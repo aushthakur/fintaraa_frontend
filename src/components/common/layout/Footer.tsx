@@ -122,7 +122,7 @@ export const AppDownloadBanner = () => {
     <section className="bg-white px-4 py-8 md:px-6 lg:px-8">
       <div className="mx-auto grid max-w-9xl gap-5 overflow-hidden rounded-[26px] border border-[#a8e5fb] bg-[radial-gradient(circle_at_94%_12%,rgba(24,194,225,0.12),transparent_16%),radial-gradient(circle_at_4%_90%,rgba(25,85,133,0.08),transparent_18%),linear-gradient(105deg,#f3fbff_0%,#ffffff_44%,#eafffb_100%)] px-4 py-6 shadow-[0_20px_55px_rgba(25,85,133,0.09)] md:grid-cols-[1fr_0.9fr_1fr] md:px-6 lg:px-8">
         <div className="flex flex-col justify-center py-3">
-          <h2 className="mt-7 max-w-xl text-[24px] font-extrabold leading-[1.05] tracking-[-0.02em] text-[#07162d] md:text-[36px] xl:text-[42px]">
+          <h2 className="mt-7 max-w-xl text-[20px] font-extrabold leading-[1.05] tracking-[-0.02em] text-[#07162d] md:text-[32px] xl:text-[36px]">
             Manage Your Finances
             <span className="block bg-[linear-gradient(90deg,#0b7fe8,#176bff)] bg-clip-text text-transparent">
               Anytime, Anywhere
@@ -134,14 +134,14 @@ export const AppDownloadBanner = () => {
           </p>
         </div>
 
-        <div className="relative hidden min-h-82.5 items-end justify-center md:flex">
+        <div className="relative hidden items-end justify-center md:flex">
           <Image
             src="/assets/refer/footer.png"
             alt="Fintaraa mobile app preview"
             width={420}
             height={360}
-            className="h-auto w-full max-w-90 object-contain"
-            sizes="(min-width: 1024px) 30vw, 360px"
+            unoptimized
+            className="h-full w-full object-cover"
           />
         </div>
 
