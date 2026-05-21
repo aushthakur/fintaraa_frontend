@@ -41,11 +41,11 @@ export function BlogVisual({
         ))}
       </div>
       <div className="relative z-10 flex h-full flex-col justify-end p-5 text-white">
-        <p className="text-[11px] font-black uppercase tracking-[0.16em] text-white/70">
+        <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-white/70">
           {category}
         </p>
         <h3
-          className={`mt-2 max-w-xl font-black leading-tight ${
+          className={`mt-2 max-w-xl font-extrabold leading-tight ${
             compact ? "text-[18px]" : "text-[34px]"
           }`}
         >

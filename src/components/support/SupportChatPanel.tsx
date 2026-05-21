@@ -61,7 +61,8 @@ export function SupportChatPanel({
   onTicketUpdated: () => Promise<void> | void;
 }) {
   const [detail, setDetail] = useState<SupportTicketDetail | null>(null);
-  const [messages, setMessages] = useState<SupportInteraction[]>(starterMessages);
+  const [messages, setMessages] =
+    useState<SupportInteraction[]>(starterMessages);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [sending, setSending] = useState(false);
@@ -89,15 +90,17 @@ export function SupportChatPanel({
         .finally(() => {
           if (active) setLoading(false);
         });
-      });
+    });
     return () => {
       active = false;
     };
   }, [ticket?.id]);
 
-  const selectedTitle = detail?.title || ticket?.title || "Support conversation";
+  const selectedTitle =
+    detail?.title || ticket?.title || "Support conversation";
   const assigneeId = detail?.assignee?.id || ticket?.assigneeId;
-  const assigneeName = detail?.assignee?.name || ticket?.assigneeName || "Support";
+  const assigneeName =
+    detail?.assignee?.name || ticket?.assigneeName || "Support";
   const displayMessages = ticket ? messages : starterMessages;
 
   const submit = async (event: FormEvent) => {
@@ -135,25 +138,27 @@ export function SupportChatPanel({
   };
 
   return (
-    <section className="flex min-h-[42rem] flex-col bg-white shadow-[0_18px_45px_rgba(25,85,133,0.08)]">
+    <section className="flex min-h-168 flex-col bg-white shadow-[0_18px_45px_rgba(25,85,133,0.08)]">
       <div className="flex flex-col gap-4 border-b border-[#e4edf5] p-5 md:flex-row md:items-center md:justify-between">
         <div className="flex gap-3">
           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#195585] text-white">
             <MessageCircle className="h-5 w-5" />
           </div>
           <div>
-            <p className="text-[12px] font-black uppercase tracking-[0.14em] text-[#195585]">
+            <p className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#195585]">
               Ticket chat
             </p>
-            <h2 className="mt-1 text-[22px] font-black text-[#07162d]">
+            <h2 className="mt-1 text-[22px] font-extrabold text-[#07162d]">
               {selectedTitle}
             </h2>
             <p className="mt-1 text-[12px] font-semibold text-[#667085]">
-              {loading ? "Loading conversation..." : `Assigned to ${assigneeName}`}
+              {loading
+                ? "Loading conversation..."
+                : `Assigned to ${assigneeName}`}
             </p>
           </div>
         </div>
-        <span className="inline-flex w-fit items-center gap-2 rounded-full bg-[#ecfdf3] px-3 py-1 text-[11px] font-black uppercase tracking-[0.12em] text-[#079455]">
+        <span className="inline-flex w-fit items-center gap-2 rounded-full bg-[#ecfdf3] px-3 py-1 text-[11px] font-extrabold uppercase tracking-[0.12em] text-[#079455]">
           <CheckCircle2 className="h-3.5 w-3.5" />
           {ticket?.status || "Ready"}
         </span>
@@ -168,7 +173,8 @@ export function SupportChatPanel({
 
         {displayMessages.length ? (
           displayMessages.map((message) => {
-            const mine = message.senderId === userId || message.senderId === "user";
+            const mine =
+              message.senderId === userId || message.senderId === "user";
             return (
               <div
                 key={message.id}
@@ -181,9 +187,7 @@ export function SupportChatPanel({
                 ) : null}
                 <div
                   className={`max-w-[78%] p-3 shadow-[0_8px_22px_rgba(25,85,133,0.06)] ${
-                    mine
-                      ? "bg-[#195585] text-white"
-                      : "bg-white text-[#07162d]"
+                    mine ? "bg-[#195585] text-white" : "bg-white text-[#07162d]"
                   }`}
                 >
                   <p className="text-[13px] font-semibold leading-6">

@@ -44,7 +44,7 @@ function InsightCard({ post }: { post: BlogPost }) {
             </span>
           </div>
 
-          <h3 className="mt-4 text-[20px] font-black leading-tight text-[#07162d] transition group-hover:text-[#195585]">
+          <h3 className="mt-4 text-[20px] font-extrabold leading-tight text-[#07162d] transition group-hover:text-[#195585]">
             {post.title}
           </h3>
           <p className="mt-3 line-clamp-3 text-[14px] font-medium leading-7 text-[#667085]">
@@ -56,7 +56,7 @@ function InsightCard({ post }: { post: BlogPost }) {
               {post.tags.slice(0, 2).map((tag) => (
                 <span
                   key={tag}
-                  className="rounded-full bg-[#eef8ff] px-3 py-1 text-[11px] font-black text-[#195585]"
+                  className="rounded-full bg-[#eef8ff] px-3 py-1 text-[11px] font-extrabold text-[#195585]"
                 >
                   {tag}
                 </span>
@@ -80,11 +80,11 @@ export function FinancialInsights() {
       <div className="mx-auto max-w-9xl">
         <div className="mb-8 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
           <div>
-            <div className="inline-flex items-center gap-2 rounded-full bg-[#eef8ff] px-4 py-2 text-[12px] font-black uppercase tracking-[0.14em] text-[#195585]">
+            <div className="inline-flex items-center gap-2 rounded-full bg-[#eef8ff] px-4 py-2 text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#195585]">
               <Newspaper className="h-4 w-4 text-[#12b76a]" />
               Financial Insights
             </div>
-            <h2 className="mt-4 text-[32px] font-black leading-tight text-[#07162d] md:text-[42px]">
+            <h2 className="mt-4 text-[32px] font-extrabold leading-tight text-[#07162d] md:text-[42px]">
               Latest guides for smarter money decisions
             </h2>
             <p className="mt-3 max-w-2xl text-[15px] font-semibold leading-7 text-[#667085]">
@@ -110,7 +110,7 @@ export function FinancialInsights() {
             </button>
             <Link
               href="/blog"
-              className="hidden items-center gap-2 rounded-full bg-[#195585] px-5 py-3 text-[13px] font-black text-white no-underline shadow-[0_14px_32px_rgba(25,85,133,0.18)] transition hover:-translate-y-0.5 hover:bg-[#12446c] md:inline-flex"
+              className="hidden items-center gap-2 rounded-full bg-[#195585] px-5 py-3 text-[13px] font-extrabold text-white no-underline shadow-[0_14px_32px_rgba(25,85,133,0.18)] transition hover:-translate-y-0.5 hover:bg-[#12446c] md:inline-flex"
             >
               View all <ArrowRight className="h-4 w-4" />
             </Link>
@@ -152,7 +152,7 @@ export function FinancialInsights() {
 
         <Link
           href="/blog"
-          className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#195585] px-5 py-3 text-[13px] font-black text-white no-underline shadow-[0_14px_32px_rgba(25,85,133,0.18)] md:hidden"
+          className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#195585] px-5 py-3 text-[13px] font-extrabold text-white no-underline shadow-[0_14px_32px_rgba(25,85,133,0.18)] md:hidden"
         >
           View all blogs <ArrowRight className="h-4 w-4" />
         </Link>

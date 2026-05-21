@@ -15,7 +15,7 @@ function PhoneMockup() {
   return (
     <div className="relative mx-auto h-70 w-42 rounded-[26px] border-[7px] border-[#195585] bg-white p-4 shadow-[0_22px_45px_rgba(0,71,133,0.2)] md:h-80 md:w-50">
       <div className="mx-auto mb-5 h-1.5 w-12 rounded-full bg-[#195585]" />
-      <p className="text-[10px] font-black text-[#195585]">
+      <p className="text-[10px] font-extrabold text-[#195585]">
         Find Financial Solution
       </p>
       <p className="mt-1 text-[8px] font-semibold text-[#697586]">
@@ -66,7 +66,7 @@ export function HeroSection() {
 
       <div className="relative mx-auto grid max-w-9xl items-center gap-10 lg:grid-cols-[0.95fr_1.05fr]">
         <div>
-          <h1 className="max-w-xl text-[34px] font-black leading-[1.08] text-[#101828] md:text-[48px]">
+          <h1 className="max-w-xl text-[34px] font-extrabold leading-[1.08] text-[#101828] md:text-[48px]">
             Get the Best Loan, Insurance & Credit Card-
             <span className="block text-[#12b76a]">Fast & Free</span>
           </h1>
@@ -77,13 +77,13 @@ export function HeroSection() {
           <div className="mt-7 flex flex-wrap gap-3">
             <Link
               href="/loans"
-              className="inline-flex h-11 items-center gap-2 rounded-full border border-[#12b76a] px-5 text-[13px] font-black text-[#12b76a] no-underline"
+              className="inline-flex h-11 items-center gap-2 rounded-full border border-[#12b76a] px-5 text-[13px] font-extrabold text-[#12b76a] no-underline"
             >
               Explore Loans <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
               href="/apply"
-              className="inline-flex h-11 items-center gap-2 rounded-full bg-[#12b76a] px-5 text-[13px] font-black text-white no-underline shadow-[0_10px_24px_rgba(18,183,106,0.25)]"
+              className="inline-flex h-11 items-center gap-2 rounded-full bg-[#12b76a] px-5 text-[13px] font-extrabold text-white no-underline shadow-[0_10px_24px_rgba(18,183,106,0.25)]"
             >
               Get matched now <CheckCircle2 className="h-4 w-4" />
             </Link>
@@ -114,7 +114,7 @@ export function HeroSection() {
               <Smartphone className="h-4 w-4 text-[#195585]" />
             </div>
             <div>
-              <p className="text-[14px] font-black text-[#195585]">
+              <p className="text-[14px] font-extrabold text-[#195585]">
                 {stat.value}
               </p>
               <p className="text-[11px] font-semibold text-[#667085]">

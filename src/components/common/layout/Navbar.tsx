@@ -106,7 +106,7 @@ export default function Navbar() {
             href="/app"
             className="inline-flex h-10 items-center rounded-full bg-[#12b76a] px-4 text-sm font-medium text-white no-underline shadow-[0_8px_18px_rgba(18,183,106,0.22)]"
           >
-            Download App
+            Apply Now
           </Link>
           <AuthButton
             loggedIn={loggedIn}
@@ -132,7 +132,7 @@ export default function Navbar() {
                 key={item.label}
                 href={item.href}
                 onClick={() => setMenuOpen(false)}
-                className={`${underlineClass} flex items-center justify-between rounded-md px-3 py-3 text-[14px] font-black text-[#101828] no-underline hover:text-[#195585]`}
+                className={`${underlineClass} flex items-center justify-between rounded-md px-3 py-3 text-[14px] font-extrabold text-[#101828] no-underline hover:text-[#195585]`}
               >
                 {item.label}
                 {item.hasDropdown && <ChevronDown className="h-4 w-4" />}
@@ -142,9 +142,9 @@ export default function Navbar() {
               <Link
                 href="/app"
                 onClick={() => setMenuOpen(false)}
-                className="rounded-full bg-[#12b76a] px-4 py-3 text-center text-[13px] font-black text-white no-underline"
+                className="rounded-full bg-[#12b76a] px-4 py-3 text-center text-[13px] font-extrabold text-white no-underline"
               >
-                Download App
+                Apply Now
               </Link>
               <AuthButton
                 loggedIn={loggedIn}
@@ -181,7 +181,7 @@ function AuthButton({
         onClick={onClick}
         className={
           mobile
-            ? "rounded-full border border-[#12b76a] px-4 py-3 text-center text-[13px] font-black text-[#0f5132] no-underline"
+            ? "rounded-full border border-[#12b76a] px-4 py-3 text-center text-[13px] font-extrabold text-[#0f5132] no-underline"
             : "inline-flex h-10 items-center gap-2 rounded-full border border-[#12b76a] px-4 text-sm font-medium text-[#0f5132] no-underline"
         }
       >
@@ -208,12 +208,12 @@ function AuthButton({
       onClick={onClick}
       className={
         mobile
-          ? "flex items-center justify-center gap-3 rounded-full bg-[#eef8ff] px-4 py-3 text-center text-[13px] font-black text-[#195585] no-underline"
-          : "inline-flex h-10 items-center gap-2 rounded-full bg-[#eef8ff] pl-1.5 pr-4 text-sm font-black text-[#195585] no-underline ring-1 ring-[#d5ebfb]"
+          ? "flex items-center justify-center gap-3 rounded-full bg-[#eef8ff] px-4 py-3 text-center text-[13px] font-extrabold text-[#195585] no-underline"
+          : "inline-flex h-10 items-center gap-2 rounded-full bg-[#eef8ff] pl-1.5 pr-4 text-sm font-extrabold text-[#195585] no-underline ring-1 ring-[#d5ebfb]"
       }
       aria-label={`Open account profile for ${name}`}
     >
-      <span className="relative flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-linear-to-br from-[#195585] to-[#12b76a] text-[11px] font-black text-white">
+      <span className="relative flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-linear-to-br from-[#195585] to-[#12b76a] text-[11px] font-extrabold text-white">
         {avatar ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={avatar} alt={name} className="h-full w-full object-cover" />

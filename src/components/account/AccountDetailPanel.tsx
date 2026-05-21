@@ -202,7 +202,7 @@ function FormField({
 }) {
   return (
     <label className="group relative block pt-2">
-      <span className="text-[12px] font-black uppercase tracking-[0.14em] text-[#667085] transition-colors duration-300 group-focus-within:text-[#195585]">
+      <span className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#667085] transition-colors duration-300 group-focus-within:text-[#195585]">
         {label}
       </span>
       <div className="relative mt-1">
@@ -210,7 +210,7 @@ function FormField({
           type={type}
           value={value}
           onChange={(event) => onChange(event.target.value)}
-          className="peer h-12 w-full border-0 border-b border-[#cfddea] bg-transparent px-0 text-[15px] font-black text-[#07162d] outline-none transition-all duration-300 placeholder:text-[#98a2b3] placeholder:font-semibold placeholder:transition-colors focus:border-transparent focus:placeholder:text-[#c8d5e1]"
+          className="peer h-12 w-full border-0 border-b border-[#cfddea] bg-transparent px-0 text-[15px] font-extrabold text-[#07162d] outline-none transition-all duration-300 placeholder:text-[#98a2b3] placeholder:font-semibold placeholder:transition-colors focus:border-transparent focus:placeholder:text-[#c8d5e1]"
           placeholder={placeholder}
         />
         <span className="pointer-events-none absolute bottom-0 left-0 h-0.5 w-full origin-left scale-x-0 bg-linear-to-r from-[#195585] via-[#12b76a] to-[#1375de] transition-transform duration-300 ease-out peer-focus:scale-x-100" />
@@ -483,7 +483,7 @@ function EditProfileForm() {
             >
               <div className="flex items-center justify-between gap-4">
                 <span
-                  className={`text-[12px] font-black uppercase tracking-[0.18em] ${
+                  className={`text-[12px] font-extrabold uppercase tracking-[0.18em] ${
                     index === 0 ? "text-white/70" : "text-[#195585]"
                   }`}
                 >
@@ -495,7 +495,7 @@ function EditProfileForm() {
                   }`}
                 />
               </div>
-              <h3 className="mt-4 text-[19px] font-black">{title}</h3>
+              <h3 className="mt-4 text-[19px] font-extrabold">{title}</h3>
               <p
                 className={`mt-2 text-[12px] font-semibold leading-5 ${
                   index === 0 ? "text-white/76" : "text-[#667085]"
@@ -518,10 +518,10 @@ function EditProfileForm() {
                     <Icon className="h-6 w-6" />
                   </div>
                   <div>
-                    <p className="text-[12px] font-black uppercase tracking-[0.18em] text-[#195585]">
+                    <p className="text-[12px] font-extrabold uppercase tracking-[0.18em] text-[#195585]">
                       Step {step}
                     </p>
-                    <h3 className="mt-1 text-[24px] font-black text-[#07162d]">
+                    <h3 className="mt-1 text-[24px] font-extrabold text-[#07162d]">
                       {title}
                     </h3>
                     <p className="mt-2 max-w-2xl text-[13px] font-semibold leading-6 text-[#667085]">
@@ -529,7 +529,7 @@ function EditProfileForm() {
                     </p>
                   </div>
                 </div>
-                <span className="w-fit rounded-full bg-[#ecfdf3] px-3 py-1 text-[11px] font-black uppercase tracking-[0.12em] text-[#079455]">
+                <span className="w-fit rounded-full bg-[#ecfdf3] px-3 py-1 text-[11px] font-extrabold uppercase tracking-[0.12em] text-[#079455]">
                   {loading ? "Syncing" : dirty ? "Editing" : "Synced"}
                 </span>
               </div>
@@ -552,7 +552,7 @@ function EditProfileForm() {
 
         <div className="flex flex-col gap-3 bg-[#07162d] p-5 text-white md:flex-row md:items-center md:justify-between">
           <div>
-            <p className="text-[18px] font-black">Ready to update?</p>
+            <p className="text-[18px] font-extrabold">Ready to update?</p>
             <p className="mt-1 text-[13px] font-semibold text-white/70">
               Review all details before saving. Partner verification may request
               supporting documents.
@@ -562,14 +562,14 @@ function EditProfileForm() {
             <button
               type="button"
               onClick={handleDraft}
-              className="h-11 rounded-full bg-white/10 px-5 text-[13px] font-black text-white"
+              className="h-11 rounded-full bg-white/10 px-5 text-[13px] font-extrabold text-white"
             >
               Save Draft
             </button>
             <button
               type="submit"
               disabled={saving}
-              className="h-11 rounded-full bg-white px-6 text-[13px] font-black text-[#195585]"
+              className="h-11 rounded-full bg-white px-6 text-[13px] font-extrabold text-[#195585]"
             >
               {saving ? "Saving..." : "Save Profile"}
             </button>
@@ -587,7 +587,9 @@ function EmptyState({ title, text }: { title: string; text: string }) {
   return (
     <div className="bg-linear-to-br from-[#f8fcff] to-white p-6">
       <CheckCircle2 className="h-7 w-7 text-[#12b76a]" />
-      <h3 className="mt-5 text-[24px] font-black text-[#07162d]">{title}</h3>
+      <h3 className="mt-5 text-[24px] font-extrabold text-[#07162d]">
+        {title}
+      </h3>
       <p className="mt-3 max-w-2xl text-[15px] font-semibold leading-7 text-[#667085]">
         {text}
       </p>
@@ -606,10 +608,10 @@ export function AccountDetailPanel({ slug = "overview" }: { slug?: string }) {
     <section className="bg-white/95 p-4 md:p-6">
       <div className="flex flex-col gap-4 border-b border-[#e4edf5] pb-5 md:flex-row md:items-end md:justify-between">
         <div>
-          <p className="text-[12px] font-black uppercase tracking-[0.18em] text-[#195585]">
+          <p className="text-[12px] font-extrabold uppercase tracking-[0.18em] text-[#195585]">
             Account workspace
           </p>
-          <h2 className="mt-1 text-[30px] font-black leading-tight text-[#07162d]">
+          <h2 className="mt-1 text-[30px] font-extrabold leading-tight text-[#07162d]">
             {title}
           </h2>
           <p className="mt-3 max-w-3xl text-[15px] font-semibold leading-7 text-[#667085]">
@@ -636,7 +638,7 @@ function renderPanel(slug: string) {
         <div className="grid gap-6">
           <div className="bg-linear-to-r from-[#195585] to-[#1375de] p-5 text-white">
             <Bell className="h-6 w-6 text-[#7ee3a2]" />
-            <h3 className="mt-4 text-[22px] font-black">
+            <h3 className="mt-4 text-[22px] font-extrabold">
               Stay updated without noise
             </h3>
             <p className="mt-2 max-w-2xl text-[13px] font-semibold leading-6 text-white/75">
@@ -671,7 +673,7 @@ function renderPanel(slug: string) {
                 <span className="flex gap-3">
                   <Bell className="mt-1 h-5 w-5 text-[#195585]" />
                   <span>
-                    <span className="block text-[15px] font-black text-[#07162d]">
+                    <span className="block text-[15px] font-extrabold text-[#07162d]">
                       {pref}
                     </span>
                     <span className="mt-1 block text-[12px] font-semibold leading-5 text-[#667085]">
@@ -727,7 +729,7 @@ function renderPanel(slug: string) {
           <div className="grid overflow-hidden bg-[#07162d] text-white md:grid-cols-[1fr_0.9fr]">
             <div className="p-6">
               <Gift className="h-8 w-8 text-[#7ee3a2]" />
-              <h3 className="mt-5 max-w-lg text-[32px] font-black leading-tight">
+              <h3 className="mt-5 max-w-lg text-[32px] font-extrabold leading-tight">
                 Use your referral code to invite friends and earn rewards
               </h3>
               <p className="mt-3 max-w-xl text-[14px] font-semibold leading-7 text-white/72">
@@ -750,16 +752,16 @@ function renderPanel(slug: string) {
           <div className="flex flex-col gap-4 border border-dashed border-[#cfddea] p-4 md:flex-row md:items-center md:justify-between">
             <div className="flex items-center gap-3">
               <Copy className="h-5 w-5 text-[#195585]" />
-              <span className="text-[18px] font-black tracking-[0.16em] text-[#07162d]">
+              <span className="text-[18px] font-extrabold tracking-[0.16em] text-[#07162d]">
                 FINTARA000
               </span>
             </div>
             <div className="flex flex-wrap gap-3">
-              <button className="inline-flex h-10 items-center gap-2 rounded-full bg-[#195585] px-4 text-[13px] font-black text-white">
+              <button className="inline-flex h-10 items-center gap-2 rounded-full bg-[#195585] px-4 text-[13px] font-extrabold text-white">
                 <Share2 className="h-4 w-4" />
                 Share
               </button>
-              <button className="inline-flex h-10 items-center gap-2 rounded-full bg-[#0f766e] px-4 text-[13px] font-black text-white">
+              <button className="inline-flex h-10 items-center gap-2 rounded-full bg-[#0f766e] px-4 text-[13px] font-extrabold text-white">
                 <MessageCircle className="h-4 w-4" />
                 WhatsApp
               </button>
@@ -788,8 +790,10 @@ function renderPanel(slug: string) {
                 key={title}
                 className="bg-linear-to-br from-[#f8fcff] to-white p-5"
               >
-                <p className="text-[13px] font-black text-[#195585]">{title}</p>
-                <p className="mt-3 text-[28px] font-black text-[#07162d]">
+                <p className="text-[13px] font-extrabold text-[#195585]">
+                  {title}
+                </p>
+                <p className="mt-3 text-[28px] font-extrabold text-[#07162d]">
                   {value}
                 </p>
                 <p className="mt-2 text-[12px] font-semibold leading-5 text-[#667085]">
@@ -801,7 +805,7 @@ function renderPanel(slug: string) {
 
           <div className="bg-[#f8fcff] p-5">
             <Zap className="h-5 w-5 text-[#195585]" />
-            <p className="mt-3 text-[13px] font-black text-[#07162d]">
+            <p className="mt-3 text-[13px] font-extrabold text-[#07162d]">
               0 points earned · 0 rewarded · 1 Point = Rs1
             </p>
             <p className="mt-2 text-[12px] font-semibold leading-6 text-[#667085]">

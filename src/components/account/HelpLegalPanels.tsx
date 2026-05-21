@@ -526,13 +526,13 @@ export function KnowledgeCenterPanel() {
                     <Icon className="h-5 w-5" />
                   </span>
                   <span
-                    className={`mt-4 block text-[11px] font-black uppercase tracking-[0.14em] ${
+                    className={`mt-4 block text-[11px] font-extrabold uppercase tracking-[0.14em] ${
                       active ? "text-white/60" : "text-[#667085]"
                     }`}
                   >
                     {items.length} updates
                   </span>
-                  <span className="mt-1 block text-[18px] font-black">
+                  <span className="mt-1 block text-[18px] font-extrabold">
                     {section.title}
                   </span>
                 </span>
@@ -571,7 +571,7 @@ export function KnowledgeCenterPanel() {
                     <Icon className="h-5 w-5" />
                   </span>
                   <div>
-                    <h3 className="text-[18px] font-black text-[#07162d]">
+                    <h3 className="text-[18px] font-extrabold text-[#07162d]">
                       {section.title}
                     </h3>
                     <p className="text-[12px] font-semibold text-[#667085]">
@@ -582,7 +582,7 @@ export function KnowledgeCenterPanel() {
                 <button
                   type="button"
                   onClick={() => setActiveType(section.type)}
-                  className="shrink-0 text-[12px] font-black text-[#195585]"
+                  className="shrink-0 text-[12px] font-extrabold text-[#195585]"
                 >
                   View all
                 </button>
@@ -611,12 +611,12 @@ export function KnowledgeCenterPanel() {
                           className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                         />
                       ) : (
-                        <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-[#eef8ff] to-[#f8fcff] px-6 text-center text-[13px] font-black text-[#98a2b3]">
+                        <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-[#eef8ff] to-[#f8fcff] px-6 text-center text-[13px] font-extrabold text-[#98a2b3]">
                           {loading ? "Loading..." : "No cover image"}
                         </div>
                       )}
                       <div className="absolute inset-x-0 bottom-0 bg-linear-to-t from-[#07162d]/90 via-[#07162d]/55 to-transparent p-4 pt-16">
-                        <p className="line-clamp-2 text-[15px] font-black leading-5 text-white">
+                        <p className="line-clamp-2 text-[15px] font-extrabold leading-5 text-white">
                           {item.title || `${section.title} #${index + 1}`}
                         </p>
                       </div>
@@ -663,10 +663,10 @@ export function KnowledgeCenterPanel() {
               <div key={section.type}>
                 <div className="flex flex-col gap-3 border-b border-[#e4edf5] pb-4 sm:flex-row sm:items-end sm:justify-between">
                   <div>
-                    <p className="text-[11px] font-black uppercase tracking-[0.16em] text-[#195585]">
+                    <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#195585]">
                       Knowledge hub
                     </p>
-                    <h3 className="mt-1 text-[24px] font-black text-[#07162d]">
+                    <h3 className="mt-1 text-[24px] font-extrabold text-[#07162d]">
                       {section.title}
                     </h3>
                     <p className="mt-1 text-[13px] font-semibold leading-6 text-[#667085]">
@@ -705,13 +705,13 @@ export function KnowledgeCenterPanel() {
                               className="h-full w-full object-cover"
                             />
                           ) : (
-                            <div className="flex h-full w-full items-center justify-center text-[11px] font-black text-[#98a2b3]">
+                            <div className="flex h-full w-full items-center justify-center text-[11px] font-extrabold text-[#98a2b3]">
                               No cover
                             </div>
                           )}
                         </div>
                         <div className="min-w-0">
-                          <p className="line-clamp-1 text-[15px] font-black text-[#07162d]">
+                          <p className="line-clamp-1 text-[15px] font-extrabold text-[#07162d]">
                             {item.title || `${section.title} #${index + 1}`}
                           </p>
                           <p className="mt-1 line-clamp-2 text-[12px] font-semibold leading-5 text-[#667085]">

@@ -223,7 +223,7 @@ export function LoginPage() {
             <div className="flex min-h-72 items-center justify-center rounded-3xl border border-dashed border-[#195585]/28 bg-white/50 p-8 text-center shadow-[inset_0_0_0_1px_rgba(255,255,255,0.65)]">
               <div>
                 <WalletCards className="mx-auto h-12 w-12 text-[#195585]" />
-                <p className="mt-4 text-[18px] font-black text-[#07162d]">
+                <p className="mt-4 text-[18px] font-extrabold text-[#07162d]">
                   Image placement area
                 </p>
                 <p className="mt-2 max-w-md text-[13px] font-semibold leading-6 text-[#667085]">
@@ -247,7 +247,7 @@ export function LoginPage() {
                     key={value}
                     type="button"
                     onClick={() => switchMode(value as AuthMode)}
-                    className={`h-11 rounded-full text-[13px] font-black transition ${
+                    className={`h-11 rounded-full text-[13px] font-extrabold transition ${
                       mode === value
                         ? "bg-[#195585] text-white shadow-[0_10px_22px_rgba(25,85,133,0.22)]"
                         : "text-[#195585]"
@@ -258,7 +258,7 @@ export function LoginPage() {
                 ))}
               </div>
             ) : (
-              <div className="mb-7 inline-flex rounded-full bg-[#eef8ff] px-4 py-2 text-[12px] font-black uppercase tracking-[0.14em] text-[#195585]">
+              <div className="mb-7 inline-flex rounded-full bg-[#eef8ff] px-4 py-2 text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#195585]">
                 {mode === "signup" ? "Create account flow" : "Login flow"}
               </div>
             )}
@@ -373,7 +373,7 @@ export function LoginPage() {
                   <button
                     type="button"
                     onClick={() => setStep("phone")}
-                    className="text-[13px] font-black text-[#195585]"
+                    className="text-[13px] font-extrabold text-[#195585]"
                   >
                     Change mobile
                   </button>
@@ -388,7 +388,7 @@ export function LoginPage() {
                         setLoading(false);
                       }
                     }}
-                    className="text-[13px] font-black text-[#195585]"
+                    className="text-[13px] font-extrabold text-[#195585]"
                   >
                     Resend OTP
                   </button>
@@ -493,7 +493,7 @@ function AuthField({
 }) {
   return (
     <label className="group relative block pt-2">
-      <span className="text-[12px] font-black uppercase tracking-[0.14em] text-[#667085] transition-colors duration-300 group-focus-within:text-[#195585]">
+      <span className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#667085] transition-colors duration-300 group-focus-within:text-[#195585]">
         {label}
       </span>
       <div className="relative mt-1 flex items-center gap-2">
@@ -530,7 +530,7 @@ function ConsentRow({
       className="flex items-start gap-3 text-left"
     >
       <span
-        className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center border text-[11px] font-black ${
+        className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center border text-[11px] font-extrabold ${
           checked
             ? "border-[#195585] bg-[#195585] text-white"
             : "border-[#cfddea] bg-white text-transparent"
@@ -567,7 +567,7 @@ function SubmitBlock({
         <button
           type="submit"
           disabled={loading}
-          className="inline-flex h-14 w-full shrink-0 items-center justify-center gap-3 rounded-full bg-[#195585] px-6 text-[15px] font-black text-white shadow-[0_14px_30px_rgba(25,85,133,0.24)] disabled:opacity-60"
+          className="inline-flex h-14 w-full shrink-0 items-center justify-center gap-3 rounded-full bg-[#195585] px-6 text-[15px] font-extrabold text-white shadow-[0_14px_30px_rgba(25,85,133,0.24)] disabled:opacity-60"
         >
           {loading ? "Please wait..." : buttonText}
           {!loading ? <ArrowRight className="h-4 w-4" /> : null}

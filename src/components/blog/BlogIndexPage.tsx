@@ -47,11 +47,11 @@ export function BlogIndexPage({ posts }: { posts: BlogPost[] }) {
         <div className="blog-grid-pulse absolute inset-0 opacity-[0.18]" />
         <div className="relative mx-auto grid max-w-9xl gap-8 lg:grid-cols-[1fr_0.86fr] lg:items-center">
           <div>
-            <div className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-[12px] font-black uppercase tracking-[0.14em] text-[#195585] shadow-[0_10px_28px_rgba(25,85,133,0.08)]">
+            <div className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#195585] shadow-[0_10px_28px_rgba(25,85,133,0.08)]">
               <Sparkles className="h-4 w-4 text-[#12b76a]" />
               Fintaraa insights
             </div>
-            <h1 className="mt-5 max-w-4xl text-[42px] font-black leading-[1.02] tracking-[-0.02em] text-[#07162d] md:text-[64px]">
+            <h1 className="mt-5 max-w-4xl text-[42px] font-extrabold leading-[1.02] tracking-[-0.02em] text-[#07162d] md:text-[64px]">
               Smarter money decisions, explained clearly.
             </h1>
             <p className="mt-5 max-w-2xl text-[16px] font-semibold leading-8 text-[#475467]">
@@ -63,7 +63,7 @@ export function BlogIndexPage({ posts }: { posts: BlogPost[] }) {
                 (item) => (
                   <span
                     key={item}
-                    className="rounded-full bg-white/85 px-4 py-2 text-[13px] font-black text-[#07162d] shadow-[0_10px_24px_rgba(25,85,133,0.06)]"
+                    className="rounded-full bg-white/85 px-4 py-2 text-[13px] font-extrabold text-[#07162d] shadow-[0_10px_24px_rgba(25,85,133,0.06)]"
                   >
                     {item}
                   </span>
@@ -83,7 +83,7 @@ export function BlogIndexPage({ posts }: { posts: BlogPost[] }) {
             />
             <div className="flex items-center justify-between gap-4 p-4">
               <div>
-                <p className="text-[12px] font-black uppercase tracking-[0.14em] text-[#195585]">
+                <p className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#195585]">
                   {featured.category}
                 </p>
                 <p className="mt-1 text-[13px] font-semibold text-[#667085]">
@@ -118,7 +118,7 @@ export function BlogIndexPage({ posts }: { posts: BlogPost[] }) {
                       key={item}
                       type="button"
                       onClick={() => setCategory(item)}
-                      className={`shrink-0 rounded-full px-4 py-2 text-[12px] font-black transition ${
+                      className={`shrink-0 rounded-full px-4 py-2 text-[12px] font-extrabold transition ${
                         category === item
                           ? "bg-[#195585] text-white"
                           : "bg-[#eef8ff] text-[#195585] hover:bg-[#dff1ff]"
@@ -141,7 +141,7 @@ export function BlogIndexPage({ posts }: { posts: BlogPost[] }) {
           <aside className="h-fit bg-white p-5 shadow-[0_18px_45px_rgba(25,85,133,0.08)] lg:sticky lg:top-28">
             <div className="flex items-center gap-2">
               <TrendingUp className="h-5 w-5 text-[#195585]" />
-              <h2 className="text-[20px] font-black text-[#07162d]">
+              <h2 className="text-[20px] font-extrabold text-[#07162d]">
                 Latest posts
               </h2>
             </div>
@@ -152,10 +152,10 @@ export function BlogIndexPage({ posts }: { posts: BlogPost[] }) {
                   href={`/blog/${post.slug}`}
                   className="group block border-b border-[#edf2f7] pb-4 text-[#07162d] no-underline last:border-b-0 last:pb-0"
                 >
-                  <p className="text-[11px] font-black uppercase tracking-[0.14em] text-[#195585]">
+                  <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[#195585]">
                     {post.category}
                   </p>
-                  <h3 className="mt-2 text-[15px] font-black leading-5 group-hover:text-[#195585]">
+                  <h3 className="mt-2 text-[15px] font-extrabold leading-5 group-hover:text-[#195585]">
                     {post.title}
                   </h3>
                   <p className="mt-2 flex items-center gap-2 text-[12px] font-semibold text-[#667085]">
@@ -193,7 +193,7 @@ function BlogCard({ post }: { post: BlogPost }) {
               {post.readTime}
             </span>
           </div>
-          <h2 className="mt-4 text-[22px] font-black leading-tight text-[#07162d] transition group-hover:text-[#195585]">
+          <h2 className="mt-4 text-[22px] font-extrabold leading-tight text-[#07162d] transition group-hover:text-[#195585]">
             {post.title}
           </h2>
           <p className="mt-3 text-[14px] font-medium leading-7 text-[#667085]">
@@ -204,7 +204,7 @@ function BlogCard({ post }: { post: BlogPost }) {
               {post.tags.slice(0, 2).map((tag) => (
                 <span
                   key={tag}
-                  className="rounded-full bg-[#eef8ff] px-3 py-1 text-[11px] font-black text-[#195585]"
+                  className="rounded-full bg-[#eef8ff] px-3 py-1 text-[11px] font-extrabold text-[#195585]"
                 >
                   {tag}
                 </span>

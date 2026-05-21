@@ -54,7 +54,7 @@ function BottomInput({
 }) {
   return (
     <label className="group relative block pt-2">
-      <span className="text-[12px] font-black uppercase tracking-[0.14em] text-[#667085] transition-colors duration-300 group-focus-within:text-[#195585]">
+      <span className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#667085] transition-colors duration-300 group-focus-within:text-[#195585]">
         {label}
       </span>
       <div className="relative mt-1">
@@ -151,7 +151,7 @@ export function EligibilitySection() {
             Quick Apply
           </span>
 
-          <h2 className="mt-8 max-w-2xl text-[42px] font-black leading-[1.18] tracking-[-0.02em] text-black md:text-[48px]">
+          <h2 className="mt-8 max-w-2xl text-[42px] font-extrabold leading-[1.18] tracking-[-0.02em] text-black md:text-[48px]">
             Check Your Eligibility in{" "}
             <span className="text-[#195585]">30 Seconds</span>
           </h2>
@@ -201,7 +201,7 @@ export function EligibilitySection() {
                         }`}
                       >
                         <div
-                          className={`mx-auto flex h-11 w-11 items-center justify-center rounded-full border-4 text-[13px] font-black transition-all duration-500 ${
+                          className={`mx-auto flex h-11 w-11 items-center justify-center rounded-full border-4 text-[13px] font-extrabold transition-all duration-500 ${
                             completed
                               ? "border-[#22c55e] bg-[#22c55e] text-white"
                               : active
@@ -217,7 +217,7 @@ export function EligibilitySection() {
                         </div>
                         <div className="mt-3 text-center">
                           <p
-                            className={`text-[13px] font-black ${
+                            className={`text-[13px] font-extrabold ${
                               active || completed
                                 ? "text-[#07162d]"
                                 : "text-[#98a2b3]"
@@ -264,7 +264,7 @@ export function EligibilitySection() {
                 <p className="text-[18px] font-semibold text-[#262626]">
                   Select Loan Amount
                 </p>
-                <p className="mt-4 text-center text-[34px] font-black text-[#383838]">
+                <p className="mt-4 text-center text-[34px] font-extrabold text-[#383838]">
                   Rs{formatAmount(amount)}
                 </p>
 
@@ -274,7 +274,7 @@ export function EligibilitySection() {
                       key={item.label}
                       type="button"
                       onClick={() => setAmount(item.value)}
-                      className={`group relative h-13 overflow-hidden rounded-xl border px-3 text-[14px] font-black transition duration-300 ${
+                      className={`group relative h-13 overflow-hidden rounded-xl border px-3 text-[14px] font-extrabold transition duration-300 ${
                         amount === item.value
                           ? "border-[#075596] bg-[#075596] text-white shadow-[0_12px_24px_rgba(7,85,150,0.22)]"
                           : "border-[#d8dee7] bg-[#fbfdff] text-[#313131] shadow-[0_6px_14px_rgba(16,24,40,0.05)] hover:-translate-y-0.5 hover:border-[#075596] hover:text-[#075596] hover:shadow-[0_12px_22px_rgba(16,24,40,0.08)]"
@@ -341,7 +341,7 @@ export function EligibilitySection() {
 
               <button
                 type="button"
-                className="ml-auto inline-flex h-11 min-w-44 items-center justify-center gap-8 rounded-full bg-[#20bf55] px-6 text-[14px] font-black text-white shadow-[0_8px_18px_rgba(32,191,85,0.26)] transition hover:-translate-y-0.5 hover:bg-[#12a946]"
+                className="ml-auto inline-flex h-11 min-w-44 items-center justify-center gap-8 rounded-full bg-[#20bf55] px-6 text-[14px] font-extrabold text-white shadow-[0_8px_18px_rgba(32,191,85,0.26)] transition hover:-translate-y-0.5 hover:bg-[#12a946]"
               >
                 Continue
                 <ArrowRight className="h-5 w-5" />

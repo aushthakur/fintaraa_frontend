@@ -13,7 +13,7 @@ export function SupportHero() {
       <div className="absolute -bottom-24 left-16 h-72 w-72 rounded-full border border-white/10 blog-orbit-reverse" />
       <div className="relative mx-auto grid max-w-9xl gap-8 lg:grid-cols-[1fr_0.78fr] lg:items-center">
         <div>
-          <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-[12px] font-black uppercase tracking-[0.14em] text-white/80">
+          <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-[12px] font-extrabold uppercase tracking-[0.14em] text-white/80">
             <Headphones className="h-4 w-4 text-[#7ee3a2]" />
             Support & Service Desk
           </div>

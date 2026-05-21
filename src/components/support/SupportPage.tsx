@@ -83,7 +83,7 @@ export function SupportPage() {
                 <Icon className="h-5 w-5" />
               </span>
               <span>
-                <span className="block text-[18px] font-black text-[#07162d]">
+                <span className="block text-[18px] font-extrabold text-[#07162d]">
                   {label === "Ticket history" ? tickets.length : value}
                 </span>
                 <span className="text-[12px] font-semibold text-[#667085]">
@@ -96,10 +96,10 @@ export function SupportPage() {
 
         <div className="mx-auto mt-5 flex max-w-9xl flex-col gap-3 bg-[#195585] p-4 text-white md:flex-row md:items-center md:justify-between">
           <div>
-            <p className="text-[12px] font-black uppercase tracking-[0.16em] text-[#7ee3a2]">
+            <p className="text-[12px] font-extrabold uppercase tracking-[0.16em] text-[#7ee3a2]">
               Need help now?
             </p>
-            <h2 className="mt-1 text-[22px] font-black">
+            <h2 className="mt-1 text-[22px] font-extrabold">
               Create a support ticket from the top workspace
             </h2>
             <p className="mt-1 max-w-2xl text-[13px] font-semibold leading-6 text-white/70">
@@ -110,7 +110,7 @@ export function SupportPage() {
           <button
             type="button"
             onClick={() => setCreateOpen(true)}
-            className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-full bg-white px-5 text-[13px] font-black text-[#195585]"
+            className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-full bg-white px-5 text-[13px] font-extrabold text-[#195585]"
           >
             <PlusCircle className="h-4 w-4" />
             Create ticket

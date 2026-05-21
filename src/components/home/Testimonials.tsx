@@ -18,11 +18,11 @@ export function Testimonials() {
       <div className="mx-auto max-w-9xl">
         <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className="inline-flex items-center gap-2 rounded-full bg-[#eef8ff] px-4 py-2 text-[12px] font-black uppercase tracking-[0.16em] text-[#195585]">
+            <p className="inline-flex items-center gap-2 rounded-full bg-[#eef8ff] px-4 py-2 text-[12px] font-extrabold uppercase tracking-[0.16em] text-[#195585]">
               <Sparkles className="h-4 w-4" />
               Customer stories
             </p>
-            <h2 className="mt-4 text-[34px] font-black leading-tight text-[#07162d] md:text-[44px]">
+            <h2 className="mt-4 text-[34px] font-extrabold leading-tight text-[#07162d] md:text-[44px]">
               What Our Clients Say
             </h2>
             <p className="mt-4 max-w-2xl text-[16px] font-semibold leading-7 text-[#667085]">
@@ -38,7 +38,7 @@ export function Testimonials() {
                 <Star key={index} className="h-4 w-4 fill-current" />
               ))}
             </div>
-            <p className="mt-2 text-[13px] font-black text-[#07162d]">
+            <p className="mt-2 text-[13px] font-extrabold text-[#07162d]">
               Trusted assisted experience
             </p>
           </div>
@@ -60,13 +60,13 @@ export function Testimonials() {
 
                 <div className="flex items-center gap-4">
                   <div
-                    className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full text-[18px] font-black text-white shadow-[0_12px_24px_rgba(16,24,40,0.08)]"
+                    className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full text-[18px] font-extrabold text-white shadow-[0_12px_24px_rgba(16,24,40,0.08)]"
                     style={{ backgroundColor: accent }}
                   >
                     {getInitials(item.name)}
                   </div>
                   <div>
-                    <h3 className="text-[17px] font-black text-[#07162d]">
+                    <h3 className="text-[17px] font-extrabold text-[#07162d]">
                       {item.name}
                     </h3>
                     <p className="mt-0.5 text-[13px] font-semibold text-[#667085]">
@@ -77,10 +77,7 @@ export function Testimonials() {
 
                 <div className="mt-5 flex gap-1 text-[#f79009]">
                   {Array.from({ length: 5 }).map((_, starIndex) => (
-                    <Star
-                      key={starIndex}
-                      className="h-4 w-4 fill-current"
-                    />
+                    <Star key={starIndex} className="h-4 w-4 fill-current" />
                   ))}
                 </div>
 
@@ -89,7 +86,7 @@ export function Testimonials() {
                 </p>
 
                 <div className="mt-6 flex items-center justify-between border-t border-[#edf2f7] pt-4">
-                  <span className="inline-flex items-center gap-2 text-[12px] font-black text-[#195585]">
+                  <span className="inline-flex items-center gap-2 text-[12px] font-extrabold text-[#195585]">
                     <ShieldCheck className="h-4 w-4 text-[#12b76a]" />
                     Verified customer
                   </span>

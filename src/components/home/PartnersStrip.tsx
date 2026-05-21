@@ -33,7 +33,6 @@ function LogoMarquee({ reverse = false }: { reverse?: boolean }) {
               src={bank.src}
               alt={bank.name}
               className="max-w-full object-contain"
-              style={{ width: "auto", height: "48px" }}
             />
           </div>
         ))}
@@ -46,7 +45,7 @@ export function PartnersStrip() {
   return (
     <section className="py-12">
       <div className="mx-auto">
-        <h2 className="text-center text-[20px] font-black text-[#101828]">
+        <h2 className="text-center text-[20px] font-extrabold text-[#101828]">
           Our Trusted Partner Banks & NBFCs
         </h2>
         <div className="relative mt-8 overflow-hidden rounded-2xl bg-white py-3">

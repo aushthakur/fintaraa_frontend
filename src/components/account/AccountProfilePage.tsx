@@ -8,10 +8,10 @@ export function AccountProfilePage({ activeSlug }: { activeSlug?: string }) {
       <div className="mx-auto max-w-9xl">
         <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className="text-[12px] font-black uppercase tracking-[0.18em] text-[#195585]">
+            <p className="text-[12px] font-extrabold uppercase tracking-[0.18em] text-[#195585]">
               Profile & Settings
             </p>
-            <h1 className="mt-2 text-[24px] font-black leading-tight tracking-[-0.02em] text-[#07162d] md:text-[36px]">
+            <h1 className="mt-2 text-[24px] font-extrabold leading-tight tracking-[-0.02em] text-[#07162d] md:text-[36px]">
               Account, activity, and support
             </h1>
           </div>
@@ -26,7 +26,7 @@ export function AccountProfilePage({ activeSlug }: { activeSlug?: string }) {
             <ProfileSummary />
             <AccountMenu activeSlug={activeSlug} />
             <div className="bg-white/90 p-4 text-center shadow-[0_14px_35px_rgba(25,85,133,0.05)]">
-              <p className="text-[13px] font-black text-[#07162d]">
+              <p className="text-[13px] font-extrabold text-[#07162d]">
                 Fintaraa app v1.0.0
               </p>
               <p className="mt-2 text-[12px] font-semibold leading-5 text-[#667085]">

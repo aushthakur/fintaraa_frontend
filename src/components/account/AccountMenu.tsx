@@ -24,7 +24,7 @@ export function AccountMenu({ activeSlug }: { activeSlug?: string }) {
     <div className="grid gap-4">
       {accountMenuSections.map((section) => (
         <section key={section.title} className="bg-white/92 p-4">
-          <h2 className="text-[13px] font-black uppercase tracking-[0.14em] text-[#195585]">
+          <h2 className="text-[13px] font-extrabold uppercase tracking-[0.14em] text-[#195585]">
             {section.title}
           </h2>
           <div className="mt-3 divide-y divide-[#edf2f7]">
@@ -54,7 +54,7 @@ export function AccountMenu({ activeSlug }: { activeSlug?: string }) {
                   </span>
                   <span className="min-w-0 flex-1">
                     <span
-                      className={`block text-[15px] font-black ${
+                      className={`block text-[15px] font-extrabold ${
                         item.action === "logout" ? "text-[#b91c1c]" : ""
                       }`}
                     >

@@ -79,7 +79,7 @@ function RangeCard({
             <Icon className="h-5 w-5" />
           </span>
           <div>
-            <p className="text-[13px] font-black uppercase tracking-[0.16em] text-[#5d6878]">
+            <p className="text-[13px] font-extrabold uppercase tracking-[0.16em] text-[#5d6878]">
               {title}
             </p>
             <p className="mt-1 text-[13px] font-semibold leading-5 text-[#667085]">
@@ -98,11 +98,11 @@ function RangeCard({
           <input
             value={Math.round(value)}
             onChange={(event) => onChange(Number(event.target.value) || min)}
-            className="h-full w-full border-0 bg-transparent text-[16px] font-black outline-none"
+            className="h-full w-full border-0 bg-transparent text-[16px] font-extrabold outline-none"
             aria-label={title}
           />
           {unit ? (
-            <span className="ml-2 text-[16px] font-black text-[#3b7eb3]">
+            <span className="ml-2 text-[16px] font-extrabold text-[#3b7eb3]">
               {unit === "percent" ? "%" : unit}
             </span>
           ) : null}
@@ -112,10 +112,10 @@ function RangeCard({
 
       <div className="mt-8">
         <div className="mb-3 flex items-center justify-between">
-          <span className="text-[11px] font-black uppercase tracking-[0.12em] text-[#98a2b3]">
+          <span className="text-[11px] font-extrabold uppercase tracking-[0.12em] text-[#98a2b3]">
             Slide to adjust
           </span>
-          <span className="rounded-full bg-[#eef8ff] px-3 py-1 text-[12px] font-black text-[#195585]">
+          <span className="rounded-full bg-[#eef8ff] px-3 py-1 text-[12px] font-extrabold text-[#195585]">
             {display}
           </span>
         </div>
@@ -215,7 +215,7 @@ export function EmiCalculator() {
           <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#f1f7fd] text-[#3b7eb3]">
             <Calculator className="h-6 w-6" />
           </span>
-          <h2 className="text-[26px] font-black text-[#171b24]">
+          <h2 className="text-[26px] font-extrabold text-[#171b24]">
             EMI Calculator
           </h2>
         </div>
@@ -274,7 +274,7 @@ export function EmiCalculator() {
 
           <aside className="overflow-hidden rounded-2xl border border-[#edf2f7] bg-white">
             <div className="bg-[#f1f6fb] px-7 py-5">
-              <p className="text-[14px] font-black uppercase tracking-[0.12em] text-[#3b7eb3]">
+              <p className="text-[14px] font-extrabold uppercase tracking-[0.12em] text-[#3b7eb3]">
                 Breakdown Summary
               </p>
             </div>
@@ -315,10 +315,10 @@ export function EmiCalculator() {
                         className="mx-auto h-5 w-5"
                         style={{ color: String(color) }}
                       />
-                      <p className="mt-4 text-[10px] font-black uppercase text-[#596475]">
+                      <p className="mt-4 text-[10px] font-extrabold uppercase text-[#596475]">
                         {String(label)}
                       </p>
-                      <p className="mt-2 text-[18px] font-black text-[#111827]">
+                      <p className="mt-2 text-[18px] font-extrabold text-[#111827]">
                         {String(value)}
                       </p>
                     </div>
@@ -334,10 +334,10 @@ export function EmiCalculator() {
               >
                 <div className="flex h-48 w-48 items-center justify-center rounded-full bg-white text-center">
                   <div>
-                    <p className="text-[11px] font-black uppercase text-[#596475]">
+                    <p className="text-[11px] font-extrabold uppercase text-[#596475]">
                       Total Amount
                     </p>
-                    <p className="mt-1 text-[25px] font-black text-[#111827]">
+                    <p className="mt-1 text-[25px] font-extrabold text-[#111827]">
                       {formatMoney(result.total)}
                     </p>
                   </div>
@@ -352,10 +352,10 @@ export function EmiCalculator() {
                       <p className="text-[13px] font-semibold text-[#596475]">
                         Principal Amount
                       </p>
-                      <p className="text-[17px] font-black text-[#111827]">
+                      <p className="text-[17px] font-extrabold text-[#111827]">
                         {formatMoney(amount)}
                       </p>
-                      <p className="text-[11px] font-black text-[#3b7eb3]">
+                      <p className="text-[11px] font-extrabold text-[#3b7eb3]">
                         ({result.principalPercent.toFixed(1)}%)
                       </p>
                     </div>
@@ -366,17 +366,17 @@ export function EmiCalculator() {
                       <p className="text-[13px] font-semibold text-[#596475]">
                         Total Interest
                       </p>
-                      <p className="text-[17px] font-black text-[#111827]">
+                      <p className="text-[17px] font-extrabold text-[#111827]">
                         {formatMoney(result.interest)}
                       </p>
-                      <p className="text-[11px] font-black text-[#62bd31]">
+                      <p className="text-[11px] font-extrabold text-[#62bd31]">
                         ({result.interestPercent.toFixed(1)}%)
                       </p>
                     </div>
                   </div>
                 </div>
 
-                <button className="mt-10 inline-flex h-14 w-full items-center justify-center gap-5 rounded-xl bg-[#48d879] text-[18px] font-black text-[#063824] shadow-[0_12px_24px_rgba(72,216,121,0.28)] transition hover:-translate-y-0.5 hover:bg-[#34c969]">
+                <button className="mt-10 inline-flex h-14 w-full items-center justify-center gap-5 rounded-xl bg-[#48d879] text-[18px] font-extrabold text-[#063824] shadow-[0_12px_24px_rgba(72,216,121,0.28)] transition hover:-translate-y-0.5 hover:bg-[#34c969]">
                   Apply for this Loan
                   <ArrowRight className="h-5 w-5" />
                 </button>
@@ -411,7 +411,7 @@ export function EmiCalculator() {
           >
             <span className="flex items-center gap-4">
               <CalendarDays className="h-5 w-5 text-[#3b7eb3]" />
-              <span className="text-[18px] font-black text-[#171b24]">
+              <span className="text-[18px] font-extrabold text-[#171b24]">
                 View Amortization Schedule{" "}
                 <span className="font-medium text-[#667085]">
                   (Month-wise Breakup)
@@ -440,7 +440,7 @@ export function EmiCalculator() {
 
               <div className="overflow-hidden rounded-2xl border border-[#d8e0ea]">
                 <table className="w-full min-w-190 border-collapse text-left">
-                  <thead className="bg-[#f1f6fb] text-[13px] font-black text-[#596475]">
+                  <thead className="bg-[#f1f6fb] text-[13px] font-extrabold text-[#596475]">
                     <tr>
                       <th className="px-5 py-4">Month</th>
                       <th className="px-5 py-4 text-right">Principal (A)</th>
@@ -459,7 +459,7 @@ export function EmiCalculator() {
                         <td className="px-5 py-4 text-right text-[#6fcf4a]">
                           {formatMoney(row.interest)}
                         </td>
-                        <td className="px-5 py-4 text-right font-black">
+                        <td className="px-5 py-4 text-right font-extrabold">
                           {formatMoney(row.emi)}
                         </td>
                         <td className="px-5 py-4 text-right">

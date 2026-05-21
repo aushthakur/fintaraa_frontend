@@ -170,27 +170,27 @@ export const AppDownloadBanner = () => {
             <div className="absolute left-1/2 top-0 z-20 h-6 w-20 -translate-x-1/2 rounded-b-2xl bg-[#06172f]" />
             <div className="h-full bg-[linear-gradient(180deg,#0e7cff_0%,#f8fbff_38%,#ffffff_100%)] p-4 pt-8">
               <div className="flex items-center justify-between text-white">
-                <p className="text-[10px] font-black">Hi, Rahul</p>
+                <p className="text-[10px] font-extrabold">Hi, Rahul</p>
                 <div className="flex h-5 w-5 items-center justify-center rounded-full bg-white/20">
                   <Smartphone className="h-3 w-3" />
                 </div>
               </div>
 
               <div className="mt-5 rounded-2xl bg-white p-3 shadow-[0_14px_30px_rgba(25,85,133,0.16)]">
-                <p className="text-[9px] font-black text-[#07162d]">
+                <p className="text-[9px] font-extrabold text-[#07162d]">
                   Credit Score
                 </p>
                 <div className="mx-auto mt-4 flex h-25 w-25 items-center justify-center rounded-full border-10 border-[#8bd84f] border-l-[#1375de] border-r-[#f79009]">
                   <div className="text-center">
-                    <p className="text-[30px] font-black leading-none text-[#07162d]">
+                    <p className="text-[30px] font-extrabold leading-none text-[#07162d]">
                       784
                     </p>
-                    <p className="mt-1 text-[8px] font-black text-[#12b76a]">
+                    <p className="mt-1 text-[8px] font-extrabold text-[#12b76a]">
                       Excellent
                     </p>
                   </div>
                 </div>
-                <p className="mt-3 text-center text-[8px] font-black text-[#12b76a]">
+                <p className="mt-3 text-center text-[8px] font-extrabold text-[#12b76a]">
                   + 24 Points
                 </p>
               </div>
@@ -201,7 +201,7 @@ export const AppDownloadBanner = () => {
                     key={item}
                     className="rounded-lg bg-[#edf6ff] px-1 py-2 text-center"
                   >
-                    <p className="text-[6px] font-black leading-tight text-[#195585]">
+                    <p className="text-[6px] font-extrabold leading-tight text-[#195585]">
                       {item}
                     </p>
                   </div>
@@ -314,19 +314,19 @@ export default function Footer() {
             </div>
 
             <div>
-              <h3 className="text-[20px] font-black">Loans</h3>
+              <h3 className="text-[20px] font-extrabold">Loans</h3>
               <div className="mt-3 h-0.5 w-9 bg-[#28c7ed]" />
               <FooterLinkList links={loanLinks} />
             </div>
 
             <div>
-              <h3 className="text-[20px] font-black">Insurance</h3>
+              <h3 className="text-[20px] font-extrabold">Insurance</h3>
               <div className="mt-3 h-0.5 w-9 bg-[#28c7ed]" />
               <FooterLinkList links={insuranceLinks} />
             </div>
 
             <div>
-              <h3 className="text-[20px] font-black">Quick Links</h3>
+              <h3 className="text-[20px] font-extrabold">Quick Links</h3>
               <div className="mt-3 h-0.5 w-9 bg-[#28c7ed]" />
               <div className="mt-6 grid gap-5">
                 {quickLinks.map(({ label, href, icon: Icon }) => (
@@ -343,7 +343,7 @@ export default function Footer() {
             </div>
 
             <div>
-              <h3 className="text-[20px] font-black">Contact</h3>
+              <h3 className="text-[20px] font-extrabold">Contact</h3>
               <div className="mt-3 h-0.5 w-9 bg-[#28c7ed]" />
               <div className="mt-7 grid gap-7 text-[16px] leading-7 text-white/90">
                 <div className="flex gap-4">
@@ -397,7 +397,7 @@ export default function Footer() {
               >
                 <Icon className="h-11 w-11 shrink-0" />
                 <div>
-                  <p className="text-[17px] font-black">{title}</p>
+                  <p className="text-[17px] font-extrabold">{title}</p>
                   <p className="text-[15px] text-white/82">{text}</p>
                 </div>
               </div>
@@ -444,10 +444,10 @@ export default function Footer() {
               </Link>
             </div>
             <div className="flex flex-wrap items-center gap-4">
-              <span className="rounded-md bg-white px-3 py-2 text-[12px] font-black text-[#195585]">
+              <span className="rounded-md bg-white px-3 py-2 text-[12px] font-extrabold text-[#195585]">
                 SECURED BY SECTIGO
               </span>
-              <span className="flex h-14 w-14 items-center justify-center rounded-full border border-white/50 text-[13px] font-black">
+              <span className="flex h-14 w-14 items-center justify-center rounded-full border border-white/50 text-[13px] font-extrabold">
                 ISO
               </span>
               <span className="text-[13px] leading-5">

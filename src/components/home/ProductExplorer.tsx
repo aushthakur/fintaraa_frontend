@@ -36,7 +36,7 @@ export function ProductExplorer() {
                 </div>
                 <Link
                   href="/products"
-                  className="inline-flex items-center gap-2 text-[16px] font-black text-[#08a045] no-underline transition hover:translate-x-1"
+                  className="inline-flex items-center gap-2 text-[16px] font-extrabold text-[#08a045] no-underline transition hover:translate-x-1"
                 >
                   {section.cta}
                   <span aria-hidden="true">→</span>
@@ -58,7 +58,7 @@ export function ProductExplorer() {
                       <Icon className="h-7 w-7 stroke-2" />
                     </span>
                     <span className="mt-5 block">
-                      <span className="text-[16px] line-clamp-1 font-black leading-snug text-[#1d2738]">
+                      <span className="text-[16px] line-clamp-1 font-extrabold leading-snug text-[#1d2738]">
                         {title}
                       </span>
                       <span className="mt-5 line-clamp-2 text-[15px] font-medium text-[#2f3137]">

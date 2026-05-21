@@ -86,11 +86,11 @@ export default function LoanDisclosurePage() {
         <div className="relative mx-auto max-w-9xl">
           <div className="grid gap-10 lg:grid-cols-[1fr_26rem] lg:items-end">
             <div>
-              <div className="inline-flex items-center gap-2 rounded-full bg-[#195585] px-4 py-2 text-[12px] font-black uppercase tracking-[0.16em] text-white">
+              <div className="inline-flex items-center gap-2 rounded-full bg-[#195585] px-4 py-2 text-[12px] font-extrabold uppercase tracking-[0.16em] text-white">
                 <ShieldCheck className="h-4 w-4" />
                 Loan Transparency
               </div>
-              <h1 className="mt-7 max-w-5xl text-[44px] font-black leading-[1.02] tracking-[-0.02em] text-[#07162d] md:text-[72px]">
+              <h1 className="mt-7 max-w-5xl text-[44px] font-extrabold leading-[1.02] tracking-[-0.02em] text-[#07162d] md:text-[72px]">
                 Loan Disclosure & Disclaimer
               </h1>
               <p className="mt-7 max-w-4xl text-[19px] font-semibold leading-9 text-[#344054]">
@@ -102,7 +102,7 @@ export default function LoanDisclosurePage() {
 
             <div className="bg-[#195585] p-7 text-white">
               <AlertCircle className="h-8 w-8 text-[#7ee3a2]" />
-              <p className="mt-5 text-[26px] font-black leading-tight">
+              <p className="mt-5 text-[26px] font-extrabold leading-tight">
                 Fintaraa facilitates. Lending decisions rest with regulated
                 partners.
               </p>
@@ -118,10 +118,10 @@ export default function LoanDisclosurePage() {
             {summary.map(({ label, value, icon: Icon }) => (
               <div key={label} className="border-t-2 border-[#195585] pt-5">
                 <Icon className="h-6 w-6 text-[#195585]" />
-                <p className="mt-4 text-[12px] font-black uppercase tracking-[0.16em] text-[#667085]">
+                <p className="mt-4 text-[12px] font-extrabold uppercase tracking-[0.16em] text-[#667085]">
                   {label}
                 </p>
-                <p className="mt-2 text-[22px] font-black text-[#07162d]">
+                <p className="mt-2 text-[22px] font-extrabold text-[#07162d]">
                   {value}
                 </p>
               </div>
@@ -140,14 +140,14 @@ export default function LoanDisclosurePage() {
               >
                 <div>
                   <p
-                    className={`text-[48px] font-black leading-none ${section.accent}`}
+                    className={`text-[48px] font-extrabold leading-none ${section.accent}`}
                   >
                     {section.kicker}
                   </p>
                   <div className="mt-4 h-1 w-16 bg-current opacity-20" />
                 </div>
                 <div>
-                  <h2 className="max-w-4xl text-[34px] font-black leading-tight tracking-[-0.01em] text-[#07162d]">
+                  <h2 className="max-w-4xl text-[34px] font-extrabold leading-tight tracking-[-0.01em] text-[#07162d]">
                     {section.title}
                   </h2>
                   <div className="mt-6 grid gap-4">
@@ -168,7 +168,7 @@ export default function LoanDisclosurePage() {
           <section className="mt-8 bg-linear-to-r from-[#195585] via-[#1375de] to-[#12b76a] p-8 text-white md:p-10">
             <div className="grid gap-6 md:grid-cols-[1fr_auto] md:items-center">
               <div>
-                <h2 className="text-[32px] font-black tracking-[-0.01em]">
+                <h2 className="text-[32px] font-extrabold tracking-[-0.01em]">
                   Questions about loan disclosures?
                 </h2>
                 <p className="mt-3 max-w-3xl text-[16px] font-semibold leading-8 text-white/82">
@@ -179,7 +179,7 @@ export default function LoanDisclosurePage() {
               </div>
               <a
                 href="mailto:support@fintaraa.com"
-                className="inline-flex h-12 items-center justify-center rounded-full bg-white px-6 text-[14px] font-black text-[#195585] no-underline"
+                className="inline-flex h-12 items-center justify-center rounded-full bg-white px-6 text-[14px] font-extrabold text-[#195585] no-underline"
               >
                 support@fintaraa.com
               </a>

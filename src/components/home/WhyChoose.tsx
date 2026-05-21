@@ -8,7 +8,7 @@ export function WhyChoose() {
       <div className="absolute -bottom-12 -right-10 h-32 w-32 rotate-45 border-18 border-white/20" />
       <div className="relative mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-[0.85fr_1.15fr]">
         <div>
-          <h2 className="text-[38px] font-black leading-tight">
+          <h2 className="text-[38px] font-extrabold leading-tight">
             Why Choose
             <br /> Fintaraa ?
           </h2>

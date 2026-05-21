@@ -37,7 +37,7 @@ export function LegalPolicyPage({
         <div className="relative mx-auto max-w-9xl">
           <div className="grid gap-10 lg:grid-cols-[1fr_26rem] lg:items-end">
             <div>
-              <div className="inline-flex items-center gap-2 rounded-full bg-[#195585] px-4 py-2 text-[12px] font-black uppercase tracking-[0.16em] text-white">
+              <div className="inline-flex items-center gap-2 rounded-full bg-[#195585] px-4 py-2 text-[12px] font-extrabold uppercase tracking-[0.16em] text-white">
                 <ShieldCheck className="h-4 w-4" />
                 {eyebrow}
               </div>
@@ -50,10 +50,10 @@ export function LegalPolicyPage({
             </div>
 
             <div className="border-l-4 border-[#195585] pl-6">
-              <p className="text-[12px] font-black uppercase tracking-[0.18em] text-[#667085]">
+              <p className="text-[12px] font-extrabold uppercase tracking-[0.18em] text-[#667085]">
                 Effective status
               </p>
-              <p className="mt-2 text-[24px] font-black text-[#07162d]">
+              <p className="mt-2 text-[24px] font-extrabold text-[#07162d]">
                 {content.updatedOn}
               </p>
               <p className="mt-4 text-[15px] font-semibold leading-7 text-[#475467]">
@@ -67,7 +67,7 @@ export function LegalPolicyPage({
             {content.badges.map((badge) => (
               <span
                 key={badge}
-                className="rounded-full bg-white px-4 py-2 text-[13px] font-black text-[#195585] shadow-[0_8px_24px_rgba(25,85,133,0.08)]"
+                className="rounded-full bg-white px-4 py-2 text-[13px] font-extrabold text-[#195585] shadow-[0_8px_24px_rgba(25,85,133,0.08)]"
               >
                 {badge}
               </span>
@@ -79,7 +79,7 @@ export function LegalPolicyPage({
       <section className="px-4 py-12 md:px-6 lg:px-8">
         <div className="mx-auto grid max-w-9xl gap-12 lg:grid-cols-[18rem_1fr]">
           <aside className="h-fit lg:sticky lg:top-32">
-            <p className="text-[12px] font-black uppercase tracking-[0.18em] text-[#98a2b3]">
+            <p className="text-[12px] font-extrabold uppercase tracking-[0.18em] text-[#98a2b3]">
               Documents
             </p>
             <nav className="mt-5 grid gap-1">
@@ -89,7 +89,7 @@ export function LegalPolicyPage({
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`group flex items-center justify-between border-l-2 px-4 py-3 text-[14px] font-black no-underline transition ${
+                    className={`group flex items-center justify-between border-l-2 px-4 py-3 text-[14px] font-extrabold no-underline transition ${
                       active
                         ? "border-[#195585] bg-[#f1f8ff] text-[#195585]"
                         : "border-transparent text-[#475467] hover:border-[#195585] hover:text-[#195585]"
@@ -101,7 +101,7 @@ export function LegalPolicyPage({
                 );
               })}
             </nav>
-            <button className="mt-8 inline-flex h-11 items-center gap-2 rounded-full bg-[#195585] px-5 text-[13px] font-black text-white">
+            <button className="mt-8 inline-flex h-11 items-center gap-2 rounded-full bg-[#195585] px-5 text-[13px] font-extrabold text-white">
               <Download className="h-4 w-4" />
               Download PDF
             </button>
@@ -111,7 +111,7 @@ export function LegalPolicyPage({
             <section className="border-b border-[#e4edf5] pb-10">
               <div className="flex items-center gap-3">
                 <BadgeCheck className="h-6 w-6 text-[#12b76a]" />
-                <h2 className="text-[32px] font-black tracking-[-0.01em] text-[#07162d]">
+                <h2 className="text-[32px] font-extrabold tracking-[-0.01em] text-[#07162d]">
                   Executive Summary
                 </h2>
               </div>
@@ -133,7 +133,7 @@ export function LegalPolicyPage({
                   key={section.title}
                   className="grid py-10 md:grid-cols-[6rem_1fr]"
                 >
-                  <div className="text-[14px] pt-2 font-black tracking-[0.16em] text-[#195585]">
+                  <div className="text-[14px] pt-2 font-extrabold tracking-[0.16em] text-[#195585]">
                     {String(index + 1).padStart(2, "0")}
                   </div>
                   <div>
@@ -153,7 +153,7 @@ export function LegalPolicyPage({
                 <div>
                   <div className="flex items-center gap-3">
                     <FileText className="h-6 w-6" />
-                    <h2 className="text-[32px] font-black tracking-[-0.01em]">
+                    <h2 className="text-[32px] font-extrabold tracking-[-0.01em]">
                       Need clarification?
                     </h2>
                   </div>
@@ -165,7 +165,7 @@ export function LegalPolicyPage({
                 </div>
                 <a
                   href="mailto:support@fintaraa.com"
-                  className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-white px-6 text-[14px] font-black text-[#195585] no-underline"
+                  className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-white px-6 text-[14px] font-extrabold text-[#195585] no-underline"
                 >
                   <Mail className="h-4 w-4" />
                   support@fintaraa.com

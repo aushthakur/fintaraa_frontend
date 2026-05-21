@@ -54,11 +54,11 @@ export function SupportTicketForm({
       onSubmit={submit}
       className="bg-white p-5 shadow-[0_18px_45px_rgba(25,85,133,0.08)]"
     >
-      <div className="inline-flex items-center gap-2 rounded-full bg-[#eef8ff] px-3 py-1 text-[11px] font-black uppercase tracking-[0.14em] text-[#195585]">
+      <div className="inline-flex items-center gap-2 rounded-full bg-[#eef8ff] px-3 py-1 text-[11px] font-extrabold uppercase tracking-[0.14em] text-[#195585]">
         <Sparkles className="h-3.5 w-3.5" />
         New ticket
       </div>
-      <h2 className="mt-4 text-[24px] font-black text-[#07162d]">
+      <h2 className="mt-4 text-[24px] font-extrabold text-[#07162d]">
         Create a support ticket
       </h2>
       <p className="mt-2 text-[13px] font-semibold leading-6 text-[#667085]">
@@ -71,13 +71,11 @@ export function SupportTicketForm({
           label="Subject"
           placeholder="Example: Need help with document verification"
           value={form.title}
-          onChange={(value) =>
-            setForm((prev) => ({ ...prev, title: value }))
-          }
+          onChange={(value) => setForm((prev) => ({ ...prev, title: value }))}
         />
 
         <label className="group block pt-2">
-          <span className="text-[12px] font-black uppercase tracking-[0.14em] text-[#667085] transition group-focus-within:text-[#195585]">
+          <span className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#667085] transition group-focus-within:text-[#195585]">
             Category
           </span>
           <select
@@ -94,7 +92,7 @@ export function SupportTicketForm({
         </label>
 
         <label className="group relative block pt-2">
-          <span className="text-[12px] font-black uppercase tracking-[0.14em] text-[#667085] transition-colors duration-300 group-focus-within:text-[#195585]">
+          <span className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#667085] transition-colors duration-300 group-focus-within:text-[#195585]">
             Description
           </span>
           <div className="relative mt-1">
@@ -124,7 +122,7 @@ export function SupportTicketForm({
         <button
           type="submit"
           disabled={submitting}
-          className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-full bg-white px-5 text-[13px] font-black text-[#195585] disabled:opacity-60"
+          className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-full bg-white px-5 text-[13px] font-extrabold text-[#195585] disabled:opacity-60"
         >
           {submitting ? (
             <MessageCircle className="h-4 w-4" />
@@ -151,7 +149,7 @@ function BottomField({
 }) {
   return (
     <label className="group relative block pt-2">
-      <span className="text-[12px] font-black uppercase tracking-[0.14em] text-[#667085] transition-colors duration-300 group-focus-within:text-[#195585]">
+      <span className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#667085] transition-colors duration-300 group-focus-within:text-[#195585]">
         {label}
       </span>
       <div className="relative mt-1">

@@ -46,10 +46,10 @@ export function HowItWorks() {
     <section className="bg-linear-to-b from-white via-[#f8fcff] to-white px-4 py-18 md:px-6 lg:px-8">
       <div className="mx-auto max-w-9xl">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-[12px] font-black uppercase tracking-[0.18em] text-[#195585]">
+          <p className="text-[12px] font-extrabold uppercase tracking-[0.18em] text-[#195585]">
             Simple guided flow
           </p>
-          <h2 className="mt-3 text-[34px] font-black leading-tight text-[#07162d] md:text-[44px]">
+          <h2 className="mt-3 text-[34px] font-extrabold leading-tight text-[#07162d] md:text-[44px]">
             How It Works
           </h2>
           <p className="mt-4 text-[16px] font-semibold leading-7 text-[#667085]">
@@ -76,12 +76,12 @@ export function HowItWorks() {
                     >
                       <Icon className="h-6 w-6" />
                     </span>
-                    <span className="text-[34px] font-black leading-none text-[#e4edf5]">
+                    <span className="text-[34px] font-extrabold leading-none text-[#e4edf5]">
                       {step.number}
                     </span>
                   </div>
 
-                  <h3 className="mt-6 text-[21px] font-black leading-tight text-[#07162d]">
+                  <h3 className="mt-6 text-[21px] font-extrabold leading-tight text-[#07162d]">
                     {step.title}
                   </h3>
                   <p className="mt-3 min-h-24 text-[14px] font-semibold leading-6 text-[#667085]">
@@ -92,7 +92,7 @@ export function HowItWorks() {
                     {step.points.map((point) => (
                       <span
                         key={point}
-                        className="rounded-full bg-[#f1f8ff] px-3 py-1 text-[11px] font-black text-[#195585]"
+                        className="rounded-full bg-[#f1f8ff] px-3 py-1 text-[11px] font-extrabold text-[#195585]"
                       >
                         {point}
                       </span>

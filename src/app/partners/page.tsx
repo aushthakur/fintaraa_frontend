@@ -124,11 +124,11 @@ export default function PartnersPage() {
         <div className="relative mx-auto max-w-9xl">
           <div className="grid gap-10 lg:grid-cols-[1fr_28rem] lg:items-end">
             <div>
-              <div className="inline-flex items-center gap-2 rounded-full bg-[#195585] px-4 py-2 text-[12px] font-black uppercase tracking-[0.16em] text-white">
+              <div className="inline-flex items-center gap-2 rounded-full bg-[#195585] px-4 py-2 text-[12px] font-extrabold uppercase tracking-[0.16em] text-white">
                 <ShieldCheck className="h-4 w-4" />
                 Partner Network
               </div>
-              <h1 className="mt-7 max-w-5xl text-[44px] font-black leading-[1.02] tracking-[-0.02em] text-[#07162d] md:text-[72px]">
+              <h1 className="mt-7 max-w-5xl text-[44px] font-extrabold leading-[1.02] tracking-[-0.02em] text-[#07162d] md:text-[72px]">
                 Our Lending Partners
               </h1>
               <p className="mt-7 max-w-4xl text-[19px] font-semibold leading-9 text-[#344054]">
@@ -139,10 +139,10 @@ export default function PartnersPage() {
             </div>
 
             <div className="bg-[#195585] p-7 text-white">
-              <p className="text-[12px] font-black uppercase tracking-[0.18em] text-white/60">
+              <p className="text-[12px] font-extrabold uppercase tracking-[0.18em] text-white/60">
                 Marketplace Standard
               </p>
-              <p className="mt-4 text-[28px] font-black leading-tight">
+              <p className="mt-4 text-[28px] font-extrabold leading-tight">
                 Partners are reviewed for compliance, customer outcomes, and
                 operational discipline.
               </p>
@@ -172,11 +172,11 @@ export default function PartnersPage() {
                     >
                       <Icon className="h-6 w-6" />
                     </div>
-                    <span className="text-[12px] font-black uppercase tracking-[0.14em] text-[#98a2b3]">
+                    <span className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#98a2b3]">
                       {segment}
                     </span>
                   </div>
-                  <h2 className="mt-6 text-[28px] line-clamp-1 font-black leading-tight text-[#07162d]">
+                  <h2 className="mt-6 text-[28px] line-clamp-1 font-extrabold leading-tight text-[#07162d]">
                     {name}
                   </h2>
                   <p className="mt-4 text-[15px] line-clamp-2 font-semibold leading-7 text-[#475467]">
@@ -189,7 +189,7 @@ export default function PartnersPage() {
                     {labels.map((label) => (
                       <span
                         key={label}
-                        className="bg-[#f1f8ff] px-3 py-1 text-[12px] font-black text-[#195585]"
+                        className="bg-[#f1f8ff] px-3 py-1 text-[12px] font-extrabold text-[#195585]"
                       >
                         {label}
                       </span>
@@ -204,17 +204,17 @@ export default function PartnersPage() {
           <section className="mt-16 bg-[#07162d] px-6 py-12 text-white md:px-10">
             <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
               <div>
-                <p className="text-[12px] font-black uppercase tracking-[0.18em] text-[#7ee3a2]">
+                <p className="text-[12px] font-extrabold uppercase tracking-[0.18em] text-[#7ee3a2]">
                   Partner governance
                 </p>
-                <h2 className="mt-4 text-[42px] font-black leading-tight tracking-[-0.02em]">
+                <h2 className="mt-4 text-[42px] font-extrabold leading-tight tracking-[-0.02em]">
                   What makes a partner fit for Fintaraa
                 </h2>
               </div>
               <div className="grid gap-8 md:grid-cols-2">
                 {principles.map((item) => (
                   <article key={item.title}>
-                    <h3 className="text-[21px] font-black text-white">
+                    <h3 className="text-[21px] font-extrabold text-white">
                       {item.title}
                     </h3>
                     <p className="mt-3 text-[15px] font-medium leading-7 text-white/72">
@@ -229,10 +229,10 @@ export default function PartnersPage() {
           <section className="mt-16">
             <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
               <div>
-                <p className="text-[12px] font-black uppercase tracking-[0.18em] text-[#195585]">
+                <p className="text-[12px] font-extrabold uppercase tracking-[0.18em] text-[#195585]">
                   Customer journey
                 </p>
-                <h2 className="mt-3 text-[38px] font-black leading-tight tracking-[-0.02em] text-[#07162d]">
+                <h2 className="mt-3 text-[38px] font-extrabold leading-tight tracking-[-0.02em] text-[#07162d]">
                   How partner-backed applications move
                 </h2>
               </div>
@@ -249,11 +249,11 @@ export default function PartnersPage() {
                     <div className="flex h-12 w-12 items-center justify-center bg-[#eef8ff] text-[#195585]">
                       <Icon className="h-6 w-6" />
                     </div>
-                    <span className="text-[13px] font-black text-[#98a2b3]">
+                    <span className="text-[13px] font-extrabold text-[#98a2b3]">
                       0{index + 1}
                     </span>
                   </div>
-                  <h3 className="mt-5 text-[22px] font-black text-[#07162d]">
+                  <h3 className="mt-5 text-[22px] font-extrabold text-[#07162d]">
                     {label}
                   </h3>
                   <p className="mt-3 text-[15px] font-medium leading-7 text-[#475467]">

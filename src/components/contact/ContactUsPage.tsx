@@ -64,11 +64,11 @@ export function ContactUsPage() {
         <div className="blog-grid-pulse absolute inset-0 opacity-[0.16]" />
         <div className="relative mx-auto grid max-w-9xl gap-8 lg:grid-cols-[1fr_0.82fr] lg:items-center">
           <div>
-            <div className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-[12px] font-black uppercase tracking-[0.14em] text-[#195585] shadow-[0_10px_28px_rgba(25,85,133,0.08)]">
+            <div className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#195585] shadow-[0_10px_28px_rgba(25,85,133,0.08)]">
               <Headphones className="h-4 w-4 text-[#12b76a]" />
               Contact Fintaraa
             </div>
-            <h1 className="mt-5 max-w-4xl text-[42px] font-black leading-[1.02] tracking-[-0.02em] text-[#07162d] md:text-[64px]">
+            <h1 className="mt-5 max-w-4xl text-[42px] font-extrabold leading-[1.02] tracking-[-0.02em] text-[#07162d] md:text-[64px]">
               Get clear support for every financial step.
             </h1>
             <p className="mt-5 max-w-2xl text-[16px] font-semibold leading-8 text-[#475467]">
@@ -86,7 +86,7 @@ export function ContactUsPage() {
                   key={label}
                   className="bg-white/90 p-4 shadow-[0_12px_30px_rgba(25,85,133,0.07)]"
                 >
-                  <p className="text-[22px] font-black text-[#195585]">
+                  <p className="text-[22px] font-extrabold text-[#195585]">
                     {value}
                   </p>
                   <p className="mt-1 text-[12px] font-semibold text-[#667085]">
@@ -104,7 +104,7 @@ export function ContactUsPage() {
               <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/12 text-[#7ee3a2]">
                 <ShieldCheck className="h-7 w-7" />
               </div>
-              <h2 className="mt-8 max-w-md text-[34px] font-black leading-tight">
+              <h2 className="mt-8 max-w-md text-[34px] font-extrabold leading-tight">
                 Trusted assistance for loans, cards, insurance, and documents.
               </h2>
               <div className="mt-8 grid gap-3">
@@ -142,10 +142,10 @@ export function ContactUsPage() {
                     <Icon className="h-5 w-5" />
                   </span>
                   <span className="min-w-0 flex-1">
-                    <span className="block text-[16px] font-black">
+                    <span className="block text-[16px] font-extrabold">
                       {title}
                     </span>
-                    <span className="mt-1 block text-[14px] font-black text-[#195585]">
+                    <span className="mt-1 block text-[14px] font-extrabold text-[#195585]">
                       {value}
                     </span>
                     <span className="mt-2 block text-[13px] font-medium leading-6 text-[#667085]">
@@ -163,7 +163,7 @@ export function ContactUsPage() {
             >
               <div className="flex items-center gap-3">
                 <Building2 className="h-5 w-5 text-[#195585]" />
-                <h2 className="text-[18px] font-black text-[#07162d]">
+                <h2 className="text-[18px] font-extrabold text-[#07162d]">
                   Registered contact
                 </h2>
               </div>
@@ -183,7 +183,7 @@ export function ContactUsPage() {
           >
             <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
               <div>
-                <h2 className="text-[30px] font-black leading-tight text-[#07162d]">
+                <h2 className="text-[30px] font-extrabold leading-tight text-[#07162d]">
                   Tell us how we can help
                 </h2>
                 <p className="mt-2 max-w-2xl text-[14px] font-semibold leading-7 text-[#667085]">
@@ -211,7 +211,7 @@ export function ContactUsPage() {
             </div>
 
             <label className="group relative mt-6 block pt-2">
-              <span className="text-[12px] font-black uppercase tracking-[0.14em] text-[#667085] transition-colors duration-300 group-focus-within:text-[#195585]">
+              <span className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#667085] transition-colors duration-300 group-focus-within:text-[#195585]">
                 Message
               </span>
               <div className="relative mt-1">
@@ -227,7 +227,7 @@ export function ContactUsPage() {
 
             <div className="mt-7 flex flex-col gap-4 bg-[#07162d] p-5 text-white md:flex-row md:items-center md:justify-between">
               <div>
-                <p className="text-[17px] font-black">
+                <p className="text-[17px] font-extrabold">
                   {submitted ? "Request captured" : "Ready to send?"}
                 </p>
                 <p className="mt-1 text-[13px] font-semibold leading-6 text-white/68">
@@ -238,7 +238,7 @@ export function ContactUsPage() {
               </div>
               <button
                 type="submit"
-                className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-full bg-white px-6 text-[13px] font-black text-[#195585]"
+                className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-full bg-white px-6 text-[13px] font-extrabold text-[#195585]"
               >
                 <Send className="h-4 w-4" />
                 Submit request
@@ -250,7 +250,7 @@ export function ContactUsPage() {
 
       <section className="px-4 pb-16 md:px-6 lg:px-8">
         <div className="mx-auto max-w-9xl bg-white p-6 shadow-[0_18px_48px_rgba(25,85,133,0.08)]">
-          <h2 className="text-[24px] font-black text-[#07162d]">
+          <h2 className="text-[24px] font-extrabold text-[#07162d]">
             What can we help with?
           </h2>
           <div className="mt-6 grid gap-3 md:grid-cols-2 lg:grid-cols-3">
@@ -283,7 +283,7 @@ function ContactField({
 }) {
   return (
     <label className="group relative block pt-2">
-      <span className="text-[12px] font-black uppercase tracking-[0.14em] text-[#667085] transition-colors duration-300 group-focus-within:text-[#195585]">
+      <span className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#667085] transition-colors duration-300 group-focus-within:text-[#195585]">
         {label}
       </span>
       <div className="relative mt-1">
