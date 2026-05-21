@@ -39,6 +39,7 @@ let storeSnapshot: CurrentUserSnapshot = {
   version: storeVersion,
 };
 let inFlight: Promise<void> | null = null;
+let loadGeneration = 0;
 
 const emitStoreChange = () => {
   storeVersion += 1;
@@ -72,23 +73,30 @@ const setStoreState = ({
   if (changed) emitStoreChange();
 };
 
-const loadCurrentUserOnce = async () => {
-  if (inFlight) return inFlight;
+const loadCurrentUserOnce = async (force = false) => {
+  if (inFlight && !force) return inFlight;
+
+  const generation = force ? loadGeneration + 1 : loadGeneration;
+  loadGeneration = generation;
 
   inFlight = (async () => {
     const cached = getCachedUser();
+    if (generation !== loadGeneration) return;
     if (cached) setStoreState({ user: cached });
 
     const token = getAuthToken();
     if (!token) {
+      if (generation !== loadGeneration) return;
       setStoreState({ user: cached || null, loading: false });
       return;
     }
 
+    if (generation !== loadGeneration) return;
     setStoreState({ loading: true });
 
     try {
       const current = await fetchCurrentUser();
+      if (generation !== loadGeneration) return;
       if (current) {
         const normalized = {
           ...(cached || {}),
@@ -102,6 +110,7 @@ const loadCurrentUserOnce = async () => {
     } catch {
       // Keep cached user if the network request fails.
     } finally {
+      if (generation !== loadGeneration) return;
       storeLoading = false;
       emitStoreChange();
       inFlight = null;
@@ -117,12 +126,21 @@ const refreshCurrentUser = () => {
   });
 };
 
+const forceRefreshCurrentUser = () => {
+  queueMicrotask(() => {
+    const cached = getCachedUser();
+    const token = getAuthToken();
+    setStoreState({ user: cached, loading: Boolean(token) });
+    void loadCurrentUserOnce(true);
+  });
+};
+
 const ensureCurrentUserStore = () => {
   if (storeStarted || typeof window === "undefined") return;
   storeStarted = true;
   refreshCurrentUser();
-  window.addEventListener(AUTH_CHANGED_EVENT, refreshCurrentUser);
-  window.addEventListener("storage", refreshCurrentUser);
+  window.addEventListener(AUTH_CHANGED_EVENT, forceRefreshCurrentUser);
+  window.addEventListener("storage", forceRefreshCurrentUser);
 };
 
 const subscribeCurrentUser = (listener: () => void) => {

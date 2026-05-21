@@ -2,6 +2,11 @@ import { Post, Put } from "@/hooks/apiUtils";
 import { emitAuthChanged } from "@/lib/authEvents";
 
 type ApiResponse<T> = T & { message?: string; success?: boolean };
+type WrappedApiResponse<T> = {
+  data?: T;
+  message?: string;
+  success?: boolean;
+};
 
 export type AuthMode = "login" | "signup";
 
@@ -35,11 +40,7 @@ export type MobileToPanResponse = {
 };
 
 export const sendOtp = (mobile: string) =>
-  Post<ApiResponse<{ existed?: boolean }>>(
-    "user/send-otp",
-    { mobile },
-    15000,
-  );
+  Post<ApiResponse<{ existed?: boolean }>>("user/send-otp", { mobile }, 15000);
 
 export const verifyOtp = async (
   mobile: string,
@@ -51,23 +52,44 @@ export const verifyOtp = async (
     "user/verify-otp",
     { mobile, otp, email, name },
   );
+  const payload =
+    ((response as WrappedApiResponse<VerifyOtpResponse>)?.data as
+      | VerifyOtpResponse
+      | undefined) || response;
 
   if (typeof window !== "undefined") {
-    if (response?.token) localStorage.setItem("token", response.token);
-    if (response?.user) localStorage.setItem("user", JSON.stringify(response.user));
+    if (payload?.token) localStorage.setItem("token", payload.token);
+    if (payload?.user)
+      localStorage.setItem("user", JSON.stringify(payload.user));
     localStorage.setItem("verified_phone", mobile);
     localStorage.setItem("verified_phone_at", new Date().toISOString());
     emitAuthChanged();
   }
 
-  return response;
+  return payload;
 };
 
 export const signup = (payload: SignupPayload) =>
   Post<ApiResponse<unknown>>("user", payload);
 
-export const updateUserProfile = (payload: Record<string, unknown>) =>
-  Put<ApiResponse<unknown>>("user", payload, 15000);
+export const updateUserProfile = async (payload: Record<string, unknown>) => {
+  const response = await Put<ApiResponse<Record<string, unknown>>>(
+    "user",
+    payload,
+    15000,
+  );
+  const updated =
+    ((response as WrappedApiResponse<Record<string, unknown>>)?.data as
+      | Record<string, unknown>
+      | undefined) || response;
+
+  if (typeof window !== "undefined" && updated && typeof updated === "object") {
+    localStorage.setItem("user", JSON.stringify(updated));
+    emitAuthChanged();
+  }
+
+  return response;
+};
 
 export const mobileToPan = (payload: { name: string; mobile_no: string }) => {
   const base = process.env.NEXT_PUBLIC_BASE_URL || "";

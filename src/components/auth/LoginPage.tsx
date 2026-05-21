@@ -1,15 +1,14 @@
 "use client";
 
 import type { ReactNode } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { FormEvent, useMemo, useState } from "react";
-import { Phone, ArrowRight, LockKeyhole, WalletCards } from "lucide-react";
+import { Phone, ArrowRight, LockKeyhole } from "lucide-react";
 import {
-  signup,
   sendOtp,
   verifyOtp,
   mobileToPan,
-  type AuthMode,
   updateUserProfile,
 } from "@/services/auth";
 
@@ -25,10 +24,10 @@ type AuthStep = "phone" | "otp" | "mobile-pan" | "complete-profile";
 
 export function LoginPage() {
   const router = useRouter();
-  const [mode, setMode] = useState<AuthMode>("login");
   const [step, setStep] = useState<AuthStep>("phone");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [accountExisted, setAccountExisted] = useState<boolean | null>(null);
   const [acceptPolicies, setAcceptPolicies] = useState(false);
   const [consentCibil, setConsentCibil] = useState(false);
   const [form, setForm] = useState({
@@ -36,7 +35,6 @@ export function LoginPage() {
     email: "",
     mobile: "",
     panCard: "",
-    referralCode: "",
     otp: "",
   });
 
@@ -46,37 +44,23 @@ export function LoginPage() {
   const validPan = /^([A-Z]{5}[0-9]{4}[A-Z])$/.test(pan);
   const validPhone = digits.length >= 10 && digits.length <= 15;
   const validOtp = form.otp.replace(/\D/g, "").length === 6;
-  const isSignupReady =
-    mode === "login" ||
-    (form.name.trim().length >= 2 &&
-      validPhone &&
-      validPan &&
-      validEmail &&
-      acceptPolicies);
 
   const requestOtp = async (event: FormEvent) => {
     event.preventDefault();
     setMessage("");
-    if (!validPhone || !isSignupReady) {
-      setMessage("Please complete the required details before continuing.");
+    setAccountExisted(null);
+    if (!validPhone) {
+      setMessage("Enter a valid mobile number to continue.");
       return;
     }
     setLoading(true);
     try {
-      if (mode === "signup") {
-        await signup({
-          name: form.name.trim(),
-          email: form.email.trim() || undefined,
-          mobile: digits,
-          panCard: pan,
-          referralCode: form.referralCode.trim() || undefined,
-          agreedToTerms: true,
-          privacyPolicyAccepted: true,
-        });
-      }
-      await sendOtp(digits);
+      const response = await sendOtp(digits);
+      setAccountExisted(
+        typeof response?.existed === "boolean" ? response.existed : null,
+      );
       setStep("otp");
-      setMessage("OTP sent to your registered mobile number.");
+      setMessage("OTP sent to your mobile number.");
     } catch (error) {
       setMessage((error as Error).message || "Unable to send OTP.");
     } finally {
@@ -93,13 +77,13 @@ export function LoginPage() {
     }
     setLoading(true);
     try {
-      const response = await verifyOtp(
-        digits,
-        form.otp.replace(/\D/g, ""),
-        mode === "signup" ? form.email.trim() || undefined : undefined,
-        mode === "signup" ? form.name.trim() || undefined : undefined,
-      );
+      const response = await verifyOtp(digits, form.otp.replace(/\D/g, ""));
       const user = response?.user;
+      const existed =
+        typeof response?.accountExisted === "boolean"
+          ? response.accountExisted
+          : accountExisted;
+      setAccountExisted(existed);
       const userName = String(user?.name || "").trim();
       const needsProfileCompletion = Boolean(
         response?.needsProfileCompletion ||
@@ -139,15 +123,6 @@ export function LoginPage() {
     }));
   };
 
-  const switchMode = (nextMode: AuthMode) => {
-    setMode(nextMode);
-    setStep("phone");
-    setMessage("");
-    setAcceptPolicies(false);
-    setConsentCibil(false);
-    setForm((prev) => ({ ...prev, otp: "" }));
-  };
-
   const fetchPanFromMobile = async (event: FormEvent) => {
     event.preventDefault();
     setMessage("");
@@ -181,8 +156,10 @@ export function LoginPage() {
   const completeVerifiedProfile = async (event: FormEvent) => {
     event.preventDefault();
     setMessage("");
-    if (!form.name.trim() || !validPan || !acceptPolicies) {
-      setMessage("Complete name, valid PAN, and policy consent to continue.");
+    if (!form.name.trim() || !validPan || !validEmail || !acceptPolicies) {
+      setMessage(
+        "Complete name, valid PAN, valid email if provided, and policy consent to continue.",
+      );
       return;
     }
     setLoading(true);
@@ -205,64 +182,36 @@ export function LoginPage() {
   };
 
   return (
-    <main className="min-h-screen bg-white px-4 py-8 md:px-6 lg:px-8">
-      <div className="mx-auto grid min-h-[calc(100vh-10rem)] max-w-9xl overflow-hidden rounded-[36px] bg-[#eef8ff] p-5 shadow-[0_28px_80px_rgba(25,85,133,0.12)] lg:grid-cols-[1.08fr_0.92fr] lg:gap-8 lg:p-8">
+    <main className="min-h-screen bg-white px-4 pb-8 md:px-6 lg:px-8">
+      <div className="mx-auto grid min-h-[calc(100vh-10rem)] max-w-9xl overflow-hidden rounded-[36px] px-4 lg:grid-cols-[1.08fr_0.92fr] lg:gap-8 lg:px-8">
         <section className="relative flex min-h-136 flex-col overflow-hidden rounded-[28px] p-6 md:p-10">
           <div className="relative z-10">
-            <h1 className="mt-8 max-w-3xl text-[52px] font-bold leading-[0.98] tracking-[-0.03em] text-[#07162d] md:text-[64px]">
+            <h1 className="mt-8 max-w-3xl text-[42px] font-bold leading-[0.98] tracking-[-0.03em] text-[#07162d] md:text-[54px]">
               Unlock your
               <span className="block text-[#195585]">Fintaraa account</span>
             </h1>
-            <p className="mt-7 max-w-2xl text-[20px] font-semibold leading-9 text-[#5d6b7c]">
+            <p className="mt-7 max-w-2xl text-[18px] text-[#5d6b7c]">
               Access your profile, applications, offers, documents, statements,
               and support tickets from one secure workspace.
             </p>
           </div>
 
           <div className="relative z-10 mt-auto pt-10">
-            <div className="flex min-h-72 items-center justify-center rounded-3xl border border-dashed border-[#195585]/28 bg-white/50 p-8 text-center shadow-[inset_0_0_0_1px_rgba(255,255,255,0.65)]">
-              <div>
-                <WalletCards className="mx-auto h-12 w-12 text-[#195585]" />
-                <p className="mt-4 text-[18px] font-extrabold text-[#07162d]">
-                  Image placement area
-                </p>
-                <p className="mt-2 max-w-md text-[13px] font-semibold leading-6 text-[#667085]">
-                  Add the login visual here later. This space is aligned like
-                  the reference image block.
-                </p>
-              </div>
+            <div className="relative min-h-72 overflow-hidden">
+              <Image
+                src="/assets/refer/login.jpg"
+                alt="Fintaraa secure login"
+                fill
+                priority
+                className="object-contain w-full"
+                sizes="(min-width: 1024px) 52vw, 100vw"
+              />
             </div>
           </div>
         </section>
 
         <section className="flex items-center justify-center py-5 lg:py-0">
-          <div className="w-full max-w-2xl rounded-[34px] bg-white p-6 shadow-[0_22px_60px_rgba(25,85,133,0.12)] md:p-10 lg:p-12">
-            {step === "phone" ? (
-              <div className="mb-7 grid grid-cols-2 gap-2 rounded-full bg-[#eef8ff] p-1">
-                {[
-                  ["login", "Login"],
-                  ["signup", "Create Account"],
-                ].map(([value, label]) => (
-                  <button
-                    key={value}
-                    type="button"
-                    onClick={() => switchMode(value as AuthMode)}
-                    className={`h-11 rounded-full text-[13px] font-extrabold transition ${
-                      mode === value
-                        ? "bg-[#195585] text-white shadow-[0_10px_22px_rgba(25,85,133,0.22)]"
-                        : "text-[#195585]"
-                    }`}
-                  >
-                    {label}
-                  </button>
-                ))}
-              </div>
-            ) : (
-              <div className="mb-7 inline-flex rounded-full bg-[#eef8ff] px-4 py-2 text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#195585]">
-                {mode === "signup" ? "Create account flow" : "Login flow"}
-              </div>
-            )}
-
+          <div className="w-full max-w-2xl rounded-[34px] bg-white p-4 md:p-6 border border-gray-200 lg:p-8">
             <div className="mb-7">
               <h2 className="mt-4 text-[32px] font-bold leading-tight tracking-[-0.02em] text-[#07162d]">
                 {step === "otp"
@@ -270,14 +219,12 @@ export function LoginPage() {
                   : step === "mobile-pan"
                     ? "Verify details"
                     : step === "complete-profile"
-                      ? "Complete profile"
-                      : mode === "login"
-                        ? "Login with OTP"
-                        : "Create account"}
+                      ? "Finish account setup"
+                      : "Login with OTP"}
               </h2>
               {step === "phone" ? (
                 <h3 className="mt-5 text-[20px] font-semibold text-[#07162d]">
-                  {mode === "login" ? "Welcome back!" : "Welcome to Fintaraa!"}
+                  Welcome back!
                 </h3>
               ) : null}
               <p className="mt-2 text-[14px] font-semibold text-[#667085]">
@@ -293,24 +240,6 @@ export function LoginPage() {
 
             {step === "phone" ? (
               <form onSubmit={requestOtp} className="grid gap-5">
-                {mode === "signup" ? (
-                  <>
-                    <AuthField
-                      label="Full name"
-                      placeholder="Rahul Sharma"
-                      value={form.name}
-                      onChange={(value) => update("name", value)}
-                    />
-                    <AuthField
-                      label="Email address"
-                      placeholder="Optional email address"
-                      value={form.email}
-                      type="email"
-                      onChange={(value) => update("email", value)}
-                    />
-                  </>
-                ) : null}
-
                 <AuthField
                   label="Mobile number"
                   placeholder="Enter phone number"
@@ -320,43 +249,10 @@ export function LoginPage() {
                   onChange={(value) => update("mobile", value)}
                 />
 
-                {mode === "signup" ? (
-                  <div className="grid gap-5 sm:grid-cols-2">
-                    <AuthField
-                      label="PAN number"
-                      placeholder="ABCDE1234F"
-                      value={form.panCard}
-                      onChange={(value) => update("panCard", value)}
-                    />
-                    <AuthField
-                      label="Referral code"
-                      placeholder="Optional"
-                      value={form.referralCode}
-                      onChange={(value) => update("referralCode", value)}
-                    />
-                  </div>
-                ) : null}
-                {mode === "signup" ? (
-                  <div className="grid gap-3">
-                    <ConsentRow
-                      checked={consentCibil}
-                      onChange={() => setConsentCibil((value) => !value)}
-                      text="I consent to the collection and use of my CIBIL score for verification purposes."
-                    />
-                    <ConsentRow
-                      checked={acceptPolicies}
-                      onChange={() => setAcceptPolicies((value) => !value)}
-                      text="I have read and agree to the Privacy Policy and Terms & Conditions."
-                    />
-                  </div>
-                ) : null}
-
                 <SubmitBlock
                   message={message}
                   loading={loading}
-                  buttonText={
-                    mode === "signup" ? "Create account" : "Send code"
-                  }
+                  buttonText="Get OTP"
                   helper="Your information is safe & secure."
                 />
               </form>
@@ -396,7 +292,11 @@ export function LoginPage() {
                 <SubmitBlock
                   message={message}
                   loading={loading}
-                  buttonText="Verify & continue"
+                  buttonText={
+                    accountExisted === false
+                      ? "Verify & setup account"
+                      : "Verify & continue"
+                  }
                   helper="Your information is safe & secure."
                 />
               </form>

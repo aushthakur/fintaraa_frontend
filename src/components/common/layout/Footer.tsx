@@ -1,11 +1,9 @@
 import Link from "next/link";
 import {
   ArrowUpRight,
-  BarChart3,
   Clock,
   Landmark,
   CreditCard,
-  IndianRupee,
   BadgeCheck,
   LockKeyhole,
   BriefcaseBusiness,
@@ -16,7 +14,6 @@ import {
   PhoneCall,
   ShieldCheck,
   MessageCircle,
-  Smartphone,
 } from "lucide-react";
 import {
   FaApple,
@@ -138,77 +135,14 @@ export const AppDownloadBanner = () => {
         </div>
 
         <div className="relative hidden min-h-82.5 items-end justify-center md:flex">
-          <div className="absolute bottom-4 top-6 aspect-square rounded-full bg-[linear-gradient(135deg,#c8efff,#23c7cd)] shadow-[0_26px_70px_rgba(35,199,205,0.25)]" />
-
-          {[
-            {
-              Icon: BarChart3,
-              className: "left-3 top-12 rotate-[-8deg]",
-            },
-            {
-              Icon: ShieldCheck,
-              className: "right-4 top-16 rotate-[8deg]",
-            },
-            {
-              Icon: IndianRupee,
-              className: "right-8 bottom-20 rotate-[10deg]",
-            },
-            {
-              Icon: ShieldCheck,
-              className: "left-1 bottom-22 rotate-[-10deg]",
-            },
-          ].map(({ Icon, className }, index) => (
-            <div
-              key={index}
-              className={`absolute z-10 flex h-16 w-16 items-center justify-center rounded-2xl bg-white/90 text-[#1570ef] shadow-[0_16px_38px_rgba(25,85,133,0.16)] backdrop-blur ${className}`}
-            >
-              <Icon className="h-8 w-8" strokeWidth={2.4} />
-            </div>
-          ))}
-
-          <div className="relative z-20 h-82.5 w-43 rotate-[4deg] overflow-hidden rounded-4xl border-8 border-[#06172f] bg-white shadow-[0_24px_50px_rgba(7,22,45,0.25)]">
-            <div className="absolute left-1/2 top-0 z-20 h-6 w-20 -translate-x-1/2 rounded-b-2xl bg-[#06172f]" />
-            <div className="h-full bg-[linear-gradient(180deg,#0e7cff_0%,#f8fbff_38%,#ffffff_100%)] p-4 pt-8">
-              <div className="flex items-center justify-between text-white">
-                <p className="text-[10px] font-extrabold">Hi, Rahul</p>
-                <div className="flex h-5 w-5 items-center justify-center rounded-full bg-white/20">
-                  <Smartphone className="h-3 w-3" />
-                </div>
-              </div>
-
-              <div className="mt-5 rounded-2xl bg-white p-3 shadow-[0_14px_30px_rgba(25,85,133,0.16)]">
-                <p className="text-[9px] font-extrabold text-[#07162d]">
-                  Credit Score
-                </p>
-                <div className="mx-auto mt-4 flex h-25 w-25 items-center justify-center rounded-full border-10 border-[#8bd84f] border-l-[#1375de] border-r-[#f79009]">
-                  <div className="text-center">
-                    <p className="text-[30px] font-extrabold leading-none text-[#07162d]">
-                      784
-                    </p>
-                    <p className="mt-1 text-[8px] font-extrabold text-[#12b76a]">
-                      Excellent
-                    </p>
-                  </div>
-                </div>
-                <p className="mt-3 text-center text-[8px] font-extrabold text-[#12b76a]">
-                  + 24 Points
-                </p>
-              </div>
-
-              <div className="mt-4 grid grid-cols-4 gap-2">
-                {["Score", "Loan", "Card", "EMI"].map((item) => (
-                  <div
-                    key={item}
-                    className="rounded-lg bg-[#edf6ff] px-1 py-2 text-center"
-                  >
-                    <p className="text-[6px] font-extrabold leading-tight text-[#195585]">
-                      {item}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+          <Image
+            src="/assets/refer/footer.png"
+            alt="Fintaraa mobile app preview"
+            width={420}
+            height={360}
+            className="h-auto w-full max-w-90 object-contain"
+            sizes="(min-width: 1024px) 30vw, 360px"
+          />
         </div>
 
         <div className="flex flex-col justify-center py-3 pt-8 md:pt-0">

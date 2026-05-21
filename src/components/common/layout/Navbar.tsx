@@ -9,10 +9,13 @@ import {
   Mail,
   Menu,
   Phone,
+  Sparkles,
   UserRound,
+  ArrowRight,
   ChevronDown,
   ShieldCheck,
 } from "lucide-react";
+import { productSections } from "@/data/homePage";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 const navItems = [
@@ -26,6 +29,24 @@ const navItems = [
 
 const underlineClass =
   "relative after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-full after:origin-left after:scale-x-0 after:bg-[#195585] after:transition-transform after:duration-300 after:ease-out hover:after:scale-x-100";
+
+const productMenuOrder = [
+  "Explore Loan Options",
+  "Explore Credit Card Options",
+  "Explore Insurance Plans",
+  "Explore Additional Services",
+];
+
+const productMegaSections = productMenuOrder
+  .map((title) => productSections.find((section) => section.title === title))
+  .filter(Boolean) as typeof productSections;
+
+const productHref = (title: string) =>
+  `/products/${title
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "")}`;
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -77,6 +98,25 @@ export default function Navbar() {
           {navItems.map((item) => {
             const active =
               pathname === item.href || pathname.startsWith(`${item.href}/`);
+            if (item.label === "Products") {
+              return (
+                <div key={item.label} className="group relative">
+                  <Link
+                    href={item.href}
+                    className={`${underlineClass} flex items-center gap-1 text-base font-semibold no-underline transition ${
+                      active
+                        ? "text-[#195585] after:scale-x-100"
+                        : "text-[#101828] hover:text-[#195585]"
+                    }`}
+                  >
+                    {item.label}
+                    <ChevronDown className="h-3.5 w-3.5 transition group-hover:rotate-180" />
+                  </Link>
+                  <ProductMegaMenu />
+                </div>
+              );
+            }
+
             return (
               <Link
                 key={item.label}
@@ -158,6 +198,87 @@ export default function Navbar() {
         </div>
       )}
     </header>
+  );
+}
+
+function ProductMegaMenu() {
+  return (
+    <div className="pointer-events-none absolute left-0 top-full z-50 w-[min(80vw,75rem)] pt-5 opacity-0 transition duration-200 group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:opacity-100">
+      <div className="overflow-hidden border border-[#d9e9f6] bg-white shadow-[0_28px_80px_rgba(25,85,133,0.16)]">
+        <div className="grid gap-0 xl:grid-cols-[0.75fr_1fr_1fr_1fr_1fr]">
+          <div className="bg-[linear-gradient(145deg,#195585,#0f6fba)] p-4 text-white">
+            <div className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-white/12">
+              <Sparkles className="h-5 w-5 text-[#7ee3a2]" />
+            </div>
+            <h3 className="mt-5 text-[20px] font-extrabold leading-tight">
+              Explore Fintaraa products
+            </h3>
+            <p className="mt-3 text-xs text-white/76">
+              Compare loans, cards, insurance, and useful services from one
+              secure marketplace.
+            </p>
+            <Link
+              href="/products"
+              className="mt-6 inline-flex h-10 whitespace-nowrap items-center gap-2 rounded-full bg-white px-4 text-[13px] font-extrabold text-[#195585] no-underline"
+            >
+              View all products
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+
+          {productMegaSections.map((section) => (
+            <div
+              key={section.title}
+              className="border-l border-[#edf3f8] py-4 px-3"
+            >
+              <div className="mb-4 flex items-start justify-between gap-3">
+                <div>
+                  <p className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#195585]">
+                    {section.title.replace("Explore ", "")}
+                  </p>
+                  <p className="mt-1 text-[12px] font-semibold leading-5 text-[#667085]">
+                    {section.subtitle}
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid gap-1.5">
+                {section.products.slice(0, 5).map((product) => {
+                  const Icon = product.icon;
+                  return (
+                    <Link
+                      key={product.title}
+                      href={productHref(product.title)}
+                      className="group/item flex items-center gap-3 rounded-2xl py-2 text-[#07162d] no-underline transition"
+                    >
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#eef8ff] text-[#195585] transition group-hover/item:bg-[#195585] group-hover/item:text-white">
+                        <Icon className="h-4.5 w-4.5" />
+                      </span>
+                      <span className="min-w-0">
+                        <span className="block truncate text-[13px] font-extrabold">
+                          {product.title}
+                        </span>
+                        <span className="mt-0.5 line-clamp-1 block text-[11px] font-semibold text-[#667085]">
+                          {product.text}
+                        </span>
+                      </span>
+                    </Link>
+                  );
+                })}
+              </div>
+
+              <Link
+                href={productHref(section.cta)}
+                className="mt-3 inline-flex items-center gap-1 text-[12px] font-extrabold text-[#12b76a] no-underline"
+              >
+                {section.cta}
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }
 
