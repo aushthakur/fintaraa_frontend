@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { productSections } from "@/data/homePage";
+import { productHref } from "@/lib/productRouting";
 
 const toneClass: Record<string, string> = {
   amber: "bg-[#fff3df] text-[#f79009]",
@@ -46,7 +47,7 @@ export function ProductExplorer() {
               <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-7">
                 {section.products.map(({ title, text, icon: Icon, tone }) => (
                   <Link
-                    href="/products"
+                    href={productHref(title)}
                     key={title}
                     className="group flex flex-col items-center justify-between rounded-xl bg-white px-2 py-4 text-center no-underline shadow-[0_8px_18px_rgba(16,24,40,0.08)] ring-1 ring-[#eef2f7] transition duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(16,24,40,0.13)] hover:ring-[#d9f6e6]"
                   >

@@ -10,42 +10,42 @@ import {
 
 const featureCards = [
   {
+    icon: ShieldCheck,
     title: "Secure & Trusted",
     text: "Bank-grade security to protect your data and money.",
-    icon: ShieldCheck,
   },
   {
     title: "Grow Your Wealth",
-    text: "Smart investment options to help you build your future.",
     icon: ChartNoAxesColumnIncreasing,
+    text: "Smart investment options to help you build your future.",
   },
   {
+    icon: ChartPie,
     title: "Track & Plan",
     text: "Easy budgeting tools to keep you in control.",
-    icon: ChartPie,
   },
 ];
 
 const trustStats = [
   {
     value: "256-bit",
-    label: "Bank-level Security",
     icon: ShieldCheck,
+    label: "Bank-level Security",
   },
   {
     value: "2M+",
-    label: "Happy Customers",
     icon: UsersRound,
+    label: "Happy Customers",
   },
   {
     value: "99.9%",
-    label: "Uptime & Reliability",
     icon: ShieldCheck,
+    label: "Uptime & Reliability",
   },
   {
     value: "24/7",
-    label: "Customer Support",
     icon: Headphones,
+    label: "Customer Support",
   },
 ];
 
@@ -97,7 +97,7 @@ export function HeroSection() {
           </div>
         </div>
 
-        <div className="relative min-h-90 md:min-h-130 lg:min-h-152.5">
+        <div className="relative min-h-72 md:min-h-110 lg:h-132.5">
           <Image
             src="/assets/refer/header.png"
             alt="Smart banking services with Fintaraa app"

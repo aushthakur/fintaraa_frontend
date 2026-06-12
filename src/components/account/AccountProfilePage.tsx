@@ -4,9 +4,9 @@ import { AccountDetailPanel } from "./AccountDetailPanel";
 
 export function AccountProfilePage({ activeSlug }: { activeSlug?: string }) {
   return (
-    <main className="min-h-screen bg-gray-100 px-4 py-8 md:px-6 lg:px-8">
-      <div className="mx-auto max-w-9xl">
-        <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+    <main className="h-auto bg-gray-100 xl:h-[calc(100dvh-6.75rem)] xl:overflow-hidden">
+      <div className="mx-auto h-full max-w-9xl">
+        {/* <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="text-[12px] font-extrabold uppercase tracking-[0.18em] text-[#195585]">
               Profile & Settings
@@ -19,13 +19,13 @@ export function AccountProfilePage({ activeSlug }: { activeSlug?: string }) {
             A compact command center for applications, offers, documents,
             preferences, help, and Fintaraa policy controls.
           </p>
-        </div>
+        </div> */}
 
-        <div className="grid items-start gap-6 xl:grid-cols-[24rem_minmax(0,1fr)]">
-          <div className="grid gap-4 bg-white xl:sticky xl:top-28 xl:h-[calc(100vh-8rem)] xl:overflow-y-auto xl:pr-3 scrollbar-thin">
+        <div className="grid min-h-0 xl:h-full xl:grid-cols-[24rem_minmax(0,1fr)]">
+          <div className="grid gap-4 border-r border-r-gray-200 bg-white xl:h-full xl:overflow-y-auto xl:pr-3 scrollbar-thin">
             <ProfileSummary />
             <AccountMenu activeSlug={activeSlug} />
-            <div className="bg-white/90 p-4 text-center shadow-[0_14px_35px_rgba(25,85,133,0.05)]">
+            <div className="bg-white/90 p-4 text-center">
               <p className="text-[13px] font-extrabold text-[#07162d]">
                 Fintaraa app v1.0.0
               </p>
@@ -36,7 +36,7 @@ export function AccountProfilePage({ activeSlug }: { activeSlug?: string }) {
             </div>
           </div>
 
-          <div className="bg-white xl:sticky xl:top-28 xl:h-[calc(100vh-8rem)] xl:overflow-y-auto xl:pb-4 scrollbar-thin">
+          <div className="bg-white xl:h-full xl:overflow-y-auto xl:pb-4 scrollbar-thin">
             <AccountDetailPanel slug={activeSlug} />
           </div>
         </div>

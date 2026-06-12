@@ -870,9 +870,7 @@ function EditProfileForm() {
     setForm((current) => ({ ...current, employmentType: value }));
   };
 
-  const saveLocalUser = (
-    payload: Record<string, string | boolean | Record<string, string>>,
-  ) => {
+  const saveLocalUser = (payload: Record<string, unknown>) => {
     if (typeof window === "undefined") return;
     const personalDetails = payload.personalDetails as Record<string, string>;
     const employmentDetails = payload.employmentDetails as Record<
@@ -880,7 +878,7 @@ function EditProfileForm() {
       string
     >;
     const bankDetails = payload.bankDetails as Record<string, string>;
-    const addressDetails = payload.addressDetails as Record<string, string>;
+    const addressDetails = payload.addressDetails as Record<string, unknown>;
     const nextUser = {
       ...(user || {}),
       name: personalDetails.fullName || user?.name,
@@ -912,6 +910,16 @@ function EditProfileForm() {
     setSaving(true);
     setStatus("Saving your profile securely...");
 
+    const currentAddress = {
+      street: form.currentAddress,
+      city: form.city,
+      state: form.state,
+      country: "India",
+      postalCode: form.pinCode,
+      label: "home",
+      isDefault: true,
+    };
+
     const payload = {
       personalDetails: {
         fullName: form.fullName,
@@ -927,13 +935,8 @@ function EditProfileForm() {
         pinCode: form.pinCode,
       },
       addressDetails: {
-        currentAddress: form.currentAddress,
-        address: form.currentAddress,
-        city: form.city,
-        state: form.state,
-        country: "India",
-        pinCode: form.pinCode,
-        pincode: form.pinCode,
+        currentAddress,
+        permanentAddress: currentAddress,
       },
       employmentDetails: {
         employmentType: activeEmploymentType,

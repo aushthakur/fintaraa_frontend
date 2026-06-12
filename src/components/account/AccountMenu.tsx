@@ -4,10 +4,10 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ChevronRight } from "lucide-react";
-import { accountMenuSections } from "@/data/accountProfile";
-import { LogoutConfirmationModal } from "@/components/account/LogoutConfirmationModal";
 import { clearAuthSession } from "@/hooks/authStorage";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { accountMenuSections } from "@/data/accountProfile";
+import { LogoutConfirmationModal } from "@/components/account/LogoutConfirmationModal";
 
 export function AccountMenu({ activeSlug }: { activeSlug?: string }) {
   const router = useRouter();

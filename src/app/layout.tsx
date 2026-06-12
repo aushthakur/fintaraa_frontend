@@ -7,8 +7,7 @@ import { Cormorant_Garamond } from "next/font/google";
 
 import "./globals.css";
 import "react-toastify/dist/ReactToastify.css";
-import Navbar from "@/components/common/layout/Navbar";
-import Footer from "@/components/common/layout/Footer";
+import { AppShell } from "@/components/common/layout/AppShell";
 
 export const bodoni = Bodoni_Moda({
   subsets: ["latin"],
@@ -87,9 +86,7 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <Providers>
-          <Navbar />
-          <div className="min-h-screen overflow-hidden">{children}</div>
-          <Footer />
+          <AppShell>{children}</AppShell>
         </Providers>
         <div id="modal-root" />
       </body>

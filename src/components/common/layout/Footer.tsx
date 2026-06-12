@@ -9,11 +9,12 @@ import {
   BriefcaseBusiness,
   Mail,
   MapPin,
-  Wrench,
   Newspaper,
   PhoneCall,
   ShieldCheck,
   MessageCircle,
+  Gift,
+  Headphones,
 } from "lucide-react";
 import {
   FaApple,
@@ -25,6 +26,7 @@ import {
   FaLinkedinIn,
 } from "react-icons/fa6";
 import Image from "next/image";
+import { productHref } from "@/lib/productRouting";
 
 const loanLinks = [
   "Personal Loan",
@@ -36,6 +38,7 @@ const loanLinks = [
   "Education Loan",
   "Gold Loan",
   "Instant Loan",
+  "Vehicle Loan",
   "Credit Score Loan",
 ];
 
@@ -50,17 +53,31 @@ const insuranceLinks = [
   "Personal Accident Insurance",
   "Critical Illness Insurance",
   "Group Insurance",
+  "Shop Insurance",
+  "Property Insurance",
 ];
 
 const quickLinks = [
   { label: "Credit Cards", href: "/credit-cards", icon: CreditCard },
-  { label: "Tools", href: "/tools", icon: Wrench },
-  { label: "CIBIL Score", href: "/cibil-score", icon: Clock },
-  { label: "Blog", href: "/blog", icon: Newspaper },
+  { label: "CIBIL Score", href: "/login?product=cibil-score", icon: Clock },
+  { label: "Offers", href: "/offers", icon: Gift },
+  { label: "Application Status", href: "/application-status", icon: BadgeCheck },
+  { label: "Blog & Articles", href: "/blog", icon: Newspaper },
   { label: "Careers", href: "/careers", icon: BriefcaseBusiness },
   { label: "Franchise", href: "/franchise", icon: Landmark },
   { label: "Become DSA", href: "/become-dsa", icon: HandshakeIcon },
   { label: "Contact Us", href: "/contact-us", icon: PhoneCall },
+  { label: "Support", href: "/support", icon: Headphones },
+];
+
+const serviceLinks = [
+  "GST Registration",
+  "ITR Filing",
+  "Company Registration",
+  "Refer and Earn",
+  "Offers and Rewards",
+  "About Us",
+  "Application Status",
 ];
 
 const socialLinks = [
@@ -195,7 +212,7 @@ function FooterLinkList({ links }: { links: string[] }) {
       {links.map((link) => (
         <Link
           key={link}
-          href="/products"
+          href={productHref(link)}
           className={`${footerUnderlineClass} group flex cursor-pointer items-center gap-2 text-[15px] font-medium text-white/88 no-underline transition hover:text-white`}
         >
           {link}
@@ -211,7 +228,7 @@ export default function Footer() {
     <>
       <footer className="bg-[#195585] text-white">
         <div className="mx-auto max-w-9xl px-4 py-12 md:px-6 lg:px-8">
-          <div className="grid gap-12 lg:grid-cols-[1.4fr_1.1fr_1.25fr_1.1fr_1.55fr]">
+          <div className="grid gap-12 lg:grid-cols-[1.4fr_1.1fr_1.25fr_1.25fr_1.1fr_1.45fr]">
             <div>
               <Link href="/" aria-label="Fintaraa home" className="shrink-0">
                 <Image
@@ -257,6 +274,14 @@ export default function Footer() {
               <h3 className="text-[20px] font-extrabold">Insurance</h3>
               <div className="mt-3 h-0.5 w-9 bg-[#28c7ed]" />
               <FooterLinkList links={insuranceLinks} />
+            </div>
+
+            <div>
+              <h3 className="text-[20px] font-extrabold">
+                Other Financial Services
+              </h3>
+              <div className="mt-3 h-0.5 w-9 bg-[#28c7ed]" />
+              <FooterLinkList links={serviceLinks} />
             </div>
 
             <div>

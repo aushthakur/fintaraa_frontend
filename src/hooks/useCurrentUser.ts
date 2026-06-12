@@ -1,6 +1,6 @@
 "use client";
 
-import { getAuthToken } from "@/hooks/authStorage";
+import { clearAuthSession, getAuthToken } from "@/hooks/authStorage";
 import { useMemo, useSyncExternalStore } from "react";
 import { AUTH_CHANGED_EVENT } from "@/lib/authEvents";
 import { fetchCurrentUser, type CurrentUser } from "@/services/profile";
@@ -107,8 +107,14 @@ const loadCurrentUserOnce = async (force = false) => {
         storeUser = normalized;
         localStorage.setItem("user", JSON.stringify(normalized));
       }
-    } catch {
-      // Keep cached user if the network request fails.
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "";
+      if (message.includes("Record not found")) {
+        clearAuthSession();
+        if (generation !== loadGeneration) return;
+        setStoreState({ user: null });
+      }
+      // Keep cached user for transient network/server failures.
     } finally {
       if (generation !== loadGeneration) return;
       storeLoading = false;

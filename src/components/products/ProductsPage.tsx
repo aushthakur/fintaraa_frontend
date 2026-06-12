@@ -38,6 +38,7 @@ import {
   WalletCards,
   Wrench,
 } from "lucide-react";
+import { productHref } from "@/lib/productRouting";
 
 const toneClass: Record<string, string> = {
   amber: "bg-[#fff3df] text-[#f79009]",
@@ -54,13 +55,6 @@ const toneClass: Record<string, string> = {
   violet: "bg-[#f3e2ff] text-[#c067f2]",
   yellow: "bg-[#fff1bd] text-[#e8b23d]",
 };
-
-const slugify = (value: string) =>
-  value
-    .toLowerCase()
-    .replace(/&/g, "and")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
 
 const productSections = [
   {
@@ -482,7 +476,7 @@ export function ProductsPage() {
                   {section.products.map(({ title, text, icon: Icon, tone }) => (
                     <Link
                       key={title}
-                      href={`/login?product=${slugify(title)}`}
+                      href={productHref(title)}
                       className="group flex min-h-64 flex-col items-center justify-between rounded-xl bg-white px-2 py-4 text-center no-underline ring-1 ring-[#eef2f7] transition duration-300 hover:-translate-y-1 hover:ring-[#d9f6e6]"
                     >
                       <div>

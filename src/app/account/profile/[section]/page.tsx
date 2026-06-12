@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { AccountProfilePage } from "@/components/account/AccountProfilePage";
 import { accountItemBySlug } from "@/data/accountProfile";
+import { AccountProfilePage } from "@/components/account/AccountProfilePage";
 
 type PageProps = {
   params: Promise<{ section: string }>;

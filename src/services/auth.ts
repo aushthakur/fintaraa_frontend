@@ -58,7 +58,12 @@ export const verifyOtp = async (
       | undefined) || response;
 
   if (typeof window !== "undefined") {
-    if (payload?.token) localStorage.setItem("token", payload.token);
+    if (payload?.token) {
+      localStorage.setItem("authType", "user");
+      localStorage.setItem("token", payload.token);
+      localStorage.removeItem("adminToken");
+      localStorage.removeItem("employeeToken");
+    }
     if (payload?.user)
       localStorage.setItem("user", JSON.stringify(payload.user));
     localStorage.setItem("verified_phone", mobile);

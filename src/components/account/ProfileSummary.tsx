@@ -14,7 +14,7 @@ export function ProfileSummary() {
     .toUpperCase();
 
   return (
-    <section className="bg-white px-5 py-5">
+    <section className="bg-white px-5 pt-5">
       <div className="flex gap-4">
         <div className="relative flex h-20 w-20 shrink-0 items-center justify-center rounded-3xl bg-linear-to-br from-[#195585] to-[#12b76a] text-[24px] font-extrabold text-white">
           {profile.avatar ? (
