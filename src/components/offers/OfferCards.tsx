@@ -49,7 +49,8 @@ export function OfferCards() {
                   alt={offer.bank}
                   width={120}
                   height={36}
-                  className="h-9 w-32 object-contain object-left"
+                  className="object-contain object-left"
+                  style={{ width: "128px", height: "auto" }}
                 />
                 <span className="rounded bg-[#d6f8e0] px-4 py-2 text-[12px] font-semibold text-[#13a653]">
                   Exclusive

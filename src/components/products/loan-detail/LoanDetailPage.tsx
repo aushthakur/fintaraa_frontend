@@ -390,7 +390,8 @@ export function LoanDetailPage({ page }: { page: LoanSeoPageData }) {
                           alt={row.name}
                           width={74}
                           height={24}
-                          className="h-6 w-20 object-contain"
+                          className="object-contain"
+                          style={{ width: "80px", height: "auto" }}
                         />
                       </Link>
                     </td>

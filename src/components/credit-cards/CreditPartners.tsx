@@ -27,7 +27,14 @@ export function CreditPartners() {
         <div className="grid gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7">
           {[...partnerBanks, ...partnerBanks].map((logo, index) => (
             <div key={`${logo}-${index}`} className="flex h-18 items-center justify-center rounded-xl border border-[#d7dfe8] bg-white p-4">
-              <Image src={logo} alt="Partner bank" width={120} height={38} className="h-8 w-28 object-contain" />
+              <Image
+                src={logo}
+                alt="Partner bank"
+                width={120}
+                height={38}
+                className="object-contain"
+                style={{ width: "112px", height: "auto" }}
+              />
             </div>
           ))}
         </div>

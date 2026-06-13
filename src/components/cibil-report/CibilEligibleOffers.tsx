@@ -47,7 +47,8 @@ export function CibilEligibleOffers() {
                       alt={bank}
                       width={110}
                       height={34}
-                      className="h-8 w-28 object-contain object-left"
+                      className="object-contain object-left"
+                      style={{ width: "112px", height: "auto" }}
                     />
                   </td>
                   <td className="px-5 py-4 font-semibold">{amount}</td>

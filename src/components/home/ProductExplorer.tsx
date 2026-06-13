@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 import { productSections } from "@/data/homePage";
 import { productHref } from "@/lib/productRouting";
 
@@ -19,14 +18,30 @@ const toneClass: Record<string, string> = {
   yellow: "bg-[#fff1bd] text-[#e8b23d]",
 };
 
-export function ProductExplorer() {
+type ProductExplorerProps = {
+  sectionTitles?: string[];
+  compactSpacing?: boolean;
+};
+
+export function ProductExplorer({
+  sectionTitles,
+  compactSpacing = false,
+}: ProductExplorerProps) {
+  const visibleSections = sectionTitles?.length
+    ? productSections.filter((section) => sectionTitles.includes(section.title))
+    : productSections;
+
   return (
-    <section className="px-4 py-20 md:px-6 lg:px-8">
+    <section
+      className={`px-4 md:px-6 lg:px-8 ${
+        compactSpacing ? "py-8 md:py-10" : "py-20"
+      }`}
+    >
       <div className="mx-auto max-w-9xl">
-        <div className="grid gap-18">
-          {productSections.map((section) => (
+        <div className={compactSpacing ? "grid gap-8" : "grid gap-18"}>
+          {visibleSections.map((section) => (
             <div key={section.title}>
-              <div className="mb-9 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+              <div className="mb-6 flex flex-col gap-4 md:mb-9 md:flex-row md:items-end md:justify-between">
                 <div>
                   <h2 className="text-[28px] font-bold tracking-tight text-[#101828] md:text-[32px]">
                     {section.title}
@@ -45,29 +60,23 @@ export function ProductExplorer() {
               </div>
 
               <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-7">
-                {section.products.map(({ title, text, icon: Icon, tone }) => (
+                {section.products.map(({ title, icon: Icon, tone }) => (
                   <Link
                     href={productHref(title)}
                     key={title}
-                    className="group flex flex-col items-center justify-between rounded-xl bg-white px-2 py-4 text-center no-underline shadow-[0_8px_18px_rgba(16,24,40,0.08)] ring-1 ring-[#eef2f7] transition duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(16,24,40,0.13)] hover:ring-[#d9f6e6]"
+                    className="group flex min-h-50 flex-col items-center justify-center rounded-xl bg-white px-1 py-8 text-center no-underline shadow-[0_8px_18px_rgba(16,24,40,0.08)] ring-1 ring-[#eef2f7] transition duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(16,24,40,0.13)] hover:ring-[#d9f6e6]"
                   >
                     <span
-                      className={`flex h-14 w-14 mt-3 items-center justify-center rounded-full ${
+                      className={`flex h-18 w-18 items-center justify-center rounded-full ${
                         toneClass[tone] || toneClass.blue
                       }`}
                     >
-                      <Icon className="h-7 w-7 stroke-2" />
+                      <Icon className="h-9 w-9 stroke-2" />
                     </span>
                     <span className="mt-5 block">
                       <span className="text-[16px] line-clamp-1 font-extrabold leading-snug text-[#1d2738]">
                         {title}
                       </span>
-                      <span className="mt-5 line-clamp-2 text-[15px] font-medium text-[#2f3137]">
-                        {text}
-                      </span>
-                    </span>
-                    <span className="mt-6 flex h-9 w-9 items-center justify-center text-[#08a045] transition group-hover:translate-x-1">
-                      <ArrowRight className="h-7 w-7 stroke-[2.6]" />
                     </span>
                   </Link>
                 ))}

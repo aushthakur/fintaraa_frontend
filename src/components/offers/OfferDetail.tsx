@@ -26,7 +26,8 @@ export function OfferDetail() {
                 alt="HDFC Bank"
                 width={150}
                 height={44}
-                className="h-11 w-38 object-contain object-left"
+                className="object-contain object-left"
+                style={{ width: "152px", height: "auto" }}
               />
               <h2 className="mt-9 text-[38px] font-black text-[#111827]">
                 Zero Processing Fee

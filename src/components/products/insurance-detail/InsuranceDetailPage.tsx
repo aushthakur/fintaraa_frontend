@@ -199,7 +199,8 @@ export function InsuranceDetailPage({ page }: { page: InsuranceSeoPageData }) {
                         alt={name}
                         width={82}
                         height={26}
-                        className="h-6 w-22 object-contain"
+                        className="object-contain"
+                        style={{ width: "88px", height: "auto" }}
                       />
                     </td>
                     <td className="px-4 py-3 font-semibold">{premium}</td>

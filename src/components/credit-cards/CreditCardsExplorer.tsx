@@ -76,7 +76,14 @@ export function CreditCardsExplorer() {
               {creditCards.map(({ bank, title, logo }) => (
                 <article key={title} className="rounded-xl border border-[#d7dfe8] bg-white p-4">
                   <div className="flex items-center justify-between">
-                    <Image src={logo} alt={bank} width={96} height={28} className="h-7 w-24 object-contain object-left" />
+                    <Image
+                      src={logo}
+                      alt={bank}
+                      width={96}
+                      height={28}
+                      className="object-contain object-left"
+                      style={{ width: "96px", height: "auto" }}
+                    />
                     <label className="flex items-center gap-1 text-[10px] font-medium text-[#667085]">
                       <input type="checkbox" />
                       Compare

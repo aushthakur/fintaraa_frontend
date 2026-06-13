@@ -42,7 +42,8 @@ export function BankDetailPage({ page }: { page: BankSeoPageData }) {
                   alt={page.bankName}
                   width={250}
                   height={92}
-                  className="h-auto w-62 object-contain object-left"
+                  className="object-contain object-left"
+                  style={{ width: "248px", height: "auto" }}
                 />
               ) : null}
             </div>
