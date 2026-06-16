@@ -11,7 +11,7 @@ export function CibilInfo() {
         
         {/* Left Column: Verbatim Copy Content Info */}
         <div className="flex flex-col justify-start">
-          <h2 className="text-[32px] md:text-[38px] font-bold text-[#1d2939] tracking-tight">
+          <h2 className="text-[26px] sm:text-[32px] md:text-[38px] font-bold text-[#1d2939] tracking-tight">
             What is Credit Score
           </h2>
           
@@ -40,8 +40,8 @@ export function CibilInfo() {
         {/* Right Column: Interaction Controls & Gauge Image Asset Frame */}
         <div className="flex flex-col items-end w-full lg:max-w-105 lg:justify-self-end">
           {/* Fixed Gauge Image Node Slot - Replaced the component with your graphic target layout */}
-          <div className="w-full flex justify-center lg:justify-end pr-2">
-            <div className="relative scale-125 w-full max-w-120 aspect-square">
+          <div className="w-full flex justify-center lg:justify-end pr-0 sm:pr-2">
+            <div className="relative w-full max-w-120 aspect-square scale-100 sm:scale-125">
               <Image
                 src="/assets/images/cibil-gauge-graphic.png" // Update this URL path string with your exact gauge graphic image file asset!
                 alt="Credit Score CIBIL Range Gauge Status Meter"

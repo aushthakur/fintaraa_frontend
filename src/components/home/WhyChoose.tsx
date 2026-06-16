@@ -23,7 +23,7 @@ export function WhyChoose() {
         
         {/* Top Branding Flex Row Banner */}
         <div className="flex items-center justify-between gap-6 pb-8">
-          <h2 className="text-[26px] font-bold tracking-tight text-white sm:text-[32px]">
+          <h2 className="text-[22px] font-bold tracking-tight text-white sm:text-[32px]">
             Why Choose Fintaraa?
           </h2>
           
@@ -37,50 +37,50 @@ export function WhyChoose() {
           </div>
         </div>
 
-        {/* Dense Grid/Flex Block Matching the Screenshot Rows */}
-        <div className="flex flex-col gap-4">
-          
-          {/* Row 1 Grid */}
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
-            {corporateReasons.map((item) => {
-              const IconComponent = item.icon;
-              return (
-                <div
-                  key={`row1-${item.id}`}
-                  className="flex items-center gap-3.5 rounded-[14px] bg-white p-4 text-[#00529c] shadow-md transition-transform duration-200 hover:-translate-y-0.5"
-                >
-                  <div className="shrink-0 text-[#00529c]">
-                    <IconComponent className="h-6 w-6 stroke-[1.75]" />
+          {/* Dense Grid/Flex Block Matching the Screenshot Rows */}
+          <div className="flex flex-col gap-4">
+            
+            {/* Row 1 Grid */}
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-5">
+              {corporateReasons.map((item) => {
+                const IconComponent = item.icon;
+                return (
+                  <div
+                    key={`row1-${item.id}`}
+                    className="flex items-center gap-2 sm:gap-3.5 rounded-[14px] bg-white p-3 sm:p-4 text-[#00529c] shadow-md transition-transform duration-200 hover:-translate-y-0.5"
+                  >
+                    <div className="shrink-0 text-[#00529c]">
+                      <IconComponent className="h-5 w-5 sm:h-6 sm:w-6 stroke-[1.75]" />
+                    </div>
+                    <h3 className="text-[12px] sm:text-[13px] font-bold leading-snug tracking-tight text-[#00529c] ">
+                      {item.label}
+                    </h3>
                   </div>
-                  <h3 className="text-[13px] font-bold leading-snug tracking-tight text-[#00529c] sm:text-[14px]">
-                    {item.label}
-                  </h3>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
 
-          {/* Row 2 Grid (Duplicates row layout logic as displayed inside screenshot) */}
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
-            {corporateReasons.map((item) => {
-              const IconComponent = item.icon;
-              return (
-                <div
-                  key={`row2-${item.id}`}
-                  className="flex items-center gap-3.5 rounded-[14px] bg-white p-4 text-[#00529c] shadow-md transition-transform duration-200 hover:-translate-y-0.5"
-                >
-                  <div className="shrink-0 text-[#00529c]">
-                    <IconComponent className="h-6 w-6 stroke-[1.75]" />
+            {/* Row 2 Grid (Duplicates row layout logic as displayed inside screenshot) */}
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-5">
+              {corporateReasons.map((item) => {
+                const IconComponent = item.icon;
+                return (
+                  <div
+                    key={`row2-${item.id}`}
+                    className="flex items-center gap-2 sm:gap-3.5 rounded-[14px] bg-white p-3 sm:p-4 text-[#00529c] shadow-md transition-transform duration-200 hover:-translate-y-0.5"
+                  >
+                    <div className="shrink-0 text-[#00529c]">
+                      <IconComponent className="h-5 w-5 sm:h-6 sm:w-6 stroke-[1.75]" />
+                    </div>
+                    <h3 className="text-[12px] sm:text-[14px] font-bold leading-snug tracking-tight text-[#00529c]">
+                      {item.label}
+                    </h3>
                   </div>
-                  <h3 className="text-[13px] font-bold leading-snug tracking-tight text-[#00529c] sm:text-[14px]">
-                    {item.label}
-                  </h3>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
 
-        </div>
+          </div>
 
       </div>
     </section>

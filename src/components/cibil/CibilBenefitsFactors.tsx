@@ -66,7 +66,7 @@ export function CibilBenefitsFactors() {
           
           {/* Main Underlined Section Heading Stack */}
           <div className="flex flex-col items-start">
-            <h2 className="text-[28px] md:text-[36px] font-bold tracking-tight text-white relative pb-2 inline-block">
+            <h2 className="text-[24px] sm:text-[28px] md:text-[36px] font-bold tracking-tight text-white relative pb-2 inline-block">
               Why Check Your CIBIL Score?
               {/* White accent bottom rule highlight */}
               <div className="absolute bottom-0 left-0 w-full h-[2.5px] bg-white rounded-full opacity-90" />
@@ -110,7 +110,7 @@ export function CibilBenefitsFactors() {
         
         {/* Section Heading Group Layout */}
         <div className="flex flex-col items-start text-left mb-10">
-          <h2 className="text-[32px] font-bold tracking-tight text-[#222222]">
+          <h2 className="text-[24px] sm:text-[32px] font-bold tracking-tight text-[#222222]">
             What affects your Score?
           </h2>
           <p className="mt-2 text-[14px] font-medium text-gray-500 max-w-xl leading-relaxed">
@@ -145,9 +145,9 @@ export function CibilBenefitsFactors() {
         </div>
 
         {/* Bottom Integrated Action Dashboard Banner Layout Block */}
-        <div className="mt-14 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between rounded-xl border border-blue-100/60 bg-[#f0f7ff] p-6 md:p-8 md:px-10">
+        <div className="mt-14 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between rounded-xl border border-blue-100/60 bg-[#f0f7ff] p-5 md:p-8 md:px-10">
           <div className="flex flex-col text-left">
-            <p className="text-[18px] sm:text-[20px] font-bold text-[#1d2939] tracking-tight">
+            <p className="text-[16px] sm:text-[18px] md:text-[20px] font-bold text-[#1d2939] tracking-tight">
               Join millions who are monitoring their CIBIL score with Fintaraa
             </p>
             <p className="mt-1.5 text-[14px] font-medium text-gray-400">

@@ -128,7 +128,7 @@ export function EligibilitySection() {
           </span>
 
           {/* Main Header - Sharp layout matching the linebreaks and deep blue text of image_bbade7.png */}
-          <h2 className="mt-5 max-w-2xl text-[38px] font-extrabold leading-[1.2] tracking-tight text-gray-900 md:text-[44px]">
+          <h2 className="mt-5 max-w-2xl text-[28px] sm:text-[38px] font-extrabold leading-[1.2] tracking-tight text-gray-900 md:text-[44px]">
             Check Your Eligibility in{" "}
             <span className="block text-[#00529b] sm:inline">30 Seconds</span>
           </h2>
@@ -246,16 +246,16 @@ export function EligibilitySection() {
 
                 {/* Row 2: Select Loan Amount Title & Display Values Layout Line */}
                 <div className="flex items-baseline justify-between pt-2">
-                  <p className="text-[16px] font-bold text-[#2d3142]">
+                  <p className="text-[14px] sm:text-[16px] font-bold text-[#2d3142]">
                     Select Loan Amount
                   </p>
-                  <p className="text-[34px] font-bold tracking-tight text-[#2d3142]">
+                  <p className="text-[24px] sm:text-[34px] font-bold tracking-tight text-[#2d3142]">
                     ₹{formatAmount(amount)}
                   </p>
                 </div>
 
                 {/* Quick Amount Suggestion Toggles Row */}
-                <div className="grid grid-cols-5 gap-2.5">
+                <div className="grid grid-cols-3 sm:grid-cols-5 gap-2.5">
                   {amountOptions.map((item) => (
                     <button
                       key={item.label}
