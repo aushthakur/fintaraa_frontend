@@ -2,7 +2,6 @@ import Link from "next/link";
 import {
   ArrowRight,
   BadgeCheck,
-  CreditCard,
   Home,
   Newspaper,
   PlayCircle,
@@ -12,50 +11,13 @@ import {
 } from "lucide-react";
 import { BlogVisual } from "@/components/blog/BlogVisual";
 import { latestBlogPosts } from "@/data/blogs";
+import Image from "next/image";
 
-const bankTabs = ["All Cards", "SBI Bank", "HDFC Bank", "ICICI Bank", "Axis Bank"];
 
-const creditCards = [
-  {
-    name: "SBI Cashback Card",
-    fee: "Rs 999",
-    reward: "5% cashback",
-    bank: "sbi",
-  },
-  {
-    name: "SBI SimplyCLICK",
-    fee: "Rs 499",
-    reward: "10X rewards",
-    bank: "sbi",
-  },
-  {
-    name: "SBI Prime Card",
-    fee: "Rs 2,999",
-    reward: "Premium perks",
-    bank: "sbi",
-  },
-  {
-    name: "SBI Elite Card",
-    fee: "Rs 4,999",
-    reward: "Travel rewards",
-    bank: "sbi",
-  },
-  {
-    name: "SBI BPCL Card",
-    fee: "Rs 499",
-    reward: "Fuel savings",
-    bank: "sbi",
-  },
-  {
-    name: "SBI IRCTC Card",
-    fee: "Rs 500",
-    reward: "Rail benefits",
-    bank: "sbi",
-  },
-];
+
 
 const loanOffers = [
-  { bank: "SBI Bank", logo: "/assets/banks/sbi.png", rate: "7.10%", fee: "0.35%" },
+  { bank: "SBI Bank", logo: "/assets/banks/visa-card.png", rate: "7.10%", fee: "0.35%" },
   { bank: "ICICI Bank", logo: "/assets/banks/icici.png", rate: "7.25%", fee: "0.50%" },
   { bank: "Kotak Bank", logo: "/assets/banks/kotak.png", rate: "7.40%", fee: "0.45%" },
   { bank: "HDFC Bank", logo: "/assets/banks/hdfc.png", rate: "7.35%", fee: "0.50%" },
@@ -116,72 +78,7 @@ export function CreditScoreMinuteBanner() {
   );
 }
 
-export function MajorBankCreditCards() {
-  return (
-    <section className="px-4 py-8 md:px-6 lg:px-8">
-      <div className="mx-auto max-w-9xl">
-        <div className="flex items-center justify-between gap-4">
-          <h2 className="text-[18px] font-extrabold text-[#101828] md:text-[24px]">
-            Credit Cards by Major Banks
-          </h2>
-          <Link href="/credit-cards" className="text-[13px] font-extrabold text-[#08a045] no-underline">
-            View all →
-          </Link>
-        </div>
 
-        <div className="mt-4 flex gap-2 overflow-x-auto pb-2">
-          {bankTabs.map((tab, index) => (
-            <button
-              key={tab}
-              type="button"
-              className={`shrink-0 rounded-full border px-4 py-2 text-[12px] font-extrabold ${
-                index === 0
-                  ? "border-[#08a045] bg-[#08a045] text-white"
-                  : "border-[#d8efe2] bg-white text-[#344054]"
-              }`}
-            >
-              {tab}
-            </button>
-          ))}
-        </div>
-
-        <div className="mt-5 rounded-xl border border-[#e4edf5] bg-white p-4 shadow-[0_12px_30px_rgba(16,24,40,0.06)]">
-          <div className="flex items-center gap-3">
-            <img
-              src="/assets/banks/sbi.png"
-              alt="SBI"
-              className="h-auto w-16 object-contain"
-            />
-            <div>
-              <h3 className="text-[16px] font-extrabold text-[#07162d]">SBI Bank Credit Cards</h3>
-              <p className="text-[12px] font-semibold text-[#667085]">Popular cards with rewards, cashback, and lifestyle benefits.</p>
-            </div>
-          </div>
-
-          <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-6">
-            {creditCards.map((card) => (
-              <article key={card.name} className="rounded-lg border border-[#e8eef5] bg-[#fbfdff] p-4">
-                <div className="flex h-32 items-center justify-center rounded-lg bg-linear-to-br from-[#075596] to-[#12b76a] text-white">
-                  <CreditCard className="h-12 w-12" />
-                </div>
-                <h4 className="mt-4 text-[15px] font-extrabold text-[#101828]">{card.name}</h4>
-                <div className="mt-3 grid grid-cols-2 gap-2 text-[12px] font-semibold text-[#667085]">
-                  <span>Annual fee</span>
-                  <span className="text-right text-[#101828]">{card.fee}</span>
-                  <span>Benefit</span>
-                  <span className="text-right text-[#08a045]">{card.reward}</span>
-                </div>
-                <Link href="/credit-cards" className="mt-4 inline-flex h-8 items-center rounded-full bg-[#12b76a] px-4 text-[11px] font-extrabold text-white no-underline">
-                  Apply Now
-                </Link>
-              </article>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
 
 export function HomeMediaSections() {
   const posts = latestBlogPosts.slice(0, 4);
@@ -280,7 +177,9 @@ export function HomeLoanOffers() {
           {loanOffers.map((offer) => (
             <article key={offer.bank} className="rounded-lg border border-[#e8eef5] bg-[#fbfdff] p-4">
               <div className="flex items-center justify-between gap-3">
-                <img
+                <Image
+                  width={72}
+                  height={40}
                   src={offer.logo}
                   alt={offer.bank}
                   className="h-auto w-18 object-contain"

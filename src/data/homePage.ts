@@ -5,7 +5,6 @@ import {
   BriefcaseBusiness,
   Car,
   Fuel,
-  Coins,
   Crown,
   ChartPie,
   HandCoins,
@@ -35,7 +34,44 @@ export const heroStats = [
 
 export const productSections = [
   {
-    title: "Explore Loan Options",
+    title: "Get Instant Loan (Get Money in 5 Minutes -Complete Digital Process)",
+    cta: "View All",
+    tag: "Cashback Offers",
+    products: [
+      {
+        title: "ICICI Bank",
+        text: "Quick instant loans",
+        logo: "/assets/banks/icici-logo.png",
+        tone: "orange",
+      },
+      {
+        title: "Kotak Bank",
+        text: "Fast approval loans",
+        logo: "/assets/banks/kotak-logo.png",
+        tone: "blue",
+      },
+      {
+        title: "SBI Bank",
+        text: "Instant disbursal",
+        logo: "/assets/banks/sbi-logo.png",
+        tone: "sky",
+      },
+      {
+        title: "PNP Bank",
+        text: "Quick funds access",
+        logo: "/assets/banks/pnb.png",
+        tone: "orange",
+      },
+      {
+        title: "HDFC Bank",
+        text: "Instant approval",
+        logo: "/assets/banks/hdfc.png",
+        tone: "red",
+      },
+    ],
+  },
+  {
+    title: "Explore All Loan Options",
     subtitle:
       "Choose from a wide range of loan solutions tailored to your needs.",
     cta: "View All Loans",
@@ -64,30 +100,20 @@ export const productSections = [
         icon: Car,
         tone: "red",
       },
-      {
-        title: "Instant Loan",
-        text: "Quick funds for your everyday needs.",
-        icon: HandCoins,
-        tone: "yellow",
-      },
+      
       {
         title: "Education Loan",
         text: "Quick funds for your everyday needs.",
         icon: GraduationCap,
         tone: "green",
       },
-      {
-        title: "Gold Loan",
-        text: "Quick funds for your everyday needs.",
-        icon: Coins,
-        tone: "gold",
-      },
+      
     ],
   },
   {
     title: "Explore Insurance Plans",
     subtitle:
-      "Secure what matters most with our wide range of insurance plans.",
+      "Get Money in 5 Mintues -Complete Digital Process",
     cta: "View All Insurance",
     products: [
       {
@@ -120,12 +146,7 @@ export const productSections = [
         icon: ShieldCheck,
         tone: "sky",
       },
-      {
-        title: "Travel Insurance",
-        text: "Quick funds for your everyday needs.",
-        icon: Plane,
-        tone: "violet",
-      },
+    
       {
         title: "Property Insurance",
         text: "Secure your home or property against risks & loss.",
@@ -164,12 +185,7 @@ export const productSections = [
         icon: ShoppingBag,
         tone: "yellow",
       },
-      {
-        title: "Premium Cards",
-        text: "Lifestyle privileges and curated benefits.",
-        icon: Crown,
-        tone: "violet",
-      },
+    
       {
         title: "Rewards Cards",
         text: "Earn points and benefits on regular spends.",
@@ -231,6 +247,48 @@ export const productSections = [
         text: "Get help managing your Fintaraa app account.",
         icon: Smartphone,
         tone: "sky",
+      },
+    ],
+  },
+  {
+    title: "Other financial services",
+    cta: "View All",
+    products: [
+      {
+        title: "CIBIL Score Check",
+        text: "Check your credit score instantly.",
+        icon: Calculator,
+        tone: "orange",
+      },
+      {
+        title: "ITR Filing",
+        text: "Professional income tax return filing.",
+        icon: ReceiptText,
+        tone: "orange",
+      },
+      {
+        title: "GST Registration & Return Filing",
+        text: "Complete GST compliance solutions.",
+        icon: FileCheck2,
+        tone: "orange",
+      },
+      {
+        title: "MSME Registration",
+        text: "Register your MSME business easily.",
+        icon: BriefcaseBusiness,
+        tone: "orange",
+      },
+      {
+        title: "Annual Compliance",
+        text: "Stay compliant with annual requirements.",
+        icon: Calculator,
+        tone: "orange",
+      },
+      {
+        title: "Project Report",
+        text: "Get detailed project reports.",
+        icon: FileCheck2,
+        tone: "orange",
       },
     ],
   },

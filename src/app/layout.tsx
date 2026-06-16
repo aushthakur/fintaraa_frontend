@@ -82,7 +82,7 @@ export default function RootLayout({
       className={`${inter.variable} ${geistMono.variable} ${bodoni.variable} ${highlightSerif.variable} h-full antialiased`}
     >
       <body
-        className="min-h-full flex flex-col font-sans"
+        className="min-h-full flex flex-col overflow-x-clip font-sans"
         suppressHydrationWarning
       >
         <Providers>

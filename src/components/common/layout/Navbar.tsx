@@ -302,7 +302,7 @@ export default function Navbar() {
   const loggedIn = Boolean(profile.raw);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-[#e5eef8] bg-white/95 backdrop-blur">
+    <header className="sticky top-0 z-50 overflow-x-clip border-b border-[#e5eef8] bg-white/95 backdrop-blur">
       <div className="bg-[#195585] px-4 text-white md:px-6 lg:pl-8 lg:pr-10">
         <div className="mx-auto flex min-h-9 max-w-9xl items-center justify-center gap-4 py-2 text-center text-[11px] font-semibold sm:justify-between sm:text-left">
           <p className="flex items-center justify-center gap-2 leading-4">
@@ -355,7 +355,7 @@ export default function Navbar() {
         <div className="hidden shrink-0 items-center gap-3 lg:flex">
           <Link
             href="/login"
-            className="inline-flex h-10 items-center gap-2 rounded-full bg-[#12b76a] px-4 text-sm font-medium text-white no-underline shadow-[0_8px_18px_rgba(18,183,106,0.22)]"
+            className="inline-flex h-10 items-center gap-2 rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-4 text-sm font-medium text-white no-underline shadow-[0_8px_18px_rgba(18,183,106,0.22)]"
           >
             Apply Now
             <ArrowRight className="h-4 w-4" />

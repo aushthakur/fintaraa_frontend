@@ -27,7 +27,7 @@ export function CibilPromo() {
           </div>
         </div>
         <div className="rounded-xl bg-white p-7 text-center shadow-[0_18px_55px_rgba(25,85,133,0.14)]">
-          <div className="mx-auto h-32 w-32 rounded-full border-[20px] border-[#13a653] border-l-[#facc15] border-b-[#ef4444]" />
+          <div className="mx-auto h-32 w-32 rounded-full border-4 border-[#13a653] border-l-[#facc15] border-b-[#ef4444]" />
           <p className="mt-5 text-[18px] font-black">Check Free CIBIL Score</p>
           <Link
             href="/cibil-score/report"
