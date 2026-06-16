@@ -5,7 +5,7 @@ import { legalPages } from "@/data/legalPages";
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description:
-    "Read how Fintaraa collects, uses, shares, and safeguards information across loan, credit card, and insurance journeys.",
+    "Read how Fintaraa collects, uses, shares, secures, stores, and lets you withdraw consent for your information.",
 };
 
 export default function PrivacyPolicyPage() {

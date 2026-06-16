@@ -91,7 +91,12 @@ export function InsuranceDetailPage({ page }: { page: InsuranceSeoPageData }) {
     .filter((field) => field.isActive !== false)
     .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0))
     .slice(0, 4);
-  const otherProducts = productSections[0]?.products.slice(0, 3) || [];
+  const otherProducts = (productSections[2]?.products.slice(0, 3) || []) as {
+    title: string;
+    text: string;
+    icon: React.ComponentType<{ className?: string }>;
+    tone: string;
+  }[];
   const faqs = tabs.flatMap((tab) => tab.faqs || []);
 
   return (

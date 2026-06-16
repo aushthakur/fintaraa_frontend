@@ -472,20 +472,23 @@ export function LoanDetailPage({ page }: { page: LoanSeoPageData }) {
             </Link>
           </div>
           <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-            {otherProducts.map(({ title, icon: Icon }) => (
+            {otherProducts.map((product) => {
+                  const { title, icon: Icon } = product as any;
+                  return (
               <Link
                 key={title}
                 href={productHref(title)}
                 className="rounded-lg border border-[#e5eaf0] bg-white p-5 text-center no-underline"
               >
                 <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#fff0e8] text-[#ef6c2f]">
-                  <Icon className="h-5 w-5" />
+                  {Icon && <Icon className="h-5 w-5" />}
                 </span>
                 <span className="mt-3 block text-[11px] font-black text-[#111827]">
                   {title}
                 </span>
               </Link>
-            ))}
+                  );
+                })}
           </div>
         </div>
       </section>

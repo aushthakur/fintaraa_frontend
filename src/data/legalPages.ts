@@ -78,66 +78,90 @@ export const legalPages: Record<LegalPageKey, LegalPageContent> = {
   privacy: {
     title: "Privacy Policy",
     subtitle:
-      "How Fintaraa collects, uses, shares, and safeguards your information while delivering loan, credit, and insurance journeys.",
-    updatedOn: "Updated: 01 Mar 2025",
+      "How Fintaraa collects, uses, shares, and safeguards your information while delivering loan and financial service journeys.",
+    updatedOn: "Last Updated: 15 June 2026",
     badges: [
-      "Encryption at Rest",
-      "Purpose-Limited Use",
-      "User-Controlled Opt-outs",
+      "IT Act 2000",
+      "Consent Based",
+      "Data Security",
     ],
     highlights: [
-      "We collect only what is needed to verify identity, assess eligibility, and present relevant offers; sensitive data is encrypted and minimised.",
-      "Sharing occurs strictly with regulated partners, processors, and support vendors bound by confidentiality and security controls.",
-      "You can access, correct, withdraw marketing consent, and request deletion subject to legal retention requirements and outstanding obligations.",
+      "This policy applies to the website, apps, platforms, and services operated by Fintaraa, a brand and unit of Xpertserve Services Private Limited.",
+      "We collect, process, store, share, and disclose information only as described in this policy and subject to applicable law and consent.",
+      "You can request access, correction, deletion, or consent withdrawal, subject to legal retention, partner obligations, and regulatory requirements.",
     ],
     sections: [
       {
-        title: "What We Collect",
-        body: "We gather identifiers (name, address, contact), device signals, demographic information, employment details, declared income, liabilities, bureau data, repayment behaviour, geolocation (when permitted), and documents such as PAN, Aadhaar masked copies, bank statements, salary slips, GST filings, or utility bills. We also collect interaction data, screens viewed, buttons tapped, and session timestamps, to improve journey performance, detect anomalies, and design fair offers.",
+        title: "Introduction and Scope",
+        body: "This Privacy Policy describes the privacy practices of Fintaraa, a brand and unit operated by Xpertserve Services Private Limited. It applies to the website at https://fintaraa.com/ together with related mobile applications, platforms, and services, including lending and financial product facilitation. The policy explains how we collect, store, use, process, share, and disclose personal and non-personal information when you access or use the Platform and Services, and it should be read together with our Terms of Use.",
       },
       {
-        title: "How We Use Your Data",
-        body: "Data powers onboarding, KYC, bureau checks, risk scoring, eligibility models, offer personalisation, fraud monitoring, communication, and customer support. Aggregated or anonymised data informs product design and operational performance. We avoid intrusive profiling; automated decisions are combined with explainable factors and, where required, manual review by partners. Your information is never sold; monetisation occurs through partner facilitation fees and anonymised insights that do not identify you.",
+        title: "Information We Collect",
+        body: "We may collect information you provide directly through forms, registration, messages, customer service interactions, or device permissions, and we may also collect data automatically while you use the Platform. Personal information can include your name, address, email address, phone number, gender, date of birth, passwords, OTPs, GST identification number, identity verification details, payment instrument details, and transaction information received via SMS. Non-personal information can include browser type, device type, IP address, operating system, usage patterns, cookies, tracking technologies, and internet service provider details.",
       },
       {
-        title: "Consent and Lawful Bases",
-        body: "We rely on explicit consent for bureau pulls, KYC, and marketing; contractual necessity for servicing and repayments; and legitimate interest for security, fraud prevention, and product improvement. You can withdraw marketing consent anytime via in-app controls or by emailing support. Withdrawing consent for core services may limit or end access if it prevents verification, underwriting, or servicing obligations required by law.",
+        title: "Consent",
+        body: "We obtain consent in writing or electronically before collecting, accessing, using, processing, storing, or sharing your information. By using the Platform or Services, or by providing information to us, you consent to our use of that information with affiliates, lenders, financial institutions, service providers, vendors, auditors, marketing agencies, technology vendors, and other authorized third parties for lawful business purposes such as service delivery, identity verification, compliance, risk assessment, credit assessment, analytics, fraud prevention, and marketing.",
       },
       {
-        title: "Sharing with Partners and Vendors",
-        body: "Information is shared with banks, NBFCs, insurers, payment gateways, e-sign providers, credit bureaus, analytics vendors, and customer support partners strictly on a need-to-know basis. Every partner is bound by confidentiality, data protection clauses, and regulator-mandated security standards. We prohibit downstream reuse beyond agreed purposes and conduct periodic vendor assessments to validate controls.",
+        title: "How We Use Your Information",
+        body: "We use your information to create and maintain accounts, develop and improve services, communicate updates and security notices, carry out identity and eligibility verification, perform credit assessment and onboarding, support analytics and internal research, comply with legal and regulatory requirements, resolve requests and complaints, detect and prevent fraud or unauthorized activity, and create aggregate or anonymized data that does not identify you personally.",
       },
       {
-        title: "Security Controls",
-        body: "We apply encryption in transit (TLS) and at rest, segregate production environments, enforce role-based access, rotate keys, and maintain audit trails. Background checks for staff, least-privilege access, device compliance, and secure coding standards reduce operational risk. Penetration tests, vulnerability assessments, and incident response runbooks are executed regularly with post-incident communication protocols.",
+        title: "Disclosure and Sharing",
+        body: "We do not disclose personal information except as set out in this policy or as agreed by you. We may share information with trusted service providers, contractors, and vendors; with affiliates, lenders, banks, NBFCs, credit information companies, and other financial institutions; with credit rating agencies, regulators, and auditors; when required by law or to protect rights, safety, fraud, security, or credit risk interests; in connection with reorganizations, mergers, acquisitions, or asset sales; and as aggregated, deidentified, or anonymized data that does not identify you personally.",
       },
       {
-        title: "Cookies, SDKs, and Device Signals",
-        body: "Session cookies and mobile SDKs capture performance metrics, crash diagnostics, attribution data, and optional geolocation to detect fraud or pre-fill city and branch details. You can disable location access through device settings; essential telemetry for security and availability may still be captured to protect the service. We avoid invasive tracking and do not permit behavioural advertising inside regulated journeys.",
+        title: "International Transfer of Information",
+        body: "Your information may be transferred to, stored in, and processed in jurisdictions outside India, including where our servers or our service providers' servers are located, as well as within our affiliates, subsidiaries, and partners. We apply appropriate safeguards and require recipients to maintain protections consistent with this policy and Indian data protection laws. By using the Platform, you consent to such transfers.",
       },
       {
-        title: "Data Retention and Deletion",
-        body: "Retention aligns with legal mandates, partner contracts, and dispute windows. KYC artefacts, repayment records, and consent logs may be stored for several years to satisfy regulatory or audit requirements. When retention expires, data is securely deleted or anonymised. You may request deletion of marketing profiles or unlinked telemetry where laws allow; we will confirm actions and limitations transparently.",
+        title: "Cookies, Web Beacons, and Online Advertising",
+        body: "We may automatically receive standard browsing information such as the URL you came from, the URL you visit next, your IP address, browser type, operating system, usage patterns, and internet service provider or mobile carrier. We may use temporary cookies, web beacons, pixels, and anonymous ad network tags to recognize returning users, analyze usage, improve services, and support aggregated reporting. We do not store personal information in cookies, and we do not link non-personal information from tracking tools to personal information without your permission.",
       },
       {
-        title: "Your Rights and Controls",
-        body: "You may access and correct personal information, update contact details, change consent preferences, object to marketing, and request clarification of automated decisions. Verification may be required before fulfilling requests. Responses are provided within reasonable timelines; if we need more time due to complexity, we will inform you with reasons and expected dates.",
+        title: "Third-Party Websites and Links",
+        body: "The Platform may contain links to third-party websites. We do not control and are not responsible for the content, actions, or privacy practices of those websites. Information you provide to such third parties is governed by their own terms and privacy policies, and it is your responsibility to review them before sharing information.",
       },
       {
-        title: "Cross-Border Transfers",
-        body: "Data is stored in India unless a specialised processor with equivalent safeguards is engaged. If cross-border processing is required, for example, for analytics or secure back-ups, we use contractual clauses, encryption, and access restrictions to maintain protection standards consistent with Indian law and global best practices.",
+        title: "Communications, Testimonials, and Marketing",
+        body: "We may keep records of telephone calls for administration, research, training, business intelligence, development, and quality assurance. With your consent, we may reproduce or publish testimonials and reviews. If you share information on public forums or blogs, it may be read and used by others. Where permitted by law, you authorize us and our partners to contact you by call or SMS regarding services and promotional offers, including if your number is registered on a Do-Not-Disturb registry. We may also conduct surveys for market research and use survey data only for research purposes unless otherwise permitted by this policy.",
       },
       {
-        title: "Children and Vulnerable Users",
-        body: "Our services are built for adults who can legally contract. We do not knowingly collect data from minors. If we learn a minor has submitted information, we will delete it except where retention is required for fraud prevention or legal defence. Caregivers seeking removal can contact our grievance officer.",
+        title: "Data Security, Retention, and Your Rights",
+        body: "We use firewalls, transport layer security, encryption, secure access controls, intrusion detection systems, and other physical and electronic safeguards to protect your personal information. No method of transmission or storage is completely secure, so you should safeguard your user ID and password and notify us immediately of any unauthorized access or breach. We retain information only as long as necessary for the purposes described in this policy, for internal records, and as required or permitted by law. You may update your information, withdraw consent, and request correction of inaccurate or deficient information, subject to our policies and the status of the service availed.",
       },
       {
-        title: "Policy Updates and Notifications",
-        body: "We refine this policy as regulations evolve or new features launch. Material changes will be highlighted in-app and via email where available. Continued use after publication signifies acceptance of updates. You are encouraged to review the effective date and summary of changes presented at the top of the policy.",
+        title: "Opt-Out and Account Management",
+        body: "We provide the opportunity to opt out of non-essential, promotional, or marketing communications from us or our partners. You may correct, update, deactivate, or remove your account information by using the Platform or by contacting support@fintaraa.com or the Grievance Officer details in this policy. You may unsubscribe from emails by using the unsubscribe link or by contacting the Grievance Officer.",
       },
       {
-        title: "Contact and Escalation",
-        body: "For privacy questions or data rights, write to support@fintaraa.com. Unresolved concerns may be escalated to the grievance officer listed below or to relevant authorities where applicable. We will collaborate with partners to address cross-entity requests and provide clear closure notes.",
+        title: "Modifications to this Policy",
+        body: "This policy supersedes earlier versions. We may amend it at any time, and any updated policy will be posted on the Platform and take effect immediately upon posting. Material changes may be communicated by email or a prominent notice before they become effective. Your continued use of the Platform or Services after changes are posted means you accept the revised policy.",
+      },
+      {
+        title: "Grievance Redressal",
+        body: "If you have questions, concerns, or complaints regarding this policy or the Platform, you may contact our Grievance Officer at customercare@fintaraa.com. The company is Xpertserve Services Private Limited, operating as Fintaraa, and the website is https://fintaraa.com/. A grievance officer name, designation, and registered address are to be inserted by Fintaraa. On receipt of a complaint, the Grievance Officer or Nodal Officer will assign an acknowledgement ID and endeavour to redress the complaint within 15 working days, subject to the time taken by you to provide information and any third-party delay.",
+      },
+      {
+        title: "Governing Law and Jurisdiction",
+        body: "This policy is governed by the laws of India. Any dispute arising from or in connection with this policy is subject to the exclusive jurisdiction of the courts in Gurugram, Haryana, India.",
+      },
+      {
+        title: "Severability",
+        body: "Each provision of this policy should be interpreted so as to be valid under applicable law. If any provision is held invalid or unenforceable, only that provision is affected and the remaining provisions continue in force.",
+      },
+      {
+        title: "Contact Us",
+        body: "If you have any questions about this Privacy Policy, the Platform, or our Services, please contact customercare@fintaraa.com or write to our Grievance Officer using the details in Section 13.",
+      },
+      {
+        title: "Data Storage Policy",
+        body: "Fintaraa recognizes the importance of secure data storage and sets guidelines for retention, storage, and disposal throughout the data lifecycle. Data is classified as Confidential, Restricted, Internal, or Public. AWS cloud servers based in India are used to store data. Confidential and Restricted data must be encrypted at rest and in transit, KYC data is collected only as required by law and securely purged once processing is complete, access is controlled using RBAC and least privilege, backups are taken regularly, data disposal is secure and documented, third-party storage providers are subject to due diligence and contractual controls, incidents must be reported promptly, vendors must meet Fintaraa's security and localization requirements, and storage practices are subject to compliance reviews, audits, and employee awareness training.",
+      },
+      {
+        title: "Consent Withdrawal Process",
+        body: "You have the right to withdraw consent previously provided to Fintaraa regarding the use of your information, including consent for specific uses, storage, sharing with third parties and lending partners, and contact for any purpose. Requests may be sent to customercare@fintaraa.com or by calling 9873596789. We will acknowledge the request within 72 hours and take appropriate steps to respect your decision, with completion targeted within 60 working days. If there is no legal obligation to retain the data, it will be erased; however, data may be retained for compliance, legal rights, regulatory investigations, or where a lending partner or outsourced collections process requires continued processing. Credit information will be permanently deleted when the request is processed, and confirmation will be provided through the website or another suitable communication channel.",
       },
     ],
   },
