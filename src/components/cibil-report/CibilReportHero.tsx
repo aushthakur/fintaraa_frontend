@@ -39,13 +39,34 @@ export function CibilReportHero() {
   ];
 
   return (
-    <section className="relative w-full max-w-7xl mx-auto bg-white px-6 py-10 antialiased text-[#111827] overflow-hidden">
-      {/* Soft blue corner accents from the image */}
-      <div className="absolute top-0 left-0 -translate-x-6 -translate-y-6 w-24 h-24 bg-[#e8f4fd] rotate-45 -z-10 rounded-xl" />
-      <div className="absolute top-0 left-0 -translate-x-12 -translate-y-2 w-20 h-20 bg-[#d4e9fc] rotate-45 -z-20 rounded-xl" />
-
-      <div className="grid items-start gap-12 md:grid-cols-2">
-        
+    <section className="relative w-full max-w-9xl mx-auto bg-white px-6 py-10 antialiased text-[#111827] overflow-hidden">
+      <div className="absolute inset-0 overflow-visible pointer-events-none z-0">
+        {/* Left-most rectangle bleeding off the screen */}
+        <div
+          className="absolute hidden md:block bg-[#e0effe]"
+          style={{
+            width: "55px",
+            height: "90px",
+            top: "-20px",
+            left: "-15px",
+            borderRadius: "5px",
+            transform: "rotate(140deg)",
+          }}
+        />
+        {/* Right parallel rectangle matching the screenshot position */}
+        <div
+          className="absolute hidden md:block bg-[#e0effe]"
+          style={{
+            width: "60px",
+            height: "120px",
+            top: "-80px",
+            left: "40px",
+            borderRadius: "5px",
+            transform: "rotate(140deg)",
+          }}
+        />
+      </div>
+      <div className="grid items-start gap-12 md:grid-cols-2 mt-3 ms-6">
         {/* LEFT SIDE: CREDIT SCORE */}
         <div className="w-full space-y-4">
           <div>
@@ -70,22 +91,23 @@ export function CibilReportHero() {
             </div>
 
             <p className="mt-4 text-sm font-medium text-gray-700">
-              Hey <span className="font-bold text-blue-600">Pawan!</span> Your Credit Score as of 01 Jun &apos;26
+              Hey <span className="font-bold text-blue-600">Pawan!</span> Your
+              Credit Score as of 01 Jun &apos;26
             </p>
           </div>
 
           {/* SCORE CARD CONTAINER */}
-          <div className="w-full max-w-md rounded-2xl border border-gray-200 text-center bg-white p-6 shadow-sm">
-            <h3 className="text-base font-bold tracking-tight text-gray-700">
+          <div className="w-full max-w-md rounded-2xl border border-gray-200  bg-white p-6">
+            <h3 className="text-base text-center font-bold tracking-tight text-gray-700">
               Your Current Score
             </h3>
 
             {/* Reusable Gauge Component */}
-            <div className="mt-4 flex items-center justify-center">
-              <CreditScoreGauge score={782} height={200} />
+            <div className="flex justify-center overflow-visible">
+              <CreditScoreGauge score={782} width={380} height={200} scale={1.25} />
             </div>
 
-            <div className="mt-6 flex flex-col items-center gap-3">
+            <div className="flex flex-col items-center gap-3">
               <Link
                 href="/cibil-score/report"
                 className="flex h-11 w-full items-center justify-center rounded-xl bg-[#00a653] text-sm font-bold text-white transition-all hover:bg-[#009349] active:scale-[0.99]"
@@ -114,7 +136,9 @@ export function CibilReportHero() {
                   className="flex items-center justify-between py-4 first:pt-0 last:pb-5"
                 >
                   <div className="flex items-center gap-4">
-                    <span className="shrink-0 text-2xl w-6 text-center">{row.icon}</span>
+                    <span className="shrink-0 text-2xl w-6 text-center">
+                      {row.icon}
+                    </span>
                     <div>
                       <h4 className="text-[15px] font-bold tracking-tight text-gray-800 leading-snug">
                         {row.label}
@@ -152,7 +176,6 @@ export function CibilReportHero() {
             </div>
           </div>
         </div>
-
       </div>
     </section>
   );

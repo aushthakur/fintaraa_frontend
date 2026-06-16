@@ -106,7 +106,7 @@ export const buildFallbackLoanSeoPage = (
     canonicalPath: buildLoanPath(loanTypeSlug, location),
     location,
     badges: ["Secure profile", "Partner-backed", "Assisted application"],
-    filterKeys: ["overview", "eligibility", "documents", "fees", "apply"],
+    filterKeys: ["overview", "eligibility", "documents", "fees", "how_to_apply", "faqs"],
     tabs: [
       {
         key: "overview",
@@ -163,7 +163,7 @@ export const buildFallbackLoanSeoPage = (
       },
       {
         key: "fees",
-        label: "Fees",
+        label: "Fees & EMI",
         eyebrow: "Cost view",
         title: `${loanType} charges`,
         description:
@@ -175,6 +175,55 @@ export const buildFallbackLoanSeoPage = (
         ],
         filterKeys: ["fees", "emi", "repayment"],
         sortOrder: 4,
+        isActive: true,
+      },
+      {
+        key: "how_to_apply",
+        label: "How to Apply",
+        eyebrow: "Application process",
+        title: `How to apply for ${scoped}`,
+        description:
+          "Follow our simple 4-step verification process to get started with your application.",
+        bullets: [
+          "Enter your mobile number and basic details.",
+          "Verify your identity with a secure OTP.",
+          "Check loan offers tailored to your profile.",
+          "Accept terms for instant disbursement.",
+        ],
+        filterKeys: ["apply", "verification", "process"],
+        sortOrder: 5,
+        isActive: true,
+      },
+      {
+        key: "faqs",
+        label: "FAQs",
+        eyebrow: "Common questions",
+        title: `FAQs about ${scoped}`,
+        description: `Find answers to common questions about ${loanType}.`,
+        bullets: [
+          "Quick answers to the most common questions.",
+          "Learn about eligibility, documents, and process.",
+          "Get clarity before you apply.",
+        ],
+        faqs: [
+          {
+            question: `What is the minimum income required for ${loanType}?`,
+            answer:
+              "Income requirements vary by lender and loan amount. Generally, a stable monthly income or business cash flow is required. Our team will help match you with suitable options during application.",
+          },
+          {
+            question: `How long does ${loanType} approval take?`,
+            answer:
+              "Approval timelines depend on document verification and lender processing. With complete documents and a strong profile, some applications can be processed within 24-48 hours.",
+          },
+          {
+            question: `Can I apply for ${loanType} with a low credit score?`,
+            answer:
+              "While a higher credit score improves approval chances, some lenders may consider applications with lower scores based on other factors like income stability and existing relationships.",
+          },
+        ],
+        filterKeys: ["faqs", "questions"],
+        sortOrder: 6,
         isActive: true,
       },
     ],

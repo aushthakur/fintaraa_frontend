@@ -28,7 +28,7 @@ const loanOffers = [
 export function CibilEligibleOffers() {
   return (
     <section className="bg-[#f7faff] px-4 py-10 md:px-6 lg:px-8  font-sans">
-      <div className="mx-auto max-w-9xl">
+      <div className="mx-auto w-full max-w-7xl">
         
         {/* Top Header Section */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
@@ -50,7 +50,7 @@ export function CibilEligibleOffers() {
         </div>
 
         {/* Tab Navigation Headers */}
-        <div className="border-b border-[#dce4ec] flex gap-8 md:gap-12 overflow-x-auto pb-0 mb-4">
+        <div className="mb-4 flex gap-8 border-b border-[#dce4ec] pb-0 overflow-x-auto md:gap-12">
           <button className="text-[#005ca8] font-bold text-[14px] md:text-[15px] pb-3 border-b-4 border-[#005ca8] whitespace-nowrap">
             Personal Loan
           </button>
@@ -66,7 +66,7 @@ export function CibilEligibleOffers() {
         </div>
 
         {/* Offer Rows Container */}
-        <div className=" rounded-lg   divide-y divide-[#e5eaf0]">
+        <div className="divide-y divide-[#e5eaf0] rounded-lg">
           {loanOffers.map((offer) => (
             <div 
               key={offer.bankName} 
@@ -128,7 +128,7 @@ export function CibilEligibleOffers() {
         </div>
 
         {/* Bottom Alert/Help Banner Section */}
-        <div className="mt-8 bg-[#eef6ff] border border-[#d6e6f7] rounded-xl p-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div className="mt-8 flex flex-col items-start justify-between gap-4 rounded-xl border border-[#d6e6f7] bg-[#eef6ff] p-4 md:flex-row md:items-center">
           <div className="flex items-start gap-3">
             {/* Informational Blue Circle Icon */}
             <div className="mt-0.5 shrink-0 w-4 h-4 rounded-full border border-[#005ca8] text-[#005ca8] flex items-center justify-center text-[10px] font-bold">

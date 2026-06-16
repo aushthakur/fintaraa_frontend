@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  ResponsiveContainer,
   PieChart,
   Pie,
   Cell,
@@ -9,7 +8,9 @@ import {
 
 interface CreditScoreGaugeProps {
   score: number;
+  width?: number;
   height?: number;
+  scale?: number;
 }
 
 const GAUGE_DATA = [
@@ -102,99 +103,97 @@ const renderNeedle = (
 
 const CreditScoreGauge: React.FC<CreditScoreGaugeProps> = ({
   score,
-  height = 320,
+  width = 460,
+  height = 260,
+  scale = 1,
 }) => {
   const rating = getRating(score);
-  
-  // Adjusted cx and cy to center the chart in the component viewport accurately
-  const cx = 130;
-  const cy = 110;
-  const innerRadius = 58;
-  const outerRadius = 78;
+  const chartWidth = width * scale;
+  const chartHeight = height * scale;
+  const cx = chartWidth / 2;
+  const cy = chartHeight * 0.52;
+  const outerRadius = Math.min(chartWidth * 0.28, chartHeight * 0.34);
+  const innerRadius = outerRadius * 0.74;
+  const labelRadius = outerRadius + Math.max(14, chartHeight * 0.06);
+  const minMaxOffset = Math.max(12, chartHeight * 0.03);
+  const scoreY = cy + Math.max(34, chartHeight * 0.16);
+  const ratingY = cy + Math.max(58, chartHeight * 0.27);
 
   return (
-    <div className="w-full flex justify-center " style={{ height }}>
-      <ResponsiveContainer className="mx-auto w-full flex justify-center-safe px-16" width="100%" height="100%">
-        <PieChart margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
-          <Pie
-            data={GAUGE_DATA}
-            dataKey="value"
-            startAngle={180}
-            endAngle={0}
-            cx={cx}
-            cy={cy}
-            innerRadius={innerRadius}
-            outerRadius={outerRadius}
-            stroke="#fff"
-            strokeWidth={2}
-          >
-            {GAUGE_DATA.map((item, index) => (
-              <Cell key={index} fill={item.color} />
-            ))}
-          </Pie>
+    <PieChart width={chartWidth} height={chartHeight}>
+      <Pie
+        data={GAUGE_DATA}
+        dataKey="value"
+        startAngle={180}
+        endAngle={0}
+        cx={cx}
+        cy={cy}
+        innerRadius={innerRadius}
+        outerRadius={outerRadius}
+        stroke="#fff"
+        strokeWidth={2}
+      >
+        {GAUGE_DATA.map((item, index) => (
+          <Cell key={index} fill={item.color} />
+        ))}
+      </Pie>
 
-          {renderNeedle(score, cx, cy, innerRadius, outerRadius)}
+      {renderNeedle(score, cx, cy, innerRadius, outerRadius)}
 
-          {/* Arc labels */}
-          {LABEL_CONFIG.map(({ text, angle }) => (
-            <ArcLabel
-              key={text}
-              text={text}
-              angle={angle}
-              radius={outerRadius + 16}
-              cx={cx}
-              cy={cy}
-            />
-          ))}
+      {LABEL_CONFIG.map(({ text, angle }) => (
+        <ArcLabel
+          key={text}
+          text={text}
+          angle={angle}
+          radius={labelRadius}
+          cx={cx}
+          cy={cy}
+        />
+      ))}
 
-          {/* Min / Max labels */}
-          <Text
-            x={cx - outerRadius - 12}
-            y={cy + 14}
-            fontSize={10}
-            fontWeight={700}
-            fill="#9ca3af"
-            textAnchor="middle"
-          >
-            {MIN_SCORE}
-          </Text>
-          <Text
-            x={cx + outerRadius + 12}
-            y={cy + 14}
-            fontSize={10}
-            fontWeight={700}
-            fill="#9ca3af"
-            textAnchor="middle"
-          >
-            {MAX_SCORE}
-          </Text>
+      <Text
+        x={cx - outerRadius - minMaxOffset}
+        y={cy + Math.max(12, chartHeight * 0.03)}
+        fontSize={10}
+        fontWeight={700}
+        fill="#9ca3af"
+        textAnchor="middle"
+      >
+        {MIN_SCORE}
+      </Text>
+      <Text
+        x={cx + outerRadius + minMaxOffset}
+        y={cy + Math.max(12, chartHeight * 0.03)}
+        fontSize={10}
+        fontWeight={700}
+        fill="#9ca3af"
+        textAnchor="middle"
+      >
+        {MAX_SCORE}
+      </Text>
 
-          {/* Score text rendered natively below the needle pivot line */}
-          <Text
-            x={cx}
-            y={cy + 36}
-            textAnchor="middle"
-            fontSize={32}
-            fontWeight={900}
-            fill="#111827"
-          >
-            {score}
-          </Text>
+      <Text
+        x={cx}
+        y={scoreY}
+        textAnchor="middle"
+        fontSize={Math.max(32, Math.round(chartHeight * 0.13))}
+        fontWeight={900}
+        fill="#111827"
+      >
+        {score}
+      </Text>
 
-          {/* Rating Badge text rendered natively underneath the score */}
-          <Text
-            x={cx}
-            y={cy + 58}
-            textAnchor="middle"
-            fontSize={14}
-            fontWeight={700}
-            fill={rating.color}
-          >
-            {rating.label}
-          </Text>
-        </PieChart>
-      </ResponsiveContainer>
-    </div>
+      <Text
+        x={cx}
+        y={ratingY}
+        textAnchor="middle"
+        fontSize={Math.max(14, Math.round(chartHeight * 0.055))}
+        fontWeight={700}
+        fill={rating.color}
+      >
+        {rating.label}
+      </Text>
+    </PieChart>
   );
 };
 

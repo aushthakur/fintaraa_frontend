@@ -1,77 +1,202 @@
-import Link from "next/link";
+"use client";
 
-const tips = [
-  "Pay EMIs and bills on time",
-  "Keep credit utilization low",
-  "Avoid multiple loan applications",
-  "Maintain a balanced credit mix",
-  "Do not close old credit cards abruptly",
+import Link from "next/link";
+import { ChevronRight } from "lucide-react";
+import {
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+} from "recharts";
+
+const CHART_DATA = [
+  { month: "May", score: 710 },
+  { month: "jun", score: 723 },
+  { month: "jul", score: 746 },
+  { month: "Aug", score: 763 },
+  { month: "Sep", score: 773 },
+  { month: "Oct", score: 781 },
+];
+
+const personalizedTips = [
+  {
+    id: 1,
+    title: "Pay EMIs and bills on time",
+    description: "Timely payments have the biggest impact on your credit score.",
+  },
+  {
+    id: 2,
+    title: "Keep credit utilization low",
+    description: "Try to use less than 30% of your total credit limit.",
+  },
+  {
+    id: 3,
+    title: "Avoid multiple loan applications",
+    description: "Too many credit checks in a short period can affect your score.",
+  },
+  {
+    id: 4,
+    title: "Maintain older credit accounts",
+    description: "A longer credit history can help strengthen your score.",
+  },
+  {
+    id: 5,
+    title: "Check your credit report regularly",
+    description: "Review your report for errors or incorrect entries and get them corrected.",
+  },
 ];
 
 export function CibilMonitoringTips() {
   return (
-    <section className="px-4 py-12 md:px-6 lg:px-8">
-      <div className="mx-auto max-w-9xl">
-        <div className="grid gap-8 lg:grid-cols-[1fr_0.65fr]">
+    <section className="w-full max-w-9xl mx-auto bg-white px-4 py-10 antialiased text-[#111827] md:px-6 space-y-16">
+      
+      {/* TOP SECTION: CHART & EXPERT ADVICE */}
+      <div className="grid items-start gap-10 lg:grid-cols-[1.5fr_1fr]">
+        
+        {/* LEFT SIDE: SCORE HISTORY CHART */}
+        <div className="w-full flex flex-col justify-between h-full">
           <div>
-            <h2 className="text-[28px] font-black text-[#111827]">
+            <h2 className="text-3xl font-bold tracking-tight text-gray-900">
               Score History & Monitoring
             </h2>
-            <p className="mt-1 text-[13px] font-semibold text-[#667085]">
-              Track your progress over the last 6 months.
-            </p>
-            <div className="mt-8 h-72 border-l border-b border-[#d7dfe8] bg-[linear-gradient(to_top,transparent_23%,#e5eaf0_24%,transparent_25%),linear-gradient(to_right,transparent_15%,#eef2f6_16%,transparent_17%)]">
-              <svg viewBox="0 0 600 260" className="h-full w-full">
-                <polyline
-                  points="40,220 140,190 240,130 340,85 460,62 560,55"
-                  fill="none"
-                  stroke="#005ca8"
-                  strokeWidth="4"
-                />
-              </svg>
-            </div>
-            <p className="mt-4 bg-[#d9efff] px-4 py-3 text-[13px] font-semibold text-[#005ca8]">
-              Great job! Your score improved by 32 points in the last 6 months.
+            <p className="mt-1.5 text-sm font-medium text-gray-500">
+              Track your progress over the last 6 months
             </p>
           </div>
-          <aside className="border border-[#d7dfe8] bg-white p-6">
-            <p className="text-[13px] font-black text-[#667085]">
+
+          {/* Recharts Wrapper */}
+          <div className="mt-8 w-full h-64 pr-2 select-none">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart
+                data={CHART_DATA}
+                margin={{ top: 10, right: 10, left: -25, bottom: 0 }}
+              >
+                <CartesianGrid
+                  strokeDasharray="2 3"
+                  vertical={false}
+                  stroke="#9ca3af"
+                />
+                <XAxis
+                  dataKey="month"
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: "#1f2937", fontSize: 12, fontWeight: 500 }}
+                  dy={10}
+                />
+                <YAxis
+                  domain={[710, 790]}
+                  tickCount={5}
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: "#1f2937", fontSize: 12, fontWeight: 500 }}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="score"
+                  stroke="#005ca8"
+                  strokeWidth={1.5}
+                  dot={{ r: 3.5, fill: "#005ca8", strokeWidth: 0 }}
+                  activeDot={{ r: 5 }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+
+          {/* Banner Insight text block */}
+          <div className="mt-6 rounded-lg bg-[#d9efff] px-4 py-3.5">
+            <p className="text-xs font-semibold text-gray-900 tracking-wide">
+              Great going! Your score improved by{" "}
+              <span className="font-bold">112 points</span> in the last 12
+              months.
+            </p>
+          </div>
+        </div>
+
+        {/* RIGHT SIDE: EXPERT ADVICE CARD */}
+        <div className="w-full h-full flex items-end">
+          <aside className="w-full max-w-md mx-auto lg:mx-0 rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
+            <h4 className="text-base font-bold text-gray-900 tracking-tight">
               Expert Advice
-            </p>
-            <div className="mt-4 h-36 rounded bg-[#e8f4ff]" />
-            <h3 className="mt-5 text-[18px] font-black text-[#111827]">
-              Mastering Your CIBIL: A 10-Step Guide for Beginners
+            </h4>
+            
+            {/* Embedded illustrative content block */}
+            <div className="mt-4 relative w-full h-40 bg-[#f8f9fa] rounded-xl overflow-hidden flex items-center justify-center border border-gray-50">
+              <div className="absolute inset-0 bg-linear-to-br from-[#e8f4ff] to-white opacity-60" />
+              <div className="relative text-center p-4">
+                <p className="text-[11px] font-extrabold uppercase tracking-wider text-blue-600">
+                  How to increase CIBIL Score
+                </p>
+                <p className="text-[9px] text-gray-400 font-medium mt-1">
+                  Step-by-Step Improvement Guide
+                </p>
+                <div className="mt-3 flex justify-center gap-1.5">
+                  <span className="w-7 h-1.5 rounded-full bg-red-500" />
+                  <span className="w-7 h-1.5 rounded-full bg-amber-400" />
+                  <span className="w-7 h-1.5 rounded-full bg-blue-500" />
+                  <span className="w-7 h-1.5 rounded-full bg-emerald-500" />
+                </div>
+              </div>
+            </div>
+
+            <h3 className="mt-5 text-lg font-bold text-gray-950 leading-snug tracking-tight">
+              Mastering Yor CIBIL: A10-Step Guide for Beginners
             </h3>
-            <p className="mt-3 text-[13px] font-medium leading-6 text-[#667085]">
-              Learn how to improve and maintain your credit health.
+            
+            <p className="mt-2 text-xs font-medium text-gray-400 leading-relaxed">
+              Learn the secret hacks that banks use to determine your risk profile.
             </p>
-            <Link href="/blog/improve-cibil-score-practical-steps" className="mt-5 block text-[13px] font-black text-[#005ca8] no-underline">
-              Read full article →
+
+            <Link
+              href="/blog/improve-cibil-score"
+              className="mt-6 flex items-center gap-1 text-sm font-bold text-[#005ca8] hover:underline w-fit"
+            >
+              Read Full Article
+              <ChevronRight className="h-4 w-4" strokeWidth={2.5} />
             </Link>
           </aside>
         </div>
 
-        <div className="mt-12 border-t border-[#d7dfe8] pt-8">
-          <h2 className="text-[28px] font-black text-[#111827]">
+      </div>
+
+      {/* BOTTOM SECTION: PERSONALIZED IMPROVEMENT TIPS */}
+      <div className="w-full">
+        <div>
+          <h2 className="text-3xl font-bold tracking-tight text-gray-900">
             Personalized Improvement Tips
           </h2>
-          <p className="mt-1 text-[13px] font-semibold text-[#667085]">
-            Track your progress over the last 6 months.
+          <p className="mt-1.5 text-sm font-medium text-gray-500">
+            Track your progress over the last 6 months
           </p>
-          <div className="mt-6 divide-y divide-[#d7dfe8] border border-[#d7dfe8]">
-            {tips.map((tip, index) => (
-              <div key={tip} className="p-5">
-                <p className="text-[14px] font-black text-[#111827]">
-                  {index + 1}. {tip}
-                </p>
-                <p className="mt-1 text-[12px] font-medium text-[#667085]">
-                  Improve consistency and reduce risk signals in your report.
+        </div>
+
+        {/* List of clean cards matching the exact screenshot blueprint */}
+        <div className="mt-6 space-y-3">
+          {personalizedTips.map((tip) => (
+            <div
+              key={tip.id}
+              className="flex items-start gap-6 rounded-xl border border-gray-100 bg-white p-5 shadow-sm transition-all hover:border-gray-200"
+            >
+              {/* Card Index Indicator */}
+              <span className="text-sm font-bold text-gray-800 w-4 shrink-0 pt-0.5">
+                {tip.id}
+              </span>
+              
+              {/* Content text stack */}
+              <div className="space-y-1">
+                <h4 className="text-sm font-bold tracking-tight text-gray-900">
+                  {tip.title}
+                </h4>
+                <p className="text-xs font-medium text-gray-400 leading-normal">
+                  {tip.description}
                 </p>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </div>
+
     </section>
   );
 }
