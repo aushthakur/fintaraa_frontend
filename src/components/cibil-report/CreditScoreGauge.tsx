@@ -102,19 +102,19 @@ const renderNeedle = (
 
 const CreditScoreGauge: React.FC<CreditScoreGaugeProps> = ({
   score,
-  height = 220,
+  height = 320,
 }) => {
   const rating = getRating(score);
   
-  // Center the gauge horizontally and vertically balance arc + text below
-  const outerRadius = 78;
+  // Adjusted cx and cy to center the chart in the component viewport accurately
+  const cx = 130;
+  const cy = 110;
   const innerRadius = 58;
-  const cx = 130;        // half of ~260px container width
-  const cy = 72;         // arc spans from y=72 to y=150, leaving room for score/rating text below
+  const outerRadius = 78;
 
   return (
-    <div className="mx-auto max-w-65" style={{ height }}>
-      <ResponsiveContainer width="100%" height="100%">
+    <div className="w-full flex justify-center " style={{ height }}>
+      <ResponsiveContainer className="mx-auto w-full flex justify-center-safe px-16" width="100%" height="100%">
         <PieChart margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
           <Pie
             data={GAUGE_DATA}

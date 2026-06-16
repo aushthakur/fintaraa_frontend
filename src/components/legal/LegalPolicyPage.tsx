@@ -140,7 +140,7 @@ export function LegalPolicyPage({
                     <h3 className="text-[30px] font-bold leading-tight tracking-[-0.01em] text-[#07162d]">
                       {section.title}
                     </h3>
-                    <p className="mt-5 max-w-5xl text-justify text-[17px] font-medium leading-9 text-[#475467]">
+                    <p className="mt-5 max-w-5xl whitespace-pre-line text-justify text-[17px] font-medium leading-9 text-[#475467]">
                       {section.body}
                     </p>
                   </div>
