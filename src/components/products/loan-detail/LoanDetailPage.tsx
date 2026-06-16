@@ -229,11 +229,10 @@ export function LoanDetailPage({ page }: { page: LoanSeoPageData }) {
               key={tab.key}
               type="button"
               onClick={() => setActiveTab(tab.key)}
-              className={`h-8 shrink-0 rounded-full px-4 text-[11px] font-extrabold ${
-                active?.key === tab.key
+              className={`h-8 shrink-0 rounded-full px-4 text-[11px] font-extrabold ${active?.key === tab.key
                   ? "bg-[#005ca8] text-white"
                   : "bg-[#edf2f7] text-[#364152]"
-              }`}
+                }`}
             >
               {tab.label}
             </button>

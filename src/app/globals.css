@@ -67,6 +67,10 @@ select:disabled {
     font-family: var(--font-highlight), Georgia, serif;
   }
 
+  .font-poppins {
+    font-family: var(--font-poppins), sans-serif;
+  }
+
   .max-w-6xl {
     max-width: 72rem; /* 1152px */
   }

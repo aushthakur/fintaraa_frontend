@@ -2,7 +2,6 @@ import { AppDownloadBanner } from "@/components/common/layout/Footer";
 import { FranchiseFaq } from "./FranchiseFaq";
 import { FranchiseHero } from "./FranchiseHero";
 import { FranchiseModel } from "./FranchiseModel";
-import { FranchiseJourney } from "./FranchiseJourney";
 import { FranchiseBenefits } from "./FranchiseBenefits";
 import { FranchiseWhyChoose } from "./FranchiseWhyChoose";
 
@@ -14,7 +13,6 @@ export function FranchisePage() {
       <FranchiseBenefits />
       <FranchiseWhyChoose />
       <FranchiseFaq />
-      <FranchiseJourney />
       <AppDownloadBanner />
     </main>
   );

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Providers } from "./providers";
-import { Inter } from "next/font/google";
+import { Inter, Poppins } from "next/font/google";
 import { Geist_Mono } from "next/font/google";
 import { Bodoni_Moda } from "next/font/google";
 import { Cormorant_Garamond } from "next/font/google";
@@ -18,6 +18,12 @@ export const bodoni = Bodoni_Moda({
 
 const inter = Inter({
   variable: "--font-inter",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
+});
+
+const poppins = Poppins({
+  variable: "--font-poppins",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800", "900"],
 });
@@ -79,7 +85,7 @@ export default function RootLayout({
       lang="en"
       data-scroll-behavior="smooth"
       suppressHydrationWarning
-      className={`${inter.variable} ${geistMono.variable} ${bodoni.variable} ${highlightSerif.variable} h-full antialiased`}
+      className={`${inter.variable} ${poppins.variable} ${geistMono.variable} ${bodoni.variable} ${highlightSerif.variable} h-full antialiased`}
     >
       <body
         className="min-h-full flex flex-col overflow-x-clip font-sans"

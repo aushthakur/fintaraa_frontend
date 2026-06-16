@@ -21,10 +21,10 @@ export function DsaWhyChoose() {
           {whyChooseItems.map(({ title, icon: Icon }, index) => (
             <div
               key={`${title}-${index}`}
-              className="flex min-h-17 items-center gap-3 rounded-lg bg-white px-4 py-3 text-[#005ca8]"
+              className="flex min-h-17 items-center gap-3 rounded-xl bg-white px-4 py-3 text-[#005ca8] transition duration-300 hover:shadow-[0_8px_25px_rgba(0,0,0,0.1)] hover:-translate-y-0.5"
             >
               <Icon className="h-6 w-6 shrink-0" />
-              <span className="text-[12px] font-black leading-4">{title}</span>
+              <span className="text-[12px] font-black leading-4 text-[#111827]">{title}</span>
             </div>
           ))}
         </div>

@@ -16,11 +16,17 @@ import {
   ShieldCheck,
   UserCheck,
   WalletCards,
+  Coins,
+  FileText,
+  Home,
+  Lightbulb,
+  User,
+  LayoutDashboard,
 } from "lucide-react";
 
 export const dsaStats = [
   { value: "95", label: "Banks & NBFCs", icon: ShieldCheck },
-  { value: "6,800K", label: "Active Partner", icon: ShieldCheck },
+  { value: "6,800+", label: "Active Partners", icon: ShieldCheck },
   { value: "₹150 Cr", label: "Loans Disbursed", icon: ShieldCheck },
   { value: "24/7", label: "Partner Support", icon: ShieldCheck },
 ];
@@ -39,6 +45,10 @@ export const dsaSteps = [
     text: "Share customer details for loans, cards or insurance products.",
   },
   {
+    title: "Get Approval",
+    text: "Track your lead status as it goes through bank review and gets approved.",
+  },
+  {
     title: "Earn Commission",
     text: "Get paid attractive commission on every successful approval.",
   },
@@ -47,7 +57,7 @@ export const dsaSteps = [
 export const dsaBenefits = [
   {
     title: "30+ Bank Tie-ups",
-    text: "Loan up to ₹10 Cr interest from 10.50% p.a.",
+    text: "Partner with 30+ leading banks and NBFCs for your customer loans.",
     icon: Banknote,
   },
   {
@@ -67,43 +77,43 @@ export const dsaBenefits = [
   },
   {
     title: "Faster Payouts",
-    text: "Loan up to ₹10 Cr interest from 8.40% p.a.",
+    text: "Get faster payouts on your completed disbursements.",
     icon: WalletCards,
   },
   {
     title: "Marketing Material",
-    text: "Loan up to ₹1 Cr interest from 11.25% p.a.",
+    text: "Access high-quality marketing materials to grow your customer reach.",
     icon: Megaphone,
   },
   {
     title: "Single Dashboard",
-    text: "Lifetime free cards exclusive rewards.",
-    icon: Building2,
+    text: "Track all your leads, applications and payouts in a single dashboard.",
+    icon: LayoutDashboard,
   },
   {
     title: "Real-time Tracking",
-    text: "Track every application status in real time.",
+    text: "Track the real-time status of all your customer applications.",
     icon: ChartNoAxesColumnIncreasing,
   },
 ];
 
 export const commissionRows = [
-  ["Personal Loan", "Up to 2%"],
-  ["Home Loan", "Up to 3%"],
-  ["Business Loan", "Up to 1%"],
-  ["Credit Card", "Up to 0%"],
-  ["Insurance", "Up to 4%"],
+  ["Personal Loan", "Up to 3.5%"],
+  ["Home Loan", "Up to 1.5%"],
+  ["Business Loan", "Up to 2.5%"],
+  ["Credit Card", "Up to ₹3,000"],
+  ["Insurance", "Up to 4.5%"],
 ];
 
 export const eligibleProfiles = [
-  { title: "Loan Agents", icon: ShieldCheck },
-  { title: "Insurance advisors", icon: ShieldCheck },
-  { title: "CA/ Tax Consultants", icon: ShieldCheck },
-  { title: "Property Dealer", icon: ShieldCheck },
-  { title: "Freelancers", icon: ShieldCheck },
-  { title: "Financial Consultants", icon: ShieldCheck },
-  { title: "Entrepreneur", icon: ShieldCheck },
-  { title: "Existing DSAs", icon: ShieldCheck },
+  { title: "Banking Agent", icon: Landmark },
+  { title: "Insurance Advisors", icon: ShieldCheck },
+  { title: "CA/Tax Professionals", icon: FileText },
+  { title: "Property Dealer", icon: Home },
+  { title: "Freelancers", icon: User },
+  { title: "Financial Consultants", icon: Coins },
+  { title: "Entrepreneur", icon: Lightbulb },
+  { title: "Existing DSAs", icon: Handshake },
 ];
 
 export const formFields = [
@@ -123,12 +133,12 @@ export const partnerBenefits = [
 ];
 
 export const whyChooseItems = [
-  { title: "Expert Legal Expert", icon: Scale },
+  { title: "Expert Legal Support", icon: Scale },
   { title: "Transparent Process", icon: FileSignature },
   { title: "100% Compliances Assured", icon: ShieldCheck },
   { title: "End to End Support", icon: Headphones },
   { title: "Affordable Pricing", icon: BadgeCheck },
-  { title: "Expert Legal Expert", icon: Scale },
+  { title: "Expert Legal Support", icon: Scale },
   { title: "Transparent Process", icon: FileSignature },
   { title: "100% Compliances Assured", icon: ShieldCheck },
   { title: "End to End Support", icon: Headphones },
@@ -136,14 +146,14 @@ export const whyChooseItems = [
 ];
 
 export const dsaFaqs = [
-  "How do I become a Fintaraa DSA partner?",
-  "Is there a penalty or joining lock-in?",
-  "Can I submit leads for more than one product?",
-  "What is the minimum and maximum commission amount?",
+  "How long does it take for the loan to be disbursed?",
+  "Is there a penalty for prepaying the loan?",
+  "Can I apply for a second loan while the first is active?",
+  "What is the minimum and maximum loan amount?",
   "Do I need to provide any collateral or security?",
-  "Will Fintaraa provide training and support?",
-  "Can I track every customer application?",
-  "When will I receive my payout?",
+  "Will checking my eligibility affect my CIBIL score?",
+  "Can I change my EMI date after the loan is disbursed?",
+  "What happens if I miss an EMI payment?",
 ];
 
 export const journeyItems = [

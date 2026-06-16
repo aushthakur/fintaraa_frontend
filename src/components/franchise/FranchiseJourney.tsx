@@ -3,9 +3,9 @@ import { journeyItems } from "./franchiseData";
 export function FranchiseJourney() {
   return (
     <section className="px-4 pb-10 md:px-6 lg:px-8">
-      <div className="mx-auto grid max-w-9xl gap-8 bg-[#edf6ff] p-8 md:grid-cols-[1fr_0.9fr] md:items-center">
+      <div className="mx-auto grid max-w-9xl gap-8 rounded-2xl bg-[#edf6ff] p-8 md:grid-cols-[1fr_0.9fr] md:items-center">
         <div>
-          <h2 className="text-[24px] font-black text-[#005ca8]">
+          <h2 className="text-[24px] font-black leading-tight text-[#005ca8]">
             Your Journey to
             <span className="block text-[#111827]">
               Franchise Business Growth
@@ -28,22 +28,28 @@ export function FranchiseJourney() {
           </div>
           <a
             href="#franchise-form"
-            className="mt-6 inline-flex h-10 items-center justify-center bg-[#005ca8] px-5 text-[12px] font-black text-white no-underline"
+            className="mt-6 inline-flex h-10 items-center justify-center rounded-lg bg-[#005ca8] px-6 text-[12px] font-black text-white no-underline transition-opacity hover:opacity-90"
           >
             Start Your Application Now
           </a>
         </div>
-        <div className="rounded bg-white p-5 shadow-[0_18px_40px_rgba(0,92,168,0.12)]">
-          <div className="mb-4 flex items-center gap-2 text-[12px] font-black text-[#005ca8]">
+
+        {/* Mock app/form card */}
+        <div className="rounded-xl bg-white p-5 shadow-[0_18px_40px_rgba(0,92,168,0.12)]">
+          <div className="mb-4 text-[12px] font-black text-[#005ca8]">
             Partner Application
           </div>
           <div className="grid gap-3">
-            <div className="h-12 rounded bg-[#f1f5f9]" />
+            <div className="h-10 rounded-lg bg-[#f1f5f9]" />
             <div className="grid grid-cols-2 gap-3">
-              <div className="h-16 rounded bg-[#f1f5f9]" />
-              <div className="h-16 rounded bg-[#f1f5f9]" />
+              <div className="h-14 rounded-lg bg-[#f1f5f9]" />
+              <div className="h-14 rounded-lg bg-[#f1f5f9]" />
             </div>
-            <div className="h-10 rounded bg-[#005ca8]" />
+            <div className="grid grid-cols-2 gap-3">
+              <div className="h-14 rounded-lg bg-[#f1f5f9]" />
+              <div className="h-14 rounded-lg bg-[#f1f5f9]" />
+            </div>
+            <div className="h-10 rounded-full bg-[#005ca8]" />
           </div>
         </div>
       </div>
