@@ -198,7 +198,7 @@ export function HeroSection() {
         <div className="grid grid-cols-1 gap-12 md:grid-cols-[1.1fr_0.9fr] items-center">
           {/* Left Side */}
           <div className="flex flex-col">
-            <h1 className="text-[38px] font-extrabold leading-[1.12] tracking-tight text-[#212529] md:text-[46px] lg:text-[52px]">
+            <h1 className="text-[28px] font-extrabold leading-[1.12] tracking-tight text-[#212529] sm:text-[32px] md:text-[46px] lg:text-[52px]">
               Get the Best Loan,
               <br />
               Insurance & Credit Card-
@@ -234,7 +234,7 @@ export function HeroSection() {
           {/* Right Side */}
           <div className="relative flex justify-end align-top pb-10">
             {/* Image */}
-            <div className="w-full rounded-xl border -mt-6 border-gray-300 bg-[#fafbfc] px-4 py-6 shadow-[0_2px_12px_rgba(0,0,0,0.01)]">
+            <div className="w-full rounded-xl border max-sm:mt-0 -mt-6 border-gray-300 bg-[#fafbfc] px-4 py-6 shadow-[0_2px_12px_rgba(0,0,0,0.01)]">
               <div className="relative w-full aspect-720/280">
                 <Image
                   src="/assets/refer/header.png"

@@ -169,29 +169,29 @@ export const AppDownloadBanner = () => {
           <p className="mt-3 text-[18px] font-medium text-[#344054]">
             Get smarter insights and better offers on the go.
           </p>
-          <div className="mt-6 flex flex-wrap gap-2">
+          <div className="mt-6 flex flex-col sm:flex-row gap-2">
             <a
               href="/app"
-              className="inline-flex h-15 items-center justify-center gap-3 rounded-xl bg-black px-5 text-white no-underline shadow-[0_14px_28px_rgba(0,0,0,0.16)] transition hover:-translate-y-0.5 hover:bg-[#111827]"
+              className="inline-flex h-14 sm:h-15 items-center justify-center gap-3 rounded-xl bg-black px-5 text-white no-underline shadow-[0_14px_28px_rgba(0,0,0,0.16)] transition hover:-translate-y-0.5 hover:bg-[#111827]"
             >
-              <FaGooglePlay className="h-8 w-8 text-[#34a853]" />
+              <FaGooglePlay className="h-7 w-7 sm:h-8 sm:w-8 text-[#34a853]" />
               <span>
                 <span className="block text-[10px] font-bold uppercase leading-none">
                   Get it on
                 </span>
-                <span className="text-[18px] font-semibold">Google Play</span>
+                <span className="text-[16px] sm:text-[18px] font-semibold">Google Play</span>
               </span>
             </a>
             <a
               href="/app"
-              className="inline-flex h-15 items-center justify-center gap-3 rounded-xl bg-black px-5 text-white no-underline shadow-[0_14px_28px_rgba(0,0,0,0.16)] transition hover:-translate-y-0.5 hover:bg-[#111827]"
+              className="inline-flex h-14 sm:h-15 items-center justify-center gap-3 rounded-xl bg-black px-5 text-white no-underline shadow-[0_14px_28px_rgba(0,0,0,0.16)] transition hover:-translate-y-0.5 hover:bg-[#111827]"
             >
-              <FaApple className="h-9 w-9 text-white" />
+              <FaApple className="h-8 w-8 sm:h-9 sm:w-9 text-white" />
               <span>
                 <span className="block text-[10px] font-bold leading-none">
                   Download on the
                 </span>
-                <span className="text-[18px] font-semibold leading-none">
+                <span className="text-[16px] sm:text-[18px] font-semibold leading-none">
                   App Store
                 </span>
               </span>
@@ -228,7 +228,7 @@ export default function Footer() {
     <>
       <footer className="bg-[#195585] text-white">
         <div className="mx-auto max-w-9xl px-4 py-12 md:px-6 lg:px-8">
-          <div className="grid gap-12 lg:grid-cols-[1.4fr_1.1fr_1.25fr_1.25fr_1.1fr_1.45fr]">
+          <div className="grid gap-12 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-[1.4fr_1.1fr_1.25fr_1.25fr_1.1fr_1.45fr]">
             <div>
               <Link href="/" aria-label="Fintaraa home" className="shrink-0">
                 <Image
@@ -346,7 +346,7 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="mx-auto mt-12 grid rounded-2xl border border-white/25 py-5 md:grid-cols-4">
+          <div className="mx-auto mt-12 grid rounded-2xl border border-white/25 py-5 sm:grid-cols-2 md:grid-cols-4">
             {trustItems.map(({ title, text, icon: Icon }, index) => (
               <div
                 key={title}

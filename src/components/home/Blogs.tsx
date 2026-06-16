@@ -76,17 +76,17 @@ export function RecentBlogs() {
       <div className="mx-auto max-w-9xl">
         
      {/* Header Section */}
-<div className="grid grid-cols-3 items-center mb-10 w-full">
+<div className="flex flex-col gap-4 sm:grid sm:grid-cols-3 items-center mb-10 w-full">
   {/* Left Column: Left Empty to Balance the Grid layout */}
-  <div />
+  <div className="hidden sm:block" />
 
   {/* Center Column: Perfectly centered text alignment */}
-  <h2 className="text-[24px] md:text-[28px] font-bold text-[#111625] tracking-tight text-center whitespace-nowrap">
+  <h2 className="text-[24px] md:text-[28px] font-bold text-[#111625] tracking-tight text-center">
     Recent Blogs
   </h2>
 
   {/* Right Column: Button pushed cleanly to the far right end */}
-  <div className="justify-self-end">
+  <div className="self-center sm:justify-self-end">
     <Link 
       href="/blogs" 
       className="rounded-full bg-[#12b76a] px-6 py-2.5 text-[14px] font-bold text-white transition-all hover:bg-[#0fa35e] whitespace-nowrap select-none"

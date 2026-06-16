@@ -57,7 +57,7 @@ export function CibilBandsSteps() {
       <section className="bg-white px-4 py-10 md:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl rounded-2xl border border-gray-200 bg-white px-6 py-10 text-center shadow-[0_4px_24px_rgba(0,0,0,0.01)] md:px-12">
           
-          <h2 className="text-[28px] md:text-[34px] font-bold text-[#222222] tracking-tight">
+          <h2 className="text-[24px] sm:text-[28px] md:text-[34px] font-bold text-[#222222] tracking-tight">
             Understanding CIBIL Score
           </h2>
           <p className="mt-2.5 text-[14px] font-medium text-gray-500 max-w-md mx-auto leading-relaxed">
@@ -90,7 +90,7 @@ export function CibilBandsSteps() {
       <section className="bg-white px-4 py-12 md:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl text-center">
           
-          <h2 className="text-[32px] md:text-[38px] font-bold leading-tight tracking-tight text-[#222222]">
+          <h2 className="text-[26px] sm:text-[32px] md:text-[38px] font-bold leading-tight tracking-tight text-[#222222]">
             Check Your <span className="text-[#00529c]">CIBIL Score</span>
             <span className="block mt-1 font-bold">in 3 Easy steps</span>
           </h2>
@@ -106,7 +106,7 @@ export function CibilBandsSteps() {
                 </span>
 
                 {/* Sub Card Component Body box layout */}
-                <article className="w-full min-h-35 rounded-xl border border-gray-200 bg-white p-5 grid grid-cols-[110px_1fr] gap-4 items-center shadow-[0_2px_12px_rgba(0,0,0,0.005)]">
+                <article className="w-full min-h-35 rounded-xl border border-gray-200 bg-white p-5 grid grid-cols-[80px_1fr] sm:grid-cols-[110px_1fr] gap-4 items-center shadow-[0_2px_12px_rgba(0,0,0,0.005)]">
                   
                   {/* Left Hand Side Styled Graphic Viewport Frame Panel */}
                   <div className="h-full w-full rounded-lg bg-[#e8f4ff]/70 flex items-center justify-center min-h-25">

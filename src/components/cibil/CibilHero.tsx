@@ -42,9 +42,9 @@ export function CibilHero() {
       {/* FIXED: Changed lg:items-center to lg:items-start to snap content to the top */}
       <div className="relative z-10 mx-auto grid max-w-7xl gap-6 lg:grid-cols-[1.25fr_0.75fr] lg:items-start w-full">
         {/* Left Section Grid Column - Top Aligned */}
-        <div className="flex flex-col justify-start lg:pt-4 ps-10 mt-10">
+        <div className="flex flex-col justify-start lg:pt-4 ps-0 sm:ps-10 mt-4 sm:mt-10">
           {/* Dynamic Asset Slot */}
-          <div className="absolute h-36 w-64 -left-10 top-0">
+          <div className="absolute h-24 w-56 rotate-12 md:rotate-0 sm:h-36 sm:w-64 -left-2 sm:-left-16 md:-left-10 -top-4 md:top-0">
             <Image
               src="/assets/images/credit-gauge.png"
               alt="Credit Score Meter Gauge"
@@ -55,7 +55,7 @@ export function CibilHero() {
             />
           </div>
           {/* Strict Typography Tracking Matching image_9fa052.png */}
-          <h1 className="text-4xl mt-10 font-extrabold leading-[1.15] tracking-tight text-[#111625] sm:text-5xl md:text-6xl">
+          <h1 className="text-3xl mt-8 md:mt-10 font-extrabold leading-[1.15] tracking-tight text-[#111625] sm:text-5xl md:text-6xl">
             Check Free <span className="text-[#12b76a]">Credit Score</span>
             <span className="block font-extrabold mt-0.5 text-[#111625]">
               & CIBIL Report
@@ -113,7 +113,7 @@ export function CibilHero() {
           </div>
         </div>
 
-        <div className="w-full max-w-120 overflow-hidden rounded-b-lg border border-gray-200/80 bg-white shadow-[0_10px_32px_rgba(0,0,0,0.04)]">
+        <div className="w-full max-w-120 overflow-hidden rounded-b-lg border border-gray-200/80 bg-white shadow-[0_10px_32px_rgba(0,0,0,0.04)] mx-auto lg:mx-0">
           {/* Top Banner Ribbon Promo Bar */}
           <div className="bg-[#00529c] px-5 py-3.5 text-center">
             <p className="text-[13px] font-normal tracking-wide text-white">
@@ -127,7 +127,7 @@ export function CibilHero() {
           {/* Main Content Area Wrapper Shell */}
           <div className="p-6 sm:p-8 pt-6">
             {/* Core Layout Titles */}
-            <h2 className="text-[26px] font-bold tracking-tight text-[#222222]">
+            <h2 className="text-[22px] sm:text-[26px] font-bold tracking-tight text-[#222222]">
               Check Your Score Now
             </h2>
             <p className="text-[14px] font-medium text-gray-500 mt-1">

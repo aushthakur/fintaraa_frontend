@@ -58,7 +58,7 @@ export function CibilMonitoringTips() {
         {/* LEFT SIDE: SCORE HISTORY CHART */}
         <div className="w-full flex flex-col justify-between h-full">
           <div>
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900">
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900">
               Score History & Monitoring
             </h2>
             <p className="mt-1.5 text-sm font-medium text-gray-500">
@@ -115,8 +115,8 @@ export function CibilMonitoringTips() {
         </div>
 
         {/* RIGHT SIDE: EXPERT ADVICE CARD */}
-        <div className="w-full h-full flex items-end">
-          <aside className="w-full max-w-md mx-auto lg:mx-0 rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
+        <div className="w-full h-full flex items-end mt-8 lg:mt-0">
+          <aside className="w-full max-w-md mx-auto lg:mx-0 rounded-2xl border border-gray-100 bg-white p-5 sm:p-6 shadow-sm">
             <h4 className="text-base font-bold text-gray-900 tracking-tight">
               Expert Advice
             </h4>
@@ -163,7 +163,7 @@ export function CibilMonitoringTips() {
       {/* BOTTOM SECTION: PERSONALIZED IMPROVEMENT TIPS */}
       <div className="w-full">
         <div>
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900">
             Personalized Improvement Tips
           </h2>
           <p className="mt-1.5 text-sm font-medium text-gray-500">
@@ -176,7 +176,7 @@ export function CibilMonitoringTips() {
           {personalizedTips.map((tip) => (
             <div
               key={tip.id}
-              className="flex items-start gap-6 rounded-xl border border-gray-100 bg-white p-5 shadow-sm transition-all hover:border-gray-200"
+              className="flex items-start gap-4 sm:gap-6 rounded-xl border border-gray-100 bg-white p-4 sm:p-5 shadow-sm transition-all hover:border-gray-200"
             >
               {/* Card Index Indicator */}
               <span className="text-sm font-bold text-gray-800 w-4 shrink-0 pt-0.5">

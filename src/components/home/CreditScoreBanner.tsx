@@ -8,7 +8,7 @@ export function CreditScoreBanner() {
       <div className="w-full rounded-[20px] bg-[#edf5fd] border border-[#d2e4ff] px-6 py-10 text-center">
         
         {/* Banner Title */}
-        <h2 className="text-[26px] font-extrabold tracking-tight text-[#0a0f1d] md:text-[32px]">
+        <h2 className="text-[22px] sm:text-[26px] font-extrabold tracking-tight text-[#0a0f1d] md:text-[32px]">
           Check your Credit Score in Minutes with <span className="text-[#195585] font-extrabold">Fintaraa</span>
         </h2>
 
@@ -49,7 +49,7 @@ export function CreditScoreBanner() {
         </div>
 
         {/* Core Trust Badges Row */}
-        <div className="mt-8 flex flex-col md:flex-row items-center justify-center gap-3.5 max-w-5xl mx-auto">
+        <div className="mt-8 flex flex-col sm:flex-row md:flex-row items-center justify-center gap-3.5 max-w-5xl mx-auto">
           {/* Badge 1 */}
           <div className="flex w-full md:w-auto items-center justify-center gap-2.5 bg-white rounded-[10px] py-3 px-6 shadow-[0_1px_3px_rgba(0,0,0,0.01)] border border-white">
             <User className="h-4.5 w-4.5 text-[#195585]" strokeWidth={2.2} />
@@ -76,7 +76,7 @@ export function CreditScoreBanner() {
         </div>
 
         {/* Call to Action Button */}
-        <div className="mt-8">
+        <div className="mt-6 sm:mt-8">
           <button className="inline-flex h-12 items-center justify-center rounded-full bg-[#0ea85f] px-9 text-[14.5px] font-bold text-white transition-all shadow-[0_4px_14px_rgba(14,168,95,0.2)] hover:bg-[#0c9352]">
             Check Credit Score Now
           </button>

@@ -43,8 +43,8 @@ export function ProductExplorer({
             <div key={section.title}>
               
               {/* Row Header Grid: Merged title and subtitle text on the left, View All link on the right */}
-              <div className="mb-6 flex items-center justify-between pb-1">
-                <div className="text-[22px] font-bold tracking-tight text-[#0b192c] md:text-[24px]">
+              <div className="mb-6 flex flex-col gap-2 sm:flex-row items-start sm:items-center justify-between pb-1">
+                <div className="text-[18px] sm:text-[22px] font-bold tracking-tight text-[#0b192c] md:text-[24px]">
                   <h2>
                     {section.title}
                     {section.subtitle && (
@@ -63,7 +63,7 @@ export function ProductExplorer({
               </div>
 
               {/* Grid System: Sized and proportioned perfectly to resemble the screenshot */}
-              <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7">
+              <div className="grid grid-cols-2 gap-3 sm:gap-5 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7">
                 {section.products.map((product, index) => {
                   const { title, icon: Icon, logo, tone, tag } = product as any;
                   // Checks specifically if the card is the first item within Instant Loans row
@@ -73,7 +73,7 @@ export function ProductExplorer({
                     <Link
                       href={productHref(title)}
                       key={title}
-                      className="group relative flex flex-col items-center justify-center rounded-3xl border border-gray-200/70 bg-white px-4 pb-8 pt-10 text-center no-underline transition-all duration-200 hover:shadow-[0_6px_20px_rgba(0,0,0,0.02)]"
+                      className="group relative flex flex-col items-center justify-center rounded-3xl border border-gray-200/70 bg-white px-2 sm:px-4 pb-6 sm:pb-8 pt-6 sm:pt-10 text-center no-underline transition-all duration-200 hover:shadow-[0_6px_20px_rgba(0,0,0,0.02)]"
                     >
                       {/* Top Absolute Cashback Offers Badge Layout */}
                       {hasCashbackBadge && (
@@ -85,30 +85,30 @@ export function ProductExplorer({
                       {/* Icon or Logo Circle Wrapper Frame */}
                       {logo ? (
                         <div
-                          className={`flex h-20 w-20 items-center justify-center rounded-full transition-transform duration-200 group-hover:scale-105 ${
+                          className={`flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-full transition-transform duration-200 group-hover:scale-105 ${
                             toneClass[tone] || "bg-[#fff2ec] text-[#ff7643]"
                           }`}
                         >
                           <Image
                             src={logo}
                             alt={title}
-                            width={60}
-                            height={60}
-                            className="object-contain"
+                            width={45}
+                            height={45}
+                            className="object-contain sm:w-15 sm:h-15"
                           />
                         </div>
                       ) : (
                         <div
-                          className={`flex h-20 w-20 items-center justify-center rounded-full transition-transform duration-200 group-hover:scale-105 ${
+                          className={`flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-full transition-transform duration-200 group-hover:scale-105 ${
                             toneClass[tone] || "bg-[#fff2ec] text-[#ff7643]"
                           }`}
                         >
-                          <Icon className="h-9 w-9 stroke-[1.8]" />
+                          <Icon className="h-7 w-7 sm:h-9 sm:w-9 stroke-[1.8]" />
                         </div>
                       )}
 
                       {/* Explicitly Bolded Bank/Product Title Copy */}
-                      <h3 className="mt-5 text-[14px] font-bold tracking-tight text-[#0f172a]">
+                      <h3 className="mt-3 sm:mt-5 text-[13px] sm:text-[14px] font-bold tracking-tight text-[#0f172a]">
                         {title}
                       </h3>
                     </Link>

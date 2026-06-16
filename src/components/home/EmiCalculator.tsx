@@ -139,12 +139,12 @@ export function EmiCalculator() {
       <div className="mx-auto max-w-9xl">
         
         {/* Component Header Label */}
-        <h2 className="text-[22px] font-bold text-gray-900 tracking-tight">
+        <h2 className="text-[20px] sm:text-[22px] font-bold text-gray-900 tracking-tight">
           EMI Calculator
         </h2>
 
         {/* Category Selection Tab Pills Wrapper */}
-        <div className="mt-4 flex gap-2 overflow-x-auto pb-2 scrollbar-none">
+        <div className="mt-4 flex gap-2 overflow-x-auto pb-2 scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0">
           {loanTabs.map((tab, idx) => {
             const isSelected = activeTab === tab && idx === 0; // matching mockup active highlight structure style
             return (
@@ -210,7 +210,7 @@ export function EmiCalculator() {
             {/* Outlined Download Document Action Trigger Button */}
             <button 
               type="button"
-              className="mt-2 flex h-12 w-full items-center justify-center gap-2 rounded-xl border border-emerald-500 bg-white text-[14px] font-bold text-gray-700 transition-colors hover:bg-emerald-50/40"
+              className="mt-2 flex h-12 w-full items-center justify-center gap-2 rounded-xl border border-emerald-500 bg-white text-[13px] sm:text-[14px] font-bold text-gray-700 transition-colors hover:bg-emerald-50/40"
             >
               <span className="opacity-70">📄</span>
               Download Loan Break up PDF
@@ -231,7 +231,7 @@ export function EmiCalculator() {
             <div className="p-6 flex flex-col flex-1 justify-between">
               
               {/* Core Output Numeric Grid Display badges layout */}
-              <div className="grid grid-cols-3 gap-2.5">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                 {[
                   { id: "emi", label: "Monthly EMI", val: computedMetrics.emi, bg: "bg-blue-50/40", icon: "📅" },
                   { id: "int", label: "Total Interest", val: computedMetrics.totalInterest, bg: "bg-emerald-50/30", icon: "％" },

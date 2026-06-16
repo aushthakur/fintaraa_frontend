@@ -85,14 +85,14 @@ export function MediaPressRelease() {
       <div className="mx-auto max-w-7xl">
         
         {/* Header Layout Grid: Centered text with end actions */}
-        <div className="grid grid-cols-3 items-center mb-10 w-full">
-          <div /> {/* Left empty balancer layout block */}
+        <div className="flex flex-col gap-4 sm:grid sm:grid-cols-3 items-center mb-10 w-full">
+          <div className="hidden sm:block" /> {/* Left empty balancer layout block */}
           
-          <h2 className="text-[24px] md:text-[28px] font-bold text-[#111625] tracking-tight text-center whitespace-nowrap">
+          <h2 className="text-[24px] md:text-[28px] font-bold text-[#111625] tracking-tight text-center">
             Media & Press Release
           </h2>
 
-          <div className="justify-self-end">
+          <div className="self-center sm:justify-self-end">
             <Link 
               href="/media" 
               className="rounded-full bg-[#12b76a] px-7 py-2.5 text-[14px] font-bold text-white transition-all hover:bg-[#0fa35e] whitespace-nowrap select-none shadow-xs"

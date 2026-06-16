@@ -39,7 +39,7 @@ export function CibilPromo() {
         <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[16px_16px] opacity-30 mask-image-[linear-gradient(to_left,white,transparent)] z-0" />
 
         {/* --- LEFT COLUMN --- */}
-        <div className="flex-1 px-8 py-8 md:px-12 md:py-10 z-10 w-full lg:max-w-[60%]">
+        <div className="flex-1 px-5 sm:px-8 py-8 md:px-12 md:py-10 z-10 w-full lg:max-w-[60%]">
           {/* Badge */}
           <div className="inline-flex items-center gap-1.5 rounded-full bg-blue-100/80 px-3 py-1 text-[11px] font-bold text-blue-700 mb-6 border border-blue-200/50">
             <ShieldCheck className="h-3.5 w-3.5" strokeWidth={2.5} />
@@ -47,7 +47,7 @@ export function CibilPromo() {
           </div>
 
           {/* Typography */}
-          <h2 className="text-3xl md:text-[40px] font-extrabold leading-[1.1] text-[#111827] tracking-tight">
+          <h2 className="text-[26px] sm:text-3xl md:text-[40px] font-extrabold leading-[1.1] text-[#111827] tracking-tight">
             Your Credit Health,
             <span className="block text-[#0b57d0] mt-1">Your Financial Freedom</span>
           </h2>
@@ -58,7 +58,7 @@ export function CibilPromo() {
           </p>
 
           {/* Features Row */}
-          <div className="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-6">
+          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-6">
             {features.map((item, idx) => (
               <div key={idx} className="flex items-start gap-2.5">
                 <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-blue-50">
@@ -76,31 +76,31 @@ export function CibilPromo() {
         </div>
 
         {/* --- RIGHT COLUMN --- */}
-        <div className="relative w-full lg:w-[45%] flex shrink-0 items-end justify-center pt-8 pb-0 px-4 z-10 min-h-75">
+        <div className="relative w-full lg:w-[45%] flex shrink-0 items-end justify-center pt-4 sm:pt-8 pb-0 px-4 z-10 min-h-50 sm:min-h-75">
           
           {/* Decorative Star Left */}
-          <div className="absolute top-[20%] left-[15%] text-blue-200 animate-pulse">
+          <div className="absolute top-[20%] left-[15%] text-blue-200 animate-pulse hidden sm:block">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 0L13.5 8.5L22 10L13.5 11.5L12 20L10.5 11.5L2 10L10.5 8.5L12 0Z" />
             </svg>
           </div>
           
           {/* Decorative Star Right */}
-          <div className="absolute top-[25%] right-[25%] text-blue-200 animate-pulse delay-75">
+          <div className="absolute top-[25%] right-[25%] text-blue-200 animate-pulse delay-75 hidden sm:block">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 0L13.5 8.5L22 10L13.5 11.5L12 20L10.5 11.5L2 10L10.5 8.5L12 0Z" />
             </svg>
           </div>
 
           {/* Floating Shield Graphic */}
-          <div className="absolute top-[25%] right-[5%] z-0 h-20 w-16 bg-white rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.06)] flex items-center justify-center border border-white">
+          <div className="absolute top-[25%] right-[5%] z-0 h-20 w-16 bg-white rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.06)] items-center justify-center border border-white hidden sm:flex">
             <div className="bg-blue-500 rounded-lg p-2.5">
               <ShieldCheck className="h-6 w-6 text-white" strokeWidth={2.5} />
             </div>
           </div>
 
           {/* Floating Chart Graphic */}
-          <div className="absolute bottom-[10%] right-[2%] z-30 h-24 w-24 bg-transparent flex items-end justify-between gap-1.5 opacity-90 sm:flex">
+          <div className="absolute bottom-[10%] right-[2%] z-30 h-24 w-24 bg-transparent items-end justify-between gap-1.5 opacity-90 hidden sm:flex">
              {/* Trend line SVG */}
              <svg className="absolute top-2 left-0 w-full h-12 text-blue-400 drop-shadow-sm" viewBox="0 0 100 50" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round">
                 <path d="M 5 40 L 35 25 L 65 15 L 95 0" />
@@ -117,10 +117,10 @@ export function CibilPromo() {
           </div>
 
           {/* Gauge & CTA Card Wrapper */}
-          <div className="relative flex flex-col items-center w-full max-w-90 pb-6">
+          <div className="relative flex flex-col items-center w-full max-w-90 pb-4 sm:pb-6">
             
             {/* Speedometer Gauge Graphic */}
-            <div className="relative w-60 h-30 -mb-10 z-10">
+            <div className="relative w-48 sm:w-60 h-24 sm:h-30 -mb-8 sm:-mb-10 z-10">
               <svg viewBox="0 0 200 100" className="w-full h-full drop-shadow-sm">
                 {/* Red Arc */}
                 <path d="M 20 100 A 80 80 0 0 1 43.4 43.4" fill="none" stroke="#ef4444" strokeWidth="24" />

@@ -124,7 +124,7 @@ export function VideoTestimonials() {
                   setIsPaused(true);
                   setSelectedVideoUrl(item.videoUrl);
                 }}
-                className="w-72.5 sm:w-82.5 md:w-87.5 min-w-72.5 sm:min-w-82.5 md:min-w-87.5 shrink-0 rounded-2xl border border-gray-100 bg-white overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.015)] flex flex-col justify-between text-left outline-none transition-transform duration-200 hover:scale-[1.01]"
+                className="w-65 sm:w-72.5 md:w-82.5 min-w-65 sm:min-w-72.5 md:min-w-82.5 shrink-0 rounded-2xl border border-gray-100 bg-white overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.015)] flex flex-col justify-between text-left outline-none transition-transform duration-200 hover:scale-[1.01]"
               >
                 {/* Image Frame Thumbnail */}
                 <div className="relative aspect-[1.62/1] w-full bg-slate-900 overflow-hidden pointer-events-none">

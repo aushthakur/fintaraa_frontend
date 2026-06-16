@@ -33,7 +33,7 @@ export function CibilEligibleOffers() {
         {/* Top Header Section */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div>
-            <h2 className="text-[28px] font-bold text-[#2d3142]">
+            <h2 className="text-[22px] sm:text-[28px] font-bold text-[#2d3142]">
               Loans You Are Eligible For
             </h2>
             <p className="mt-1 text-[15px] text-[#7c8293]">
@@ -128,7 +128,7 @@ export function CibilEligibleOffers() {
         </div>
 
         {/* Bottom Alert/Help Banner Section */}
-        <div className="mt-8 flex flex-col items-start justify-between gap-4 rounded-xl border border-[#d6e6f7] bg-[#eef6ff] p-4 md:flex-row md:items-center">
+        <div className="mt-8 flex flex-col items-start justify-between gap-4 rounded-xl border border-[#d6e6f7] bg-[#eef6ff] p-4 sm:flex-row sm:items-center">
           <div className="flex items-start gap-3">
             {/* Informational Blue Circle Icon */}
             <div className="mt-0.5 shrink-0 w-4 h-4 rounded-full border border-[#005ca8] text-[#005ca8] flex items-center justify-center text-[10px] font-bold">

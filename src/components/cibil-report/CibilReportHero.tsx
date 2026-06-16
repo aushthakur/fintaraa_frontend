@@ -39,7 +39,7 @@ export function CibilReportHero() {
   ];
 
   return (
-    <section className="relative w-full max-w-9xl mx-auto bg-white px-6 py-10 antialiased text-[#111827] overflow-hidden">
+    <section className="relative w-full max-w-9xl mx-auto bg-white px-4 sm:px-6 py-8 sm:py-10 antialiased text-[#111827] overflow-hidden">
       <div className="absolute inset-0 overflow-visible pointer-events-none z-0">
         {/* Left-most rectangle bleeding off the screen */}
         <div
@@ -66,11 +66,11 @@ export function CibilReportHero() {
           }}
         />
       </div>
-      <div className="grid items-start gap-12 md:grid-cols-2 mt-3 ms-6">
+      <div className="grid items-start gap-8 sm:gap-10 md:gap-12 grid-cols-1 md:grid-cols-2 mt-3 ms-0 sm:ms-6">
         {/* LEFT SIDE: CREDIT SCORE */}
         <div className="w-full space-y-4">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-gray-900">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-gray-900">
               You are on FREE Credit Score Plan
             </h1>
 
@@ -97,14 +97,16 @@ export function CibilReportHero() {
           </div>
 
           {/* SCORE CARD CONTAINER */}
-          <div className="w-full max-w-md rounded-2xl border border-gray-200  bg-white p-6">
+          <div className="w-full max-w-md rounded-2xl border border-gray-200 bg-white p-4 sm:p-6 mx-auto md:mx-0">
             <h3 className="text-base text-center font-bold tracking-tight text-gray-700">
               Your Current Score
             </h3>
 
             {/* Reusable Gauge Component */}
-            <div className="flex justify-center overflow-visible">
-              <CreditScoreGauge score={782} width={380} height={200} scale={1.25} />
+            <div className="flex justify-center overflow-hidden w-full">
+              <div className="max-w-65 sm:max-w-none mx-auto">
+                <CreditScoreGauge score={782} width={260} height={150} scale={1.05} />
+              </div>
             </div>
 
             <div className="flex flex-col items-center gap-3">
@@ -124,32 +126,32 @@ export function CibilReportHero() {
 
         {/* RIGHT SIDE: QUICK REPORT SUMMARY */}
         <div className="w-full">
-          <h2 className="text-2xl font-bold tracking-tight text-gray-900 mb-6 text-center md:text-left">
+          <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 mb-4 sm:mb-6 text-center md:text-left">
             Quick Report Summary
           </h2>
 
-          <div className="rounded-2xl border border-gray-300 bg-white p-6 ">
+          <div className="rounded-2xl border border-gray-300 bg-white p-4 sm:p-6 mx-auto md:mx-0">
             <div className="divide-y divide-gray-100">
               {summaryRows.map((row, idx) => (
                 <div
                   key={idx}
-                  className="flex items-center justify-between py-4 first:pt-0 last:pb-5"
+                  className="flex items-center justify-between py-3 sm:py-4 first:pt-0 last:pb-5"
                 >
-                  <div className="flex items-center gap-4">
-                    <span className="shrink-0 text-2xl w-6 text-center">
+                  <div className="flex items-center gap-3 sm:gap-4">
+                    <span className="shrink-0 text-xl sm:text-2xl w-5 sm:w-6 text-center">
                       {row.icon}
                     </span>
                     <div>
-                      <h4 className="text-[15px] font-bold tracking-tight text-gray-800 leading-snug">
+                      <h4 className="text-[13px] sm:text-[15px] font-bold tracking-tight text-gray-800 leading-snug">
                         {row.label}
                       </h4>
-                      <p className="text-xs font-medium text-gray-400 mt-0.5">
+                      <p className="text-[11px] sm:text-xs font-medium text-gray-400 mt-0.5">
                         {row.subLabel}
                       </p>
                     </div>
                   </div>
 
-                  <span className="text-[15px] font-bold text-gray-900">
+                  <span className="text-[13px] sm:text-[15px] font-bold text-gray-900 shrink-0">
                     {row.value}
                   </span>
                 </div>
@@ -157,12 +159,12 @@ export function CibilReportHero() {
             </div>
 
             {/* Bottom Action Card */}
-            <div className="flex items-center justify-between rounded-2xl border border-[#bbf2d1] bg-[#e6f7ed] px-5 py-4 mt-2">
+            <div className="flex items-center justify-between rounded-2xl border border-[#bbf2d1] bg-[#e6f7ed] px-4 sm:px-5 py-3 sm:py-4 mt-2">
               <div>
-                <p className="text-[15px] font-bold text-[#00a653]">
+                <p className="text-[13px] sm:text-[15px] font-bold text-[#00a653]">
                   Oldest Credit Account
                 </p>
-                <p className="text-xs font-medium text-gray-400 mt-0.5">
+                <p className="text-[11px] sm:text-xs font-medium text-gray-400 mt-0.5">
                   In depth analysis of your Credit Score
                 </p>
               </div>
