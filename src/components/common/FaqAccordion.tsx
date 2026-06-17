@@ -7,50 +7,48 @@ export type FaqItem = {
   answer: string;
 };
 
-type FaqAccordionProps = {
-  title: string;
-  subtitle: string;
-  items?: FaqItem[];
+const faqData = {
+  title: "Frequently Asked Questions",
+  subtitle: "Everything you need to know about our services",
+  items: [
+    {
+      question: "How long does it take for the loan to be disbursed?",
+      answer: "Our automated systems verify details quickly. Typically, loan amounts are approved and disbursed directly into your bank account within a few business hours.",
+    },
+    {
+      question: "Is there a penalty for prepaying the loan?",
+      answer: "Prepayment terms depend entirely on the specific product tier selected. Many instances offer completely penalty-free early repayments.",
+    },
+    {
+      question: "Can I apply for a second loan while the first is active?",
+      answer: "Yes, you can hold multiple active accounts concurrently provided your monthly debt-to-income margin meets regular lending compliance limits.",
+    },
+    {
+      question: "What is the minimum and maximum loan amount?",
+      answer: "Flexible limits scale seamlessly depending on individual documentation records and current calculated repayment credit metrics.",
+    },
+    {
+      question: "Do I need to provide any collateral or security?",
+      answer: "No collateral or security assets are required as these profiles remain categorized under signature unsecured lending brackets.",
+    },
+    {
+      question: "Will checking my eligibility affect my CIBIL score?",
+      answer: "Checking preliminary parameters via our portal registers an immediate soft pull inquiry indicator which never alters or reduces your point totals.",
+    },
+    {
+      question: "Can I change my EMI date after the loan is disbursed?",
+      answer: "Yes, adjustment requests can be requested post-disbursement through support channels prior to upcoming billing cycles.",
+    },
+    {
+      question: "What happens if I miss an EMI payment?",
+      answer: "Missing payment dates records default flags onto your profile. Ensure prompt balances to prevent late penalties and potential credit downgrades.",
+    },
+  ],
 };
 
-const defaultFaqData: FaqItem[] = [
-  {
-    question: "How long does it take for the loan to be disbursed?",
-    answer: "Our automated systems verify details quickly. Typically, loan amounts are approved and disbursed directly into your bank account within a few business hours.",
-  },
-  {
-    question: "Is there a penalty for prepaying the loan?",
-    answer: "Prepayment terms depend entirely on the specific product tier selected. Many instances offer completely penalty-free early repayments.",
-  },
-  {
-    question: "Can I apply for a second loan while the first is active?",
-    answer: "Yes, you can hold multiple active accounts concurrently provided your monthly debt-to-income margin meets regular lending compliance limits.",
-  },
-  {
-    question: "What is the minimum and maximum loan amount?",
-    answer: "Flexible limits scale seamlessly depending on individual documentation records and current calculated repayment credit metrics.",
-  },
-  {
-    question: "Do I need to provide any collateral or security?",
-    answer: "No collateral or security assets are required as these profiles remain categorized under signature unsecured lending brackets.",
-  },
-  {
-    question: "Will checking my eligibility affect my CIBIL score?",
-    answer: "Checking preliminary parameters via our portal registers an immediate soft pull inquiry indicator which never alters or reduces your point totals.",
-  },
-  {
-    question: "Can I change my EMI date after the loan is disbursed?",
-    answer: "Yes, adjustment requests can be requested post-disbursement through support channels prior to upcoming billing cycles.",
-  },
-  {
-    question: "What happens if I miss an EMI payment?",
-    answer: "Missing payment dates records default flags onto your profile. Ensure prompt balances to prevent late penalties and potential credit downgrades.",
-  },
-];
-
-export function FaqAccordion({ title, subtitle, items }: FaqAccordionProps) {
+export function FaqAccordion() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-  const faqItems = items ?? defaultFaqData;
+  const { title, subtitle, items } = faqData;
 
   const toggleFaq = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -71,7 +69,7 @@ export function FaqAccordion({ title, subtitle, items }: FaqAccordionProps) {
 
         {/* Clean Rounded-Box Stack Layout */}
         <div className="space-y-3.5">
-          {faqItems.map((faq, index) => {
+          {items.map((faq, index) => {
             const isOpen = openIndex === index;
             return (
               <div
