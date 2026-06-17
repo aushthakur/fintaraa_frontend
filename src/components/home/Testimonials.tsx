@@ -18,28 +18,32 @@ const testimonialsData: TestimonialItem[] = [
     id: 1,
     name: "Ramesh Kumar",
     location: "Delhi",
-    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=120&h=120",
+    avatar:
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=120&h=120",
     text: "Got ₹25 Lakh Home Loan approved in 3 days. The team was very helpful",
   },
   {
     id: 2,
     name: "Ramesh Kumar",
     location: "Delhi",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=120&h=120",
+    avatar:
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=120&h=120",
     text: "The attention to detail and design sensibility is unmatched. Every corner of our space reflects thoughtful planning and refined aesthetics. It truly feels like a personalized masterpiece.",
   },
   {
     id: 3,
     name: "Ramesh Kumar",
     location: "Delhi",
-    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=120&h=120",
+    avatar:
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=120&h=120",
     text: "Working with them was an exceptional experience. They balanced creativity with practicality, delivering a space that is not only beautiful but also perfectly suited to our lifestyle.",
   },
   {
     id: 4,
     name: "Ramesh Kumar",
     location: "Delhi",
-    avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=120&h=120",
+    avatar:
+      "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=120&h=120",
     text: "Working with them was an exceptional experience. They balanced creativity with practicality, delivering a space that is not only beautiful but also perfectly suited to our lifestyle.",
   },
 ];
@@ -54,7 +58,7 @@ export function Testimonials() {
 
   const containerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
-  
+
   const [isPaused, setIsPaused] = useState(false);
   const [trackWidth, setTrackWidth] = useState(0);
 
@@ -87,14 +91,13 @@ export function Testimonials() {
 
   return (
     <section className="bg-white px-4 py-16 md:px-6 lg:px-8 overflow-hidden select-none">
-      <div className="mx-auto max-w-7xl">
-        
+      <div className="mx-auto max-w-9xl">
         <h2 className="text-center text-[26px] font-extrabold text-[#111625] md:text-[32px] tracking-tight">
           What Our Clients Say
         </h2>
 
         {/* Mask Carousel Viewport Container Frame */}
-        <div 
+        <div
           ref={containerRef}
           className="relative w-full overflow-hidden py-4 mt-12"
           onMouseEnter={() => setIsPaused(true)}

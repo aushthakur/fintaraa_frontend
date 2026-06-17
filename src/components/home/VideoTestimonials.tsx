@@ -2,7 +2,12 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { motion, useMotionValue, useAnimationFrame, AnimatePresence } from "framer-motion";
+import {
+  motion,
+  useMotionValue,
+  useAnimationFrame,
+  AnimatePresence,
+} from "framer-motion";
 import { Star, Play, X } from "lucide-react";
 
 interface VideoTestimonial {
@@ -22,8 +27,10 @@ const videoData: VideoTestimonial[] = [
     loanType: "Home Loan",
     location: "Delhi",
     quote: "Fintaraa supported me financially when I needed it the most",
-    thumbnail: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600&h=400", 
-    videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+    thumbnail:
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600&h=400",
+    videoUrl:
+      "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
   },
   {
     id: 2,
@@ -31,8 +38,10 @@ const videoData: VideoTestimonial[] = [
     loanType: "Home Loan",
     location: "Delhi",
     quote: "Fintaraa supported me financially when I needed it the most",
-    thumbnail: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600&h=400",
-    videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+    thumbnail:
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600&h=400",
+    videoUrl:
+      "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
   },
   {
     id: 3,
@@ -40,28 +49,25 @@ const videoData: VideoTestimonial[] = [
     loanType: "Home Loan",
     location: "Delhi",
     quote: "Fintaraa supported me financially when I needed it the most",
-    thumbnail: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600&h=400",
-    videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+    thumbnail:
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600&h=400",
+    videoUrl:
+      "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
   },
 ];
 
 export function VideoTestimonials() {
-
   const containerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
-  
+
   const [isPaused, setIsPaused] = useState(false);
   const [trackWidth, setTrackWidth] = useState(0);
   const [selectedVideoUrl, setSelectedVideoUrl] = useState<string | null>(null);
 
   const x = useMotionValue(0);
   const baseSpeed = 0.65;
-  
-  const duplicatedVideos = [
-    ...videoData,
-    ...videoData,
-    ...videoData,
-  ];
+
+  const duplicatedVideos = [...videoData, ...videoData, ...videoData];
 
   useEffect(() => {
     if (trackRef.current) {
@@ -84,8 +90,7 @@ export function VideoTestimonials() {
 
   return (
     <section className="bg-white px-4 py-16 md:px-6 lg:px-8 overflow-hidden select-none">
-      <div className="mx-auto max-w-7xl">
-        
+      <div className="mx-auto max-w-9xl">
         <div className="w-full flex justify-center mb-12">
           <h2 className="text-[26px] md:text-[32px] font-extrabold text-[#111625] tracking-tight text-center">
             Video Testimonials
@@ -93,7 +98,7 @@ export function VideoTestimonials() {
         </div>
 
         {/* Carousel Viewport Box */}
-        <div 
+        <div
           ref={containerRef}
           className="relative w-full overflow-hidden py-2"
           onMouseEnter={() => setIsPaused(true)}
@@ -172,7 +177,10 @@ export function VideoTestimonials() {
 
                     <div className="flex items-center gap-0.5 text-orange-500 mt-0.5 shrink-0">
                       {Array.from({ length: 5 }).map((_, i) => (
-                        <Star key={i} className="h-3.5 w-3.5 fill-current stroke-current" />
+                        <Star
+                          key={i}
+                          className="h-3.5 w-3.5 fill-current stroke-current"
+                        />
                       ))}
                     </div>
                   </div>
@@ -185,7 +193,7 @@ export function VideoTestimonials() {
         {/* Dynamic Video Lightbox Modal Popup */}
         <AnimatePresence>
           {selectedVideoUrl && (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -195,7 +203,7 @@ export function VideoTestimonials() {
                 setIsPaused(false);
               }}
             >
-              <motion.div 
+              <motion.div
                 initial={{ scale: 0.95, y: 20 }}
                 animate={{ scale: 1, y: 0 }}
                 exit={{ scale: 0.95, y: 20 }}
@@ -229,7 +237,6 @@ export function VideoTestimonials() {
             </motion.div>
           )}
         </AnimatePresence>
-
       </div>
     </section>
   );

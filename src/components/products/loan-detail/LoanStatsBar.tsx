@@ -37,7 +37,7 @@ const displayStats = [
 export function LoanStatsBar() {
   return (
     <section className="bg-[#004B93] px-6 py-6 text-white antialiased md:px-12 lg:px-16">
-      <div className="mx-auto max-w-7xl grid grid-cols-2 gap-y-6 md:grid-cols-4 md:gap-y-0">
+      <div className="mx-auto max-w-9xl grid grid-cols-2 gap-y-6 md:grid-cols-4 md:gap-y-0">
         {displayStats.map((stat, index) => {
           const IconComponent = stat.icon;
           return (
@@ -46,8 +46,13 @@ export function LoanStatsBar() {
               className="relative flex items-center justify-start gap-4 px-2 md:justify-center"
             >
               {/* Dynamic Icon with explicit matching background tints */}
-              <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full ${stat.bgClass}`}>
-                <IconComponent className={`h-5 w-5 ${stat.iconColor}`} strokeWidth={2.2} />
+              <div
+                className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full ${stat.bgClass}`}
+              >
+                <IconComponent
+                  className={`h-5 w-5 ${stat.iconColor}`}
+                  strokeWidth={2.2}
+                />
               </div>
 
               {/* Typography block stack */}

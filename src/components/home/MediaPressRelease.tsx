@@ -26,14 +26,14 @@ const pressData: PressPost[] = [
     category: "Investor",
     title: "Productboard and Gainsight Partnership P ...",
     date: "01th June, 2026",
-    image: "/assets/images/media2.png", 
+    image: "/assets/images/media2.png",
   },
   {
     id: 3,
     category: "Investor",
     title: "Productboard and Gainsight Partnership P ...",
     date: "01th June, 2026",
-    image: "/assets/images/media3.png"
+    image: "/assets/images/media3.png",
   },
   {
     id: 4,
@@ -50,7 +50,7 @@ export function MediaPressRelease() {
 
   const containerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
-  
+
   const [isPaused, setIsPaused] = useState(false);
   const [trackWidth, setTrackWidth] = useState(0);
 
@@ -82,19 +82,17 @@ export function MediaPressRelease() {
 
   return (
     <section className="bg-white px-4 py-16 md:px-6 lg:px-8 overflow-hidden select-none">
-      <div className="mx-auto max-w-7xl">
-        
+      <div className="mx-auto max-w-9xl">
         {/* Header Layout Grid: Centered text with end actions */}
         <div className="flex flex-col gap-4 sm:grid sm:grid-cols-3 items-center mb-10 w-full">
-          <div className="hidden sm:block" /> {/* Left empty balancer layout block */}
-          
+          <div className="hidden sm:block" />{" "}
+          {/* Left empty balancer layout block */}
           <h2 className="text-[24px] md:text-[28px] font-bold text-[#111625] tracking-tight text-center">
             Media & Press Release
           </h2>
-
           <div className="self-center sm:justify-self-end">
-            <Link 
-              href="/media" 
+            <Link
+              href="/media"
               className="rounded-full bg-[#12b76a] px-7 py-2.5 text-[14px] font-bold text-white transition-all hover:bg-[#0fa35e] whitespace-nowrap select-none shadow-xs"
             >
               View All
@@ -103,7 +101,7 @@ export function MediaPressRelease() {
         </div>
 
         {/* Carousel Window Mask Viewport Frame */}
-        <div 
+        <div
           ref={containerRef}
           className="relative w-full overflow-hidden py-2"
           onMouseEnter={() => setIsPaused(true)}
@@ -128,7 +126,7 @@ export function MediaPressRelease() {
             className="flex gap-6 w-max cursor-grab active:cursor-grabbing"
           >
             {duplicatedPress.map((post, index) => (
-              <article 
+              <article
                 key={`press-card-${post.id}-${index}`}
                 className="w-65 sm:w-70 md:w-73.75 shrink-0 rounded-2xl border border-gray-100/80 bg-white overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.01)] hover:shadow-[0_4px_24px_rgba(0,0,0,0.03)] transition-shadow flex flex-col"
               >
@@ -143,7 +141,7 @@ export function MediaPressRelease() {
                     className="object-cover select-none"
                   />
                 </div>
-                
+
                 {/* Meta Summary Container Panel */}
                 <div className="p-4 flex flex-col justify-between flex-1 pointer-events-none">
                   <div>
@@ -165,12 +163,10 @@ export function MediaPressRelease() {
                     </span>
                   </div>
                 </div>
-
               </article>
             ))}
           </motion.div>
         </div>
-
       </div>
     </section>
   );
