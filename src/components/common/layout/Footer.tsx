@@ -1,6 +1,5 @@
 import Link from "next/link";
 import {
-  ArrowUpRight,
   Clock,
   Landmark,
   CreditCard,
@@ -13,8 +12,9 @@ import {
   PhoneCall,
   ShieldCheck,
   MessageCircle,
-  Gift,
   Headphones,
+  Wrench,
+  ChevronRight,
 } from "lucide-react";
 import {
   FaApple,
@@ -28,6 +28,27 @@ import {
 import Image from "next/image";
 import { productHref } from "@/lib/productRouting";
 
+/* ─── DATA ─────────────────────────────────────────────────── */
+
+const otherFinancialLinks = [
+  "GST Registration",
+  "ITR Filing",
+  "ROC Filing",
+  "Company Registration",
+  "Credit Card",
+  "Site Map",
+  "About Us",
+];
+
+const otherFinancialLinks2 = [
+  "About Us",
+  "Site Map",
+  "Awards & Recognitions",
+  "Articles",
+  "Press Release",
+  "FAQ's",
+];
+
 const loanLinks = [
   "Personal Loan",
   "Home Loan",
@@ -38,7 +59,6 @@ const loanLinks = [
   "Education Loan",
   "Gold Loan",
   "Instant Loan",
-  "Vehicle Loan",
   "Credit Score Loan",
 ];
 
@@ -53,86 +73,67 @@ const insuranceLinks = [
   "Personal Accident Insurance",
   "Critical Illness Insurance",
   "Group Insurance",
-  "Shop Insurance",
-  "Property Insurance",
 ];
 
 const quickLinks = [
   { label: "Credit Cards", href: "/credit-cards", icon: CreditCard },
-  { label: "CIBIL Score", href: "/login?product=cibil-score", icon: Clock },
-  { label: "Offers", href: "/offers", icon: Gift },
-  { label: "Application Status", href: "/application-status", icon: BadgeCheck },
+  { label: "Tools", href: "/tools", icon: Wrench },
+  { label: "CIBIL Score", href: "/login?product=cibil-score", icon: BadgeCheck },
   { label: "Blog & Articles", href: "/blog", icon: Newspaper },
   { label: "Careers", href: "/careers", icon: BriefcaseBusiness },
   { label: "Franchise", href: "/franchise", icon: Landmark },
-  { label: "Become DSA", href: "/become-dsa", icon: HandshakeIcon },
+  { label: "Become DSA", href: "/become-dsa", icon: BadgeCheck },
   { label: "Contact Us", href: "/contact-us", icon: PhoneCall },
-  { label: "Support", href: "/support", icon: Headphones },
-];
-
-const serviceLinks = [
-  "GST Registration",
-  "ITR Filing",
-  "Company Registration",
-  "Refer and Earn",
-  "Offers and Rewards",
-  "About Us",
-  "Application Status",
 ];
 
 const socialLinks = [
-  {
-    label: "Facebook",
-    href: "https://www.facebook.com/fintaraa",
-    icon: FaFacebookF,
-  },
+  { label: "Facebook", href: "https://www.facebook.com/fintaraa", icon: FaFacebookF },
   { label: "X", href: "https://x.com/fintaraa", icon: FaXTwitter },
-  {
-    label: "Instagram",
-    href: "https://www.instagram.com/fintaraa/",
-    icon: FaInstagram,
-  },
-  {
-    label: "LinkedIn",
-    href: "https://www.linkedin.com/company/fintaraa/",
-    icon: FaLinkedinIn,
-  },
-  {
-    label: "YouTube",
-    href: "https://www.youtube.com/@Fintaraa-finance",
-    icon: FaYoutube,
-  },
+  { label: "Instagram", href: "https://www.instagram.com/fintaraa/", icon: FaInstagram },
+  { label: "LinkedIn", href: "https://www.linkedin.com/company/fintaraa/", icon: FaLinkedinIn },
+  { label: "YouTube", href: "https://www.youtube.com/@Fintaraa-finance", icon: FaYoutube },
 ];
 
 const trustItems = [
-  {
-    title: "SSL Secure",
-    text: "256-bit encryption",
-    icon: ShieldCheck,
-  },
-  {
-    title: "ISO 27001",
-    text: "Certified",
-    icon: BadgeCheck,
-  },
-  {
-    title: "RBI Registered",
-    text: "Trusted & Compliant",
-    icon: Landmark,
-  },
-  {
-    title: "Data Protected",
-    text: "Your privacy is our priority",
-    icon: LockKeyhole,
-  },
+  { title: "SSL Secure", text: "256-bit encryption", icon: ShieldCheck },
+  { title: "ISO 27001", text: "Certified", icon: BadgeCheck },
+  { title: "RBI Registered", text: "Trusted & Compliant", icon: Landmark },
+  { title: "Data Protected", text: "Your privacy is our priority", icon: LockKeyhole },
 ];
 
-const footerUnderlineClass =
-  "relative w-fit after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-white after:transition-transform after:duration-300 after:ease-out hover:after:scale-x-100";
+/* ─── HELPERS ───────────────────────────────────────────────── */
 
-function HandshakeIcon({ className }: { className?: string }) {
-  return <BadgeCheck className={className} />;
+const hoverUnderline =
+  "relative w-fit after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-white after:transition-transform after:duration-300 after:ease-out hover:after:scale-x-100";
+
+function FooterLinkList({ links }: { links: string[] }) {
+  return (
+    <ul className="mt-4 space-y-[10px]">
+      {links.map((link) => (
+        <li key={link}>
+          <Link
+            href={productHref(link)}
+            className={`${hoverUnderline} flex items-center gap-[6px] text-[13px] font-normal leading-[1.6] text-white/80 no-underline transition-colors hover:text-white`}
+          >
+            <ChevronRight className="h-3 w-3 shrink-0 text-white/50" />
+            {link}
+          </Link>
+        </li>
+      ))}
+    </ul>
+  );
 }
+
+function ColHeading({ children }: { children: React.ReactNode }) {
+  return (
+    <div>
+      <h3 className="text-[15px] font-bold text-white">{children}</h3>
+      <div className="mt-2 h-[2px] w-8 rounded-full bg-[#28c7ed]" />
+    </div>
+  );
+}
+
+/* ─── APP DOWNLOAD BANNER (unchanged) ──────────────────────── */
 
 export const AppDownloadBanner = () => {
   return (
@@ -147,7 +148,7 @@ export const AppDownloadBanner = () => {
           </h2>
           <p className="mt-5 max-w-lg text-[18px] font-medium leading-8 text-[#344054]">
             Track your credit score, explore loans, pay EMIs, get personalised
-            offers & do much more.
+            offers &amp; do much more.
           </p>
         </div>
 
@@ -169,36 +170,31 @@ export const AppDownloadBanner = () => {
           <p className="mt-3 text-[18px] font-medium text-[#344054]">
             Get smarter insights and better offers on the go.
           </p>
-          <div className="mt-6 flex flex-col sm:flex-row gap-2">
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
             <a
               href="/app"
-              className="inline-flex h-14 sm:h-15 items-center justify-center gap-3 rounded-xl bg-black px-5 text-white no-underline shadow-[0_14px_28px_rgba(0,0,0,0.16)] transition hover:-translate-y-0.5 hover:bg-[#111827]"
+              className="inline-flex h-14 items-center justify-center gap-3 rounded-xl bg-black px-5 text-white no-underline shadow-[0_14px_28px_rgba(0,0,0,0.16)] transition hover:-translate-y-0.5 hover:bg-[#111827]"
             >
-              <FaGooglePlay className="h-7 w-7 sm:h-8 sm:w-8 text-[#34a853]" />
+              <FaGooglePlay className="h-7 w-7 text-[#34a853]" />
               <span>
-                <span className="block text-[10px] font-bold uppercase leading-none">
-                  Get it on
-                </span>
-                <span className="text-[16px] sm:text-[18px] font-semibold">Google Play</span>
+                <span className="block text-[10px] font-bold uppercase leading-none">Get it on</span>
+                <span className="text-[16px] font-semibold">Google Play</span>
               </span>
             </a>
             <a
               href="/app"
-              className="inline-flex h-14 sm:h-15 items-center justify-center gap-3 rounded-xl bg-black px-5 text-white no-underline shadow-[0_14px_28px_rgba(0,0,0,0.16)] transition hover:-translate-y-0.5 hover:bg-[#111827]"
+              className="inline-flex h-14 items-center justify-center gap-3 rounded-xl bg-black px-5 text-white no-underline shadow-[0_14px_28px_rgba(0,0,0,0.16)] transition hover:-translate-y-0.5 hover:bg-[#111827]"
             >
-              <FaApple className="h-8 w-8 sm:h-9 sm:w-9 text-white" />
+              <FaApple className="h-7 w-7 text-white" />
               <span>
-                <span className="block text-[10px] font-bold leading-none">
-                  Download on the
-                </span>
-                <span className="text-[16px] sm:text-[18px] font-semibold leading-none">
-                  App Store
-                </span>
+                <span className="block text-[10px] font-bold leading-none">Download on the</span>
+                <span className="text-[16px] font-semibold leading-none">App Store</span>
               </span>
             </a>
           </div>
-          <p className="mt-7 text-[18px] font-medium leading-7 text-[#344054]">
-            Simple. Secure. Reliable.
+          <p className="mt-6 text-[16px] font-medium text-[#344054]">
+            Simple. Secure. Reliable.{" "}
+            <span className="font-semibold text-[#0b7fe8]">Fintaraa.</span>
           </p>
         </div>
       </div>
@@ -206,219 +202,195 @@ export const AppDownloadBanner = () => {
   );
 };
 
-function FooterLinkList({ links }: { links: string[] }) {
-  return (
-    <div className="mt-5 grid gap-4">
-      {links.map((link) => (
-        <Link
-          key={link}
-          href={productHref(link)}
-          className={`${footerUnderlineClass} group flex cursor-pointer items-center gap-2 text-[15px] font-medium text-white/88 no-underline transition hover:text-white`}
-        >
-          {link}
-          <ArrowUpRight className="h-4 w-4 shrink-0 rotate-0 opacity-70 transition group-hover:translate-x-0.5 group-hover:opacity-100" />
-        </Link>
-      ))}
-    </div>
-  );
-}
+/* ─── MAIN FOOTER ───────────────────────────────────────────── */
 
 export default function Footer() {
   return (
     <>
-      <footer className="bg-[#195585] text-white">
-        <div className="mx-auto max-w-9xl px-4 py-12 md:px-6 lg:px-8">
-          <div className="grid gap-12 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-[1.4fr_1.1fr_1.25fr_1.25fr_1.1fr_1.45fr]">
+      {/* ── Main dark footer ── */}
+      <footer className="bg-[#0B1C35] text-white">
+
+        {/* ── 5-column link grid ── */}
+        <div className="mx-auto max-w-9xl px-6 pt-12 pb-0 lg:px-8">
+          <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-5">
+
+            {/* Col 1 – Other Financial Services */}
             <div>
-              <Link href="/" aria-label="Fintaraa home" className="shrink-0">
-                <Image
-                  priority
-                  width={134}
-                  height={41}
-                  alt="Fintaraa"
-                  className="h-auto w-32 invert brightness-0"
-                  src="/assets/logo/logo.png"
-                />
-              </Link>
-              <p className="mt-8 max-w-sm text-[16px] leading-8 text-white/88">
-                Fintaraa is India&apos;s trusted financial marketplace helping
-                you compare, choose and manage loans, credit cards, insurance
-                and more - all in one place.
-              </p>
-              <div className="mt-16">
-                <p className="text-[16px] font-medium">Follow Us</p>
-                <div className="mt-5 flex gap-4">
-                  {socialLinks.map(({ label, href, icon: Icon }) => (
-                    <a
-                      key={label}
-                      href={href}
-                      target="_blank"
-                      rel="noreferrer"
-                      aria-label={label}
-                      className="flex h-9 w-9 items-center justify-center rounded-full border border-white/80 text-white transition hover:bg-white hover:text-[#195585]"
-                    >
-                      <Icon className="h-4 w-4" />
-                    </a>
-                  ))}
-                </div>
-              </div>
+              <ColHeading>Other Financial Services</ColHeading>
+              <FooterLinkList links={otherFinancialLinks} />
             </div>
 
+            {/* Col 2 – Loans */}
             <div>
-              <h3 className="text-[20px] font-extrabold">Loans</h3>
-              <div className="mt-3 h-0.5 w-9 bg-[#28c7ed]" />
+              <ColHeading>Loans</ColHeading>
               <FooterLinkList links={loanLinks} />
             </div>
 
+            {/* Col 3 – Insurance */}
             <div>
-              <h3 className="text-[20px] font-extrabold">Insurance</h3>
-              <div className="mt-3 h-0.5 w-9 bg-[#28c7ed]" />
+              <ColHeading>Insurance</ColHeading>
               <FooterLinkList links={insuranceLinks} />
             </div>
 
+            {/* Col 4 – Quick Links */}
             <div>
-              <h3 className="text-[20px] font-extrabold">
-                Other Financial Services
-              </h3>
-              <div className="mt-3 h-0.5 w-9 bg-[#28c7ed]" />
-              <FooterLinkList links={serviceLinks} />
-            </div>
-
-            <div>
-              <h3 className="text-[20px] font-extrabold">Quick Links</h3>
-              <div className="mt-3 h-0.5 w-9 bg-[#28c7ed]" />
-              <div className="mt-6 grid gap-5">
+              <ColHeading>Quick Links</ColHeading>
+              <ul className="mt-4 space-y-[10px]">
                 {quickLinks.map(({ label, href, icon: Icon }) => (
-                  <Link
-                    key={label}
-                    href={href}
-                    className={`${footerUnderlineClass} flex items-center gap-4 text-[16px] font-medium text-white/90 no-underline transition hover:text-white`}
-                  >
-                    <Icon className="h-5 w-5 shrink-0" />
-                    {label}
-                  </Link>
+                  <li key={label}>
+                    <Link
+                      href={href}
+                      className={`${hoverUnderline} flex items-center gap-2 text-[13px] font-normal leading-[1.6] text-white/80 no-underline transition-colors hover:text-white`}
+                    >
+                      <span className="flex h-[18px] w-[18px] shrink-0 items-center justify-center">
+                        <Icon className="h-[14px] w-[14px] text-white/60" />
+                      </span>
+                      {label}
+                    </Link>
+                  </li>
                 ))}
-              </div>
+              </ul>
             </div>
 
+            {/* Col 5 – Other Financial Services (right) */}
             <div>
-              <h3 className="text-[20px] font-extrabold">Contact</h3>
-              <div className="mt-3 h-0.5 w-9 bg-[#28c7ed]" />
-              <div className="mt-7 grid gap-7 text-[16px] leading-7 text-white/90">
-                <div className="flex gap-4">
-                  <MapPin className="mt-1 h-5 w-5 shrink-0" />
-                  <p>
-                    Fintaraa Financial Services Pvt. Ltd.
-                    <br />
-                    Unit No. 402, 4th Floor, Tower A,
-                    <br />
-                    Spaze I-Tech Park, Sector 49,
-                    <br />
-                    Gurugram, Haryana - 122018
-                  </p>
-                </div>
-                <a
-                  href="tel:+911244567890"
-                  className={`${footerUnderlineClass} flex items-center gap-4 text-white/90 no-underline transition hover:text-white`}
-                >
-                  <PhoneCall className="h-5 w-5" />
-                  +91 124 456 7890
-                </a>
-                <a
-                  href="tel:+919876543210"
-                  className={`${footerUnderlineClass} flex items-center gap-4 text-white/90 no-underline transition hover:text-white`}
-                >
-                  <MessageCircle className="h-5 w-5" />
-                  +91 98765 43210
-                </a>
-                <a
-                  href="mailto:support@fintaraa.com"
-                  className={`${footerUnderlineClass} flex items-center gap-4 text-white/90 no-underline transition hover:text-white`}
-                >
-                  <Mail className="h-5 w-5" />
-                  support@fintaraa.com
-                </a>
-                <p className="flex items-center gap-4">
-                  <Clock className="h-5 w-5" />
-                  Mon - Sat: 9:30 AM - 6:30 PM
-                </p>
-              </div>
+              <ColHeading>Other Financial Services</ColHeading>
+              <FooterLinkList links={otherFinancialLinks2} />
             </div>
           </div>
+        </div>
 
-          <div className="mx-auto mt-12 grid rounded-2xl border border-white/25 py-5 sm:grid-cols-2 md:grid-cols-4">
-            {trustItems.map(({ title, text, icon: Icon }, index) => (
+        {/* ── Contact bar ── */}
+        <div className="mx-auto mt-10 max-w-9xl border-t border-white/10 px-6 lg:px-8">
+          <div className="grid grid-cols-1 gap-y-5 py-7 text-[13px] text-white/75 sm:grid-cols-2 lg:grid-cols-[1.6fr_1px_1fr_1px_1fr_1px_1fr_1px_1fr]">
+
+            {/* Address */}
+            <div className="flex items-start gap-3">
+              <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-white/50" />
+              <p className="leading-[1.7]">
+                Fintaraa Financial Services Pvt. Ltd.
+                <br />
+                Unit No. 402, 4th Floor, Tower A,
+                <br />
+                Spaze I-Tech Park, Sector 49,
+                <br />
+                Gurugram, Haryana - 122018
+              </p>
+            </div>
+
+            {/* Vertical divider */}
+<div className="hidden lg:block w-6" />
+            {/* Phone */}
+            <a
+              href="tel:+911244567890"
+              className="flex items-center gap-3 text-white/75 no-underline transition-colors hover:text-white"
+            >
+              <PhoneCall className="h-4 w-4 shrink-0 text-white/50" />
+              +91 124 456 7890
+            </a>
+
+           <div className="hidden lg:block w-6" />
+
+            {/* WhatsApp */}
+            <a
+              href="tel:+919876543210"
+              className="flex items-center gap-3 text-white/75 no-underline transition-colors hover:text-white"
+            >
+              <MessageCircle className="h-4 w-4 shrink-0 text-white/50" />
+              +91 98765 43210
+            </a>
+
+           <div className="hidden lg:block w-6" />
+
+            {/* Email */}
+            <a
+              href="mailto:support@fintaraa.com"
+              className="flex items-center gap-3 text-white/75 no-underline transition-colors hover:text-white"
+            >
+              <Mail className="h-4 w-4 shrink-0 text-white/50" />
+              support@fintaraa.com
+            </a>
+
+            <div className="hidden lg:block w-6" />
+
+            {/* Hours */}
+            <div className="flex items-center gap-3">
+              <Clock className="h-4 w-4 shrink-0 text-white/50" />
+              Mon - Sat: 9:30 AM - 6:30 PM
+            </div>
+          </div>
+        </div>
+
+        {/* ── Trust bar ── */}
+        <div className="mx-auto max-w-9xl px-6 pb-10 lg:px-8">
+          <div className="grid grid-cols-2 divide-x divide-white/15 rounded-xl border border-white/15 md:grid-cols-4">
+            {trustItems.map(({ title, text, icon: Icon }) => (
               <div
                 key={title}
-                className={`flex items-center justify-center gap-5 px-7 py-4 ${
-                  index > 0 ? "md:border-l md:border-white/25" : ""
-                }`}
+                className="flex items-center gap-4 px-6 py-5"
               >
-                <Icon className="h-11 w-11 shrink-0" />
+                <Icon className="h-9 w-9 shrink-0 text-white/80" />
                 <div>
-                  <p className="text-[17px] font-extrabold">{title}</p>
-                  <p className="text-[15px] text-white/82">{text}</p>
+                  <p className="text-[14px] font-bold text-white">{title}</p>
+                  <p className="text-[12px] text-white/60">{text}</p>
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="border-t border-white/20">
-          <div className="mx-auto flex max-w-9xl flex-col gap-6 px-4 py-3 text-[14px] text-white/88 md:flex-row md:items-center md:justify-between md:px-6">
-            <div className="flex flex-wrap items-center gap-5">
-              <Link
-                href="/privacy-policy"
-                className={`${footerUnderlineClass} text-white/88 no-underline transition hover:text-white`}
-              >
-                Privacy Policy
-              </Link>
-              <span>|</span>
-              <Link
-                href="/terms-and-conditions"
-                className={`${footerUnderlineClass} text-white/88 no-underline transition hover:text-white`}
-              >
-                Terms and Conditions
-              </Link>
-              <span>|</span>
-              <Link
-                href="/grievance"
-                className={`${footerUnderlineClass} text-white/88 no-underline transition hover:text-white`}
-              >
-                Grievance Redressal Policy
-              </Link>
-              <span>|</span>
-              <Link
-                href="/loan-disclosure"
-                className={`${footerUnderlineClass} text-white/88 no-underline transition hover:text-white`}
-              >
-                Loan Disclosure & Disclaimer
-              </Link>
-              <span>|</span>
-              <Link
-                href="/partners"
-                className={`${footerUnderlineClass} text-white/88 no-underline transition hover:text-white`}
-              >
-                Our Lending Partners
-              </Link>
+        {/* ── Bottom bar ── */}
+        <div className="border-t border-white/10">
+          <div className="mx-auto flex max-w-9xl flex-col items-start justify-between gap-4 px-6 py-4 lg:flex-row lg:items-center lg:px-8">
+
+            {/* Copyright */}
+            <p className="text-[12px] text-white/55">
+              © 2024 Fintaraa Financial Services Pvt. Ltd. All Rights Reserved.
+            </p>
+
+            {/* Legal links */}
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[12px] text-white/65">
+              {[
+                { label: "Privacy Policy", href: "/privacy-policy" },
+                { label: "Terms & Conditions", href: "/terms-and-conditions" },
+                { label: "Grievance Redressal", href: "/grievance" },
+                { label: "Sitemap", href: "/sitemap" },
+              ].map(({ label, href }, i, arr) => (
+                <span key={href} className="flex items-center gap-4">
+                  <Link
+                    href={href}
+                    className={`${hoverUnderline} text-white/65 no-underline transition-colors hover:text-white`}
+                  >
+                    {label}
+                  </Link>
+                  {i < arr.length - 1 && <span className="text-white/30">|</span>}
+                </span>
+              ))}
             </div>
-            <div className="flex flex-wrap items-center gap-4">
-              <span className="rounded-md bg-white px-3 py-2 text-[12px] font-extrabold text-[#195585]">
-                SECURED BY SECTIGO
+
+            {/* Badges */}
+            <div className="flex items-center gap-3">
+              {/* SECTIGO */}
+              <span className="flex items-center gap-1 rounded border border-white/20 bg-white/5 px-2 py-1">
+                <ShieldCheck className="h-3.5 w-3.5 text-[#28c7ed]" />
+                <span className="text-[10px] font-bold uppercase tracking-wide text-white/80">
+                  Secured by Sectigo
+                </span>
               </span>
-              <span className="flex h-14 w-14 items-center justify-center rounded-full border border-white/50 text-[13px] font-extrabold">
+
+              {/* ISO */}
+              <span className="flex h-9 w-9 items-center justify-center rounded-full border border-white/30 text-[11px] font-extrabold text-white/80">
                 ISO
               </span>
-              <span className="text-[13px] leading-5">
+
+              {/* RBI */}
+              <span className="text-[11px] leading-[1.4] text-white/55">
                 Registered with
                 <br />
                 Reserve Bank of India (RBI)
               </span>
             </div>
           </div>
-          <p className="text-center pb-4">
-            © 2024 Fintaraa Financial Services Pvt. Ltd. All Rights Reserved.
-          </p>
         </div>
       </footer>
     </>

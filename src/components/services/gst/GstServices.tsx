@@ -1,4 +1,4 @@
-import { CircleCheck, FileText, ShieldCheck, UserRound } from "lucide-react";
+import { CircleCheck, FileText, ShieldCheck, UserRound, Tag } from "lucide-react";
 
 const serviceCards = [
   {
@@ -10,7 +10,9 @@ const serviceCards = [
       "Cancellation & Surrender",
       "Document & ARN Support",
     ],
-    bg: "bg-[#e8f7ff]",
+    bg: "bg-[#eaf6ff]",
+    border: "border-[#bcdff5]",
+    iconBg: "bg-[#d0ecff]",
   },
   {
     title: "GST Filing",
@@ -21,35 +23,56 @@ const serviceCards = [
       "Annual Return (GSTR-9)",
       "Reconciliation & Compliance",
     ],
-    bg: "bg-[#e7fff3]",
+    bg: "bg-[#eafff4]",
+    border: "border-[#b5e8cf]",
+    iconBg: "bg-[#c8f5de]",
   },
+];
+
+const featureBadges = [
+  { label: "Timely & Accurate Filing", icon: UserRound },
+  { label: "Expert CA Assistance", icon: ShieldCheck },
+  { label: "100% Compliance", icon: ShieldCheck },
+  { label: "Affordable Pricing", icon: Tag },
 ];
 
 export function GstServices() {
   return (
     <section className="px-4 py-8 md:px-6 lg:px-8">
       <div className="mx-auto max-w-9xl rounded-xl border border-[#d7dfe8] bg-white p-8">
-        <h2 className="text-[34px] font-black text-[#005ca8]">
+        {/* Section heading */}
+        <h2 className="text-[32px] font-black tracking-[-0.01em] text-[#005ca8]">
           Our GST Services
         </h2>
-        <div className="mt-10 grid gap-8 md:grid-cols-2">
+
+        {/* Two service cards */}
+        <div className="mt-8 grid gap-6 md:grid-cols-2">
           {serviceCards.map((card) => (
             <div
               key={card.title}
-              className={`rounded-xl border border-[#b9d8e8] ${card.bg} p-8`}
+              className={`rounded-xl border ${card.border} ${card.bg} p-7`}
             >
-              <h3 className="flex items-center gap-3 text-[22px] font-black text-[#005ca8]">
-                <FileText className="h-6 w-6" />
+              {/* Card header with icon placeholder */}
+              <h3 className="flex items-center gap-3 text-[18px] font-black text-[#005ca8]">
+                {/* Icon placeholder box — swap with <Image> later */}
+                <span
+                  className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${card.iconBg}`}
+                >
+                  <FileText className="h-5 w-5 text-[#005ca8]" />
+                </span>
                 {card.title}
               </h3>
-              <p className="mt-6 text-[15px] font-medium leading-6 text-[#111827]">
+
+              <p className="mt-4 text-[14px] font-medium leading-[1.65] text-[#374151]">
                 {card.text}
               </p>
-              <div className="mt-6 grid gap-4">
+
+              {/* Checklist rows */}
+              <div className="mt-5 grid gap-3">
                 {card.rows.map((row) => (
                   <div
                     key={row}
-                    className="flex items-center gap-3 text-[14px] font-semibold text-[#8b95a3]"
+                    className="flex items-center gap-3 text-[13px] font-semibold text-[#4b5563]"
                   >
                     <CircleCheck className="h-4 w-4 shrink-0 text-[#005ca8]" />
                     {row}
@@ -59,19 +82,21 @@ export function GstServices() {
             </div>
           ))}
         </div>
-        <div className="mt-8 grid gap-5 md:grid-cols-4">
-          {[
-            { title: "Timely & Accurate Filing", icon: UserRound },
-            { title: "Expert CA Assistance", icon: ShieldCheck },
-            { title: "100% Compliance", icon: ShieldCheck },
-            { title: "Affordable Pricing", icon: CircleCheck },
-          ].map(({ title, icon: Icon }) => (
+
+        {/* 4 feature badges */}
+        <div className="mt-8 grid grid-cols-2 gap-4 border-t border-[#eaf0f8] pt-7 md:grid-cols-4">
+          {featureBadges.map(({ label, icon: Icon }) => (
             <div
-              key={title}
-              className="flex items-center justify-center gap-3 text-[#005ca8]"
+              key={label}
+              className="flex items-center gap-3 text-[#005ca8]"
             >
-              <Icon className="h-5 w-5" />
-              <span className="text-[14px] font-black">{title}</span>
+              {/* Icon placeholder box — swap with <Image> later */}
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#e8f4ff]">
+                <Icon className="h-5 w-5 text-[#005ca8]" />
+              </span>
+              <span className="text-[12px] font-black leading-[1.4]">
+                {label}
+              </span>
             </div>
           ))}
         </div>
