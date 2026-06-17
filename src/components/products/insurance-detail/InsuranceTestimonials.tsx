@@ -1,0 +1,39 @@
+import { UserRound } from "lucide-react";
+
+interface Testimonial {
+  name: string;
+  role: string;
+  text: string;
+}
+
+interface InsuranceTestimonialsProps {
+  testimonials: Testimonial[];
+}
+
+export function InsuranceTestimonials({ testimonials }: InsuranceTestimonialsProps) {
+  return (
+    <section className="px-4 py-10 md:px-6 lg:px-8">
+      <div className="mx-auto max-w-9xl text-center">
+        <h2 className="text-[22px] font-black">What Our Clients Say</h2>
+        <div className="mt-6 grid gap-5 md:grid-cols-3">
+          {testimonials.map((item) => (
+            <div key={item.name} className="rounded-[28px] border border-dashed border-[#005ca8] p-6 text-left">
+              <div className="flex items-center gap-3">
+                <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#e8f4ff] text-[#005ca8]">
+                  <UserRound className="h-5 w-5" />
+                </span>
+                <span>
+                  <span className="block text-[13px] font-black">{item.name}</span>
+                  <span className="text-[11px] font-semibold text-[#667085]">{item.role}</span>
+                </span>
+              </div>
+              <p className="mt-4 text-[12px] font-medium leading-6 text-[#344054]">
+                {item.text}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}

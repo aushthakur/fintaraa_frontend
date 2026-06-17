@@ -17,10 +17,7 @@ const searchLinks = [
 export function CibilReportSocial() {
   return (
     <>
-      <FaqAccordion
-        title="Frequently Asked Questions"
-        subtitle="Everything you need to know about our personal loans"
-      />
+      <FaqAccordion />
 
       {/* FOOTER: SEO SEARCH LINKS BANNER */}
       <section className="w-full bg-white antialiased">

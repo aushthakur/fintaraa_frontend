@@ -14,7 +14,7 @@ export function BlogVisual({
 }) {
   return (
     <div
-      className={`relative isolate overflow-hidden bg-[#07162d] ${
+      className={`relative isolate overflow-hidden rounded-xl border border-[#b9d8e8] bg-[#e8f7ff] ${
         compact ? "h-56" : "min-h-88"
       }`}
       style={
@@ -23,29 +23,32 @@ export function BlogVisual({
         } as CSSProperties
       }
     >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_15%,rgba(255,255,255,0.18),transparent_26%),radial-gradient(circle_at_82%_22%,var(--blog-accent),transparent_28%),linear-gradient(135deg,#07162d_0%,#195585_54%,#0f766e_100%)] opacity-95" />
-      <div className="blog-orbit absolute -right-14 top-8 h-44 w-44 rounded-full border border-white/18" />
-      <div className="blog-orbit-reverse absolute -bottom-16 left-8 h-52 w-52 rounded-full border border-white/14" />
-      <div className="absolute left-6 top-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-white/14 text-white backdrop-blur">
+      <div className="absolute inset-0 bg-[linear-gradient(135deg,#e8f7ff_0%,#ffffff_52%,#e7fff3_100%)]" />
+      <div className="absolute -right-14 top-8 h-44 w-44 rounded-full border border-[#005ca8]/15 bg-white/40" />
+      <div className="absolute -bottom-16 left-8 h-52 w-52 rounded-full border border-[#13a653]/15 bg-white/35" />
+      <div
+        className="absolute right-10 top-10 h-20 w-20 rounded-xl opacity-20"
+        style={{ backgroundColor: "var(--blog-accent)" }}
+      />
+      <div className="absolute left-6 top-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-[#005ca8] shadow-[0_12px_28px_rgba(0,92,168,0.12)]">
         <ShieldCheck className="h-6 w-6" />
       </div>
       <div className="absolute bottom-6 right-6 grid gap-3">
         {[LineChart, BarChart3, Landmark].map((Icon, index) => (
           <div
             key={index}
-            className="blog-float flex h-12 w-12 items-center justify-center rounded-2xl bg-white/14 text-white shadow-[0_14px_28px_rgba(0,0,0,0.16)] backdrop-blur"
-            style={{ animationDelay: `${index * 0.55}s` }}
+            className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-[#005ca8] shadow-[0_12px_28px_rgba(0,92,168,0.10)]"
           >
             <Icon className="h-5 w-5" />
           </div>
         ))}
       </div>
-      <div className="relative z-10 flex h-full flex-col justify-end p-5 text-white">
-        <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-white/70">
+      <div className="relative z-10 flex h-full flex-col justify-end p-5 text-[#111827]">
+        <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#005ca8]">
           {category}
         </p>
         <h3
-          className={`mt-2 max-w-xl font-extrabold leading-tight ${
+          className={`mt-2 max-w-xl font-black leading-tight ${
             compact ? "text-[18px]" : "text-[34px]"
           }`}
         >

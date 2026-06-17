@@ -38,7 +38,6 @@ export function LoanDetailPage({ page }: { page: LoanSeoPageData }) {
   const featureItems = (
     active?.bullets?.length ? active.bullets : tabs.flatMap((tab) => tab.bullets || [])
   ).slice(0, 6);
-  const faqs = tabs.flatMap((tab) => tab.faqs || []);
 
   // Map each tab key to the sections it should show
   const tabSections: Record<string, string[]> = {
@@ -94,7 +93,7 @@ export function LoanDetailPage({ page }: { page: LoanSeoPageData }) {
       {showSection("verification") && <LoanVerificationSteps page={page} />}
 
       <LoanOtherProducts />
-      <LoanFAQSection loanType={page.loanType} faqs={faqs} />
+      <LoanFAQSection />
       <Testimonials />
       <AppDownloadBanner />
     </main>
