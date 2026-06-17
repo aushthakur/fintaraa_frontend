@@ -4,16 +4,19 @@ import {
   FileText,
   Handshake,
   ShieldCheck,
+  Users,
   Target,
   Trophy,
   UsersRound,
+  TrendingUp,
+  GraduationCap,
 } from "lucide-react";
 
 export const careerStats = [
   { title: "Trusted Brand", icon: ShieldCheck },
-  { title: "Great Culture", icon: ShieldCheck },
-  { title: "Career Growth", icon: ShieldCheck },
-  { title: "Learning & Development", icon: ShieldCheck },
+  { title: "Great Culture", icon: Users },
+  { title: "Career Growth", icon: TrendingUp },
+  { title: "Learning & Development", icon: GraduationCap },
 ];
 
 export const cultureValues = [
@@ -45,7 +48,7 @@ export const cultureValues = [
 ];
 
 export const jobs = Array.from({ length: 6 }, (_, index) => ({
-  title: "Relationship Manager",
+  title: "Relationship Manger",
   department: "Sales Department",
   location: index % 2 ? "New Delhi" : "New Delhi",
   experience: "1-2 Years",
