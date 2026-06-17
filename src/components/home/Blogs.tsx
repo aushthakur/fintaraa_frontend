@@ -88,7 +88,7 @@ export function RecentBlogs() {
   {/* Right Column: Button pushed cleanly to the far right end */}
   <div className="self-center sm:justify-self-end">
     <Link 
-      href="/blogs" 
+      href="/blog" 
       className="rounded-full bg-[#12b76a] px-6 py-2.5 text-[14px] font-bold text-white transition-all hover:bg-[#0fa35e] whitespace-nowrap select-none"
     >
       View All Blogs

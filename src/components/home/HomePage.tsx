@@ -1,17 +1,17 @@
+import { RecentBlogs } from "./Blogs";
 import { WhyChoose } from "./WhyChoose";
 import { HeroSection } from "./HeroSection";
 import { Testimonials } from "./Testimonials";
 import { EmiCalculator } from "./EmiCalculator";
 import { PartnersStrip } from "./PartnersStrip";
-import { ProductExplorer } from "./ProductExplorer";
-import { EligibilitySection } from "./EligibilitySection";
-import { MajorBankCreditCards } from "./MajorBanksCreditCards";
-import { AppDownloadBanner } from "../common/layout/Footer";
-import { CreditScoreBanner } from "./CreditScoreBanner";
-import { RecentBlogs } from "./Blogs";
-import { MediaPressRelease } from "./MediaPressRelease";
-import { VideoTestimonials } from "./VideoTestimonials";
 import { HomeLoanOffers } from "./HomeLoanOffers";
+import { ProductExplorer } from "./ProductExplorer";
+import { MediaPressRelease } from "./MediaPressRelease";
+import { CreditScoreBanner } from "./CreditScoreBanner";
+import { VideoTestimonials } from "./VideoTestimonials";
+import { EligibilitySection } from "./EligibilitySection";
+import { AppDownloadBanner } from "../common/layout/Footer";
+import { MajorBankCreditCards } from "./MajorBanksCreditCards";
 
 export function HomePage() {
   return (
@@ -60,7 +60,7 @@ export function HomePage() {
       </div>
 
       <MajorBankCreditCards />
-     
+
       <ProductExplorer
         compactSpacing
         sectionTitles={["Other financial services"]}

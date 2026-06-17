@@ -1,5 +1,5 @@
 import { AppDownloadBanner } from "@/components/common/layout/Footer";
-import { FranchiseFaq } from "./FranchiseFaq";
+import { FaqAccordion } from "@/components/common/FaqAccordion";
 import { FranchiseHero } from "./FranchiseHero";
 import { FranchiseModel } from "./FranchiseModel";
 import { FranchiseBenefits } from "./FranchiseBenefits";
@@ -12,7 +12,10 @@ export function FranchisePage() {
       <FranchiseModel />
       <FranchiseBenefits />
       <FranchiseWhyChoose />
-      <FranchiseFaq />
+       <FaqAccordion
+        title="Frequently Asked Questions"
+        subtitle="Everything you need to know about career opportunities at Fintaraa"
+      />
       <AppDownloadBanner />
     </main>
   );

@@ -20,7 +20,7 @@ export function LoanEMICalculator({ page }: { page: LoanSeoPageData }) {
 
   return (
     <section className="w-full bg-[#004B93] min-h-170 px-6 py-12 antialiased text-[#111827] sm:px-8 md:px-12 lg:px-16">
-      <div className="mx-auto max-w-7xl">
+      <div className="mx-auto max-w-9xl">
         {/* SECTION HEADER BLOCK */}
         <div className="mb-8">
           <h2 className="text-[32px] font-bold tracking-tight text-white leading-tight">
@@ -183,49 +183,50 @@ export function LoanEMICalculator({ page }: { page: LoanSeoPageData }) {
           </div>
 
           <div className="flex my-10 ms-10">
+            {/* RIGHT SECTION: OPTIMIZED COMPACT EMI READOUT CARD */}
+            <div className="bg-[#e3f0fc] p-8 flex flex-col my-2 me-2 justify-between border border-blue-100/20 shadow-sm w-full max-w-full mx-auto lg:ms-auto lg:me-0">
+              {/* Upper segment text content */}
+              <div className="text-center space-y-2 pb-4 border-b border-gray-400/30">
+                <p className="text-xs font-semibold text-gray-600 tracking-wide">
+                  Your Monthly EMI Payment
+                </p>
+                <p className="text-2xl font-black text-gray-900 tracking-tight leading-none">
+                  ₹ 15,668
+                </p>
+              </div>
 
-          {/* RIGHT SECTION: OPTIMIZED COMPACT EMI READOUT CARD */}
-          <div className="bg-[#e3f0fc] p-8 flex flex-col my-2 me-2 justify-between border border-blue-100/20 shadow-sm w-full max-w-full mx-auto lg:ms-auto lg:me-0">
-            {/* Upper segment text content */}
-            <div className="text-center space-y-2 pb-4 border-b border-gray-400/30">
-              <p className="text-xs font-semibold text-gray-600 tracking-wide">
-                Your Monthly EMI Payment
-              </p>
-              <p className="text-2xl font-black text-gray-900 tracking-tight leading-none">
-                ₹ 15,668
-              </p>
+              {/* Middle data points structure block */}
+              <div className="py-4 space-y-3 border-b border-gray-400/30">
+                <div className="flex justify-between text-xs font-bold text-gray-600">
+                  <span>Principal Amount</span>
+                  <span className="text-gray-900 font-extrabold">
+                    ₹ 5,00,000
+                  </span>
+                </div>
+                <div className="flex justify-between text-xs font-bold text-gray-600">
+                  <span>Interest Amount</span>
+                  <span className="text-gray-900 font-extrabold">₹ 64,055</span>
+                </div>
+              </div>
+
+              {/* Absolute total readout baseline and redirect anchor */}
+              <div className="pt-4 space-y-5">
+                <div className="flex justify-between items-center text-sm font-black text-gray-900 tracking-tight">
+                  <span>Total Amount</span>
+                  <span className="text-base font-extrabold">₹ 5,64,055</span>
+                </div>
+
+                <div className="w-full flex justify-center">
+                  <Link
+                    href={`/login?product=${page.loanTypeSlug}`}
+                    className="flex h-9 w-full max-w-55 items-center justify-center gap-1.5 rounded-full bg-[#13a653] text-xs font-bold text-white transition-all hover:bg-[#0f8f46] active:scale-[0.99] no-underline shadow-sm"
+                  >
+                    <span>Get Instant Loan</span>
+                    <ArrowRight className="h-3.5 w-3.5" strokeWidth={2.5} />
+                  </Link>
+                </div>
+              </div>
             </div>
-
-            {/* Middle data points structure block */}
-            <div className="py-4 space-y-3 border-b border-gray-400/30">
-              <div className="flex justify-between text-xs font-bold text-gray-600">
-                <span>Principal Amount</span>
-                <span className="text-gray-900 font-extrabold">₹ 5,00,000</span>
-              </div>
-              <div className="flex justify-between text-xs font-bold text-gray-600">
-                <span>Interest Amount</span>
-                <span className="text-gray-900 font-extrabold">₹ 64,055</span>
-              </div>
-            </div>
-
-            {/* Absolute total readout baseline and redirect anchor */}
-            <div className="pt-4 space-y-5">
-              <div className="flex justify-between items-center text-sm font-black text-gray-900 tracking-tight">
-                <span>Total Amount</span>
-                <span className="text-base font-extrabold">₹ 5,64,055</span>
-              </div>
-
-              <div className="w-full flex justify-center">
-                <Link
-                  href={`/login?product=${page.loanTypeSlug}`}
-                  className="flex h-9 w-full max-w-55 items-center justify-center gap-1.5 rounded-full bg-[#13a653] text-xs font-bold text-white transition-all hover:bg-[#0f8f46] active:scale-[0.99] no-underline shadow-sm"
-                >
-                  <span>Get Instant Loan</span>
-                  <ArrowRight className="h-3.5 w-3.5" strokeWidth={2.5} />
-                </Link>
-              </div>
-            </div>
-          </div>
           </div>
         </div>
       </div>

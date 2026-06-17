@@ -2,7 +2,6 @@ import {
   BadgeCheck,
   BadgeIndianRupee,
   Banknote,
-  Building2,
   ChartNoAxesColumnIncreasing,
   CircleCheck,
   ClipboardCheck,
@@ -11,42 +10,38 @@ import {
   Handshake,
   Headphones,
   Landmark,
+  LayoutDashboard,
+  Lightbulb,
   Megaphone,
   Scale,
   ShieldCheck,
+  User,
   UserCheck,
   WalletCards,
   Coins,
   FileText,
   Home,
-  Lightbulb,
-  User,
-  LayoutDashboard,
 } from "lucide-react";
 
 export const dsaStats = [
   { value: "95", label: "Banks & NBFCs", icon: ShieldCheck },
-  { value: "6,800+", label: "Active Partners", icon: ShieldCheck },
-  { value: "₹150 Cr", label: "Loans Disbursed", icon: ShieldCheck },
+  { value: "6.80K", label: "Active Partner", icon: ShieldCheck },
+  { value: "\u20b9150 Cr", label: "Loans Disbursed", icon: ShieldCheck },
   { value: "24/7", label: "Partner Support", icon: ShieldCheck },
 ];
 
 export const dsaSteps = [
   {
     title: "Register as Partner",
-    text: "Fill the application form and our team will get in touch with you.",
+    text: "Fill the registration form and our team will get in touch with you.",
   },
   {
     title: "Get Training & Access",
-    text: "Complete training and get access to our partner portal and tools.",
+    text: "Complete training and get access to the partner portal and tools.",
   },
   {
     title: "Submit Customer Leads",
     text: "Share customer details for loans, cards or insurance products.",
-  },
-  {
-    title: "Get Approval",
-    text: "Track your lead status as it goes through bank review and gets approved.",
   },
   {
     title: "Earn Commission",
@@ -57,7 +52,7 @@ export const dsaSteps = [
 export const dsaBenefits = [
   {
     title: "30+ Bank Tie-ups",
-    text: "Partner with 30+ leading banks and NBFCs for your customer loans.",
+    text: "Loan up to \u20b940 Lakh. Interest from 10.50% p.a.",
     icon: Banknote,
   },
   {
@@ -67,7 +62,7 @@ export const dsaBenefits = [
   },
   {
     title: "Training Program",
-    text: "Free product & sales training to help you succeed.",
+    text: "Free product and sales training to help you succeed.",
     icon: ClipboardCheck,
   },
   {
@@ -77,38 +72,38 @@ export const dsaBenefits = [
   },
   {
     title: "Faster Payouts",
-    text: "Get faster payouts on your completed disbursements.",
+    text: "Loan up to \u20b910 Cr. Interest from 8.40% p.a.",
     icon: WalletCards,
   },
   {
     title: "Marketing Material",
-    text: "Access high-quality marketing materials to grow your customer reach.",
+    text: "Loan up to \u20b91 Cr. Interest from 11.25% p.a.",
     icon: Megaphone,
   },
   {
     title: "Single Dashboard",
-    text: "Track all your leads, applications and payouts in a single dashboard.",
+    text: "Lifetime free cards and exclusive rewards.",
     icon: LayoutDashboard,
   },
   {
     title: "Real-time Tracking",
-    text: "Track the real-time status of all your customer applications.",
+    text: "Track every application status in real time.",
     icon: ChartNoAxesColumnIncreasing,
   },
 ];
 
 export const commissionRows = [
-  ["Personal Loan", "Up to 3.5%"],
-  ["Home Loan", "Up to 1.5%"],
-  ["Business Loan", "Up to 2.5%"],
-  ["Credit Card", "Up to ₹3,000"],
-  ["Insurance", "Up to 4.5%"],
+  ["Personal Loan", "Up to 2%"],
+  ["Home Loan", "Up to 3%"],
+  ["Business Loan", "Up to 1%"],
+  ["Credit Card", "Up to 9%"],
+  ["Insurance", "Up to 4%"],
 ];
 
 export const eligibleProfiles = [
-  { title: "Banking Agent", icon: Landmark },
-  { title: "Insurance Advisors", icon: ShieldCheck },
-  { title: "CA/Tax Professionals", icon: FileText },
+  { title: "Loan Agents", icon: Landmark },
+  { title: "Insurance advisors", icon: ShieldCheck },
+  { title: "CA/ Tax Consultants", icon: FileText },
   { title: "Property Dealer", icon: Home },
   { title: "Freelancers", icon: User },
   { title: "Financial Consultants", icon: Coins },

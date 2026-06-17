@@ -67,8 +67,8 @@ export function CibilMonitoringTips() {
           </div>
 
           {/* Recharts Wrapper */}
-          <div className="mt-8 w-full h-64 pr-2 select-none">
-            <ResponsiveContainer width="100%" height="100%">
+          <div className="mt-8 w-full pr-2 select-none">
+            <ResponsiveContainer width="100%" height={256} minWidth={0}>
               <LineChart
                 data={CHART_DATA}
                 margin={{ top: 10, right: 10, left: -25, bottom: 0 }}

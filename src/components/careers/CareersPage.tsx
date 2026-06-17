@@ -1,6 +1,6 @@
 import { AppDownloadBanner } from "@/components/common/layout/Footer";
+import { FaqAccordion } from "@/components/common/FaqAccordion";
 import { DsaWhyChoose } from "@/components/dsa/DsaWhyChoose";
-import { ServiceFaqSection } from "@/components/services/shared/ServiceShared";
 import { CareerJobs } from "./CareerJobs";
 import { CareersCulture } from "./CareersCulture";
 import { CareersHero } from "./CareersHero";
@@ -16,7 +16,10 @@ export function CareersPage() {
       <CareersJoin />
       <CareersLife />
       <DsaWhyChoose />
-      <ServiceFaqSection subtitle="Everything you need to know about our personal loans" />
+      <FaqAccordion
+        title="Frequently Asked Questions"
+        subtitle="Everything you need to know about career opportunities at Fintaraa"
+      />
       <AppDownloadBanner />
     </main>
   );
