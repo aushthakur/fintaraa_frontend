@@ -18,35 +18,35 @@ const benefits = [
 export function ItrInfo() {
   return (
     <section className="px-4 py-8 md:px-6 lg:px-8">
-      <div className="mx-auto max-w-9xl rounded-xl border border-[#d7dfe8] bg-white p-8">
-        <h2 className="text-center text-[28px] font-bold text-[#1a6bc6]">
+      <div className="mx-auto max-w-9xl rounded-xl border border-[#d7dfe8] bg-white p-5 sm:p-6 md:p-8">
+        <h2 className="text-center text-xl font-bold text-[#1a6bc6] sm:text-2xl md:text-[26px] lg:text-[28px]">
           What is ITR?
         </h2>
-        <p className="mx-auto mt-6 max-w-3xl text-center text-[14px] font-medium leading-6 text-[#1f2937]">
+        <p className="mx-auto mt-4 max-w-3xl text-center text-xs font-medium leading-6 text-[#1f2937] sm:text-sm md:text-[14px] lg:text-base">
           ITR (Income Tax Return) is a form used by individuals and entities to
           report their income, deductions, and taxes to the Income Tax
           Department.
         </p>
-        <div className="mt-10 grid gap-8 md:grid-cols-2">
+        <div className="mt-8 grid gap-6 sm:mt-10 sm:gap-8 md:grid-cols-2">
           {[
             ["Who Must File ITR?", mustFile, "bg-[#e8f7ff]"],
             ["Key Benefits", benefits, "bg-[#e7fff3]"],
           ].map(([title, rows, bg]) => (
             <div
               key={String(title)}
-              className={`rounded-xl border border-[#b9d8e8] ${bg} p-8`}
+              className={`rounded-xl border border-[#b9d8e8] ${bg} p-5 sm:p-6 md:p-8`}
             >
-              <h3 className="flex items-center gap-3 text-[19px] font-bold text-[#1a6bc6]">
-                <UserRound className="h-5 w-5" />
+              <h3 className="flex items-center gap-3 text-base font-bold text-[#1a6bc6] sm:text-[17px] md:text-[19px]">
+                <UserRound className="h-4 w-4 sm:h-5 sm:w-5" />
                 {title}
               </h3>
-              <div className="mt-6 grid gap-4">
+              <div className="mt-4 grid gap-3 sm:mt-6 sm:gap-4">
                 {(rows as string[]).map((row) => (
                   <div
                     key={row}
-                    className="flex items-center gap-3 text-[13px] font-medium text-[#8b95a3]"
+                    className="flex items-center gap-3 text-xs font-medium text-[#8b95a3] sm:text-[13px] md:text-sm"
                   >
-                    <CircleCheck className="h-4 w-4 shrink-0 text-[#1a6bc6]" />
+                    <CircleCheck className="h-3.5 w-3.5 shrink-0 text-[#1a6bc6] sm:h-4 sm:w-4" />
                     {row}
                   </div>
                 ))}

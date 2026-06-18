@@ -58,13 +58,13 @@ export function ItrHero() {
 
       <div className="mx-auto grid max-w-9xl gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
         <div>
-          <h1 className="text-[40px] font-bold leading-tight tracking-[-0.02em] text-[#1a6bc6] md:text-[54px]">
+          <h1 className="text-[28px] font-bold leading-tight tracking-[-0.02em] text-[#1a6bc6] sm:text-[34px] md:text-[40px] lg:text-[48px] xl:text-[54px]">
             ITR Filling
           </h1>
-          <p className="mt-3 text-[17px] font-medium text-[#1f2937] md:text-[19px]">
+          <p className="mt-3 text-[15px] font-medium text-[#1f2937] sm:text-base md:text-[17px] lg:text-[19px]">
             File your Income Tax Return easily and stay 100% compliant
           </p>
-          <div className="relative mt-6 min-h-130">
+          <div className="relative mt-6 min-h-[200px] sm:min-h-[260px] md:min-h-[300px] lg:min-h-[340px] xl:min-h-[380px]">
             <Image
               src="/assets/services/itr-hero.png"
               alt="ITR filing"
@@ -76,40 +76,40 @@ export function ItrHero() {
         </div>
 
         <div className="relative mx-auto w-full max-w-[560px]">
-          <div className="absolute -right-7 -top-7 h-full w-[460px] rounded-2xl bg-[#005ca8]" />
-          <div className="relative rounded-2xl bg-white p-8 shadow-[0_18px_45px_rgba(16,24,40,0.14)]">
-            <h2 className="text-[24px] font-bold text-[#1f2937]">
+          <div className="absolute -right-7 -top-7 h-full w-[340px] rounded-2xl bg-[#005ca8] sm:w-[380px] md:w-[420px] lg:w-[460px]" />
+          <div className="relative rounded-2xl bg-white p-5 shadow-[0_18px_45px_rgba(16,24,40,0.14)] sm:p-6 md:p-8">
+            <h2 className="text-lg font-bold text-[#1f2937] sm:text-xl md:text-[22px] lg:text-[24px]">
               Get Started with ITR Filling
             </h2>
-            <p className="mt-2 text-[13px] font-medium leading-5 text-[#8b95a3]">
+            <p className="mt-2 text-xs font-medium leading-5 text-[#8b95a3] sm:text-[13px] md:text-sm">
               Fill in your details and our expert will get in touch with you.
             </p>
-            <form className="mt-6 grid gap-5">
+            <form className="mt-5 grid gap-4 sm:mt-6 sm:gap-5">
               {fields.map(([label, placeholder, type]) => (
-                <label key={label} className="grid gap-2">
-                  <span className="text-[14px] font-bold text-[#1f2937]">
+                <label key={label} className="grid gap-1.5 sm:gap-2">
+                  <span className="text-xs font-bold text-[#1f2937] sm:text-[13px] md:text-sm lg:text-[14px]">
                     {label}
                   </span>
                   {type === "select" ? (
-                    <select className="h-12 rounded-lg border border-[#d9dfe8] bg-white px-4 text-[13px] font-medium text-[#8b95a3] outline-none focus:border-[#005ca8]">
+                    <select className="h-10 rounded-lg border border-[#d9dfe8] bg-white px-3 text-xs font-medium text-[#8b95a3] outline-none focus:border-[#005ca8] sm:h-11 sm:text-[13px] md:h-12 md:text-sm">
                       <option>{placeholder}</option>
                     </select>
                   ) : (
                     <input
                       type={type}
                       placeholder={placeholder}
-                      className="h-12 rounded-lg border border-[#d9dfe8] px-4 text-[13px] font-medium outline-none placeholder:text-[#a0a7b2] focus:border-[#005ca8]"
+                      className="h-10 rounded-lg border border-[#d9dfe8] px-3 text-xs font-medium outline-none placeholder:text-[#a0a7b2] focus:border-[#005ca8] sm:h-11 sm:text-[13px] md:h-12 md:text-sm"
                     />
                   )}
                 </label>
               ))}
               <button
                 type="button"
-                className="mx-auto mt-2 h-13 w-64 rounded-full bg-gradient-to-r from-[#1cb45c] to-[#28cf6c] text-[14px] font-bold text-white"
+                className="mx-auto mt-2 h-11 w-full max-w-xs rounded-full bg-gradient-to-r from-[#1cb45c] to-[#28cf6c] text-xs font-bold text-white sm:h-12 sm:text-sm md:h-13 md:text-[14px]"
               >
                 Submit Inquiry
               </button>
-              <p className="flex items-center justify-center gap-1.5 text-center text-[12px] font-medium text-[#a0a7b2]">
+              <p className="flex items-center justify-center gap-1.5 text-center text-[11px] font-medium text-[#a0a7b2] sm:text-xs">
                 🔒 Your information safe with us
               </p>
             </form>
@@ -117,17 +117,17 @@ export function ItrHero() {
         </div>
       </div>
 
-      <div className="mx-auto mt-10 grid max-w-9xl gap-8 md:grid-cols-3">
+      <div className="mx-auto mt-10 grid max-w-9xl gap-6 sm:gap-8 md:grid-cols-3">
         {features.map(({ title, text, icon: Icon }) => (
-          <div key={title} className="flex items-center gap-4">
-            <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-[#d8ecff] text-[#1a6bc6]">
-              <Icon className="h-6 w-6" />
+          <div key={title} className="flex items-center gap-3 sm:gap-4">
+            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#d8ecff] text-[#1a6bc6] sm:h-14 sm:w-14 md:h-16 md:w-16">
+              <Icon className="h-5 w-5 sm:h-6 sm:w-6" />
             </span>
             <span>
-              <span className="block text-[18px] font-bold text-[#1f2937]">
+              <span className="block text-sm font-bold text-[#1f2937] sm:text-base md:text-[17px] lg:text-[18px]">
                 {title}
               </span>
-              <span className="mt-1 block text-[13px] font-medium leading-5 text-[#98a2b3]">
+              <span className="mt-1 block text-xs font-medium leading-5 text-[#98a2b3] sm:text-[13px] md:text-sm">
                 {text}
               </span>
             </span>

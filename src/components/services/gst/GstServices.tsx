@@ -39,42 +39,42 @@ const featureBadges = [
 export function GstServices() {
   return (
     <section className="px-4 py-8 md:px-6 lg:px-8">
-      <div className="mx-auto max-w-9xl rounded-xl border border-[#d7dfe8] bg-white p-8">
+      <div className="mx-auto max-w-9xl rounded-xl border border-[#d7dfe8] bg-white p-5 sm:p-6 md:p-8">
         {/* Section heading */}
-        <h2 className="text-[32px] font-black tracking-[-0.01em] text-[#005ca8]">
+        <h2 className="text-xl font-black tracking-[-0.01em] text-[#005ca8] sm:text-2xl md:text-[28px] lg:text-[32px]">
           Our GST Services
         </h2>
 
         {/* Two service cards */}
-        <div className="mt-8 grid gap-6 md:grid-cols-2">
+        <div className="mt-6 grid gap-5 sm:mt-8 sm:gap-6 md:grid-cols-2">
           {serviceCards.map((card) => (
             <div
               key={card.title}
-              className={`rounded-xl border ${card.border} ${card.bg} p-7`}
+              className={`rounded-xl border ${card.border} ${card.bg} p-5 sm:p-6 md:p-7`}
             >
               {/* Card header with icon placeholder */}
-              <h3 className="flex items-center gap-3 text-[18px] font-black text-[#005ca8]">
+              <h3 className="flex items-center gap-3 text-base font-black text-[#005ca8] sm:text-[17px] md:text-[18px] lg:text-xl">
                 {/* Icon placeholder box — swap with <Image> later */}
                 <span
-                  className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${card.iconBg}`}
+                  className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${card.iconBg} sm:h-9 sm:w-9`}
                 >
-                  <FileText className="h-5 w-5 text-[#005ca8]" />
+                  <FileText className="h-4 w-4 text-[#005ca8] sm:h-5 sm:w-5" />
                 </span>
                 {card.title}
               </h3>
 
-              <p className="mt-4 text-[14px] font-medium leading-[1.65] text-[#374151]">
+              <p className="mt-3 text-xs font-medium leading-[1.65] text-[#374151] sm:text-sm md:text-[14px] lg:text-base">
                 {card.text}
               </p>
 
               {/* Checklist rows */}
-              <div className="mt-5 grid gap-3">
+              <div className="mt-4 grid gap-2.5 sm:mt-5 sm:gap-3">
                 {card.rows.map((row) => (
                   <div
                     key={row}
-                    className="flex items-center gap-3 text-[13px] font-semibold text-[#4b5563]"
+                    className="flex items-center gap-3 text-xs font-semibold text-[#4b5563] sm:text-sm md:text-[14px]"
                   >
-                    <CircleCheck className="h-4 w-4 shrink-0 text-[#005ca8]" />
+                    <CircleCheck className="h-3.5 w-3.5 shrink-0 text-[#005ca8] sm:h-4 sm:w-4" />
                     {row}
                   </div>
                 ))}
@@ -84,17 +84,17 @@ export function GstServices() {
         </div>
 
         {/* 4 feature badges */}
-        <div className="mt-8 grid grid-cols-2 gap-4 border-t border-[#eaf0f8] pt-7 md:grid-cols-4">
+        <div className="mt-6 grid grid-cols-2 gap-4 border-t border-[#eaf0f8] pt-6 sm:mt-8 sm:pt-7 md:grid-cols-4">
           {featureBadges.map(({ label, icon: Icon }) => (
             <div
               key={label}
               className="flex items-center gap-3 text-[#005ca8]"
             >
               {/* Icon placeholder box — swap with <Image> later */}
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#e8f4ff]">
-                <Icon className="h-5 w-5 text-[#005ca8]" />
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#e8f4ff] sm:h-9 sm:w-9">
+                <Icon className="h-4 w-4 text-[#005ca8] sm:h-5 sm:w-5" />
               </span>
-              <span className="text-[12px] font-black leading-[1.4]">
+              <span className="text-[11px] font-black leading-[1.4] text-[#005ca8] sm:text-xs md:text-sm">
                 {label}
               </span>
             </div>
