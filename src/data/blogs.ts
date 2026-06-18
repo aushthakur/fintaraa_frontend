@@ -5,12 +5,18 @@ export type BlogCategory =
   | "Credit Cards"
   | "Financial Planning";
 
+export type BlogAuthor = {
+  name: string;
+  role: string;
+  avatar: string;
+};
+
 export type BlogPost = {
   slug: string;
   title: string;
   excerpt: string;
   category: BlogCategory;
-  author: string;
+  author: string | BlogAuthor;
   publishedAt: string;
   readTime: string;
   featured?: boolean;

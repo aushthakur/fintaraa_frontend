@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import {
-  ArrowRight,
   BadgeCheck,
   BadgeIndianRupee,
   BadgePercent,
@@ -472,12 +471,12 @@ export function ProductsPage() {
                   </span>
                 </div>
 
-                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-7">
-                  {section.products.map(({ title, text, icon: Icon, tone }) => (
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-8">
+                  {section.products.map(({ title, icon: Icon, tone }) => (
                     <Link
                       key={title}
                       href={productHref(title)}
-                      className="group flex min-h-64 flex-col items-center justify-between rounded-xl bg-white px-2 py-4 text-center no-underline ring-1 ring-[#eef2f7] transition duration-300 hover:-translate-y-1 hover:ring-[#d9f6e6]"
+                      className="group flex min-h-44 flex-col items-center justify-between rounded-xl bg-white px-2 py-4 text-center no-underline ring-1 ring-[#eef2f7] transition duration-300 hover:-translate-y-1 hover:ring-[#d9f6e6]"
                     >
                       <div>
                         <div className="flex justify-center">
@@ -493,14 +492,7 @@ export function ProductsPage() {
                         <h3 className="mt-5 line-clamp-2 text-[16px] font-extrabold leading-snug text-[#1d2738] transition group-hover:text-[#195585]">
                           {title}
                         </h3>
-                        <p className="mt-4 line-clamp-3 text-[13px] font-medium leading-5 text-[#4b5565]">
-                          {text}
-                        </p>
                       </div>
-
-                      <span className="mt-6 flex h-9 w-9 items-center justify-center text-[#08a045] transition group-hover:translate-x-1">
-                        <ArrowRight className="h-7 w-7 stroke-[2.6]" />
-                      </span>
                     </Link>
                   ))}
                 </div>
