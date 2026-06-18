@@ -303,7 +303,7 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 overflow-x-clip border-b border-[#e5eef8] bg-white/95 backdrop-blur">
-      <div className="bg-[#195585] px-4 text-white md:px-6 lg:pl-8 lg:pr-10">
+      <div className="bg-[#002B4D] px-4 text-white md:px-6 lg:pl-8 lg:pr-10">
         <div className="mx-auto flex min-h-9 max-w-9xl items-center justify-center gap-4 py-2 text-center text-[11px] font-semibold sm:justify-between sm:text-left">
           <p className="flex items-center justify-center gap-2 leading-4">
             <ShieldCheck className="h-4 w-4 shrink-0 text-[#7ee3a2]" />

@@ -16,7 +16,8 @@ export function CareersPage() {
       <CareersJoin />
       <CareersLife />
       <DsaWhyChoose />
-      <FaqAccordion />
+      <FaqAccordion
+      />
       <AppDownloadBanner />
     </main>
   );

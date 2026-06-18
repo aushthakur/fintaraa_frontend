@@ -1,10 +1,10 @@
 import { AppDownloadBanner } from "@/components/common/layout/Footer";
-import { CreditArticlesFaq } from "./CreditArticlesFaq";
 import { CreditCardsExplorer } from "./CreditCardsExplorer";
 import { CreditCardsHero } from "./CreditCardsHero";
 import { CreditCardsStats } from "./CreditCardsStats";
 import { CreditEligibility } from "./CreditEligibility";
 import { CreditPartners } from "./CreditPartners";
+import { FaqAccordion } from "../common/FaqAccordion";
 
 export function CreditCardsPage() {
   return (
@@ -14,7 +14,7 @@ export function CreditCardsPage() {
       <CreditCardsExplorer />
       <CreditEligibility />
       <CreditPartners />
-      <CreditArticlesFaq />
+      <FaqAccordion />
       <AppDownloadBanner />
     </main>
   );
