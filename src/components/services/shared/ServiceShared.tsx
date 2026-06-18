@@ -28,7 +28,7 @@ export function ServiceStatusCard({
           <div className="flex shrink-0 justify-center md:justify-start">
             <span className="relative flex h-20 w-20 items-center justify-center rounded-2xl bg-[#dbeeff]">
               <Image
-                src="/assets/services/statusicon.png"
+                src="/assets/services/statusicon1.png"
                 alt="Track status icon"
                 width={48}
                 height={48}

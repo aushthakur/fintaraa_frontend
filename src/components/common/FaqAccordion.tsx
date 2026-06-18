@@ -7,7 +7,7 @@ export type FaqItem = {
   answer: string;
 };
 
-const faqData = {
+const defaultFaqData = {
   title: "Frequently Asked Questions",
   subtitle: "Everything you need to know about our services",
   items: [
@@ -46,9 +46,18 @@ const faqData = {
   ],
 };
 
-export function FaqAccordion() {
+type FaqAccordionProps = {
+  title?: string;
+  subtitle?: string;
+  items?: FaqItem[];
+};
+
+export function FaqAccordion({
+  title = defaultFaqData.title,
+  subtitle = defaultFaqData.subtitle,
+  items = defaultFaqData.items,
+}: FaqAccordionProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-  const { title, subtitle, items } = faqData;
 
   const toggleFaq = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);

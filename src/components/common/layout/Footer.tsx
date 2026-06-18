@@ -81,6 +81,7 @@ const quickLinks = [
   { label: "Blog & Articles", href: "/blog", icon: Newspaper },
   { label: "Careers", href: "/careers", icon: BriefcaseBusiness },
   { label: "Franchise", href: "/franchise", icon: Landmark },
+  { label: "Partners by Product", href: "/partners-by-product", icon: Landmark },
   { label: "Become DSA", href: "/become-dsa", icon: BadgeCheck },
   { label: "Contact Us", href: "/contact-us", icon: PhoneCall },
 ];
