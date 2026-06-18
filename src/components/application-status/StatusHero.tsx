@@ -1,9 +1,4 @@
-import {
-  ClipboardCheck,
-  FileText,
-  LockKeyhole,
-  ShieldCheck,
-} from "lucide-react";
+import { FileText, LockKeyhole, ShieldCheck } from "lucide-react";
 
 const stats = [
   { title: "Total Applications", value: "08", icon: LockKeyhole, active: true },
@@ -24,7 +19,32 @@ const tabs = [
 export function StatusHero() {
   return (
     <section className="relative overflow-hidden px-4 pb-8 pt-8 md:px-6 lg:px-8">
-      <div className="pointer-events-none absolute left-0 top-7 hidden h-30 w-30 rotate-45 bg-[#d8ecff] md:block" />
+      <div className="absolute inset-0 overflow-visible pointer-events-none z-0">
+        {/*Left-most rectangle bleeding off the screen */}
+        <div
+          className="absolute hidden md:block bg-[#e0effe]"
+          style={{
+            width: "55px",
+            height: "90px",
+            top: "-20px",
+            left: "-15px",
+            borderRadius: "5px",
+            transform: "rotate(140deg)",
+          }}
+        />
+        {/* Right parallel rectangle matching the screenshot position */}
+        <div
+          className="absolute hidden md:block bg-[#e0effe]"
+          style={{
+            width: "60px",
+            height: "120px",
+            top: "-80px",
+            left: "40px",
+            borderRadius: "5px",
+            transform: "rotate(140deg)",
+          }}
+        />
+      </div>
       <div className="mx-auto max-w-9xl">
         <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
           <div>
@@ -36,9 +56,14 @@ export function StatusHero() {
               applications in real time.
             </p>
           </div>
-          <span className="hidden h-30 w-30 items-center justify-center rounded-3xl bg-[#e8f4ff] text-[#005ca8] md:flex">
-            <ClipboardCheck className="h-16 w-16" />
-          </span>
+          <div className="hidden h-30 w-40 shrink-0 items-center justify-center md:flex">
+            {/* TODO: replace src with the final illustration asset */}
+            <img
+              src="/assets/images/application-status.png"
+              alt="Application status illustration"
+              className="h-full w-full object-contain"
+            />
+          </div>
         </div>
 
         <div className="mt-8 grid gap-5 lg:grid-cols-3">
@@ -69,7 +94,7 @@ export function StatusHero() {
             <button
               key={`${tab}-${index}`}
               type="button"
-              className={`h-13 shrink-0 rounded-xl border px-8 text-[16px] font-semibold ${
+              className={`h-13 shrink-0 rounded-full border px-8 text-[16px] font-semibold ${
                 index === 0
                   ? "border-[#13a653] bg-[#13a653] text-white"
                   : "border-[#13a653] bg-white text-[#2a2f36]"

@@ -13,7 +13,7 @@ export function ApplicationDetailCard() {
           <p className="text-[18px] font-medium text-[#9aa0a6]">
             Application ID: PLN1234567890
           </p>
-          <span className="w-fit bg-[#d6f8e0] px-8 py-3 text-[14px] font-semibold text-[#13a653] shadow-[0_6px_15px_rgba(16,24,40,0.12)]">
+          <span className="w-fit rounded-md border border-[#a8e6c0] bg-[#e3faea] px-6 py-2 text-[14px] font-semibold text-[#13a653]">
             Under Review
           </span>
         </div>
@@ -21,7 +21,7 @@ export function ApplicationDetailCard() {
           {details.map(({ label, value }) => (
             <div key={label}>
               <p className="text-[13px] font-medium text-[#9aa0a6]">{label}</p>
-              <p className="mt-3 text-[17px] font-black text-[#2a2f36]">
+              <p className="mt-3 text-[17px] font-bold text-[#2a2f36]">
                 {value}
               </p>
             </div>
