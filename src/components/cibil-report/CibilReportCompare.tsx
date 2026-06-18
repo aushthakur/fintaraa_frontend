@@ -89,7 +89,7 @@ export function CibilReportCompare() {
 
           <Link
             href="/cibil-score/report"
-            className="flex h-9 items-center justify-center gap-2 rounded-full bg-[#00a653] px-6 text-xs font-bold text-white transition-all hover:bg-[#009349]"
+            className="flex h-9 items-center justify-center gap-2 rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-6 text-xs font-bold text-white transition-all hover:brightness-110"
           >
             <Download className="h-3.5 w-3.5" strokeWidth={2.5} />
             Download Report

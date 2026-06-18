@@ -219,7 +219,7 @@ export function LoanEMICalculator({ page }: { page: LoanSeoPageData }) {
                 <div className="w-full flex justify-center">
                   <Link
                     href={`/login?product=${page.loanTypeSlug}`}
-                    className="flex h-9 w-full max-w-55 items-center justify-center gap-1.5 rounded-full bg-[#13a653] text-xs font-bold text-white transition-all hover:bg-[#0f8f46] active:scale-[0.99] no-underline shadow-sm"
+                    className="flex h-9 w-full max-w-55 items-center justify-center gap-1.5 rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] text-xs font-bold text-white transition-all hover:brightness-110 active:scale-[0.99] no-underline shadow-sm"
                   >
                     <span>Get Instant Loan</span>
                     <ArrowRight className="h-3.5 w-3.5" strokeWidth={2.5} />

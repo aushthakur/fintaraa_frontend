@@ -176,7 +176,7 @@ export function CibilHero() {
               {/* Premium Pill-Shaped Action Trigger CTA Button */}
               <button
                 type="submit"
-                className="mt-6 flex h-13 w-full items-center justify-center rounded-full bg-[#1cbd5d] text-[16px] font-bold text-white transition-colors hover:bg-[#17a34f] active:scale-[0.995]"
+                className="mt-6 flex h-13 w-full items-center justify-center rounded-full  bg-linear-to-r from-[#0fae5e] to-[#17cb70] text-[16px] font-bold text-white transition-colors hover:bg-[#17a34f] active:scale-[0.995]"
               >
                 Get Free Credit Score
               </button>

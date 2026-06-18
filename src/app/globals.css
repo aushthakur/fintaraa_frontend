@@ -15,10 +15,9 @@
 
 body {
   color: var(--foreground);
-  user-select: none !important;
   background: var(--background);
-  /* -webkit-user-select: none !important;
-  -webkit-touch-callout: none !important; */
+  -webkit-user-select: text;
+  user-select: text;
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
 
@@ -26,19 +25,14 @@ html {
   scroll-behavior: smooth;
 }
 
-/* * {
-  -webkit-user-select: none !important;
-  user-select: none !important;
-} */
-
 *::selection {
-  background: transparent !important;
-  color: inherit !important;
+  background: #b7dbff;
+  color: inherit;
 }
 
 *::-moz-selection {
-  background: transparent !important;
-  color: inherit !important;
+  background: #b7dbff;
+  color: inherit;
 }
 
 button,

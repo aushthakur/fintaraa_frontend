@@ -165,7 +165,7 @@ export function CibilBandsSteps() {
           <div className="mt-12 flex justify-center">
             <Link
               href="/cibil-score/report"
-              className="inline-flex h-12.5 items-center justify-center rounded-full bg-[#1cbd5d] px-10 text-[15px] font-bold text-white shadow-sm transition-colors hover:bg-[#17a34f] gap-2"
+              className="inline-flex h-12.5 items-center justify-center rounded-full  bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-10 text-[15px] font-bold text-white shadow-sm transition-colors hover:bg-[#17a34f] gap-2"
             >
               <span>Get free credit score</span>
               <span className="text-[16px] font-normal">→</span>

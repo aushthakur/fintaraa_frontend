@@ -77,7 +77,7 @@ export function CibilReportHero() {
             <div className="mt-3 flex gap-3">
               <button
                 type="button"
-                className="rounded-md bg-[#00a653] px-5 py-2 text-xs font-bold text-white transition-colors hover:bg-[#009349]"
+                className="rounded-md bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-5 py-2 text-xs font-bold text-white transition-colors hover:brightness-110"
               >
                 CIBIL
               </button>
@@ -112,7 +112,7 @@ export function CibilReportHero() {
             <div className="flex flex-col items-center gap-3">
               <Link
                 href="/cibil-score/report"
-                className="flex h-11 w-full items-center justify-center rounded-xl bg-[#00a653] text-sm font-bold text-white transition-all hover:bg-[#009349] active:scale-[0.99]"
+                className="flex h-11 w-full items-center justify-center rounded-xl bg-linear-to-r from-[#0fae5e] to-[#17cb70] text-sm font-bold text-white transition-all hover:brightness-110 active:scale-[0.99]"
               >
                 Download Full Report
               </Link>
@@ -171,7 +171,7 @@ export function CibilReportHero() {
 
               <button
                 type="button"
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#00a653] text-white transition-transform hover:scale-105 active:scale-95 shadow-sm"
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] text-white transition-transform hover:scale-105 active:scale-95 shadow-sm"
               >
                 <ArrowDownToLine className="h-5 w-5" strokeWidth={2.5} />
               </button>

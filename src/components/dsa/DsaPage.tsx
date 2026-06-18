@@ -12,10 +12,7 @@ export function DsaPage() {
       <DsaHowItWorks />
       <DsaPartnerBenefits />
       <DsaWhyChoose />
-      <FaqAccordion
-        title="Frequently Asked Questions"
-        subtitle="Everything you need to know about career opportunities at Fintaraa"
-      />
+      <FaqAccordion  />
       <AppDownloadBanner />
     </main>
   );
