@@ -1,4 +1,4 @@
-import { Banknote, Clock, FileText, Headphones, Landmark } from "lucide-react";
+import { Banknote, FileText, Headphones, Landmark } from "lucide-react";
 
 const stats = [
   { value: "5M+", label: "Happy Users", icon: FileText },
@@ -23,10 +23,6 @@ export function CreditCardsStats() {
             </div>
           </div>
         ))}
-        <button className="mx-auto inline-flex h-11 items-center gap-2 rounded-full bg-[#13a653] px-7 text-[13px] font-black">
-          <Clock className="h-4 w-4" />
-          Talk to Loan Expert
-        </button>
       </div>
     </section>
   );
