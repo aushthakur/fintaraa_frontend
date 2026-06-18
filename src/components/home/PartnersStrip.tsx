@@ -65,10 +65,10 @@ function LogoMarquee({
               <Image
                 src={bank.src}
                 alt={bank.name}
-                width={140}
-                height={40}
+                fill
+                sizes="140px"
                 unoptimized
-                className="h-auto max-h-full w-auto max-w-full object-contain mix-blend-multiply"
+                className="object-contain mix-blend-multiply"
               />
             </div>
           </div>
