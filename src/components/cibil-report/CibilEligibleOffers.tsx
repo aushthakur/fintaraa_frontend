@@ -105,7 +105,7 @@ export function CibilEligibleOffers() {
               <div className="sm:text-right">
                 <Link
                   href={`/apply?bank=${offer.bankName.toLowerCase().replace(" ", "-")}`}
-                  className="inline-flex items-center justify-center rounded-full bg-[#13a653] hover:bg-[#108e46] transition-colors w-full sm:w-auto px-6 py-2.5 text-[13px] font-bold text-white tracking-wide whitespace-nowrap"
+                  className="inline-flex items-center justify-center rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] hover:brightness-110 transition-all w-full sm:w-auto px-6 py-2.5 text-[13px] font-bold text-white tracking-wide whitespace-nowrap"
                 >
                   Apply Now <span className="ml-2">→</span>
                 </Link>
@@ -138,7 +138,7 @@ export function CibilEligibleOffers() {
               You will receive SMS, WhatsApp & push notifications on your registered mobile number at every status update.
             </p>
           </div>
-          <button className="shrink-0 bg-white border border-[#13a653] text-[#13a653] hover:bg-[#f3faf6] transition-colors font-medium text-[13px] px-5 py-2 rounded-full shadow-xs">
+          <button className="shrink-0 bg-white border border-[#0fae5e] text-[#0fae5e] hover:bg-[#f3faf6] transition-colors font-medium text-[13px] px-5 py-2 rounded-full shadow-xs">
             Need help? Contact Support
           </button>
         </div>

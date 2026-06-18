@@ -101,7 +101,7 @@ export function InsuranceHero({ page }: { page: InsuranceSeoPageData }) {
           <div className="pt-2">
             <Link
               href={`/login?product=${page.insuranceTypeSlug}`}
-              className="inline-flex h-12 items-center justify-center rounded-full bg-[#13a653] px-7 text-[14px] font-black text-white no-underline"
+              className="inline-flex h-12 items-center justify-center rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-7 text-[14px] font-black text-white no-underline"
             >
               Apply {page.insuranceType}
             </Link>

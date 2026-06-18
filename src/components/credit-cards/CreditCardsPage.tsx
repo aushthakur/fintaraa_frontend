@@ -5,12 +5,14 @@ import { CreditCardsStats } from "./CreditCardsStats";
 import { CreditEligibility } from "./CreditEligibility";
 import { CreditPartners } from "./CreditPartners";
 import { FaqAccordion } from "../common/FaqAccordion";
+import { ExploreCategories } from "./CategoryCardsGrid";
 
 export function CreditCardsPage() {
   return (
     <main className="bg-white">
       <CreditCardsHero />
       <CreditCardsStats />
+      <ExploreCategories />
       <CreditCardsExplorer />
       <CreditEligibility />
       <CreditPartners />

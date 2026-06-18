@@ -42,10 +42,9 @@ export function InsuranceComparePlans({ insuranceType, insuranceTypeSlug }: Insu
                     <Image
                       src={logo}
                       alt={name}
-                      width={82}
+                      width={88}
                       height={26}
                       className="object-contain"
-                      style={{ width: "88px", height: "auto" }}
                     />
                   </td>
                   <td className="px-4 py-3 font-semibold">{premium}</td>
@@ -53,7 +52,7 @@ export function InsuranceComparePlans({ insuranceType, insuranceTypeSlug }: Insu
                   <td className="px-4 py-3 font-semibold">{cover}</td>
                   <td className="px-4 py-3 font-semibold">{tenure}</td>
                   <td className="px-4 py-3">
-                    <Link href={`/login?product=${insuranceTypeSlug}`} className="rounded-full bg-[#13a653] px-3 py-1.5 text-[11px] font-black text-white no-underline">
+                    <Link href={`/login?product=${insuranceTypeSlug}`} className="rounded-full  bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-3 py-1.5 text-[11px] font-black text-white no-underline">
                       Apply Now
                     </Link>
                   </td>

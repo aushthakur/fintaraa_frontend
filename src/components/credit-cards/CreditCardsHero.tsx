@@ -57,7 +57,7 @@ export function CreditCardsHero() {
             </p>
             <Link
               href="/login?product=credit-card"
-              className="mt-6 inline-flex h-12 items-center gap-2 rounded-full bg-[#13a653] px-7 text-[14px] font-black text-white no-underline"
+              className="mt-6 inline-flex h-12 items-center gap-2 rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-7 text-[14px] font-black text-white no-underline"
             >
               Apply Health Insurance
               <Gift className="h-4 w-4" />
@@ -97,13 +97,13 @@ export function CreditCardsHero() {
               ))}
               <button
                 type="button"
-                className="inline-flex h-9 items-center justify-center rounded-full bg-[#13a653] px-4 text-[12px] font-extrabold text-white"
+                className="inline-flex h-9 items-center justify-center rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-4 text-[12px] font-extrabold text-white"
               >
                 Unlock card offers
               </button>
             </form>
             <p className="mt-6 flex items-center justify-center gap-2 text-[11px] font-semibold text-[#667085]">
-              <ShieldCheck className="h-4 w-4 text-[#13a653]" />
+              <ShieldCheck className="h-4 w-4 text-[#0fae5e]" />
               100% secure. No impact on credit score.
             </p>
           </div>

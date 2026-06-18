@@ -54,7 +54,7 @@ export function LoanHeroSection({
           <div className="pt-2">
             <Link
               href={`/login?product=${page.loanTypeSlug}`}
-              className="inline-flex h-12 items-center justify-center rounded-full bg-[#13a653] px-7 text-[14px] font-black text-white no-underline"
+              className="inline-flex h-12 items-center justify-center rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-7 text-[14px] font-black text-white no-underline"
             >
               Apply {page.loanType}
             </Link>
@@ -85,7 +85,7 @@ export function LoanHeroSection({
               ))}
               <Link
                 href={`/login?product=${page.loanTypeSlug}`}
-                className="inline-flex h-9 items-center justify-center rounded-full bg-[#13a653] px-4 text-[12px] font-extrabold text-white no-underline"
+                className="inline-flex h-9 items-center justify-center rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-4 text-[12px] font-extrabold text-white no-underline"
               >
                 Check Eligibility
               </Link>

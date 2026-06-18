@@ -87,7 +87,7 @@ export function LoanBankComparison({ page }: { page: LoanSeoPageData }) {
                 <td className="px-6 py-4.5 text-center">
                   <Link
                     href={`/banks/${slugifyProduct(row.name)}/${page.loanTypeSlug}`}
-                    className="inline-flex h-9 items-center justify-center rounded-full whitespace-nowrap bg-[#00b254] px-5 text-xs font-bold text-white transition-colors hover:bg-[#009948] no-underline shadow-sm active:scale-[0.98]"
+                    className="inline-flex h-9 items-center justify-center rounded-full whitespace-nowrap  bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-5 text-xs font-bold text-white transition-colors hover:bg-[#009948] no-underline shadow-sm active:scale-[0.98]"
                   >
                     Apply Now
                   </Link>
