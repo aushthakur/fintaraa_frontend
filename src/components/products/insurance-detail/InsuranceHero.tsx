@@ -1,10 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import type { InsuranceSeoFormField, InsuranceSeoPageData } from "@/services/insuranceSeoPages";
+import type {
+  InsuranceSeoFormField,
+  InsuranceSeoPageData,
+} from "@/services/insuranceSeoPages";
 
 const fieldClass =
-  "h-8 w-full border-0 border-b border-[#d6dce5] bg-transparent px-1 text-[12px] font-semibold text-[#111827] outline-none placeholder:text-[#8b95a3] focus:border-[#005ca8]";
+  "h-9 w-full rounded-lg border border-[#d9dfe8] bg-white px-3 text-[13px] font-semibold text-[#111827] outline-none placeholder:text-[#8b95a3] focus:border-[#005ca8]";
+
+const coverageOptions = ["5L", "10L", "20L", "30L", "40L", "50L"];
 
 function DynamicField({ field }: { field: InsuranceSeoFormField }) {
   if (field.type === "select") {
@@ -21,6 +26,7 @@ function DynamicField({ field }: { field: InsuranceSeoFormField }) {
       </select>
     );
   }
+
   return (
     <input
       required={field.required}
@@ -34,15 +40,27 @@ function DynamicField({ field }: { field: InsuranceSeoFormField }) {
 export function InsuranceHero({ page }: { page: InsuranceSeoPageData }) {
   const fields = (page.formFields || [])
     .filter((field) => field.isActive !== false)
-    .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0))
-    .slice(0, 4);
+    .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+
+  const ageField =
+    fields.find((field) => field.key === "age") ||
+    fields.find((field) => field.key === "insuredAge") ||
+    fields[0];
+  const cityField = fields.find((field) => field.key === "city") || fields[1];
+
+  const coverageField = {
+    key: "sumInsured",
+    label: "Desired Coverage.",
+    type: "number",
+    placeholder: "Enter coverage amount",
+    required: true,
+  } satisfies InsuranceSeoFormField;
 
   return (
     <section className="relative overflow-hidden bg-[#fbfdff] px-4 pb-8 pt-8 md:px-6 lg:px-8">
-      <div className="absolute inset-0 overflow-visible pointer-events-none z-0">
-        {/* Left-most rectangle bleeding off the screen */}
+      <div className="absolute inset-0 pointer-events-none z-0 overflow-visible">
         <div
-          className="absolute hidden md:block bg-[#e0effe]"
+          className="absolute hidden bg-[#e0effe] md:block"
           style={{
             width: "55px",
             height: "90px",
@@ -52,9 +70,8 @@ export function InsuranceHero({ page }: { page: InsuranceSeoPageData }) {
             transform: "rotate(140deg)",
           }}
         />
-        {/* Right parallel rectangle matching the screenshot position */}
         <div
-          className="absolute hidden md:block bg-[#e0effe]"
+          className="absolute hidden bg-[#e0effe] md:block"
           style={{
             width: "60px",
             height: "120px",
@@ -65,61 +82,130 @@ export function InsuranceHero({ page }: { page: InsuranceSeoPageData }) {
           }}
         />
       </div>
-      <div className="mx-auto grid max-w-9xl gap-8 md:grid-cols-[1fr_23rem] md:items-center">
-        {/* LEFT CONTAINER: HERO COPY */}
+
+      <div className="mx-auto grid max-w-9xl gap-8 md:grid-cols-[1fr_26rem] md:items-center">
         <div className="relative z-10 space-y-6">
-          <h1 className="text-[36px] font-bold tracking-tight text-[#005ca8] sm:text-[46px] leading-[1.15]">
-            {page.insuranceType} -
-            <span className="block text-[#212529] mt-1 font-bold">
+          <h1 className="max-w-2xl text-[38px] font-black leading-tight tracking-[-0.03em] text-[#111827] md:text-[52px]">
+            <span className="text-[#005ca8]">{page.insuranceType}</span>
+            <span className="block text-[#111827]">
               Compare Plans / Best Rates / Quick Approval
             </span>
           </h1>
 
-          <p className="max-w-xl text-[15px] font-medium leading-relaxed text-gray-600">
-            {page.heroDescription || page.subtitle || "Compare top insurance plans from leading insurers with the best rates and quick approval process."}
+          <p className="mt-5 max-w-xl text-[17px] font-medium leading-7 text-[#667085]">
+            {page.heroDescription ||
+              page.subtitle ||
+              "Compare top insurance plans from leading insurers with the best rates and quick approval process."}
           </p>
 
           <div className="pt-2">
             <Link
               href={`/login?product=${page.insuranceTypeSlug}`}
-              className="inline-flex h-12 items-center justify-center rounded-2xl bg-[#00b254] px-7 text-sm font-bold text-white transition-colors hover:bg-[#009948] no-underline shadow-sm"
+              className="inline-flex h-12 items-center justify-center rounded-full bg-[#13a653] px-7 text-[14px] font-black text-white no-underline"
             >
               Apply {page.insuranceType}
             </Link>
           </div>
         </div>
 
-        <div className="border-r-8 border-b-8 border-[#005ca8] bg-white p-5 shadow-[0_10px_26px_rgba(0,92,168,0.12)]">
-          <h2 className="text-[16px] font-black text-[#111827]">
-            Premium Calculator
-          </h2>
-          <p className="mt-1 text-[11px] font-semibold text-[#596272]">
-            Get an indicative premium range.
-          </p>
-          <form className="mt-4 grid gap-3" onSubmit={(event) => event.preventDefault()}>
-            {fields.map((field) => (
-              <label key={field.key} className="grid gap-1">
-                <span className="text-[11px] font-bold text-[#374151]">
-                  {field.label}
-                </span>
-                <DynamicField field={field} />
-              </label>
-            ))}
-            <div>
-              <span className="text-[11px] font-bold text-[#374151]">
-                Estimated premium
-              </span>
-              <p className="mt-1 text-[24px] font-black text-[#005ca8]">
-                ₹12,450
-              </p>
-            </div>
-            <Link
-              href={`/login?product=${page.insuranceTypeSlug}`}
-              className="inline-flex h-9 items-center justify-center rounded-full border border-[#13a653] px-4 text-[12px] font-extrabold text-[#13a653] no-underline"
+        <div className="relative mx-auto w-full max-w-100 md:mx-0">
+          <div className="absolute inset-0 hidden translate-x-3 translate-y-3 rounded-[18px] bg-[#00529c] md:block" />
+
+          <div className="relative rounded-[18px] border border-[#d9dfe8] bg-white p-4 shadow-[0_14px_34px_rgba(0,82,156,0.12)] md:p-6">
+            <h2 className="text-[22px] font-black leading-tight tracking-[-0.02em] text-[#222222]">
+              Premium Calculator
+            </h2>
+            <p className="mt-1 text-[12px] font-medium text-[#667085]">
+              Get an instant estimate in 30 seconds.
+            </p>
+
+            <form
+              className="mt-4 grid gap-3"
+              onSubmit={(event) => event.preventDefault()}
             >
-              Compare Plans
-            </Link>
-          </form>
+              <div className="grid gap-2.5 sm:grid-cols-2">
+                <label className="grid gap-2">
+                  <span className="text-[12px] font-semibold text-[#222222]">
+                    {ageField?.label || "Age of oldest member"}
+                  </span>
+                  <DynamicField
+                    field={
+                      ageField || {
+                        key: "age",
+                        label: "Age of oldest member",
+                        type: "number",
+                        required: true,
+                      }
+                    }
+                  />
+                </label>
+
+                <label className="grid gap-2">
+                  <span className="text-[12px] font-semibold text-[#222222]">
+                    {cityField?.label || "City"}
+                  </span>
+                  <DynamicField
+                    field={
+                      cityField || {
+                        key: "city",
+                        label: "City",
+                        type: "text",
+                        required: true,
+                      }
+                    }
+                  />
+                </label>
+              </div>
+
+              <label className="grid gap-2">
+                <span className="text-[12px] font-semibold text-[#222222]">
+                  {coverageField.label}
+                </span>
+                <DynamicField field={coverageField} />
+              </label>
+
+              <div className="grid grid-cols-3 gap-1.5 pt-0.5 sm:grid-cols-6">
+                {coverageOptions.map((option, index) => (
+                  <button
+                    key={option}
+                    type="button"
+                    className={`h-8 rounded-lg border px-0 text-[11px] font-semibold transition sm:text-[12px] ${
+                      index === 0
+                        ? "border-[#005ca8] bg-[#005ca8] text-white"
+                        : "border-[#005ca8] bg-white text-[#8b95a3]"
+                    }`}
+                  >
+                    {option}
+                  </button>
+                ))}
+              </div>
+
+              <div className="pt-1">
+                <span className="text-[12px] font-semibold text-[#222222]">
+                  Estimated annual premium
+                </span>
+                <div className="mt-1.5 flex items-end justify-between gap-3">
+                  <p className="text-[26px] font-black tracking-[-0.03em] text-[#3556a5] md:text-[30px]">
+                    {new Intl.NumberFormat("en-IN", {
+                      style: "currency",
+                      currency: "INR",
+                      maximumFractionDigits: 0,
+                    }).format(12450)}
+                  </p>
+                  <p className="pb-1 text-[10px] font-medium text-[#98a2b3]">
+                    T &amp; C Apply
+                  </p>
+                </div>
+              </div>
+
+              <Link
+                href={`/login?product=${page.insuranceTypeSlug}`}
+                className="mt-0.5 inline-flex h-10 items-center justify-center rounded-full border border-[#12b76a] bg-white px-5 text-[12px] font-extrabold text-[#12b76a] no-underline shadow-[0_10px_24px_rgba(18,183,106,0.14)] transition hover:bg-[#f3fbf6]"
+              >
+                Compare detailed plans
+              </Link>
+            </form>
+          </div>
         </div>
       </div>
     </section>

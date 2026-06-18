@@ -34,14 +34,14 @@ export function CreditPartners() {
           {[...partnerBanks, ...partnerBanks].slice(0, 14).map((logo, index) => (
             <div
               key={`${logo}-${index}`}
-              className="flex h-16 items-center justify-center rounded-[8px] border border-[#dbe3ec] bg-white p-3 shadow-[0_4px_14px_rgba(16,24,40,0.03)]"
+              className="flex h-16 items-center justify-center rounded-lg border border-[#dbe3ec] bg-white p-3 shadow-[0_4px_14px_rgba(16,24,40,0.03)]"
             >
               <Image
                 src={logo}
                 alt="Partner bank"
                 width={110}
                 height={34}
-                className="h-auto w-[92px] object-contain"
+                className="h-auto w-23 object-contain"
               />
             </div>
           ))}
