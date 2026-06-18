@@ -39,7 +39,7 @@ export function BlogHeroSection() {
       <div className="absolute left-0 top-12 -z-10 h-16 w-16 rounded-br-full bg-[#deebf9] opacity-50" />
 
       {/* Two-Column Structured Hero Grid */}
-      <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+      <div className="mx-auto grid max-w-9xl gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
         {/* LEFT COMPARTMENT: Brand Headers, Copy Messaging & Search Bar */}
         <div className="space-y-6">
           <h1 className="max-w-xl text-[38px] font-extrabold leading-[1.15] tracking-tight text-[#2d3142] md:text-[46px]">

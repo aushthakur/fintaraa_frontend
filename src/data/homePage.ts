@@ -21,6 +21,20 @@ import {
   Store,
   Umbrella,
   WalletCards,
+  Gem,
+  Landmark,
+  UtensilsCrossed,
+  Building2,
+  // PiggyBank,
+  // Banknote,
+  // RotateCcw,
+  // HandCoins,
+  // Sparkles,
+  // Wallet,
+  // ScrollText,
+  // Tent,
+  // Trees,
+  BarChart3,
 } from "lucide-react";
 
 export const heroStats = [
@@ -55,21 +69,51 @@ export const productSections = [
         tone: "sky",
       },
       {
-        title: "PNP Bank",
-        text: "Quick funds access",
-        logo: "/assets/banks/pnb.png",
-        tone: "orange",
-      },
-      {
         title: "HDFC Bank",
         text: "Instant approval",
         logo: "/assets/banks/hdfc.png",
         tone: "red",
       },
+      {
+        title: "Axis Bank",
+        text: "Quick loan disbursal",
+        logo: "/assets/banks/axis-bank.png",
+        tone: "pink",
+      },
+      {
+        title: "Yes Bank",
+        text: "Fast digital loans",
+        logo: "/assets/banks/yes-bank.png",
+        tone: "green",
+      },
+      {
+        title: "IndusInd Bank",
+        text: "Instant cash loans",
+        logo: "/assets/banks/indusind.png",
+        tone: "amber",
+      },
+      // {
+      //   title: "IDFC First Bank",
+      //   text: "Quick personal loans",
+      //   logo: "/assets/banks/idfc.png",
+      //   tone: "brown",
+      // },
+      // {
+      //   title: "Bajaj Finserv",
+      //   text: "Instant loan approval",
+      //   logo: "/assets/banks/bajaj.png",
+      //   tone: "gold",
+      // },
+      // {
+      //   title: "Bank of Baroda",
+      //   text: "Fast disbursal loans",
+      //   logo: "/assets/banks/Bank-of-Baroda.png",
+      //   tone: "orange",
+      // },
     ],
   },
   {
-    title: "Explore All Loan Options",
+    title: "Explore Loan Options",
     subtitle:
       "Choose from a wide range of loan solutions tailored to your needs.",
     cta: "View All Loans",
@@ -98,20 +142,48 @@ export const productSections = [
         icon: Car,
         tone: "red",
       },
-      
       {
         title: "Education Loan",
         text: "Quick funds for your everyday needs.",
         icon: GraduationCap,
         tone: "green",
       },
-      
+      {
+        title: "Gold Loan",
+        text: "Instant loan against your gold assets.",
+        icon: Gem,
+        tone: "gold",
+      },
+      {
+        title: "Loan Against Property",
+        text: "Unlock funds from your property value.",
+        icon: Landmark,
+        tone: "blue",
+      },
+      // {
+      //   title: "Working Capital Loan",
+      //   text: "Manage business cash flow effectively.",
+      //   icon: Banknote,
+      //   tone: "sky",
+      // },
+      // {
+      //   title: "Equipment Loan",
+      //   text: "Finance machinery & equipment purchases.",
+      //   icon: Building2,
+      //   tone: "brown",
+      // },
+      // {
+      //   title: "Overdraft Facility",
+      //   text: "Flexible overdraft against your account.",
+      //   icon: PiggyBank,
+      //   tone: "violet",
+      // },
     ],
   },
   {
     title: "Explore Insurance Plans",
     subtitle:
-      "Get Money in 5 Mintues -Complete Digital Process",
+      "Get Money in 5 Minutes -Complete Digital Process",
     cta: "View All Insurance",
     products: [
       {
@@ -122,7 +194,7 @@ export const productSections = [
       },
       {
         title: "Life Insurance",
-        text: "Financial protection for your family’s future.",
+        text: "Financial protection for your family's future.",
         icon: Umbrella,
         tone: "brown",
       },
@@ -144,13 +216,30 @@ export const productSections = [
         icon: ShieldCheck,
         tone: "sky",
       },
-    
       {
         title: "Property Insurance",
         text: "Secure your home or property against risks & loss.",
         icon: Home,
         tone: "red",
       },
+      {
+        title: "Travel Insurance",
+        text: "Stay covered during domestic & international trips.",
+        icon: Plane,
+        tone: "blue",
+      },
+      // {
+      //   title: "Two-Wheeler Insurance",
+      //   text: "Protect your bike or scooter from damage & theft.",
+      //   icon: Tent,
+      //   tone: "orange",
+      // },
+      // {
+      //   title: "Critical Illness Insurance",
+      //   text: "Lump sum cover for major health conditions.",
+      //   icon: HeartPulse,
+      //   tone: "gold",
+      // },
     ],
   },
   {
@@ -183,7 +272,6 @@ export const productSections = [
         icon: ShoppingBag,
         tone: "yellow",
       },
-    
       {
         title: "Rewards Cards",
         text: "Earn points and benefits on regular spends.",
@@ -196,6 +284,30 @@ export const productSections = [
         icon: Repeat2,
         tone: "sky",
       },
+      {
+        title: "Dining Cards",
+        text: "Exclusive discounts & offers at restaurants.",
+        icon: UtensilsCrossed,
+        tone: "red",
+      },
+      // {
+      //   title: "Business Cards",
+      //   text: "Expense management & corporate benefits.",
+      //   icon: BriefcaseBusiness,
+      //   tone: "brown",
+      // },
+      // {
+      //   title: "Student Cards",
+      //   text: "Build credit history with student-friendly perks.",
+      //   icon: GraduationCap,
+      //   tone: "pink",
+      // },
+      // {
+      //   title: "Premium Cards",
+      //   text: "Exclusive lifestyle, concierge & luxury benefits.",
+      //   icon: Gem,
+      //   tone: "gold",
+      // },
     ],
   },
   {
@@ -246,6 +358,18 @@ export const productSections = [
         icon: Smartphone,
         tone: "sky",
       },
+      {
+        title: "Investment Advisory",
+        text: "Expert guidance for mutual funds & investments.",
+        icon: BarChart3,
+        tone: "brown",
+      },
+      // {
+      //   title: "Pension Planning",
+      //   text: "Secure your retirement with smart pension plans.",
+      //   icon: Trees,
+      //   tone: "green",
+      // },
     ],
   },
   {
@@ -288,6 +412,24 @@ export const productSections = [
         icon: FileCheck2,
         tone: "orange",
       },
+      {
+        title: "Company Registration",
+        text: "Register Pvt Ltd, LLP & OPC companies.",
+        icon: Building2,
+        tone: "orange",
+      },
+      // {
+      //   title: "Trademark Registration",
+      //   text: "Protect your brand with trademark filing.",
+      //   icon: ScrollText,
+      //   tone: "orange",
+      // },
+      // {
+      //   title: "Loan Calculator",
+      //   text: "Calculate EMI, tenure & interest easily.",
+      //   icon: Calculator,
+      //   tone: "orange",
+      // },
     ],
   },
 ];

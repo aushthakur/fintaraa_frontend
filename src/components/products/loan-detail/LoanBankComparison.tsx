@@ -15,7 +15,7 @@ export function LoanBankComparison({ page }: { page: LoanSeoPageData }) {
   const visibleRows = isExpanded ? bankRows : bankRows.slice(0, 5);
 
   return (
-    <section className="w-full max-w-7xl mx-auto bg-white px-4 py-12 antialiased text-[#111827] md:px-6">
+    <section className="w-full max-w-9xl mx-auto bg-white px-4 py-12 antialiased text-[#111827] md:px-6">
       
       {/* SECTION TITLE & DESCRIPTION BLOCK */}
       <div className="mb-6">
@@ -59,7 +59,7 @@ export function LoanBankComparison({ page }: { page: LoanSeoPageData }) {
                         alt={row.name}
                         width={110}
                         height={32}
-                        className="object-contain max-h-8 w-auto"
+                        className="h-auto max-h-8 w-auto object-contain"
                       />
                     </Link>
                     <div className="flex items-center gap-0.5 text-xs font-bold text-gray-400 select-none">

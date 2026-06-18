@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
 import {
   PieChart,
   Pie,
@@ -11,6 +11,7 @@ interface CreditScoreGaugeProps {
   width?: number;
   height?: number;
   scale?: number;
+  className?: string;
 }
 
 const GAUGE_DATA = [
@@ -53,7 +54,7 @@ const ArcLabel = ({
 }) => {
   const x = cx + radius * Math.cos(-angle * RADIAN);
   const y = cy + radius * Math.sin(-angle * RADIAN);
-  const rotation = -angle + 90; 
+  const rotation = -angle + 90;
   return (
     <Text
       x={x}
@@ -103,97 +104,123 @@ const renderNeedle = (
 
 const CreditScoreGauge: React.FC<CreditScoreGaugeProps> = ({
   score,
-  width = 460,
-  height = 260,
   scale = 1,
+  className = "",
 }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [containerWidth, setContainerWidth] = useState<number>(0);
+
+  const updateWidth = useCallback(() => {
+    if (containerRef.current) {
+      const w = containerRef.current.clientWidth;
+      setContainerWidth(w);
+    }
+  }, []);
+
+  useEffect(() => {
+    updateWidth();
+    const observer = new ResizeObserver(updateWidth);
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+    return () => observer.disconnect();
+  }, [updateWidth]);
+
+  if (containerWidth === 0) return <div ref={containerRef} className="w-full" style={{ aspectRatio: "560/350" }} />;
+
+  const chartWidth = containerWidth;
+  const chartHeight = chartWidth * (350 / 560);
+
   const rating = getRating(score);
-  const chartWidth = width * scale;
-  const chartHeight = height * scale;
   const cx = chartWidth / 2;
   const cy = chartHeight * 0.52;
-  const outerRadius = Math.min(chartWidth * 0.28, chartHeight * 0.34);
+  const outerRadius = Math.min(chartWidth * 0.28, chartHeight * 0.34) * scale;
   const innerRadius = outerRadius * 0.74;
-  const labelRadius = outerRadius + Math.max(14, chartHeight * 0.06);
-  const minMaxOffset = Math.max(12, chartHeight * 0.03);
-  const scoreY = cy + Math.max(34, chartHeight * 0.16);
-  const ratingY = cy + Math.max(58, chartHeight * 0.27);
+  const labelRadius = outerRadius + Math.max(14, chartHeight * 0.06) * Math.min(scale, 1.5);
+  const minMaxOffset = Math.max(12, chartHeight * 0.03) * Math.min(scale, 1.5);
+  const scoreY = cy + Math.max(34, chartHeight * 0.16) * Math.min(scale, 1.5);
+  const ratingY = cy + Math.max(58, chartHeight * 0.27) * Math.min(scale, 1.5);
+
+  const scoreFontSize = Math.max(24, Math.round(chartHeight * 0.13 * Math.min(scale, 1.5)));
+  const ratingFontSize = Math.max(12, Math.round(chartHeight * 0.055 * Math.min(scale, 1.5)));
 
   return (
-    <PieChart width={chartWidth} height={chartHeight}>
-      <Pie
-        data={GAUGE_DATA}
-        dataKey="value"
-        startAngle={180}
-        endAngle={0}
-        cx={cx}
-        cy={cy}
-        innerRadius={innerRadius}
-        outerRadius={outerRadius}
-        stroke="#fff"
-        strokeWidth={2}
-      >
-        {GAUGE_DATA.map((item, index) => (
-          <Cell key={index} fill={item.color} />
-        ))}
-      </Pie>
-
-      {renderNeedle(score, cx, cy, innerRadius, outerRadius)}
-
-      {LABEL_CONFIG.map(({ text, angle }) => (
-        <ArcLabel
-          key={text}
-          text={text}
-          angle={angle}
-          radius={labelRadius}
+    <div ref={containerRef} className={`w-full ${className}`}>
+      <PieChart width={chartWidth} height={chartHeight}>
+        <Pie
+          data={GAUGE_DATA}
+          dataKey="value"
+          startAngle={180}
+          endAngle={0}
           cx={cx}
           cy={cy}
-        />
-      ))}
+          innerRadius={innerRadius}
+          outerRadius={outerRadius}
+          stroke="#fff"
+          strokeWidth={2}
+        >
+          {GAUGE_DATA.map((item, index) => (
+            <Cell key={index} fill={item.color} />
+          ))}
+        </Pie>
 
-      <Text
-        x={cx - outerRadius - minMaxOffset}
-        y={cy + Math.max(12, chartHeight * 0.03)}
-        fontSize={10}
-        fontWeight={700}
-        fill="#9ca3af"
-        textAnchor="middle"
-      >
-        {MIN_SCORE}
-      </Text>
-      <Text
-        x={cx + outerRadius + minMaxOffset}
-        y={cy + Math.max(12, chartHeight * 0.03)}
-        fontSize={10}
-        fontWeight={700}
-        fill="#9ca3af"
-        textAnchor="middle"
-      >
-        {MAX_SCORE}
-      </Text>
+        {renderNeedle(score, cx, cy, innerRadius, outerRadius)}
 
-      <Text
-        x={cx}
-        y={scoreY}
-        textAnchor="middle"
-        fontSize={Math.max(32, Math.round(chartHeight * 0.13))}
-        fontWeight={900}
-        fill="#111827"
-      >
-        {score}
-      </Text>
+        {LABEL_CONFIG.map(({ text, angle }) => (
+          <ArcLabel
+            key={text}
+            text={text}
+            angle={angle}
+            radius={labelRadius}
+            cx={cx}
+            cy={cy}
+          />
+        ))}
 
-      <Text
-        x={cx}
-        y={ratingY}
-        textAnchor="middle"
-        fontSize={Math.max(14, Math.round(chartHeight * 0.055))}
-        fontWeight={700}
-        fill={rating.color}
-      >
-        {rating.label}
-      </Text>
-    </PieChart>
+        <Text
+          x={cx - outerRadius - minMaxOffset}
+          y={cy + Math.max(12, chartHeight * 0.03)}
+          fontSize={Math.max(8, Math.round(10 * Math.min(scale, 1.5)))}
+          fontWeight={700}
+          fill="#9ca3af"
+          textAnchor="middle"
+        >
+          {MIN_SCORE}
+        </Text>
+        <Text
+          x={cx + outerRadius + minMaxOffset}
+          y={cy + Math.max(12, chartHeight * 0.03)}
+          fontSize={Math.max(8, Math.round(10 * Math.min(scale, 1.5)))}
+          fontWeight={700}
+          fill="#9ca3af"
+          textAnchor="middle"
+        >
+          {MAX_SCORE}
+        </Text>
+
+        <Text
+          x={cx}
+          y={scoreY}
+          textAnchor="middle"
+          fontSize={scoreFontSize}
+          fontWeight={900}
+          fill="#111827"
+        >
+          {score}
+        </Text>
+
+        <Text
+          x={cx}
+          y={ratingY}
+          textAnchor="middle"
+          fontSize={ratingFontSize}
+          fontWeight={700}
+          fill={rating.color}
+        >
+          {rating.label}
+        </Text>
+      </PieChart>
+    </div>
   );
 };
 

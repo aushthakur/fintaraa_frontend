@@ -40,7 +40,7 @@ export function CibilHero() {
       {/* ------------------------------------------------------------- */}
 
       {/* FIXED: Changed lg:items-center to lg:items-start to snap content to the top */}
-      <div className="relative z-10 mx-auto grid max-w-7xl gap-6 lg:grid-cols-[1.25fr_0.75fr] lg:items-start w-full">
+      <div className="relative z-10 mx-auto grid max-w-9xl gap-6 lg:grid-cols-[1.25fr_0.75fr] lg:items-start w-full">
         {/* Left Section Grid Column - Top Aligned */}
         <div className="flex flex-col justify-start lg:pt-4 ps-0 sm:ps-10 mt-4 sm:mt-10">
           {/* Dynamic Asset Slot */}

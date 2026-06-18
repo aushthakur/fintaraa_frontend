@@ -1,6 +1,6 @@
 "use client";
-import React, { useState } from "react";
 import Image from "next/image";
+import React, { useState } from "react";
 
 type BankLogo = {
   name: string;
@@ -19,7 +19,7 @@ type Category = (typeof categories)[number];
 const bankLogos = [
   { name: "Bank of Baroda", src: "/assets/banks/Bank-of-Baroda1.png" },
   { name: "State Bank of India", src: "/assets/banks/Sbi1.png" },
-  { name: "Shriram Finance", src: "/assets/banks/Shriram.png" }, // Adjusted based on image text
+  { name: "Shriram Finance", src: "/assets/banks/Shriram.png" },
   { name: "IndusInd Bank", src: "/assets/banks/Indusind.png" },
   { name: "Bajaj Finserv", src: "/assets/banks/Bajaj.png" },
   { name: "Kotak Mahindra Bank", src: "/assets/banks/Kotak-Mahindra-Bank.png" },
@@ -60,15 +60,14 @@ function LogoMarquee({
             key={`${bank.name}-${index}-${reverse ? "reverse" : "forward"}`}
             className="flex h-24 w-44 shrink-0 items-center justify-center rounded-2xl border border-gray-100 bg-white px-6 py-4 shadow-[0_4px_12px_rgba(16,24,40,0.03)]"
           >
-            {/* Explicit layout box forcing all internal logos to scale within the exact same boundaries */}
             <div className="relative flex h-10 w-full items-center justify-center">
               <Image
                 src={bank.src}
                 alt={bank.name}
-                width={140}
-                height={40}
+                fill
+                sizes="140px"
                 unoptimized
-                className="max-h-full max-w-full object-cover mix-blend-multiply"
+                className="object-contain mix-blend-multiply"
               />
             </div>
           </div>

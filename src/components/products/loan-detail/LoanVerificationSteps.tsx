@@ -31,7 +31,7 @@ const sequentialSteps = [
 
 export function LoanVerificationSteps({ page }: { page: LoanSeoPageData }) {
   return (
-    <section className="w-full max-w-7xl mx-auto bg-white px-6 py-12 antialiased text-[#111827] sm:px-8 md:px-12 lg:px-16">
+    <section className="w-full max-w-9xl mx-auto bg-white px-6 py-12 antialiased text-[#111827] sm:px-8 md:px-12 lg:px-16">
       <div className="grid gap-12 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
         
         {/* LEFT CONTAINER: VERIFICATION STEPS MATRICES */}

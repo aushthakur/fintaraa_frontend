@@ -324,7 +324,7 @@ export function EligibilitySection() {
                   {/* Premium Pill Green Button */}
                   <button
                     type="button"
-                    className="flex h-12 w-full items-center justify-center rounded-full bg-[#12b76a] px-12 text-[15px] font-bold text-white shadow-[0_10px_20px_rgba(18,183,106,0.15)] transition-all duration-200 hover:bg-[#0ea85f] sm:w-auto min-w-45"
+                    className="flex h-12 w-full items-center justify-center rounded-full  bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-12 text-[15px] font-bold text-white shadow-[0_10px_20px_rgba(18,183,106,0.15)] transition-all duration-200 hover:bg-[#0ea85f] sm:w-auto min-w-45"
                   >
                     Continue
                   </button>

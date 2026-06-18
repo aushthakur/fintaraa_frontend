@@ -16,7 +16,11 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
-import { productHref as resolveProductHref } from "@/lib/productRouting";
+import {
+  productHref as resolveProductHref,
+  isLoanProduct,
+  isInsuranceProduct,
+} from "@/lib/productRouting";
 
 type NavLink = {
   label: string;
@@ -149,16 +153,16 @@ const navItems = [
             href: "/cibil-score/report",
             description: "Open report summary and offers.",
           },
-          {
-            label: "Credit Score Loan",
-            href: resolveProductHref("Credit Score Loan"),
-            description: "Loan options based on credit profile.",
-          },
-          {
-            label: "Improve CIBIL Score",
-            href: "/blog/improve-cibil-score-practical-steps",
-            description: "Practical steps to build credit health.",
-          },
+          // {
+          //   label: "Credit Score Loan",
+          //   href: resolveProductHref("Credit Score Loan"),
+          //   description: "Loan options based on credit profile.",
+          // },
+          // {
+          //   label: "Improve CIBIL Score",
+          //   href: "/blog/improve-cibil-score-practical-steps",
+          //   description: "Practical steps to build credit health.",
+          // },
         ],
       },
     ],
@@ -216,29 +220,7 @@ const navItems = [
   {
     label: "Contact Us",
     href: "/contact-us",
-    sections: [
-      {
-        title: "Connect",
-        subtitle: "Reach the right team quickly.",
-        links: [
-          {
-            label: "Contact Us",
-            href: "/contact-us",
-            description: "Talk to the Fintaraa team.",
-          },
-          {
-            label: "Support",
-            href: "/support",
-            description: "Raise queries and track support.",
-          },
-          {
-            label: "About Fintaraa",
-            href: "/about-us",
-            description: "Learn more about our platform.",
-          },
-        ],
-      },
-    ],
+ 
   },
   {
     label: "Partner Zone",
@@ -274,16 +256,16 @@ const navItems = [
             href: "/careers",
             description: "Explore open roles at Fintaraa.",
           },
-          {
-            label: "Partner Support",
-            href: "/support",
-            description: "Get help for partner journeys.",
-          },
-          {
-            label: "Contact Us",
-            href: "/contact-us",
-            description: "Connect with our team.",
-          },
+          // {
+          //   label: "Partner Support",
+          //   href: "/support",
+          //   description: "Get help for partner journeys.",
+          // },
+          // {
+          //   label: "Contact Us",
+          //   href: "/contact-us",
+          //   description: "Connect with our team.",
+          // },
         ],
       },
     ],
@@ -451,12 +433,27 @@ function DesktopNavItem({
   item: NavItem;
   pathname: string;
 }) {
-  const active =
-    pathname === hrefPath(item.href) ||
-    pathname.startsWith(`${hrefPath(item.href)}/`) ||
-    item.sections?.some((section) =>
-      section.links.some((link) => pathname === hrefPath(link.href)),
+  const active = (() => {
+    // Loans and Insurance both use href="/products" — differentiate by product type
+    if (item.href === "/products") {
+      if (pathname === "/products") return true;
+      const slug = pathname.split("/")[2];
+      if (slug) {
+        return item.label === "Loans"
+          ? isLoanProduct(slug)
+          : isInsuranceProduct(slug);
+      }
+      return false;
+    }
+
+    return (
+      pathname === hrefPath(item.href) ||
+      pathname.startsWith(`${hrefPath(item.href)}/`) ||
+      item.sections?.some((section) =>
+        section.links.some((link) => pathname === hrefPath(link.href)),
+      )
     );
+  })();
 
   if (item.sections?.length) {
     return (
