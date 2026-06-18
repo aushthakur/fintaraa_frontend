@@ -12,18 +12,17 @@ import {
   PhoneCall,
   ShieldCheck,
   MessageCircle,
-  Headphones,
   Wrench,
   ChevronRight,
 } from "lucide-react";
 import {
   FaApple,
   FaGooglePlay,
-  FaYoutube,
-  FaXTwitter,
-  FaFacebookF,
-  FaInstagram,
-  FaLinkedinIn,
+  // FaYoutube,
+  // FaXTwitter,
+  // FaFacebookF,
+  // FaInstagram,
+  // FaLinkedinIn,
 } from "react-icons/fa6";
 import Image from "next/image";
 import { productHref } from "@/lib/productRouting";
@@ -86,13 +85,13 @@ const quickLinks = [
   { label: "Contact Us", href: "/contact-us", icon: PhoneCall },
 ];
 
-const socialLinks = [
-  { label: "Facebook", href: "https://www.facebook.com/fintaraa", icon: FaFacebookF },
-  { label: "X", href: "https://x.com/fintaraa", icon: FaXTwitter },
-  { label: "Instagram", href: "https://www.instagram.com/fintaraa/", icon: FaInstagram },
-  { label: "LinkedIn", href: "https://www.linkedin.com/company/fintaraa/", icon: FaLinkedinIn },
-  { label: "YouTube", href: "https://www.youtube.com/@Fintaraa-finance", icon: FaYoutube },
-];
+// const socialLinks = [
+//   { label: "Facebook", href: "https://www.facebook.com/fintaraa", icon: FaFacebookF },
+//   { label: "X", href: "https://x.com/fintaraa", icon: FaXTwitter },
+//   { label: "Instagram", href: "https://www.instagram.com/fintaraa/", icon: FaInstagram },
+//   { label: "LinkedIn", href: "https://www.linkedin.com/company/fintaraa/", icon: FaLinkedinIn },
+//   { label: "YouTube", href: "https://www.youtube.com/@Fintaraa-finance", icon: FaYoutube },
+// ];
 
 const trustItems = [
   { title: "SSL Secure", text: "256-bit encryption", icon: ShieldCheck },
@@ -108,12 +107,12 @@ const hoverUnderline =
 
 function FooterLinkList({ links }: { links: string[] }) {
   return (
-    <ul className="mt-4 space-y-[10px]">
+    <ul className="mt-4 space-y-2.5">
       {links.map((link) => (
         <li key={link}>
           <Link
             href={productHref(link)}
-            className={`${hoverUnderline} flex items-center gap-[6px] text-[13px] font-normal leading-[1.6] text-white/80 no-underline transition-colors hover:text-white`}
+            className={`${hoverUnderline} flex items-center gap-1.5 text-[13px] font-normal leading-[1.6] text-white/80 no-underline transition-colors hover:text-white`}
           >
             <ChevronRight className="h-3 w-3 shrink-0 text-white/50" />
             {link}
@@ -128,7 +127,7 @@ function ColHeading({ children }: { children: React.ReactNode }) {
   return (
     <div>
       <h3 className="text-[15px] font-bold text-white">{children}</h3>
-      <div className="mt-2 h-[2px] w-8 rounded-full bg-[#28c7ed]" />
+      <div className="mt-2 h-0.5 w-8 rounded-full bg-[#28c7ed]" />
     </div>
   );
 }
@@ -146,7 +145,7 @@ export const AppDownloadBanner = () => {
               Anytime, Anywhere
             </span>
           </h2>
-          <p className="mt-5 max-w-lg text-[18px] font-medium leading-8 text-[#344054]">
+          <p className="mt-5 max-w-lg text-4.5 font-medium leading-8 text-[#344054]">
             Track your credit score, explore loans, pay EMIs, get personalised
             offers &amp; do much more.
           </p>
@@ -167,7 +166,7 @@ export const AppDownloadBanner = () => {
           <h3 className="text-[24px] font-extrabold tracking-[-0.01em] text-[#07162d] md:text-[26px]">
             Download the Fintaraa App Now!
           </h3>
-          <p className="mt-3 text-[18px] font-medium text-[#344054]">
+          <p className="mt-3 text-4.5 font-medium text-[#344054]">
             Get smarter insights and better offers on the go.
           </p>
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
@@ -208,7 +207,7 @@ export default function Footer() {
   return (
     <>
       {/* ── Main dark footer ── */}
-      <footer className="bg-[#0B1C35] text-white">
+      <footer className="bg-[#002B4D] text-white">
 
         {/* ── 5-column link grid ── */}
         <div className="mx-auto max-w-9xl px-6 pt-12 pb-0 lg:px-8">
@@ -235,15 +234,15 @@ export default function Footer() {
             {/* Col 4 – Quick Links */}
             <div>
               <ColHeading>Quick Links</ColHeading>
-              <ul className="mt-4 space-y-[10px]">
+              <ul className="mt-4 space-y-2.5">
                 {quickLinks.map(({ label, href, icon: Icon }) => (
                   <li key={label}>
                     <Link
                       href={href}
                       className={`${hoverUnderline} flex items-center gap-2 text-[13px] font-normal leading-[1.6] text-white/80 no-underline transition-colors hover:text-white`}
                     >
-                      <span className="flex h-[18px] w-[18px] shrink-0 items-center justify-center">
-                        <Icon className="h-[14px] w-[14px] text-white/60" />
+                      <span className="flex h-4.5 w-4.5 shrink-0 items-center justify-center">
+                        <Icon className="h-3.5 w-3.5 text-white/60" />
                       </span>
                       {label}
                     </Link>
@@ -331,7 +330,7 @@ export default function Footer() {
               >
                 <Icon className="h-9 w-9 shrink-0 text-white/80" />
                 <div>
-                  <p className="text-[14px] font-bold text-white">{title}</p>
+                  <p className="text-3.5 font-bold text-white">{title}</p>
                   <p className="text-[12px] text-white/60">{text}</p>
                 </div>
               </div>
