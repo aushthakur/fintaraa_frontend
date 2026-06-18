@@ -79,6 +79,7 @@ export function CibilEligibleOffers() {
                     src={offer.logo}
                     alt={offer.bankName}
                     fill
+                    sizes="112px"
                     className="object-contain object-left"
                   />
                 </div>

@@ -106,6 +106,7 @@ export function HomeLoanOffers() {
                     src={offer.logoSrc}
                     alt={offer.bankName}
                     fill
+                    sizes="96px"
                     unoptimized
                     className="object-contain object-left"
                   />

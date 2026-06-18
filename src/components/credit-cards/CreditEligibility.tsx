@@ -62,7 +62,7 @@ export function CreditEligibility() {
               alt="Credit Card Eligibility Illustration"
               width={340}
               height={220}
-              className="object-contain"
+              className="h-auto w-auto object-contain"
               priority
             />
           </div>

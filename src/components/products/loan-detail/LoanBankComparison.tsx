@@ -59,7 +59,7 @@ export function LoanBankComparison({ page }: { page: LoanSeoPageData }) {
                         alt={row.name}
                         width={110}
                         height={32}
-                        className="object-contain max-h-8 w-auto"
+                        className="h-auto max-h-8 w-auto object-contain"
                       />
                     </Link>
                     <div className="flex items-center gap-0.5 text-xs font-bold text-gray-400 select-none">

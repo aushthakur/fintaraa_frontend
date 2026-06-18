@@ -68,7 +68,7 @@ function LogoMarquee({
                 width={140}
                 height={40}
                 unoptimized
-                className="max-h-full max-w-full object-cover mix-blend-multiply"
+                className="h-auto max-h-full w-auto max-w-full object-contain mix-blend-multiply"
               />
             </div>
           </div>

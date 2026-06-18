@@ -102,7 +102,7 @@ export function LoanOtherProducts() {
                   alt={bank.title}
                   width={60}
                   height={60}
-                  className="object-contain"
+                  className="h-auto w-auto object-contain"
                 />
               </div>
               <h3 className="mt-5 text-[14px] font-bold tracking-tight text-[#0f172a]">
