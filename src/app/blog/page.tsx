@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
+import { getPageSeoMetadata } from "@/services/seoMetadata";
 import { BlogIndexPage } from "@/components/blog/BlogIndexPage";
-import { blogPosts } from "@/data/blogs";
 
-export const metadata: Metadata = {
+const fallbackMetadata: Metadata = {
   title: "Financial Insights and Blogs",
   description:
     "Read Fintaraa blogs on loans, credit score, credit cards, insurance, eligibility, documents, EMIs, and responsible financial planning.",
@@ -16,6 +16,10 @@ export const metadata: Metadata = {
   },
 };
 
+export async function generateMetadata(): Promise<Metadata> {
+  return getPageSeoMetadata("/blog", fallbackMetadata);
+}
+
 export default function BlogPage() {
-  return <BlogIndexPage posts={blogPosts} />;
+  return <BlogIndexPage />;
 }

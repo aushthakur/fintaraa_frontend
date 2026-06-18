@@ -12,7 +12,7 @@ export function CareersLife() {
           {lifeImages.map((src, index) => (
             <div
               key={src}
-              className="relative h-[136px] overflow-hidden rounded-[10px] bg-[#e8f4ff] shadow-[0_4px_12px_rgba(16,24,40,0.05)]"
+              className="relative h-34 overflow-hidden rounded-[10px] bg-[#e8f4ff] shadow-[0_4px_12px_rgba(16,24,40,0.05)]"
             >
               <Image src={src} alt={`Life at Fintaraa ${index + 1}`} fill unoptimized className="object-cover" />
             </div>

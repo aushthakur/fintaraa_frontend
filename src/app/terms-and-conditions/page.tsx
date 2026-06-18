@@ -1,12 +1,17 @@
 import type { Metadata } from "next";
+import { getPageSeoMetadata } from "@/services/seoMetadata";
 import { LegalPolicyPage } from "@/components/legal/LegalPolicyPage";
 import { legalPages } from "@/data/legalPages";
 
-export const metadata: Metadata = {
+const fallbackMetadata: Metadata = {
   title: "Terms and Conditions",
   description:
     "Read the Fintaraa terms for using loan, credit card, insurance, KYC, bureau, and partner fulfilment services.",
 };
+
+export async function generateMetadata(): Promise<Metadata> {
+  return getPageSeoMetadata("/terms-and-conditions", fallbackMetadata);
+}
 
 export default function TermsAndConditionsPage() {
   return (

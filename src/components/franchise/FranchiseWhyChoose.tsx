@@ -7,7 +7,7 @@ export function FranchiseWhyChoose() {
       <div className="mx-auto max-w-9xl">
         <div className="flex items-start justify-between gap-6">
           <h2 className="text-[28px] font-semibold">Why Choose Fintaraa?</h2>
-          <div className="relative hidden h-[80px] w-[200px] md:block">
+          <div className="relative hidden h-20 w-50 md:block">
             <Image
               src="/assets/images/security.png"
               alt="Fintaraa compliance badges"
@@ -25,7 +25,7 @@ export function FranchiseWhyChoose() {
               key={`${title}-${index}`}
               className="
 flex
-h-[66px]
+h-16.5
 items-center
 gap-4
 rounded-[14px]
@@ -34,7 +34,7 @@ px-5
 text-[#005CA8]
 "
             >
-              <Icon className="h-[22px] w-[22px] shrink-0 stroke-[1.7]" />
+              <Icon className="h-5.5 w-5.5 shrink-0 stroke-[1.7]" />
               <span className="text-[13px] font-medium leading-[18px]">
                 {title}
               </span>

@@ -1,19 +1,18 @@
 import Image from "next/image";
 import Link from "next/link";
 import {
-  Building2,
-  Clock3,
   Mail,
-  MapPin,
+  Clock3,
+  Building2,
   MessageCircle,
+  Users,
   Phone,
   ShieldCheck,
-  Users,
 } from "lucide-react";
-import { AppDownloadBanner } from "@/components/common/layout/Footer";
-import { FaqAccordion } from "@/components/common/FaqAccordion";
 import { Testimonials } from "@/components/home/Testimonials";
+import { FaqAccordion } from "@/components/common/FaqAccordion";
 import { ContactConsultationForm } from "./ContactConsultationForm";
+import { AppDownloadBanner } from "@/components/common/layout/Footer";
 
 const heroStats = [
   { value: "Quick Approval", label: "Just in 24hrs", icon: ShieldCheck },
@@ -144,8 +143,8 @@ export function ContactUsPage() {
               </div>
             </div>
 
-            <div className="relative flex min-h-[250px] items-center justify-center lg:min-h-[310px]">
-              <div className="relative h-[330px] w-full max-w-[560px]">
+            <div className="relative flex min-h-62.5 items-center justify-center lg:min-h-77.5">
+              <div className="relative h-82.5 w-full max-w-140">
                 <Image
                   src="/assets/contact/contact-hero.png"
                   alt="Contact hero illustration placeholder"
@@ -169,7 +168,7 @@ export function ContactUsPage() {
       </section>
 
       <section className="px-4 pb-14 md:px-6 lg:px-8">
-        <div className="mx-auto max-w-9xl">
+        <div className="mx-auto max-w-4xl">
           <div className="mb-5">
             <h2 className="text-[24px] font-extrabold tracking-normal text-[#111827]">
               Get A Free Loan Consultation
@@ -189,7 +188,7 @@ export function ContactUsPage() {
           <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex items-center gap-5">
               {/* Image Placeholder */}
-              <div className="flex h-[90px] w-[90px] shrink-0 items-center justify-center">
+              <div className="flex h-22.5 w-22.5 shrink-0 items-center justify-center">
                 <Image
                   src="/assets/images/help-desk 1.png"
                   alt="Support Agent"

@@ -153,7 +153,7 @@ export function DsaPartnerBenefits() {
             </form>
           </div>
 
-          <aside className="flex min-h-[340px] flex-col justify-between rounded-[22px] bg-[#eaf3ff] p-5">
+          <aside className="flex min-h-85 flex-col justify-between rounded-[22px] bg-[#eaf3ff] p-5">
             <div>
               <h3 className="text-[22px] font-extrabold tracking-[-0.02em] text-[#22272e]">
                 Benefits You Get
@@ -171,7 +171,7 @@ export function DsaPartnerBenefits() {
               </div>
             </div>
 
-            <div className="relative mt-6 min-h-[160px]">
+            <div className="relative mt-6 min-h-40">
               <Image
                 src="/assets/images/handshake.png"
                 alt="DSA partnership"

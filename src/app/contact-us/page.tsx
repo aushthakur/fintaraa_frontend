@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import { getPageSeoMetadata } from "@/services/seoMetadata";
 import { ContactUsPage } from "@/components/contact/ContactUsPage";
 
-export const metadata: Metadata = {
+const fallbackMetadata: Metadata = {
   title: "Contact Us",
   description:
     "Contact Fintaraa for loan, credit card, insurance, document verification, partner follow-up, support, business, and grievance-related assistance.",
@@ -14,6 +15,10 @@ export const metadata: Metadata = {
     type: "website",
   },
 };
+
+export async function generateMetadata(): Promise<Metadata> {
+  return getPageSeoMetadata("/contact-us", fallbackMetadata);
+}
 
 export default function ContactPage() {
   return <ContactUsPage />;

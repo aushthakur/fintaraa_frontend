@@ -64,7 +64,7 @@ export function ItrHero() {
           <p className="mt-3 text-[15px] font-medium text-[#1f2937] sm:text-base md:text-[17px] lg:text-[19px]">
             File your Income Tax Return easily and stay 100% compliant
           </p>
-          <div className="relative mt-6 min-h-[200px] sm:min-h-[260px] md:min-h-[300px] lg:min-h-[340px] xl:min-h-[380px]">
+          <div className="relative mt-6 min-h-50 sm:min-h-65 md:min-h-75 lg:min-h-85 xl:min-h-95">
             <Image
               src="/assets/services/itr-hero.png"
               alt="ITR filing"
@@ -75,8 +75,8 @@ export function ItrHero() {
           </div>
         </div>
 
-        <div className="relative mx-auto w-full max-w-[560px]">
-          <div className="absolute -right-7 -top-7 h-full w-[340px] rounded-2xl bg-[#005ca8] sm:w-[380px] md:w-[420px] lg:w-[460px]" />
+        <div className="relative mx-auto w-full max-w-140">
+          <div className="absolute -right-7 -top-7 h-full w-85 rounded-2xl bg-[#005ca8] sm:w-95 md:w-105 lg:w-115" />
           <div className="relative rounded-2xl bg-white p-5 shadow-[0_18px_45px_rgba(16,24,40,0.14)] sm:p-6 md:p-8">
             <h2 className="text-lg font-bold text-[#1f2937] sm:text-xl md:text-[22px] lg:text-[24px]">
               Get Started with ITR Filling

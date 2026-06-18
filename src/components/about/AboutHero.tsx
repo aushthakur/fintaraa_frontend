@@ -47,7 +47,7 @@ export function AboutHero() {
         <div className="mt-8 flex flex-wrap items-center gap-6">
           <Link
             href="/about-us"
-            className="inline-flex h-12 w-[200px] items-center justify-center rounded-full bg-[#1cb45c] text-[14px] font-semibold text-white no-underline shadow-[0_14px_28px_rgba(28,180,92,0.2)] transition hover:bg-[#16954d]"
+            className="inline-flex h-12 w-50 items-center justify-center rounded-full bg-[#1cb45c] text-[14px] font-semibold text-white no-underline shadow-[0_14px_28px_rgba(28,180,92,0.2)] transition hover:bg-[#16954d]"
           >
             About
           </Link>

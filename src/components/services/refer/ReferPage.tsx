@@ -84,7 +84,7 @@ export function ReferPage() {
                     When their loan is disbursed
                   </p>
                 </div>
-                <div className="relative min-h-[200px] md:min-h-[230px]">
+                <div className="relative min-h-50 md:min-h-57.5">
                   <Image
                     src="/assets/refer/image.png"
                     alt="Refer a friend illustration"
@@ -135,7 +135,7 @@ export function ReferPage() {
                       <button
                         key={label}
                         type="button"
-                        className="inline-flex h-12 min-w-[148px] items-center justify-center gap-2.5 rounded-[8px] bg-[#eaf6ff] px-5 text-[14px] font-bold text-[#1f2937]"
+                        className="inline-flex h-12 min-w-37 items-center justify-center gap-2.5 rounded-[8px] bg-[#eaf6ff] px-5 text-[14px] font-bold text-[#1f2937]"
                       >
                         <Icon className="h-5 w-5 shrink-0" style={{ color }} />
                         {label}
@@ -168,7 +168,7 @@ export function ReferPage() {
                   Referral History
                 </h2>
                 <div className="mt-4 overflow-x-auto">
-                  <table className="w-full min-w-[760px] border-collapse text-left">
+                  <table className="w-full min-w-190 border-collapse text-left">
                     <thead>
                       <tr className="border-b border-[#e3e8ef] text-[14px] text-[#1f2937]">
                         {[

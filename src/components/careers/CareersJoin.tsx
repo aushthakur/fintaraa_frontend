@@ -16,7 +16,7 @@ export function CareersJoin() {
             suitable opportunity comes up.
           </p>
           <div className="mt-10 flex justify-center">
-            <div className="relative h-[250px] w-[310px] max-w-full">
+            <div className="relative h-62.5 w-77.5 max-w-full">
               <Image
                 src="/assets/images/mail.png"
                 alt="Apply with Fintaraa"

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getPageSeoMetadata } from "@/services/seoMetadata";
 import {
   Mail,
   Landmark,
@@ -8,7 +9,7 @@ import {
   ShieldCheck,
 } from "lucide-react";
 
-export const metadata: Metadata = {
+const fallbackMetadata: Metadata = {
   title: "Loan Disclosure & Disclaimer",
   description:
     "View Fintaraa loan disclosure, indicative loan ranges, sample EMI calculation, lender responsibility, and support details.",
@@ -74,6 +75,10 @@ const sections = [
     ],
   },
 ];
+
+export async function generateMetadata(): Promise<Metadata> {
+  return getPageSeoMetadata("/loan-disclosure", fallbackMetadata);
+}
 
 export default function LoanDisclosurePage() {
   return (

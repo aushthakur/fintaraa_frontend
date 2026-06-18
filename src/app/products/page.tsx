@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import { getPageSeoMetadata } from "@/services/seoMetadata";
 import { ProductsPage } from "@/components/products/ProductsPage";
 
-export const metadata: Metadata = {
+const fallbackMetadata: Metadata = {
   title: "Products | Fintaraa",
   description:
     "Explore Fintaraa loans, credit cards, insurance plans, and additional financial services with search and assisted applications.",
@@ -14,6 +15,10 @@ export const metadata: Metadata = {
     type: "website",
   },
 };
+
+export async function generateMetadata(): Promise<Metadata> {
+  return getPageSeoMetadata("/products", fallbackMetadata);
+}
 
 export default function Page() {
   return <ProductsPage />;

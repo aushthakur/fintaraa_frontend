@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { BankDetailPage } from "@/components/banks/BankDetailPage";
 import { parseLoanLocation, slugifyProduct } from "@/lib/productRouting";
 import { buildBankPath, getBankSeoPage } from "@/services/bankSeoPages";
+import { getPageSeoMetadata } from "@/services/seoMetadata";
 
 type PageProps = {
   params: Promise<{
@@ -27,7 +28,7 @@ export async function generateMetadata({
   const page = await getBankSeoPage(bankSlug, productSlug, location);
   const canonical = page.canonicalPath || buildBankPath(bankSlug, productSlug, location);
 
-  return {
+  return getPageSeoMetadata(canonical, {
     title: page.seoTitle || `${page.title} | Fintaraa`,
     description:
       page.seoDescription ||
@@ -41,7 +42,7 @@ export async function generateMetadata({
       url: canonical,
       type: "website",
     },
-  };
+  });
 }
 
 export default async function BankSeoRoute({ params }: PageProps) {

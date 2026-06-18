@@ -79,7 +79,7 @@ export function DsaHero() {
           </div>
         </div>
 
-        <div className="relative min-h-[330px] md:min-h-[520px]">
+        <div className="relative min-h-82.5 md:min-h-130">
           <Image
             src="/assets/dsa/hero.png"
             alt="Fintaraa DSA partners"

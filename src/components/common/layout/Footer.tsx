@@ -15,10 +15,7 @@ import {
   Wrench,
   ChevronRight,
 } from "lucide-react";
-import {
-  FaApple,
-  FaGooglePlay,
-} from "react-icons/fa6";
+import { FaApple, FaGooglePlay } from "react-icons/fa6";
 import Image from "next/image";
 import { productHref } from "@/lib/productRouting";
 
@@ -73,7 +70,11 @@ const insuranceLinks = [
 const quickLinks = [
   { label: "Credit Cards", href: "/credit-cards", icon: CreditCard },
   { label: "Tools", href: "/tools", icon: Wrench },
-  { label: "CIBIL Score", href: "/login?product=cibil-score", icon: BadgeCheck },
+  {
+    label: "CIBIL Score",
+    href: "/login?product=cibil-score",
+    icon: BadgeCheck,
+  },
   { label: "Blog", href: "/blog", icon: Newspaper },
   { label: "Careers", href: "/careers", icon: BriefcaseBusiness },
   { label: "Franchise", href: "/franchise", icon: Landmark },
@@ -85,7 +86,11 @@ const trustItems = [
   { title: "SSL Secure", text: "256-bit encryption", icon: ShieldCheck },
   { title: "ISO 27001", text: "Certified", icon: BadgeCheck },
   { title: "RBI Registered", text: "Trusted & Compliant", icon: Landmark },
-  { title: "Data Protected", text: "Your privacy is our priority", icon: LockKeyhole },
+  {
+    title: "Data Protected",
+    text: "Your privacy is our priority",
+    icon: LockKeyhole,
+  },
 ];
 
 /* ─── HELPERS ───────────────────────────────────────────────── */
@@ -100,7 +105,7 @@ function FooterLinkList({ links }: { links: string[] }) {
         <li key={link}>
           <Link
             href={productHref(link)}
-            className={`${hoverUnderline} flex items-center gap-1.5 text-[14px] font-normal leading-[1.55] text-white/90 no-underline transition-colors hover:text-white`}
+            className={`${hoverUnderline} flex items-center gap-1.5 text-3.5 font-normal leading-[1.55] text-white/90 no-underline transition-colors hover:text-white`}
           >
             <ChevronRight className="h-3 w-3 shrink-0 text-white/50" />
             {link}
@@ -115,7 +120,7 @@ function ColHeading({ children }: { children: React.ReactNode }) {
   return (
     <div>
       <h3 className="text-[16px] font-bold text-white">{children}</h3>
-      <div className="mt-2 h-[2px] w-8 rounded-full bg-[#28c7ed]" />
+      <div className="mt-2 h-0.5 w-8 rounded-full bg-[#28c7ed]" />
     </div>
   );
 }
@@ -133,7 +138,7 @@ export const AppDownloadBanner = () => {
               Anytime, Anywhere
             </span>
           </h2>
-          <p className="mt-5 max-w-lg text-[18px] font-medium leading-8 text-[#344054]">
+          <p className="mt-5 max-w-lg text-4.5 font-medium leading-8 text-[#344054]">
             Track your credit score, explore loans, pay EMIs, get personalised
             offers &amp; do much more.
           </p>
@@ -154,7 +159,7 @@ export const AppDownloadBanner = () => {
           <h3 className="text-[24px] font-extrabold tracking-[-0.01em] text-[#07162d] md:text-[26px]">
             Download the Fintaraa App Now!
           </h3>
-          <p className="mt-3 text-[18px] font-medium text-[#344054]">
+          <p className="mt-3 text-4.5 font-medium text-[#344054]">
             Get smarter insights and better offers on the go.
           </p>
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
@@ -164,7 +169,9 @@ export const AppDownloadBanner = () => {
             >
               <FaGooglePlay className="h-7 w-7 text-[#34a853]" />
               <span>
-                <span className="block text-[10px] font-bold uppercase leading-none">Get it on</span>
+                <span className="block text-[10px] font-bold uppercase leading-none">
+                  Get it on
+                </span>
                 <span className="text-[16px] font-semibold">Google Play</span>
               </span>
             </a>
@@ -174,8 +181,12 @@ export const AppDownloadBanner = () => {
             >
               <FaApple className="h-7 w-7 text-white" />
               <span>
-                <span className="block text-[10px] font-bold leading-none">Download on the</span>
-                <span className="text-[16px] font-semibold leading-none">App Store</span>
+                <span className="block text-[10px] font-bold leading-none">
+                  Download on the
+                </span>
+                <span className="text-[16px] font-semibold leading-none">
+                  App Store
+                </span>
               </span>
             </a>
           </div>
@@ -195,11 +206,9 @@ export default function Footer() {
   return (
     <>
       <footer className="bg-[#002B4D] text-white">
-
         {/* ── 5-column link grid ── */}
         <div className="mx-auto max-w-9xl px-6 pt-12 pb-0 lg:px-10">
           <div className="grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3 lg:grid-cols-5">
-
             {/* Col 1 – Financial Services */}
             <div>
               <ColHeading>Financial Services</ColHeading>
@@ -226,10 +235,10 @@ export default function Footer() {
                   <li key={label}>
                     <Link
                       href={href}
-                      className={`${hoverUnderline} flex items-center gap-2 text-[14px] font-normal leading-[1.55] text-white/90 no-underline transition-colors hover:text-white`}
+                      className={`${hoverUnderline} flex items-center gap-2 text-3.5 font-normal leading-[1.55] text-white/90 no-underline transition-colors hover:text-white`}
                     >
-                      <span className="flex h-[18px] w-[18px] shrink-0 items-center justify-center">
-                        <Icon className="h-[14px] w-[14px] text-white/60" />
+                      <span className="flex h-4.5 w-4.5 shrink-0 items-center justify-center">
+                        <Icon className="h-3.5 w-3.5 text-white/60" />
                       </span>
                       {label}
                     </Link>
@@ -248,16 +257,14 @@ export default function Footer() {
 
         {/* ── Contact bar ── */}
         <div className="mx-auto mt-10 max-w-9xl border-t border-white/10 px-6 lg:px-10">
-          <div className="flex flex-col gap-7 py-7  text-[14px] text-white sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-28 sm:gap-y-4">
-
+          <div className="grid grid-cols-5 py-7 text-3.5 text-white sm:items-center gap-5">
             {/* Address */}
-            <div className="flex items-start gap-2  ">
+            <div className="flex items-start gap-2">
               <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-white/70" />
               <p className="leading-[1.7] text-white/90">
-                Fintaraa Financial Services Pvt. Ltd.<br />
-                Unit No. 402, 4th Floor, Tower A,<br />
-                Spaze I-Tech Park, Sector 49,<br />
-                Gurugram, Haryana - 122018
+                Fintaraa Financial Services Pvt. Ltd. Unit No. 402, 4th Floor,
+                Tower A, Spaze I-Tech Park, Sector 49, Gurugram, Haryana -
+                122018
               </p>
             </div>
 
@@ -303,7 +310,7 @@ export default function Footer() {
               <div key={title} className="flex items-center gap-4 px-6 py-5">
                 <Icon className="h-9 w-9 shrink-0 text-white/80" />
                 <div>
-                  <p className="text-[14px] font-bold text-white">{title}</p>
+                  <p className="text-3.5 font-bold text-white">{title}</p>
                   <p className="text-[12px] text-white/70">{text}</p>
                 </div>
               </div>
@@ -314,7 +321,6 @@ export default function Footer() {
         {/* ── Bottom bar ── */}
         <div className="border-t border-white/10">
           <div className="mx-auto flex max-w-9xl flex-col items-start justify-between gap-4 px-6 py-4 lg:flex-row lg:items-center lg:px-10">
-
             {/* Copyright */}
             <p className="text-[13px] text-white/70">
               © 2024 Fintaraa Financial Services Pvt. Ltd. All Rights Reserved.
@@ -335,14 +341,15 @@ export default function Footer() {
                   >
                     {label}
                   </Link>
-                  {i < arr.length - 1 && <span className="text-white/30">|</span>}
+                  {i < arr.length - 1 && (
+                    <span className="text-white/30">|</span>
+                  )}
                 </span>
               ))}
             </div>
 
             {/* Badges */}
             <div className="flex items-center gap-3">
-
               {/* SECTIGO badge */}
               <span className="flex items-center gap-1.5 rounded border border-white/20 bg-white/5 px-2.5 py-1.5">
                 <ShieldCheck className="h-3.5 w-3.5 text-[#28c7ed]" />
@@ -376,8 +383,9 @@ export default function Footer() {
               </span>
 
               {/* RBI text label */}
-              <span className="text-[11px] leading-[1.5] text-white/60">
-                Registered with<br />
+              <span className="text-[11px] leading-normal text-white/60">
+                Registered with
+                <br />
                 Reserve Bank of India (RBI)
               </span>
             </div>

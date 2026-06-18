@@ -57,7 +57,7 @@ export function GstHero() {
           </p>
 
           {/* Hero illustration */}
-          <div className="relative mt-6 min-h-[200px] w-full sm:min-h-[260px] md:min-h-[320px] lg:min-h-[380px] xl:min-h-[420px]">
+          <div className="relative mt-6 min-h-50 w-full sm:min-h-65 md:min-h-80 lg:min-h-95 xl:min-h-105">
             <Image
               src="/assets/services/gst-hero.png"
               alt="GST services"
@@ -69,9 +69,9 @@ export function GstHero() {
         </div>
 
         {/* RIGHT — form card */}
-        <div className="relative mx-auto w-full max-w-[560px]">
+        <div className="relative mx-auto w-full max-w-140">
           {/* Blue shadow offset */}
-          <div className="absolute -right-4 -top-4 h-full w-[340px] rounded-xl bg-[#005ca8] sm:w-[380px] md:w-[420px] lg:w-[460px]" />
+          <div className="absolute -right-4 -top-4 h-full w-85 rounded-xl bg-[#005ca8] sm:w-95 md:w-105 lg:w-115" />
 
           {/* White card */}
           <div className="relative rounded-xl bg-white p-5 shadow-[0_18px_45px_rgba(16,24,40,0.12)] sm:p-6 md:p-7">
@@ -119,14 +119,14 @@ export function GstHero() {
       </div>
 
       {/* Trust badges row */}
-<div className="mx-auto mt-2 max-w-[1200px]">
+<div className="mx-auto mt-2 max-w-300">
   <div className="grid grid-cols-3 border-t border-[#E6EEF8] ">
     {trustBadges.map(({ label, icon: Icon }) => (
       <div
         key={label}
         className="flex items-left justify-left gap-2 py-4 border-r border-[#E6EEF8] last:border-r-0"
       >
-        <Icon className="h-5 w-5 text-[#005CA8] sm:h-6 sm:w-6 md:h-[30px] md:w-[30px]" />
+        <Icon className="h-5 w-5 text-[#005CA8] sm:h-6 sm:w-6 md:h-7.5 md:w-7.5" />
 
         <span className="text-xs font-semibold text-[#005CA8] sm:text-sm md:text-[15px]">
           {label}

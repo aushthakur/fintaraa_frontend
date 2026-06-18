@@ -57,13 +57,13 @@ export function FranchiseHero() {
           <div className="mt-6 flex flex-wrap gap-4">
             <Link
               href="#franchise-form"
-              className="inline-flex h-[48px] items-center justify-center rounded-full bg-[#15B24A] px-8 text-[15px] font-semibold text-white"
+              className="inline-flex h-12 items-center justify-center rounded-full bg-[#15B24A] px-8 text-[15px] font-semibold text-white"
             >
               Apply For Franchise
             </Link>
             <a
               href="tel:+918448282679"
-              className="inline-flex h-[48px] items-center justify-center gap-2 rounded-full border border-[#15B24A] px-8 text-[15px] font-semibold text-[#15B24A]"
+              className="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-[#15B24A] px-8 text-[15px] font-semibold text-[#15B24A]"
             >
               Talk to Franchise Expert
             </a>
@@ -71,7 +71,7 @@ export function FranchiseHero() {
         </div>
 
         {/* Right: Hero image - Fintaraa franchise outlet photo */}
-        <div className="relative h-[360px] w-full overflow-hidden">
+        <div className="relative h-90 w-full overflow-hidden">
           <Image
             src="/assets/images/hero.png"
             alt="Fintaraa franchise outlet"
@@ -102,7 +102,7 @@ export function FranchiseHero() {
             key={label}
             className="flex items-center gap-3 rounded-[12px] bg-white px-4 py-2 shadow-[0_2px_10px_rgba(0,0,0,0.05)]"
           >
-            <div className="flex h-[40px] w-[40px] items-center justify-center rounded-[10px] bg-[#EDF5FF]">
+            <div className="flex h-10 w-10 items-center justify-center rounded-[10px] bg-[#EDF5FF]">
               <Icon className="h-10 w-10 text-[#005CA8]" />
             </div>
 

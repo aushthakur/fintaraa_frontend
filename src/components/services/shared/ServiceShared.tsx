@@ -98,7 +98,7 @@ export function ServiceTimeline({ title }: { title: string }) {
               {/* Connector line */}
               {index < timelineSteps.length - 1 && (
                 <div
-                  className={`absolute left-1/2 top-[22px] h-[3px] w-full ${
+                  className={`absolute left-1/2 top-5.5 h-0.75 w-full ${
                     index < 2 ? "bg-[#005ca8]" : "bg-[#daeeff]"
                   }`}
                 />

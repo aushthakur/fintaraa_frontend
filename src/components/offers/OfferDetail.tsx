@@ -20,13 +20,13 @@ export function OfferDetail() {
       <div className="mx-auto max-w-9xl">
         <div className="rounded-[12px] border border-[#49a7ff] bg-[#eaf4ff] p-6 shadow-[0_4px_18px_rgba(73,167,255,0.14)]">
           <div className="grid gap-8 md:grid-cols-[1fr_267px] md:items-center">
-            <div className="relative min-h-[260px] md:min-h-[280px]">
+            <div className="relative min-h-65 md:min-h-70">
               <Image
                 src="/assets/banks/hdfc.png"
                 alt="HDFC Bank"
                 width={214}
                 height={64}
-                className="h-auto w-[214px] object-contain object-left"
+                className="h-auto w-53.5 object-contain object-left"
                 priority
               />
 
@@ -46,7 +46,7 @@ export function OfferDetail() {
               </p>
             </div>
 
-            <div className="relative mx-auto h-[267px] w-[267px] md:h-[267px] md:w-[267px]">
+            <div className="relative mx-auto h-66.75 w-66.75 md:h-66.75 md:w-66.75">
               <Image
                 src="/assets/offers/offer.png"
                 alt="Offer illustration"

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import { getPageSeoMetadata } from "@/services/seoMetadata";
 import { DsaPage } from "@/components/dsa/DsaPage";
 
-export const metadata: Metadata = {
+const fallbackMetadata: Metadata = {
   title: "Become a Fintaraa DSA Partner",
   description:
     "Become a Fintaraa DSA partner and earn commissions by referring loan, credit card and insurance customers through a guided partner program.",
@@ -14,6 +15,10 @@ export const metadata: Metadata = {
     type: "website",
   },
 };
+
+export async function generateMetadata(): Promise<Metadata> {
+  return getPageSeoMetadata("/become-dsa", fallbackMetadata);
+}
 
 export default function Page() {
   return <DsaPage />;

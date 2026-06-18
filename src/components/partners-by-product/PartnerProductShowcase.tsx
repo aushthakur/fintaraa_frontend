@@ -28,7 +28,7 @@ function LogoTile({
   width: number;
 }) {
   return (
-    <div className="flex h-[90px] items-center justify-center rounded-xl border border-[#e6eaf0] bg-white px-5 shadow-[0_4px_14px_rgba(15,23,42,0.04)]">
+    <div className="flex h-22.5 items-center justify-center rounded-xl border border-[#e6eaf0] bg-white px-5 shadow-[0_4px_14px_rgba(15,23,42,0.04)]">
       <Image
         src={src}
         alt={name}
@@ -90,7 +90,7 @@ export function PartnerProductShowcase() {
                 ))}
                 <Link
                   href="/partners"
-                  className="inline-flex h-[90px] items-center justify-center gap-1.5 rounded-xl border border-transparent px-4 text-[14px] font-semibold text-[#1da34c] no-underline transition-colors hover:text-[#13853d]"
+                  className="inline-flex h-22.5 items-center justify-center gap-1.5 rounded-xl border border-transparent px-4 text-[14px] font-semibold text-[#1da34c] no-underline transition-colors hover:text-[#13853d]"
                 >
                   View all
                   <ArrowRight className="h-4 w-4" />

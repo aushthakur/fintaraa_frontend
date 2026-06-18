@@ -11,6 +11,7 @@ import {
 } from "@/lib/productRouting";
 import { getLoanSeoPage } from "@/services/loanSeoPages";
 import { getInsuranceSeoPage } from "@/services/insuranceSeoPages";
+import { getPageSeoMetadata } from "@/services/seoMetadata";
 
 type PageProps = {
   params: Promise<{
@@ -34,7 +35,7 @@ export async function generateMetadata({
     : await getLoanSeoPage(productSlug, location);
   const canonical = page.canonicalPath || buildLoanPath(productSlug, location);
 
-  return {
+  return getPageSeoMetadata(canonical, {
     title: page.seoTitle || `${page.title} | Fintaraa`,
     description:
       page.seoDescription ||
@@ -48,7 +49,7 @@ export async function generateMetadata({
       url: canonical,
       type: "website",
     },
-  };
+  });
 }
 
 export default async function ProductLoanPage({ params }: PageProps) {

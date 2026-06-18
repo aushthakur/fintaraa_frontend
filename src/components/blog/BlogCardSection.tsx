@@ -68,7 +68,7 @@ export function BlogCardSection({ posts }: { posts: BlogPost[] }) {
                 <div className="relative h-40 w-full bg-gray-50 sm:h-44 md:h-48 lg:h-52 xl:h-56">
                   {/* Visual placeholder using standard Image component */}
                   <Image
-                    src={`/assets/blogs/blog${index + 1}.png`}
+                    src={(post as any).coverImageUrl || `/assets/blogs/blog${index + 1}.png`}
                     alt={post.title}
                     fill
                     className="object-cover"

@@ -64,18 +64,18 @@ export function FranchiseModel() {
         {/* 6-step horizontal flow with arrows */}
         <div className="mt-6 grid grid-cols-6 gap-2">
           {franchiseSteps.map((step, index) => (
-            <div key={step.title} className="relative w-[140px] text-center">
-              <span className="mx-auto flex h-[54px] w-[54px] items-center justify-center rounded-[12px] bg-[#EEF6FF]">
+            <div key={step.title} className="relative w-35 text-center">
+              <span className="mx-auto flex h-13.5 w-13.5 items-center justify-center rounded-[12px] bg-[#EEF6FF]">
                 <ShieldCheck className="h-10 w-10 text-[#005CA8]" />
               </span>
               {index < franchiseSteps.length - 1 ? (
                 <ArrowRight
                   className="
   absolute
-  -right-[26px]
-  top-[10px]
-  h-[34px]
-  w-[34px]
+  -right-6.5
+  top-2.5
+  h-8.5
+  w-8.5
   text-[#005CA8]
   "
                 />

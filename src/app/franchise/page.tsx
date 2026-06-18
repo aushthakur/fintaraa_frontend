@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import { getPageSeoMetadata } from "@/services/seoMetadata";
 import { FranchisePage } from "@/components/franchise/FranchisePage";
 
-export const metadata: Metadata = {
+const fallbackMetadata: Metadata = {
   title: "Fintaraa Franchise | Partner With Fintaraa",
   description:
     "Open your own Fintaraa franchise and build a financial services business with bank, NBFC, loan, credit card and insurance partner support.",
@@ -14,6 +15,10 @@ export const metadata: Metadata = {
     type: "website",
   },
 };
+
+export async function generateMetadata(): Promise<Metadata> {
+  return getPageSeoMetadata("/franchise", fallbackMetadata);
+}
 
 export default function Page() {
   return <FranchisePage />;

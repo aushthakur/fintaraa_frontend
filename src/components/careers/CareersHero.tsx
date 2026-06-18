@@ -39,7 +39,7 @@ export function CareersHero() {
           </div>
         </div>
 
-        <div className="relative h-[360px] w-full overflow-hidden">
+        <div className="relative h-90 w-full overflow-hidden">
           <Image
             src="/assets/images/hero1.png"
             alt="Fintaraa careers"

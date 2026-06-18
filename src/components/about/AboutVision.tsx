@@ -22,7 +22,7 @@ export function AboutVision() {
         </p>
 
         <div className="relative mt-10">
-          <div className="h-[250px] rounded-[10px] bg-[linear-gradient(rgba(57,193,111,0.6),rgba(57,193,111,0.6)),url('/assets/images/hero1.png')] bg-cover bg-center shadow-[0_10px_25px_rgba(16,24,40,0.12)] md:h-[280px]" />
+          <div className="h-62.5 rounded-[10px] bg-[linear-gradient(rgba(57,193,111,0.6),rgba(57,193,111,0.6)),url('/assets/images/hero1.png')] bg-cover bg-center shadow-[0_10px_25px_rgba(16,24,40,0.12)] md:h-70" />
           <div className="-mt-18 grid gap-5 px-4 md:grid-cols-3 md:px-8">
             {cards.map((title, index) => (
               <article

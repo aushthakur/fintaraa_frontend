@@ -4,61 +4,59 @@ import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { motion, useMotionValue, useAnimationFrame } from "framer-motion";
 import { Star } from "lucide-react";
+import {
+  fetchWebsiteKnowledge,
+  type WebsiteKnowledgeItem,
+} from "@/services/websiteKnowledge";
 
-interface TestimonialItem {
-  id: number;
-  name: string;
-  location: string;
-  avatar: string;
-  text: string;
-}
-
-const testimonialsData: TestimonialItem[] = [
+const testimonialsData: WebsiteKnowledgeItem[] = [
   {
-    id: 1,
-    name: "Ramesh Kumar",
+    slug: "ramesh-kumar",
+    title: "Ramesh Kumar",
+    type: "testimonial",
+    authorName: "Ramesh Kumar",
     location: "Delhi",
-    avatar:
+    authorAvatarUrl:
       "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=120&h=120",
-    text: "Got ₹25 Lakh Home Loan approved in 3 days. The team was very helpful",
+    summary: "Got Rs25 Lakh Home Loan approved in 3 days. The team was very helpful",
   },
   {
-    id: 2,
-    name: "Ramesh Kumar",
+    slug: "ramesh-kumar-2",
+    title: "Ramesh Kumar",
+    type: "testimonial",
+    authorName: "Ramesh Kumar",
     location: "Delhi",
-    avatar:
+    authorAvatarUrl:
       "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=120&h=120",
-    text: "The attention to detail and design sensibility is unmatched. Every corner of our space reflects thoughtful planning and refined aesthetics. It truly feels like a personalized masterpiece.",
+    summary: "Every step was explained clearly and I could compare options with confidence.",
   },
   {
-    id: 3,
-    name: "Ramesh Kumar",
+    slug: "ramesh-kumar-3",
+    title: "Ramesh Kumar",
+    type: "testimonial",
+    authorName: "Ramesh Kumar",
     location: "Delhi",
-    avatar:
+    authorAvatarUrl:
       "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=120&h=120",
-    text: "Working with them was an exceptional experience. They balanced creativity with practicality, delivering a space that is not only beautiful but also perfectly suited to our lifestyle.",
+    summary: "The process was practical, quick, and suited to my requirement.",
   },
   {
-    id: 4,
-    name: "Ramesh Kumar",
+    slug: "ramesh-kumar-4",
+    title: "Ramesh Kumar",
+    type: "testimonial",
+    authorName: "Ramesh Kumar",
     location: "Delhi",
-    avatar:
+    authorAvatarUrl:
       "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=120&h=120",
-    text: "Working with them was an exceptional experience. They balanced creativity with practicality, delivering a space that is not only beautiful but also perfectly suited to our lifestyle.",
+    summary: "The team balanced speed with proper guidance and documentation support.",
   },
 ];
 
 export function Testimonials() {
-  // Triplicate array to guarantee continuous structural real-estate for looping
-  const duplicatedTestimonials = [
-    ...testimonialsData,
-    ...testimonialsData,
-    ...testimonialsData,
-  ];
-
   const containerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
-
+  const [items, setItems] = useState<WebsiteKnowledgeItem[]>([]);
+  const [loading, setLoading] = useState(true);
   const [isPaused, setIsPaused] = useState(false);
   const [trackWidth, setTrackWidth] = useState(0);
 
@@ -67,10 +65,25 @@ export function Testimonials() {
   const baseSpeed = 0.6; // Adjust to speed up or slow down auto-scroll smoothly
 
   useEffect(() => {
-    if (trackRef.current) {
-      setTrackWidth(trackRef.current.scrollWidth);
-    }
+    let mounted = true;
+    fetchWebsiteKnowledge({
+      type: "testimonial",
+      sectionKey: "client_testimonials",
+      limit: 5,
+    })
+      .then((data) => mounted && setItems(data.length ? data : testimonialsData))
+      .catch(() => mounted && setItems(testimonialsData))
+      .finally(() => mounted && setLoading(false));
+    return () => {
+      mounted = false;
+    };
   }, []);
+
+  useEffect(() => {
+    if (trackRef.current) setTrackWidth(trackRef.current.scrollWidth);
+  }, [items]);
+
+  const duplicatedTestimonials = [...items, ...items, ...items];
 
   // Framer Motion native animation loop runner (runs outside React state render cycle)
   useAnimationFrame((_, delta) => {
@@ -88,6 +101,23 @@ export function Testimonials() {
       x.set(newX);
     }
   });
+
+  if (loading) {
+    return (
+      <section className="overflow-hidden select-none bg-white px-4 py-16 md:px-6 lg:px-8">
+        <div className="mx-auto max-w-9xl">
+          <h2 className="text-center text-[26px] font-extrabold tracking-tight text-[#111625] md:text-[32px]">
+            What Our Clients Say
+          </h2>
+          <div className="mt-12 flex gap-6 overflow-hidden">
+            {Array.from({ length: 4 }).map((_, index) => (
+              <div key={index} className="h-52 w-77.5 shrink-0 animate-pulse rounded-[20px] bg-slate-100 sm:w-87.5 md:w-95" />
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="bg-white px-4 py-16 md:px-6 lg:px-8 overflow-hidden select-none">
@@ -123,15 +153,15 @@ export function Testimonials() {
           >
             {duplicatedTestimonials.map((item, index) => (
               <article
-                key={`testimonial-card-${item.id}-${index}`}
+                key={`testimonial-card-${item.slug}-${index}`}
                 className="w-77.5 sm:w-87.5 md:w-95 shrink-0 rounded-[20px] border border-gray-100 bg-white p-6 shadow-[0_4px_20px_rgba(0,0,0,0.015)] flex flex-col justify-start select-none"
               >
                 {/* Meta Layout Row */}
                 <div className="flex items-center gap-4 pointer-events-none">
                   <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-full border border-gray-50 bg-gray-50">
                     <Image
-                      src={item.avatar}
-                      alt={item.name}
+                      src={item.authorAvatarUrl || "/assets/images/user1.png"}
+                      alt={item.authorName || item.title}
                       fill
                       unoptimized
                       draggable={false}
@@ -141,7 +171,7 @@ export function Testimonials() {
 
                   <div className="flex flex-col">
                     <h3 className="text-[16px] font-bold text-gray-800 leading-tight">
-                      {item.name}
+                      {item.authorName || item.title}
                     </h3>
                     <p className="text-[12px] font-medium text-gray-400 mt-0.5">
                       {item.location}
@@ -160,7 +190,7 @@ export function Testimonials() {
 
                 {/* Review Body */}
                 <p className="mt-5 text-[14px] font-normal leading-relaxed text-gray-500/90 whitespace-normal pointer-events-none">
-                  {item.text}
+                  {item.summary}
                 </p>
               </article>
             ))}

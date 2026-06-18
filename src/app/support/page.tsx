@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import { getPageSeoMetadata } from "@/services/seoMetadata";
 import { SupportPage } from "@/components/support/SupportPage";
 
-export const metadata: Metadata = {
+const fallbackMetadata: Metadata = {
   title: "Support & Service Desk",
   description:
     "Raise Fintaraa support tickets, track open requests, and continue chat-style follow-ups for applications, documents, payments, insurance, cards, and account help.",
@@ -14,6 +15,10 @@ export const metadata: Metadata = {
     type: "website",
   },
 };
+
+export async function generateMetadata(): Promise<Metadata> {
+  return getPageSeoMetadata("/support", fallbackMetadata);
+}
 
 export default function SupportRoute() {
   return <SupportPage />;

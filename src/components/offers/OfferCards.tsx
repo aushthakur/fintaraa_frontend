@@ -49,7 +49,7 @@ export function OfferCards() {
             >
               {/* Bank logo + Exclusive badge */}
               <div className="flex items-start justify-between gap-3">
-                <div className="relative h-9 w-[120px]">
+                <div className="relative h-9 w-30">
                   <Image
                     src={offer.logo}
                     alt={offer.bank}
@@ -84,7 +84,7 @@ export function OfferCards() {
               {/* Apply Now CTA */}
               <Link
                 href="/login?product=offer"
-                className="mt-6 flex h-[46px] items-center justify-center rounded-full bg-[#13a653] text-[14px] font-black text-white no-underline hover:bg-[#0f9446] transition-colors"
+                className="mt-6 flex h-11.5 items-center justify-center rounded-full bg-[#13a653] text-[14px] font-black text-white no-underline hover:bg-[#0f9446] transition-colors"
               >
                 Apply Now
               </Link>

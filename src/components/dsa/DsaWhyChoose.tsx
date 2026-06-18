@@ -25,7 +25,7 @@ export function DsaWhyChoose() {
           {whyChooseItems.map(({ title, icon: Icon }, index) => (
             <div
               key={`${title}-${index}`}
-              className="flex min-h-[74px] items-center gap-3 rounded-[16px] bg-white px-4 py-3 text-[#0b5aa8] shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition hover:-translate-y-0.5"
+              className="flex min-h-18.5 items-center gap-3 rounded-[16px] bg-white px-4 py-3 text-[#0b5aa8] shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition hover:-translate-y-0.5"
             >
               <Icon className="h-5 w-5 shrink-0" />
               <span className="text-[12px] font-extrabold leading-4 text-[#1d2633]">

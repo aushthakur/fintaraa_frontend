@@ -9,47 +9,47 @@ import {
   AnimatePresence,
 } from "framer-motion";
 import { Star, Play, X } from "lucide-react";
+import {
+  fetchWebsiteKnowledge,
+  type WebsiteKnowledgeItem,
+} from "@/services/websiteKnowledge";
 
-interface VideoTestimonial {
-  id: number;
-  name: string;
-  loanType?: string;
-  location: string;
-  quote: string;
-  thumbnail: string;
-  videoUrl: string;
-}
-
-const videoData: VideoTestimonial[] = [
+const videoData: WebsiteKnowledgeItem[] = [
   {
-    id: 1,
-    name: "Deepika Kumari",
-    loanType: "Home Loan",
+    slug: "deepika-kumari-video",
+    title: "Deepika Kumari",
+    type: "video",
+    authorName: "Deepika Kumari",
+    category: "Home Loan",
     location: "Delhi",
-    quote: "Fintaraa supported me financially when I needed it the most",
-    thumbnail:
+    summary: "Fintaraa supported me financially when I needed it the most",
+    coverImageUrl:
       "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600&h=400",
     videoUrl:
       "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
   },
   {
-    id: 2,
-    name: "Deepika Kumari",
-    loanType: "Home Loan",
+    slug: "deepika-kumari-video-2",
+    title: "Deepika Kumari",
+    type: "video",
+    authorName: "Deepika Kumari",
+    category: "Home Loan",
     location: "Delhi",
-    quote: "Fintaraa supported me financially when I needed it the most",
-    thumbnail:
+    summary: "Fintaraa supported me financially when I needed it the most",
+    coverImageUrl:
       "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600&h=400",
     videoUrl:
       "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
   },
   {
-    id: 3,
-    name: "Deepika Kumari",
-    loanType: "Home Loan",
+    slug: "deepika-kumari-video-3",
+    title: "Deepika Kumari",
+    type: "video",
+    authorName: "Deepika Kumari",
+    category: "Home Loan",
     location: "Delhi",
-    quote: "Fintaraa supported me financially when I needed it the most",
-    thumbnail:
+    summary: "Fintaraa supported me financially when I needed it the most",
+    coverImageUrl:
       "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600&h=400",
     videoUrl:
       "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
@@ -60,6 +60,8 @@ export function VideoTestimonials() {
   const containerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
 
+  const [items, setItems] = useState<WebsiteKnowledgeItem[]>([]);
+  const [loading, setLoading] = useState(true);
   const [isPaused, setIsPaused] = useState(false);
   const [trackWidth, setTrackWidth] = useState(0);
   const [selectedVideoUrl, setSelectedVideoUrl] = useState<string | null>(null);
@@ -67,13 +69,26 @@ export function VideoTestimonials() {
   const x = useMotionValue(0);
   const baseSpeed = 0.65;
 
-  const duplicatedVideos = [...videoData, ...videoData, ...videoData];
+  useEffect(() => {
+    let mounted = true;
+    fetchWebsiteKnowledge({
+      type: "video",
+      sectionKey: "video_testimonials",
+      limit: 5,
+    })
+      .then((data) => mounted && setItems(data.length ? data : videoData))
+      .catch(() => mounted && setItems(videoData))
+      .finally(() => mounted && setLoading(false));
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   useEffect(() => {
-    if (trackRef.current) {
-      setTrackWidth(trackRef.current.scrollWidth);
-    }
-  }, []);
+    if (trackRef.current) setTrackWidth(trackRef.current.scrollWidth);
+  }, [items]);
+
+  const duplicatedVideos = [...items, ...items, ...items];
 
   // Infinite carousel looping logic
   useAnimationFrame((_, delta) => {
@@ -107,35 +122,41 @@ export function VideoTestimonials() {
           <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-linear-to-r from-white to-transparent" />
           <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-linear-to-l from-white to-transparent" />
 
-          {/* Canvas Slider Track Container */}
-          <motion.div
-            ref={trackRef}
-            style={{ x, touchAction: "pan-y" }}
-            drag="x"
-            dragConstraints={{
-              left: -((trackWidth || 2400) * (2 / 3)),
-              right: 0,
-            }}
-            dragElastic={0.05}
-            onDragStart={() => setIsPaused(true)}
-            onDragEnd={() => !selectedVideoUrl && setIsPaused(false)}
-            className="flex gap-6 w-max cursor-grab active:cursor-grabbing"
-          >
+          {loading ? (
+            <div className="flex gap-6">
+              {Array.from({ length: 3 }).map((_, index) => (
+                <div key={index} className="h-64 w-65 shrink-0 animate-pulse rounded-2xl bg-slate-100 sm:w-72.5 md:w-82.5" />
+              ))}
+            </div>
+          ) : (
+            <motion.div
+              ref={trackRef}
+              style={{ x, touchAction: "pan-y" }}
+              drag="x"
+              dragConstraints={{
+                left: -((trackWidth || 2400) * (2 / 3)),
+                right: 0,
+              }}
+              dragElastic={0.05}
+              onDragStart={() => setIsPaused(true)}
+              onDragEnd={() => !selectedVideoUrl && setIsPaused(false)}
+              className="flex gap-6 w-max cursor-grab active:cursor-grabbing"
+            >
             {duplicatedVideos.map((item, index) => (
               <button
-                key={`video-card-${item.id}-${index}`}
+                key={`video-card-${item.slug}-${index}`}
                 type="button"
                 onClick={() => {
                   setIsPaused(true);
-                  setSelectedVideoUrl(item.videoUrl);
+                  setSelectedVideoUrl(item.videoUrl || null);
                 }}
                 className="w-65 sm:w-72.5 md:w-82.5 min-w-65 sm:min-w-72.5 md:min-w-82.5 shrink-0 rounded-2xl border border-gray-100 bg-white overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.015)] flex flex-col justify-between text-left outline-none transition-transform duration-200 hover:scale-[1.01]"
               >
                 {/* Image Frame Thumbnail */}
                 <div className="relative aspect-[1.62/1] w-full bg-slate-900 overflow-hidden pointer-events-none">
                   <Image
-                    src={item.thumbnail}
-                    alt={item.name}
+                    src={item.coverImageUrl || "/assets/images/media1.png"}
+                    alt={item.authorName || item.title}
                     fill
                     unoptimized
                     draggable={false}
@@ -146,7 +167,7 @@ export function VideoTestimonials() {
                   {/* Overlay Quote Text */}
                   <div className="absolute top-4 left-4 right-6 text-white z-10">
                     <p className="text-[13px] sm:text-[14px] font-semibold leading-relaxed text-white/95 tracking-wide">
-                      {item.quote}
+                      {item.summary}
                     </p>
                   </div>
 
@@ -163,11 +184,11 @@ export function VideoTestimonials() {
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex flex-col">
                       <h3 className="text-[14px] sm:text-[15px] font-bold text-gray-800 leading-tight">
-                        {item.name}
+                        {item.authorName || item.title}
                       </h3>
-                      {item.loanType && (
+                      {item.category && (
                         <p className="text-[12px] font-bold text-gray-700 mt-0.5">
-                          {item.loanType}
+                          {item.category}
                         </p>
                       )}
                       <p className="text-[12px] font-medium text-gray-400 mt-0.5">
@@ -187,7 +208,8 @@ export function VideoTestimonials() {
                 </div>
               </button>
             ))}
-          </motion.div>
+            </motion.div>
+          )}
         </div>
 
         {/* Dynamic Video Lightbox Modal Popup */}

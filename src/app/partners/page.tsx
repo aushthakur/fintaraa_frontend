@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getPageSeoMetadata } from "@/services/seoMetadata";
 import {
   BadgeCheck,
   CreditCard,
@@ -10,7 +11,7 @@ import {
   Zap,
 } from "lucide-react";
 
-export const metadata: Metadata = {
+const fallbackMetadata: Metadata = {
   title: "Our Lending Partners",
   description:
     "View Fintaraa's lending and insurance partners, due diligence approach, product coverage, and servicing principles.",
@@ -112,6 +113,10 @@ const journey = [
     icon: RefreshCw,
   },
 ];
+
+export async function generateMetadata(): Promise<Metadata> {
+  return getPageSeoMetadata("/partners", fallbackMetadata);
+}
 
 export default function PartnersPage() {
   return (
