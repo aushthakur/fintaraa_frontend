@@ -56,7 +56,7 @@ const notCoveredItems = [
 
 export function InsuranceCoverageExplanation() {
   return (
-    <section className="w-full max-w-7xl mx-auto bg-white px-4 py-12 antialiased text-[#111827] md:px-6">
+    <section className="w-full max-w-9xl mx-auto bg-white px-4 py-12 antialiased text-[#111827] md:px-6">
       
       {/* SECTION TITLE */}
       <div className="text-center mb-10">

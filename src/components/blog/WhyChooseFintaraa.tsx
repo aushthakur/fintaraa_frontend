@@ -26,7 +26,7 @@ const featureItems = [
 export function WhyChooseFintaraa() {
   return (
     <section className="bg-[#004E96] px-6 py-10 md:px-12 lg:px-16 text-white font-sans antialiased relative">
-      <div className="mx-auto max-w-7xl">
+      <div className="mx-auto max-w-9xl">
         
         {/* Top Header Block Row */}
         <div className="flex items-center justify-between mb-8">

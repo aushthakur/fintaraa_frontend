@@ -115,8 +115,8 @@ export function CibilMonitoringTips() {
         </div>
 
         {/* RIGHT SIDE: EXPERT ADVICE CARD */}
-        <div className="w-full h-full flex items-end mt-8 lg:mt-0">
-          <aside className="w-full max-w-md mx-auto lg:mx-0 rounded-2xl border border-gray-100 bg-white p-5 sm:p-6 shadow-sm">
+        <div className="w-full h-full flex items-end mt-8 lg:mt-0 ">
+          <aside className="w-full max-w-md lg:mx-0 rounded-2xl border xl:ml-auto  border-gray-100 bg-white p-5 sm:p-6 shadow-sm">
             <h4 className="text-base font-bold text-gray-900 tracking-tight">
               Expert Advice
             </h4>

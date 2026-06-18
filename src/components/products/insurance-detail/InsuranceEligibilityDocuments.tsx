@@ -35,7 +35,7 @@ export function InsuranceEligibilityDocuments() {
 
   return (
     <section className="bg-[#d2e7fa] px-6 py-14 antialiased text-[#111827] md:px-12 lg:px-16">
-      <div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-2 items-stretch">
+      <div className="mx-auto grid max-w-9xl gap-8 md:grid-cols-2 items-stretch">
         
         {/* LEFT CARD: ELIGIBILITY CRITERIA */}
         <div className="bg-white rounded-lg p-8 border border-gray-100 shadow-sm flex flex-col justify-between">

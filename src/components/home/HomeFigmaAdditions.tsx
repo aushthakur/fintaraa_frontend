@@ -69,7 +69,7 @@ export function CreditScoreMinuteBanner() {
         </div>
         <Link
           href="/cibil-score"
-          className="mt-5 inline-flex h-10 items-center justify-center rounded-full bg-[#12b76a] px-6 text-[13px] font-extrabold text-white no-underline"
+          className="mt-5 inline-flex h-10 items-center justify-center rounded-full  bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-6 text-[13px] font-extrabold text-white no-underline"
         >
           Check Score Now
         </Link>
@@ -198,7 +198,7 @@ export function HomeLoanOffers() {
 
         <Link
           href="/products/home-loan"
-          className="mx-auto mt-6 flex h-10 w-fit items-center gap-2 rounded-full bg-[#12b76a] px-6 text-[13px] font-extrabold text-white no-underline"
+          className="mx-auto mt-6 flex h-10 w-fit items-center gap-2 rounded-full  bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-6 text-[13px] font-extrabold text-white no-underline"
         >
           Compare Home Loan Offers <ArrowRight className="h-4 w-4" />
         </Link>

@@ -1,6 +1,6 @@
 "use client";
-import React, { useState } from "react";
 import Image from "next/image";
+import React, { useState } from "react";
 
 type BankLogo = {
   name: string;
@@ -67,7 +67,6 @@ function LogoMarquee({
                 alt={bank.name}
                 width={140}
                 height={40}
-                unoptimized
                 className="h-auto max-h-full w-auto max-w-full object-contain mix-blend-multiply"
               />
             </div>

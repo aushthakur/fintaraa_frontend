@@ -102,11 +102,9 @@ export function CibilReportHero() {
               Your Current Score
             </h3>
 
-            {/* Reusable Gauge Component */}
-            <div className="flex justify-center overflow-hidden w-full">
-              <div className="max-w-65 sm:max-w-none mx-auto">
-                <CreditScoreGauge score={782} width={260} height={150} scale={1.05} />
-              </div>
+            {/* Reusable Gauge Component - responsive via ResizeObserver */}
+            <div className="flex justify-center w-full">
+              <CreditScoreGauge score={782} scale={1.5} />
             </div>
 
             <div className="flex flex-col items-center gap-3">

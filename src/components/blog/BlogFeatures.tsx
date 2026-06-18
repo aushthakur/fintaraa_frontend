@@ -39,7 +39,7 @@ export function FeaturedArticleSection({ article }: FeaturedArticleProps) {
 
   return (
     <section className="px-4 py-10 md:px-8 lg:px-16 bg-white font-sans antialiased">
-      <div className="mx-auto max-w-7xl">
+      <div className="mx-auto max-w-9xl">
         
         {/* Section Heading Title */}
         <h2 className="text-[22px] font-bold text-[#1a1d25] tracking-tight mb-5">

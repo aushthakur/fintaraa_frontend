@@ -25,7 +25,7 @@ const bankLogos: BankLogo[] = [
 export function CreditPartners() {
   return (
     <section className="px-4 py-12 md:px-8 lg:px-16 bg-white font-sans">
-      <div className="mx-auto max-w-7xl">
+      <div className="mx-auto max-w-9xl">
         
         {/* Header Section with Title, Filters, and Action link */}
         <div className="mb-8 flex flex-col xl:flex-row xl:items-center justify-between gap-5">

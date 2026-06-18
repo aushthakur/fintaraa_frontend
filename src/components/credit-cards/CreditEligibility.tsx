@@ -8,7 +8,7 @@ export function CreditEligibility() {
       <div className="absolute top-0 left-0 w-32 h-32 bg-[#e3effc] opacity-60 rounded-br-full -z-10" />
       <div className="absolute top-12 left-0 w-16 h-16 bg-[#d2e5f9] opacity-40 rounded-br-full -z-10" />
 
-      <div className="mx-auto max-w-7xl grid gap-12 lg:grid-cols-[1.1fr_1fr] lg:items-start pt-6">
+      <div className="mx-auto max-w-9xl grid gap-12 lg:grid-cols-[1.1fr_1fr] lg:items-start pt-6">
         
         {/* Left Column: Heading, Value Props & Illustration */}
         <div className="flex flex-col justify-between h-full">

@@ -7,7 +7,7 @@ export function CibilInfo() {
   return (
     <section className="bg-white px-4 py-12 md:px-6 lg:px-8 w-full h-auto">
       {/* Grid container with top-aligned content tracking image_9f1a1d.png */}
-      <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
+      <div className="mx-auto grid max-w-9xl gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
         
         {/* Left Column: Verbatim Copy Content Info */}
         <div className="flex flex-col justify-start">

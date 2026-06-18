@@ -28,7 +28,7 @@ const loanOffers = [
 export function CibilEligibleOffers() {
   return (
     <section className="bg-[#f7faff] px-4 py-10 md:px-6 lg:px-8  font-sans">
-      <div className="mx-auto w-full max-w-7xl">
+      <div className="mx-auto w-full max-w-9xl">
         
         {/* Top Header Section */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
