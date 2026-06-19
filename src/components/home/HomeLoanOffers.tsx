@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Search } from "lucide-react";
+import { slugifyProduct } from "@/lib/productRouting";
 
 interface LoanRateOffer {
   id: string;
@@ -94,9 +95,10 @@ export function HomeLoanOffers() {
         {/* Dynamic Partner Offers Layout Grid */}
         <div className="mt-6 grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {loanOffersData.map((offer, idx) => (
-            <article
+            <Link
               key={`${offer.id}-${idx}`}
-              className="rounded-2xl border border-gray-200 bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.01)] transition-shadow hover:shadow-[0_4px_20px_rgba(0,0,0,0.03)]"
+              href={`/banks/${slugifyProduct(offer.bankName)}/${slugifyProduct(activeTab)}`}
+              className="rounded-2xl border border-gray-200 bg-white p-5 no-underline shadow-[0_2px_12px_rgba(0,0,0,0.01)] transition-shadow hover:shadow-[0_4px_20px_rgba(0,0,0,0.03)]"
             >
               {/* Top Row: Brand Identity Placement */}
               <div className="flex flex-col items-start gap-1">
@@ -135,7 +137,7 @@ export function HomeLoanOffers() {
                   </span>
                 </div>
               </div>
-            </article>
+            </Link>
           ))}
         </div>
 

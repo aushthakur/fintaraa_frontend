@@ -8,7 +8,7 @@ import type {
 } from "@/services/insuranceSeoPages";
 
 const fieldClass =
-  "h-9 w-full rounded-lg border border-[#d9dfe8] bg-white px-3 text-[13px] font-semibold text-[#111827] outline-none placeholder:text-[#8b95a3] focus:border-[#005ca8]";
+  "h-12 w-full rounded-xl border border-[#d9dfe8] bg-white px-4 text-[14px] font-semibold text-[#111827] outline-none placeholder:text-[#8b95a3] focus:border-[#005ca8] focus:ring-4 focus:ring-[#005ca8]/10";
 
 const coverageOptions = ["5L", "10L", "20L", "30L", "40L", "50L"];
 
@@ -89,7 +89,7 @@ export function InsuranceHero({ page }: { page: InsuranceSeoPageData }) {
         />
       </div>
 
-      <div className="mx-auto grid max-w-9xl gap-8 md:grid-cols-[1fr_26rem] md:items-center">
+      <div className="mx-auto grid max-w-9xl gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(400px,460px)] lg:items-center">
         <div className="relative z-10 space-y-6">
           <h1 className="max-w-2xl text-[38px] font-black leading-tight tracking-[-0.03em] text-[#111827] md:text-[52px]">
             <span className="text-[#005ca8]">{page.insuranceType}</span>
@@ -115,24 +115,24 @@ export function InsuranceHero({ page }: { page: InsuranceSeoPageData }) {
           </div>
         </div>
 
-        <div className="relative mx-auto w-full max-w-100 md:mx-0">
+        <div className="relative mx-auto w-full max-w-[460px] lg:mx-0">
           <div className="absolute inset-0 hidden translate-x-3 translate-y-3 rounded-[18px] bg-[#00529c] md:block" />
 
-          <div className="relative rounded-[18px] border border-[#d9dfe8] bg-white p-4 shadow-[0_14px_34px_rgba(0,82,156,0.12)] md:p-6">
-            <h2 className="text-[22px] font-black leading-tight tracking-[-0.02em] text-[#222222]">
+          <div className="relative rounded-[22px] border border-[#d9dfe8] bg-white p-6 shadow-[0_14px_34px_rgba(0,82,156,0.12)] md:p-7">
+            <h2 className="text-[24px] font-black leading-tight tracking-[-0.02em] text-[#222222]">
               Premium Calculator
             </h2>
-            <p className="mt-1 text-[12px] font-medium text-[#667085]">
+            <p className="mt-1.5 text-[13px] font-semibold text-[#667085]">
               Get an instant estimate in 30 seconds.
             </p>
 
             <form
-              className="mt-4 grid gap-3"
+              className="mt-5 grid gap-4"
               onSubmit={(event) => event.preventDefault()}
             >
-              <div className="grid gap-2.5 sm:grid-cols-2">
+              <div className="grid gap-3 sm:grid-cols-2">
                 <label className="grid gap-2">
-                  <span className="text-[12px] font-semibold text-[#222222]">
+                  <span className="text-[13px] font-bold text-[#222222]">
                     {ageField?.label || "Age of oldest member"}
                   </span>
                   <DynamicField
@@ -148,7 +148,7 @@ export function InsuranceHero({ page }: { page: InsuranceSeoPageData }) {
                 </label>
 
                 <label className="grid gap-2">
-                  <span className="text-[12px] font-semibold text-[#222222]">
+                  <span className="text-[13px] font-bold text-[#222222]">
                     {cityField?.label || "City"}
                   </span>
                   <DynamicField
@@ -165,7 +165,7 @@ export function InsuranceHero({ page }: { page: InsuranceSeoPageData }) {
               </div>
 
               <label className="grid gap-2">
-                <span className="text-[12px] font-semibold text-[#222222]">
+                <span className="text-[13px] font-bold text-[#222222]">
                   {coverageField.label}
                 </span>
                 <DynamicField field={coverageField} />
@@ -176,7 +176,7 @@ export function InsuranceHero({ page }: { page: InsuranceSeoPageData }) {
                   <button
                     key={option}
                     type="button"
-                    className={`h-8 rounded-lg border px-0 text-[11px] font-semibold transition sm:text-[12px] ${
+                    className={`h-10 rounded-xl border px-0 text-[12px] font-bold transition ${
                       index === 0
                         ? "border-[#005ca8] bg-[#005ca8] text-white"
                         : "border-[#005ca8] bg-white text-[#8b95a3]"
@@ -188,7 +188,7 @@ export function InsuranceHero({ page }: { page: InsuranceSeoPageData }) {
               </div>
 
               <div className="pt-1">
-                <span className="text-[12px] font-semibold text-[#222222]">
+                <span className="text-[13px] font-bold text-[#222222]">
                   Estimated annual premium
                 </span>
                 <div className="mt-1.5 flex items-end justify-between gap-3">
@@ -208,7 +208,7 @@ export function InsuranceHero({ page }: { page: InsuranceSeoPageData }) {
               <AuthRedirectLink
                 href={applyHref}
                 productSlug={page.insuranceTypeSlug}
-                className="mt-0.5 inline-flex h-10 items-center justify-center rounded-full border border-[#12b76a] bg-white px-5 text-[12px] font-extrabold text-[#12b76a] no-underline shadow-[0_10px_24px_rgba(18,183,106,0.14)] transition hover:bg-[#f3fbf6]"
+                className="mt-1 inline-flex h-12 items-center justify-center rounded-full border border-[#12b76a] bg-white px-5 text-[14px] font-extrabold text-[#12b76a] no-underline shadow-[0_10px_24px_rgba(18,183,106,0.14)] transition hover:bg-[#f3fbf6]"
               >
                 Compare detailed plans
               </AuthRedirectLink>

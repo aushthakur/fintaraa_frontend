@@ -4,16 +4,16 @@ import { LoanDetailPage } from "@/components/products/loan-detail/LoanDetailPage
 import { InsuranceDetailPage } from "@/components/products/insurance-detail/InsuranceDetailPage";
 import {
   buildLoanPath,
-  isInsuranceProduct,
   isLoanProduct,
-  parseLoanLocation,
   slugifyProduct,
+  parseLoanLocation,
+  isInsuranceProduct,
 } from "@/lib/productRouting";
-import { getLoanSeoPage } from "@/services/loanSeoPages";
-import { getInsuranceSeoPage } from "@/services/insuranceSeoPages";
-import { getPageSeoMetadata } from "@/services/seoMetadata";
 import { JsonLd } from "@/components/seo/JsonLd";
+import { getLoanSeoPage } from "@/services/loanSeoPages";
+import { getPageSeoMetadata } from "@/services/seoMetadata";
 import { absoluteUrl, siteName } from "@/services/seoConfig";
+import { getInsuranceSeoPage } from "@/services/insuranceSeoPages";
 
 type PageProps = {
   params: Promise<{
@@ -29,7 +29,8 @@ export async function generateMetadata({
 }: PageProps): Promise<Metadata> {
   const { loanType, location: locationSegments = [] } = await params;
   const productSlug = slugifyProduct(loanType);
-  if (!isLoanProduct(productSlug) && !isInsuranceProduct(productSlug)) return {};
+  if (!isLoanProduct(productSlug) && !isInsuranceProduct(productSlug))
+    return {};
 
   const location = parseLoanLocation(locationSegments);
   const page = isInsuranceProduct(productSlug)
@@ -57,12 +58,14 @@ export async function generateMetadata({
 export default async function ProductLoanPage({ params }: PageProps) {
   const { loanType, location: locationSegments = [] } = await params;
   const productSlug = slugifyProduct(loanType);
-  if (!isLoanProduct(productSlug) && !isInsuranceProduct(productSlug)) notFound();
+  if (!isLoanProduct(productSlug) && !isInsuranceProduct(productSlug))
+    notFound();
 
   const location = parseLoanLocation(locationSegments);
   if (isInsuranceProduct(productSlug)) {
     const page = await getInsuranceSeoPage(productSlug, location);
-    const canonical = page.canonicalPath || buildLoanPath(productSlug, location);
+    const canonical =
+      page.canonicalPath || buildLoanPath(productSlug, location);
     return (
       <>
         <JsonLd

@@ -51,7 +51,7 @@ export function ProductExplorer({
                 </div>
 
                 <Link
-                  href="/products"
+                  href={(section as any).ctaHref || "/products"}
                   className="inline-flex items-center gap-1 text-[14px] font-bold text-[#22c55e] no-underline transition-colors hover:text-[#16a34a] shrink-0"
                 >
                   {section.cta || "View All"}
@@ -70,7 +70,7 @@ export function ProductExplorer({
 
                   return (
                     <Link
-                      href={productHref(title)}
+                      href={(product as any).href || productHref(title)}
                       key={title}
                       className="group relative flex min-h-36 flex-col items-center justify-center rounded-3xl border border-gray-200/70 bg-white px-2 pb-6 pt-6 text-center no-underline transition-all duration-200 hover:shadow-[0_6px_20px_rgba(0,0,0,0.02)] sm:min-h-44 sm:px-4 sm:pb-8 sm:pt-10"
                     >

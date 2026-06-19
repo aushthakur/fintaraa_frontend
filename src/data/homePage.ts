@@ -48,6 +48,7 @@ export const productSections = [
   {
     title: "Get Instant Loan (Get Money in 5 Minutes -Complete Digital Process)",
     cta: "View All",
+    ctaHref: "/products/instant-loan",
     tag: "Cashback Offers",
     products: [
       {
@@ -55,42 +56,49 @@ export const productSections = [
         text: "Quick instant loans",
         logo: "/assets/banks/icici-logo.png",
         tone: "orange",
+        href: "/banks/icici-bank/instant-loan",
       },
       {
         title: "Kotak Bank",
         text: "Fast approval loans",
         logo: "/assets/banks/kotak-logo.png",
         tone: "blue",
+        href: "/banks/kotak-bank/instant-loan",
       },
       {
         title: "SBI Bank",
         text: "Instant disbursal",
         logo: "/assets/banks/sbi-logo.png",
         tone: "sky",
+        href: "/banks/sbi-bank/instant-loan",
       },
       {
         title: "HDFC Bank",
         text: "Instant approval",
         logo: "/assets/banks/hdfc.png",
         tone: "red",
+        href: "/banks/hdfc-bank/instant-loan",
       },
       {
         title: "Axis Bank",
         text: "Quick loan disbursal",
         logo: "/assets/banks/axis-bank.png",
         tone: "pink",
+        href: "/banks/axis-bank/instant-loan",
       },
       {
         title: "Yes Bank",
         text: "Fast digital loans",
         logo: "/assets/banks/yes-bank.png",
         tone: "green",
+        href: "/banks/yes-bank/instant-loan",
       },
       {
         title: "IndusInd Bank",
         text: "Instant cash loans",
         logo: "/assets/banks/indusind.png",
         tone: "amber",
+        href: "/banks/indusind-bank/instant-loan",
       },
       // {
       //   title: "IDFC First Bank",

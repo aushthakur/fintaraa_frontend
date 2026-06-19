@@ -70,7 +70,7 @@ export const verificationSteps = [
 ];
 
 export const fieldClass =
-  "h-9 w-full rounded border border-[#d6dce5] bg-white px-3 text-[12px] font-semibold text-[#1f2937] outline-none placeholder:text-[#98a2b3] focus:border-[#0b64a8]";
+  "h-12 w-full rounded-xl border border-[#d6dce5] bg-white px-4 text-[14px] font-semibold text-[#1f2937] outline-none placeholder:text-[#98a2b3] focus:border-[#0b64a8] focus:ring-4 focus:ring-[#0b64a8]/10";
 
 export const iconPool = [
   BadgeIndianRupee,

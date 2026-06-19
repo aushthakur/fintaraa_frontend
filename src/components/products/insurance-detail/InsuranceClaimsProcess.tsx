@@ -2,6 +2,7 @@
 
 import { Fragment } from "react";
 import { Clock, ShieldCheck, FileText, Zap } from "lucide-react";
+import type { InsuranceSeoTab } from "@/services/insuranceSeoPages";
 
 const claimSteps = [
   {
@@ -30,17 +31,27 @@ const claimSteps = [
   },
 ];
 
-export function InsuranceClaimsProcess() {
+export function InsuranceClaimsProcess({ tab }: { tab?: InsuranceSeoTab }) {
+  const steps = tab?.bullets?.length
+    ? tab.bullets.map((item, index) => ({
+        number: String(index + 1).padStart(2, "0"),
+        title: index === 0 ? "Start Claim" : `Step ${index + 1}`,
+        text: item,
+        icon: claimSteps[index % claimSteps.length].icon,
+      }))
+    : claimSteps;
+
   return (
     <section className="px-4 py-14 md:px-6 lg:px-16 bg-white antialiased text-[#111827]">
       <div className="mx-auto max-w-9xl text-center">
         
         {/* HEADER BLOCK */}
         <h2 className="text-[24px] font-bold tracking-tight text-gray-900 md:text-[26px]">
-          Hassle-Free Claims Process
+          {tab?.title || "Hassle-Free Claims Process"}
         </h2>
         <p className="mt-2 text-[13px] font-medium text-gray-400 max-w-2xl mx-auto">
-          We understand that emergencies are stressful. Our digital claim process is built for speed.
+          {tab?.description ||
+            "We understand that emergencies are stressful. Our digital claim process is built for speed."}
         </p>
 
         {/* BULLETPROOF MATRIX LAYOUT
@@ -48,7 +59,7 @@ export function InsuranceClaimsProcess() {
           Falls back to a clean stacking structure on mobile.
         */}
         <div className="mt-12 grid grid-cols-1 items-start gap-y-10 sm:grid-cols-2 sm:gap-x-6 lg:mt-16 lg:grid-cols-7 lg:gap-x-0 lg:gap-y-0">
-          {claimSteps.map((step, index) => {
+          {steps.map((step, index) => {
             const IconComponent = step.icon;
             return (
               <Fragment key={step.title}>
@@ -81,7 +92,7 @@ export function InsuranceClaimsProcess() {
                 {/* NATIVE DIRECTIONAL FLOW ARROW CONNECTOR SLOT 
                   Rendered in alternate rows directly inline within the grid matrix blueprint tree.
                 */}
-                {index < claimSteps.length - 1 && (
+                {index < steps.length - 1 && (
                   <div className="hidden h-14 select-none items-center justify-center lg:col-span-1 lg:flex pointer-events-none">
                     <div className="flex items-center w-full px-2 max-w-32.5">
                       {/* Linear Horizontal Dashed Path Track Line */}

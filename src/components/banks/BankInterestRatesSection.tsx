@@ -14,7 +14,15 @@ import type { BankSeoPageData } from "@/services/bankSeoPages";
 
 const productIcons = [BadgeIndianRupee, Banknote, Building2, CreditCard];
 
-export function BankInterestRatesSection({ page }: { page: BankSeoPageData }) {
+type BankInterestRatesSectionMode = "all" | "products" | "rates";
+
+export function BankInterestRatesSection({
+  page,
+  mode = "all",
+}: {
+  page: BankSeoPageData;
+  mode?: BankInterestRatesSectionMode;
+}) {
   const applyHref = getApplyHref({
     category: "loan",
     bankSlug: page.bankSlug,
@@ -39,10 +47,11 @@ export function BankInterestRatesSection({ page }: { page: BankSeoPageData }) {
         });
 
   return (
-    <div className="bg-white space-y-12 py-10 font-sans antialiased">
+    <div className="bg-white space-y-12 pb-10 font-sans antialiased">
       {/* SECTION 1: Product Grid Deck */}
-      <section className="px-4 md:px-8 lg:px-16">
-        <div className="mx-auto max-w-7xl">
+      {mode !== "rates" ? (
+      <section className="px-4 md:px-8">
+        <div className="mx-auto max-w-9xl">
           <h2 className="text-[22px] font-black text-[#000000] tracking-tight mb-6">
             Loans & Products Offered by {page.bankName || "HDFC Bank"}
           </h2>
@@ -112,10 +121,12 @@ export function BankInterestRatesSection({ page }: { page: BankSeoPageData }) {
           </div>
         </div>
       </section>
+      ) : null}
 
       {/* SECTION 2: Master Grid Container */}
-      <section className="px-4 md:px-8 lg:px-16">
-        <div className="mx-auto max-w-7xl rounded-2xl border border-[#e3ebf3] bg-white p-6 md:p-8 shadow-[0_4px_16px_rgba(22,34,50,0.02)] grid gap-6 lg:grid-cols-[1fr_280px]">
+      {mode !== "products" ? (
+      <section className="px-4 md:px-8">
+        <div className="mx-auto max-w-9xl rounded-2xl border border-[#e3ebf3] bg-white p-6 md:p-8 shadow-[0_4px_16px_rgba(22,34,50,0.02)] grid gap-6 lg:grid-cols-[1fr_280px]">
           {/* Left Block: Table Data Sheet */}
           <div className="space-y-4">
             <h2 className="text-[20px] font-bold text-[#000000] tracking-tight">
@@ -205,6 +216,7 @@ export function BankInterestRatesSection({ page }: { page: BankSeoPageData }) {
           </aside>
         </div>
       </section>
+      ) : null}
     </div>
   );
 }

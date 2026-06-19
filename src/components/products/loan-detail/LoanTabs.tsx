@@ -19,7 +19,7 @@ export function LoanTabs({
         Scroll container matching the design blueprint. 
         no-scrollbar class can be added here if you want to mask the horizontal browser scroll line indicators.
       */}
-      <div className="mx-auto flex max-w-7xl  items-center gap-3 overflow-x-auto py-1">
+      <div className="mx-auto flex max-w-9xl  items-center gap-3 overflow-x-auto py-1">
         {tabs.map((tab) => {
           const isSelected = active?.key === tab.key;
           return (

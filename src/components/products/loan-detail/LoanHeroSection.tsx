@@ -44,7 +44,7 @@ export function LoanHeroSection({
           }}
         />
       </div>
-      <div className="mx-auto grid max-w-9xl gap-8 md:grid-cols-[1fr_26rem] md:items-center">
+      <div className="mx-auto grid max-w-9xl gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(400px,460px)] lg:items-center">
        {/* LEFT CONTAINER: HERO COPY */}
         <div className="relative z-10 space-y-6">
           <h1 className="max-w-2xl text-[38px] font-black leading-tight tracking-[-0.03em] text-[#111827] md:text-[52px]">
@@ -69,23 +69,23 @@ export function LoanHeroSection({
           </div>
         </div>
 
-        <div className="relative mx-auto w-full max-w-125.5 md:mx-0">
+        <div className="relative mx-auto w-full max-w-[460px] lg:mx-0">
           <div className="absolute inset-0 block translate-x-2 translate-y-2 rounded-[18px] bg-[#00529c] sm:translate-x-3 sm:translate-y-3" />
 
-          <div className="relative rounded-[18px] border border-[#d9dfe8] bg-white p-6 px-8 shadow-[0_10px_26px_rgba(0,92,168,0.12)]">
-            <h2 className="text-[16px] font-black text-[#111827]">
+          <div className="relative rounded-[22px] border border-[#d9dfe8] bg-white p-6 shadow-[0_10px_26px_rgba(0,92,168,0.12)] sm:p-7">
+            <h2 className="text-[20px] font-black text-[#111827]">
               Eligibility Checker
             </h2>
-            <p className="mt-1 text-[11px] font-semibold text-[#596272]">
+            <p className="mt-1.5 text-[13px] font-semibold leading-5 text-[#596272]">
               Find suitable partner options with basic details.
             </p>
             <form
-              className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-1"
+              className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-1"
               onSubmit={(event) => event.preventDefault()}
             >
               {fields.map((field) => (
-                <label key={field.key} className="grid gap-1">
-                  <span className="text-[11px] font-bold text-[#374151]">
+                <label key={field.key} className="grid gap-2">
+                  <span className="text-[13px] font-bold text-[#374151]">
                     {field.label}
                   </span>
                   <DynamicField field={field} />
@@ -94,7 +94,7 @@ export function LoanHeroSection({
               <AuthRedirectLink
                 href={applyHref}
                 productSlug={page.loanTypeSlug}
-                className="inline-flex h-9 items-center justify-center rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-4 text-[12px] font-extrabold text-white no-underline"
+                className="mt-1 inline-flex h-12 items-center justify-center rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-5 text-[14px] font-extrabold text-white no-underline"
               >
                 Check Eligibility
               </AuthRedirectLink>

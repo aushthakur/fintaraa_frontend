@@ -15,6 +15,7 @@ export type BankSeoTab = {
   key: string;
   label: string;
   title?: string;
+  description?: string;
   content?: string[];
   bullets?: string[];
   sortOrder?: number;

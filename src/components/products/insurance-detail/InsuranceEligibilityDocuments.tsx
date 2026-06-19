@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
+import type { InsuranceSeoTab } from "@/services/insuranceSeoPages";
 
 const eligibilityCriteria = [
   { label: "Entry Age (Adults)", value: "18 to 65 Years old  (can vary by plan )" },
@@ -30,23 +31,51 @@ const requiredDocumentsFaq = [
   },
 ];
 
-export function InsuranceEligibilityDocuments() {
+export function InsuranceEligibilityDocuments({
+  tab,
+  mode = "all",
+}: {
+  tab?: InsuranceSeoTab;
+  mode?: "all" | "eligibility" | "documents";
+}) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const criteria = tab?.bullets?.length
+    ? tab.bullets.map((item, index) => ({
+        label: `Criteria ${index + 1}`,
+        value: item,
+      }))
+    : eligibilityCriteria;
+  const documents = tab?.bullets?.length
+    ? tab.bullets.map((item, index) => ({
+        question: `Document ${index + 1}`,
+        answer: item,
+      }))
+    : tab?.faqs?.length
+      ? tab.faqs
+      : requiredDocumentsFaq;
+  const showEligibility = mode === "all" || mode === "eligibility";
+  const showDocuments = mode === "all" || mode === "documents";
 
   return (
     <section className="bg-[#d2e7fa] px-6 py-14 antialiased text-[#111827] md:px-12 lg:px-16">
-      <div className="mx-auto grid max-w-9xl gap-8 md:grid-cols-2 items-stretch">
+      <div className={`mx-auto grid max-w-9xl gap-8 items-stretch ${mode === "all" ? "md:grid-cols-2" : ""}`}>
         
         {/* LEFT CARD: ELIGIBILITY CRITERIA */}
+        {showEligibility ? (
         <div className="bg-white rounded-lg p-8 border border-gray-100 shadow-sm flex flex-col justify-between">
           <div>
             <h2 className="text-2xl font-bold tracking-tight text-gray-900 leading-none">
-              Eligibility Criteria
+              {mode === "eligibility" && tab?.title ? tab.title : "Eligibility Criteria"}
             </h2>
+            {mode === "eligibility" && tab?.description ? (
+              <p className="mt-3 text-[13px] font-semibold leading-6 text-gray-500">
+                {tab.description}
+              </p>
+            ) : null}
             
             {/* Structured row layout mimicking the split key-value alignment */}
             <div className="mt-8 space-y-3">
-              {eligibilityCriteria.map((item) => (
+              {criteria.map((item) => (
                 <div
                   key={item.label}
                   className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-[#f4f8fc] rounded-lg px-5 py-4 text-xs font-semibold text-gray-700"
@@ -62,16 +91,23 @@ export function InsuranceEligibilityDocuments() {
             </div>
           </div>
         </div>
+        ) : null}
 
         {/* RIGHT CARD: REQUIRED DOCUMENTS ACCORDION MATRIX */}
+        {showDocuments ? (
         <div className="bg-white rounded-lg p-8 border border-gray-100 shadow-sm flex flex-col justify-between">
           <div>
             <h2 className="text-2xl font-bold tracking-tight text-gray-900 leading-none mb-4">
-              Required Documents
+              {mode === "documents" && tab?.title ? tab.title : "Required Documents"}
             </h2>
+            {mode === "documents" && tab?.description ? (
+              <p className="mb-4 text-[13px] font-semibold leading-6 text-gray-500">
+                {tab.description}
+              </p>
+            ) : null}
             
             <div className="divide-y divide-gray-100 mt-4">
-              {requiredDocumentsFaq.map((item, index) => {
+              {documents.map((item, index) => {
                 const isOpen = openIndex === index;
                 return (
                   <div key={index} className="py-2 first:pt-0 last:pb-0">
@@ -107,6 +143,7 @@ export function InsuranceEligibilityDocuments() {
             </div>
           </div>
         </div>
+        ) : null}
 
       </div>
     </section>

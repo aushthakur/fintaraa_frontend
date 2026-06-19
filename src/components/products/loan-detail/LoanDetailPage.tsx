@@ -1,21 +1,21 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { AppDownloadBanner } from "@/components/common/layout/Footer";
-import { LoanHeroSection } from "./LoanHeroSection";
-import { LoanStatsBar } from "./LoanStatsBar";
 import { LoanTabs } from "./LoanTabs";
-import { LoanFeaturesSection } from "./LoanFeaturesSection";
-import { LoanFeaturesBenefits } from "./LoanFeaturesBenefits";
-import { LoanEligibilityCriteria } from "./LoanEligibilityCriteria";
-import { LoanDocumentsRequired } from "./LoanDocumentsRequired";
+import { useMemo, useState } from "react";
+import { LoanStatsBar } from "./LoanStatsBar";
+import { LoanFAQSection } from "./LoanFAQSection";
+import { LoanHeroSection } from "./LoanHeroSection";
+import { LoanOtherProducts } from "./LoanOtherProducts";
 import { LoanEMICalculator } from "./LoanEMICalculator";
 import { LoanBankComparison } from "./LoanBankComparison";
-import { LoanVerificationSteps } from "./LoanVerificationSteps";
-import { LoanOtherProducts } from "./LoanOtherProducts";
-import { LoanFAQSection } from "./LoanFAQSection";
+import { LoanFeaturesSection } from "./LoanFeaturesSection";
 import { Testimonials } from "@/components/home/Testimonials";
+import { LoanFeaturesBenefits } from "./LoanFeaturesBenefits";
 import type { LoanSeoPageData } from "@/services/loanSeoPages";
+import { LoanDocumentsRequired } from "./LoanDocumentsRequired";
+import { LoanVerificationSteps } from "./LoanVerificationSteps";
+import { LoanEligibilityCriteria } from "./LoanEligibilityCriteria";
+import { AppDownloadBanner } from "@/components/common/layout/Footer";
 
 export function LoanDetailPage({ page }: { page: LoanSeoPageData }) {
   const tabs = useMemo(
@@ -36,29 +36,50 @@ export function LoanDetailPage({ page }: { page: LoanSeoPageData }) {
   const [activeTab, setActiveTab] = useState(tabs[0]?.key || "overview");
   const active = tabs.find((tab) => tab.key === activeTab) || tabs[0];
   const featureItems = (
-    active?.bullets?.length ? active.bullets : tabs.flatMap((tab) => tab.bullets || [])
+    active?.bullets?.length
+      ? active.bullets
+      : tabs.flatMap((tab) => tab.bullets || [])
   ).slice(0, 6);
 
-  // Map each tab key to the sections it should show
-  const tabSections: Record<string, string[]> = {
-    overview: [
-      "features",
-      "benefits",
-      "eligibility",
-      "documents",
-      "emi_calculator",
-      "bank_comparison",
-      "verification",
-      "faq",
-    ],
-    eligibility: ["benefits", "eligibility"],
-    documents: ["benefits", "documents"],
-    fees: ["emi_calculator", "bank_comparison"],
-    how_to_apply: ["verification"],
-    faqs: ["faq"],
-  };
+  const tabIdentity = [
+    active?.key,
+    active?.label,
+    ...(active?.filterKeys || []),
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
 
-  const sections = tabSections[activeTab] || tabSections.overview;
+  const sections = (() => {
+    if (tabIdentity.includes("eligib")) return ["benefits", "eligibility"];
+    if (tabIdentity.includes("document")) return ["documents"];
+    if (
+      tabIdentity.includes("fee") ||
+      tabIdentity.includes("emi") ||
+      tabIdentity.includes("rate") ||
+      tabIdentity.includes("repayment")
+    ) {
+      return ["emi_calculator", "bank_comparison"];
+    }
+    if (
+      tabIdentity.includes("apply") ||
+      tabIdentity.includes("process") ||
+      tabIdentity.includes("verification")
+    ) {
+      return ["verification"];
+    }
+    if (tabIdentity.includes("faq") || tabIdentity.includes("question")) {
+      return ["faq"];
+    }
+    if (tabIdentity.includes("product") || tabIdentity.includes("other")) {
+      return ["other_products"];
+    }
+    if (tabIdentity.includes("review") || tabIdentity.includes("testimonial")) {
+      return ["testimonials"];
+    }
+    if (tabIdentity.includes("overview")) return ["features", "benefits"];
+    return ["benefits"];
+  })();
 
   const showSection = (section: string) => sections.includes(section);
 
@@ -69,7 +90,10 @@ export function LoanDetailPage({ page }: { page: LoanSeoPageData }) {
       <LoanTabs tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
 
       {showSection("features") && (
-        <LoanFeaturesSection loanType={page.loanType} featureItems={featureItems} />
+        <LoanFeaturesSection
+          loanType={page.loanType}
+          featureItems={featureItems}
+        />
       )}
 
       {(showSection("benefits") ||
@@ -82,7 +106,9 @@ export function LoanDetailPage({ page }: { page: LoanSeoPageData }) {
                 <LoanFeaturesBenefits page={page} active={active} />
               )}
               {showSection("eligibility") && <LoanEligibilityCriteria />}
-              {showSection("documents") && <LoanDocumentsRequired page={page} />}
+              {showSection("documents") && (
+                <LoanDocumentsRequired page={page} />
+              )}
             </div>
           </div>
         </section>
@@ -92,9 +118,11 @@ export function LoanDetailPage({ page }: { page: LoanSeoPageData }) {
       {showSection("bank_comparison") && <LoanBankComparison page={page} />}
       {showSection("verification") && <LoanVerificationSteps page={page} />}
 
-      <LoanOtherProducts />
-      <LoanFAQSection />
-      <Testimonials />
+      {showSection("other_products") && <LoanOtherProducts />}
+      {showSection("faq") && (
+        <LoanFAQSection faqs={active?.faqs} title={active?.title} />
+      )}
+      {showSection("testimonials") && <Testimonials />}
       <AppDownloadBanner />
     </main>
   );

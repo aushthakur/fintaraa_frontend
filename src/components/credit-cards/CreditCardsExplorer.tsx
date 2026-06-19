@@ -437,8 +437,8 @@ export function CreditCardsExplorer() {
   return (
     <section className="bg-[#f8faff] px-4 py-8 font-sans text-[#1a1d25] antialiased md:px-6 lg:px-8">
       <div className="mx-auto max-w-9xl">
-        <div className="grid items-start gap-5 xl:grid-cols-[260px_minmax(0,1fr)] xl:gap-6">
-          <aside className="space-y-5 rounded-xl border border-[#e2edf6] bg-white p-5 shadow-xs xl:sticky xl:top-28">
+        <div className="grid items-start gap-5 lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-6">
+          <aside className="space-y-5 rounded-xl border border-[#e2edf6] bg-white p-5 shadow-xs lg:sticky lg:top-28">
             <div className="flex items-center justify-between border-b border-[#f0f4f8] pb-2">
               <span className="text-[14px] font-bold text-[#1a1d25]">
                 Filters

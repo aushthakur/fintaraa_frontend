@@ -1,5 +1,7 @@
 "use client";
 
+import type { InsuranceSeoTab } from "@/services/insuranceSeoPages";
+
 const coveredItems = [
   {
     title: "In-patient Hospitalization",
@@ -54,15 +56,27 @@ const notCoveredItems = [
   },
 ];
 
-export function InsuranceCoverageExplanation() {
+export function InsuranceCoverageExplanation({ tab }: { tab?: InsuranceSeoTab }) {
+  const covered = tab?.covered?.length
+    ? tab.covered.map((item) => ({ title: item, description: tab.description || "" }))
+    : coveredItems;
+  const notCovered = tab?.notCovered?.length
+    ? tab.notCovered.map((item) => ({ title: item, description: tab.description || "" }))
+    : notCoveredItems;
+
   return (
     <section className="w-full max-w-9xl mx-auto bg-white px-4 py-12 antialiased text-[#111827] md:px-6">
       
       {/* SECTION TITLE */}
       <div className="text-center mb-10">
         <h2 className="text-[32px] font-bold tracking-tight text-[#212529]">
-          Understanding your coverage
+          {tab?.title || "Understanding your coverage"}
         </h2>
+        {tab?.description ? (
+          <p className="mx-auto mt-3 max-w-3xl text-[14px] font-semibold leading-7 text-[#667085]">
+            {tab.description}
+          </p>
+        ) : null}
       </div>
 
       {/* TWO COLUMN GRID SIDE-BY-SIDE PANELS */}
@@ -75,7 +89,7 @@ export function InsuranceCoverageExplanation() {
           </h3>
           
           <div className="space-y-5">
-            {coveredItems.map((item) => (
+            {covered.map((item) => (
               <div key={item.title} className="space-y-0.5">
                 <h4 className="text-[15px] font-bold text-gray-800 tracking-tight">
                   {item.title}
@@ -95,7 +109,7 @@ export function InsuranceCoverageExplanation() {
           </h3>
           
           <div className="space-y-5">
-            {notCoveredItems.map((item) => (
+            {notCovered.map((item) => (
               <div key={item.title} className="space-y-0.5">
                 <h4 className="text-[15px] font-bold text-gray-800 tracking-tight">
                   {item.title}
