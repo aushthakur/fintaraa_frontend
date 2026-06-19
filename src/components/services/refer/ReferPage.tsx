@@ -341,7 +341,7 @@ export function ReferPage() {
                 )}
               </div>
 
-              <div className="grid grid-cols-2 gap-y-5 rounded-2xl border border-[#e3e8ef] bg-white p-6 shadow-[0_4px_18px_rgba(16,24,40,0.04)] sm:grid-cols-3 md:grid-cols-5 md:p-7">
+              <div className="grid grid-cols-1 gap-4 rounded-2xl border border-[#e3e8ef] bg-white p-6 shadow-[0_4px_18px_rgba(16,24,40,0.04)] sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 xl:p-7">
                 {(loading ? Array.from({ length: 5 }) : summaryCards).map(
                   (item, index) => {
                     if (loading) {

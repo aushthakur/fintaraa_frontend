@@ -123,16 +123,16 @@ export function ContactUsPage() {
                 financial solutions.
               </p>
 
-              <div className="mt-6 flex flex-wrap gap-3">
+              <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <Link
                   href="/products"
-                  className="inline-flex h-12 items-center justify-center rounded-full bg-[#16b654] px-8 text-[15px] font-semibold text-white no-underline shadow-[0_14px_28px_rgba(22,182,84,0.24)]"
+                  className="inline-flex h-12 w-full items-center justify-center rounded-full bg-[#16b654] px-8 text-[15px] font-semibold text-white no-underline shadow-[0_14px_28px_rgba(22,182,84,0.24)] sm:w-auto"
                 >
                   Apply Loan
                 </Link>
                 <a
                   href="tel:+918448282679"
-                  className="inline-flex h-12 items-center justify-center rounded-full border border-[#73d08b] bg-white px-8 text-[15px] font-semibold text-[#16b654] no-underline"
+                  className="inline-flex h-12 w-full items-center justify-center rounded-full border border-[#73d08b] bg-white px-8 text-[15px] font-semibold text-[#16b654] no-underline sm:w-auto"
                 >
                   Call Us Now
                 </a>
@@ -212,7 +212,7 @@ export function ContactUsPage() {
 
             <a
               href="/contact-us"
-              className="inline-flex h-14 items-center justify-center gap-3 rounded-full bg-[#16b654] px-7 text-[16px] font-semibold text-white no-underline shadow-[0_16px_30px_rgba(22,182,84,0.24)] transition hover:-translate-y-0.5 hover:bg-[#119b48]"
+              className="inline-flex h-14 w-full items-center justify-center gap-3 rounded-full bg-[#16b654] px-7 text-[16px] font-semibold text-white no-underline shadow-[0_16px_30px_rgba(22,182,84,0.24)] transition hover:-translate-y-0.5 hover:bg-[#119b48] sm:w-auto"
             >
               <Phone className="h-5 w-5" />
               Talk to Loan Expert

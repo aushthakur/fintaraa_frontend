@@ -402,7 +402,7 @@ export function ProductsPage() {
       <section className="relative overflow-hidden px-4 py-12 md:px-6 lg:px-8">
         {/* <div className="absolute inset-0 bg-[radial-gradient(circle_at_14%_18%,rgba(25,85,133,0.10),transparent_24%),radial-gradient(circle_at_88%_8%,rgba(18,183,106,0.12),transparent_22%),linear-gradient(180deg,#f5fbff_0%,#ffffff_72%)]" /> */}
         <div className="relative mx-auto max-w-9xl">
-          <div className="grid gap-8 lg:grid-cols-[1fr_25rem] lg:items-end">
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,25rem)] lg:items-end">
             <div>
               <h1 className="text-[20px] font-bold leading-[1.02] tracking-[-0.02em] text-[#07162d] md:text-[40px]">
                 Compare financial products with clarity.
@@ -435,7 +435,7 @@ export function ProductsPage() {
             </div> */}
           </div>
 
-          <div className="mt-9 grid gap-4 bg-white p-4 xl:grid-cols-[1fr_auto] xl:items-center">
+          <div className="mt-9 grid gap-4 rounded-2xl bg-white p-4 shadow-[0_12px_32px_rgba(25,85,133,0.04)] xl:grid-cols-[minmax(0,1fr)_auto] xl:items-center">
             <label className="relative block">
               <Search className="absolute left-0 top-3.5 h-4.5 w-4.5 text-[#98a2b3]" />
               <input
@@ -446,7 +446,7 @@ export function ProductsPage() {
               />
             </label>
 
-            <div className="flex items-center gap-2 overflow-x-auto">
+            <div className="flex min-w-0 items-center gap-2 overflow-x-auto pb-1">
               <span className="hidden h-10 items-center gap-2 rounded-full bg-[#eef8ff] px-3 text-[12px] font-extrabold text-[#195585] xl:inline-flex">
                 <SlidersHorizontal className="h-4 w-4" />
                 Filter
@@ -497,7 +497,7 @@ export function ProductsPage() {
                   </span>
                 </div>
 
-                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-8">
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-7">
                   {section.products.map(({ title, icon: Icon, tone }) => {
                     const slug = slugifyProduct(title);
                     const isManaged = managedSlugs.has(slug);
@@ -506,7 +506,7 @@ export function ProductsPage() {
                       <Link
                         key={title}
                         href={productHref(title)}
-                        className="group relative flex min-h-44 flex-col items-center justify-between rounded-xl bg-white px-2 py-4 text-center no-underline ring-1 ring-[#eef2f7] transition duration-300 hover:-translate-y-1 hover:ring-[#d9f6e6]"
+                        className="group relative flex min-h-40 flex-col items-center justify-between rounded-xl bg-white px-3 py-4 text-center no-underline ring-1 ring-[#eef2f7] transition duration-300 hover:-translate-y-1 hover:ring-[#d9f6e6] sm:min-h-44"
                       >
                         {isManaged ? (
                           <span className="absolute right-2 top-2 rounded-full bg-[#ecfdf3] px-2 py-1 text-[9px] font-black uppercase tracking-[0.08em] text-[#027a48]">

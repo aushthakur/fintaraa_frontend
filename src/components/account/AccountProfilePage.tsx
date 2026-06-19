@@ -21,8 +21,8 @@ export function AccountProfilePage({ activeSlug }: { activeSlug?: string }) {
           </p>
         </div> */}
 
-        <div className="grid min-h-0 xl:h-full xl:grid-cols-[24rem_minmax(0,1fr)]">
-          <div className="grid gap-4 border-r border-r-gray-200 bg-white xl:h-full xl:overflow-y-auto xl:pr-3 scrollbar-thin">
+        <div className="grid min-h-0 gap-3 xl:h-full xl:grid-cols-[minmax(20rem,24rem)_minmax(0,1fr)] xl:gap-0">
+          <div className="grid gap-4 border-r-gray-200 bg-white xl:h-full xl:overflow-y-auto xl:border-r xl:pr-3 scrollbar-thin">
             <ProfileSummary />
             <AccountMenu activeSlug={activeSlug} />
             <div className="bg-white/90 p-4 text-center">
@@ -36,7 +36,7 @@ export function AccountProfilePage({ activeSlug }: { activeSlug?: string }) {
             </div>
           </div>
 
-          <div className="bg-white xl:h-full xl:overflow-y-auto xl:pb-4 scrollbar-thin">
+          <div className="min-w-0 bg-white xl:h-full xl:overflow-y-auto xl:pb-4 scrollbar-thin">
             <AccountDetailPanel slug={activeSlug} />
           </div>
         </div>

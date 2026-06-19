@@ -15,7 +15,7 @@ export function ProfileSummary() {
 
   return (
     <section className="bg-white px-5 pt-5">
-      <div className="flex gap-4">
+      <div className="flex flex-col gap-4 sm:flex-row">
         <div className="relative flex h-20 w-20 shrink-0 items-center justify-center rounded-3xl bg-linear-to-br from-[#195585] to-[#12b76a] text-[24px] font-extrabold text-white">
           {profile.avatar ? (
             // eslint-disable-next-line @next/next/no-img-element
@@ -34,7 +34,7 @@ export function ProfileSummary() {
 
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-3">
-            <h1 className="text-[24px] font-extrabold leading-tight text-[#07162d]">
+            <h1 className="min-w-0 text-[22px] font-extrabold leading-tight text-[#07162d] sm:text-[24px]">
               {loading && profile.name === "Guest User"
                 ? "Loading..."
                 : profile.name}
@@ -57,10 +57,10 @@ export function ProfileSummary() {
               style={{ width: `${profile.completion.percent}%` }}
             />
           </div>
-          <p className="mt-3 text-[12px] font-semibold text-[#667085]">
+          <p className="mt-3 break-words text-[12px] font-semibold text-[#667085]">
             Customer ID: {profile.customerId}
           </p>
-          <p className="mt-1 text-[12px] font-semibold text-[#667085]">
+          <p className="mt-1 break-words text-[12px] font-semibold text-[#667085]">
             Mail ID: {profile.email}
           </p>
         </div>

@@ -20,35 +20,37 @@ function DataTable({
       <p className="mt-1 text-center text-[12px] font-semibold text-[#8b95a3]">
         {subtitle}
       </p>
-      <table className="mt-5 w-full border-collapse text-[13px]">
-        <thead className="border-b border-[#dce3eb] text-[#005ca8]">
-          <tr>
-            {headers.map((header) => (
-              <th key={header} className="pb-3 text-left font-black">
-                {header}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row) => (
-            <tr key={row.join("-")} className="border-t border-[#dce3eb]">
-              {row.map((cell, index) => (
-                <td
-                  key={cell}
-                  className={`py-4 ${
-                    index === 1
-                      ? "font-black text-[#111827]"
-                      : "font-semibold text-[#667085]"
-                  }`}
-                >
-                  {cell}
-                </td>
+      <div className="mt-5 overflow-x-auto">
+        <table className="w-full min-w-[420px] border-collapse text-[13px]">
+          <thead className="border-b border-[#dce3eb] text-[#005ca8]">
+            <tr>
+              {headers.map((header) => (
+                <th key={header} className="pb-3 text-left font-black">
+                  {header}
+                </th>
               ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {rows.map((row) => (
+              <tr key={row.join("-")} className="border-t border-[#dce3eb]">
+                {row.map((cell, index) => (
+                  <td
+                    key={cell}
+                    className={`py-4 ${
+                      index === 1
+                        ? "font-black text-[#111827]"
+                        : "font-semibold text-[#667085]"
+                    }`}
+                  >
+                    {cell}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
@@ -62,9 +64,10 @@ export function FranchiseModel() {
         </h2>
 
         {/* 6-step horizontal flow with arrows */}
-        <div className="mt-6 grid grid-cols-6 gap-2">
+        <div className="mt-6 overflow-x-auto pb-2">
+          <div className="grid min-w-[760px] grid-cols-6 gap-2">
           {franchiseSteps.map((step, index) => (
-            <div key={step.title} className="relative w-35 text-center">
+            <div key={step.title} className="relative text-center">
               <span className="mx-auto flex h-13.5 w-13.5 items-center justify-center rounded-[12px] bg-[#EEF6FF]">
                 <ShieldCheck className="h-10 w-10 text-[#005CA8]" />
               </span>
@@ -88,6 +91,7 @@ export function FranchiseModel() {
               </p>
             </div>
           ))}
+          </div>
         </div>
 
         {/* Two tables */}

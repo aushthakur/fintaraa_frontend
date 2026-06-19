@@ -13,7 +13,7 @@ type ModalProps = {
 };
 
 export default function Modal({
-  width = "w-[calc(100%-2rem)] max-w-lg",
+  width = "w-full max-w-lg",
   isVisible,
   onClose,
   children,
@@ -33,7 +33,7 @@ export default function Modal({
         onClick={onClose}
       />
       <div
-        className={`relative z-10 overflow-hidden rounded-[28px] bg-white shadow-[0_28px_90px_rgba(7,22,45,0.28)] ${width}`}
+        className={`relative z-10 max-h-[calc(100dvh-2rem)] max-w-[calc(100vw-2rem)] overflow-hidden rounded-[28px] bg-white shadow-[0_28px_90px_rgba(7,22,45,0.28)] ${width}`}
         role="dialog"
         aria-modal="true"
       >
@@ -47,7 +47,13 @@ export default function Modal({
             <X className="h-4 w-4" />
           </button>
         )}
-        <div className={hidePadding ? "" : "p-5 md:p-6"}>{children}</div>
+        <div
+          className={`max-h-[calc(100dvh-2rem)] overflow-y-auto ${
+            hidePadding ? "" : "p-5 md:p-6"
+          }`}
+        >
+          {children}
+        </div>
       </div>
     </div>,
     target,

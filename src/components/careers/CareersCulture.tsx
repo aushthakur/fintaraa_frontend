@@ -7,7 +7,7 @@ export function CareersCulture() {
         <h2 className="text-[20px] font-extrabold text-[#2b2f38]">
           Our Culture & Values
         </h2>
-        <div className="mt-6 grid gap-4 md:grid-cols-5">
+        <div className="mt-6 grid gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5">
           {cultureValues.map(({ title, text, icon: Icon }) => (
             <article
               key={title}

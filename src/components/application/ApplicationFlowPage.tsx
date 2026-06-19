@@ -555,7 +555,7 @@ function FieldInput({
           ) : null}
         </div>
       ) : onRcLookup ? (
-        <div className="flex gap-2">
+        <div className="flex flex-col gap-2 sm:flex-row">
           <input
             className={fieldClass}
             type={field.type === "number" ? "text" : field.type}
@@ -570,7 +570,7 @@ function FieldInput({
             type="button"
             disabled={rcLookupLoading}
             onClick={onRcLookup}
-            className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-[#005ca8] px-4 text-[12px] font-black text-white disabled:cursor-not-allowed disabled:opacity-70"
+            className="inline-flex h-11 w-full shrink-0 items-center justify-center gap-2 rounded-xl bg-[#005ca8] px-4 text-[12px] font-black text-white disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
           >
             {rcLookupLoading ? (
               <Loader2 className="h-4 w-4 animate-spin" />
@@ -995,7 +995,7 @@ export function ApplicationFlowPage({
   }
 
   return (
-    <main className="relative overflow-hidden bg-white px-4 py-8 font-sans md:px-8 lg:px-16">
+    <main className="relative overflow-hidden bg-white px-4 py-6 font-sans sm:py-8 md:px-8 lg:px-10 xl:px-16">
       <div className="pointer-events-none absolute -left-10 top-10 h-32 w-20 rotate-140 rounded bg-[#e0effe]" />
       <div className="mx-auto max-w-7xl">
         <Link
@@ -1006,7 +1006,7 @@ export function ApplicationFlowPage({
           Back to product
         </Link>
 
-        <div className="grid gap-8 lg:grid-cols-[1fr_330px]">
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(280px,330px)] lg:gap-8">
           <form onSubmit={handleSubmit} className="min-w-0">
             <div className="mb-8 rounded-2xl border border-[#dce9f7] bg-[linear-gradient(180deg,#ffffff_0%,#f6fbff_100%)] p-4 shadow-[0_16px_40px_rgba(0,92,168,0.06)]">
               <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
@@ -1023,7 +1023,7 @@ export function ApplicationFlowPage({
                 </span>
               </div>
 
-              <div className="relative">
+              <div className="relative overflow-x-auto pb-1">
                 <div className="absolute left-5 right-5 top-5 h-1 rounded-full bg-[#d7eafd]" />
                 <motion.div
                   className="absolute left-5 top-5 h-1 rounded-full bg-[linear-gradient(90deg,#005ca8,#13a653)]"
@@ -1034,7 +1034,7 @@ export function ApplicationFlowPage({
                 <div
                   className="relative grid gap-3"
                   style={{
-                    gridTemplateColumns: `repeat(${flow.steps.length}, minmax(0, 1fr))`,
+                    gridTemplateColumns: `repeat(${flow.steps.length}, minmax(72px, 1fr))`,
                   }}
                 >
                   {flow.steps.map((item, index) => {
@@ -1132,7 +1132,7 @@ export function ApplicationFlowPage({
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -24 }}
                 transition={{ duration: 0.24, ease: "easeOut" }}
-                className="grid gap-4 md:grid-cols-2"
+                className="grid gap-4 sm:grid-cols-2"
               >
                 {fields.map((field) => (
                   <FieldInput
@@ -1158,12 +1158,12 @@ export function ApplicationFlowPage({
               </motion.section>
             </AnimatePresence>
 
-            <div className="mt-8 flex flex-wrap items-center gap-4">
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
               {stepIndex > 0 ? (
                 <button
                   type="button"
                   onClick={goBack}
-                  className="h-11 min-w-40 rounded-full border border-[#13a653] bg-white px-6 text-[13px] font-black text-[#13a653]"
+                  className="h-11 w-full rounded-full border border-[#13a653] bg-white px-6 text-[13px] font-black text-[#13a653] sm:w-auto sm:min-w-40"
                 >
                   Save & Back
                 </button>
@@ -1172,7 +1172,7 @@ export function ApplicationFlowPage({
                 <button
                   type="button"
                   onClick={goNext}
-                  className="inline-flex h-11 min-w-40 items-center justify-center gap-2 rounded-full bg-[#13a653] px-6 text-[13px] font-black text-white"
+                  className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-[#13a653] px-6 text-[13px] font-black text-white sm:w-auto sm:min-w-40"
                 >
                   Continue
                   <ChevronRight className="h-4 w-4" />
@@ -1181,7 +1181,7 @@ export function ApplicationFlowPage({
                 <button
                   type="submit"
                   disabled={loading}
-                  className="inline-flex h-11 min-w-44 items-center justify-center gap-2 rounded-full bg-[#13a653] px-6 text-[13px] font-black text-white disabled:cursor-not-allowed disabled:opacity-70"
+                  className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-[#13a653] px-6 text-[13px] font-black text-white disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto sm:min-w-44"
                 >
                   {loading ? (
                     <Loader2 className="h-4 w-4 animate-spin" />

@@ -47,14 +47,14 @@ export function InsuranceClaimsProcess() {
           Uses a 7-column grid on desktop screens to interleave step cards with arrow tracks natively.
           Falls back to a clean stacking structure on mobile.
         */}
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-7 items-start gap-y-10 md:gap-y-0">
+        <div className="mt-12 grid grid-cols-1 items-start gap-y-10 sm:grid-cols-2 sm:gap-x-6 lg:mt-16 lg:grid-cols-7 lg:gap-x-0 lg:gap-y-0">
           {claimSteps.map((step, index) => {
             const IconComponent = step.icon;
             return (
               <Fragment key={step.title}>
                 
                 {/* INTERACTIVE STEP ELEMENT CARD CONTAINER */}
-                <div className="flex flex-col items-center px-2 md:col-span-1">
+                <div className="flex flex-col items-center px-2 lg:col-span-1">
                   
                   {/* Icon Node Badge */}
                   <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[#005ca8] text-white shadow-[0_4px_12px_rgba(0,92,168,0.2)]">
@@ -82,7 +82,7 @@ export function InsuranceClaimsProcess() {
                   Rendered in alternate rows directly inline within the grid matrix blueprint tree.
                 */}
                 {index < claimSteps.length - 1 && (
-                  <div className="hidden md:flex h-14 items-center justify-center md:col-span-1 select-none pointer-events-none">
+                  <div className="hidden h-14 select-none items-center justify-center lg:col-span-1 lg:flex pointer-events-none">
                     <div className="flex items-center w-full px-2 max-w-32.5">
                       {/* Linear Horizontal Dashed Path Track Line */}
                       <div className="w-full h-0 border-t-2 border-dashed border-blue-200" />

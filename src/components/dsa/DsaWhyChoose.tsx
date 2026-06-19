@@ -21,7 +21,7 @@ export function DsaWhyChoose() {
           </div>
         </div>
 
-        <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-5">
+        <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5">
           {whyChooseItems.map(({ title, icon: Icon }, index) => (
             <div
               key={`${title}-${index}`}

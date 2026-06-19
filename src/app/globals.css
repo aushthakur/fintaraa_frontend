@@ -21,6 +21,52 @@ body {
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
 
+html,
+body {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+main {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+main :where(section, header, footer, article, aside, div, form) {
+  min-width: 0;
+}
+
+main :where(.grid, .flex) > * {
+  min-width: 0;
+}
+
+main :where(img, video, canvas, svg) {
+  max-width: 100%;
+}
+
+main :where(h1, h2, h3, h4, h5, h6, p, li, a, button, span) {
+  overflow-wrap: anywhere;
+}
+
+main :where(h1, h2, h3) {
+  text-wrap: balance;
+}
+
+main :where(p, li) {
+  text-wrap: pretty;
+}
+
+@media (max-width: 767px) {
+  main :where(section) {
+    scroll-margin-top: 5.5rem;
+  }
+
+  main :where([class*="shadow-"]) {
+    --tw-shadow-color: rgba(15, 23, 42, 0.08);
+  }
+}
+
 main p[class*="text-[9px]"]:not([class*="uppercase"]):not([class*="tracking-"]):not([class*="absolute"]):not([class*="truncate"]):not([class*="sr-only"]),
 main p[class*="text-[10px]"]:not([class*="uppercase"]):not([class*="tracking-"]):not([class*="absolute"]):not([class*="truncate"]):not([class*="sr-only"]),
 main p[class*="text-[11px]"]:not([class*="uppercase"]):not([class*="tracking-"]):not([class*="absolute"]):not([class*="truncate"]):not([class*="sr-only"]),

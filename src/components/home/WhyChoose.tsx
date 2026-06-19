@@ -43,7 +43,7 @@ export function WhyChoose() {
         {/* Dense Grid/Flex Block Matching the Screenshot Rows */}
         <div className="flex flex-col gap-4">
           {/* Row 1 Grid */}
-          <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-5">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 md:grid-cols-3 xl:grid-cols-5">
             {corporateReasons.map((item) => {
               const IconComponent = item.icon;
               return (
@@ -63,7 +63,7 @@ export function WhyChoose() {
           </div>
 
           {/* Row 2 Grid (Duplicates row layout logic as displayed inside screenshot) */}
-          <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-5">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 md:grid-cols-3 xl:grid-cols-5">
             {corporateReasons.map((item) => {
               const IconComponent = item.icon;
               return (

@@ -339,7 +339,7 @@ export default function Navbar() {
       </nav>
 
       {menuOpen && (
-        <div className="border-t border-[#e5eef8] bg-white px-4 pb-5 shadow-lg md:px-6 lg:hidden">
+        <div className="max-h-[calc(100dvh-6.75rem)] overflow-y-auto border-t border-[#e5eef8] bg-white px-4 pb-5 shadow-lg md:px-6 lg:hidden">
           <div className="mx-auto grid max-w-9xl gap-1">
             {navItems.map((item) => (
               <div key={item.label} className="border-b border-[#edf3f8] py-2">

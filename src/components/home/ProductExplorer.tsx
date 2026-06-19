@@ -41,18 +41,15 @@ export function ProductExplorer({
         <div className="flex flex-col">
           {visibleSections.map((section) => (
             <div key={section.title}>
-              
               {/* Row Header Grid: Merged title and subtitle text on the left, View All link on the right */}
               <div className="mb-6 flex flex-col gap-2 sm:flex-row items-start sm:items-center justify-between pb-1">
                 <div className="text-[18px] sm:text-[22px] font-bold tracking-tight text-[#0b192c] md:text-[24px]">
                   <h2>
                     {section.title}
-                    {section.subtitle && (
-                      <span> ({section.subtitle})</span>
-                    )}
+                    {section.subtitle && <span> ({section.subtitle})</span>}
                   </h2>
                 </div>
-                
+
                 <Link
                   href="/products"
                   className="inline-flex items-center gap-1 text-[14px] font-bold text-[#22c55e] no-underline transition-colors hover:text-[#16a34a] shrink-0"
@@ -63,17 +60,19 @@ export function ProductExplorer({
               </div>
 
               {/* Grid System: Sized and proportioned perfectly to resemble the screenshot */}
-              <div className="grid grid-cols-2 gap-3 sm:gap-5 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7">
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5 md:grid-cols-4 lg:grid-cols-7">
                 {section.products.map((product, index) => {
                   const { title, icon: Icon, logo, tone, tag } = product as any;
                   // Checks specifically if the card is the first item within Instant Loans row
-                  const hasCashbackBadge = tag || (index === 0 && section.title.includes("Get Instant Loan"));
+                  const hasCashbackBadge =
+                    tag ||
+                    (index === 0 && section.title.includes("Get Instant Loan"));
 
                   return (
                     <Link
                       href={productHref(title)}
                       key={title}
-                      className="group relative flex flex-col items-center justify-center rounded-3xl border border-gray-200/70 bg-white px-2 sm:px-4 pb-6 sm:pb-8 pt-6 sm:pt-10 text-center no-underline transition-all duration-200 hover:shadow-[0_6px_20px_rgba(0,0,0,0.02)]"
+                      className="group relative flex min-h-36 flex-col items-center justify-center rounded-3xl border border-gray-200/70 bg-white px-2 pb-6 pt-6 text-center no-underline transition-all duration-200 hover:shadow-[0_6px_20px_rgba(0,0,0,0.02)] sm:min-h-44 sm:px-4 sm:pb-8 sm:pt-10"
                     >
                       {/* Top Absolute Cashback Offers Badge Layout */}
                       {hasCashbackBadge && (
@@ -108,14 +107,13 @@ export function ProductExplorer({
                       )}
 
                       {/* Explicitly Bolded Bank/Product Title Copy */}
-                      <h3 className="mt-3 sm:mt-5 text-[13px] sm:text-[14px] font-bold tracking-tight text-[#0f172a]">
+                      <h3 className="mt-3 line-clamp-2 text-[13px] font-bold tracking-tight text-[#0f172a] sm:mt-5 sm:text-[14px]">
                         {title}
                       </h3>
                     </Link>
                   );
                 })}
               </div>
-
             </div>
           ))}
         </div>

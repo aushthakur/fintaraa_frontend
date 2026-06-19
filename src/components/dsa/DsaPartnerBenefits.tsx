@@ -64,24 +64,26 @@ export function DsaPartnerBenefits() {
             <h3 className="text-[22px] font-extrabold tracking-[-0.02em] text-[#33393f]">
               Commission Structure
             </h3>
-            <table className="mt-4 w-full border-collapse text-[13px]">
-              <thead>
-                <tr className="border-b border-[#e8edf3] text-left text-[#22272e]">
-                  <th className="py-3 font-extrabold">Product</th>
-                  <th className="py-3 font-extrabold">Commission</th>
-                </tr>
-              </thead>
-              <tbody>
-                {commissionRows.map(([product, commission]) => (
-                  <tr key={product} className="border-b border-[#edf2f7] last:border-b-0">
-                    <td className="py-4 font-medium text-[#7d8794]">{product}</td>
-                    <td className="py-4 font-semibold text-[#22272e]">
-                      {commission}
-                    </td>
+            <div className="mt-4 overflow-x-auto">
+              <table className="w-full min-w-[360px] border-collapse text-[13px]">
+                <thead>
+                  <tr className="border-b border-[#e8edf3] text-left text-[#22272e]">
+                    <th className="py-3 font-extrabold">Product</th>
+                    <th className="py-3 font-extrabold">Commission</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {commissionRows.map(([product, commission]) => (
+                    <tr key={product} className="border-b border-[#edf2f7] last:border-b-0">
+                      <td className="py-4 font-medium text-[#7d8794]">{product}</td>
+                      <td className="py-4 font-semibold text-[#22272e]">
+                        {commission}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
 
           <div>

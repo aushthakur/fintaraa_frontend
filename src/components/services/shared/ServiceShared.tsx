@@ -82,7 +82,8 @@ export function ServiceTimeline({ title }: { title: string }) {
           {title}
         </h2>
 
-        <div className="mt-10 grid grid-cols-5 items-start">
+        <div className="mt-10 overflow-x-auto pb-2">
+          <div className="grid min-w-[560px] grid-cols-5 items-start">
           {timelineSteps.map((label, index) => (
             <div key={label} className="relative text-center">
               {/* Connector line */}
@@ -109,6 +110,7 @@ export function ServiceTimeline({ title }: { title: string }) {
               </p>
             </div>
           ))}
+          </div>
         </div>
       </div>
     </section>

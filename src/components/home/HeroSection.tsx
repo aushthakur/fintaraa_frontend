@@ -77,17 +77,17 @@ export function HeroSection() {
   );
 
   return (
-    <section className="bg-white py-12 lg:pt-16 lg:pb-0">
-      <div className="mx-auto max-w-9xl px-6 lg:px-8">
-        <div className="flex flex-col gap-12 md:flex-row items-center">
+    <section className="bg-white py-10 sm:py-12 lg:pt-16 lg:pb-0">
+      <div className="mx-auto max-w-9xl px-4 sm:px-6 lg:px-8">
+        <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,0.88fr)_minmax(0,1.12fr)] lg:gap-12">
           {/* Left Side */}
-          <div className="flex flex-col md:w-[45%]">
+          <div className="flex min-w-0 flex-col">
             {activeBanner.eyebrow ? (
               <p className="mb-3 text-[12px] font-extrabold uppercase tracking-[0.18em] text-[#195585]">
                 {activeBanner.eyebrow}
               </p>
             ) : null}
-            <h1 className="text-[28px] font-extrabold leading-[1.12] tracking-tight text-[#212529] sm:text-[32px] md:text-[46px] lg:text-[52px]">
+            <h1 className="text-[30px] font-extrabold leading-[1.12] tracking-tight text-[#212529] sm:text-[38px] md:text-[46px] lg:text-[52px]">
               {activeBanner.title}
               {activeBanner.highlightText ? (
                 <span className="block mt-2 font-extrabold text-[#12b76a]">
@@ -101,11 +101,11 @@ export function HeroSection() {
             </p>
 
             {/* Action Buttons */}
-            <div className="mt-8 flex flex-wrap items-center gap-4">
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
               {activeBanner.buttonText && activeBanner.linkUrl ? (
                 <Link
                   href={activeBanner.linkUrl}
-                  className="inline-flex h-12 items-center justify-center rounded-full border border-[#12b76a] px-7 text-[15px] font-bold text-[#12b76a] no-underline transition-colors hover:bg-emerald-50/40"
+                  className="inline-flex h-12 w-full items-center justify-center rounded-full border border-[#12b76a] px-7 text-[15px] font-bold text-[#12b76a] no-underline transition-colors hover:bg-emerald-50/40 sm:w-auto"
                 >
                   {activeBanner.buttonText}
                 </Link>
@@ -115,7 +115,7 @@ export function HeroSection() {
               activeBanner.secondaryLinkUrl ? (
                 <Link
                   href={activeBanner.secondaryLinkUrl}
-                  className="inline-flex h-12 items-center justify-center rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-8 text-[15px] font-bold text-white no-underline transition-colors hover:bg-[#0ea85f]"
+                  className="inline-flex h-12 w-full items-center justify-center rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-8 text-[15px] font-bold text-white no-underline transition-colors hover:bg-[#0ea85f] sm:w-auto"
                 >
                   {activeBanner.secondaryButtonText}
                 </Link>
@@ -124,10 +124,10 @@ export function HeroSection() {
           </div>
 
           {/* Right Side */}
-          <div className="relative flex md:w-[55%] flex-col justify-end align-top pb-10">
+          <div className="relative flex min-w-0 flex-col justify-end align-top pb-4 lg:pb-10">
             {/* Image */}
             <div className="w-full rounded-xl border max-sm:mt-0 border-gray-300 bg-[#fafbfc] shadow-[0_2px_12px_rgba(0,0,0,0.01)]">
-              <div className="relative w-full h-[45vh]">
+              <div className="relative h-[240px] w-full sm:h-[320px] md:h-[380px] lg:h-[min(45vh,500px)]">
                 {banners.map((banner, index) => (
                   <Image
                     key={banner._id || `${banner.image}-${index}`}
@@ -164,13 +164,13 @@ export function HeroSection() {
 
             {/* Trust Stats Card */}
             <div className="rounded-2xl border-2 mt-5 border-indigo-50 bg-white p-4">
-              <div className="grid grid-cols-4 items-center gap-4">
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:items-center lg:gap-4">
                 {trustStats.map(({ value, label, icon: Icon }, index) => (
                   <div
                     key={label}
-                    className={`relative flex items-center gap-3 px-4 ${
+                    className={`relative flex items-center gap-3 rounded-xl bg-[#f8fbff] px-4 py-3 lg:rounded-none lg:bg-transparent lg:py-0 ${
                       index > 0
-                        ? "before:absolute before:left-0 before:top-1/2 before:h-8 before:w-px before:-translate-y-1/2 before:bg-gray-200"
+                        ? "lg:before:absolute lg:before:left-0 lg:before:top-1/2 lg:before:h-8 lg:before:w-px lg:before:-translate-y-1/2 lg:before:bg-gray-200"
                         : ""
                     }`}
                   >

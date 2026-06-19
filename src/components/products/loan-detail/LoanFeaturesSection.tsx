@@ -13,7 +13,7 @@ export function LoanFeaturesSection({
         <h2 className="text-[22px] font-black text-[#111827]">
           {loanType} <span className="text-[#13a653]">Features</span>
         </h2>
-        <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+        <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-6">
           {featureItems.map((item, index) => {
             const Icon = iconPool[index % iconPool.length];
             return (

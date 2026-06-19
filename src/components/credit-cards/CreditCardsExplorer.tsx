@@ -437,8 +437,8 @@ export function CreditCardsExplorer() {
   return (
     <section className="bg-[#f8faff] px-4 py-8 font-sans text-[#1a1d25] antialiased md:px-6 lg:px-8">
       <div className="mx-auto max-w-9xl">
-        <div className="grid items-start gap-6 lg:grid-cols-[260px_1fr]">
-          <aside className="space-y-5 rounded-xl border border-[#e2edf6] bg-white p-5 shadow-xs">
+        <div className="grid items-start gap-5 xl:grid-cols-[260px_minmax(0,1fr)] xl:gap-6">
+          <aside className="space-y-5 rounded-xl border border-[#e2edf6] bg-white p-5 shadow-xs xl:sticky xl:top-28">
             <div className="flex items-center justify-between border-b border-[#f0f4f8] pb-2">
               <span className="text-[14px] font-bold text-[#1a1d25]">
                 Filters
@@ -558,12 +558,12 @@ export function CreditCardsExplorer() {
             ))}
           </aside>
 
-          <div className="space-y-4">
+          <div className="min-w-0 space-y-4">
             <div className="flex flex-col justify-between gap-3 rounded-xl border border-[#e2edf6] bg-white px-5 py-3 sm:flex-row sm:items-center">
               <span className="text-[14px] font-bold text-[#1a1d25]">
                 {loading ? "Loading cards..." : `${filteredCards.length} Cards Found`}
               </span>
-              <div className="flex items-center gap-2 text-[12px]">
+              <div className="flex flex-wrap items-center gap-2 text-[12px]">
                 <span className="font-medium text-[#7a869a]">Sort By:</span>
                 <div className="flex cursor-pointer items-center gap-2 rounded-lg border border-[#cbd5e1] bg-white px-3 py-1.5 font-bold">
                   <span>Priority</span>
@@ -670,7 +670,7 @@ export function CreditCardsExplorer() {
 
             {eligibilityCard ? (
               <div className="rounded-2xl border border-[#cfe3f7] bg-white p-5 shadow-xs">
-                <div className="flex items-center justify-between gap-3">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                   <div>
                     <p className="text-[12px] font-bold text-[#005ca8]">
                       Eligibility Check
@@ -742,7 +742,7 @@ export function CreditCardsExplorer() {
             {loading ? (
               <CardsSkeleton />
             ) : filteredCards.length ? (
-              <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+              <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
                 {filteredCards.map((card) => {
                   const cardId = getCardId(card);
                   const benefits = getCardBenefits(card);
@@ -862,7 +862,7 @@ export function CreditCardsExplorer() {
                         </div>
 
                         <div className="space-y-2">
-                          <div className="grid grid-cols-2 gap-2">
+                          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                             <button
                               type="button"
                               onClick={() => handleDetails(card)}
@@ -902,7 +902,7 @@ export function CreditCardsExplorer() {
               </div>
             )}
 
-            <div className="flex flex-col items-center justify-between gap-4 rounded-xl border border-[#e2edf6] bg-white p-4 shadow-xs md:flex-row">
+            <div className="flex flex-col items-stretch justify-between gap-4 rounded-xl border border-[#e2edf6] bg-white p-4 shadow-xs md:flex-row md:items-center">
               <div className="flex flex-wrap items-center gap-4">
                 <div>
                   <span className="text-[14px] font-bold text-[#005ca8]">
@@ -931,14 +931,14 @@ export function CreditCardsExplorer() {
                 type="button"
                 disabled={compareCards.length < 2}
                 onClick={() => setCompareOpen(true)}
-                className="flex items-center gap-2 rounded-lg bg-[#005ca8] px-6 py-2.5 text-[13px] font-bold text-white transition-colors hover:bg-[#004b87] disabled:cursor-not-allowed disabled:bg-[#9db9d1]"
+                className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#005ca8] px-6 py-2.5 text-[13px] font-bold text-white transition-colors hover:bg-[#004b87] disabled:cursor-not-allowed disabled:bg-[#9db9d1] md:w-auto"
               >
                 <span>Compare Now</span>
                 <ExternalLink className="h-3.5 w-3.5" />
               </button>
             </div>
             {compareCards.length > 0 && compareCards.length < 2 ? (
-              <p className="-mt-2 text-right text-[11px] font-semibold text-[#7a869a]">
+              <p className="-mt-2 text-left text-[11px] font-semibold text-[#7a869a] md:text-right">
                 Select at least 2 cards to compare.
               </p>
             ) : null}
@@ -947,7 +947,7 @@ export function CreditCardsExplorer() {
               <h4 className="text-[15px] font-bold text-[#1a1d25]">
                 Why choose Fintaraa for Credit Cards?
               </h4>
-              <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-5">
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5">
                 {whyChooseItems.map((item) => (
                   <div
                     key={item.id}

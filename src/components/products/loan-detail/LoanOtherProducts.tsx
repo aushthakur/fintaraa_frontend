@@ -85,12 +85,12 @@ export function LoanOtherProducts() {
             <span className="text-[15px] font-light">→</span>
           </Link>
         </div>
-        <div className="mt-6 grid grid-cols-2 gap-5 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7">
+        <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-7">
           {bankCards.map((bank) => (
             <Link
               key={bank.title}
               href={productHref(bank.title)}
-              className="group relative flex flex-col items-center justify-center rounded-3xl border border-gray-200/70 bg-white px-4 pb-8 pt-10 text-center no-underline transition-all duration-200 hover:shadow-[0_6px_20px_rgba(0,0,0,0.02)]"
+              className="group relative flex min-h-40 flex-col items-center justify-center rounded-3xl border border-gray-200/70 bg-white px-3 pb-7 pt-8 text-center no-underline transition-all duration-200 hover:shadow-[0_6px_20px_rgba(0,0,0,0.02)] sm:px-4 sm:pb-8 sm:pt-10"
             >
               <div
                 className={`flex h-20 w-20 items-center justify-center rounded-full transition-transform duration-200 group-hover:scale-105 ${

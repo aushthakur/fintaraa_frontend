@@ -112,7 +112,7 @@ export function MajorBankCreditCards() {
   return (
     <section className="bg-white px-4 py-8 md:px-6 lg:px-8">
       <div className="mx-auto max-w-9xl">
-        <div className="flex items-center justify-between border-b border-gray-100 pb-4">
+        <div className="flex flex-col gap-3 border-b border-gray-100 pb-4 sm:flex-row sm:items-center sm:justify-between">
           <h2 className="text-[20px] font-bold text-[#111111] md:text-[24px]">
             Credit Cards by Major Banks
           </h2>
@@ -125,7 +125,7 @@ export function MajorBankCreditCards() {
           </a>
         </div>
 
-        <div className="mt-5 flex gap-2 overflow-x-auto pb-3 scrollbar-hide">
+        <div className="mt-5 flex min-w-0 gap-2 overflow-x-auto pb-3 scrollbar-hide">
           {loading ? (
             <span className="inline-flex items-center gap-2 text-[13px] font-semibold text-[#667085]">
               <Loader2 className="h-4 w-4 animate-spin" />
@@ -170,7 +170,7 @@ export function MajorBankCreditCards() {
 
           {activeBank ? (
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex items-start gap-4 sm:items-center">
+              <div className="flex min-w-0 items-start gap-4 sm:items-center">
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#1e73be]/10 text-xl font-bold text-[#1e73be]">
                   {activeBankData?.image ? (
                     <BankLogoImage
@@ -182,11 +182,11 @@ export function MajorBankCreditCards() {
                     activeBank.slice(0, 1)
                   )}
                 </div>
-                <div>
+                <div className="min-w-0">
                   <h3 className="text-[22px] font-bold text-[#111111]">
                     {activeBank} Credit Cards
                   </h3>
-                  <p className="mt-0.5 max-w-xl text-[12px] leading-relaxed text-gray-400">
+                  <p className="mt-0.5 max-w-xl text-[12px] leading-relaxed text-gray-500">
                     Choose from cards with rewards, cashback, lounge access and
                     lifestyle benefits from {activeBank}.
                   </p>
@@ -252,11 +252,11 @@ export function MajorBankCreditCards() {
                     </div>
                   </div>
 
-                  <div className="mt-6 flex items-center justify-between gap-4 pt-2">
+                  <div className="mt-6 flex flex-col gap-3 pt-2 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
                     <button
                       type="button"
                       onClick={() => handleDetails(card)}
-                      className="flex items-center gap-1 text-[13px] font-medium text-[#08a045] hover:underline"
+                      className="flex items-center justify-center gap-1 text-[13px] font-medium text-[#08a045] hover:underline sm:justify-start"
                     >
                       View Details
                       <span className="text-[13px]">➔</span>
@@ -264,7 +264,7 @@ export function MajorBankCreditCards() {
                     <button
                       type="button"
                       onClick={() => handleApply(card)}
-                      className="inline-flex h-9.5 items-center justify-center rounded-full bg-[#08a045] px-6 text-[13px] font-medium text-white shadow-sm transition-colors hover:bg-[#067e36]"
+                      className="inline-flex h-9.5 w-full items-center justify-center rounded-full bg-[#08a045] px-6 text-[13px] font-medium text-white shadow-sm transition-colors hover:bg-[#067e36] sm:w-auto"
                     >
                       Apply Now
                     </button>
@@ -276,7 +276,7 @@ export function MajorBankCreditCards() {
 
           {selectedCard ? (
             <div className="mt-6 rounded-2xl border border-[#dcebf7] bg-[#f8fbff] p-5">
-              <div className="flex items-start justify-between gap-4">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                 <div>
                   <p className="text-[12px] font-bold text-[#08a045]">
                     {selectedCard.bankName}

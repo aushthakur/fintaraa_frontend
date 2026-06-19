@@ -5,7 +5,7 @@ export function FranchiseWhyChoose() {
   return (
     <section className="bg-[#005ca8] px-4 py-10 text-white md:px-6 lg:px-8">
       <div className="mx-auto max-w-9xl">
-        <div className="flex items-start justify-between gap-6">
+        <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
           <h2 className="text-[28px] font-semibold">Why Choose Fintaraa?</h2>
           <div className="relative hidden h-20 w-50 md:block">
             <Image
@@ -19,7 +19,7 @@ export function FranchiseWhyChoose() {
         </div>
 
         {/* 10 chips in 2 rows of 5 */}
-        <div className="mt-8 grid grid-cols-5 gap-x-10 gap-y-8">
+        <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 xl:gap-x-10 xl:gap-y-8">
           {whyChooseItems.map(({ title, icon: Icon }, index) => (
             <div
               key={`${title}-${index}`}

@@ -114,7 +114,7 @@ export function CibilBenefitsFactors() {
           </div>
 
           {/* Dynamic Card Matrix Grid matching image_9eb010.png */}
-          <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5">
             {factors.map((item) => {
               const IconComponent = item.icon;
               return (

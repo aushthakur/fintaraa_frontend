@@ -29,7 +29,7 @@ export function WhyChooseFintaraa() {
       <div className="mx-auto max-w-9xl">
         
         {/* Top Header Block Row */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <h2 className="text-[24px] md:text-[28px] font-black tracking-tight">
             Why Choose Fintaraa?
           </h2>
@@ -46,7 +46,7 @@ export function WhyChooseFintaraa() {
         </div>
 
         {/* 2-Row x 5-Column Compact Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5">
           {featureItems.map((item, index) => {
             const Icon = item.icon;
             return (

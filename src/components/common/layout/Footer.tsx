@@ -134,21 +134,21 @@ function ColHeading({ children }: { children: React.ReactNode }) {
 export const AppDownloadBanner = () => {
   return (
     <section className="bg-white px-4 py-8 md:px-6 lg:px-8">
-      <div className="mx-auto grid max-w-9xl gap-5 overflow-hidden rounded-[26px] border border-[#a8e5fb] bg-[radial-gradient(circle_at_94%_12%,rgba(24,194,225,0.12),transparent_16%),radial-gradient(circle_at_4%_90%,rgba(25,85,133,0.08),transparent_18%),linear-gradient(105deg,#f3fbff_0%,#ffffff_44%,#eafffb_100%)] px-4 py-6 shadow-[0_20px_55px_rgba(25,85,133,0.09)] md:grid-cols-[1fr_0.9fr_1fr] md:px-6 lg:px-8">
+      <div className="mx-auto grid max-w-9xl gap-5 overflow-hidden rounded-[22px] border border-[#a8e5fb] bg-[radial-gradient(circle_at_94%_12%,rgba(24,194,225,0.12),transparent_16%),radial-gradient(circle_at_4%_90%,rgba(25,85,133,0.08),transparent_18%),linear-gradient(105deg,#f3fbff_0%,#ffffff_44%,#eafffb_100%)] px-4 py-6 shadow-[0_20px_55px_rgba(25,85,133,0.09)] md:px-6 lg:grid-cols-[1fr_0.82fr_1fr] lg:px-8">
         <div className="flex flex-col justify-center py-3">
-          <h2 className="mt-7 max-w-xl text-[20px] font-extrabold leading-[1.05] tracking-[-0.02em] text-[#07162d] md:text-[32px] xl:text-[36px]">
+          <h2 className="max-w-xl text-[22px] font-extrabold leading-[1.08] tracking-[-0.02em] text-[#07162d] md:text-[32px] xl:text-[36px]">
             Manage Your Finances
             <span className="block bg-[linear-gradient(90deg,#0b7fe8,#176bff)] bg-clip-text text-transparent">
               Anytime, Anywhere
             </span>
           </h2>
-          <p className="mt-5 max-w-lg text-4.5 font-medium leading-8 text-[#344054]">
+          <p className="mt-4 max-w-lg text-[15px] font-medium leading-7 text-[#344054] md:text-[17px] md:leading-8">
             Track your credit score, explore loans, pay EMIs, get personalised
             offers &amp; do much more.
           </p>
         </div>
 
-        <div className="relative hidden items-end justify-center md:flex">
+        <div className="relative hidden items-end justify-center lg:flex">
           <Image
             src="/assets/refer/footer.png"
             alt="Fintaraa mobile app preview"
@@ -159,17 +159,17 @@ export const AppDownloadBanner = () => {
           />
         </div>
 
-        <div className="flex flex-col justify-center py-3 pt-8 md:pt-0">
-          <h3 className="text-[24px] font-extrabold tracking-[-0.01em] text-[#07162d] md:text-[26px]">
+        <div className="flex flex-col justify-center py-3 lg:pt-0">
+          <h3 className="text-[22px] font-extrabold tracking-[-0.01em] text-[#07162d] md:text-[26px]">
             Download the Fintaraa App Now!
           </h3>
-          <p className="mt-3 text-4.5 font-medium text-[#344054]">
+          <p className="mt-3 text-[15px] font-medium text-[#344054] md:text-[17px]">
             Get smarter insights and better offers on the go.
           </p>
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
             <a
               href="/app"
-              className="inline-flex h-14 items-center justify-center gap-3 rounded-xl bg-black px-5 text-white no-underline shadow-[0_14px_28px_rgba(0,0,0,0.16)] transition hover:-translate-y-0.5 hover:bg-[#111827]"
+              className="inline-flex h-14 w-full items-center justify-center gap-3 rounded-xl bg-black px-5 text-white no-underline shadow-[0_14px_28px_rgba(0,0,0,0.16)] transition hover:-translate-y-0.5 hover:bg-[#111827] sm:w-auto"
             >
               <FaGooglePlay className="h-7 w-7 text-[#34a853]" />
               <span>
@@ -181,7 +181,7 @@ export const AppDownloadBanner = () => {
             </a>
             <a
               href="/app"
-              className="inline-flex h-14 items-center justify-center gap-3 rounded-xl bg-black px-5 text-white no-underline shadow-[0_14px_28px_rgba(0,0,0,0.16)] transition hover:-translate-y-0.5 hover:bg-[#111827]"
+              className="inline-flex h-14 w-full items-center justify-center gap-3 rounded-xl bg-black px-5 text-white no-underline shadow-[0_14px_28px_rgba(0,0,0,0.16)] transition hover:-translate-y-0.5 hover:bg-[#111827] sm:w-auto"
             >
               <FaApple className="h-7 w-7 text-white" />
               <span>
@@ -194,7 +194,7 @@ export const AppDownloadBanner = () => {
               </span>
             </a>
           </div>
-          <p className="mt-6 text-[16px] font-medium text-[#344054]">
+          <p className="mt-6 text-[15px] font-medium text-[#344054] md:text-[16px]">
             Simple. Secure. Reliable.{" "}
             <span className="font-semibold text-[#0b7fe8]">Fintaraa.</span>
           </p>
@@ -261,7 +261,7 @@ export default function Footer() {
 
         {/* ── Contact bar ── */}
         <div className="mx-auto mt-10 max-w-9xl border-t border-white/10 px-6 lg:px-10">
-          <div className="grid grid-cols-5 py-7 text-3.5 text-white sm:items-center gap-5">
+          <div className="grid grid-cols-1 gap-5 py-7 text-[14px] text-white sm:grid-cols-2 sm:items-start lg:grid-cols-5 lg:items-center">
             {/* Address */}
             <div className="flex items-start gap-2">
               <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-white/70" />
@@ -309,9 +309,12 @@ export default function Footer() {
 
         {/* ── Trust bar ── */}
         <div className="mx-auto max-w-9xl px-6 pb-10 lg:px-10">
-          <div className="grid grid-cols-2 divide-x divide-white/15 rounded-xl border border-white/20 md:grid-cols-4">
+          <div className="grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-white/20 bg-white/15 sm:grid-cols-2 lg:grid-cols-4">
             {trustItems.map(({ title, text, icon: Icon }) => (
-              <div key={title} className="flex items-center gap-4 px-6 py-5">
+              <div
+                key={title}
+                className="flex items-center gap-4 bg-[#002B4D] px-5 py-5"
+              >
                 <Icon className="h-9 w-9 shrink-0 text-white/80" />
                 <div>
                   <p className="text-3.5 font-bold text-white">{title}</p>

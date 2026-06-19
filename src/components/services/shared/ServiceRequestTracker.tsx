@@ -288,44 +288,46 @@ export function ServiceRequestTracker({
           <h3 className="text-[20px] font-black text-[#005ca8] md:text-[24px]">
             {title}
           </h3>
-          <div className="mt-8 grid grid-cols-5 items-start">
-            {steps.map(({ label, icon: Icon }, index) => {
-              const done = index < activeStep;
-              const active = index === activeStep;
-              return (
-                <div key={label} className="relative text-center">
-                  {index < steps.length - 1 && (
-                    <div
-                      className={`absolute left-1/2 top-5.5 h-0.75 w-full ${
-                        index < activeStep ? "bg-[#005ca8]" : "bg-[#daeeff]"
-                      }`}
-                    />
-                  )}
-                  <span
-                    className={`relative z-10 mx-auto flex h-11 w-11 items-center justify-center rounded-full text-[15px] font-black shadow-sm ${
-                      done || active
-                        ? "bg-[#005ca8] text-white"
-                        : "bg-[#daeeff] text-[#005ca8]"
-                    }`}
-                  >
-                    {done ? (
-                      <CheckCircle2 className="h-5 w-5" />
-                    ) : active ? (
-                      <Icon className="h-5 w-5" />
-                    ) : (
-                      index + 1
+          <div className="mt-8 overflow-x-auto pb-2">
+            <div className="grid min-w-[560px] grid-cols-5 items-start">
+              {steps.map(({ label, icon: Icon }, index) => {
+                const done = index < activeStep;
+                const active = index === activeStep;
+                return (
+                  <div key={label} className="relative text-center">
+                    {index < steps.length - 1 && (
+                      <div
+                        className={`absolute left-1/2 top-5.5 h-0.75 w-full ${
+                          index < activeStep ? "bg-[#005ca8]" : "bg-[#daeeff]"
+                        }`}
+                      />
                     )}
-                  </span>
-                  <p
-                    className={`mt-4 text-[12px] font-bold leading-[1.45] md:text-[13px] ${
-                      done || active ? "text-[#005ca8]" : "text-[#374151]"
-                    }`}
-                  >
-                    {label}
-                  </p>
-                </div>
-              );
-            })}
+                    <span
+                      className={`relative z-10 mx-auto flex h-11 w-11 items-center justify-center rounded-full text-[15px] font-black shadow-sm ${
+                        done || active
+                          ? "bg-[#005ca8] text-white"
+                          : "bg-[#daeeff] text-[#005ca8]"
+                      }`}
+                    >
+                      {done ? (
+                        <CheckCircle2 className="h-5 w-5" />
+                      ) : active ? (
+                        <Icon className="h-5 w-5" />
+                      ) : (
+                        index + 1
+                      )}
+                    </span>
+                    <p
+                      className={`mt-4 text-[12px] font-bold leading-[1.45] md:text-[13px] ${
+                        done || active ? "text-[#005ca8]" : "text-[#374151]"
+                      }`}
+                    >
+                      {label}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
 
