@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
 import { Gift, ShieldCheck } from "lucide-react";
+import { AuthRedirectLink } from "@/components/auth/AuthRedirectLink";
 
 export function CreditCardsHero() {
   return (
@@ -55,13 +55,14 @@ export function CreditCardsHero() {
               Find the perfect card for cashback, travel, fuel savings,
               rewards and more from top banks.
             </p>
-            <Link
-              href="/login?product=credit-card"
+            <AuthRedirectLink
+              href="/credit-cards"
+              productSlug="credit-card"
               className="mt-6 inline-flex h-12 items-center gap-2 rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-7 text-[14px] font-black text-white no-underline"
             >
-              Apply Health Insurance
+              Apply for Credit Card
               <Gift className="h-4 w-4" />
-            </Link>
+            </AuthRedirectLink>
           </div>
         </div>
 

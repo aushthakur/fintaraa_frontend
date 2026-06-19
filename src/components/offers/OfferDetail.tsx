@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { CircleCheck, FileText, LockKeyhole, ShieldCheck } from "lucide-react";
+import { AuthRedirectLink } from "@/components/auth/AuthRedirectLink";
+import { BankLogoImage } from "@/components/common/BankLogoImage";
 import { howToAvail, offerHighlights } from "./offersData";
 
 const detailStats = [
@@ -21,12 +23,11 @@ export function OfferDetail() {
         <div className="rounded-[12px] border border-[#49a7ff] bg-[#eaf4ff] p-6 shadow-[0_4px_18px_rgba(73,167,255,0.14)]">
           <div className="grid gap-8 md:grid-cols-[1fr_267px] md:items-center">
             <div className="relative min-h-65 md:min-h-70">
-              <Image
+              <BankLogoImage
                 src="/assets/banks/hdfc.png"
                 alt="HDFC Bank"
-                width={214}
-                height={64}
-                className="h-auto w-53.5 object-contain object-left"
+                className="h-16 w-53.5"
+                imageClassName="object-left"
                 priority
               />
 
@@ -94,12 +95,13 @@ export function OfferDetail() {
               </div>
             </div>
           ))}
-          <Link
-            href="/login?product=offer"
+          <AuthRedirectLink
+            href="/offers"
+            productSlug="offer"
             className="inline-flex h-13 min-w-60 items-center justify-center rounded-full bg-[#13a653] text-[14px] font-black text-white no-underline"
           >
             Apply Now
-          </Link>
+          </AuthRedirectLink>
         </div>
 
         <div className="mt-6 flex flex-col gap-4 rounded-xl border border-[#b5d9f6] bg-[#e8f4ff] p-5 md:flex-row md:items-center md:justify-between">

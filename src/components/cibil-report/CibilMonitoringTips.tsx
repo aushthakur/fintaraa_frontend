@@ -10,11 +10,12 @@ import {
   YAxis,
   CartesianGrid,
 } from "recharts";
+import type { CibilScoreHistoryPoint } from "./types";
 
-const CHART_DATA = [
+const DEFAULT_CHART_DATA: CibilScoreHistoryPoint[] = [
   { month: "May", score: 710 },
-  { month: "jun", score: 723 },
-  { month: "jul", score: 746 },
+  { month: "Jun", score: 723 },
+  { month: "Jul", score: 746 },
   { month: "Aug", score: 763 },
   { month: "Sep", score: 773 },
   { month: "Oct", score: 781 },
@@ -48,7 +49,21 @@ const personalizedTips = [
   },
 ];
 
-export function CibilMonitoringTips() {
+export function CibilMonitoringTips({
+  history = DEFAULT_CHART_DATA,
+  improvementPoints,
+}: {
+  history?: CibilScoreHistoryPoint[];
+  improvementPoints?: number;
+}) {
+  const chartData = history.length ? history : DEFAULT_CHART_DATA;
+  const scores = chartData.map((point) => point.score);
+  const minScore = Math.max(300, Math.min(...scores) - 10);
+  const maxScore = Math.min(900, Math.max(...scores) + 10);
+  const points =
+    improvementPoints ??
+    Math.max(0, chartData[chartData.length - 1].score - chartData[0].score);
+
   return (
     <section className="w-full max-w-9xl mx-auto bg-white px-4 py-10 antialiased text-[#111827] md:px-6 space-y-16">
       
@@ -70,7 +85,7 @@ export function CibilMonitoringTips() {
           <div className="mt-8 w-full pr-2 select-none">
             <ResponsiveContainer width="100%" height={256} minWidth={0}>
               <LineChart
-                data={CHART_DATA}
+                data={chartData}
                 margin={{ top: 10, right: 10, left: -25, bottom: 0 }}
               >
                 <CartesianGrid
@@ -86,7 +101,7 @@ export function CibilMonitoringTips() {
                   dy={10}
                 />
                 <YAxis
-                  domain={[710, 790]}
+                  domain={[minScore, maxScore]}
                   tickCount={5}
                   axisLine={false}
                   tickLine={false}
@@ -108,7 +123,7 @@ export function CibilMonitoringTips() {
           <div className="mt-6 rounded-lg bg-[#d9efff] px-4 py-3.5">
             <p className="text-xs font-semibold text-gray-900 tracking-wide">
               Great going! Your score improved by{" "}
-              <span className="font-bold">112 points</span> in the last 12
+              <span className="font-bold">{points} points</span> in the last 12
               months.
             </p>
           </div>

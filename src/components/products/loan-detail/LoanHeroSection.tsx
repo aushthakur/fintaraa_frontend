@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { DynamicField } from "./DynamicField";
+import { AuthRedirectLink } from "@/components/auth/AuthRedirectLink";
 import { getApplyHref } from "@/components/application/flowRegistry";
 import type { LoanSeoPageData, LoanSeoFormField } from "@/services/loanSeoPages";
 
@@ -59,12 +59,13 @@ export function LoanHeroSection({
           </p>
           
           <div className="pt-2">
-            <Link
+            <AuthRedirectLink
               href={applyHref}
+              productSlug={page.loanTypeSlug}
               className="inline-flex h-12 items-center justify-center rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-7 text-[14px] font-black text-white no-underline"
             >
               Apply {page.loanType}
-            </Link>
+            </AuthRedirectLink>
           </div>
         </div>
 
@@ -90,12 +91,13 @@ export function LoanHeroSection({
                   <DynamicField field={field} />
                 </label>
               ))}
-              <Link
+              <AuthRedirectLink
                 href={applyHref}
+                productSlug={page.loanTypeSlug}
                 className="inline-flex h-9 items-center justify-center rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-4 text-[12px] font-extrabold text-white no-underline"
               >
                 Check Eligibility
-              </Link>
+              </AuthRedirectLink>
             </form>
           </div>
         </div>

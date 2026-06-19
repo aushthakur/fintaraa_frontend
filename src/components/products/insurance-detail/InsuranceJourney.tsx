@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { CircleCheck, HeartPulse } from "lucide-react";
+import { AuthRedirectLink } from "@/components/auth/AuthRedirectLink";
 import { getApplyHref } from "@/components/application/flowRegistry";
 
 interface InsuranceJourneyProps {
@@ -41,9 +41,9 @@ export function InsuranceJourney({ insuranceTypeSlug }: InsuranceJourneyProps) {
               </span>
             ))}
           </div>
-          <Link href={applyHref} className="mt-6 inline-flex h-10 items-center justify-center bg-[#005ca8] px-5 text-[12px] font-black text-white no-underline">
+          <AuthRedirectLink href={applyHref} productSlug={insuranceTypeSlug} className="mt-6 inline-flex h-10 items-center justify-center bg-[#005ca8] px-5 text-[12px] font-black text-white no-underline">
             Start Your Application Now
-          </Link>
+          </AuthRedirectLink>
         </div>
         <div className="rounded bg-white p-5 shadow-[0_18px_40px_rgba(0,92,168,0.12)]">
           <div className="mb-4 flex items-center gap-2 text-[12px] font-black text-[#005ca8]">

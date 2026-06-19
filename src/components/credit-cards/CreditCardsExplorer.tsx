@@ -1,4 +1,5 @@
 import { ChevronDown, ChevronUp, Search } from "lucide-react";
+import { AuthRedirectLink } from "@/components/auth/AuthRedirectLink";
 
 // Mock structured mock dataset reflecting the exact text strings in image_f134df.jpg
 const cardsData = [
@@ -273,9 +274,13 @@ export function CreditCardsExplorer() {
                         <button className="py-2 rounded-lg border border-[#005ca8] text-[12px] font-bold text-[#005ca8] bg-white hover:bg-[#f4f9ff] transition-colors">
                           View Details
                         </button>
-                        <button className="py-2 rounded-lg bg-[#005ca8] hover:bg-[#004b87] text-[12px] font-bold text-white shadow-xs transition-colors">
+                        <AuthRedirectLink
+                          href="/credit-cards"
+                          productSlug={card.cardName.toLowerCase().replace(/[^a-z0-9]+/g, "-")}
+                          className="py-2 rounded-lg bg-[#005ca8] hover:bg-[#004b87] text-center text-[12px] font-bold text-white shadow-xs transition-colors no-underline"
+                        >
                           Apply Now
-                        </button>
+                        </AuthRedirectLink>
                       </div>
                       <button className="w-full text-center text-[11px] font-bold text-[#005ca8] hover:underline pt-1 block">
                         Check Eligibility

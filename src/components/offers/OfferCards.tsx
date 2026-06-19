@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { CalendarDays } from "lucide-react";
+import { AuthRedirectLink } from "@/components/auth/AuthRedirectLink";
 import { offerCards, offerCategories } from "./offersData";
 
 export function OfferCards() {
@@ -82,12 +83,13 @@ export function OfferCards() {
               </p>
 
               {/* Apply Now CTA */}
-              <Link
-                href="/login?product=offer"
+              <AuthRedirectLink
+                href="/offers"
+                productSlug="offer"
                 className="mt-6 flex h-11.5 items-center justify-center rounded-full bg-[#13a653] text-[14px] font-black text-white no-underline hover:bg-[#0f9446] transition-colors"
               >
                 Apply Now
-              </Link>
+              </AuthRedirectLink>
             </div>
           ))}
         </div>

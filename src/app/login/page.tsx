@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { LoginPage } from "@/components/auth/LoginPage";
 import { getPageSeoMetadata } from "@/services/seoMetadata";
-import { getAuthToken, getAuthType } from "@/hooks/authStorage";
 
 const fallbackMetadata: Metadata = {
   title: "Login or Create Account",
@@ -21,32 +20,19 @@ export async function generateMetadata(): Promise<Metadata> {
   return getPageSeoMetadata("/login", fallbackMetadata);
 }
 
-export default function LoginRoute({
+const firstParam = (value: string | string[] | undefined) =>
+  Array.isArray(value) ? value[0] : value;
+
+export default async function LoginRoute({
   searchParams,
 }: {
-  searchParams?: Record<string, string | string[] | undefined>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const isLoggedIn = getAuthType() === "user" && Boolean(getAuthToken());
+  const params = (await searchParams) || {};
   const redirectParam =
-    typeof searchParams?.redirect === "string"
-      ? searchParams.redirect
-      : undefined;
+    firstParam(params.redirect) ||
+    firstParam(params.referrer) ||
+    firstParam(params.returnTo);
 
-  const redirectFromRef =
-    typeof searchParams?.ref === "string" ? searchParams.ref : undefined;
-
-  const redirectFromReferrer =
-    typeof searchParams?.referrer === "string"
-      ? searchParams.referrer
-      : undefined;
-
-  const effectiveRedirect =
-    redirectParam || redirectFromRef || redirectFromReferrer;
-
-  // Logged-in users should not land on login without a valid redirect/referrer.
-  if (isLoggedIn && !effectiveRedirect) {
-    return <LoginPage redirectParam="/account/profile" />;
-  }
-
-  return <LoginPage redirectParam={effectiveRedirect} />;
+  return <LoginPage redirectParam={redirectParam} />;
 }

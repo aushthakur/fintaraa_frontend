@@ -1,6 +1,6 @@
 "use client";
-import Image from "next/image";
 import React, { useState } from "react";
+import { BankLogoImage } from "@/components/common/BankLogoImage";
 
 type BankLogo = {
   name: string;
@@ -60,14 +60,14 @@ function LogoMarquee({
             key={`${bank.name}-${index}-${reverse ? "reverse" : "forward"}`}
             className="flex h-24 w-44 shrink-0 items-center justify-center rounded-2xl border border-gray-100 bg-white px-6 py-4 shadow-[0_4px_12px_rgba(16,24,40,0.03)]"
           >
-            <div className="relative flex h-10 w-full items-center justify-center">
-              <Image
+            <div className="flex h-10 w-full items-center justify-center">
+              <BankLogoImage
                 src={bank.src}
                 alt={bank.name}
-                fill
+                className="h-10 w-full"
                 sizes="140px"
                 unoptimized
-                className="object-contain mix-blend-multiply"
+                imageClassName="mix-blend-multiply"
               />
             </div>
           </div>

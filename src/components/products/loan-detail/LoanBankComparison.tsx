@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { ChevronDown, Star } from "lucide-react";
+import { AuthRedirectLink } from "@/components/auth/AuthRedirectLink";
 import { getApplyHref } from "@/components/application/flowRegistry";
+import { BankLogoImage } from "@/components/common/BankLogoImage";
 import { bankRows } from "./LoanDetailConstants";
 import { slugifyProduct } from "@/lib/productRouting";
 import type { LoanSeoPageData } from "@/services/loanSeoPages";
@@ -65,12 +66,11 @@ export function LoanBankComparison({ page }: { page: LoanSeoPageData }) {
                       href={bankDetailHref}
                       className="block shrink-0 focus:outline-none"
                     >
-                      <Image
+                      <BankLogoImage
                         src={row.logo}
                         alt={row.name}
-                        width={110}
-                        height={32}
-                        className="h-auto max-h-8 w-auto object-contain"
+                        className="h-8 w-28"
+                        imageClassName="object-left"
                       />
                     </Link>
                     <div className="flex items-center gap-0.5 text-xs font-bold text-gray-400 select-none">
@@ -96,12 +96,13 @@ export function LoanBankComparison({ page }: { page: LoanSeoPageData }) {
 
                 {/* 3. CAPSULE CTA SUBMIT LINK */}
                 <td className="px-6 py-4.5 text-center">
-                  <Link
+                  <AuthRedirectLink
                     href={applyHref}
+                    productSlug={page.loanTypeSlug}
                     className="inline-flex h-9 items-center justify-center rounded-full whitespace-nowrap  bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-5 text-xs font-bold text-white transition-colors hover:bg-[#009948] no-underline shadow-sm active:scale-[0.98]"
                   >
                     Apply Now
-                  </Link>
+                  </AuthRedirectLink>
                 </td>
               </tr>
               );

@@ -21,8 +21,7 @@ export const buildLoginRedirectHref = ({
   fallback?: string;
 }) => {
   const params = new URLSearchParams();
-  params.set("redirect", getSafeRedirectTarget(redirectTo, fallback));
-  if (referrer) params.set("referrer", referrer);
+  params.set("referrer", getSafeRedirectTarget(redirectTo || referrer, fallback));
   if (product) params.set("product", product);
   return `/login?${params.toString()}`;
 };

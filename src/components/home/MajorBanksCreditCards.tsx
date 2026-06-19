@@ -1,6 +1,7 @@
 "use client";
 import Image from 'next/image';
 import React, { useState } from 'react';
+import { BankLogoImage } from '@/components/common/BankLogoImage';
 
 // Interfaces for structured mockup data
 interface CreditCardData {
@@ -129,13 +130,11 @@ export function MajorBankCreditCards() {
               {/* Bank Logo Image */}
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#1e73be]/10 text-[#1e73be] text-xl font-bold">
                 {/* Fallback clean styling or raw <img /> */}
-                <Image
-                    width={48}
-                    height={48}
-                    src="/assets/banks/sbi-logo.png"    
-                    alt={activeBankData.name}
-                    className="h-auto w-10 object-contain"
-                  />
+                <BankLogoImage
+                  src="/assets/banks/sbi-logo.png"
+                  alt={activeBankData.name}
+                  className="h-10 w-10"
+                />
               </div>
               <div>
                 <h3 className="text-[22px] font-bold text-[#111111]">

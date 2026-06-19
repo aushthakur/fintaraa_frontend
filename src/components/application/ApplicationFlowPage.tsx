@@ -657,6 +657,13 @@ export function ApplicationFlowPage({
     [activeTab, flow, stepIndex, values],
   );
   const premium = estimatePremium(category, values);
+  const currentApplyHref = useMemo(() => {
+    const params = new URLSearchParams();
+    if (referrer) params.set("referrer", referrer);
+    if (bank) params.set("bank", bank);
+    const query = params.toString();
+    return `/apply/${category}/${productSlug}${query ? `?${query}` : ""}`;
+  }, [bank, category, productSlug, referrer]);
 
   useEffect(() => {
     const isLoggedIn = getAuthType() === "user" && Boolean(getAuthToken());
@@ -1195,7 +1202,10 @@ export function ApplicationFlowPage({
                   {submitError}{" "}
                   {submitError.toLowerCase().includes("login") ? (
                     <Link
-                      href={`/login?product=${productSlug}`}
+                      href={buildLoginRedirectHref({
+                        redirectTo: currentApplyHref,
+                        product: productSlug,
+                      })}
                       className="underline"
                     >
                       Login now

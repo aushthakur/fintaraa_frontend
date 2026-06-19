@@ -3,41 +3,9 @@
 import Link from "next/link";
 import { ArrowDownToLine } from "lucide-react";
 import CreditScoreGauge from "./CreditScoreGauge";
+import type { CibilReportViewData } from "./types";
 
-export function CibilReportHero() {
-  const summaryRows = [
-    {
-      icon: "💳",
-      label: "Payment History",
-      subLabel: "% of On time Payments",
-      value: "100%",
-    },
-    {
-      icon: "💳",
-      label: "Credit Card Utilization",
-      subLabel: "% of Credit Limit Used",
-      value: "10%",
-    },
-    {
-      icon: "🗂️",
-      label: "Credit Enquiries",
-      subLabel: "All Loans & Credit Card",
-      value: "1",
-    },
-    {
-      icon: "📊",
-      label: "Credit Mix",
-      subLabel: "All Credit Accounts",
-      value: "2",
-    },
-    {
-      icon: "📅",
-      label: "Credit Age",
-      subLabel: "Oldest Credit Account",
-      value: "2 y, 6 m",
-    },
-  ];
-
+export function CibilReportHero({ data }: { data: CibilReportViewData }) {
   return (
     <section className="relative w-full max-w-9xl mx-auto bg-white px-4 sm:px-6 py-8 sm:py-10 antialiased text-[#111827] overflow-hidden">
       <div className="absolute inset-0 overflow-visible pointer-events-none z-0">
@@ -91,8 +59,8 @@ export function CibilReportHero() {
             </div>
 
             <p className="mt-4 text-sm font-medium text-gray-700">
-              Hey <span className="font-bold text-blue-600">Pawan!</span> Your
-              Credit Score as of 01 Jun &apos;26
+              Hey <span className="font-bold text-blue-600">{data.userName}!</span>{" "}
+              Your Credit Score as of {data.scoreDateLabel}
             </p>
           </div>
 
@@ -104,19 +72,19 @@ export function CibilReportHero() {
 
             {/* Reusable Gauge Component - responsive via ResizeObserver */}
             <div className="flex justify-center w-full">
-              <CreditScoreGauge score={782} scale={1.5} />
+              <CreditScoreGauge score={data.score} scale={1.5} />
             </div>
 
             <div className="flex flex-col items-center gap-3">
               <Link
-                href="/cibil-score/report"
+                href={data.reportHref}
                 className="flex h-11 w-full items-center justify-center rounded-xl bg-linear-to-r from-[#0fae5e] to-[#17cb70] text-sm font-bold text-white transition-all hover:brightness-110 active:scale-[0.99]"
               >
                 Download Full Report
               </Link>
 
               <p className="text-[11px] font-semibold text-gray-400">
-                Report Date: 20th May, 2025
+                Report Date: {data.reportDateLabel}
               </p>
             </div>
           </div>
@@ -130,7 +98,7 @@ export function CibilReportHero() {
 
           <div className="rounded-2xl border border-gray-300 bg-white p-4 sm:p-6 mx-auto md:mx-0">
             <div className="divide-y divide-gray-100">
-              {summaryRows.map((row, idx) => (
+              {data.summaryRows.map((row, idx) => (
                 <div
                   key={idx}
                   className="flex items-center justify-between py-3 sm:py-4 first:pt-0 last:pb-5"

@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { AuthRedirectLink } from "@/components/auth/AuthRedirectLink";
 import { getApplyHref } from "@/components/application/flowRegistry";
 import type { LoanSeoPageData } from "@/services/loanSeoPages";
 
@@ -91,13 +91,14 @@ export function LoanVerificationSteps({ page }: { page: LoanSeoPageData }) {
 
           {/* Capsule CTA redirection block */}
           <div className="pt-2">
-            <Link
+            <AuthRedirectLink
               href={applyHref}
+              productSlug={page.loanTypeSlug}
               className="inline-flex h-11 items-center justify-center gap-2 rounded-full  bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-6 text-sm font-bold text-white transition-all hover:bg-[#009948] active:scale-[0.99] no-underline shadow-sm"
             >
               Get free credit score
               <ArrowRight className="h-4 w-4" strokeWidth={2.5} />
-            </Link>
+            </AuthRedirectLink>
           </div>
         </div>
 

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
+import { BankLogoImage } from "@/components/common/BankLogoImage";
 import { productHref } from "@/lib/productRouting";
 
 // Soft, clean color palette configurations mirroring the design circles
@@ -86,12 +86,10 @@ export function InsuranceOtherProducts() {
                   toneClass[insurance.tone] || "bg-[#fff2ec] text-[#ff7643]"
                 }`}
               >
-                <Image
+                <BankLogoImage
                   src={insurance.logo}
                   alt={insurance.title}
-                  width={60}
-                  height={60}
-                  className="object-contain"
+                  className="h-12 w-12"
                 />
               </div>
               <h3 className="mt-5 text-[14px] font-bold tracking-tight text-[#0f172a]">

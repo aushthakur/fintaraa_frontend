@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { AuthRedirectLink } from "@/components/auth/AuthRedirectLink";
 import { getApplyHref } from "@/components/application/flowRegistry";
 import type {
   InsuranceSeoFormField,
@@ -105,12 +105,13 @@ export function InsuranceHero({ page }: { page: InsuranceSeoPageData }) {
           </p>
 
           <div className="pt-2">
-            <Link
+            <AuthRedirectLink
               href={applyHref}
+              productSlug={page.insuranceTypeSlug}
               className="inline-flex h-12 items-center justify-center rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-7 text-[14px] font-black text-white no-underline"
             >
               Apply {page.insuranceType}
-            </Link>
+            </AuthRedirectLink>
           </div>
         </div>
 
@@ -204,12 +205,13 @@ export function InsuranceHero({ page }: { page: InsuranceSeoPageData }) {
                 </div>
               </div>
 
-              <Link
+              <AuthRedirectLink
                 href={applyHref}
+                productSlug={page.insuranceTypeSlug}
                 className="mt-0.5 inline-flex h-10 items-center justify-center rounded-full border border-[#12b76a] bg-white px-5 text-[12px] font-extrabold text-[#12b76a] no-underline shadow-[0_10px_24px_rgba(18,183,106,0.14)] transition hover:bg-[#f3fbf6]"
               >
                 Compare detailed plans
-              </Link>
+              </AuthRedirectLink>
             </form>
           </div>
         </div>

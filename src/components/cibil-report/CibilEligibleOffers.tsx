@@ -1,5 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
+import { AuthRedirectLink } from "@/components/auth/AuthRedirectLink";
+import { getApplyHref } from "@/components/application/flowRegistry";
+import { slugifyProduct } from "@/lib/productRouting";
 
 const loanOffers = [
   {
@@ -25,7 +28,7 @@ const loanOffers = [
   },
 ];
 
-export function CibilEligibleOffers() {
+export function CibilEligibleOffers({ score = 782 }: { score?: number }) {
   return (
     <section className="bg-[#f7faff] px-4 py-10 md:px-6 lg:px-8  font-sans">
       <div className="mx-auto w-full max-w-9xl">
@@ -37,7 +40,8 @@ export function CibilEligibleOffers() {
               Loans You Are Eligible For
             </h2>
             <p className="mt-1 text-[15px] text-[#7c8293]">
-              Based on your CIBIL Score of <span className="font-semibold text-[#4a5060]">782</span>
+              Based on your CIBIL Score of{" "}
+              <span className="font-semibold text-[#4a5060]">{score}</span>
             </p>
           </div>
           
@@ -67,7 +71,15 @@ export function CibilEligibleOffers() {
 
         {/* Offer Rows Container */}
         <div className="divide-y divide-[#e5eaf0] rounded-lg">
-          {loanOffers.map((offer) => (
+          {loanOffers.map((offer) => {
+            const applyHref = getApplyHref({
+              category: "loan",
+              productSlug: "personal-loan",
+              bankSlug: slugifyProduct(offer.bankName),
+              referrer: "/cibil-score/report",
+            });
+
+            return (
             <div 
               key={offer.bankName} 
               className="grid grid-cols-1 sm:grid-cols-4 items-center gap-4 p-5 sm:p-6 text-left"
@@ -104,15 +116,17 @@ export function CibilEligibleOffers() {
 
               {/* Column 4: CTAs */}
               <div className="sm:text-right">
-                <Link
-                  href={`/apply?bank=${offer.bankName.toLowerCase().replace(" ", "-")}`}
+                <AuthRedirectLink
+                  href={applyHref}
+                  productSlug="personal-loan"
                   className="inline-flex items-center justify-center rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] hover:brightness-110 transition-all w-full sm:w-auto px-6 py-2.5 text-[13px] font-bold text-white tracking-wide whitespace-nowrap"
                 >
                   Apply Now <span className="ml-2">→</span>
-                </Link>
+                </AuthRedirectLink>
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* View More Trigger */}

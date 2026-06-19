@@ -139,34 +139,6 @@ const navItems = [
   {
     label: "CIBIL Score",
     href: "/cibil-score",
-    sections: [
-      {
-        title: "Credit Health",
-        subtitle: "Check, understand, and improve your credit profile.",
-        links: [
-          {
-            label: "Check CIBIL Score",
-            href: "/cibil-score",
-            description: "View your score and credit profile.",
-          },
-          {
-            label: "CIBIL Report",
-            href: "/cibil-score/report",
-            description: "Open report summary and offers.",
-          },
-          // {
-          //   label: "Credit Score Loan",
-          //   href: resolveProductHref("Credit Score Loan"),
-          //   description: "Loan options based on credit profile.",
-          // },
-          // {
-          //   label: "Improve CIBIL Score",
-          //   href: "/blog/improve-cibil-score-practical-steps",
-          //   description: "Practical steps to build credit health.",
-          // },
-        ],
-      },
-    ],
   },
   { label: "Loans", href: "/products", sections: loanSections },
   { label: "Insurance", href: "/products", sections: insuranceSections },
@@ -190,7 +162,10 @@ const navItems = [
           },
           {
             label: "Check Card Eligibility",
-            href: "/login?product=credit-card",
+            href: buildLoginRedirectHref({
+              redirectTo: "/credit-cards",
+              product: "credit-card",
+            }),
             description: "Check eligible card offers quickly.",
           },
         ],

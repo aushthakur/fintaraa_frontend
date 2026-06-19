@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import Image from "next/image";
+import { BankLogoImage } from "@/components/common/BankLogoImage";
 import { productHref } from "@/lib/productRouting";
 
 // Soft, clean color palette configurations mirroring the design circles
@@ -97,12 +97,10 @@ export function LoanOtherProducts() {
                   toneClass[bank.tone] || "bg-[#fff2ec] text-[#ff7643]"
                 }`}
               >
-                <Image
+                <BankLogoImage
                   src={bank.logo}
                   alt={bank.title}
-                  width={60}
-                  height={60}
-                  className="h-auto w-auto object-contain"
+                  className="h-12 w-12"
                 />
               </div>
               <h3 className="mt-5 text-[14px] font-bold tracking-tight text-[#0f172a]">

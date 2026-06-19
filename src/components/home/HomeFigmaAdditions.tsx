@@ -10,8 +10,8 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { BlogVisual } from "@/components/blog/BlogVisual";
+import { BankLogoImage } from "@/components/common/BankLogoImage";
 import { latestBlogPosts } from "@/data/blogs";
-import Image from "next/image";
 
 
 
@@ -177,12 +177,11 @@ export function HomeLoanOffers() {
           {loanOffers.map((offer) => (
             <article key={offer.bank} className="rounded-lg border border-[#e8eef5] bg-[#fbfdff] p-4">
               <div className="flex items-center justify-between gap-3">
-                <Image
-                  width={72}
-                  height={40}
+                <BankLogoImage
                   src={offer.logo}
                   alt={offer.bank}
-                  className="h-auto w-18 object-contain"
+                  className="h-10 w-18"
+                  imageClassName="object-left"
                 />
                 <ShieldCheck className="h-5 w-5 text-[#12b76a]" />
               </div>

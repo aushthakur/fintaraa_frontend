@@ -1,6 +1,4 @@
 import { formFlows, type FormFlow } from "./flows";
-import { buildLoginRedirectHref } from "@/lib/loginRedirect";
-import { isUserLoggedIn } from "@/hooks/authStorage";
 
 export type ApplicationCategory = "loan" | "insurance";
 
@@ -85,23 +83,7 @@ export const getApplyHref = ({
   if (referrer) params.set("referrer", referrer);
   if (bankSlug) params.set("bank", bankSlug);
   const query = params.toString();
-  const applyHref = `/apply/${category}/${slugifyProduct(productSlug)}${query ? `?${query}` : ""}`;
-
-  if (isUserLoggedIn()) {
-    return applyHref;
-  }
-
-  if (referrer) {
-    const loginParams = new URLSearchParams();
-    loginParams.set("referrer", referrer);
-    loginParams.set("product", slugifyProduct(productSlug));
-    return `/login?${loginParams.toString()}`;
-  }
-
-  return buildLoginRedirectHref({
-    redirectTo: applyHref,
-    product: slugifyProduct(productSlug),
-  });
+  return `/apply/${category}/${slugifyProduct(productSlug)}${query ? `?${query}` : ""}`;
 };
 
 export const getApplicationFlow = (

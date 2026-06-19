@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { Clock3, LockKeyhole, ShieldCheck } from "lucide-react";
+import { AuthRedirectLink } from "@/components/auth/AuthRedirectLink";
 import { getApplyHref } from "@/components/application/flowRegistry";
 import type { BankSeoPageData } from "@/services/bankSeoPages";
 
@@ -118,18 +118,20 @@ export function BankHeroSection({ page }: { page: BankSeoPageData }) {
 
           {/* Core Navigation Conversion Controls Trigger Wrapper */}
           <div className="flex flex-col sm:flex-row items-center gap-4 pt-2">
-            <Link
+            <AuthRedirectLink
               href={applyHref}
+              productSlug={page.productSlug || "personal-loan"}
               className="inline-flex h-12 w-full sm:w-56 items-center justify-center rounded-xl bg-[#13a653] hover:bg-[#108e46] text-[15px] font-bold text-white no-underline shadow-xs transition-colors"
             >
               Apply Now
-            </Link>
-            <Link
+            </AuthRedirectLink>
+            <AuthRedirectLink
               href={applyHref}
+              productSlug={page.productSlug || "personal-loan"}
               className="inline-flex h-12 w-full sm:w-56 items-center justify-center rounded-xl border border-[#13a653] bg-white text-[15px] font-bold text-[#13a653] hover:bg-[#f4fbf7] no-underline transition-colors"
             >
               Check Eligibility
-            </Link>
+            </AuthRedirectLink>
           </div>
         </div>
 

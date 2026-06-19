@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { BankLogoImage } from "@/components/common/BankLogoImage";
 
 interface BankLogo {
   name: string;
@@ -63,13 +63,12 @@ export function CreditPartners() {
               key={`${logo.name}-${index}`}
               className="flex h-20 items-center justify-center rounded-xl border border-[#e3ebf3] bg-white p-4 shadow-[0_4px_16px_rgba(22,34,50,0.03)] hover:shadow-md transition-shadow duration-200"
             >
-              <div className="relative w-full h-full max-w-32.5">
-                <Image
+              <div className="flex h-full w-full max-w-32.5 items-center justify-center">
+                <BankLogoImage
                   src={logo.src}
                   alt={logo.name}
-                  fill
+                  className="h-full w-full"
                   sizes="(min-width: 1024px) 128px, (min-width: 768px) 25vw, (min-width: 640px) 33vw, 50vw"
-                  className="object-contain"
                 />
               </div>
             </div>
