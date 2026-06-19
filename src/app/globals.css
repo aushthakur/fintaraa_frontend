@@ -21,6 +21,27 @@ body {
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
 
+main p[class*="text-[9px]"]:not([class*="uppercase"]):not([class*="tracking-"]):not([class*="absolute"]):not([class*="truncate"]):not([class*="sr-only"]),
+main p[class*="text-[10px]"]:not([class*="uppercase"]):not([class*="tracking-"]):not([class*="absolute"]):not([class*="truncate"]):not([class*="sr-only"]),
+main p[class*="text-[11px]"]:not([class*="uppercase"]):not([class*="tracking-"]):not([class*="absolute"]):not([class*="truncate"]):not([class*="sr-only"]),
+main p[class*="text-[12px]"]:not([class*="uppercase"]):not([class*="tracking-"]):not([class*="absolute"]):not([class*="truncate"]):not([class*="sr-only"]),
+main p[class*="text-[13px]"]:not([class*="uppercase"]):not([class*="tracking-"]):not([class*="absolute"]):not([class*="truncate"]):not([class*="sr-only"]),
+main p[class~="text-xs"]:not([class*="uppercase"]):not([class*="tracking-"]):not([class*="absolute"]):not([class*="truncate"]):not([class*="sr-only"]) {
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+@media (min-width: 768px) {
+  main p[class*="text-[9px]"]:not([class*="uppercase"]):not([class*="tracking-"]):not([class*="absolute"]):not([class*="truncate"]):not([class*="sr-only"]),
+  main p[class*="text-[10px]"]:not([class*="uppercase"]):not([class*="tracking-"]):not([class*="absolute"]):not([class*="truncate"]):not([class*="sr-only"]),
+  main p[class*="text-[11px]"]:not([class*="uppercase"]):not([class*="tracking-"]):not([class*="absolute"]):not([class*="truncate"]):not([class*="sr-only"]),
+  main p[class*="text-[12px]"]:not([class*="uppercase"]):not([class*="tracking-"]):not([class*="absolute"]):not([class*="truncate"]):not([class*="sr-only"]),
+  main p[class*="text-[13px]"]:not([class*="uppercase"]):not([class*="tracking-"]):not([class*="absolute"]):not([class*="truncate"]):not([class*="sr-only"]),
+  main p[class~="text-xs"]:not([class*="uppercase"]):not([class*="tracking-"]):not([class*="absolute"]):not([class*="truncate"]):not([class*="sr-only"]) {
+    font-size: 0.9375rem;
+  }
+}
+
 html {
   scroll-behavior: smooth;
 }

@@ -22,7 +22,7 @@ export function ItrInfo() {
         <h2 className="text-center text-xl font-bold text-[#1a6bc6] sm:text-2xl md:text-[26px] lg:text-[28px]">
           What is ITR?
         </h2>
-        <p className="mx-auto mt-4 max-w-3xl text-center text-xs font-medium leading-6 text-[#1f2937] sm:text-sm md:text-[14px] lg:text-base">
+        <p className="mx-auto mt-4 max-w-3xl text-center text-sm font-medium leading-7 text-[#1f2937] md:text-[15px] lg:text-base">
           ITR (Income Tax Return) is a form used by individuals and entities to
           report their income, deductions, and taxes to the Income Tax
           Department.
@@ -44,7 +44,7 @@ export function ItrInfo() {
                 {(rows as string[]).map((row) => (
                   <div
                     key={row}
-                    className="flex items-center gap-3 text-xs font-medium text-[#8b95a3] sm:text-[13px] md:text-sm"
+                    className="flex items-center gap-3 text-sm font-medium text-[#8b95a3] md:text-[15px]"
                   >
                     <CircleCheck className="h-3.5 w-3.5 shrink-0 text-[#1a6bc6] sm:h-4 sm:w-4" />
                     {row}

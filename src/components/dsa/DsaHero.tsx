@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Building2, BadgeIndianRupee, Zap } from "lucide-react";
+import { AnimatedCounter } from "@/components/common/AnimatedCounter";
 import { dsaStats } from "./dsaData";
 
 const heroBadges = [
@@ -67,9 +68,10 @@ export function DsaHero() {
                   <Icon className="h-5 w-5" />
                 </div>
                 <div>
-                  <div className="text-[14px] font-extrabold text-[#22272e]">
-                    {value}
-                  </div>
+                  <AnimatedCounter
+                    value={value}
+                    className="block text-[16px] font-extrabold text-[#22272e]"
+                  />
                   <div className="text-[10px] font-semibold leading-4 text-[#8391a3]">
                     {label}
                   </div>

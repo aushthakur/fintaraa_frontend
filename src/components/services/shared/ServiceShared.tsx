@@ -1,17 +1,6 @@
-import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 import { AppDownloadBanner } from "@/components/common/layout/Footer";
-
-export const serviceFaqs = [
-  "How long does it take for the request to be completed?",
-  "Is there a penalty for late filing?",
-  "Can I track my inquiry after submission?",
-  "What documents are required?",
-  "Do I need to provide any collateral or security?",
-  "Will checking eligibility affect my CIBIL score?",
-  "Can I update details after submitting?",
-  "What happens if I miss a deadline?",
-];
+import { FaqAccordion } from "@/components/common/FaqAccordion";
 
 export function ServiceStatusCard({
   title,
@@ -78,7 +67,7 @@ export function ServiceStatusCard({
 }
 
 const timelineSteps = [
-  "Inquiry Submit",
+  "Inquiry Submitted",
   "Expert Assigned",
   "Document Review",
   "Processing",
@@ -115,7 +104,7 @@ export function ServiceTimeline({ title }: { title: string }) {
                 {index + 1}
               </span>
               {/* Step label */}
-              <p className="mt-4 text-[11px] font-bold leading-[1.4] text-[#374151]">
+              <p className="mt-4 text-[13px] font-bold leading-[1.45] text-[#374151]">
                 {label}
               </p>
             </div>
@@ -127,35 +116,7 @@ export function ServiceTimeline({ title }: { title: string }) {
 }
 
 export function ServiceFaqSection({ subtitle }: { subtitle: string }) {
-  return (
-    <section className="px-4 py-14 md:px-6 lg:px-8">
-      <div className="mx-auto max-w-5xl text-center">
-        <h2 className="text-[34px] font-black tracking-[-0.02em] text-[#2a2f36]">
-          Frequently Asked Questions
-        </h2>
-        <p className="mt-3 text-[13px] font-semibold text-[#667085]">
-          {subtitle}
-        </p>
-        <div className="mt-10 grid gap-4 text-left">
-          {serviceFaqs.map((question) => (
-            <details
-              key={question}
-              className="rounded-xl border border-[#e4eaf2] bg-white px-5 py-4 shadow-[0_5px_15px_rgba(16,24,40,0.04)]"
-            >
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-[13px] font-black text-[#2a2f36]">
-                {question}
-                <ChevronDown className="h-4 w-4 shrink-0" />
-              </summary>
-              <p className="mt-3 text-[12px] font-semibold leading-6 text-[#667085]">
-                Our team will verify the latest requirement and guide you with
-                the next step after submission.
-              </p>
-            </details>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
+  return <FaqAccordion subtitle={subtitle} />;
 }
 
 export function ServiceAppBanner() {

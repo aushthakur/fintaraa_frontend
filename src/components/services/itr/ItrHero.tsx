@@ -1,11 +1,28 @@
-import Image from "next/image";
-import { Clock, LockKeyhole, ShieldCheck } from "lucide-react";
+"use client";
 
-const fields = [
-  ["Name", "Enter Full Name", "text"],
-  ["Mobile Number", "Enter Mobile Number", "tel"],
-  ["Employment Type", "Select Employment Type", "select"],
-  ["Annual Income", "Select Annual Income", "select"],
+import Image from "next/image";
+import { useState } from "react";
+import { Clock, Loader2, LockKeyhole, ShieldCheck } from "lucide-react";
+import { ServiceRequestProgress } from "@/components/services/shared/ServiceRequestProgress";
+import {
+  createServiceRequest,
+  ServiceRequestRecord,
+} from "@/services/serviceRequests";
+import { ServiceRequestSuccess } from "@/components/services/shared/ServiceRequestSuccess";
+
+const employmentTypes = [
+  "Salaried",
+  "Self Employed",
+  "Business Owner",
+  "Professional",
+  "Other",
+];
+
+const annualIncomeOptions = [
+  "Below ₹5 lakh",
+  "₹5 lakh - ₹10 lakh",
+  "₹10 lakh - ₹25 lakh",
+  "Above ₹25 lakh",
 ];
 
 const features = [
@@ -26,13 +43,67 @@ const features = [
   },
 ];
 
+const nameRegex = /^[A-Za-z][A-Za-z\s.'-]{1,79}$/;
+const mobileRegex = /^(?:\+91[\s-]?)?[6-9]\d{9}$/;
+
 export function ItrHero() {
+  const [form, setForm] = useState({
+    name: "",
+    mobile: "",
+    employmentType: "",
+    annualIncome: "",
+  });
+  const [request, setRequest] = useState<ServiceRequestRecord | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
+
+  const updateField = (key: keyof typeof form, value: string) => {
+    setForm((current) => ({ ...current, [key]: value }));
+    setError("");
+  };
+
+  const submit = async () => {
+    if (!nameRegex.test(form.name.trim())) {
+      setError("Enter a valid full name.");
+      return;
+    }
+    if (!mobileRegex.test(form.mobile.trim())) {
+      setError("Enter a valid 10-digit mobile number.");
+      return;
+    }
+    if (!form.employmentType || !form.annualIncome) {
+      setError("Please select employment type and annual income.");
+      return;
+    }
+
+    setSubmitting(true);
+    setError("");
+    try {
+      const result = await createServiceRequest({
+        serviceType: "itr_filing",
+        name: form.name.trim(),
+        mobile: form.mobile.trim(),
+        employmentType: form.employmentType,
+        annualIncome: form.annualIncome,
+      });
+      setRequest(result);
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(
+          new CustomEvent("service-request-created", { detail: result }),
+        );
+      }
+    } catch (err) {
+      setError((err as Error).message || "Unable to submit ITR request.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
     <section className="relative overflow-hidden px-4 pb-10 pt-10 md:px-6 lg:px-8">
-            <div className="absolute inset-0 overflow-visible pointer-events-none z-0">
-        {/*Left-most rectangle bleeding off the screen */}
+      <div className="pointer-events-none absolute inset-0 z-0 overflow-visible">
         <div
-          className="absolute hidden md:block bg-[#e0effe]"
+          className="absolute hidden bg-[#e0effe] md:block"
           style={{
             width: "55px",
             height: "90px",
@@ -42,9 +113,8 @@ export function ItrHero() {
             transform: "rotate(140deg)",
           }}
         />
-        {/* Right parallel rectangle matching the screenshot position */}
         <div
-          className="absolute hidden md:block bg-[#e0effe]"
+          className="absolute hidden bg-[#e0effe] md:block"
           style={{
             width: "60px",
             height: "120px",
@@ -81,41 +151,91 @@ export function ItrHero() {
             <h2 className="text-lg font-bold text-[#1f2937] sm:text-xl md:text-[22px] lg:text-[24px]">
               Get Started with ITR Filling
             </h2>
-            <p className="mt-2 text-xs font-medium leading-5 text-[#8b95a3] sm:text-[13px] md:text-sm">
+            <p className="mt-2 text-[13px] font-medium leading-6 text-[#8b95a3] sm:text-sm md:text-[15px]">
               Fill in your details and our expert will get in touch with you.
             </p>
             <form className="mt-5 grid gap-4 sm:mt-6 sm:gap-5">
-              {fields.map(([label, placeholder, type]) => (
-                <label key={label} className="grid gap-1.5 sm:gap-2">
-                  <span className="text-xs font-bold text-[#1f2937] sm:text-[13px] md:text-sm lg:text-[14px]">
-                    {label}
+              <label className="grid gap-1.5 sm:gap-2">
+                <span className="text-[13px] font-bold text-[#1f2937] sm:text-sm">
+                  Name
+                </span>
+                <input
+                  value={form.name}
+                  onChange={(event) => updateField("name", event.target.value)}
+                  placeholder="Enter full name as per PAN"
+                  className="h-10 rounded-lg border border-[#d9dfe8] px-3 text-[13px] font-medium outline-none placeholder:text-[#a0a7b2] focus:border-[#005ca8] sm:h-11 sm:text-sm md:h-12"
+                />
+              </label>
+              <label className="grid gap-1.5 sm:gap-2">
+                <span className="text-[13px] font-bold text-[#1f2937] sm:text-sm">
+                  Mobile Number
+                </span>
+                <input
+                  type="tel"
+                  value={form.mobile}
+                  onChange={(event) => updateField("mobile", event.target.value)}
+                  placeholder="Enter 10-digit mobile number"
+                  className="h-10 rounded-lg border border-[#d9dfe8] px-3 text-[13px] font-medium outline-none placeholder:text-[#a0a7b2] focus:border-[#005ca8] sm:h-11 sm:text-sm md:h-12"
+                />
+              </label>
+              {[
+                ["employmentType", "Employment Type", "Select Employment Type", employmentTypes],
+                ["annualIncome", "Annual Income", "Select Annual Income", annualIncomeOptions],
+              ].map(([key, label, placeholder, options]) => (
+                <label key={String(key)} className="grid gap-1.5 sm:gap-2">
+                  <span className="text-[13px] font-bold text-[#1f2937] sm:text-sm">
+                    {String(label)}
                   </span>
-                  {type === "select" ? (
-                    <select className="h-10 rounded-lg border border-[#d9dfe8] bg-white px-3 text-xs font-medium text-[#8b95a3] outline-none focus:border-[#005ca8] sm:h-11 sm:text-[13px] md:h-12 md:text-sm">
-                      <option>{placeholder}</option>
-                    </select>
-                  ) : (
-                    <input
-                      type={type}
-                      placeholder={placeholder}
-                      className="h-10 rounded-lg border border-[#d9dfe8] px-3 text-xs font-medium outline-none placeholder:text-[#a0a7b2] focus:border-[#005ca8] sm:h-11 sm:text-[13px] md:h-12 md:text-sm"
-                    />
-                  )}
+                  <select
+                    value={form[key as keyof typeof form]}
+                    onChange={(event) =>
+                      updateField(key as keyof typeof form, event.target.value)
+                    }
+                    className="h-10 rounded-lg border border-[#d9dfe8] bg-white px-3 text-[13px] font-medium text-[#475467] outline-none focus:border-[#005ca8] sm:h-11 sm:text-sm md:h-12"
+                  >
+                    <option value="">{String(placeholder)}</option>
+                    {(options as string[]).map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
                 </label>
               ))}
+
+              {error ? (
+                <p className="rounded-lg bg-red-50 px-3 py-2 text-[13px] font-bold text-red-700">
+                  {error}
+                </p>
+              ) : null}
+
               <button
                 type="button"
-                className="mx-auto mt-2 h-11 w-full max-w-xs rounded-full bg-gradient-to-r from-[#1cb45c] to-[#28cf6c] text-xs font-bold text-white sm:h-12 sm:text-sm md:h-13 md:text-[14px]"
+                onClick={submit}
+                disabled={submitting}
+                className="mx-auto mt-2 inline-flex h-11 w-full max-w-xs items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#1cb45c] to-[#28cf6c] text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-70 sm:h-12"
               >
+                {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
                 Submit Inquiry
               </button>
-              <p className="flex items-center justify-center gap-1.5 text-center text-[11px] font-medium text-[#a0a7b2] sm:text-xs">
-                🔒 Your information safe with us
+              <p className="flex items-center justify-center gap-1.5 text-center text-[13px] font-medium text-[#a0a7b2]">
+                Your information is safe with us
               </p>
             </form>
           </div>
         </div>
       </div>
+
+      {request ? (
+        <div className="mx-auto mt-8 grid max-w-9xl gap-5">
+          <ServiceRequestSuccess
+            request={request}
+            title="Thank you! Your ITR filing request has been submitted."
+            message="We have created your ITR service request. Our tax expert will review your profile and contact you for the next steps."
+          />
+          <ServiceRequestProgress request={request} />
+        </div>
+      ) : null}
 
       <div className="mx-auto mt-10 grid max-w-9xl gap-6 sm:gap-8 md:grid-cols-3">
         {features.map(({ title, text, icon: Icon }) => (
@@ -127,7 +247,7 @@ export function ItrHero() {
               <span className="block text-sm font-bold text-[#1f2937] sm:text-base md:text-[17px] lg:text-[18px]">
                 {title}
               </span>
-              <span className="mt-1 block text-xs font-medium leading-5 text-[#98a2b3] sm:text-[13px] md:text-sm">
+              <span className="mt-1 block text-sm font-medium leading-5 text-[#98a2b3] md:text-[15px]">
                 {text}
               </span>
             </span>

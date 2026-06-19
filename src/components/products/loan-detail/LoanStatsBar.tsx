@@ -1,6 +1,7 @@
 "use client";
 
 import { FileText, Building2, MapPin, Users } from "lucide-react";
+import { AnimatedCounter } from "@/components/common/AnimatedCounter";
 
 // Structured to map the explicit icons, text values, and colors directly from image_0750a9.png
 const displayStats = [
@@ -47,19 +48,20 @@ export function LoanStatsBar() {
             >
               {/* Dynamic Icon with explicit matching background tints */}
               <div
-                className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full ${stat.bgClass}`}
+                className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-full ${stat.bgClass}`}
               >
                 <IconComponent
-                  className={`h-5 w-5 ${stat.iconColor}`}
+                  className={`h-6 w-6 ${stat.iconColor}`}
                   strokeWidth={2.2}
                 />
               </div>
 
               {/* Typography block stack */}
               <div className="space-y-0.5">
-                <span className="block text-lg font-bold tracking-tight text-white md:text-xl">
-                  {stat.value}
-                </span>
+                <AnimatedCounter
+                  value={stat.value}
+                  className="block text-xl font-bold tracking-tight text-white md:text-2xl"
+                />
                 <span className="block text-[11px] font-semibold text-blue-100/80 tracking-wide whitespace-nowrap">
                   {stat.label}
                 </span>

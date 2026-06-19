@@ -1,4 +1,5 @@
 import { Banknote, FileText, Headphones, Landmark } from "lucide-react";
+import { AnimatedCounter } from "@/components/common/AnimatedCounter";
 
 const stats = [
   { value: "5M+", label: "Happy Users", icon: FileText },
@@ -18,9 +19,12 @@ export function CreditCardsStats() {
               index < 2 ? "border-b md:border-b-0" : ""
             } ${index % 2 === 0 ? "md:border-r" : ""}`}
           >
-            <Icon className="h-5 w-5 md:h-8 md:w-8" />
+            <Icon className="h-6 w-6 md:h-9 md:w-9" />
             <div>
-              <p className="text-sm font-black md:text-lg">{value}</p>
+              <AnimatedCounter
+                value={value}
+                className="block text-base font-black md:text-xl"
+              />
               <p className="text-[10px] font-semibold text-white/80 md:text-[13px]">{label}</p>
             </div>
           </div>

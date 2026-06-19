@@ -1,8 +1,5 @@
-import {
-  ServiceAppBanner,
-  ServiceStatusCard,
-  ServiceTimeline,
-} from "@/components/services/shared/ServiceShared";
+import { ServiceAppBanner } from "@/components/services/shared/ServiceShared";
+import { ServiceRequestTracker } from "@/components/services/shared/ServiceRequestTracker";
 import { GstHero } from "./GstHero";
 import { GstServices } from "./GstServices";
 
@@ -11,11 +8,11 @@ export function GstPage() {
     <main className="bg-white">
       <GstHero />
       <GstServices />
-      <ServiceStatusCard
+      <ServiceRequestTracker
         title="Track Your GST Registration Status"
-        idLabel="Registration Number"
+        idLabel="GST Query ID"
+        serviceType="gst_registration"
       />
-      <ServiceTimeline title="Track Your GST Registration Status" />
       <ServiceAppBanner />
     </main>
   );

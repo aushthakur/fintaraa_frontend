@@ -1,8 +1,5 @@
-import {
-  ServiceAppBanner,
-  ServiceStatusCard,
-  ServiceTimeline,
-} from "@/components/services/shared/ServiceShared";
+import { ServiceAppBanner } from "@/components/services/shared/ServiceShared";
+import { ServiceRequestTracker } from "@/components/services/shared/ServiceRequestTracker";
 import { ItrHero } from "./ItrHero";
 import { ItrInfo } from "./ItrInfo";
 import { ItrDeadline } from "./ItrDeadline";
@@ -13,11 +10,11 @@ export function ItrPage() {
       <ItrHero />
       <ItrInfo />
       <ItrDeadline />
-      <ServiceStatusCard
-        title="Track Your Inquiry Status"
-        idLabel="Inquiry ID"
+      <ServiceRequestTracker
+        title="Track Your ITR Filing Status"
+        idLabel="ITR Query ID"
+        serviceType="itr_filing"
       />
-      <ServiceTimeline title="Track Your ITR filling Status" />
       <ServiceAppBanner />
     </main>
   );

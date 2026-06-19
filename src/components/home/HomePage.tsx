@@ -18,7 +18,7 @@ export function HomePage() {
     <main className="bg-white">
       <HeroSection />
 
-      <div className=" py-12 md:py-16">
+      <div className=" py-12 md:py-16 lg:pt-8">
         {/* Global Centered Main Title Header */}
         <div className="mx-auto max-w-9xl px-6 lg:px-8 mb-10">
           <div className="text-center">

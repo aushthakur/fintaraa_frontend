@@ -17,6 +17,12 @@ export type CibilReportViewData = {
   reportDateLabel: string;
   compareDateLabel: string;
   summaryRows: CibilReportSummaryRow[];
+  detailMetrics: CibilReportSummaryRow[];
+  detailSections: Array<{
+    title: string;
+    rows: Array<{ label: string; value: string }>;
+  }>;
+  recommendations: string[];
   scoreHistory: CibilScoreHistoryPoint[];
   improvementPoints: number;
   reportHref: string;

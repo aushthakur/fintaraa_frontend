@@ -12,7 +12,7 @@ export function DsaPage() {
       <DsaHowItWorks />
       <DsaPartnerBenefits />
       <DsaWhyChoose />
-      <FaqAccordion  />
+      <FaqAccordion />
       <AppDownloadBanner />
     </main>
   );

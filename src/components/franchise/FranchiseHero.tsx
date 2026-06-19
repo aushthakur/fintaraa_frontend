@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 // import { PhoneCall } from "lucide-react";
+import { AnimatedCounter } from "@/components/common/AnimatedCounter";
 import { franchiseStats } from "./franchiseData";
 
 export function FranchiseHero() {
@@ -107,9 +108,10 @@ export function FranchiseHero() {
             </div>
 
             <div>
-              <div className="text-[13px] font-bold text-[#111827]">
-                {value}
-              </div>
+              <AnimatedCounter
+                value={value}
+                className="block text-[15px] font-bold text-[#111827]"
+              />
 
               <div className="text-[10px] text-[#8A8A8A]">{label}</div>
             </div>

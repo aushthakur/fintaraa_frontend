@@ -1,13 +1,10 @@
 import {
   Archive,
   BarChart2,
-  BookOpen,
   FileText,
   Folder,
   Gift,
-  HelpCircle,
   LogOut,
-  MessageCircle,
   Sliders,
   UserCheck,
 } from "lucide-react";
@@ -56,12 +53,6 @@ export const accountMenuSections: AccountMenuSection[] = [
         description: "View pre-approved and saved offers from partners.",
       },
       {
-        label: "Refer & Earn",
-        slug: "refer-earn",
-        icon: Gift,
-        description: "Invite friends and earn referral rewards.",
-      },
-      {
         label: "Edit Profile",
         slug: "edit-profile",
         icon: UserCheck,
@@ -98,32 +89,8 @@ export const accountMenuSections: AccountMenuSection[] = [
     ],
   },
   {
-    title: "Help & Legal",
+    title: "Session",
     items: [
-      {
-        label: "Contact & Support",
-        slug: "contact-support",
-        icon: HelpCircle,
-        description: "Ways to reach our customer care team.",
-      },
-      {
-        label: "FAQ",
-        slug: "faq",
-        icon: MessageCircle,
-        description: "Quick answers to common questions.",
-      },
-      {
-        label: "Knowledge Center",
-        slug: "knowledge-center",
-        icon: BookOpen,
-        description: "Blogs, videos, and tutorials to learn more.",
-      },
-      {
-        label: "Policies",
-        slug: "policies",
-        icon: FileText,
-        description: "Terms, privacy, grievance, and partner disclosures.",
-      },
       {
         label: "Logout",
         slug: "logout",

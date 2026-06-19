@@ -1,0 +1,118 @@
+"use client";
+
+import { CheckCircle2, Clock3, Loader2 } from "lucide-react";
+import type { ServiceRequestRecord } from "@/services/serviceRequests";
+
+const formatDate = (value?: string) => {
+  if (!value) return "Not updated yet";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "Not updated yet";
+  return date.toLocaleString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+};
+
+export function ServiceRequestProgress({
+  request,
+  loading,
+}: {
+  request: ServiceRequestRecord | null;
+  loading?: boolean;
+}) {
+  if (loading) {
+    return (
+      <div className="rounded-2xl border border-[#dce9f7] bg-white p-5 shadow-[0_10px_30px_rgba(16,24,40,0.05)]">
+        <div className="flex items-center gap-2 text-[14px] font-bold text-[#005ca8]">
+          <Loader2 className="h-4 w-4 animate-spin" />
+          Loading latest progress...
+        </div>
+      </div>
+    );
+  }
+
+  if (!request) return null;
+
+  const currentItem = request.timeline?.[request.currentStageIndex];
+
+  return (
+    <div className="rounded-2xl border border-[#dce9f7] bg-white p-5 shadow-[0_10px_30px_rgba(16,24,40,0.05)] md:p-6">
+      <div className="flex flex-col justify-between gap-4 md:flex-row md:items-start">
+        <div>
+          <p className="text-[13px] font-black uppercase tracking-wide text-[#005ca8]">
+            Progress
+          </p>
+          <h3 className="mt-1 text-[20px] font-black text-[#1f2937]">
+            {request.currentStage}
+          </h3>
+          <p className="mt-2 text-[14px] font-semibold leading-6 text-[#667085] md:text-[15px]">
+            {currentItem?.remarks || "Our team will update remarks as the case moves."}
+          </p>
+        </div>
+        <div className="rounded-xl bg-[#eef7ff] px-4 py-3 text-[13px] font-bold text-[#005ca8]">
+          Query ID: {request.queryId}
+        </div>
+      </div>
+
+      <div className="mt-5 grid gap-3 md:grid-cols-3">
+        <div className="rounded-xl border border-[#edf2f7] bg-[#fbfdff] p-3">
+          <p className="text-[12px] font-black text-[#98a2b3]">Assigned Executive</p>
+          <p className="mt-1 text-[14px] font-bold text-[#1f2937]">
+            {request.assignedExecutive || "Pending assignment"}
+          </p>
+        </div>
+        <div className="rounded-xl border border-[#edf2f7] bg-[#fbfdff] p-3">
+          <p className="text-[12px] font-black text-[#98a2b3]">Updated By</p>
+          <p className="mt-1 text-[14px] font-bold text-[#1f2937]">
+            {currentItem?.updatedBy || "System"}
+          </p>
+        </div>
+        <div className="rounded-xl border border-[#edf2f7] bg-[#fbfdff] p-3">
+          <p className="text-[12px] font-black text-[#98a2b3]">Last Updated</p>
+          <p className="mt-1 text-[14px] font-bold text-[#1f2937]">
+            {formatDate(currentItem?.updatedAt || request.updatedAt)}
+          </p>
+        </div>
+      </div>
+
+      <div className="mt-6 grid gap-3">
+        {request.timeline?.map((item, index) => {
+          const completed = item.status === "completed";
+          const active = item.status === "active";
+          return (
+            <div key={item.stage} className="flex items-start gap-3">
+              <span
+                className={`mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full ${
+                  completed
+                    ? "bg-[#1cb45c] text-white"
+                    : active
+                      ? "bg-[#005ca8] text-white"
+                      : "bg-[#e8eef5] text-[#98a2b3]"
+                }`}
+              >
+                {completed ? (
+                  <CheckCircle2 className="h-4 w-4" />
+                ) : active ? (
+                  <Clock3 className="h-4 w-4" />
+                ) : (
+                  <span className="text-[11px] font-black">{index + 1}</span>
+                )}
+              </span>
+              <div className="min-w-0 flex-1 border-b border-[#edf2f7] pb-3">
+                <p className="text-[14px] font-black text-[#1f2937]">
+                  {item.stage}
+                </p>
+                <p className="mt-1 text-[13px] font-semibold leading-5 text-[#8b95a3]">
+                  {item.remarks || "Awaiting update"} · {formatDate(item.updatedAt)}
+                </p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}

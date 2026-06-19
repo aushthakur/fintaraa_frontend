@@ -26,7 +26,7 @@ export function InsuranceDetailPage({ page }: { page: InsuranceSeoPageData }) {
       <InsuranceClaimsProcess />
       <InsuranceEligibilityDocuments />
       <InsuranceOtherProducts />
-      <FaqAccordion />
+      <FaqAccordion lookupPathname="/products/[insuranceType]" />
       <Testimonials />
       {/* <InsuranceJourney insuranceTypeSlug={page.insuranceTypeSlug} /> */}
       <AppDownloadBanner />

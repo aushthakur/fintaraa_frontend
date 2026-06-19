@@ -63,7 +63,7 @@ export function GstServices() {
                 {card.title}
               </h3>
 
-              <p className="mt-3 text-xs font-medium leading-[1.65] text-[#374151] sm:text-sm md:text-[14px] lg:text-base">
+              <p className="mt-3 text-sm font-medium leading-[1.65] text-[#374151] md:text-[15px] lg:text-base">
                 {card.text}
               </p>
 
@@ -72,7 +72,7 @@ export function GstServices() {
                 {card.rows.map((row) => (
                   <div
                     key={row}
-                    className="flex items-center gap-3 text-xs font-semibold text-[#4b5563] sm:text-sm md:text-[14px]"
+                    className="flex items-center gap-3 text-sm font-semibold text-[#4b5563] md:text-[15px]"
                   >
                     <CircleCheck className="h-3.5 w-3.5 shrink-0 text-[#005ca8] sm:h-4 sm:w-4" />
                     {row}
@@ -94,7 +94,7 @@ export function GstServices() {
               <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#e8f4ff] sm:h-9 sm:w-9">
                 <Icon className="h-4 w-4 text-[#005ca8] sm:h-5 sm:w-5" />
               </span>
-              <span className="text-[11px] font-black leading-[1.4] text-[#005ca8] sm:text-xs md:text-sm">
+              <span className="text-[13px] font-black leading-[1.4] text-[#005ca8] sm:text-sm md:text-[15px]">
                 {label}
               </span>
             </div>

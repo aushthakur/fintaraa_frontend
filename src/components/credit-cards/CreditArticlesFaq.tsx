@@ -1,15 +1,7 @@
 import Link from "next/link";
-import { ChevronDown, FileText } from "lucide-react";
+import { FileText } from "lucide-react";
+import { FaqAccordion } from "@/components/common/FaqAccordion";
 import { articleCards } from "./creditCardsData";
-
-const faqs = [
-  "What is a credit card?",
-  "How does a credit card work?",
-  "What CIBIL score is required?",
-  "How can I apply online?",
-  "Can I get a lifetime free card?",
-  "How does the eligibility checker work?",
-];
 
 export function CreditArticlesFaq() {
   return (
@@ -38,25 +30,7 @@ export function CreditArticlesFaq() {
         </div>
       </section>
 
-      <section className="bg-[#f8fafc] px-4 py-16 md:px-6 lg:px-8">
-        <div className="mx-auto max-w-4xl text-center">
-          <h2 className="text-[30px] font-black">Frequently Asked Questions (FAQ)</h2>
-          <div className="mt-10 grid gap-4 text-left">
-            {faqs.map((faq, index) => (
-              <details key={faq} className="border border-[#d7dfe8] bg-white px-5 py-4">
-                <summary className="flex cursor-pointer list-none items-center justify-between text-[15px] font-semibold">
-                  {index + 1}. {faq}
-                  <ChevronDown className="h-4 w-4" />
-                </summary>
-                <p className="mt-3 text-[13px] font-medium leading-6 text-[#667085]">
-                  Fintaraa helps you compare cards and check eligibility before
-                  applying.
-                </p>
-              </details>
-            ))}
-          </div>
-        </div>
-      </section>
+      <FaqAccordion lookupPathname="/credit-cards" />
     </>
   );
 }

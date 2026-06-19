@@ -12,7 +12,7 @@ export function FranchisePage() {
       <FranchiseModel />
       <FranchiseBenefits />
       <FranchiseWhyChoose />
-       <FaqAccordion/>
+      <FaqAccordion />
       <AppDownloadBanner />
     </main>
   );

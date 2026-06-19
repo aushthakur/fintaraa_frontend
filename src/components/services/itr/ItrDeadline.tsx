@@ -47,7 +47,7 @@ export function ItrDeadline() {
                 {rest}
               </h3>
 
-              <div className="mt-4 flex items-center justify-center gap-2 text-xs font-medium text-[#98a2b3] sm:text-[13px] md:text-sm">
+              <div className="mt-4 flex items-center justify-center gap-2 text-sm font-medium text-[#98a2b3] md:text-[15px]">
                 {/* Icon placeholder — drop your image at the iconSrc path to replace */}
                 <span className="flex h-6 w-6 shrink-0 items-center justify-center sm:h-7 sm:w-7">
                   <Image
@@ -65,7 +65,7 @@ export function ItrDeadline() {
           ))}
         </div>
 
-        <p className="mt-5 text-[10px] font-medium text-[#a0a7b2] sm:mt-7 sm:text-[11px] md:text-xs">
+        <p className="mt-5 text-[12px] font-medium text-[#a0a7b2] sm:mt-7 sm:text-[13px] md:text-sm">
           *Dates are subject to change as per Income Tax Department updates.
         </p>
       </div>

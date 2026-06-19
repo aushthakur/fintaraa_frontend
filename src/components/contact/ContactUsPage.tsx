@@ -13,6 +13,7 @@ import { Testimonials } from "@/components/home/Testimonials";
 import { FaqAccordion } from "@/components/common/FaqAccordion";
 import { ContactConsultationForm } from "./ContactConsultationForm";
 import { AppDownloadBanner } from "@/components/common/layout/Footer";
+import { AnimatedCounter } from "@/components/common/AnimatedCounter";
 
 const heroStats = [
   { value: "Quick Approval", label: "Just in 24hrs", icon: ShieldCheck },
@@ -62,9 +63,10 @@ function HeroMetric({
         <Icon className="h-5 w-5" />
       </span>
       <span>
-        <span className="block text-[14px] font-extrabold text-[#111827]">
-          {value}
-        </span>
+        <AnimatedCounter
+          value={value}
+          className="block text-[15px] font-extrabold text-[#111827]"
+        />
         <span className="block text-[11px] font-medium text-[#667085]">
           {label}
         </span>
@@ -220,10 +222,7 @@ export function ContactUsPage() {
       </section>
 
       <section className="px-4 pb-14 md:px-6 lg:px-8">
-        <FaqAccordion
-          title="Frequently Asked Questions"
-          subtitle="Everything you need to know about our personal loans"
-        />
+        <FaqAccordion />
       </section>
 
       <AppDownloadBanner />
