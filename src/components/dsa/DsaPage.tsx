@@ -1,5 +1,6 @@
 import { AppDownloadBanner } from "@/components/common/layout/Footer";
 import { FaqAccordion } from "@/components/common/FaqAccordion";
+import { ServiceRequestTracker } from "@/components/services/shared/ServiceRequestTracker";
 import { DsaHero } from "./DsaHero";
 import { DsaWhyChoose } from "./DsaWhyChoose";
 import { DsaHowItWorks } from "./DsaHowItWorks";
@@ -11,6 +12,11 @@ export function DsaPage() {
       <DsaHero />
       <DsaHowItWorks />
       <DsaPartnerBenefits />
+      <ServiceRequestTracker
+        title="Track Your DSA Partner Status"
+        idLabel="DSA Query ID"
+        serviceType="dsa_partner"
+      />
       <DsaWhyChoose />
       <FaqAccordion />
       <AppDownloadBanner />

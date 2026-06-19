@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   BadgeCheck,
   BadgeIndianRupee,
@@ -37,7 +37,8 @@ import {
   WalletCards,
   Wrench,
 } from "lucide-react";
-import { productHref } from "@/lib/productRouting";
+import { productHref, slugifyProduct } from "@/lib/productRouting";
+import { fetchPublicProductPages } from "@/services/productCatalog";
 
 const toneClass: Record<string, string> = {
   amber: "bg-[#fff3df] text-[#f79009]",
@@ -343,12 +344,37 @@ const categories = ["All", ...productSections.map((section) => section.title)];
 export function ProductsPage() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("All");
+  const [managedSlugs, setManagedSlugs] = useState<Set<string>>(new Set());
 
   const normalizedQuery = query.trim().toLowerCase();
   const totalProducts = productSections.reduce(
     (count, section) => count + section.products.length,
     0,
   );
+
+  useEffect(() => {
+    let active = true;
+
+    fetchPublicProductPages()
+      .then(({ loans, insurance }) => {
+        if (!active) return;
+        setManagedSlugs(
+          new Set(
+            [
+              ...loans.map((item) => item.loanTypeSlug),
+              ...insurance.map((item) => item.insuranceTypeSlug),
+            ].filter(Boolean) as string[],
+          ),
+        );
+      })
+      .catch(() => {
+        if (active) setManagedSlugs(new Set());
+      });
+
+    return () => {
+      active = false;
+    };
+  }, []);
 
   const filteredSections = useMemo(() => {
     return productSections
@@ -472,29 +498,39 @@ export function ProductsPage() {
                 </div>
 
                 <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-8">
-                  {section.products.map(({ title, icon: Icon, tone }) => (
-                    <Link
-                      key={title}
-                      href={productHref(title)}
-                      className="group flex min-h-44 flex-col items-center justify-between rounded-xl bg-white px-2 py-4 text-center no-underline ring-1 ring-[#eef2f7] transition duration-300 hover:-translate-y-1 hover:ring-[#d9f6e6]"
-                    >
-                      <div>
-                        <div className="flex justify-center">
-                          <span
-                            className={`mt-3 flex h-14 w-14 items-center justify-center rounded-full ${
-                              toneClass[tone] || toneClass.blue
-                            }`}
-                          >
-                            <Icon className="h-7 w-7 stroke-2" />
-                          </span>
-                        </div>
+                  {section.products.map(({ title, icon: Icon, tone }) => {
+                    const slug = slugifyProduct(title);
+                    const isManaged = managedSlugs.has(slug);
 
-                        <h3 className="mt-5 line-clamp-2 text-[16px] font-extrabold leading-snug text-[#1d2738] transition group-hover:text-[#195585]">
-                          {title}
-                        </h3>
-                      </div>
-                    </Link>
-                  ))}
+                    return (
+                      <Link
+                        key={title}
+                        href={productHref(title)}
+                        className="group relative flex min-h-44 flex-col items-center justify-between rounded-xl bg-white px-2 py-4 text-center no-underline ring-1 ring-[#eef2f7] transition duration-300 hover:-translate-y-1 hover:ring-[#d9f6e6]"
+                      >
+                        {isManaged ? (
+                          <span className="absolute right-2 top-2 rounded-full bg-[#ecfdf3] px-2 py-1 text-[9px] font-black uppercase tracking-[0.08em] text-[#027a48]">
+                            Managed
+                          </span>
+                        ) : null}
+                        <div>
+                          <div className="flex justify-center">
+                            <span
+                              className={`mt-3 flex h-14 w-14 items-center justify-center rounded-full ${
+                                toneClass[tone] || toneClass.blue
+                              }`}
+                            >
+                              <Icon className="h-7 w-7 stroke-2" />
+                            </span>
+                          </div>
+
+                          <h3 className="mt-5 line-clamp-2 text-[16px] font-extrabold leading-snug text-[#1d2738] transition group-hover:text-[#195585]">
+                            {title}
+                          </h3>
+                        </div>
+                      </Link>
+                    );
+                  })}
                 </div>
               </div>
             ))

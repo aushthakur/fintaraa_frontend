@@ -12,6 +12,8 @@ import {
 import { getLoanSeoPage } from "@/services/loanSeoPages";
 import { getInsuranceSeoPage } from "@/services/insuranceSeoPages";
 import { getPageSeoMetadata } from "@/services/seoMetadata";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { absoluteUrl, siteName } from "@/services/seoConfig";
 
 type PageProps = {
   params: Promise<{
@@ -60,9 +62,107 @@ export default async function ProductLoanPage({ params }: PageProps) {
   const location = parseLoanLocation(locationSegments);
   if (isInsuranceProduct(productSlug)) {
     const page = await getInsuranceSeoPage(productSlug, location);
-    return <InsuranceDetailPage page={page} />;
+    const canonical = page.canonicalPath || buildLoanPath(productSlug, location);
+    return (
+      <>
+        <JsonLd
+          id="product-page-schema"
+          data={[
+            {
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                {
+                  "@type": "ListItem",
+                  position: 1,
+                  name: "Home",
+                  item: absoluteUrl("/"),
+                },
+                {
+                  "@type": "ListItem",
+                  position: 2,
+                  name: "Products",
+                  item: absoluteUrl("/products"),
+                },
+                {
+                  "@type": "ListItem",
+                  position: 3,
+                  name: page.title,
+                  item: absoluteUrl(canonical),
+                },
+              ],
+            },
+            {
+              "@context": "https://schema.org",
+              "@type": "Service",
+              name: page.title,
+              description:
+                page.seoDescription || page.heroDescription || page.subtitle,
+              provider: {
+                "@type": "Organization",
+                name: siteName,
+                url: absoluteUrl("/"),
+              },
+              areaServed: "IN",
+              serviceType: page.insuranceType,
+              url: absoluteUrl(canonical),
+            },
+          ]}
+        />
+        <InsuranceDetailPage page={page} />
+      </>
+    );
   }
 
   const page = await getLoanSeoPage(productSlug, location);
-  return <LoanDetailPage page={page} />;
+  const canonical = page.canonicalPath || buildLoanPath(productSlug, location);
+  return (
+    <>
+      <JsonLd
+        id="product-page-schema"
+        data={[
+          {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Home",
+                item: absoluteUrl("/"),
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: "Products",
+                item: absoluteUrl("/products"),
+              },
+              {
+                "@type": "ListItem",
+                position: 3,
+                name: page.title,
+                item: absoluteUrl(canonical),
+              },
+            ],
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "Service",
+            name: page.title,
+            description:
+              page.seoDescription || page.heroDescription || page.subtitle,
+            provider: {
+              "@type": "Organization",
+              name: siteName,
+              url: absoluteUrl("/"),
+            },
+            areaServed: "IN",
+            serviceType: page.loanType,
+            url: absoluteUrl(canonical),
+          },
+        ]}
+      />
+      <LoanDetailPage page={page} />
+    </>
+  );
 }

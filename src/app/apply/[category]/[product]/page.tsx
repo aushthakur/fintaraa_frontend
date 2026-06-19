@@ -6,6 +6,7 @@ import {
   humanizeProduct,
   type ApplicationCategory,
 } from "@/components/application/flowRegistry";
+import { noIndexRobots } from "@/services/seoConfig";
 
 type PageProps = {
   params: Promise<{ category: string; product: string }>;
@@ -19,6 +20,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title,
     description: `Complete your ${category} application for ${humanizeProduct(product)} on Fintaraa.`,
     alternates: { canonical: `/apply/${category}/${product}` },
+    robots: noIndexRobots,
   };
 }
 

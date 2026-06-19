@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
 import { buildApiUrl } from "@/services/apiUrl";
+import {
+  defaultOgImage,
+  defaultSeoDescription,
+  indexRobots,
+  siteName,
+} from "@/services/seoConfig";
 
 type SeoMetadataRecord = {
   title?: string;
@@ -36,27 +42,68 @@ export async function getPageSeoMetadata(
 ): Promise<Metadata> {
   const normalizedPathname = normalizePathname(pathname);
   const fallbackTitle = firstTitle(fallback.title);
-  const fallbackDescription = fallback.description || "";
+  const fallbackDescription = fallback.description || defaultSeoDescription;
+
+  const withDefaults = (metadata: Metadata): Metadata => {
+    const title = firstTitle(metadata.title) || fallbackTitle || siteName;
+    const description = metadata.description || fallbackDescription;
+    const canonical =
+      typeof metadata.alternates?.canonical === "string"
+        ? metadata.alternates.canonical
+        : normalizedPathname;
+
+    return {
+      ...metadata,
+      description,
+      alternates: {
+        ...metadata.alternates,
+        canonical,
+      },
+      robots: metadata.robots || indexRobots,
+      openGraph: {
+        siteName,
+        ...(typeof metadata.openGraph === "object" ? metadata.openGraph : {}),
+        title,
+        description,
+        url: canonical,
+        type: "website",
+        images:
+          typeof metadata.openGraph === "object" && metadata.openGraph?.images
+            ? metadata.openGraph.images
+            : [{ url: defaultOgImage, width: 1200, height: 630, alt: siteName }],
+      },
+      twitter: {
+        card: "summary_large_image",
+        ...(typeof metadata.twitter === "object" ? metadata.twitter : {}),
+        title,
+        description,
+        images:
+          typeof metadata.twitter === "object" && metadata.twitter?.images
+            ? metadata.twitter.images
+            : [defaultOgImage],
+      },
+    };
+  };
 
   const url = buildApiUrl(
     `/seo-metadata/resolve?pathname=${encodeURIComponent(normalizedPathname)}`,
   );
 
   if (!url) {
-    return {
+    return withDefaults({
       ...fallback,
       alternates: { ...fallback.alternates, canonical: normalizedPathname },
-    };
+    });
   }
 
   try {
     const response = await fetch(url, { next: { revalidate: 300 } });
 
     if (!response.ok) {
-      return {
+      return withDefaults({
         ...fallback,
         alternates: { ...fallback.alternates, canonical: normalizedPathname },
-      };
+      });
     }
 
     const payload = await response.json();
@@ -65,7 +112,7 @@ export async function getPageSeoMetadata(
     const description = seo.description || fallbackDescription;
     const canonical = seo.canonicalPath || normalizedPathname;
 
-    return {
+    return withDefaults({
       ...fallback,
       title,
       description,
@@ -98,11 +145,11 @@ export async function getPageSeoMetadata(
           ? { images: [seo.twitterImage || seo.openGraphImage || ""] }
           : {}),
       },
-    };
+    });
   } catch {
-    return {
+    return withDefaults({
       ...fallback,
       alternates: { ...fallback.alternates, canonical: normalizedPathname },
-    };
+    });
   }
 }

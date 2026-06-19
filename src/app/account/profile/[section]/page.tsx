@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { accountItemBySlug } from "@/data/accountProfile";
 import { AccountProfilePage } from "@/components/account/AccountProfilePage";
 import { getPageSeoMetadata } from "@/services/seoMetadata";
+import { noIndexRobots } from "@/services/seoConfig";
 
 type PageProps = {
   params: Promise<{ section: string }>;
@@ -20,6 +21,7 @@ export async function generateMetadata({
   return getPageSeoMetadata(`/account/profile/${section}`, {
     title: `${item.label} | Profile & Settings`,
     description: item.description,
+    robots: noIndexRobots,
   });
 }
 

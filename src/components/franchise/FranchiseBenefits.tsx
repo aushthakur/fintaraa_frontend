@@ -1,10 +1,7 @@
 import Image from "next/image";
 import { CircleCheck } from "lucide-react";
-import {
-  formFields,
-  franchiseBenefits,
-  partnerBenefits,
-} from "./franchiseData";
+import { PartnerLeadForm } from "@/components/services/shared/PartnerLeadForm";
+import { franchiseBenefits, partnerBenefits } from "./franchiseData";
 
 export function FranchiseBenefits() {
   return (
@@ -52,34 +49,31 @@ export function FranchiseBenefits() {
               shortly.
             </p>
 
-            <div className="mt-5 grid gap-4 sm:grid-cols-2">
-              {formFields.map(([label, placeholder, type]) => (
-                <label key={label} className="grid gap-1">
-                  <span className="text-[12px] font-black text-[#111827]">
-                    {label}
-                  </span>
-                  {type === "select" ? (
-                    <select className="h-10 rounded-lg border border-[#d7dfe9] bg-white px-3 text-[12px] font-semibold text-[#667085] outline-none focus:border-[#005ca8]">
-                      <option>{placeholder}</option>
-                    </select>
-                  ) : (
-                    <input
-                      type={type}
-                      placeholder={placeholder}
-                      className="h-10 rounded-lg border border-[#d7dfe9] px-3 text-[12px] font-semibold outline-none placeholder:text-[#98a2b3] focus:border-[#005ca8]"
-                    />
-                  )}
-                </label>
-              ))}
-              <button
-                type="button"
-                className="h-12 rounded-full bg-[#13a653] text-[13px] font-black text-white transition-opacity hover:opacity-90 sm:col-span-2"
-              >
-                Become a Partner
-              </button>
-              <p className="text-center text-[11px] font-semibold text-[#98a2b3] sm:col-span-2">
-                🔒 Your information is safe with us
-              </p>
+            <div className="mt-5">
+              <PartnerLeadForm
+                serviceType="franchise_partner"
+                source="website_franchise_page"
+                submitLabel="Apply For Franchise"
+                successTitle="Thank you! Your franchise request has been submitted."
+                successMessage="We have generated your franchise query ID. Our partnership team will review your location and contact you."
+                primarySelectLabel="Investment Range"
+                primarySelectPlaceholder="Select investment range"
+                primaryOptions={[
+                  "Below ₹2 lakh",
+                  "₹2 lakh - ₹5 lakh",
+                  "₹5 lakh - ₹10 lakh",
+                  "Above ₹10 lakh",
+                ]}
+                secondarySelectLabel="Preferred Setup"
+                secondarySelectPlaceholder="Select preferred setup"
+                secondaryOptions={[
+                  "Existing office",
+                  "New office",
+                  "Retail shop",
+                  "Co-working space",
+                  "Need guidance",
+                ]}
+              />
             </div>
           </div>
 

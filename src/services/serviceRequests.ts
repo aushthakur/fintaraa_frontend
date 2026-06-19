@@ -6,7 +6,12 @@ type ApiEnvelope<T> = {
   message?: string;
 };
 
-export type ServiceRequestType = "gst_registration" | "itr_filing";
+export type ServiceRequestType =
+  | "gst_registration"
+  | "itr_filing"
+  | "company_registration"
+  | "franchise_partner"
+  | "dsa_partner";
 
 export type ServiceWorkflowItem = {
   stage: string;

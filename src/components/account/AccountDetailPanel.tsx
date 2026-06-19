@@ -2979,7 +2979,7 @@ function renderPanel(slug: string) {
       return (
         <EmptyState
           title="Profile & Settings"
-          text="Choose a section from the left to manage account, activity, documents, preferences, support, and policies."
+          text="Choose a section from the left to manage profile details, applications, offers, documents, and preferences."
         />
       );
   }

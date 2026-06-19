@@ -63,6 +63,7 @@ export const productHref = (title: string) => {
   if (slug === "itr-filing") return "/itr-filing";
   if (slug === "gst-registration") return "/gst-registration";
   if (slug === "company-registration") return "/company-registration";
+  if (slug === "roc-filing") return "/company-registration";
   if (slug === "refer-and-earn" || slug === "refer-earn")
     return "/refer-and-earn";
   if (slug === "offers" || slug === "offers-and-rewards") return "/offers";
@@ -75,8 +76,15 @@ export const productHref = (title: string) => {
   if (slug === "contact-us") return "/contact-us";
   if (slug === "support") return "/support";
   if (slug === "blog" || slug === "blog-and-articles") return "/blog";
+  if (slug === "articles" || slug === "press-release") return "/blog";
+  if (slug === "site-map" || slug === "sitemap") return "/sitemap";
+  if (slug === "feedback" || slug === "subscribe") return "/contact-us";
+  if (slug === "awards-and-recognitions") return "/about-us";
+  if (slug === "faq" || slug === "faqs" || slug === "faq-s")
+    return "/support";
   if (slug === "cibil-score" || slug === "credit-score") return "/cibil-score";
   if (slug === "credit-card" || slug === "credit-cards") return "/credit-cards";
+  if (slug === "all-others-credit-cards") return "/credit-cards";
   if (slug === "view-all-cards") return "/credit-cards";
   if (slug === "view-all-loans" || slug === "view-all-insurance")
     return "/products";

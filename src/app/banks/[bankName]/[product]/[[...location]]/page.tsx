@@ -3,6 +3,8 @@ import { BankDetailPage } from "@/components/banks/BankDetailPage";
 import { parseLoanLocation, slugifyProduct } from "@/lib/productRouting";
 import { buildBankPath, getBankSeoPage } from "@/services/bankSeoPages";
 import { getPageSeoMetadata } from "@/services/seoMetadata";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { absoluteUrl, siteName } from "@/services/seoConfig";
 
 type PageProps = {
   params: Promise<{
@@ -56,5 +58,55 @@ export default async function BankSeoRoute({ params }: PageProps) {
   const location = parseLoanLocation(locationSegments);
   const page = await getBankSeoPage(bankSlug, productSlug, location);
 
-  return <BankDetailPage page={page} />;
+  const canonical =
+    page.canonicalPath || buildBankPath(bankSlug, productSlug, location);
+
+  return (
+    <>
+      <JsonLd
+        id="bank-page-schema"
+        data={[
+          {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Home",
+                item: absoluteUrl("/"),
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: "Banks",
+                item: absoluteUrl("/partners"),
+              },
+              {
+                "@type": "ListItem",
+                position: 3,
+                name: page.title,
+                item: absoluteUrl(canonical),
+              },
+            ],
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "Service",
+            name: page.title,
+            description: page.seoDescription || page.subtitle,
+            provider: {
+              "@type": "Organization",
+              name: siteName,
+              url: absoluteUrl("/"),
+            },
+            areaServed: "IN",
+            serviceType: page.productName,
+            url: absoluteUrl(canonical),
+          },
+        ]}
+      />
+      <BankDetailPage page={page} />
+    </>
+  );
 }

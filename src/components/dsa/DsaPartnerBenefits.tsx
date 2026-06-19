@@ -1,10 +1,10 @@
 import Image from "next/image";
-import { CircleCheck, Lock } from "lucide-react";
+import { CircleCheck } from "lucide-react";
+import { PartnerLeadForm } from "@/components/services/shared/PartnerLeadForm";
 import {
   commissionRows,
   dsaBenefits,
   eligibleProfiles,
-  formFields,
   partnerBenefits,
 } from "./dsaData";
 
@@ -119,38 +119,33 @@ export function DsaPartnerBenefits() {
               shortly.
             </p>
 
-            <form className="mt-5 grid gap-4 sm:grid-cols-2">
-              {formFields.map(([label, placeholder, type]) => (
-                <label key={label} className="grid gap-1.5">
-                  <span className="text-[12px] font-extrabold text-[#22272e]">
-                    {label}
-                  </span>
-                  {type === "select" ? (
-                    <select className="h-10 rounded-lg border border-[#d7dfe9] bg-white px-3 text-[12px] font-medium text-[#8b95a5] outline-none focus:border-[#0d64bf]">
-                      <option>{placeholder}</option>
-                    </select>
-                  ) : (
-                    <input
-                      type={type}
-                      placeholder={placeholder}
-                      className="h-10 rounded-lg border border-[#d7dfe9] px-3 text-[12px] font-medium outline-none placeholder:text-[#a0a8b6] focus:border-[#0d64bf]"
-                    />
-                  )}
-                </label>
-              ))}
-
-              <button
-                type="button"
-                className="mt-1 h-12 rounded-full bg-[#1cb45c] text-[14px] font-extrabold text-white shadow-[0_14px_30px_rgba(28,180,92,0.2)] transition hover:bg-[#16954d] sm:col-span-2"
-              >
-                Become a Partner
-              </button>
-
-              <p className="flex items-center justify-center gap-1.5 text-center text-[11px] font-medium text-[#a0a8b6] sm:col-span-2">
-                <Lock className="h-3.5 w-3.5" />
-                Your information safe with us
-              </p>
-            </form>
+            <div className="mt-5">
+              <PartnerLeadForm
+                serviceType="dsa_partner"
+                source="website_dsa_page"
+                submitLabel="Become a Partner"
+                successTitle="Thank you! Your DSA partner request has been submitted."
+                successMessage="We have generated your partner query ID. Our partnership team will review your profile and contact you."
+                primarySelectLabel="Partner Profile"
+                primarySelectPlaceholder="Select partner profile"
+                primaryOptions={[
+                  "Loan consultant",
+                  "Insurance advisor",
+                  "Financial distributor",
+                  "CA / tax consultant",
+                  "Real estate broker",
+                  "Other",
+                ]}
+                secondarySelectLabel="Monthly Lead Volume"
+                secondarySelectPlaceholder="Select expected volume"
+                secondaryOptions={[
+                  "1 - 10 leads",
+                  "11 - 25 leads",
+                  "26 - 50 leads",
+                  "50+ leads",
+                ]}
+              />
+            </div>
           </div>
 
           <aside className="flex min-h-85 flex-col justify-between rounded-[22px] bg-[#eaf3ff] p-5">

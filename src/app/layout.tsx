@@ -9,6 +9,14 @@ import { Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import "react-toastify/dist/ReactToastify.css";
 import { AppShell } from "@/components/common/layout/AppShell";
+import {
+  absoluteUrl,
+  defaultOgImage,
+  defaultSeoDescription,
+  indexRobots,
+  siteName,
+  siteUrl,
+} from "@/services/seoConfig";
 
 export const bodoni = Bodoni_Moda({
   subsets: ["latin"],
@@ -43,12 +51,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Fintaraa — Loans, Credit Cards and Insurance Marketplace",
+    default: "Fintaraa | Loans, Credit Cards and Insurance Marketplace",
     template: "%s | Fintaraa",
   },
 
-  description:
-    "Fintaraa helps customers discover and apply for responsible loans, credit cards, insurance, and financial products from regulated partners with transparent eligibility, documentation, and support.",
+  description: defaultSeoDescription,
 
   keywords: [
     "Fintaraa",
@@ -69,11 +76,39 @@ export const metadata: Metadata = {
     "Insurance Products",
   ],
 
-  publisher: "Fintaraa",
-  creator: "Rishabh Gupta",
+  applicationName: siteName,
+  category: "Financial Services",
+  publisher: siteName,
+  creator: siteName,
   alternates: { canonical: "/" },
-  authors: [{ name: "Rishabh Gupta" }],
-  metadataBase: new URL("https://fintaraa.com"),
+  authors: [{ name: siteName, url: siteUrl }],
+  metadataBase: new URL(siteUrl),
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+  },
+  robots: indexRobots,
+  openGraph: {
+    type: "website",
+    siteName,
+    title: "Fintaraa | Loans, Credit Cards and Insurance Marketplace",
+    description: defaultSeoDescription,
+    url: "/",
+    images: [
+      {
+        url: defaultOgImage,
+        width: 1200,
+        height: 630,
+        alt: "Fintaraa financial services marketplace",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Fintaraa | Loans, Credit Cards and Insurance Marketplace",
+    description: defaultSeoDescription,
+    images: [defaultOgImage],
+  },
 };
 
 export default function RootLayout({
@@ -84,6 +119,62 @@ export default function RootLayout({
   const clarityProjectId = process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID;
   const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
   const metaPixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
+  const structuredData = [
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      name: siteName,
+      url: siteUrl,
+      logo: absoluteUrl("/assets/logo/logo.png"),
+      email: "support@fintaraa.com",
+      contactPoint: [
+        {
+          "@type": "ContactPoint",
+          telephone: "+91-124-456-7890",
+          contactType: "customer support",
+          areaServed: "IN",
+          availableLanguage: ["en", "hi"],
+        },
+      ],
+      address: {
+        "@type": "PostalAddress",
+        streetAddress:
+          "Unit No. 402, 4th Floor, Tower A, Spaze I-Tech Park, Sector 49",
+        addressLocality: "Gurugram",
+        addressRegion: "Haryana",
+        postalCode: "122018",
+        addressCountry: "IN",
+      },
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FinancialService",
+      name: siteName,
+      url: siteUrl,
+      image: absoluteUrl(defaultOgImage),
+      description: defaultSeoDescription,
+      areaServed: "IN",
+      serviceType: [
+        "Loans",
+        "Credit Cards",
+        "Insurance",
+        "CIBIL Score",
+        "GST Registration",
+        "ITR Filing",
+      ],
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name: siteName,
+      url: siteUrl,
+      publisher: {
+        "@type": "Organization",
+        name: siteName,
+        logo: absoluteUrl("/assets/logo/logo.png"),
+      },
+    },
+  ];
 
   return (
     <html
@@ -100,6 +191,14 @@ export default function RootLayout({
           <AppShell>{children}</AppShell>
         </Providers>
         <div id="modal-root" />
+        <Script
+          id="fintaraa-site-schema"
+          type="application/ld+json"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
+          }}
+        />
         {clarityProjectId ? (
           <Script id="microsoft-clarity" strategy="afterInteractive">
             {`
