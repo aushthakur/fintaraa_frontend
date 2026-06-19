@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { getApplyHref } from "@/components/application/flowRegistry";
 
 const planRows = [
   ["HDFC ERGO", "/assets/banks/hdfc.png", "₹450 - ₹1200", "Up to 2%", "₹10 Lac", "60 Years"],
@@ -15,6 +16,12 @@ interface InsuranceComparePlansProps {
 }
 
 export function InsuranceComparePlans({ insuranceType, insuranceTypeSlug }: InsuranceComparePlansProps) {
+  const applyHref = getApplyHref({
+    category: "insurance",
+    productSlug: insuranceTypeSlug,
+    referrer: `/products/${insuranceTypeSlug}`,
+  });
+
   return (
     <section className="px-4 py-10 md:px-6 lg:px-8">
       <div className="mx-auto max-w-9xl text-center">
@@ -52,7 +59,7 @@ export function InsuranceComparePlans({ insuranceType, insuranceTypeSlug }: Insu
                   <td className="px-4 py-3 font-semibold">{cover}</td>
                   <td className="px-4 py-3 font-semibold">{tenure}</td>
                   <td className="px-4 py-3">
-                    <Link href={`/login?product=${insuranceTypeSlug}`} className="rounded-full  bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-3 py-1.5 text-[11px] font-black text-white no-underline">
+                    <Link href={applyHref} className="rounded-full  bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-3 py-1.5 text-[11px] font-black text-white no-underline">
                       Apply Now
                     </Link>
                   </td>

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { getApplyHref } from "@/components/application/flowRegistry";
 import type { LoanSeoPageData } from "@/services/loanSeoPages";
 
 // Explicit step objects mapped directly from the image blueprint
@@ -30,6 +31,12 @@ const sequentialSteps = [
 ];
 
 export function LoanVerificationSteps({ page }: { page: LoanSeoPageData }) {
+  const applyHref = getApplyHref({
+    category: "loan",
+    productSlug: page.loanTypeSlug,
+    referrer: page.canonicalPath || `/products/${page.loanTypeSlug}`,
+  });
+
   return (
     <section className="w-full max-w-9xl mx-auto bg-white px-6 py-12 antialiased text-[#111827] sm:px-8 md:px-12 lg:px-16">
       <div className="grid gap-12 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
@@ -85,7 +92,7 @@ export function LoanVerificationSteps({ page }: { page: LoanSeoPageData }) {
           {/* Capsule CTA redirection block */}
           <div className="pt-2">
             <Link
-              href={`/login?product=${page.loanTypeSlug}`}
+              href={applyHref}
               className="inline-flex h-11 items-center justify-center gap-2 rounded-full  bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-6 text-sm font-bold text-white transition-all hover:bg-[#009948] active:scale-[0.99] no-underline shadow-sm"
             >
               Get free credit score

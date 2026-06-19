@@ -1,4 +1,4 @@
-import { Post, Put } from "@/hooks/apiUtils";
+import { Fetch, Post, Put } from "@/hooks/apiUtils";
 import { emitAuthChanged } from "@/lib/authEvents";
 
 type ApiResponse<T> = T & { message?: string; success?: boolean };
@@ -94,6 +94,23 @@ export const updateUserProfile = async (payload: Record<string, unknown>) => {
   }
 
   return response;
+};
+
+export const getCurrentUser = async () => {
+  const response = await Fetch<
+    ApiResponse<Record<string, unknown>> | WrappedApiResponse<Record<string, unknown>>
+  >("user/get-current", undefined, 15000, true, false);
+  const current =
+    ((response as WrappedApiResponse<Record<string, unknown>>)?.data as
+      | Record<string, unknown>
+      | undefined) || (response as Record<string, unknown>);
+
+  if (typeof window !== "undefined" && current && typeof current === "object") {
+    localStorage.setItem("user", JSON.stringify(current));
+    emitAuthChanged();
+  }
+
+  return current;
 };
 
 export const mobileToPan = (payload: { name: string; mobile_no: string }) => {

@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronDown, Star } from "lucide-react";
+import { getApplyHref } from "@/components/application/flowRegistry";
 import { bankRows } from "./LoanDetailConstants";
 import { slugifyProduct } from "@/lib/productRouting";
 import type { LoanSeoPageData } from "@/services/loanSeoPages";
@@ -42,16 +43,26 @@ export function LoanBankComparison({ page }: { page: LoanSeoPageData }) {
           </thead>
           
           <tbody className="divide-y divide-gray-100">
-            {visibleRows.map((row) => (
-              <tr 
-                key={row.name} 
-                className="transition-colors hover:bg-gray-50/40"
-              >
+            {visibleRows.map((row) => {
+              const bankSlug = slugifyProduct(row.name);
+              const bankDetailHref = `/banks/${bankSlug}/${page.loanTypeSlug}`;
+              const applyHref = getApplyHref({
+                category: "loan",
+                productSlug: page.loanTypeSlug,
+                bankSlug,
+                referrer: bankDetailHref,
+              });
+
+              return (
+                <tr
+                  key={row.name}
+                  className="transition-colors hover:bg-gray-50/40"
+                >
                 {/* 1. LENDER LOGO & STAR RATINGS */}
                 <td className="px-6 py-4.5">
                   <div className="flex items-center gap-4">
                     <Link
-                      href={`/banks/${slugifyProduct(row.name)}/${page.loanTypeSlug}`}
+                      href={bankDetailHref}
                       className="block shrink-0 focus:outline-none"
                     >
                       <Image
@@ -86,14 +97,15 @@ export function LoanBankComparison({ page }: { page: LoanSeoPageData }) {
                 {/* 3. CAPSULE CTA SUBMIT LINK */}
                 <td className="px-6 py-4.5 text-center">
                   <Link
-                    href={`/banks/${slugifyProduct(row.name)}/${page.loanTypeSlug}`}
+                    href={applyHref}
                     className="inline-flex h-9 items-center justify-center rounded-full whitespace-nowrap  bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-5 text-xs font-bold text-white transition-colors hover:bg-[#009948] no-underline shadow-sm active:scale-[0.98]"
                   >
                     Apply Now
                   </Link>
                 </td>
               </tr>
-            ))}
+              );
+            })}
           </tbody>
         </table>
       </div>

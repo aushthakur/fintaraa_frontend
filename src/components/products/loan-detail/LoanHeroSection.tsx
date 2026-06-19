@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { DynamicField } from "./DynamicField";
+import { getApplyHref } from "@/components/application/flowRegistry";
 import type { LoanSeoPageData, LoanSeoFormField } from "@/services/loanSeoPages";
 
 export function LoanHeroSection({
@@ -9,6 +10,12 @@ export function LoanHeroSection({
   page: LoanSeoPageData;
   fields: LoanSeoFormField[];
 }) {
+  const applyHref = getApplyHref({
+    category: "loan",
+    productSlug: page.loanTypeSlug,
+    referrer: page.canonicalPath || `/products/${page.loanTypeSlug}`,
+  });
+
   return (
     <section className="relative overflow-hidden bg-[#fbfdff] px-4 pb-8 pt-8 md:px-6 lg:px-8">
       <div className="absolute inset-0 overflow-visible pointer-events-none z-0">
@@ -53,7 +60,7 @@ export function LoanHeroSection({
           
           <div className="pt-2">
             <Link
-              href={`/login?product=${page.loanTypeSlug}`}
+              href={applyHref}
               className="inline-flex h-12 items-center justify-center rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-7 text-[14px] font-black text-white no-underline"
             >
               Apply {page.loanType}
@@ -84,7 +91,7 @@ export function LoanHeroSection({
                 </label>
               ))}
               <Link
-                href={`/login?product=${page.loanTypeSlug}`}
+                href={applyHref}
                 className="inline-flex h-9 items-center justify-center rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-4 text-[12px] font-extrabold text-white no-underline"
               >
                 Check Eligibility

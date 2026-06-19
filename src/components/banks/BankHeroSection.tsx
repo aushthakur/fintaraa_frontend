@@ -3,9 +3,18 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Clock3, LockKeyhole, ShieldCheck } from "lucide-react";
+import { getApplyHref } from "@/components/application/flowRegistry";
 import type { BankSeoPageData } from "@/services/bankSeoPages";
 
 export function BankHeroSection({ page }: { page: BankSeoPageData }) {
+  const applyHref = getApplyHref({
+    category: "loan",
+    productSlug: page.productSlug || "personal-loan",
+    bankSlug: page.bankSlug,
+    referrer:
+      page.canonicalPath || `/banks/${page.bankSlug}/${page.productSlug}`,
+  });
+
   return (
     <section className="relative overflow-hidden bg-white px-4 pb-12 pt-10 md:px-6 lg:px-8 font-sans">
       {/* Decorative Top-Left Background Accent Plates matching image_ef0600.png */}
@@ -110,13 +119,13 @@ export function BankHeroSection({ page }: { page: BankSeoPageData }) {
           {/* Core Navigation Conversion Controls Trigger Wrapper */}
           <div className="flex flex-col sm:flex-row items-center gap-4 pt-2">
             <Link
-              href={`/login?product=${page.productSlug || "personal-loan"}&bank=${page.bankSlug || "hdfc"}`}
+              href={applyHref}
               className="inline-flex h-12 w-full sm:w-56 items-center justify-center rounded-xl bg-[#13a653] hover:bg-[#108e46] text-[15px] font-bold text-white no-underline shadow-xs transition-colors"
             >
               Apply Now
             </Link>
             <Link
-              href={`/login?product=${page.productSlug || "personal-loan"}&bank=${page.bankSlug || "hdfc"}`}
+              href={applyHref}
               className="inline-flex h-12 w-full sm:w-56 items-center justify-center rounded-xl border border-[#13a653] bg-white text-[15px] font-bold text-[#13a653] hover:bg-[#f4fbf7] no-underline transition-colors"
             >
               Check Eligibility
@@ -131,6 +140,7 @@ export function BankHeroSection({ page }: { page: BankSeoPageData }) {
               src="/assets/images/coin-bag.png"
               alt={page.title || "Hero Banner Illustration"}
               fill
+              sizes="(max-width: 768px) 100vw, 384px"
               className="object-contain"
               priority
             />

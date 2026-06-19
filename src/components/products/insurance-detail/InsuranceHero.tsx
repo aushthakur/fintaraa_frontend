@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { getApplyHref } from "@/components/application/flowRegistry";
 import type {
   InsuranceSeoFormField,
   InsuranceSeoPageData,
@@ -38,6 +39,11 @@ function DynamicField({ field }: { field: InsuranceSeoFormField }) {
 }
 
 export function InsuranceHero({ page }: { page: InsuranceSeoPageData }) {
+  const applyHref = getApplyHref({
+    category: "insurance",
+    productSlug: page.insuranceTypeSlug,
+    referrer: page.canonicalPath || `/products/${page.insuranceTypeSlug}`,
+  });
   const fields = (page.formFields || [])
     .filter((field) => field.isActive !== false)
     .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
@@ -100,7 +106,7 @@ export function InsuranceHero({ page }: { page: InsuranceSeoPageData }) {
 
           <div className="pt-2">
             <Link
-              href={`/login?product=${page.insuranceTypeSlug}`}
+              href={applyHref}
               className="inline-flex h-12 items-center justify-center rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-7 text-[14px] font-black text-white no-underline"
             >
               Apply {page.insuranceType}
@@ -199,7 +205,7 @@ export function InsuranceHero({ page }: { page: InsuranceSeoPageData }) {
               </div>
 
               <Link
-                href={`/login?product=${page.insuranceTypeSlug}`}
+                href={applyHref}
                 className="mt-0.5 inline-flex h-10 items-center justify-center rounded-full border border-[#12b76a] bg-white px-5 text-[12px] font-extrabold text-[#12b76a] no-underline shadow-[0_10px_24px_rgba(18,183,106,0.14)] transition hover:bg-[#f3fbf6]"
               >
                 Compare detailed plans

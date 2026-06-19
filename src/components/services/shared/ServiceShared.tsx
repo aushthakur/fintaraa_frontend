@@ -34,6 +34,7 @@ export function ServiceStatusCard({
                 height={48}
                 unoptimized
                 className="relative z-10 object-contain"
+                style={{ width: "auto", height: "auto" }}
               />
             </span>
           </div>

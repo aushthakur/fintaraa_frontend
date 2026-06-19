@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { getApplyHref } from "@/components/application/flowRegistry";
 import type { LoanSeoPageData } from "@/services/loanSeoPages";
 
 const banks = [
@@ -13,6 +14,11 @@ const banks = [
 ];
 
 export function LoanEMICalculator({ page }: { page: LoanSeoPageData }) {
+  const applyHref = getApplyHref({
+    category: "loan",
+    productSlug: page.loanTypeSlug,
+    referrer: page.canonicalPath || `/products/${page.loanTypeSlug}`,
+  });
   const [selectedBank, setSelectedBank] = useState("hdfc");
   const [amount, setAmount] = useState(500000);
   const [interest, setInterest] = useState(8);
@@ -218,7 +224,7 @@ export function LoanEMICalculator({ page }: { page: LoanSeoPageData }) {
 
                 <div className="w-full flex justify-center">
                   <Link
-                    href={`/login?product=${page.loanTypeSlug}`}
+                    href={applyHref}
                     className="flex h-9 w-full max-w-55 items-center justify-center gap-1.5 rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] text-xs font-bold text-white transition-all hover:brightness-110 active:scale-[0.99] no-underline shadow-sm"
                   >
                     <span>Get Instant Loan</span>

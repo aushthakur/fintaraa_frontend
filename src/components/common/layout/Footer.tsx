@@ -18,6 +18,7 @@ import {
 import { FaApple, FaGooglePlay } from "react-icons/fa6";
 import Image from "next/image";
 import { productHref } from "@/lib/productRouting";
+import { buildLoginRedirectHref } from "@/lib/loginRedirect";
 
 /* ─── DATA ─────────────────────────────────────────────────── */
 
@@ -72,7 +73,10 @@ const quickLinks = [
   { label: "Tools", href: "/tools", icon: Wrench },
   {
     label: "CIBIL Score",
-    href: "/login?product=cibil-score",
+    href: buildLoginRedirectHref({
+      redirectTo: "/cibil-score",
+      product: "cibil-score",
+    }),
     icon: BadgeCheck,
   },
   { label: "Blog", href: "/blog", icon: Newspaper },

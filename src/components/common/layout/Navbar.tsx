@@ -21,6 +21,7 @@ import {
   isLoanProduct,
   isInsuranceProduct,
 } from "@/lib/productRouting";
+import { buildLoginRedirectHref } from "@/lib/loginRedirect";
 
 type NavLink = {
   label: string;
@@ -220,7 +221,6 @@ const navItems = [
   {
     label: "Contact Us",
     href: "/contact-us",
- 
   },
   {
     label: "Partner Zone",
@@ -336,12 +336,17 @@ export default function Navbar() {
 
         <div className="hidden shrink-0 items-center gap-3 lg:flex">
           <Link
-            href="/login"
+            href={
+              loggedIn
+                ? "/products"
+                : buildLoginRedirectHref({ redirectTo: "/products" })
+            }
             className="inline-flex h-10 items-center gap-2 rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-4 text-sm font-medium text-white no-underline shadow-[0_8px_18px_rgba(18,183,106,0.22)]"
           >
             Apply Now
             <ArrowRight className="h-4 w-4" />
           </Link>
+
           <AuthButton
             loggedIn={loggedIn}
             name={profile.name}
@@ -403,7 +408,11 @@ export default function Navbar() {
             ))}
             <div className="mt-4 grid gap-3">
               <Link
-                href="/login"
+                href={
+                  loggedIn
+                    ? "/products"
+                    : buildLoginRedirectHref({ redirectTo: "/products" })
+                }
                 onClick={() => setMenuOpen(false)}
                 className="rounded-full bg-[#12b76a] px-4 py-3 text-center text-[13px] font-extrabold text-white no-underline"
               >

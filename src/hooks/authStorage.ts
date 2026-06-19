@@ -24,6 +24,11 @@ export const getAuthToken = (): string | null => {
   );
 };
 
+export const isUserLoggedIn = (): boolean =>
+  typeof window !== "undefined" &&
+  getAuthType() === "user" &&
+  Boolean(getAuthToken());
+
 export const setAuthSession = (type: AuthType, token: string) => {
   if (typeof window === "undefined") return;
   localStorage.setItem("authType", type);

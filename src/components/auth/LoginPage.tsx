@@ -3,8 +3,10 @@
 import type { ReactNode } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import { Phone, ArrowRight, LockKeyhole } from "lucide-react";
+import { getAuthToken, getAuthType } from "@/hooks/authStorage";
+import { getSafeRedirectTarget } from "@/lib/loginRedirect";
 import {
   sendOtp,
   verifyOtp,
@@ -22,8 +24,12 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 type AuthStep = "phone" | "otp" | "mobile-pan" | "complete-profile";
 
-export function LoginPage() {
+export function LoginPage({ redirectParam }: { redirectParam?: string } = {}) {
   const router = useRouter();
+  const postLoginTarget = useMemo(
+    () => getSafeRedirectTarget(redirectParam),
+    [redirectParam],
+  );
   const [step, setStep] = useState<AuthStep>("phone");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -44,6 +50,12 @@ export function LoginPage() {
   const validPan = /^([A-Z]{5}[0-9]{4}[A-Z])$/.test(pan);
   const validPhone = digits.length >= 10 && digits.length <= 15;
   const validOtp = form.otp.replace(/\D/g, "").length === 6;
+
+  useEffect(() => {
+    if (getAuthType() === "user" && getAuthToken()) {
+      router.replace(postLoginTarget);
+    }
+  }, [postLoginTarget, router]);
 
   const requestOtp = async (event: FormEvent) => {
     event.preventDefault();
@@ -107,8 +119,8 @@ export function LoginPage() {
         return;
       }
 
-      setMessage("Verified successfully. Redirecting to your account.");
-      router.push("/account/profile");
+      setMessage("Verified successfully. Redirecting.");
+      router.push(postLoginTarget);
     } catch (error) {
       setMessage((error as Error).message || "Unable to verify OTP.");
     } finally {
@@ -172,8 +184,8 @@ export function LoginPage() {
         agreedToTerms: acceptPolicies,
         privacyPolicyAccepted: acceptPolicies,
       });
-      setMessage("Profile completed. Redirecting to your account.");
-      router.push("/account/profile");
+      setMessage("Profile completed. Redirecting.");
+      router.push(postLoginTarget);
     } catch (error) {
       setMessage((error as Error).message || "Unable to complete profile.");
     } finally {

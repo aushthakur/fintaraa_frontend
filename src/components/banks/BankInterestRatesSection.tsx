@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { getApplyHref } from "@/components/application/flowRegistry";
 import {
   ArrowRight,
   BadgeIndianRupee,
@@ -13,6 +14,12 @@ import type { BankSeoPageData } from "@/services/bankSeoPages";
 const productIcons = [BadgeIndianRupee, Banknote, Building2, CreditCard];
 
 export function BankInterestRatesSection({ page }: { page: BankSeoPageData }) {
+  const applyHref = getApplyHref({
+    category: "loan",
+    productSlug: page.productSlug || "loan",
+    bankSlug: page.bankSlug,
+    referrer: page.canonicalPath || `/banks/${page.bankSlug}/${page.productSlug}`,
+  });
   const products = (page.products || [])
     .filter((product) => product.isActive !== false)
     .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
@@ -62,7 +69,7 @@ export function BankInterestRatesSection({ page }: { page: BankSeoPageData }) {
                     </div>
                   </div>
                   <Link
-                    href={product.href || `/login?product=${page.productSlug || "loan"}&bank=${page.bankSlug || "hdfc"}`}
+                    href={product.href || applyHref}
                     className="mt-4 inline-flex items-center justify-center gap-1 text-[12px] font-bold text-[#13a653] hover:underline self-center w-full pt-2 border-t border-[#f7fafc]"
                   >
                     <span>{product.ctaLabel || "Apply Now"}</span>
@@ -138,7 +145,7 @@ export function BankInterestRatesSection({ page }: { page: BankSeoPageData }) {
             </div>
 
             <Link
-              href={`/login?product=${page.productSlug || "loan"}&bank=${page.bankSlug || "hdfc"}`}
+              href={applyHref}
               className="mt-6 flex h-11 w-full items-center justify-center rounded-2xl bg-[#13a653] hover:bg-[#108e46] text-[14px] font-bold text-white no-underline transition-colors shadow-xs"
             >
               Apply Now

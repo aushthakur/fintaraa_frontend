@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { FileText, LockKeyhole, ShieldCheck } from "lucide-react";
 
 const stats = [
@@ -58,9 +59,11 @@ export function StatusHero() {
           </div>
           <div className="hidden h-30 w-40 shrink-0 items-center justify-center md:flex">
             {/* TODO: replace src with the final illustration asset */}
-            <img
+            <Image
               src="/assets/images/application-status.png"
               alt="Application status illustration"
+              width={160}
+              height={120}
               className="h-full w-full object-contain"
             />
           </div>

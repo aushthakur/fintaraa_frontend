@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { CircleCheck, HeartPulse } from "lucide-react";
+import { getApplyHref } from "@/components/application/flowRegistry";
 
 interface InsuranceJourneyProps {
   insuranceTypeSlug: string;
@@ -15,6 +16,12 @@ const journeySteps = [
 ];
 
 export function InsuranceJourney({ insuranceTypeSlug }: InsuranceJourneyProps) {
+  const applyHref = getApplyHref({
+    category: "insurance",
+    productSlug: insuranceTypeSlug,
+    referrer: `/products/${insuranceTypeSlug}`,
+  });
+
   return (
     <section className="px-4 pb-10 md:px-6 lg:px-8">
       <div className="mx-auto grid max-w-9xl gap-8 bg-[#edf6ff] p-8 md:grid-cols-[1fr_0.9fr] md:items-center">
@@ -34,7 +41,7 @@ export function InsuranceJourney({ insuranceTypeSlug }: InsuranceJourneyProps) {
               </span>
             ))}
           </div>
-          <Link href={`/login?product=${insuranceTypeSlug}`} className="mt-6 inline-flex h-10 items-center justify-center bg-[#005ca8] px-5 text-[12px] font-black text-white no-underline">
+          <Link href={applyHref} className="mt-6 inline-flex h-10 items-center justify-center bg-[#005ca8] px-5 text-[12px] font-black text-white no-underline">
             Start Your Application Now
           </Link>
         </div>
