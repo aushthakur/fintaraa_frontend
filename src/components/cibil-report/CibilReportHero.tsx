@@ -1,11 +1,18 @@
 "use client";
 
-import Link from "next/link";
 import { ArrowDownToLine } from "lucide-react";
 import CreditScoreGauge from "./CreditScoreGauge";
 import type { CibilReportViewData } from "./types";
 
-export function CibilReportHero({ data }: { data: CibilReportViewData }) {
+export function CibilReportHero({
+  data,
+  downloadingReport,
+  onDownloadReport,
+}: {
+  data: CibilReportViewData;
+  downloadingReport?: boolean;
+  onDownloadReport?: () => void;
+}) {
   return (
     <section className="relative w-full max-w-9xl mx-auto bg-white px-4 sm:px-6 py-8 sm:py-10 antialiased text-[#111827] overflow-hidden">
       <div className="absolute inset-0 overflow-visible pointer-events-none z-0">
@@ -76,12 +83,14 @@ export function CibilReportHero({ data }: { data: CibilReportViewData }) {
             </div>
 
             <div className="flex flex-col items-center gap-3">
-              <Link
-                href={data.reportHref}
+              <button
+                type="button"
+                onClick={onDownloadReport}
+                disabled={downloadingReport}
                 className="flex h-11 w-full items-center justify-center rounded-xl bg-linear-to-r from-[#0fae5e] to-[#17cb70] text-sm font-bold text-white transition-all hover:brightness-110 active:scale-[0.99]"
               >
-                Download Full Report
-              </Link>
+                {downloadingReport ? "Preparing Report..." : "Download Full Report"}
+              </button>
 
               <p className="text-[11px] font-semibold text-gray-400">
                 Report Date: {data.reportDateLabel}
@@ -137,6 +146,8 @@ export function CibilReportHero({ data }: { data: CibilReportViewData }) {
 
               <button
                 type="button"
+                onClick={onDownloadReport}
+                disabled={downloadingReport}
                 className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] text-white transition-transform hover:scale-105 active:scale-95 shadow-sm"
               >
                 <ArrowDownToLine className="h-5 w-5" strokeWidth={2.5} />

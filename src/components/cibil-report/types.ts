@@ -26,4 +26,16 @@ export type CibilReportViewData = {
   scoreHistory: CibilScoreHistoryPoint[];
   improvementPoints: number;
   reportHref: string;
+  bureauScores?: {
+    cibil?: number;
+    equifax?: number;
+    experian?: number;
+    crif?: number;
+  };
+  bureauDates?: {
+    cibil?: string;
+    equifax?: string;
+    experian?: string;
+    crif?: string;
+  };
 };

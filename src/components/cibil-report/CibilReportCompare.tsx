@@ -1,8 +1,18 @@
-import Link from "next/link";
 import { Download } from "lucide-react";
 import type { CibilReportViewData } from "./types";
 
-export function CibilReportCompare({ data }: { data: CibilReportViewData }) {
+const scoreText = (value?: number) => (value ? String(value) : "Not fetched");
+const dateText = (value?: string) => (value && value !== "—" ? value : "—");
+
+export function CibilReportCompare({
+  data,
+  downloadingReport,
+  onDownloadReport,
+}: {
+  data: CibilReportViewData;
+  downloadingReport?: boolean;
+  onDownloadReport?: () => void;
+}) {
   return (
     <section className="px-4 py-6 md:px-6 lg:px-8">
       <div className="mx-auto w-full max-w-9xl rounded-xl border border-gray-200 bg-white p-5 shadow-sm md:p-6 lg:p-8">
@@ -24,7 +34,7 @@ export function CibilReportCompare({ data }: { data: CibilReportViewData }) {
                     CIBIL
                   </span>
                   <span className="mt-0.5 block text-[11px] font-medium text-gray-400">
-                    {data.compareDateLabel}
+                    {dateText(data.bureauDates?.cibil || data.compareDateLabel)}
                   </span>
                 </th>
                 <th className="pb-3 text-center">
@@ -32,7 +42,7 @@ export function CibilReportCompare({ data }: { data: CibilReportViewData }) {
                     EQUIFAX
                   </span>
                   <span className="mt-0.5 block text-[11px] font-medium text-gray-400">
-                    1 Jun &apos;26
+                    {dateText(data.bureauDates?.equifax)}
                   </span>
                 </th>
                 <th className="pb-3 text-center">
@@ -40,7 +50,7 @@ export function CibilReportCompare({ data }: { data: CibilReportViewData }) {
                     experian
                   </span>
                   <span className="mt-0.5 block text-[11px] font-medium text-gray-400">
-                    1 Jun &apos;26
+                    {dateText(data.bureauDates?.experian)}
                   </span>
                 </th>
                 <th className="pb-3 text-center">
@@ -51,7 +61,7 @@ export function CibilReportCompare({ data }: { data: CibilReportViewData }) {
                     </span>
                   </span>
                   <span className="mt-0.5 block text-[11px] font-medium text-gray-400">
-                    1 Jun &apos;26
+                    {dateText(data.bureauDates?.crif)}
                   </span>
                 </th>
               </tr>
@@ -62,16 +72,16 @@ export function CibilReportCompare({ data }: { data: CibilReportViewData }) {
                   Score
                 </td>
                 <td className="py-4 text-center text-xs font-semibold text-gray-400">
-                  {data.score}
-                </td>
-                <td className="py-4 text-center text-xs font-bold text-[#00a653]">
-                  780
+                  {scoreText(data.bureauScores?.cibil || data.score)}
                 </td>
                 <td className="py-4 text-center text-xs font-semibold text-gray-400">
-                  830
+                  {scoreText(data.bureauScores?.equifax)}
+                </td>
+                <td className="py-4 text-center text-xs font-semibold text-gray-400">
+                  {scoreText(data.bureauScores?.experian)}
                 </td>
                 <td className="py-4 text-center text-[11px] font-medium text-gray-400">
-                  No History
+                  {scoreText(data.bureauScores?.crif)}
                 </td>
               </tr>
             </tbody>
@@ -88,13 +98,15 @@ export function CibilReportCompare({ data }: { data: CibilReportViewData }) {
             </p>
           </div>
 
-          <Link
-            href={data.reportHref}
+          <button
+            type="button"
+            onClick={onDownloadReport}
+            disabled={downloadingReport}
             className="flex h-9 items-center justify-center gap-2 rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-6 text-xs font-bold text-white transition-all hover:brightness-110"
           >
             <Download className="h-3.5 w-3.5" strokeWidth={2.5} />
-            Download Report
-          </Link>
+            {downloadingReport ? "Preparing..." : "Download Report"}
+          </button>
         </div>
       </div>
     </section>
