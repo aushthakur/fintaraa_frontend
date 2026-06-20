@@ -20,6 +20,8 @@ export type SignupPayload = {
   privacyPolicyAccepted?: boolean;
 };
 
+const WEBSITE_ACCOUNT_SOURCE = "website";
+
 export type VerifyOtpResponse = {
   token?: string;
   user?: Record<string, unknown>;
@@ -40,7 +42,11 @@ export type MobileToPanResponse = {
 };
 
 export const sendOtp = (mobile: string) =>
-  Post<ApiResponse<{ existed?: boolean }>>("user/send-otp", { mobile }, 15000);
+  Post<ApiResponse<{ existed?: boolean }>>(
+    "user/send-otp",
+    { mobile, accountSource: WEBSITE_ACCOUNT_SOURCE },
+    15000,
+  );
 
 export const verifyOtp = async (
   mobile: string,
@@ -50,7 +56,7 @@ export const verifyOtp = async (
 ) => {
   const response = await Post<ApiResponse<VerifyOtpResponse>>(
     "user/verify-otp",
-    { mobile, otp, email, name },
+    { mobile, otp, email, name, accountSource: WEBSITE_ACCOUNT_SOURCE },
   );
   const payload =
     ((response as WrappedApiResponse<VerifyOtpResponse>)?.data as
@@ -75,7 +81,10 @@ export const verifyOtp = async (
 };
 
 export const signup = (payload: SignupPayload) =>
-  Post<ApiResponse<unknown>>("user", payload);
+  Post<ApiResponse<unknown>>("user", {
+    ...payload,
+    accountSource: WEBSITE_ACCOUNT_SOURCE,
+  });
 
 export const updateUserProfile = async (payload: Record<string, unknown>) => {
   const response = await Put<ApiResponse<Record<string, unknown>>>(
