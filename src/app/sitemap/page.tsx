@@ -41,6 +41,7 @@ const groups = [
     title: "Legal",
     links: [
       ["/privacy-policy", "Privacy Policy"],
+      ["/delete-account", "Delete Account"],
       ["/terms-and-conditions", "Terms & Conditions"],
       ["/grievance", "Grievance Redressal"],
       ["/loan-disclosure", "Loan Disclosure"],

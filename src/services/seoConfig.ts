@@ -60,6 +60,7 @@ export const coreSitemapRoutes = [
   { path: "/tools", priority: 0.5, changeFrequency: "weekly" },
   { path: "/app", priority: 0.45, changeFrequency: "monthly" },
   { path: "/privacy-policy", priority: 0.35, changeFrequency: "yearly" },
+  { path: "/delete-account", priority: 0.35, changeFrequency: "yearly" },
   { path: "/terms-and-conditions", priority: 0.35, changeFrequency: "yearly" },
   { path: "/grievance", priority: 0.35, changeFrequency: "yearly" },
   { path: "/loan-disclosure", priority: 0.35, changeFrequency: "yearly" },

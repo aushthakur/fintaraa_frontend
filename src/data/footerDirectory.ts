@@ -5,5 +5,5 @@ export const legalLinks = [
   { label: "Refunds and Cancellations", href: "/refund-cancellations" },
   { label: "Grievance Support", href: "/grievance" },
   { label: "Our Lending Partners", href: "/partners" },
-  { label: "Data Deletion Requests", href: "/privacy-policy#data-deletion" },
+  { label: "Data Deletion Requests", href: "/delete-account" },
 ];

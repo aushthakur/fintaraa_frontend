@@ -339,6 +339,7 @@ export default function Footer() {
                 { label: "Privacy Policy", href: "/privacy-policy" },
                 { label: "Terms & Conditions", href: "/terms-and-conditions" },
                 { label: "Grievance Redressal", href: "/grievance" },
+                { label: "Delete Account", href: "/delete-account" },
                 { label: "Sitemap", href: "/sitemap" },
               ].map(({ label, href }, i, arr) => (
                 <span key={href} className="flex items-center gap-3">

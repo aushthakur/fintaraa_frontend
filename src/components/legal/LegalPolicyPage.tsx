@@ -15,8 +15,18 @@ const relatedLinks = [
   { label: "Terms & Conditions", href: "/terms-and-conditions" },
   { label: "Grievance Redressal", href: "/grievance" },
   { label: "Loan Disclosure", href: "/loan-disclosure" },
+  { label: "Delete Account", href: "/delete-account" },
   { label: "Lending Partners", href: "/partners" },
 ];
+
+const toSectionId = (section: LegalPageContent["sections"][number]) =>
+  section.id ||
+  section.title
+    .toLowerCase()
+    .replace(/^\d+\.\s*/, "")
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
 
 export function LegalPolicyPage({
   content,
@@ -131,7 +141,8 @@ export function LegalPolicyPage({
               {content.sections.map((section, index) => (
                 <article
                   key={section.title}
-                  className="grid py-10 md:grid-cols-[6rem_1fr]"
+                  id={toSectionId(section)}
+                  className="grid scroll-mt-32 py-10 md:grid-cols-[6rem_1fr]"
                 >
                   <div className="text-[14px] pt-2 font-extrabold tracking-[0.16em] text-[#195585]">
                     {String(index + 1).padStart(2, "0")}
