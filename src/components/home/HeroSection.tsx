@@ -37,6 +37,11 @@ const trustStats = [
 const safeDuration = (value?: number) =>
   Math.min(Math.max(Number(value || 5000), 1500), 30000);
 
+const resolveBannerHref = (buttonText?: string, href?: string) => {
+  if (/eligibility/i.test(buttonText || "")) return "/#eligibility-check";
+  return href || "";
+};
+
 export function HeroSection() {
   const [banners, setBanners] = useState<HomeBanner[]>(fallbackHomeBanners);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -75,6 +80,14 @@ export function HeroSection() {
       "Compare offers from 30+ banks and NBFCs. Apply in minutes.",
     [activeBanner.description],
   );
+  const primaryHref = resolveBannerHref(
+    activeBanner.buttonText,
+    activeBanner.linkUrl,
+  );
+  const secondaryHref = resolveBannerHref(
+    activeBanner.secondaryButtonText,
+    activeBanner.secondaryLinkUrl,
+  );
 
   return (
     <section className="bg-white py-10 sm:py-12 lg:pt-16 lg:pb-0">
@@ -102,9 +115,9 @@ export function HeroSection() {
 
             {/* Action Buttons */}
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
-              {activeBanner.buttonText && activeBanner.linkUrl ? (
+              {activeBanner.buttonText && primaryHref ? (
                 <Link
-                  href={activeBanner.linkUrl}
+                  href={primaryHref}
                   className="inline-flex h-12 w-full items-center justify-center rounded-full border border-[#12b76a] px-7 text-[15px] font-bold text-[#12b76a] no-underline transition-colors hover:bg-emerald-50/40 sm:w-auto"
                 >
                   {activeBanner.buttonText}
@@ -112,9 +125,9 @@ export function HeroSection() {
               ) : null}
 
               {activeBanner.secondaryButtonText &&
-              activeBanner.secondaryLinkUrl ? (
+              secondaryHref ? (
                 <Link
-                  href={activeBanner.secondaryLinkUrl}
+                  href={secondaryHref}
                   className="inline-flex h-12 w-full items-center justify-center rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-8 text-[15px] font-bold text-white no-underline transition-colors hover:bg-[#0ea85f] sm:w-auto"
                 >
                   {activeBanner.secondaryButtonText}

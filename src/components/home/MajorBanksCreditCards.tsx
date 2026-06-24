@@ -23,6 +23,108 @@ const getCardId = (card: CreditCardProduct) => card._id || card.id || "";
 
 const loggedIn = () => getAuthType() === "user" && Boolean(getAuthToken());
 
+const bankDisplayOrder = [
+  "SBI Card",
+  "HDFC Bank",
+  "ICICI Bank",
+  "Axis Bank",
+  "Kotak Mahindra Bank",
+  "IndusInd Bank",
+];
+
+const fallbackCreditCards: CreditCardProduct[] = [
+  {
+    _id: "fallback-sbi-card",
+    name: "SBI Cashback Credit Card",
+    bankName: "SBI Card",
+    image: "/assets/banks/sbi-logo.png",
+    shortDescription: "Cashback benefits on everyday online spends.",
+    cardType: "Cashback",
+    rewardsType: "Cashback",
+    welcomeBenefits: "Welcome benefits as per bank policy.",
+    rewardStructure: "Cashback and milestone rewards.",
+    applyUrl: "/credit-cards",
+    priorityOrder: 1,
+  },
+  {
+    _id: "fallback-hdfc-card",
+    name: "HDFC Millennia Credit Card",
+    bankName: "HDFC Bank",
+    image: "/assets/banks/hdfc.png",
+    shortDescription: "Popular shopping, dining and rewards card.",
+    cardType: "Lifestyle",
+    rewardsType: "Reward Points",
+    welcomeBenefits: "Digital vouchers and partner benefits.",
+    rewardStructure: "Reward points on eligible spends.",
+    applyUrl: "/credit-cards",
+    priorityOrder: 2,
+  },
+  {
+    _id: "fallback-icici-card",
+    name: "ICICI Platinum Credit Card",
+    bankName: "ICICI Bank",
+    image: "/assets/banks/icici-logo.png",
+    shortDescription: "Simple card for rewards and daily convenience.",
+    cardType: "Rewards",
+    rewardsType: "Reward Points",
+    welcomeBenefits: "Available as per bank policy.",
+    rewardStructure: "Points on retail spends.",
+    applyUrl: "/credit-cards",
+    priorityOrder: 3,
+  },
+  {
+    _id: "fallback-axis-card",
+    name: "Axis Bank Rewards Credit Card",
+    bankName: "Axis Bank",
+    image: "/assets/banks/axis-bank.png",
+    shortDescription: "Rewards-led card for shopping and travel spends.",
+    cardType: "Rewards",
+    rewardsType: "EDGE Rewards",
+    welcomeBenefits: "Shopping and partner benefits.",
+    rewardStructure: "Rewards on eligible purchases.",
+    applyUrl: "/credit-cards",
+    priorityOrder: 4,
+  },
+  {
+    _id: "fallback-kotak-card",
+    name: "Kotak League Credit Card",
+    bankName: "Kotak Mahindra Bank",
+    image: "/assets/banks/kotak.png",
+    shortDescription: "Lifestyle card with rewards and offers.",
+    cardType: "Lifestyle",
+    rewardsType: "Reward Points",
+    welcomeBenefits: "Available as per bank policy.",
+    rewardStructure: "Points and milestone benefits.",
+    applyUrl: "/credit-cards",
+    priorityOrder: 5,
+  },
+];
+
+const normalizeBankKey = (bankName?: string) => {
+  const value = (bankName || "").toLowerCase();
+  if (value.includes("sbi") || value.includes("state bank")) return "sbi";
+  if (value.includes("hdfc")) return "hdfc";
+  if (value.includes("icici")) return "icici";
+  if (value.includes("axis")) return "axis";
+  if (value.includes("kotak")) return "kotak";
+  if (value.includes("indusind")) return "indusind";
+  return slugify(value);
+};
+
+const mergeWithFallbackCards = (cards: CreditCardProduct[]) => {
+  const existingKeys = new Set(
+    cards.map((card) => `${card.bankName}-${card.name}`.toLowerCase()),
+  );
+  const existingBanks = new Set(cards.map((card) => normalizeBankKey(card.bankName)));
+  const missingFallbacks = fallbackCreditCards.filter(
+    (card) =>
+      !existingBanks.has(normalizeBankKey(card.bankName)) &&
+      !existingKeys.has(`${card.bankName}-${card.name}`.toLowerCase()),
+  );
+
+  return [...cards, ...missingFallbacks];
+};
+
 export function MajorBankCreditCards() {
   const router = useRouter();
   const [cards, setCards] = useState<CreditCardProduct[]>([]);
@@ -39,11 +141,14 @@ export function MajorBankCreditCards() {
       try {
         const result = await fetchCreditCards();
         if (!active) return;
-        setCards(result);
-        setActiveBank((current) => current || result[0]?.bankName || "");
-      } catch (err) {
+        const mergedCards = mergeWithFallbackCards(result);
+        setCards(mergedCards);
+        setActiveBank((current) => current || mergedCards[0]?.bankName || "");
+      } catch {
         if (!active) return;
-        setError((err as Error).message || "Unable to load credit cards.");
+        setCards(fallbackCreditCards);
+        setActiveBank((current) => current || fallbackCreditCards[0]?.bankName || "");
+        setError("");
       } finally {
         if (active) setLoading(false);
       }
@@ -55,7 +160,17 @@ export function MajorBankCreditCards() {
   }, []);
 
   const bankTabs = useMemo(
-    () => Array.from(new Set(cards.map((card) => card.bankName).filter(Boolean))),
+    () =>
+      Array.from(new Set(cards.map((card) => card.bankName).filter(Boolean))).sort(
+        (a, b) => {
+          const aIndex = bankDisplayOrder.indexOf(a);
+          const bIndex = bankDisplayOrder.indexOf(b);
+          if (aIndex === -1 && bIndex === -1) return a.localeCompare(b);
+          if (aIndex === -1) return 1;
+          if (bIndex === -1) return -1;
+          return aIndex - bIndex;
+        },
+      ),
     [cards],
   );
 

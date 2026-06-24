@@ -22,15 +22,22 @@ export const fallbackHomeBanners: HomeBanner[] = [
     title: "Get the Best Loan, Insurance & Credit Card",
     highlightText: "Fast & Free",
     description: "Compare offers from 30+ banks and NBFCs. Apply in minutes.",
-    image: "/assets/refer/header.png",
+    image: "/assets/refer/header-credit-cards.png",
     imageAlt: "Banking services application view dashboard",
     linkUrl: "/products",
     buttonText: "View All Products",
-    secondaryLinkUrl: "/products",
+    secondaryLinkUrl: "/#eligibility-check",
     secondaryButtonText: "Check Eligibility Free",
     displayDurationMs: 5000,
   },
 ];
+
+const localBannerImage = (image?: string) => {
+  if (!image) return fallbackHomeBanners[0].image;
+  return image.includes("/assets/refer/header.png")
+    ? "/assets/refer/header-credit-cards.png"
+    : image;
+};
 
 const normalise = (item: any): HomeBanner => ({
   _id: item?._id,
@@ -38,7 +45,7 @@ const normalise = (item: any): HomeBanner => ({
   title: String(item?.title || "Fintaraa Financial Services"),
   highlightText: item?.highlightText || "",
   description: item?.description || "",
-  image: item?.image || fallbackHomeBanners[0].image,
+  image: localBannerImage(item?.image),
   imageAlt: item?.imageAlt || item?.title || fallbackHomeBanners[0].imageAlt,
   linkUrl: item?.linkUrl || "",
   buttonText: item?.buttonText || "",

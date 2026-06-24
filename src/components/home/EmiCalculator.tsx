@@ -65,6 +65,60 @@ const formatNumberIndian = (num: number) =>
     maximumFractionDigits: 0,
   }).format(Math.max(0, Math.round(num || 0)));
 
+const formatCurrencyPdf = (num: number) =>
+  `Rs ${formatNumberIndian(Math.max(0, Math.round(num || 0)))}`;
+
+const escapePdfText = (value: string) =>
+  value.replace(/\\/g, "\\\\").replace(/\(/g, "\\(").replace(/\)/g, "\\)");
+
+const buildLoanBreakupPdf = (lines: string[]) => {
+  const content = [
+    "BT",
+    "/F1 18 Tf",
+    "54 742 Td",
+    "(Fintaraa Loan Breakup) Tj",
+    "0 -30 Td",
+    "/F1 11 Tf",
+    ...lines.flatMap((line) => [`(${escapePdfText(line)}) Tj`, "0 -18 Td"]),
+    "ET",
+  ].join("\n");
+  const objects = [
+    "<< /Type /Catalog /Pages 2 0 R >>",
+    "<< /Type /Pages /Kids [3 0 R] /Count 1 >>",
+    "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>",
+    "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>",
+    `<< /Length ${content.length} >>\nstream\n${content}\nendstream`,
+  ];
+
+  let pdf = "%PDF-1.4\n";
+  const offsets = [0];
+  objects.forEach((object, index) => {
+    offsets[index + 1] = pdf.length;
+    pdf += `${index + 1} 0 obj\n${object}\nendobj\n`;
+  });
+
+  const xrefOffset = pdf.length;
+  pdf += `xref\n0 ${objects.length + 1}\n0000000000 65535 f \n`;
+  offsets.slice(1).forEach((offset) => {
+    pdf += `${String(offset).padStart(10, "0")} 00000 n \n`;
+  });
+  pdf += `trailer\n<< /Size ${objects.length + 1} /Root 1 0 R >>\nstartxref\n${xrefOffset}\n%%EOF`;
+
+  return pdf;
+};
+
+const downloadPdf = (fileName: string, pdf: string) => {
+  const blob = new Blob([pdf], { type: "application/pdf" });
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = fileName;
+  document.body.appendChild(anchor);
+  anchor.click();
+  anchor.remove();
+  URL.revokeObjectURL(url);
+};
+
 const clamp = (value: number, min: number, max: number) =>
   Math.min(Math.max(Number.isFinite(value) ? value : min, min), max);
 
@@ -771,6 +825,31 @@ export function EmiCalculator() {
     }));
   };
 
+  const handleDownloadBreakup = () => {
+    const inputLines = activeConfig.fields.map((field) => {
+      const value = activeValues[field.key];
+      const formattedValue = field.prefix
+        ? formatCurrencyPdf(value)
+        : `${formatNumberIndian(value)}${field.suffix ? ` ${field.suffix}` : ""}`;
+      return `${field.title}: ${formattedValue}`;
+    });
+    const metricLines = [
+      `Product: ${activeConfig.label}`,
+      `${computedMetrics.principalLabel}: ${formatCurrencyPdf(computedMetrics.principal)}`,
+      `Monthly EMI: ${formatCurrencyPdf(computedMetrics.emi)}`,
+      `Total Interest: ${formatCurrencyPdf(computedMetrics.totalInterest)}`,
+      `Total Payable: ${formatCurrencyPdf(computedMetrics.totalPayable)}`,
+      `Tenure: ${computedMetrics.months} months`,
+      "",
+      "Inputs",
+      ...inputLines,
+      "",
+      "Note: This is an indicative calculation. Final offers depend on lender policy, credit profile and document verification.",
+    ];
+    const fileName = `fintaraa-${activeConfig.key}-breakup.pdf`;
+    downloadPdf(fileName, buildLoanBreakupPdf(metricLines));
+  };
+
   return (
     <section className="bg-[#fafbfc] px-4 py-8 md:px-6 lg:px-8">
       <div className="mx-auto max-w-9xl">
@@ -831,7 +910,7 @@ export function EmiCalculator() {
 
             <button
               type="button"
-              onClick={() => window.print()}
+              onClick={handleDownloadBreakup}
               className="mt-2 flex h-12 w-full items-center justify-center gap-2 rounded-xl border border-emerald-500 bg-white text-[13px] font-bold text-gray-700 transition-colors hover:bg-emerald-50/40 sm:text-[14px]"
             >
               Download Loan Breakup PDF

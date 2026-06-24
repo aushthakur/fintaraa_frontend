@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { User, ShieldCheck, Clock } from "lucide-react";
 
 export function CreditScoreBanner() {
@@ -77,9 +78,12 @@ export function CreditScoreBanner() {
 
         {/* Call to Action Button */}
         <div className="mt-6 sm:mt-8">
-          <button className="inline-flex h-12 items-center justify-center rounded-full  bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-9 text-[14.5px] font-bold text-white transition-all shadow-[0_4px_14px_rgba(14,168,95,0.2)] hover:bg-[#0c9352]">
+          <Link
+            href="/cibil-score"
+            className="inline-flex h-12 items-center justify-center rounded-full  bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-9 text-[14.5px] font-bold text-white no-underline transition-all shadow-[0_4px_14px_rgba(14,168,95,0.2)] hover:bg-[#0c9352]"
+          >
             Check Credit Score Now
-          </button>
+          </Link>
         </div>
 
       </div>

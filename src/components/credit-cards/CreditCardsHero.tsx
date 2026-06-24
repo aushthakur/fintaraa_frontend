@@ -1,8 +1,21 @@
 "use client";
 
 import Image from "next/image";
-import { Gift, ShieldCheck } from "lucide-react";
+import {
+  BriefcaseBusiness,
+  Gift,
+  IndianRupee,
+  Phone,
+  ShieldCheck,
+  UserRound,
+} from "lucide-react";
 import { AuthRedirectLink } from "@/components/auth/AuthRedirectLink";
+
+const inputClass =
+  "h-11 w-full rounded-xl border border-[#d8e4f0] bg-[#f8fbff] px-3 text-[13px] font-bold text-[#1f2937] outline-none transition placeholder:text-[#9aa8b8] focus:border-[#005ca8] focus:bg-white focus:ring-2 focus:ring-[#e4f1ff]";
+
+const selectClass =
+  "h-11 w-full rounded-xl border border-[#d8e4f0] bg-[#f8fbff] px-3 text-[13px] font-bold text-[#1f2937] outline-none transition focus:border-[#005ca8] focus:bg-white focus:ring-2 focus:ring-[#e4f1ff]";
 
 export function CreditCardsHero() {
   return (
@@ -69,43 +82,101 @@ export function CreditCardsHero() {
         <div className="relative mx-auto w-full max-w-100 md:mx-0">
           <div className="absolute inset-0 block translate-x-2 translate-y-2 rounded-[18px] bg-[#00529c] sm:translate-x-3 sm:translate-y-3" />
 
-          <div className="relative rounded-[18px] border border-[#d9dfe8] bg-white p-6 shadow-[0_10px_26px_rgba(0,92,168,0.12)]">
-            <h2 className="text-[21px] font-black text-[#111827]">
-              Check your Card offers
-            </h2>
-            <p className="mt-1 text-[12px] font-semibold text-[#8b95a3]">
-              Get personalized card suggestions.
-            </p>
-            <form className="mt-4 grid grid-cols-2 gap-3">
-              {[
-                "Full Name",
-                "Mobile Number",
-                "Monthly Income",
-                "Employment Type",
-              ].map((label, index) => (
-                <label key={label} className="grid gap-1 min-w-0">
-                  <span className="text-[11px] font-bold text-[#374151]">
-                    {label}
+          <div className="relative rounded-[18px] border border-[#d9dfe8] bg-white p-5 shadow-[0_10px_26px_rgba(0,92,168,0.12)] sm:p-6">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <h2 className="text-[21px] font-black leading-tight text-[#111827]">
+                  Check your card offers
+                </h2>
+                <p className="mt-1 text-[12px] font-semibold leading-5 text-[#667085]">
+                  Get personalised suggestions from top banks.
+                </p>
+              </div>
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#eef8ff] text-[#005ca8]">
+                <Gift className="h-5 w-5" />
+              </span>
+            </div>
+
+            <form className="mt-5 grid gap-3">
+              <label className="grid gap-1.5">
+                <span className="text-[11px] font-black uppercase tracking-[0.08em] text-[#475467]">
+                  Full Name
+                </span>
+                <div className="relative">
+                  <UserRound className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#667085]" />
+                  <input
+                    type="text"
+                    placeholder="Enter name as per PAN"
+                    className={`${inputClass} pl-10`}
+                  />
+                </div>
+              </label>
+
+              <label className="grid gap-1.5">
+                <span className="text-[11px] font-black uppercase tracking-[0.08em] text-[#475467]">
+                  Mobile Number
+                </span>
+                <div className="flex h-11 overflow-hidden rounded-xl border border-[#d8e4f0] bg-[#f8fbff] transition focus-within:border-[#005ca8] focus-within:bg-white focus-within:ring-2 focus-within:ring-[#e4f1ff]">
+                  <span className="flex items-center border-r border-[#d8e4f0] bg-[#eef8ff] px-3 text-[13px] font-black text-[#005ca8]">
+                    +91
                   </span>
-                  {index > 1 ? (
-                    <select className="h-10 w-full border border-[#d9dfe8] bg-white px-3 text-[12px] font-semibold text-[#8b95a3] outline-none">
-                      <option>Select Type</option>
-                    </select>
-                  ) : (
-                    <input className="h-10 w-full border border-[#d9dfe8] px-3 text-[12px] outline-none" />
-                  )}
+                  <div className="relative min-w-0 flex-1">
+                    <Phone className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#667085]" />
+                    <input
+                      type="tel"
+                      inputMode="numeric"
+                      maxLength={10}
+                      placeholder="10-digit mobile number"
+                      className="h-full w-full bg-transparent px-3 pl-10 text-[13px] font-bold text-[#1f2937] outline-none placeholder:text-[#9aa8b8]"
+                    />
+                  </div>
+                </div>
+              </label>
+
+              <div className="grid gap-3 sm:grid-cols-2">
+                <label className="grid gap-1.5">
+                  <span className="text-[11px] font-black uppercase tracking-[0.08em] text-[#475467]">
+                    Monthly Income
+                  </span>
+                  <div className="relative">
+                    <IndianRupee className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#667085]" />
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      placeholder="e.g. 75,000"
+                      className={`${inputClass} pl-10`}
+                    />
+                  </div>
                 </label>
-              ))}
+
+                <label className="grid gap-1.5">
+                  <span className="text-[11px] font-black uppercase tracking-[0.08em] text-[#475467]">
+                    Employment Type
+                  </span>
+                  <div className="relative">
+                    <BriefcaseBusiness className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#667085]" />
+                    <select className={`${selectClass} pl-10`}>
+                      <option value="">Select employment</option>
+                      <option value="salaried">Salaried</option>
+                      <option value="self-employed">Self-employed</option>
+                      <option value="business-owner">Business owner</option>
+                      <option value="student">Student</option>
+                    </select>
+                  </div>
+                </label>
+              </div>
+
               <button
                 type="button"
-                className="inline-flex h-9 items-center justify-center rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-4 text-[12px] font-extrabold text-white"
+                className="mt-1 inline-flex h-11 w-full items-center justify-center rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-4 text-[13px] font-extrabold text-white shadow-[0_10px_20px_rgba(18,183,106,0.18)] transition hover:brightness-105"
               >
-                Unlock card offers
+                Unlock Card Offers
+                <Gift className="ml-2 h-4 w-4" />
               </button>
             </form>
-            <p className="mt-6 flex items-center justify-center gap-2 text-[11px] font-semibold text-[#667085]">
+            <p className="mt-4 flex items-center justify-center gap-2 text-center text-[11px] font-semibold text-[#667085]">
               <ShieldCheck className="h-4 w-4 text-[#0fae5e]" />
-              100% secure. No impact on credit score.
+              100% secure. Soft check only, no impact on credit score.
             </p>
           </div>
         </div>

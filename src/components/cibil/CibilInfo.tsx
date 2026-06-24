@@ -41,9 +41,9 @@ export function CibilInfo() {
         <div className="flex flex-col items-end w-full lg:max-w-105 lg:justify-self-end">
           {/* Fixed Gauge Image Node Slot - Replaced the component with your graphic target layout */}
           <div className="w-full flex justify-center lg:justify-end pr-0 sm:pr-2">
-            <div className="relative w-full max-w-120 aspect-square scale-100 sm:scale-125">
+            <div className="relative w-full max-w-150 aspect-[16/10]">
               <Image
-                src="/assets/images/cibil-gauge-graphic.png" // Update this URL path string with your exact gauge graphic image file asset!
+                src="/assets/images/cibil-score-quality.png"
                 alt="Credit Score CIBIL Range Gauge Status Meter"
                 fill
                 unoptimized

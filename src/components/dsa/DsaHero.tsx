@@ -83,7 +83,7 @@ export function DsaHero() {
 
         <div className="relative min-h-82.5 md:min-h-130">
           <Image
-            src="/assets/dsa/hero.png"
+            src="/assets/dsa/hero-quality.png"
             alt="Fintaraa DSA partners"
             fill
             priority

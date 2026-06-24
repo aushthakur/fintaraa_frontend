@@ -344,6 +344,7 @@ const categories = ["All", ...productSections.map((section) => section.title)];
 export function ProductsPage() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("All");
+  const [filtersOpen, setFiltersOpen] = useState(true);
   const [managedSlugs, setManagedSlugs] = useState<Set<string>>(new Set());
 
   const normalizedQuery = query.trim().toLowerCase();
@@ -446,25 +447,36 @@ export function ProductsPage() {
               />
             </label>
 
-            <div className="flex min-w-0 items-center gap-2 overflow-x-auto pb-1">
-              <span className="hidden h-10 items-center gap-2 rounded-full bg-[#eef8ff] px-3 text-[12px] font-extrabold text-[#195585] xl:inline-flex">
+            <div className="flex min-w-0 flex-col gap-3 xl:flex-row xl:items-center">
+              <button
+                type="button"
+                onClick={() => setFiltersOpen((current) => !current)}
+                aria-expanded={filtersOpen}
+                className="inline-flex h-10 w-fit items-center gap-2 rounded-full bg-[#eef8ff] px-3 text-[12px] font-extrabold text-[#195585] transition hover:bg-[#e1f2ff]"
+              >
                 <SlidersHorizontal className="h-4 w-4" />
                 Filter
-              </span>
-              {categories.map((item) => (
-                <button
-                  key={item}
-                  type="button"
-                  onClick={() => setCategory(item)}
-                  className={`shrink-0 rounded-full px-4 py-2 text-[12px] font-extrabold transition ${
-                    category === item
-                      ? "bg-[#195585] text-white"
-                      : "bg-[#f3faff] text-[#195585] hover:bg-[#e7f4ff]"
-                  }`}
-                >
-                  {item === "All" ? "All" : item.replace("Explore ", "")}
-                </button>
-              ))}
+              </button>
+              <div
+                className={`min-w-0 gap-2 overflow-x-auto pb-1 ${
+                  filtersOpen ? "flex" : "hidden"
+                }`}
+              >
+                {categories.map((item) => (
+                  <button
+                    key={item}
+                    type="button"
+                    onClick={() => setCategory(item)}
+                    className={`shrink-0 rounded-full px-4 py-2 text-[12px] font-extrabold transition ${
+                      category === item
+                        ? "bg-[#195585] text-white"
+                        : "bg-[#f3faff] text-[#195585] hover:bg-[#e7f4ff]"
+                    }`}
+                  >
+                    {item === "All" ? "All" : item.replace("Explore ", "")}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 

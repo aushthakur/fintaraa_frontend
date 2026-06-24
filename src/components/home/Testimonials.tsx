@@ -11,46 +11,85 @@ import {
 
 const testimonialsData: WebsiteKnowledgeItem[] = [
   {
-    slug: "ramesh-kumar",
-    title: "Ramesh Kumar",
+    slug: "ananya-sharma",
+    title: "Ananya Sharma",
     type: "testimonial",
-    authorName: "Ramesh Kumar",
-    location: "Delhi",
-    authorAvatarUrl:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=120&h=120",
-    summary: "Got Rs25 Lakh Home Loan approved in 3 days. The team was very helpful",
+    authorName: "Ananya Sharma",
+    location: "Mumbai",
+    authorAvatarUrl: "/assets/images/testimonials/client-1.jpg",
+    summary:
+      "Got my home loan options compared quickly and the documentation support was clear.",
   },
   {
-    slug: "ramesh-kumar-2",
-    title: "Ramesh Kumar",
+    slug: "rohan-mehta",
+    title: "Rohan Mehta",
     type: "testimonial",
-    authorName: "Ramesh Kumar",
-    location: "Delhi",
-    authorAvatarUrl:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=120&h=120",
-    summary: "Every step was explained clearly and I could compare options with confidence.",
+    authorName: "Rohan Mehta",
+    location: "Ahmedabad",
+    authorAvatarUrl: "/assets/images/testimonials/client-2.jpg",
+    summary:
+      "The team helped me choose a credit card that matched my spending pattern.",
   },
   {
-    slug: "ramesh-kumar-3",
-    title: "Ramesh Kumar",
+    slug: "aditya-nair",
+    title: "Aditya Nair",
     type: "testimonial",
-    authorName: "Ramesh Kumar",
-    location: "Delhi",
-    authorAvatarUrl:
-      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=120&h=120",
-    summary: "The process was practical, quick, and suited to my requirement.",
+    authorName: "Aditya Nair",
+    location: "Bengaluru",
+    authorAvatarUrl: "/assets/images/testimonials/client-3.jpg",
+    summary:
+      "I could understand eligibility, EMI and required documents before applying.",
   },
   {
-    slug: "ramesh-kumar-4",
-    title: "Ramesh Kumar",
+    slug: "priya-iyer",
+    title: "Priya Iyer",
     type: "testimonial",
-    authorName: "Ramesh Kumar",
-    location: "Delhi",
-    authorAvatarUrl:
-      "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=120&h=120",
-    summary: "The team balanced speed with proper guidance and documentation support.",
+    authorName: "Priya Iyer",
+    location: "Chennai",
+    authorAvatarUrl: "/assets/images/testimonials/client-4.jpg",
+    summary:
+      "Fintaraa made the loan process feel organised, transparent and easy to track.",
   },
 ];
+
+const testimonialAvatars = testimonialsData.map((item) => item.authorAvatarUrl || "");
+
+const normaliseTestimonials = (data: WebsiteKnowledgeItem[]) => {
+  const source = data.length ? data : testimonialsData;
+  const seen = new Set<string>();
+  const cleaned: WebsiteKnowledgeItem[] = [];
+
+  for (const item of source) {
+    const name = item.authorName || item.title || item.slug;
+    const key = String(name || "").trim().toLowerCase();
+    if (!key || seen.has(key)) continue;
+    seen.add(key);
+
+    cleaned.push({
+      ...item,
+      authorName: name,
+      title: item.title || name,
+      authorAvatarUrl: testimonialAvatars[cleaned.length],
+      location: item.location || testimonialsData[cleaned.length]?.location || "India",
+    });
+
+    if (cleaned.length === testimonialAvatars.length) break;
+  }
+
+  for (const item of testimonialsData) {
+    if (cleaned.length === testimonialAvatars.length) break;
+    const name = item.authorName || item.title || item.slug;
+    const key = String(name || "").trim().toLowerCase();
+    if (!key || seen.has(key)) continue;
+    seen.add(key);
+    cleaned.push({
+      ...item,
+      authorAvatarUrl: testimonialAvatars[cleaned.length],
+    });
+  }
+
+  return cleaned.length ? cleaned : testimonialsData;
+};
 
 export function Testimonials() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -69,9 +108,9 @@ export function Testimonials() {
     fetchWebsiteKnowledge({
       type: "testimonial",
       sectionKey: "client_testimonials",
-      limit: 5,
+      limit: 4,
     })
-      .then((data) => mounted && setItems(data.length ? data : testimonialsData))
+      .then((data) => mounted && setItems(normaliseTestimonials(data)))
       .catch(() => mounted && setItems(testimonialsData))
       .finally(() => mounted && setLoading(false));
     return () => {

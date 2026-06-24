@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import {
   Info,
@@ -12,6 +13,7 @@ import {
   CalendarDays,
   type LucideIcon,
 } from "lucide-react";
+import { productHref } from "@/lib/productRouting";
 
 const productOptions = [
   { label: "Loan", icon: HandCoins },
@@ -36,6 +38,12 @@ const stepperItems = [
 
 const purposeOptions = ["Personal", "Home renovation", "Business", "Education"];
 const tenureOptions = ["5 Years", "3 Years", "7 Years", "10 Years"];
+const loanPurposeRoutes: Record<string, string> = {
+  Personal: productHref("Personal Loan"),
+  "Home renovation": productHref("Renovation Loan"),
+  Business: productHref("Business Loan"),
+  Education: productHref("Education Loan"),
+};
 
 const formatAmount = (value: number) =>
   new Intl.NumberFormat("en-IN", {
@@ -117,9 +125,15 @@ export function EligibilitySection() {
   const [purpose, setPurpose] = useState(purposeOptions[0]);
   const [tenure, setTenure] = useState(tenureOptions[0]);
   const activeStep = amount ? 2 : selectedProduct ? 1 : 0;
+  const continueHref =
+    selectedProduct === "Credit Card"
+      ? "/credit-cards"
+      : selectedProduct === "Insurance"
+        ? "/products"
+        : loanPurposeRoutes[purpose] || "/products";
 
   return (
-    <section className="bg-white px-4 py-28 md:px-6 lg:px-8 ">
+    <section id="eligibility-check" className="bg-white px-4 py-28 md:px-6 lg:px-8 ">
       <div className="mx-auto grid max-w-9xl items-center gap-12 lg:grid-cols-2 ">
         <div className="lg:pl-2">
           {/* Quick Apply Badge - Perfectly matching light border and muted text */}
@@ -322,12 +336,12 @@ export function EligibilitySection() {
                   </div>
 
                   {/* Premium Pill Green Button */}
-                  <button
-                    type="button"
-                    className="flex h-12 w-full items-center justify-center rounded-full  bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-12 text-[15px] font-bold text-white shadow-[0_10px_20px_rgba(18,183,106,0.15)] transition-all duration-200 hover:bg-[#0ea85f] sm:w-auto min-w-45"
+                  <Link
+                    href={continueHref}
+                    className="flex h-12 w-full items-center justify-center rounded-full  bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-12 text-[15px] font-bold text-white no-underline shadow-[0_10px_20px_rgba(18,183,106,0.15)] transition-all duration-200 hover:bg-[#0ea85f] sm:w-auto min-w-45"
                   >
                     Continue
-                  </button>
+                  </Link>
                 </div>
               </form>
             </div>

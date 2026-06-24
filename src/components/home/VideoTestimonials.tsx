@@ -23,38 +23,49 @@ const videoData: WebsiteKnowledgeItem[] = [
     category: "Home Loan",
     location: "Delhi",
     summary: "Fintaraa supported me financially when I needed it the most",
-    coverImageUrl:
-      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600&h=400",
+    coverImageUrl: "/assets/images/testimonials/video-1.jpg",
     videoUrl:
       "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
   },
   {
-    slug: "deepika-kumari-video-2",
-    title: "Deepika Kumari",
+    slug: "arjun-mehta-video",
+    title: "Arjun Mehta",
     type: "video",
-    authorName: "Deepika Kumari",
-    category: "Home Loan",
-    location: "Delhi",
-    summary: "Fintaraa supported me financially when I needed it the most",
-    coverImageUrl:
-      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600&h=400",
+    authorName: "Arjun Mehta",
+    category: "Credit Card",
+    location: "Ahmedabad",
+    summary: "I compared cards easily and found benefits that matched my spends",
+    coverImageUrl: "/assets/images/testimonials/video-2.jpg",
     videoUrl:
       "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
   },
   {
-    slug: "deepika-kumari-video-3",
-    title: "Deepika Kumari",
+    slug: "neha-and-rahul-video",
+    title: "Neha & Rahul",
     type: "video",
-    authorName: "Deepika Kumari",
+    authorName: "Neha & Rahul",
     category: "Home Loan",
-    location: "Delhi",
-    summary: "Fintaraa supported me financially when I needed it the most",
-    coverImageUrl:
-      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600&h=400",
+    location: "Pune",
+    summary: "The team explained our eligibility and documents before applying",
+    coverImageUrl: "/assets/images/testimonials/video-3.jpg",
     videoUrl:
       "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
   },
 ];
+
+const videoCovers = [
+  "/assets/images/testimonials/video-1.jpg",
+  "/assets/images/testimonials/video-2.jpg",
+  "/assets/images/testimonials/video-3.jpg",
+];
+
+const normaliseVideoItems = (data: WebsiteKnowledgeItem[]) => {
+  const source = data.length ? data : videoData;
+  return source.slice(0, videoCovers.length).map((item, index) => ({
+    ...item,
+    coverImageUrl: videoCovers[index],
+  }));
+};
 
 export function VideoTestimonials() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -76,7 +87,7 @@ export function VideoTestimonials() {
       sectionKey: "video_testimonials",
       limit: 5,
     })
-      .then((data) => mounted && setItems(data.length ? data : videoData))
+      .then((data) => mounted && setItems(normaliseVideoItems(data)))
       .catch(() => mounted && setItems(videoData))
       .finally(() => mounted && setLoading(false));
     return () => {

@@ -8,6 +8,7 @@ import {
   RefreshCcw,
   ArrowRight,
   CheckCircle2,
+  FileText,
 } from "lucide-react";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { getAuthToken, getAuthType } from "@/hooks/authStorage";
@@ -517,21 +518,33 @@ export function CibilScoreChecker() {
               </label>
             </div>
 
-            <button
-              type="button"
-              disabled={loading || !canFetch}
-              onClick={() => handleFetchScore(Boolean(score))}
-              className="flex h-13 w-full items-center justify-center gap-2 rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] text-[15px] font-bold text-white disabled:cursor-not-allowed disabled:opacity-70"
-            >
-              {loading ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : score ? (
-                <RefreshCcw className="h-4 w-4" />
-              ) : (
-                <ArrowRight className="h-4 w-4" />
-              )}
-              {loading ? "Fetching..." : actionLabel}
-            </button>
+            <div className={score ? "grid gap-3 sm:grid-cols-2" : ""}>
+              <button
+                type="button"
+                disabled={loading || !canFetch}
+                onClick={() => handleFetchScore(Boolean(score))}
+                className="flex h-13 w-full items-center justify-center gap-2 rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] text-[15px] font-bold text-white disabled:cursor-not-allowed disabled:opacity-70"
+              >
+                {loading ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : score ? (
+                  <RefreshCcw className="h-4 w-4" />
+                ) : (
+                  <ArrowRight className="h-4 w-4" />
+                )}
+                {loading ? "Fetching..." : actionLabel}
+              </button>
+
+              {score ? (
+                <Link
+                  href="/cibil-score/report"
+                  className="flex h-13 w-full items-center justify-center gap-2 rounded-full border border-[#00529c] bg-white text-[15px] font-bold text-[#00529c] no-underline transition-colors hover:bg-[#eef8ff]"
+                >
+                  <FileText className="h-4 w-4" />
+                  View Full Report
+                </Link>
+              ) : null}
+            </div>
           </div>
         ) : null}
 

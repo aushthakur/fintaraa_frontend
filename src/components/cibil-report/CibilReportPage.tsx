@@ -29,14 +29,43 @@ export function CibilReportPage() {
   const [reportLoading, setReportLoading] = useState(false);
   const [reportError, setReportError] = useState("");
   const [pdfLoading, setPdfLoading] = useState(false);
+  const userCibilSnapshot = useMemo(() => {
+    const currentUser = user as Record<string, unknown> | null;
+    if (!currentUser) return null;
+    if (
+      !currentUser.cibilScore &&
+      !currentUser.cibilReport &&
+      !currentUser.cibilLastFetchedAt
+    ) {
+      return null;
+    }
+
+    return {
+      cached: true,
+      cibilScore:
+        typeof currentUser.cibilScore === "number"
+          ? currentUser.cibilScore
+          : Number(currentUser.cibilScore) || undefined,
+      report: currentUser.cibilReport,
+      payload: currentUser.cibilRequestPayload,
+      lastFetchedAt:
+        typeof currentUser.cibilLastFetchedAt === "string"
+          ? currentUser.cibilLastFetchedAt
+          : currentUser.cibilLastFetchedAt instanceof Date
+            ? currentUser.cibilLastFetchedAt.toISOString()
+            : currentUser.cibilLastFetchedAt
+              ? String(currentUser.cibilLastFetchedAt)
+              : undefined,
+    } satisfies UserCibilResponse;
+  }, [user]);
   const reportData = useMemo(
     () =>
       buildCibilReportData({
         user: (user as Record<string, unknown> | null) || null,
-        cibil: cibilData,
+        cibil: cibilData || userCibilSnapshot,
         pdf: pdfData,
       }),
-    [cibilData, pdfData, user],
+    [cibilData, pdfData, user, userCibilSnapshot],
   );
 
   useEffect(() => {
@@ -71,9 +100,10 @@ export function CibilReportPage() {
       try {
         const result = await fetchUserCibil(false);
         if (!active) return;
-        setCibilData(result || null);
+        setCibilData(result || userCibilSnapshot);
       } catch (error) {
         if (!active) return;
+        if (userCibilSnapshot) setCibilData(userCibilSnapshot);
         setReportError(
           (error as Error).message ||
             "Unable to load your latest CIBIL report right now.",
@@ -88,7 +118,7 @@ export function CibilReportPage() {
     return () => {
       active = false;
     };
-  }, [authReady]);
+  }, [authReady, userCibilSnapshot]);
 
   const handleRefreshReport = async () => {
     setReportLoading(true);
