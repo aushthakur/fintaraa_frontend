@@ -63,6 +63,20 @@ export type LoanSeoPageData = {
   isFallback?: boolean;
 };
 
+export type LoanSeoLocationPage = Pick<
+  LoanSeoPageData,
+  | "_id"
+  | "loanType"
+  | "loanTypeSlug"
+  | "title"
+  | "subtitle"
+  | "canonicalPath"
+  | "location"
+> & {
+  priority?: number;
+  updatedAt?: string;
+};
+
 type ApiResponse<T> = {
   data?: T;
 };
@@ -81,6 +95,17 @@ const locationLabel = (location: ParsedLoanLocation) =>
   [location.area, location.pincode, location.city, location.state]
     .filter(Boolean)
     .join(", ");
+
+const mergeLocation = (
+  requested: ParsedLoanLocation,
+  resolved?: Partial<ParsedLoanLocation>,
+): ParsedLoanLocation => ({
+  country: resolved?.country || requested.country || "India",
+  state: resolved?.state || requested.state || "",
+  city: resolved?.city || requested.city || "",
+  pincode: resolved?.pincode || requested.pincode || "",
+  area: resolved?.area || requested.area || "",
+});
 
 export const buildFallbackLoanSeoPage = (
   loanTypeSlug: string,
@@ -106,8 +131,38 @@ export const buildFallbackLoanSeoPage = (
     canonicalPath: buildLoanPath(loanTypeSlug, location),
     location,
     badges: ["Secure profile", "Partner-backed", "Assisted application"],
-    filterKeys: ["overview", "eligibility", "documents", "fees", "how_to_apply", "faqs"],
+    filterKeys: [
+      "all_details",
+      "overview",
+      "features",
+      "eligibility",
+      "documents",
+      "emi_calculator",
+      "fees_and_charges",
+      "reviews",
+      "faqs",
+    ],
     tabs: [
+      {
+        key: "all_details",
+        label: "All Details",
+        eyebrow: "Complete guide",
+        title: `${scoped} complete details`,
+        description:
+          "Review the important eligibility, document, EMI, fee, review, and FAQ details before applying.",
+        content: [
+          `${scoped} can be compared across partner requirements, expected documentation, repayment comfort, and support timelines.`,
+          "Use this complete view when you want the full page context without switching between individual tabs.",
+        ],
+        bullets: [
+          "Check eligibility, documents, EMI, fees, reviews, and FAQs together.",
+          "Prepare PAN, address, income, and bank details before applying.",
+          "Continue with the guided Fintaraa application journey.",
+        ],
+        filterKeys: ["all_details", "complete_guide"],
+        sortOrder: 0,
+        isActive: true,
+      },
       {
         key: "overview",
         label: "Overview",
@@ -130,6 +185,23 @@ export const buildFallbackLoanSeoPage = (
         isActive: true,
       },
       {
+        key: "features",
+        label: "Features",
+        eyebrow: "Highlights",
+        title: `${loanType} features`,
+        description:
+          "Key features depend on lender policy, applicant profile, loan amount, and the selected repayment tenure.",
+        bullets: [
+          "Digital discovery with guided application support.",
+          "Flexible amount and tenure options from eligible partners.",
+          "Partner-specific collateral or asset checks where applicable.",
+          "Transparent next steps for documentation and verification.",
+        ],
+        filterKeys: ["features", "benefits"],
+        sortOrder: 2,
+        isActive: true,
+      },
+      {
         key: "eligibility",
         label: "Eligibility",
         eyebrow: "Applicant fit",
@@ -142,7 +214,7 @@ export const buildFallbackLoanSeoPage = (
           "Credit history and current EMI obligations.",
         ],
         filterKeys: ["eligibility", "income", "cibil"],
-        sortOrder: 2,
+        sortOrder: 3,
         isActive: true,
       },
       {
@@ -158,14 +230,30 @@ export const buildFallbackLoanSeoPage = (
           "Bank statement and income proof where applicable.",
         ],
         filterKeys: ["documents", "kyc", "income_proof"],
-        sortOrder: 3,
+        sortOrder: 4,
         isActive: true,
       },
       {
-        key: "fees",
-        label: "Fees & EMI",
+        key: "emi_calculator",
+        label: "EMI Calculator",
+        eyebrow: "Repayment view",
+        title: `${loanType} EMI planning`,
+        description:
+          "Estimate EMI comfort before applying by reviewing the loan amount, tenure, and expected interest range.",
+        bullets: [
+          "Compare monthly EMI against your income and existing obligations.",
+          "Shorter tenures can reduce total interest but increase EMI.",
+          "Longer tenures can reduce monthly EMI but increase total repayment.",
+        ],
+        filterKeys: ["emi_calculator", "emi", "repayment"],
+        sortOrder: 5,
+        isActive: true,
+      },
+      {
+        key: "fees_and_charges",
+        label: "Fees & Charges",
         eyebrow: "Cost view",
-        title: `${loanType} charges`,
+        title: `${loanType} fees and charges`,
         description:
           "Review interest rate, processing fee, tenure, foreclosure charges, and total repayment before applying.",
         bullets: [
@@ -174,24 +262,23 @@ export const buildFallbackLoanSeoPage = (
           "Avoid duplicate applications with multiple lenders.",
         ],
         filterKeys: ["fees", "emi", "repayment"],
-        sortOrder: 4,
+        sortOrder: 6,
         isActive: true,
       },
       {
-        key: "how_to_apply",
-        label: "How to Apply",
-        eyebrow: "Application process",
-        title: `How to apply for ${scoped}`,
+        key: "reviews",
+        label: "Reviews",
+        eyebrow: "Customer view",
+        title: `${loanType} customer reviews`,
         description:
-          "Follow our simple 4-step verification process to get started with your application.",
+          "Customer experiences can vary by lender, document readiness, and approval policy, but guided support helps keep the process organised.",
         bullets: [
-          "Enter your mobile number and basic details.",
-          "Verify your identity with a secure OTP.",
-          "Check loan offers tailored to your profile.",
-          "Accept terms for instant disbursement.",
+          "Applicants value clear document checklists before lender review.",
+          "Guided callbacks help reduce back-and-forth during verification.",
+          "EMI and fee visibility helps users compare options more carefully.",
         ],
-        filterKeys: ["apply", "verification", "process"],
-        sortOrder: 5,
+        filterKeys: ["reviews", "testimonials"],
+        sortOrder: 7,
         isActive: true,
       },
       {
@@ -223,7 +310,7 @@ export const buildFallbackLoanSeoPage = (
           },
         ],
         filterKeys: ["faqs", "questions"],
-        sortOrder: 6,
+        sortOrder: 8,
         isActive: true,
       },
     ],
@@ -310,10 +397,7 @@ export async function getLoanSeoPage(
     if (!data) throw new Error("Loan page missing data");
     return {
       ...data,
-      location: {
-        ...location,
-        ...(data.location || {}),
-      },
+      location: mergeLocation(location, data.location),
       tabs: (data.tabs || []).map((tab) => ({
         ...tab,
         key: lowerKey(tab.key || tab.label),
@@ -326,5 +410,36 @@ export async function getLoanSeoPage(
     };
   } catch {
     return buildFallbackLoanSeoPage(loanTypeSlug, location);
+  }
+}
+
+export async function getLoanSeoLocationPages(
+  loanTypeSlug: string,
+): Promise<LoanSeoLocationPage[]> {
+  const baseUrl = getBaseUrl();
+  if (!baseUrl || !(await isServerApiReachable(baseUrl))) return [];
+
+  const params = new URLSearchParams({
+    loanTypeSlug,
+    limit: "1000",
+  });
+
+  try {
+    const response = await fetch(`${baseUrl}/loan-pages/public?${params}`, {
+      next: { revalidate: 300 },
+    });
+    if (!response.ok) return [];
+    const payload = (await response.json()) as ApiResponse<LoanSeoLocationPage[]>;
+    return Array.isArray(payload.data)
+      ? payload.data.map((page) => ({
+          ...page,
+          location: mergeLocation(
+            { country: "India", state: "", city: "", pincode: "", area: "" },
+            page.location,
+          ),
+        }))
+      : [];
+  } catch {
+    return [];
   }
 }

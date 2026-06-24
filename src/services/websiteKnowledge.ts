@@ -27,6 +27,7 @@ export type WebsiteKnowledgeItem = {
   readTime?: string;
   accent?: string;
   videoUrl?: string;
+  buttonLabel?: string;
   tags?: string[];
   publishedAt?: string;
   createdAt?: string;
@@ -58,6 +59,7 @@ const normalise = (item: any): WebsiteKnowledgeItem => ({
   readTime: item?.readTime || "5 min read",
   accent: item?.accent || "#005ca8",
   videoUrl: item?.videoUrl || "",
+  buttonLabel: item?.buttonLabel || "",
   tags: Array.isArray(item?.tags) ? item.tags : [],
   publishedAt: item?.publishedAt || item?.createdAt || new Date().toISOString(),
   createdAt: item?.createdAt,

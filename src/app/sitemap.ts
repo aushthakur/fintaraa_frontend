@@ -98,6 +98,24 @@ const fetchBlogPages = async () => {
   return [...dynamicBlogs, ...fallbackBlogs].filter((item) => item.path);
 };
 
+const fetchKnowledgePages = async (
+  type: "press_release" | "video" | "testimonial",
+  rootPath: "/press-release" | "/video-testimonials" | "/testimonials",
+  priority: number,
+) => {
+  const payload = await fetchJson(
+    `/knowledge?type=${type}&limit=250&pagination=false`,
+  );
+  return unwrapList(payload)
+    .map((item) => ({
+      path: item?.slug ? `${rootPath}/${slugifyProduct(item.slug)}` : "",
+      priority,
+      changeFrequency: "weekly" as SitemapFrequency,
+      lastModified: item?.publishedAt || item?.updatedAt || item?.createdAt,
+    }))
+    .filter((item) => item.path);
+};
+
 const fetchBankPages = async () => {
   const payload = await fetchJson(
     "/bank-products/public?type=credit_card&pagination=false",
@@ -115,10 +133,21 @@ const fetchBankPages = async () => {
 };
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [loanPages, insurancePages, blogPages, bankPages] = await Promise.all([
+  const [
+    loanPages,
+    insurancePages,
+    blogPages,
+    pressPages,
+    videoPages,
+    testimonialPages,
+    bankPages,
+  ] = await Promise.all([
     fetchProductPages("loan-pages", "loanTypeSlug"),
     fetchProductPages("insurance-pages", "insuranceTypeSlug"),
     fetchBlogPages(),
+    fetchKnowledgePages("press_release", "/press-release", 0.62),
+    fetchKnowledgePages("video", "/video-testimonials", 0.6),
+    fetchKnowledgePages("testimonial", "/testimonials", 0.58),
     fetchBankPages(),
   ]);
 
@@ -133,6 +162,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...loanPages,
     ...insurancePages,
     ...blogPages,
+    ...pressPages,
+    ...videoPages,
+    ...testimonialPages,
     ...bankPages,
   ]).map(toEntry);
 }

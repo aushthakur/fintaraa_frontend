@@ -51,6 +51,20 @@ export type InsuranceSeoPageData = {
   isFallback?: boolean;
 };
 
+export type InsuranceSeoLocationPage = Pick<
+  InsuranceSeoPageData,
+  | "_id"
+  | "insuranceType"
+  | "insuranceTypeSlug"
+  | "title"
+  | "subtitle"
+  | "canonicalPath"
+  | "location"
+> & {
+  priority?: number;
+  updatedAt?: string;
+};
+
 type ApiResponse<T> = {
   data?: T;
 };
@@ -69,6 +83,17 @@ const locationLabel = (location: ParsedLoanLocation) =>
   [location.area, location.pincode, location.city, location.state]
     .filter(Boolean)
     .join(", ");
+
+const mergeLocation = (
+  requested: ParsedLoanLocation,
+  resolved?: Partial<ParsedLoanLocation>,
+): ParsedLoanLocation => ({
+  country: resolved?.country || requested.country || "India",
+  state: resolved?.state || requested.state || "",
+  city: resolved?.city || requested.city || "",
+  pincode: resolved?.pincode || requested.pincode || "",
+  area: resolved?.area || requested.area || "",
+});
 
 export const buildFallbackInsuranceSeoPage = (
   insuranceTypeSlug: string,
@@ -225,7 +250,7 @@ export async function getInsuranceSeoPage(
     if (!data) throw new Error("Insurance page missing data");
     return {
       ...data,
-      location: { ...location, ...(data.location || {}) },
+      location: mergeLocation(location, data.location),
       tabs: (data.tabs || []).map((tab) => ({
         ...tab,
         key: lowerKey(tab.key || tab.label),
@@ -238,5 +263,38 @@ export async function getInsuranceSeoPage(
     };
   } catch {
     return buildFallbackInsuranceSeoPage(insuranceTypeSlug, location);
+  }
+}
+
+export async function getInsuranceSeoLocationPages(
+  insuranceTypeSlug: string,
+): Promise<InsuranceSeoLocationPage[]> {
+  const baseUrl = getBaseUrl();
+  if (!baseUrl || !(await isServerApiReachable(baseUrl))) return [];
+
+  const params = new URLSearchParams({
+    insuranceTypeSlug,
+    limit: "1000",
+  });
+
+  try {
+    const response = await fetch(`${baseUrl}/insurance-pages/public?${params}`, {
+      next: { revalidate: 300 },
+    });
+    if (!response.ok) return [];
+    const payload = (await response.json()) as ApiResponse<
+      InsuranceSeoLocationPage[]
+    >;
+    return Array.isArray(payload.data)
+      ? payload.data.map((page) => ({
+          ...page,
+          location: mergeLocation(
+            { country: "India", state: "", city: "", pincode: "", area: "" },
+            page.location,
+          ),
+        }))
+      : [];
+  } catch {
+    return [];
   }
 }

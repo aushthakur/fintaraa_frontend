@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BankDirectorySection } from "@/components/banks/BankDirectorySection";
 import { getPageSeoMetadata } from "@/services/seoMetadata";
 import {
   BadgeCheck,
@@ -270,6 +271,7 @@ export default function PartnersPage() {
           </section>
         </div>
       </section>
+      <BankDirectorySection compact />
     </main>
   );
 }

@@ -75,8 +75,9 @@ export const productHref = (title: string) => {
   if (slug === "become-dsa") return "/become-dsa";
   if (slug === "contact-us") return "/contact-us";
   if (slug === "support") return "/support";
-  if (slug === "blog" || slug === "blog-and-articles") return "/blog";
-  if (slug === "articles" || slug === "press-release") return "/blog";
+  if (slug === "blog" || slug === "blog-and-articles" || slug === "articles")
+    return "/blog";
+  if (slug === "press-release" || slug === "press") return "/press-release";
   if (slug === "site-map" || slug === "sitemap") return "/sitemap";
   if (slug === "feedback" || slug === "subscribe") return "/contact-us";
   if (slug === "awards-and-recognitions") return "/about-us";

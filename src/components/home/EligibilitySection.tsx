@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   Info,
   Check,
@@ -11,9 +11,11 @@ import {
   ShieldCheck,
   ChevronDown,
   CalendarDays,
+  BriefcaseBusiness,
+  Gauge,
   type LucideIcon,
 } from "lucide-react";
-import { productHref } from "@/lib/productRouting";
+import { loanProductDirectory } from "@/data/bankDirectory";
 
 const productOptions = [
   { label: "Loan", icon: HandCoins },
@@ -36,21 +38,23 @@ const stepperItems = [
   { step: "04", title: "Offers", text: "Matched results" },
 ];
 
-const purposeOptions = ["Personal", "Home renovation", "Business", "Education"];
+const loanTypeOptions = loanProductDirectory.map((loan) => loan.name);
 const tenureOptions = ["5 Years", "3 Years", "7 Years", "10 Years"];
-const loanPurposeRoutes: Record<string, string> = {
-  Personal: productHref("Personal Loan"),
-  "Home renovation": productHref("Renovation Loan"),
-  Business: productHref("Business Loan"),
-  Education: productHref("Education Loan"),
-};
+const salaryOptions = [
+  "Salaried",
+  "Self Employed",
+  "Self Employed Professional",
+];
+const loanPurposeSlugs = Object.fromEntries(
+  loanProductDirectory.map((loan) => [loan.name, loan.slug]),
+);
 
 const formatAmount = (value: number) =>
   new Intl.NumberFormat("en-IN", {
     maximumFractionDigits: 0,
   }).format(value);
 
-
+const getTenureYears = (value: string) => Number(value.match(/\d+/)?.[0] || 5);
 
 function PremiumSelect({
   label,
@@ -122,18 +126,35 @@ function PremiumSelect({
 export function EligibilitySection() {
   const [selectedProduct, setSelectedProduct] = useState("Loan");
   const [amount, setAmount] = useState(1000000);
-  const [purpose, setPurpose] = useState(purposeOptions[0]);
+  const [purpose, setPurpose] = useState(loanTypeOptions[0]);
   const [tenure, setTenure] = useState(tenureOptions[0]);
-  const activeStep = amount ? 2 : selectedProduct ? 1 : 0;
-  const continueHref =
-    selectedProduct === "Credit Card"
-      ? "/credit-cards"
-      : selectedProduct === "Insurance"
-        ? "/products"
-        : loanPurposeRoutes[purpose] || "/products";
+  const [salaryType, setSalaryType] = useState(salaryOptions[0]);
+  const [cibilScore, setCibilScore] = useState(720);
+  const activeStep = cibilScore ? 3 : amount ? 2 : selectedProduct ? 1 : 0;
+  const continueHref = useMemo(() => {
+    if (selectedProduct === "Credit Card") return "/credit-cards";
+    if (selectedProduct === "Insurance") return "/products";
+
+    const loanType = loanPurposeSlugs[purpose] || "personal-loan";
+    const params = new URLSearchParams({
+      product: "loan",
+      loanType,
+      amount: String(amount),
+      salaryType,
+      cibilScore: String(cibilScore),
+      tenureYears: String(getTenureYears(tenure)),
+    });
+
+    return `/eligibility-results?${params.toString()}`;
+  }, [amount, cibilScore, purpose, salaryType, selectedProduct, tenure]);
+  const continueLabel =
+    selectedProduct === "Loan" ? "Search Eligible Banks" : "Continue";
 
   return (
-    <section id="eligibility-check" className="bg-white px-4 py-28 md:px-6 lg:px-8 ">
+    <section
+      id="eligibility-check"
+      className="bg-white px-4 py-28 md:px-6 lg:px-8 "
+    >
       <div className="mx-auto grid max-w-9xl items-center gap-12 lg:grid-cols-2 ">
         <div className="lg:pl-2">
           {/* Quick Apply Badge - Perfectly matching light border and muted text */}
@@ -282,7 +303,7 @@ export function EligibilitySection() {
                       : "border-[#e2e8f0] bg-white text-gray-700 hover:bg-gray-50"
                   }`}
                     >
-                      ₹ {item.label}
+                      {item.label}
                     </button>
                   ))}
                 </div>
@@ -303,7 +324,7 @@ export function EligibilitySection() {
                   />
                   <div className="mt-1 flex justify-between text-[12px] font-medium text-gray-400">
                     <span>₹ 50,000</span>
-                    <span>₹ 5,00,000</span>
+                    <span>₹ 50,00,000</span>
                   </div>
                 </div>
 
@@ -312,7 +333,7 @@ export function EligibilitySection() {
                   <PremiumSelect
                     label="Select Loan Type"
                     value={purpose}
-                    options={purposeOptions}
+                    options={loanTypeOptions}
                     icon={UserRound}
                     onChange={setPurpose}
                   />
@@ -323,6 +344,37 @@ export function EligibilitySection() {
                     icon={CalendarDays}
                     onChange={setTenure}
                   />
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <PremiumSelect
+                    label="Income Profile"
+                    value={salaryType}
+                    options={salaryOptions}
+                    icon={BriefcaseBusiness}
+                    onChange={setSalaryType}
+                  />
+                  <label className="block">
+                    <span className="text-[16px] font-medium text-[#2c2c2c]">
+                      CIBIL Score
+                    </span>
+                    <span className="mt-1 flex h-11 w-full items-center gap-3 border border-[#ccd1d8] bg-white px-3 transition hover:border-[#075596]">
+                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#eef8ff] text-[#075596]">
+                        <Gauge className="h-4 w-4" />
+                      </span>
+                      <input
+                        type="number"
+                        min={300}
+                        max={900}
+                        value={cibilScore}
+                        onChange={(event) =>
+                          setCibilScore(Number(event.target.value || 0))
+                        }
+                        className="min-w-0 flex-1 border-0 bg-transparent text-[14px] font-semibold text-[#2f3a4a] outline-none"
+                        aria-label="CIBIL Score"
+                      />
+                    </span>
+                  </label>
                 </div>
 
                 {/* Bottom Footer Elements: Tip + Button Side-by-Side to keep height minimal */}
@@ -338,9 +390,9 @@ export function EligibilitySection() {
                   {/* Premium Pill Green Button */}
                   <Link
                     href={continueHref}
-                    className="flex h-12 w-full items-center justify-center rounded-full  bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-12 text-[15px] font-bold text-white no-underline shadow-[0_10px_20px_rgba(18,183,106,0.15)] transition-all duration-200 hover:bg-[#0ea85f] sm:w-auto min-w-45"
+                    className="flex h-12 w-full whitespace-nowrap items-center justify-center rounded-full  bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-12 text-[15px] font-bold text-white no-underline shadow-[0_10px_20px_rgba(18,183,106,0.15)] transition-all duration-200 hover:bg-[#0ea85f] sm:w-auto min-w-45"
                   >
-                    Continue
+                    {continueLabel}
                   </Link>
                 </div>
               </form>

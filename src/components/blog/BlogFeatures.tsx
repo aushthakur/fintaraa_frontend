@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { formatKnowledgeDate } from "@/services/websiteKnowledge";
 
 interface FeaturedArticleProps {
   article?: {
@@ -36,6 +37,7 @@ export function FeaturedArticleSection({ article }: FeaturedArticleProps) {
     },
     slug: "how-sip-investments-can-build-long-term-wealth"
   };
+  const publishedDate = formatKnowledgeDate(data.publishedAt);
 
   return (
     <section className="px-4 py-10 md:px-8 lg:px-16 bg-white font-sans antialiased">
@@ -106,7 +108,7 @@ export function FeaturedArticleSection({ article }: FeaturedArticleProps) {
               {/* Central Metadata Stack Timestamps */}
               <div className="flex items-center gap-4 text-[12px] font-medium text-[#93a2b2] sm:pr-4">
                 <span>{data.readTime}</span>
-                <span>{data.publishedAt}</span>
+                <span>{publishedDate}</span>
               </div>
 
               {/* Solid Click Action Trigger */}

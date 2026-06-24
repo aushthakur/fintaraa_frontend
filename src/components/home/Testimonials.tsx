@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion, useMotionValue, useAnimationFrame } from "framer-motion";
 import { Star } from "lucide-react";
 import {
@@ -53,6 +54,7 @@ const testimonialsData: WebsiteKnowledgeItem[] = [
 ];
 
 const testimonialAvatars = testimonialsData.map((item) => item.authorAvatarUrl || "");
+const homeTestimonialsLimit = 12;
 
 const normaliseTestimonials = (data: WebsiteKnowledgeItem[]) => {
   const source = data.length ? data : testimonialsData;
@@ -69,22 +71,27 @@ const normaliseTestimonials = (data: WebsiteKnowledgeItem[]) => {
       ...item,
       authorName: name,
       title: item.title || name,
-      authorAvatarUrl: testimonialAvatars[cleaned.length],
-      location: item.location || testimonialsData[cleaned.length]?.location || "India",
+      authorAvatarUrl:
+        item.authorAvatarUrl ||
+        testimonialAvatars[cleaned.length % testimonialAvatars.length],
+      location:
+        item.location ||
+        testimonialsData[cleaned.length % testimonialsData.length]?.location ||
+        "India",
     });
 
-    if (cleaned.length === testimonialAvatars.length) break;
+    if (cleaned.length === homeTestimonialsLimit) break;
   }
 
   for (const item of testimonialsData) {
-    if (cleaned.length === testimonialAvatars.length) break;
+    if (cleaned.length === homeTestimonialsLimit) break;
     const name = item.authorName || item.title || item.slug;
     const key = String(name || "").trim().toLowerCase();
     if (!key || seen.has(key)) continue;
     seen.add(key);
     cleaned.push({
       ...item,
-      authorAvatarUrl: testimonialAvatars[cleaned.length],
+      authorAvatarUrl: testimonialAvatars[cleaned.length % testimonialAvatars.length],
     });
   }
 
@@ -108,7 +115,7 @@ export function Testimonials() {
     fetchWebsiteKnowledge({
       type: "testimonial",
       sectionKey: "client_testimonials",
-      limit: 4,
+      limit: homeTestimonialsLimit,
     })
       .then((data) => mounted && setItems(normaliseTestimonials(data)))
       .catch(() => mounted && setItems(testimonialsData))
@@ -161,9 +168,20 @@ export function Testimonials() {
   return (
     <section className="bg-white px-4 py-16 md:px-6 lg:px-8 overflow-hidden select-none">
       <div className="mx-auto max-w-9xl">
-        <h2 className="text-center text-[26px] font-extrabold text-[#111625] md:text-[32px] tracking-tight">
-          What Our Clients Say
-        </h2>
+        <div className="flex w-full flex-col items-center gap-4 sm:grid sm:grid-cols-3">
+          <div className="hidden sm:block" />
+          <h2 className="text-center text-[26px] font-extrabold text-[#111625] md:text-[32px] tracking-tight">
+            What Our Clients Say
+          </h2>
+          <div className="self-center sm:justify-self-end">
+            <Link
+              href="/testimonials"
+              className="rounded-full bg-[#12b76a] px-6 py-2.5 text-[14px] font-bold text-white transition-all hover:bg-[#0fa35e]"
+            >
+              View All
+            </Link>
+          </div>
+        </div>
 
         {/* Mask Carousel Viewport Container Frame */}
         <div

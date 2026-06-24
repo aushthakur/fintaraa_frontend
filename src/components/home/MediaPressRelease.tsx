@@ -45,7 +45,7 @@ export function MediaPressRelease() {
     fetchWebsiteKnowledge({
       type: "press_release",
       sectionKey: "media_press_release",
-      limit: 5,
+      limit: 12,
     })
       .then((data) => mounted && setItems(data.length ? data : fallbackPress))
       .catch(() => mounted && setItems(fallbackPress))
@@ -78,7 +78,7 @@ export function MediaPressRelease() {
           </h2>
           <div className="self-center sm:justify-self-end">
             <Link
-              href="/blog"
+              href="/press-release"
               className="rounded-full bg-[#12b76a] px-7 py-2.5 text-[14px] font-bold text-white transition-all hover:bg-[#0fa35e]"
             >
               View All
@@ -114,7 +114,11 @@ export function MediaPressRelease() {
               {duplicatedPress.map((post, index) => (
                 <Link
                   key={`press-card-${post.slug}-${index}`}
-                  href={post.linkUrl || `/blog/${post.slug}`}
+                  href={
+                    post.linkUrl && /^https?:\/\//i.test(post.linkUrl)
+                      ? post.linkUrl
+                      : `/press-release/${post.slug}`
+                  }
                   className="flex w-65 shrink-0 flex-col overflow-hidden rounded-2xl border border-gray-100/80 bg-white no-underline shadow-[0_4px_20px_rgba(0,0,0,0.01)] transition-shadow hover:shadow-[0_4px_24px_rgba(0,0,0,0.03)] sm:w-70 md:w-73.75"
                 >
                   <div className="pointer-events-none relative aspect-[1.38/1] w-full bg-gray-100">

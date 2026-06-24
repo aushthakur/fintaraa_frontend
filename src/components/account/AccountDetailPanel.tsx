@@ -42,6 +42,7 @@ import {
 } from "@/services/accountActivity";
 import {
   fetchCreditCards,
+  getCreditCardApplyUrl,
   type CreditCardProduct,
 } from "@/services/bankProducts";
 import {
@@ -1588,7 +1589,7 @@ const normalizeOffer = (
         ? "Profile match"
         : "Review eligibility"
       : "Complete profile",
-    href: card.applyUrl || card.link || "/credit-cards",
+    href: getCreditCardApplyUrl(card, "/credit-cards"),
   };
 };
 

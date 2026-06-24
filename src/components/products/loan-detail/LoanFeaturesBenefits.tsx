@@ -16,6 +16,13 @@ export function LoanFeaturesBenefits({
       <p className="mt-3 text-[14px] font-semibold leading-7 text-[#2f3744]">
         {active?.description || page.subtitle}
       </p>
+      {active?.content?.length ? (
+        <div className="mt-3 grid gap-2 text-[13px] font-medium leading-6 text-[#2f3744]">
+          {active.content.map((item) => (
+            <p key={item}>{item}</p>
+          ))}
+        </div>
+      ) : null}
       <ul className="mt-3 grid gap-2 text-[13px] font-medium leading-6 text-[#111827]">
         {(active?.bullets || []).map((item) => (
           <li key={item}>- {item}</li>

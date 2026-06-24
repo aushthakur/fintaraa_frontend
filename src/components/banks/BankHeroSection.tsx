@@ -1,19 +1,36 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { Clock3, LockKeyhole, ShieldCheck } from "lucide-react";
 import { AuthRedirectLink } from "@/components/auth/AuthRedirectLink";
 import { getApplyHref } from "@/components/application/flowRegistry";
 import type { BankSeoPageData } from "@/services/bankSeoPages";
+import { slugifyProduct } from "@/lib/productRouting";
 
 export function BankHeroSection({ page }: { page: BankSeoPageData }) {
-  const applyHref = getApplyHref({
-    category: "loan",
-    productSlug: page.productSlug || "personal-loan",
-    bankSlug: page.bankSlug,
-    referrer:
-      page.canonicalPath || `/banks/${page.bankSlug}/${page.productSlug}`,
-  });
+  const isBankOverview = Boolean(page.isBankOverview);
+  const productSlug = slugifyProduct(page.productSlug || page.productName);
+  const isCreditCardPage = productSlug.includes("credit-card");
+  const applyHref = isCreditCardPage
+    ? "/credit-cards"
+    : getApplyHref({
+        category: "loan",
+        productSlug: page.productSlug || "personal-loan",
+        bankSlug: page.bankSlug,
+        referrer:
+          page.canonicalPath || `/banks/${page.bankSlug}/${page.productSlug}`,
+      });
+  const stats =
+    page.heroStats && page.heroStats.length
+      ? page.heroStats.slice(0, 4)
+      : [
+          { label: "Quick Approval", value: "In 24 hrs" },
+          { label: "Attractive Interest Rates", value: "Starts from 10.50% p.a." },
+          { label: "Loan Amount", value: "₹50,000 - ₹40 Lakh" },
+          { label: "Paperless Process", value: "100% Online" },
+        ];
+  const statIcons = [ShieldCheck, LockKeyhole, Clock3, Clock3];
 
   return (
     <section className="relative overflow-hidden bg-white px-4 pb-12 pt-10 md:px-6 lg:px-8 font-sans">
@@ -51,7 +68,7 @@ export function BankHeroSection({ page }: { page: BankSeoPageData }) {
             <div className="flex flex-col gap-1.5 w-full">
               <div className="flex items-center gap-3 flex-wrap">
                 <h1 className="text-[36px] md:text-[46px] font-black leading-[1.1] text-[#005ca8] tracking-tight">
-                  {page.bankName} {page.productName}
+                  {page.title || `${page.bankName} ${page.productName}`}
                 </h1>
                 <span className="bg-[#eaf3fc] text-[#005ca8] text-[11px] font-bold px-3 py-1 rounded-full whitespace-nowrap self-start mt-2">
                   Trusted Partner
@@ -62,76 +79,65 @@ export function BankHeroSection({ page }: { page: BankSeoPageData }) {
 
           {/* Descriptive Content Section */}
           <p className="text-[16px] md:text-[18px] font-medium text-[#2d3142] tracking-normal">
-            Instant Personal Loans from India&apos;s Leading Private Bank
+            {page.subtitle ||
+              `${page.productName} from ${page.bankName} with assisted application support.`}
           </p>
 
           {/* Structured Informational Meta Icons Bar */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 py-4 border-t border-b border-[#f0f4f8]">
-            <div className="flex items-start gap-2.5">
-              <ShieldCheck className="h-5 w-5 text-[#005ca8] mt-0.5 shrink-0" />
-              <div>
-                <h4 className="text-[13px] font-bold text-[#1a1d24]">
-                  Quick Approval
-                </h4>
-                <p className="text-[11px] font-medium text-[#8a94a6] mt-0.5">
-                  In 24 hrs
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-2.5">
-              <LockKeyhole className="h-5 w-5 text-[#005ca8] mt-0.5 shrink-0" />
-              <div>
-                <h4 className="text-[13px] font-bold text-[#1a1d24]">
-                  Attractive Interest Rates
-                </h4>
-                <p className="text-[11px] font-medium text-[#8a94a6] mt-0.5">
-                  Starts from 10.50% p.a.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-2.5">
-              <Clock3 className="h-5 w-5 text-[#005ca8] mt-0.5 shrink-0" />
-              <div>
-                <h4 className="text-[13px] font-bold text-[#1a1d24]">
-                  Loan Amount
-                </h4>
-                <p className="text-[11px] font-medium text-[#8a94a6] mt-0.5">
-                  ₹50,000 - ₹40 Lakh
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-2.5">
-              <Clock3 className="h-5 w-5 text-[#005ca8] mt-0.5 shrink-0" />
-              <div>
-                <h4 className="text-[13px] font-bold text-[#1a1d24]">
-                  Paperless Process
-                </h4>
-                <p className="text-[11px] font-medium text-[#8a94a6] mt-0.5">
-                  100% Online
-                </p>
-              </div>
-            </div>
+            {stats.map((stat, index) => {
+              const Icon = statIcons[index % statIcons.length];
+              return (
+                <div key={`${stat.label}-${index}`} className="flex items-start gap-2.5">
+                  <Icon className="h-5 w-5 text-[#005ca8] mt-0.5 shrink-0" />
+                  <div>
+                    <h4 className="text-[13px] font-bold text-[#1a1d24]">
+                      {stat.label}
+                    </h4>
+                    <p className="text-[11px] font-medium text-[#8a94a6] mt-0.5">
+                      {stat.value}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
           </div>
 
           {/* Core Navigation Conversion Controls Trigger Wrapper */}
           <div className="flex flex-col sm:flex-row items-center gap-4 pt-2">
-            <AuthRedirectLink
-              href={applyHref}
-              productSlug={page.productSlug || "personal-loan"}
-              className="inline-flex h-12 w-full sm:w-56 items-center justify-center rounded-xl bg-[#13a653] hover:bg-[#108e46] text-[15px] font-bold text-white no-underline shadow-xs transition-colors"
-            >
-              Apply Now
-            </AuthRedirectLink>
-            <AuthRedirectLink
-              href={applyHref}
-              productSlug={page.productSlug || "personal-loan"}
-              className="inline-flex h-12 w-full sm:w-56 items-center justify-center rounded-xl border border-[#13a653] bg-white text-[15px] font-bold text-[#13a653] hover:bg-[#f4fbf7] no-underline transition-colors"
-            >
-              Check Eligibility
-            </AuthRedirectLink>
+            {isBankOverview ? (
+              <>
+                <Link
+                  href="#bank-products"
+                  className="inline-flex h-12 w-full sm:w-56 items-center justify-center rounded-xl bg-[#13a653] hover:bg-[#108e46] text-[15px] font-bold text-white no-underline shadow-xs transition-colors"
+                >
+                  View Products
+                </Link>
+                <Link
+                  href={`/eligibility-results?bank=${encodeURIComponent(page.bankName)}`}
+                  className="inline-flex h-12 w-full sm:w-56 items-center justify-center rounded-xl border border-[#13a653] bg-white text-[15px] font-bold text-[#13a653] hover:bg-[#f4fbf7] no-underline transition-colors"
+                >
+                  Check Eligibility
+                </Link>
+              </>
+            ) : (
+              <>
+                <AuthRedirectLink
+                  href={applyHref}
+                  productSlug={page.productSlug || "personal-loan"}
+                  className="inline-flex h-12 w-full sm:w-56 items-center justify-center rounded-xl bg-[#13a653] hover:bg-[#108e46] text-[15px] font-bold text-white no-underline shadow-xs transition-colors"
+                >
+                  Apply Now
+                </AuthRedirectLink>
+                <AuthRedirectLink
+                  href={applyHref}
+                  productSlug={page.productSlug || "personal-loan"}
+                  className="inline-flex h-12 w-full sm:w-56 items-center justify-center rounded-xl border border-[#13a653] bg-white text-[15px] font-bold text-[#13a653] hover:bg-[#f4fbf7] no-underline transition-colors"
+                >
+                  Check Eligibility
+                </AuthRedirectLink>
+              </>
+            )}
           </div>
         </div>
 

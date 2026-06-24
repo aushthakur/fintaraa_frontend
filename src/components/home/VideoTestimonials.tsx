@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import {
   motion,
   useMotionValue,
@@ -61,9 +62,9 @@ const videoCovers = [
 
 const normaliseVideoItems = (data: WebsiteKnowledgeItem[]) => {
   const source = data.length ? data : videoData;
-  return source.slice(0, videoCovers.length).map((item, index) => ({
+  return source.slice(0, 12).map((item, index) => ({
     ...item,
-    coverImageUrl: videoCovers[index],
+    coverImageUrl: item.coverImageUrl || videoCovers[index % videoCovers.length],
   }));
 };
 
@@ -85,7 +86,7 @@ export function VideoTestimonials() {
     fetchWebsiteKnowledge({
       type: "video",
       sectionKey: "video_testimonials",
-      limit: 5,
+      limit: 12,
     })
       .then((data) => mounted && setItems(normaliseVideoItems(data)))
       .catch(() => mounted && setItems(videoData))
@@ -117,10 +118,19 @@ export function VideoTestimonials() {
   return (
     <section className="bg-white px-4 py-16 md:px-6 lg:px-8 overflow-hidden select-none">
       <div className="mx-auto max-w-9xl">
-        <div className="w-full flex justify-center mb-12">
+        <div className="mb-12 flex w-full flex-col items-center gap-4 sm:grid sm:grid-cols-3">
+          <div className="hidden sm:block" />
           <h2 className="text-[26px] md:text-[32px] font-extrabold text-[#111625] tracking-tight text-center">
             Video Testimonials
           </h2>
+          <div className="self-center sm:justify-self-end">
+            <Link
+              href="/video-testimonials"
+              className="rounded-full bg-[#12b76a] px-6 py-2.5 text-[14px] font-bold text-white transition-all hover:bg-[#0fa35e]"
+            >
+              View All
+            </Link>
+          </div>
         </div>
 
         {/* Carousel Viewport Box */}

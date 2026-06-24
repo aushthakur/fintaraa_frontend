@@ -13,8 +13,16 @@ import { InsuranceOtherProducts } from "./InsuranceOtherProducts";
 import { LoanStatsBar } from "../loan-detail/LoanStatsBar";
 import { FaqAccordion } from "@/components/common/FaqAccordion";
 import { Testimonials } from "@/components/home/Testimonials";
+import { ProductLocationDirectory } from "../ProductLocationDirectory";
+import type { InsuranceSeoLocationPage } from "@/services/insuranceSeoPages";
 
-export function InsuranceDetailPage({ page }: { page: InsuranceSeoPageData }) {
+export function InsuranceDetailPage({
+  page,
+  locationPages = [],
+}: {
+  page: InsuranceSeoPageData;
+  locationPages?: InsuranceSeoLocationPage[];
+}) {
   const tabs = useMemo(
     () =>
       (page.tabs || [])
@@ -89,6 +97,12 @@ export function InsuranceDetailPage({ page }: { page: InsuranceSeoPageData }) {
       ) : null}
       {isFaq ? <FaqAccordion lookupPathname="/products/[insuranceType]" /> : null}
       {isReview ? <Testimonials /> : null}
+      <ProductLocationDirectory
+        productName={page.insuranceType}
+        productSlug={page.insuranceTypeSlug}
+        currentLocation={page.location}
+        pages={locationPages}
+      />
       {/* <InsuranceJourney insuranceTypeSlug={page.insuranceTypeSlug} /> */}
       <AppDownloadBanner />
     </main>

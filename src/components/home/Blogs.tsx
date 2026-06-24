@@ -58,7 +58,7 @@ export function RecentBlogs() {
     fetchWebsiteKnowledge({
       type: "blog",
       sectionKey: "recent_blogs",
-      limit: 5,
+      limit: 12,
     })
       .then((items) => mounted && setPosts(items.length ? items : fallbackBlogs))
       .catch(() => mounted && setPosts(fallbackBlogs))

@@ -6,23 +6,22 @@ import {
   ChevronDown,
   ChevronUp,
   ExternalLink,
-  Loader2,
   Search,
   Star,
   X,
-  XCircle,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { BankLogoImage } from "@/components/common/BankLogoImage";
-import { getAuthToken, getAuthType } from "@/hooks/authStorage";
-import { buildLoginRedirectHref } from "@/lib/loginRedirect";
 import {
+  buildCreditCardDetailPath,
+  buildCreditCardEligibilityPath,
   CreditCardFilters,
   CreditCardProduct,
-  EligibilityBreakdown,
-  fetchCreditCardEligibility,
   fetchCreditCardFilters,
   fetchCreditCards,
+  getCreditCardApplyUrl,
+  isSameCreditCardBank,
+  isSameCreditCardType,
   trackBankProductClick,
 } from "@/services/bankProducts";
 
@@ -63,12 +62,6 @@ const fallbackFilters: CreditCardFilters = {
   incomeBuckets: [],
 };
 
-const slugify = (value: string) =>
-  value
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
-
 const formatCurrency = (value: unknown) => {
   const numeric =
     typeof value === "number"
@@ -96,9 +89,6 @@ const getCardTags = (card: CreditCardProduct) =>
 
 const textOrFallback = (value: unknown, fallback = "Not specified") =>
   String(value || "").trim() || fallback;
-
-const hasActiveSession = () =>
-  getAuthType() === "user" && Boolean(getAuthToken());
 
 function FilterGroup({
   title,
@@ -154,7 +144,13 @@ function CardsSkeleton() {
   );
 }
 
-export function CreditCardsExplorer() {
+export function CreditCardsExplorer({
+  initialBankSlug = "",
+  initialCardTypeSlug = "",
+}: {
+  initialBankSlug?: string;
+  initialCardTypeSlug?: string;
+}) {
   const router = useRouter();
   const [cards, setCards] = useState<CreditCardProduct[]>([]);
   const [filters, setFilters] = useState<CreditCardFilters>(fallbackFilters);
@@ -169,10 +165,6 @@ export function CreditCardsExplorer() {
   const [selectedNetworks, setSelectedNetworks] = useState<string[]>([]);
   const [loungeOnly, setLoungeOnly] = useState(false);
   const [featuredOnly, setFeaturedOnly] = useState(false);
-  const [detailCard, setDetailCard] = useState<CreditCardProduct | null>(null);
-  const [eligibilityCard, setEligibilityCard] = useState<CreditCardProduct | null>(null);
-  const [eligibility, setEligibility] = useState<EligibilityBreakdown | null>(null);
-  const [eligibilityLoading, setEligibilityLoading] = useState(false);
   const [compareIds, setCompareIds] = useState<string[]>([]);
   const [compareOpen, setCompareOpen] = useState(false);
 
@@ -187,8 +179,30 @@ export function CreditCardsExplorer() {
           fetchCreditCardFilters(),
         ]);
         if (!active) return;
+        const nextFilters = filterData || fallbackFilters;
         setCards(products);
-        setFilters(filterData || fallbackFilters);
+        setFilters(nextFilters);
+
+        const matchedBank = initialBankSlug
+          ? nextFilters.banks.find((bank) =>
+              isSameCreditCardBank(initialBankSlug, bank),
+            ) ||
+            products.find((card) =>
+              isSameCreditCardBank(initialBankSlug, card.bankName),
+            )?.bankName ||
+            ""
+          : "";
+        const matchedType = initialCardTypeSlug
+          ? nextFilters.cardTypes.find((type) =>
+              isSameCreditCardType(initialCardTypeSlug, type),
+            ) ||
+            products.find((card) =>
+              isSameCreditCardType(initialCardTypeSlug, card.cardType),
+            )?.cardType ||
+            ""
+          : "";
+        setSelectedBanks(matchedBank ? [matchedBank] : []);
+        setSelectedCardTypes(matchedType ? [matchedType] : []);
       } catch (err) {
         if (!active) return;
         setError((err as Error).message || "Unable to load credit cards.");
@@ -200,7 +214,7 @@ export function CreditCardsExplorer() {
     return () => {
       active = false;
     };
-  }, []);
+  }, [initialBankSlug, initialCardTypeSlug]);
 
   const filteredBanks = useMemo(
     () =>
@@ -296,7 +310,6 @@ export function CreditCardsExplorer() {
   };
 
   const handleDetails = async (card: CreditCardProduct) => {
-    setDetailCard(card);
     const id = getCardId(card);
     if (id) {
       try {
@@ -305,56 +318,28 @@ export function CreditCardsExplorer() {
         // Analytics should not block details.
       }
     }
+    router.push(buildCreditCardDetailPath(card));
   };
 
-  const handleEligibility = async (card: CreditCardProduct) => {
-    if (!hasActiveSession()) {
-      router.push(
-        buildLoginRedirectHref({
-          redirectTo: "/credit-cards",
-          product: slugify(card.name),
-        }),
-      );
-      return;
-    }
-
-    setEligibilityCard(card);
-    setEligibility(null);
-    setEligibilityLoading(true);
-    try {
-      const result = await fetchCreditCardEligibility(getCardId(card));
-      setEligibility(result);
-    } catch (err) {
-      setEligibility({
-        eligible: false,
-        score: 0,
-        message: (err as Error).message || "Unable to calculate eligibility.",
-        checks: [],
-      });
-    } finally {
-      setEligibilityLoading(false);
-    }
-  };
+  const handleEligibility = (card: CreditCardProduct) =>
+    router.push(buildCreditCardEligibilityPath(card));
 
   const handleApply = async (card: CreditCardProduct) => {
-    if (!hasActiveSession()) {
-      router.push(
-        buildLoginRedirectHref({
-          redirectTo: "/credit-cards",
-          product: slugify(card.name),
-        }),
-      );
-      return;
+    const id = getCardId(card);
+    if (id) {
+      try {
+        await trackBankProductClick(id, "apply");
+      } catch {
+        // Tracking should not block redirect to the bank.
+      }
     }
 
-    const id = getCardId(card);
-    try {
-      if (id) await trackBankProductClick(id, "apply");
-    } catch {
-      // Tracking should not block the bank/product handoff.
+    const url = getCreditCardApplyUrl(card);
+    if (url.startsWith("http")) {
+      window.open(url, "_blank", "noopener,noreferrer");
+    } else {
+      router.push(url);
     }
-    const url = card.applyUrl || card.link;
-    if (url) window.open(url, "_blank", "noopener,noreferrer");
   };
 
   const toggleCompare = (id: string) => {
@@ -575,167 +560,6 @@ export function CreditCardsExplorer() {
             {error ? (
               <div className="rounded-xl border border-red-100 bg-red-50 p-5 text-[13px] font-semibold text-red-700">
                 {error}
-              </div>
-            ) : null}
-
-            {detailCard ? (
-              <div className="rounded-2xl border border-[#cfe3f7] bg-white p-5 shadow-xs">
-                <div className="flex flex-col justify-between gap-4 md:flex-row md:items-start">
-                  <div>
-                    <p className="text-[12px] font-bold text-[#005ca8]">
-                      {detailCard.bankName}
-                    </p>
-                    <h3 className="mt-1 text-[20px] font-extrabold text-[#1a1d25]">
-                      {detailCard.name}
-                    </h3>
-                    <p className="mt-2 max-w-3xl text-[13px] font-medium leading-6 text-[#64748b]">
-                      {detailCard.shortDescription || detailCard.subtitle}
-                    </p>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setDetailCard(null)}
-                    className="self-start rounded-full border border-[#d8e3ef] px-4 py-2 text-[12px] font-bold text-[#64748b]"
-                  >
-                    Close
-                  </button>
-                </div>
-                <div className="mt-5 grid gap-4 md:grid-cols-3">
-                  {[
-                    ["Joining Fee", formatCurrency(detailCard.joiningFee)],
-                    ["Annual Fee", formatCurrency(detailCard.annualFee)],
-                    ["Processing Time", detailCard.processingTime || "3-7 working days"],
-                    ["Network", detailCard.cardNetwork || "Bank issued"],
-                    ["Minimum Income", formatCurrency(detailCard.minimumIncome)],
-                    ["Credit Score", `${detailCard.creditScoreRequirement || 700}+`],
-                  ].map(([label, value]) => (
-                    <div
-                      key={label}
-                      className="rounded-xl border border-[#eef3f8] bg-[#fafcff] p-3"
-                    >
-                      <p className="text-[11px] font-bold text-[#94a3b8]">
-                        {label}
-                      </p>
-                      <p className="mt-1 text-[13px] font-extrabold text-[#1a1d25]">
-                        {value}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-                <div className="mt-5 grid gap-5 md:grid-cols-2">
-                  <div>
-                    <h4 className="text-[13px] font-extrabold text-[#1a1d25]">
-                      Benefits
-                    </h4>
-                    <ul className="mt-3 space-y-2 text-[12px] font-medium leading-5 text-[#536273]">
-                      {[
-                        detailCard.welcomeBenefits,
-                        detailCard.rewardStructure,
-                        detailCard.cashbackDetails,
-                        detailCard.loungeAccess,
-                        detailCard.fuelBenefits,
-                        detailCard.movieBenefits,
-                        detailCard.travelBenefits,
-                        detailCard.insuranceBenefits,
-                      ]
-                        .filter(Boolean)
-                        .map((benefit) => (
-                          <li key={String(benefit)} className="flex gap-2">
-                            <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#1cb45c]" />
-                            <span>{benefit}</span>
-                          </li>
-                        ))}
-                    </ul>
-                  </div>
-                  <div>
-                    <h4 className="text-[13px] font-extrabold text-[#1a1d25]">
-                      FAQs
-                    </h4>
-                    <div className="mt-3 grid gap-3">
-                      {(detailCard.faqs || []).slice(0, 3).map((faq) => (
-                        <div key={faq.question} className="rounded-xl bg-[#f6f9fc] p-3">
-                          <p className="text-[12px] font-bold text-[#1a1d25]">
-                            {faq.question}
-                          </p>
-                          <p className="mt-1 text-[11px] font-medium leading-5 text-[#64748b]">
-                            {faq.answer}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ) : null}
-
-            {eligibilityCard ? (
-              <div className="rounded-2xl border border-[#cfe3f7] bg-white p-5 shadow-xs">
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                  <div>
-                    <p className="text-[12px] font-bold text-[#005ca8]">
-                      Eligibility Check
-                    </p>
-                    <h3 className="mt-1 text-[18px] font-extrabold text-[#1a1d25]">
-                      {eligibilityCard.name}
-                    </h3>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setEligibilityCard(null)}
-                    className="rounded-full border border-[#d8e3ef] px-4 py-2 text-[12px] font-bold text-[#64748b]"
-                  >
-                    Close
-                  </button>
-                </div>
-                {eligibilityLoading ? (
-                  <div className="mt-4 flex items-center gap-2 text-[13px] font-bold text-[#005ca8]">
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    Calculating eligibility...
-                  </div>
-                ) : eligibility ? (
-                  <div className="mt-4">
-                    <div className="flex flex-wrap items-center gap-3">
-                      <span
-                        className={`rounded-full px-4 py-2 text-[12px] font-extrabold ${
-                          eligibility.eligible
-                            ? "bg-[#e8f8ef] text-[#12904b]"
-                            : "bg-[#fff4e6] text-[#a15c00]"
-                        }`}
-                      >
-                        {eligibility.eligible ? "Eligible" : "Needs Review"} -
-                        Match Score {eligibility.score}%
-                      </span>
-                      <span className="text-[12px] font-medium text-[#64748b]">
-                        {eligibility.message}
-                      </span>
-                    </div>
-                    <div className="mt-4 grid gap-3 md:grid-cols-2">
-                      {eligibility.checks.map((check) => (
-                        <div
-                          key={check.key}
-                          className="rounded-xl border border-[#eef3f8] bg-[#fafcff] p-3"
-                        >
-                          <div className="flex items-start gap-2">
-                            {check.passed ? (
-                              <CheckCircle2 className="mt-0.5 h-4 w-4 text-[#1cb45c]" />
-                            ) : (
-                              <XCircle className="mt-0.5 h-4 w-4 text-[#f97316]" />
-                            )}
-                            <div>
-                              <p className="text-[12px] font-bold text-[#1a1d25]">
-                                {check.label}
-                              </p>
-                              <p className="mt-1 text-[11px] font-medium text-[#64748b]">
-                                Required: {check.required || "Not defined"} |
-                                Your value: {check.current || "Not available"}
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ) : null}
               </div>
             ) : null}
 

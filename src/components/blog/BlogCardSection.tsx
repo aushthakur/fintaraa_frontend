@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { type BlogPost, type BlogAuthor } from "@/data/blogs";
+import { formatKnowledgeDate } from "@/services/websiteKnowledge";
 
 function normalizeAuthor(author: string | BlogAuthor): BlogAuthor {
   if (typeof author === "string") {
@@ -57,8 +58,9 @@ export function BlogCardSection({ posts }: { posts: BlogPost[] }) {
 
         {/* 3-Column Balanced Card Grid */}
         <div className="grid gap-4 sm:gap-5 md:grid-cols-2 md:gap-6 lg:grid-cols-3">
-          {displayPosts.slice(0, 6).map((post, index) => {
+          {displayPosts.map((post, index) => {
             const authorInfo = normalizeAuthor(post.author);
+            const publishedDate = formatKnowledgeDate(post.publishedAt);
             return (
               <article
                 key={post.slug || index}
@@ -106,11 +108,9 @@ export function BlogCardSection({ posts }: { posts: BlogPost[] }) {
                       </div>
 
                       {/* Right timestamp meta block - responsive text */}
-                      <div className="flex items-center gap-2 whitespace-nowrap text-[10px] font-medium text-[#93a2b2] sm:gap-3 sm:text-[11px] md:text-xs lg:text-sm">
+                      <div className="flex shrink-0 flex-col items-end gap-1 whitespace-nowrap text-right text-[10px] font-medium leading-tight text-[#93a2b2] sm:text-[11px] md:text-xs lg:text-sm">
                         <span>{post.readTime}</span>
-                        <span className="hidden sm:inline">{post.publishedAt}</span>
-                        {/* Show abbreviated date on small screens */}
-                        <span className="sm:hidden">{post.publishedAt?.slice(0, 6)}</span>
+                        <span>{publishedDate}</span>
                       </div>
                     </div>
                   </div>

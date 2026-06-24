@@ -35,6 +35,7 @@ type CalculatorResult = {
   totalInterest: number;
   totalPayable: number;
   months: number;
+  repaymentPrincipal?: number;
   extraMetrics?: Array<{ label: string; value: number; type?: "currency" | "number" }>;
 };
 
@@ -65,29 +66,387 @@ const formatNumberIndian = (num: number) =>
     maximumFractionDigits: 0,
   }).format(Math.max(0, Math.round(num || 0)));
 
+const formatDecimalIndian = (num: number) =>
+  new Intl.NumberFormat("en-IN", {
+    maximumFractionDigits: 2,
+  }).format(Math.max(0, Number(num || 0)));
+
 const formatCurrencyPdf = (num: number) =>
-  `Rs ${formatNumberIndian(Math.max(0, Math.round(num || 0)))}`;
+  `Rs ${new Intl.NumberFormat("en-IN", {
+    minimumFractionDigits: Number.isInteger(num) ? 0 : 2,
+    maximumFractionDigits: 2,
+  }).format(Math.max(0, Number(num || 0)))}`;
 
 const escapePdfText = (value: string) =>
   value.replace(/\\/g, "\\\\").replace(/\(/g, "\\(").replace(/\)/g, "\\)");
 
-const buildLoanBreakupPdf = (lines: string[]) => {
-  const content = [
+const roundMoney = (value: number) =>
+  Math.round((value + Number.EPSILON) * 100) / 100;
+
+type AmortizationRow = {
+  month: number;
+  openingBalance: number;
+  emi: number;
+  principalPaid: number;
+  interest: number;
+  closingBalance: number;
+  cumulativeInterest: number;
+};
+
+type PdfDetail = {
+  label: string;
+  value: string;
+};
+
+type LoanBreakupPdfData = {
+  productLabel: string;
+  description: string;
+  generatedAt: string;
+  inputs: PdfDetail[];
+  summary: PdfDetail[];
+  extras: PdfDetail[];
+  schedule: AmortizationRow[];
+};
+
+const buildAmortizationSchedule = (
+  principal: number,
+  annualRate: number,
+  months: number,
+  monthlyPayment: number,
+): AmortizationRow[] => {
+  const safeMonths = Math.max(1, Math.round(months || 1));
+  const monthlyRate = Math.max(0, annualRate || 0) / 12 / 100;
+  let balance = roundMoney(Math.max(0, principal || 0));
+  let cumulativeInterest = 0;
+  const rows: AmortizationRow[] = [];
+
+  for (let month = 1; month <= safeMonths && balance > 0.005; month += 1) {
+    const openingBalance = balance;
+    const interest = roundMoney(openingBalance * monthlyRate);
+    let principalPaid = roundMoney(Math.max(0, monthlyPayment - interest));
+
+    if (month === safeMonths || principalPaid >= openingBalance) {
+      principalPaid = openingBalance;
+    }
+
+    const emi = roundMoney(principalPaid + interest);
+    const closingBalance = roundMoney(Math.max(0, openingBalance - principalPaid));
+    cumulativeInterest = roundMoney(cumulativeInterest + interest);
+
+    rows.push({
+      month,
+      openingBalance,
+      emi,
+      principalPaid,
+      interest,
+      closingBalance,
+      cumulativeInterest,
+    });
+
+    balance = closingBalance;
+  }
+
+  return rows;
+};
+
+const pdfNumber = (value: number) =>
+  Number.isFinite(value) ? Number(value.toFixed(2)).toString() : "0";
+
+const pdfColor = (hex: string) => {
+  const value = hex.replace("#", "");
+  const red = parseInt(value.slice(0, 2), 16) / 255;
+  const green = parseInt(value.slice(2, 4), 16) / 255;
+  const blue = parseInt(value.slice(4, 6), 16) / 255;
+  return `${pdfNumber(red)} ${pdfNumber(green)} ${pdfNumber(blue)}`;
+};
+
+const textWidthEstimate = (value: string, fontSize: number) =>
+  value.length * fontSize * 0.48;
+
+const pdfText = (
+  value: string,
+  x: number,
+  y: number,
+  options: {
+    size?: number;
+    bold?: boolean;
+    color?: string;
+    align?: "left" | "center" | "right";
+  } = {},
+) => {
+  const size = options.size || 10;
+  const align = options.align || "left";
+  const offset =
+    align === "right"
+      ? textWidthEstimate(value, size)
+      : align === "center"
+        ? textWidthEstimate(value, size) / 2
+        : 0;
+
+  return [
+    "q",
+    `${pdfColor(options.color || "#111827")} rg`,
     "BT",
-    "/F1 18 Tf",
-    "54 742 Td",
-    "(Fintaraa Loan Breakup) Tj",
-    "0 -30 Td",
-    "/F1 11 Tf",
-    ...lines.flatMap((line) => [`(${escapePdfText(line)}) Tj`, "0 -18 Td"]),
+    `/${options.bold ? "F2" : "F1"} ${size} Tf`,
+    `${pdfNumber(x - offset)} ${pdfNumber(y)} Td`,
+    `(${escapePdfText(value)}) Tj`,
     "ET",
+    "Q",
   ].join("\n");
+};
+
+const pdfRect = (
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  fill: string,
+) =>
+  [
+    "q",
+    `${pdfColor(fill)} rg`,
+    `${pdfNumber(x)} ${pdfNumber(y)} ${pdfNumber(width)} ${pdfNumber(height)} re`,
+    "f",
+    "Q",
+  ].join("\n");
+
+const pdfLine = (
+  x1: number,
+  y1: number,
+  x2: number,
+  y2: number,
+  color = "#E5EAF2",
+) =>
+  [
+    "q",
+    `${pdfColor(color)} RG`,
+    "0.6 w",
+    `${pdfNumber(x1)} ${pdfNumber(y1)} m`,
+    `${pdfNumber(x2)} ${pdfNumber(y2)} l`,
+    "S",
+    "Q",
+  ].join("\n");
+
+const drawDetailGrid = (
+  commands: string[],
+  title: string,
+  details: PdfDetail[],
+  startY: number,
+) => {
+  commands.push(pdfText(title, 42, startY, { size: 13, bold: true }));
+  const cardWidth = 252;
+  const cardHeight = 36;
+  const rowGap = 44;
+  const gap = 18;
+
+  details.forEach((item, index) => {
+    const column = index % 2;
+    const row = Math.floor(index / 2);
+    const x = 42 + column * (cardWidth + gap);
+    const y = startY - 48 - row * rowGap;
+
+    commands.push(pdfRect(x, y, cardWidth, cardHeight, "#F7FAFF"));
+    commands.push(
+      pdfText(item.label.toUpperCase(), x + 12, y + 21, {
+        size: 7.5,
+        bold: true,
+        color: "#64748B",
+      }),
+    );
+    commands.push(
+      pdfText(item.value, x + 12, y + 7, {
+        size: 10.5,
+        bold: true,
+        color: "#111827",
+      }),
+    );
+  });
+
+  return startY - 48 - Math.ceil(details.length / 2) * rowGap;
+};
+
+const scheduleColumns = [
+  { label: "Month", x: 42, width: 38, align: "left" as const },
+  { label: "Opening", x: 84, width: 78, align: "right" as const },
+  { label: "EMI", x: 166, width: 70, align: "right" as const },
+  { label: "Principal", x: 240, width: 76, align: "right" as const },
+  { label: "Interest", x: 320, width: 70, align: "right" as const },
+  { label: "Closing", x: 394, width: 80, align: "right" as const },
+  { label: "Cum. Int.", x: 478, width: 90, align: "right" as const },
+];
+
+const scheduleValue = (row: AmortizationRow, column: string) => {
+  switch (column) {
+    case "Month":
+      return String(row.month);
+    case "Opening":
+      return formatCurrencyPdf(row.openingBalance);
+    case "EMI":
+      return formatCurrencyPdf(row.emi);
+    case "Principal":
+      return formatCurrencyPdf(row.principalPaid);
+    case "Interest":
+      return formatCurrencyPdf(row.interest);
+    case "Closing":
+      return formatCurrencyPdf(row.closingBalance);
+    default:
+      return formatCurrencyPdf(row.cumulativeInterest);
+  }
+};
+
+const buildLoanBreakupPdf = (data: LoanBreakupPdfData) => {
+  const pages: string[] = [];
+  const firstPage: string[] = [];
+
+  firstPage.push(pdfRect(0, 726, 612, 66, "#1F2D44"));
+  firstPage.push(
+    pdfText("FINTARAA", 42, 766, {
+      size: 9,
+      bold: true,
+      color: "#D9FBE8",
+    }),
+  );
+  firstPage.push(
+    pdfText("Loan Breakup Report", 42, 743, {
+      size: 22,
+      bold: true,
+      color: "#FFFFFF",
+    }),
+  );
+  firstPage.push(
+    pdfText(data.generatedAt, 568, 750, {
+      size: 8.5,
+      color: "#D7E0EC",
+      align: "right",
+    }),
+  );
+
+  firstPage.push(
+    pdfText(`${data.productLabel} Calculator`, 42, 696, {
+      size: 16,
+      bold: true,
+      color: "#0F172A",
+    }),
+  );
+  firstPage.push(
+    pdfText(data.description, 42, 677, {
+      size: 9.5,
+      color: "#64748B",
+    }),
+  );
+
+  let nextY = drawDetailGrid(firstPage, "Breakdown Summary", data.summary, 642);
+  nextY = drawDetailGrid(firstPage, "Input Parameters", data.inputs, nextY - 8);
+
+  if (data.extras.length) {
+    nextY = drawDetailGrid(firstPage, "Additional Details", data.extras, nextY - 8);
+  }
+
+  firstPage.push(pdfRect(42, Math.max(86, nextY - 28), 528, 42, "#F0FDF4"));
+  firstPage.push(
+    pdfText(
+      `Full month-wise schedule attached: ${data.schedule.length} repayment rows.`,
+      56,
+      Math.max(104, nextY - 4),
+      { size: 10.5, bold: true, color: "#14532D" },
+    ),
+  );
+  firstPage.push(
+    pdfText(
+      "This report is indicative. Final EMI, fees, rate and approval depend on lender policy, credit profile and document verification.",
+      56,
+      Math.max(90, nextY - 18),
+      { size: 7.7, color: "#64748B" },
+    ),
+  );
+  firstPage.push(pdfText("Page 1", 568, 34, { size: 8, color: "#94A3B8", align: "right" }));
+  pages.push(firstPage.join("\n"));
+
+  const rowsPerPage = 28;
+  for (let index = 0; index < data.schedule.length; index += rowsPerPage) {
+    const pageRows = data.schedule.slice(index, index + rowsPerPage);
+    const pageNumber = pages.length + 1;
+    const page: string[] = [];
+
+    page.push(pdfText("Loan Amortization Schedule", 42, 750, { size: 15, bold: true }));
+    page.push(
+      pdfText(data.productLabel, 42, 732, {
+        size: 9,
+        color: "#64748B",
+      }),
+    );
+    page.push(
+      pdfText(`Page ${pageNumber}`, 568, 742, {
+        size: 8,
+        color: "#94A3B8",
+        align: "right",
+      }),
+    );
+    page.push(pdfRect(42, 700, 528, 24, "#EAF2FF"));
+
+    scheduleColumns.forEach((column) => {
+      page.push(
+        pdfText(
+          column.label,
+          column.align === "right" ? column.x + column.width : column.x,
+          709,
+          {
+            size: 7.5,
+            bold: true,
+            color: "#334155",
+            align: column.align,
+          },
+        ),
+      );
+    });
+
+    pageRows.forEach((row, rowIndex) => {
+      const y = 681 - rowIndex * 21;
+      if (rowIndex % 2 === 0) {
+        page.push(pdfRect(42, y - 7, 528, 19, "#FAFCFF"));
+      }
+      page.push(pdfLine(42, y - 10, 570, y - 10));
+
+      scheduleColumns.forEach((column) => {
+        page.push(
+          pdfText(
+            scheduleValue(row, column.label),
+            column.align === "right" ? column.x + column.width : column.x,
+            y,
+            {
+              size: 7.2,
+              color: column.label === "Interest" ? "#A34747" : "#334155",
+              align: column.align,
+            },
+          ),
+        );
+      });
+    });
+
+    page.push(
+      pdfText(
+        "Interest is calculated on reducing monthly outstanding balance. Last EMI is adjusted for rounding.",
+        42,
+        34,
+        { size: 7.5, color: "#94A3B8" },
+      ),
+    );
+    pages.push(page.join("\n"));
+  }
+
+  const pageObjectIds = pages.map((_, index) => 5 + index * 2);
+  const contentObjectIds = pages.map((_, index) => 6 + index * 2);
   const objects = [
     "<< /Type /Catalog /Pages 2 0 R >>",
-    "<< /Type /Pages /Kids [3 0 R] /Count 1 >>",
-    "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>",
+    `<< /Type /Pages /Kids [${pageObjectIds
+      .map((id) => `${id} 0 R`)
+      .join(" ")}] /Count ${pages.length} >>`,
     "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>",
-    `<< /Length ${content.length} >>\nstream\n${content}\nendstream`,
+    "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>",
+    ...pages.flatMap((content, index) => [
+      `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents ${contentObjectIds[index]} 0 R >>`,
+      `<< /Length ${content.length} >>\nstream\n${content}\nendstream`,
+    ]),
   ];
 
   let pdf = "%PDF-1.4\n";
@@ -610,6 +969,7 @@ const calculatorConfigs: CalculatorConfig[] = [
         ...base,
         principal,
         principalLabel: "Loan Amount",
+        repaymentPrincipal: repayablePrincipal,
         totalInterest: Math.max(0, base.totalPayable - principal),
         totalPayable: base.totalPayable,
         extraMetrics: [
@@ -826,28 +1186,90 @@ export function EmiCalculator() {
   };
 
   const handleDownloadBreakup = () => {
-    const inputLines = activeConfig.fields.map((field) => {
+    const inputs = activeConfig.fields.map((field) => {
       const value = activeValues[field.key];
       const formattedValue = field.prefix
-        ? formatCurrencyPdf(value)
-        : `${formatNumberIndian(value)}${field.suffix ? ` ${field.suffix}` : ""}`;
-      return `${field.title}: ${formattedValue}`;
+        ? `${formatCurrencyPdf(value)}${field.suffix ? ` ${field.suffix}` : ""}`
+        : `${formatDecimalIndian(value)}${field.suffix ? ` ${field.suffix}` : ""}`;
+
+      return {
+        label: field.title,
+        value: formattedValue,
+      };
     });
-    const metricLines = [
-      `Product: ${activeConfig.label}`,
-      `${computedMetrics.principalLabel}: ${formatCurrencyPdf(computedMetrics.principal)}`,
-      `Monthly EMI: ${formatCurrencyPdf(computedMetrics.emi)}`,
-      `Total Interest: ${formatCurrencyPdf(computedMetrics.totalInterest)}`,
-      `Total Payable: ${formatCurrencyPdf(computedMetrics.totalPayable)}`,
-      `Tenure: ${computedMetrics.months} months`,
-      "",
-      "Inputs",
-      ...inputLines,
-      "",
-      "Note: This is an indicative calculation. Final offers depend on lender policy, credit profile and document verification.",
+    const repaymentPrincipal =
+      computedMetrics.repaymentPrincipal || computedMetrics.principal;
+    const schedule = buildAmortizationSchedule(
+      repaymentPrincipal,
+      activeValues.interestRate,
+      computedMetrics.months,
+      computedMetrics.emi,
+    );
+    const firstMonthInterest = schedule[0]?.interest || 0;
+    const monthlyRate = (activeValues.interestRate || 0) / 12;
+    const extraDetails: PdfDetail[] = [
+      ...(computedMetrics.repaymentPrincipal &&
+      Math.abs(computedMetrics.repaymentPrincipal - computedMetrics.principal) > 0.5
+        ? [
+            {
+              label: "Repayment Principal",
+              value: formatCurrencyPdf(computedMetrics.repaymentPrincipal),
+            },
+          ]
+        : []),
+      ...(computedMetrics.extraMetrics || []).map((metric) => ({
+        label: metric.label,
+        value:
+          metric.type === "number"
+            ? formatDecimalIndian(metric.value)
+            : formatCurrencyPdf(metric.value),
+      })),
     ];
+    const pdf = buildLoanBreakupPdf({
+      productLabel: activeConfig.label,
+      description: activeConfig.description,
+      generatedAt: `Generated on ${new Date().toLocaleString("en-IN", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      })}`,
+      inputs,
+      summary: [
+        { label: "Product", value: activeConfig.label },
+        {
+          label: computedMetrics.principalLabel,
+          value: formatCurrencyPdf(computedMetrics.principal),
+        },
+        { label: "Monthly EMI", value: formatCurrencyPdf(computedMetrics.emi) },
+        {
+          label: "Annual Rate",
+          value: `${formatDecimalIndian(activeValues.interestRate)}%`,
+        },
+        {
+          label: "Monthly Rate",
+          value: `${formatDecimalIndian(monthlyRate)}%`,
+        },
+        {
+          label: "First Month Interest",
+          value: formatCurrencyPdf(firstMonthInterest),
+        },
+        {
+          label: "Total Interest",
+          value: formatCurrencyPdf(computedMetrics.totalInterest),
+        },
+        {
+          label: "Total Payable",
+          value: formatCurrencyPdf(computedMetrics.totalPayable),
+        },
+        { label: "Tenure", value: `${computedMetrics.months} months` },
+      ],
+      extras: extraDetails,
+      schedule,
+    });
     const fileName = `fintaraa-${activeConfig.key}-breakup.pdf`;
-    downloadPdf(fileName, buildLoanBreakupPdf(metricLines));
+    downloadPdf(fileName, pdf);
   };
 
   return (

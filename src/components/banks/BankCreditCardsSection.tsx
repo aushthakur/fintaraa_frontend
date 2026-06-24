@@ -1,24 +1,24 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   ArrowRight,
   BadgeIndianRupee,
   CheckCircle2,
   CreditCard,
   Gift,
-  Plane,
   ShieldCheck,
-  X,
 } from "lucide-react";
 import { BankLogoImage } from "@/components/common/BankLogoImage";
-import { getAuthToken, getAuthType } from "@/hooks/authStorage";
-import { buildLoginRedirectHref } from "@/lib/loginRedirect";
 import { slugifyProduct } from "@/lib/productRouting";
 import {
+  buildCreditCardDetailPath,
+  buildCreditCardEligibilityPath,
   type CreditCardProduct,
   fetchCreditCards,
+  getCreditCardApplyUrl,
   trackBankProductClick,
 } from "@/services/bankProducts";
 
@@ -51,8 +51,6 @@ const isSameBank = (routeBankSlug: string, cardBankName: string) => {
   );
 };
 
-const isLoggedIn = () => getAuthType() === "user" && Boolean(getAuthToken());
-
 const formatCurrency = (value?: number | string) => {
   const amount =
     typeof value === "number"
@@ -79,9 +77,7 @@ export function BankCreditCardsSection({
   bankSlug,
 }: BankCreditCardsSectionProps) {
   const router = useRouter();
-  const pathname = usePathname();
   const [cards, setCards] = useState<CreditCardProduct[]>([]);
-  const [selectedCard, setSelectedCard] = useState<CreditCardProduct | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -123,37 +119,32 @@ export function BankCreditCardsSection({
   const logoCard = bankCards.find((card) => card.image);
 
   const handleDetails = async (card: CreditCardProduct) => {
-    setSelectedCard(card);
     const id = getCardId(card);
-    if (!id) return;
-    try {
-      await trackBankProductClick(id, "detail");
-    } catch {
-      // Non-blocking analytics.
+    if (id) {
+      try {
+        await trackBankProductClick(id, "detail");
+      } catch {
+        // Non-blocking analytics.
+      }
     }
+    router.push(buildCreditCardDetailPath(card));
+  };
+
+  const handleEligibility = (card: CreditCardProduct) => {
+    router.push(buildCreditCardEligibilityPath(card));
   };
 
   const handleApply = async (card: CreditCardProduct) => {
-    if (!isLoggedIn()) {
-      router.push(
-        buildLoginRedirectHref({
-          redirectTo: pathname || `/banks/${bankSlug}/credit-card`,
-          product: slugifyProduct(card.name),
-        }),
-      );
-      return;
-    }
-
     const id = getCardId(card);
     if (id) {
       try {
         await trackBankProductClick(id, "apply");
       } catch {
-        // Continue even when tracking is unavailable.
+        // Tracking should not block redirect to the bank.
       }
     }
 
-    const url = card.applyUrl || card.link || "/credit-cards";
+    const url = getCreditCardApplyUrl(card);
     if (url.startsWith("http")) {
       window.open(url, "_blank", "noopener,noreferrer");
     } else {
@@ -190,13 +181,13 @@ export function BankCreditCardsSection({
               </p>
             </div>
           </div>
-          <a
+          <Link
             href="/credit-cards"
             className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-[#cfe0ef] bg-white px-5 text-[13px] font-extrabold text-[#005ca8] no-underline transition hover:border-[#005ca8]"
           >
             View all banks
             <ArrowRight className="h-4 w-4" />
-          </a>
+          </Link>
         </div>
 
         {loading ? (
@@ -343,159 +334,31 @@ export function BankCreditCardsSection({
                   </div>
                 </div>
 
-                <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                <div className="mt-6 grid gap-3 sm:grid-cols-2">
                   <button
                     type="button"
                     onClick={() => handleDetails(card)}
-                    className="inline-flex h-11 flex-1 items-center justify-center rounded-full border border-[#cfe0ef] bg-white px-4 text-[13px] font-extrabold text-[#005ca8] transition hover:border-[#005ca8]"
+                    className="inline-flex h-11 items-center justify-center rounded-full border border-[#cfe0ef] bg-white px-4 text-[13px] font-extrabold text-[#005ca8] transition hover:border-[#005ca8]"
                   >
                     View Details
                   </button>
                   <button
                     type="button"
                     onClick={() => handleApply(card)}
-                    className="inline-flex h-11 flex-1 items-center justify-center rounded-full bg-[#08a045] px-4 text-[13px] font-extrabold text-white transition hover:bg-[#067e36]"
+                    className="inline-flex h-11 items-center justify-center rounded-full bg-[#08a045] px-4 text-[13px] font-extrabold text-white transition hover:bg-[#067e36]"
                   >
                     Apply Now
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleEligibility(card)}
+                    className="inline-flex h-11 items-center justify-center rounded-full border border-[#dce9f7] bg-[#f8fbff] px-4 text-[13px] font-extrabold text-[#005ca8] transition hover:border-[#005ca8] sm:col-span-2"
+                  >
+                    View Eligibility
                   </button>
                 </div>
               </article>
             ))}
-          </div>
-        ) : null}
-
-        {selectedCard ? (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#07162d]/55 px-4 py-6 backdrop-blur-sm">
-            <div className="max-h-[calc(100dvh-3rem)] w-full max-w-5xl overflow-hidden rounded-2xl bg-white shadow-[0_28px_80px_rgba(15,23,42,0.28)]">
-              <div className="flex items-start justify-between gap-4 border-b border-[#e2edf6] px-5 py-4 md:px-6">
-                <div className="min-w-0">
-                  <p className="text-[12px] font-black text-[#005ca8]">
-                    {selectedCard.bankName}
-                  </p>
-                  <h3 className="mt-1 text-[20px] font-black text-[#07162d] md:text-[24px]">
-                    {selectedCard.name}
-                  </h3>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setSelectedCard(null)}
-                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#d8e3ef] text-[#667085] transition hover:border-[#005ca8] hover:text-[#005ca8]"
-                  aria-label="Close card details"
-                >
-                  <X className="h-5 w-5" />
-                </button>
-              </div>
-
-              <div className="max-h-[calc(100dvh-9rem)] overflow-y-auto px-5 py-5 md:px-6">
-                <div className="grid gap-4 md:grid-cols-3">
-                  {[
-                    ["Joining Fee", formatCurrency(selectedCard.joiningFee)],
-                    ["Annual Fee", formatCurrency(selectedCard.annualFee)],
-                    ["Minimum Income", formatCurrency(selectedCard.minimumIncome)],
-                    [
-                      "Credit Score",
-                      selectedCard.creditScoreRequirement
-                        ? `${selectedCard.creditScoreRequirement}+`
-                        : "As per bank policy",
-                    ],
-                    ["Processing Time", selectedCard.processingTime || "3-7 working days"],
-                    ["Network", selectedCard.cardNetwork || "Bank issued"],
-                  ].map(([label, value]) => (
-                    <div
-                      key={label}
-                      className="rounded-xl border border-[#eef3f8] bg-[#fafcff] p-4"
-                    >
-                      <p className="text-[11px] font-black uppercase tracking-wide text-[#98a2b3]">
-                        {label}
-                      </p>
-                      <p className="mt-1 text-[13px] font-extrabold text-[#07162d]">
-                        {value}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="mt-6 grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(280px,0.8fr)]">
-                  <div className="rounded-2xl border border-[#e2edf6] bg-white p-5">
-                    <h4 className="text-[14px] font-black text-[#07162d]">
-                      Benefits & Rewards
-                    </h4>
-                    <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                      {[
-                        ["Welcome Benefits", selectedCard.welcomeBenefits, Gift],
-                        ["Reward Structure", selectedCard.rewardStructure, CheckCircle2],
-                        ["Cashback Details", selectedCard.cashbackDetails, BadgeIndianRupee],
-                        ["Lounge Access", selectedCard.loungeAccess, Plane],
-                        ["Fuel Benefits", selectedCard.fuelBenefits, BadgeIndianRupee],
-                        ["Movie Benefits", selectedCard.movieBenefits, Gift],
-                        ["Travel Benefits", selectedCard.travelBenefits, Plane],
-                        ["Insurance Benefits", selectedCard.insuranceBenefits, ShieldCheck],
-                      ].map(([label, value, Icon]) => {
-                        const BenefitIcon = Icon as typeof Gift;
-                        return (
-                          <div key={String(label)} className="rounded-xl bg-[#f8fbff] p-4">
-                            <BenefitIcon className="h-4 w-4 text-[#005ca8]" />
-                            <p className="mt-2 text-[12px] font-black text-[#07162d]">
-                              {String(label)}
-                            </p>
-                            <p className="mt-1 text-[12px] font-semibold leading-5 text-[#667085]">
-                              {String(value || "Available as per bank policy.")}
-                            </p>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  <div className="rounded-2xl border border-[#e2edf6] bg-[#f8fbff] p-5">
-                    <h4 className="text-[14px] font-black text-[#07162d]">
-                      Eligibility
-                    </h4>
-                    <ul className="mt-4 space-y-3">
-                      {(selectedCard.eligibilityCriteria || [
-                        "Minimum income and credit score as per bank policy.",
-                      ]).map((item) => (
-                        <li
-                          key={item}
-                          className="flex gap-2 text-[12px] font-semibold leading-5 text-[#536273]"
-                        >
-                          <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#1cb45c]" />
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-
-                    {selectedCard.faqs?.length ? (
-                      <div className="mt-6 border-t border-[#dce9f7] pt-5">
-                        <h4 className="text-[14px] font-black text-[#07162d]">
-                          FAQs
-                        </h4>
-                        <div className="mt-3 space-y-3">
-                          {selectedCard.faqs.slice(0, 3).map((faq) => (
-                            <div key={faq.question} className="rounded-xl bg-white p-3">
-                              <p className="text-[12px] font-black text-[#07162d]">
-                                {faq.question}
-                              </p>
-                              <p className="mt-1 text-[12px] font-semibold leading-5 text-[#667085]">
-                                {faq.answer}
-                              </p>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    ) : null}
-
-                    <button
-                      type="button"
-                      onClick={() => handleApply(selectedCard)}
-                      className="mt-6 inline-flex h-11 w-full items-center justify-center rounded-full bg-[#08a045] px-5 text-[13px] font-extrabold text-white transition hover:bg-[#067e36]"
-                    >
-                      Apply Now
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         ) : null}
       </div>

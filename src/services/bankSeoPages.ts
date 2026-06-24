@@ -65,6 +65,21 @@ export type BankSeoPageData = {
   applyBullets: string[];
   isIndexable?: boolean;
   isFallback?: boolean;
+  isBankOverview?: boolean;
+};
+
+export type BankSeoLocationPage = {
+  _id?: string;
+  bankName: string;
+  bankSlug: string;
+  productName: string;
+  productSlug: string;
+  title?: string;
+  canonicalPath?: string;
+  logoUrl?: string;
+  location?: ParsedLoanLocation;
+  priority?: number;
+  isFeatured?: boolean;
 };
 
 type ApiResponse<T> = {
@@ -88,7 +103,6 @@ export const buildBankPath = (
     "/banks",
     slugifyProduct(bankSlug),
     slugifyProduct(productSlug),
-    location?.country && slugifyProduct(location.country),
     location?.state && slugifyProduct(location.state),
     location?.city && slugifyProduct(location.city),
     location?.pincode && slugifyProduct(location.pincode),
@@ -97,21 +111,63 @@ export const buildBankPath = (
   return parts.join("/");
 };
 
+export const buildBankOverviewPath = (bankSlug: string) =>
+  ["/banks", slugifyProduct(bankSlug)].filter(Boolean).join("/");
+
 const logoForBank = (bankSlug: string) => {
   if (bankSlug.includes("hdfc")) return "/assets/banks/hdfc.png";
   if (bankSlug.includes("icici")) return "/assets/banks/icici.png";
   if (bankSlug.includes("kotak")) return "/assets/banks/kotak.png";
-  if (bankSlug.includes("sbi")) return "/assets/banks/sbi.png";
-  if (bankSlug.includes("pnb")) return "/assets/banks/pnb.png";
+  if (bankSlug.includes("axis")) return "/assets/banks/axis-bank.png";
+  if (bankSlug.includes("indus")) return "/assets/banks/indusind.png";
+  if (bankSlug.includes("idfc")) return "/assets/banks/idfc.png";
+  if (bankSlug.includes("bajaj")) return "/assets/banks/bajaj.png";
+  if (bankSlug.includes("shriram")) return "/assets/banks/shriram.png";
+  if (bankSlug.includes("baroda")) return "/assets/banks/bank-of-baroda1.png";
+  if (bankSlug.includes("canara")) return "/assets/banks/canara-bank.png";
+  if (bankSlug.includes("union")) return "/assets/banks/union-bank.png";
+  if (bankSlug.includes("bank-of-india"))
+    return "/assets/banks/bank-of-india.png";
+  if (bankSlug.includes("indian-bank"))
+    return "/assets/banks/indian-bank.png";
+  if (bankSlug.includes("central-bank"))
+    return "/assets/banks/Central-Bank-of-India.png";
+  if (bankSlug.includes("federal")) return "/assets/banks/Federal-Bank.png";
+  if (bankSlug.includes("bandhan")) return "/assets/banks/Bandhan-Bank.png";
+  if (bankSlug.includes("uco")) return "/assets/banks/UCO-Bank.png";
+  if (bankSlug.includes("punjab-and-sind"))
+    return "/assets/banks/Punjab-&-Sind-Bank.png";
+  if (bankSlug.includes("south-indian"))
+    return "/assets/banks/south-indian-bank.png";
+  if (bankSlug.includes("idbi")) return "/assets/banks/IDBI-Bank.png";
+  if (bankSlug.includes("yes-bank")) return "/assets/banks/yes-bank.png";
+  if (bankSlug.includes("sbi") || bankSlug.includes("state-bank"))
+    return "/assets/banks/sbi-logo.png";
+  if (bankSlug.includes("pnb") || bankSlug.includes("punjab-national"))
+    return "/assets/banks/pnb.png";
   return "/assets/banks/indian.png";
 };
+
+const bankNameOverrides: Record<string, string> = {
+  "hdfc-bank": "HDFC Bank",
+  "icici-bank": "ICICI Bank",
+  "axis-bank": "Axis Bank",
+  "kotak-mahindra-bank": "Kotak Mahindra Bank",
+  "idfc-first-bank": "IDFC FIRST Bank",
+  "sbi-card": "SBI Card",
+  "yes-bank": "YES Bank",
+  pnb: "PNB",
+};
+
+const humanizeBankName = (bankSlug: string) =>
+  bankNameOverrides[slugifyProduct(bankSlug)] || humanizeSlug(bankSlug);
 
 export const buildFallbackBankSeoPage = (
   bankSlug: string,
   productSlug: string,
   location: ParsedLoanLocation,
 ): BankSeoPageData => {
-  const bankName = humanizeSlug(bankSlug);
+  const bankName = humanizeBankName(bankSlug);
   const productName = humanizeSlug(productSlug);
   const scoped = locationLabel(location)
     ? `${bankName} ${productName} in ${locationLabel(location)}`
@@ -194,6 +250,172 @@ export const buildFallbackBankSeoPage = (
   };
 };
 
+const defaultBankProducts = (bankSlug: string): BankSeoProduct[] => [
+  {
+    title: "Personal Loan",
+    description: "Loan up to ₹40 Lakh Interest from 10.50% p.a.",
+    href: `/banks/${bankSlug}/personal-loan`,
+  },
+  {
+    title: "Instant Loan",
+    description: "Fast digital loan discovery and assisted application.",
+    href: `/banks/${bankSlug}/instant-loan`,
+  },
+  {
+    title: "Home Loan",
+    description: "Loan up to ₹10 Cr Interest from 8.40% p.a.",
+    href: `/banks/${bankSlug}/home-loan`,
+  },
+  {
+    title: "Business Loan",
+    description: "Loan up to ₹1 Cr Interest from 11.25% p.a.",
+    href: `/banks/${bankSlug}/business-loan`,
+  },
+  {
+    title: "Credit Card",
+    description: "Lifetime Free Cards Exclusive Rewards",
+    href: `/banks/${bankSlug}/credit-card`,
+  },
+];
+
+export const buildFallbackBankOverviewPage = (
+  bankSlug: string,
+): BankSeoPageData => {
+  const bankName = humanizeBankName(bankSlug);
+
+  return {
+    _id: `fallback-${bankSlug}-overview`,
+    bankName,
+    bankSlug,
+    productName: "Products",
+    productSlug: "",
+    title: bankName,
+    subtitle: `Compare loans, credit cards, eligibility, documents, and assisted application options from ${bankName}.`,
+    logoUrl: logoForBank(bankSlug),
+    trustBadge: "Trusted Partner",
+    seoTitle: `${bankName} Products | Fintaraa`,
+    seoDescription: `Explore ${bankName} loan and credit-card products with Fintaraa. Compare eligibility, documents, rates, and assisted application support.`,
+    canonicalPath: buildBankOverviewPath(bankSlug),
+    aboutTitle: `About ${bankName}`,
+    aboutDescription: `${bankName} is a trusted financial partner available on Fintaraa for loan, card, and assisted financial product discovery.`,
+    location: {
+      country: "India",
+      state: "",
+      city: "",
+      pincode: "",
+      area: "",
+    },
+    heroStats: [
+      { label: "Product Options", value: "Loans & Cards" },
+      { label: "Application", value: "Assisted Digital" },
+      { label: "Eligibility", value: "Profile Based" },
+      { label: "Support", value: "Fintaraa Guided" },
+    ],
+    bankStats: [
+      { label: "Category", value: "Bank Partner" },
+      { label: "Presence", value: "India" },
+      { label: "Journey", value: "Digital + Assisted" },
+    ],
+    whyApply: [
+      "Compare multiple products from one bank",
+      "Check eligibility before applying",
+      "Continue with assisted Fintaraa support",
+      "Review documents and next steps clearly",
+    ],
+    products: defaultBankProducts(bankSlug),
+    tabs: [
+      { key: "overview", label: "Overview", sortOrder: 1, isActive: true },
+      { key: "product", label: "Products", sortOrder: 2, isActive: true },
+      { key: "eligibility", label: "Eligibility", sortOrder: 3, isActive: true },
+      { key: "document", label: "Documents", sortOrder: 4, isActive: true },
+      { key: "why_bank", label: `Why ${bankName.split(" ")[0]}`, sortOrder: 5, isActive: true },
+      { key: "review", label: "Review", sortOrder: 6, isActive: true },
+    ],
+    interestRates: [],
+    applyBullets: ["Choose a product", "Check eligibility", "Apply digitally"],
+    isIndexable: true,
+    isFallback: true,
+    isBankOverview: true,
+  };
+};
+
+const buildBankOverviewFromPages = (
+  bankSlug: string,
+  pages: BankSeoLocationPage[],
+) => {
+  const first = pages[0];
+  const fallback = buildFallbackBankOverviewPage(bankSlug);
+  if (!first) return fallback;
+  const bankName = first.bankName || fallback.bankName;
+
+  const productsBySlug = new Map<string, BankSeoProduct>();
+  pages.forEach((page) => {
+    if (!page.productSlug) return;
+    productsBySlug.set(page.productSlug, {
+      title: page.productName || humanizeSlug(page.productSlug),
+      description: `Open ${page.bankName || fallback.bankName} ${page.productName || humanizeSlug(page.productSlug)} details.`,
+      href: `/banks/${bankSlug}/${page.productSlug}`,
+    });
+  });
+
+  const mergedProducts = [
+    ...Array.from(productsBySlug.values()),
+    ...defaultBankProducts(bankSlug),
+  ];
+  const seen = new Set<string>();
+  const products = mergedProducts.filter((product) => {
+    const key = slugifyProduct(product.title);
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+
+  return {
+    ...fallback,
+    bankName,
+    title: bankName,
+    subtitle: `Compare loans, credit cards, eligibility, documents, and assisted application options from ${bankName}.`,
+    seoTitle: `${bankName} Products | Fintaraa`,
+    seoDescription: `Explore ${bankName} loan and credit-card products with Fintaraa. Compare eligibility, documents, rates, and assisted application support.`,
+    aboutTitle: `About ${bankName}`,
+    aboutDescription: `${bankName} is a trusted financial partner available on Fintaraa for loan, card, and assisted financial product discovery.`,
+    tabs: fallback.tabs.map((tab) =>
+      tab.key === "why_bank"
+        ? { ...tab, label: `Why ${bankName.split(" ")[0]}` }
+        : tab,
+    ),
+    logoUrl: first.logoUrl || fallback.logoUrl,
+    products,
+    isFallback: false,
+  };
+};
+
+export async function getBankOverviewPage(
+  bankSlug: string,
+): Promise<BankSeoPageData> {
+  const baseUrl = getBaseUrl();
+  if (!baseUrl || !(await isServerApiReachable(baseUrl))) {
+    return buildFallbackBankOverviewPage(bankSlug);
+  }
+
+  const params = new URLSearchParams({
+    bankSlug: slugifyProduct(bankSlug),
+    limit: "200",
+  });
+
+  try {
+    const response = await fetch(`${baseUrl}/bank-pages/public?${params}`, {
+      next: { revalidate: 300 },
+    });
+    if (!response.ok) throw new Error("Bank overview request failed");
+    const payload = (await response.json()) as ApiResponse<BankSeoLocationPage[]>;
+    const pages = Array.isArray(payload.data) ? payload.data : [];
+    return buildBankOverviewFromPages(slugifyProduct(bankSlug), pages);
+  } catch {
+    return buildFallbackBankOverviewPage(bankSlug);
+  }
+}
+
 export async function getBankSeoPage(
   bankSlug: string,
   productSlug: string,
@@ -233,5 +455,30 @@ export async function getBankSeoPage(
     };
   } catch {
     return buildFallbackBankSeoPage(bankSlug, productSlug, location);
+  }
+}
+
+export async function getBankSeoLocationPages(
+  bankSlug: string,
+  productSlug: string,
+): Promise<BankSeoLocationPage[]> {
+  const baseUrl = getBaseUrl();
+  if (!baseUrl || !(await isServerApiReachable(baseUrl))) return [];
+
+  const params = new URLSearchParams({
+    bankSlug: slugifyProduct(bankSlug),
+    productSlug: slugifyProduct(productSlug),
+    limit: "5000",
+  });
+
+  try {
+    const response = await fetch(`${baseUrl}/bank-pages/public?${params}`, {
+      next: { revalidate: 300 },
+    });
+    if (!response.ok) throw new Error("Bank page list request failed");
+    const payload = (await response.json()) as ApiResponse<BankSeoLocationPage[]>;
+    return Array.isArray(payload.data) ? payload.data : [];
+  } catch {
+    return [];
   }
 }

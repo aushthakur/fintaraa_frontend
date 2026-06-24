@@ -34,7 +34,7 @@ export function BlogIndexPage() {
     fetchWebsiteKnowledge({
       type: "blog",
       sectionKey: "recent_blogs",
-      limit: 20,
+      limit: 50,
     })
       .then((items) => {
         if (mounted) setPosts(items.length ? items.map(toBlogPost) : blogPosts);

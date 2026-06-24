@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import { BankDetailPage } from "@/components/banks/BankDetailPage";
 import { parseLoanLocation, slugifyProduct } from "@/lib/productRouting";
-import { buildBankPath, getBankSeoPage } from "@/services/bankSeoPages";
+import {
+  buildBankPath,
+  getBankSeoLocationPages,
+  getBankSeoPage,
+} from "@/services/bankSeoPages";
 import { getPageSeoMetadata } from "@/services/seoMetadata";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { absoluteUrl, siteName } from "@/services/seoConfig";
@@ -56,7 +60,10 @@ export default async function BankSeoRoute({ params }: PageProps) {
   const bankSlug = slugifyProduct(bankName);
   const productSlug = slugifyProduct(product);
   const location = parseLoanLocation(locationSegments);
-  const page = await getBankSeoPage(bankSlug, productSlug, location);
+  const [page, locationPages] = await Promise.all([
+    getBankSeoPage(bankSlug, productSlug, location),
+    getBankSeoLocationPages(bankSlug, productSlug),
+  ]);
 
   const canonical =
     page.canonicalPath || buildBankPath(bankSlug, productSlug, location);
@@ -106,7 +113,7 @@ export default async function BankSeoRoute({ params }: PageProps) {
           },
         ]}
       />
-      <BankDetailPage page={page} />
+      <BankDetailPage page={page} locationPages={locationPages} />
     </>
   );
 }

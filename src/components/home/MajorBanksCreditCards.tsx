@@ -1,27 +1,23 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { BankLogoImage } from "@/components/common/BankLogoImage";
-import { getAuthToken, getAuthType } from "@/hooks/authStorage";
-import { buildLoginRedirectHref } from "@/lib/loginRedirect";
 import {
+  buildCreditCardBankPath,
+  buildCreditCardDetailPath,
+  buildCreditCardEligibilityPath,
   CreditCardProduct,
   fetchCreditCards,
+  getCreditCardApplyUrl,
+  slugifyCreditCardValue,
   trackBankProductClick,
 } from "@/services/bankProducts";
 
-const slugify = (value: string) =>
-  value
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
-
 const getCardId = (card: CreditCardProduct) => card._id || card.id || "";
-
-const loggedIn = () => getAuthType() === "user" && Boolean(getAuthToken());
 
 const bankDisplayOrder = [
   "SBI Card",
@@ -43,7 +39,6 @@ const fallbackCreditCards: CreditCardProduct[] = [
     rewardsType: "Cashback",
     welcomeBenefits: "Welcome benefits as per bank policy.",
     rewardStructure: "Cashback and milestone rewards.",
-    applyUrl: "/credit-cards",
     priorityOrder: 1,
   },
   {
@@ -56,7 +51,6 @@ const fallbackCreditCards: CreditCardProduct[] = [
     rewardsType: "Reward Points",
     welcomeBenefits: "Digital vouchers and partner benefits.",
     rewardStructure: "Reward points on eligible spends.",
-    applyUrl: "/credit-cards",
     priorityOrder: 2,
   },
   {
@@ -69,7 +63,6 @@ const fallbackCreditCards: CreditCardProduct[] = [
     rewardsType: "Reward Points",
     welcomeBenefits: "Available as per bank policy.",
     rewardStructure: "Points on retail spends.",
-    applyUrl: "/credit-cards",
     priorityOrder: 3,
   },
   {
@@ -82,7 +75,6 @@ const fallbackCreditCards: CreditCardProduct[] = [
     rewardsType: "EDGE Rewards",
     welcomeBenefits: "Shopping and partner benefits.",
     rewardStructure: "Rewards on eligible purchases.",
-    applyUrl: "/credit-cards",
     priorityOrder: 4,
   },
   {
@@ -95,7 +87,6 @@ const fallbackCreditCards: CreditCardProduct[] = [
     rewardsType: "Reward Points",
     welcomeBenefits: "Available as per bank policy.",
     rewardStructure: "Points and milestone benefits.",
-    applyUrl: "/credit-cards",
     priorityOrder: 5,
   },
 ];
@@ -108,7 +99,7 @@ const normalizeBankKey = (bankName?: string) => {
   if (value.includes("axis")) return "axis";
   if (value.includes("kotak")) return "kotak";
   if (value.includes("indusind")) return "indusind";
-  return slugify(value);
+  return slugifyCreditCardValue(value);
 };
 
 const mergeWithFallbackCards = (cards: CreditCardProduct[]) => {
@@ -129,7 +120,6 @@ export function MajorBankCreditCards() {
   const router = useRouter();
   const [cards, setCards] = useState<CreditCardProduct[]>([]);
   const [activeBank, setActiveBank] = useState("");
-  const [selectedCard, setSelectedCard] = useState<CreditCardProduct | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -179,44 +169,39 @@ export function MajorBankCreditCards() {
       cards
         .filter((card) => card.bankName === activeBank)
         .sort((a, b) => Number(a.priorityOrder || 999) - Number(b.priorityOrder || 999))
-        .slice(0, 3),
+        .slice(0, 4),
     [activeBank, cards],
   );
 
   const activeBankData = activeCards[0];
 
   const handleDetails = async (card: CreditCardProduct) => {
-    setSelectedCard(card);
     const id = getCardId(card);
-    if (!id) return;
-    try {
-      await trackBankProductClick(id, "detail");
-    } catch {
-      // Non-blocking analytics.
+    if (id) {
+      try {
+        await trackBankProductClick(id, "detail");
+      } catch {
+        // Non-blocking analytics.
+      }
     }
+    router.push(buildCreditCardDetailPath(card));
+  };
+
+  const handleEligibility = (card: CreditCardProduct) => {
+    router.push(buildCreditCardEligibilityPath(card));
   };
 
   const handleApply = async (card: CreditCardProduct) => {
-    if (!loggedIn()) {
-      router.push(
-        buildLoginRedirectHref({
-          redirectTo: "/credit-cards",
-          product: slugify(card.name),
-        }),
-      );
-      return;
-    }
-
     const id = getCardId(card);
     if (id) {
       try {
         await trackBankProductClick(id, "apply");
       } catch {
-        // Continue to product link even if tracking fails.
+        // Tracking should not block redirect to the bank.
       }
     }
 
-    const url = card.applyUrl || card.link || "/credit-cards";
+    const url = getCreditCardApplyUrl(card);
     if (url.startsWith("http")) {
       window.open(url, "_blank", "noopener,noreferrer");
     } else {
@@ -231,13 +216,13 @@ export function MajorBankCreditCards() {
           <h2 className="text-[20px] font-bold text-[#111111] md:text-[24px]">
             Credit Cards by Major Banks
           </h2>
-          <a
+          <Link
             href="/credit-cards"
             className="flex items-center gap-1 text-[13px] font-medium text-[#08a045] no-underline transition-colors hover:text-[#067e36]"
           >
             View all banks
             <span className="text-[14px]">➔</span>
-          </a>
+          </Link>
         </div>
 
         <div className="mt-5 flex min-w-0 gap-2 overflow-x-auto pb-3 scrollbar-hide">
@@ -255,7 +240,6 @@ export function MajorBankCreditCards() {
                   type="button"
                   onClick={() => {
                     setActiveBank(tab);
-                    setSelectedCard(null);
                   }}
                   className={`shrink-0 rounded-full border px-5 py-2 text-[13px] font-medium transition-all ${
                     isActive
@@ -307,13 +291,13 @@ export function MajorBankCreditCards() {
                   </p>
                 </div>
               </div>
-              <a
-                href="/credit-cards"
+              <Link
+                href={activeBank ? buildCreditCardBankPath(activeBank) : "/credit-cards"}
                 className="flex items-center gap-1 self-start text-[13px] font-medium text-[#08a045] hover:underline sm:self-center"
               >
                 View all {activeBank} cards
                 <span className="text-[14px]">➔</span>
-              </a>
+              </Link>
             </div>
           ) : null}
 
@@ -332,7 +316,7 @@ export function MajorBankCreditCards() {
               ))}
             </div>
           ) : activeCards.length ? (
-            <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-8 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
               {activeCards.map((card) => (
                 <article
                   key={getCardId(card) || card.name}
@@ -367,63 +351,31 @@ export function MajorBankCreditCards() {
                     </div>
                   </div>
 
-                  <div className="mt-6 flex flex-col gap-3 pt-2 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
-                    <button
-                      type="button"
-                      onClick={() => handleDetails(card)}
-                      className="flex items-center justify-center gap-1 text-[13px] font-medium text-[#08a045] hover:underline sm:justify-start"
-                    >
-                      View Details
-                      <span className="text-[13px]">➔</span>
-                    </button>
+                  <div className="mt-6 grid gap-2 pt-2 sm:grid-cols-2">
                     <button
                       type="button"
                       onClick={() => handleApply(card)}
-                      className="inline-flex h-9.5 w-full items-center justify-center rounded-full bg-[#08a045] px-6 text-[13px] font-medium text-white shadow-sm transition-colors hover:bg-[#067e36] sm:w-auto"
+                      className="inline-flex h-9.5 items-center justify-center rounded-full bg-[#08a045] px-4 text-[13px] font-medium text-white shadow-sm transition-colors hover:bg-[#067e36]"
                     >
                       Apply Now
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleDetails(card)}
+                      className="inline-flex h-9.5 items-center justify-center rounded-full border border-[#08a045] bg-white px-4 text-[13px] font-medium text-[#08a045] transition-colors hover:bg-[#f3fbf6]"
+                    >
+                      View Details
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleEligibility(card)}
+                      className="inline-flex h-9.5 items-center justify-center rounded-full border border-[#dcebf7] bg-[#f8fbff] px-4 text-[13px] font-medium text-[#005ca8] transition-colors hover:border-[#005ca8] sm:col-span-2"
+                    >
+                      View Eligibility
                     </button>
                   </div>
                 </article>
               ))}
-            </div>
-          ) : null}
-
-          {selectedCard ? (
-            <div className="mt-6 rounded-2xl border border-[#dcebf7] bg-[#f8fbff] p-5">
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-                <div>
-                  <p className="text-[12px] font-bold text-[#08a045]">
-                    {selectedCard.bankName}
-                  </p>
-                  <h4 className="mt-1 text-[18px] font-extrabold text-[#111111]">
-                    {selectedCard.name}
-                  </h4>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setSelectedCard(null)}
-                  className="rounded-full border border-[#d5e1eb] px-4 py-2 text-[12px] font-bold text-[#667085]"
-                >
-                  Close
-                </button>
-              </div>
-              <div className="mt-4 grid gap-3 md:grid-cols-3">
-                {[
-                  ["Welcome", selectedCard.welcomeBenefits],
-                  ["Rewards", selectedCard.rewardStructure],
-                  ["Eligibility", selectedCard.eligibilityCriteria?.[0]],
-                ].map(([label, value]) => (
-                  <div key={label} className="rounded-xl bg-white p-3">
-                    <p className="text-[11px] font-bold text-[#98a2b3]">
-                      {label}
-                    </p>
-                    <p className="mt-1 text-[12px] font-semibold leading-5 text-[#475467]">
-                      {value || "Available as per bank policy."}
-                    </p>
-                  </div>
-                ))}
-              </div>
             </div>
           ) : null}
         </div>

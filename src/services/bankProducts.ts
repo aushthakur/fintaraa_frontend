@@ -68,6 +68,92 @@ export type EligibilityBreakdown = {
   }>;
 };
 
+export const slugifyCreditCardValue = (value: unknown) =>
+  String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+
+export const getCreditCardId = (card: Partial<CreditCardProduct>) =>
+  card._id || card.id || "";
+
+export const buildCreditCardBankPath = (bankName: string) =>
+  `/credit-cards/${slugifyCreditCardValue(bankName)}`;
+
+export const buildCreditCardTypePath = (bankName: string, cardType?: string) =>
+  `${buildCreditCardBankPath(bankName)}/${slugifyCreditCardValue(
+    cardType || "credit-card",
+  )}`;
+
+export const buildCreditCardDetailPath = (card: CreditCardProduct) => {
+  const id = getCreditCardId(card);
+  const cardSlug = [slugifyCreditCardValue(card.name), id].filter(Boolean).join("-");
+  return `${buildCreditCardTypePath(card.bankName, card.cardType)}/${cardSlug}`;
+};
+
+export const buildCreditCardEligibilityPath = (card: CreditCardProduct) =>
+  `${buildCreditCardDetailPath(card)}/eligibility`;
+
+const creditCardBankApplyUrls: Record<string, string> = {
+  "sbi-card": "https://www.sbicard.com/en/personal/credit-cards.page",
+  "state-bank-of-india": "https://www.sbicard.com/en/personal/credit-cards.page",
+  "hdfc-bank": "https://www.hdfcbank.com/personal/pay/cards/credit-cards",
+  "icici-bank": "https://www.icicibank.com/personal-banking/cards/credit-card",
+  "axis-bank": "https://www.axisbank.com/retail/cards/credit-card",
+  "kotak-mahindra-bank":
+    "https://www.kotak.com/en/personal-banking/cards/credit-cards.html",
+  "indusind-bank": "https://www.indusind.com/in/en/personal/cards/credit-card.html",
+  "idfc-first-bank": "https://www.idfcfirstbank.com/credit-card",
+};
+
+export const getCreditCardBankApplyUrl = (bankName?: string) =>
+  creditCardBankApplyUrls[slugifyCreditCardValue(bankName)] || "";
+
+const normalizeCreditCardApplyUrl = (value: string) => {
+  const trimmed = value.trim();
+  if (!trimmed) return "";
+  if (/^https?:\/\//i.test(trimmed) || trimmed.startsWith("/")) return trimmed;
+  if (/^(www\.|[a-z0-9-]+\.[a-z]{2,})(\/|$)/i.test(trimmed)) {
+    return `https://${trimmed}`;
+  }
+  return trimmed;
+};
+
+export const getCreditCardApplyUrl = (
+  card: Partial<CreditCardProduct>,
+  fallback = "/credit-cards",
+) =>
+  normalizeCreditCardApplyUrl(
+    String(
+      card.applyUrl ||
+        card.link ||
+        getCreditCardBankApplyUrl(card.bankName) ||
+        fallback,
+    ),
+  );
+
+export const parseCreditCardIdFromSlug = (segment = "") => {
+  const decoded = decodeURIComponent(segment);
+  const match = decoded.match(/([a-f0-9]{24})$/i);
+  return match?.[1] || decoded;
+};
+
+export const isSameCreditCardBank = (bankSlug: string, bankName: string) =>
+  slugifyCreditCardValue(bankSlug) === slugifyCreditCardValue(bankName);
+
+export const isSameCreditCardType = (typeSlug: string, cardType?: string) => {
+  if (!typeSlug) return true;
+  const normalized = slugifyCreditCardValue(cardType || "credit-card");
+  const requested = slugifyCreditCardValue(typeSlug);
+  return (
+    normalized === requested ||
+    normalized.includes(requested) ||
+    requested.includes(normalized)
+  );
+};
+
 const unwrap = <T>(response: ApiEnvelope<T> | T): T => {
   if (response && typeof response === "object" && "data" in response) {
     return (response as ApiEnvelope<T>).data as T;
@@ -93,6 +179,17 @@ export const fetchCreditCards = async () => {
     false,
   );
   return normalizeList<CreditCardProduct>(response);
+};
+
+export const fetchCreditCardById = async (id: string) => {
+  const response = await Fetch<ApiEnvelope<CreditCardProduct>>(
+    `bank-products/public/${id}`,
+    undefined,
+    15000,
+    true,
+    false,
+  );
+  return unwrap(response);
 };
 
 export const fetchCreditCardFilters = async () => {

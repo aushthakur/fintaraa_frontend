@@ -11,19 +11,50 @@ import { LoanBankComparison } from "./LoanBankComparison";
 import { LoanFeaturesSection } from "./LoanFeaturesSection";
 import { Testimonials } from "@/components/home/Testimonials";
 import { LoanFeaturesBenefits } from "./LoanFeaturesBenefits";
-import type { LoanSeoPageData } from "@/services/loanSeoPages";
+import { ProductLocationDirectory } from "../ProductLocationDirectory";
+import type {
+  LoanSeoLocationPage,
+  LoanSeoPageData,
+} from "@/services/loanSeoPages";
 import { LoanDocumentsRequired } from "./LoanDocumentsRequired";
 import { LoanVerificationSteps } from "./LoanVerificationSteps";
 import { LoanEligibilityCriteria } from "./LoanEligibilityCriteria";
 import { AppDownloadBanner } from "@/components/common/layout/Footer";
 
-export function LoanDetailPage({ page }: { page: LoanSeoPageData }) {
+export function LoanDetailPage({
+  page,
+  locationPages = [],
+}: {
+  page: LoanSeoPageData;
+  locationPages?: LoanSeoLocationPage[];
+}) {
   const tabs = useMemo(
-    () =>
-      (page.tabs || [])
+    () => {
+      const activeTabs = (page.tabs || [])
         .filter((tab) => tab.isActive !== false)
-        .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0)),
-    [page.tabs],
+        .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+      const hasAllDetails = activeTabs.some((tab) => tab.key === "all_details");
+      if (hasAllDetails) return activeTabs;
+      return [
+        {
+          key: "all_details",
+          label: "All Details",
+          eyebrow: "Complete guide",
+          title: `${page.title} details`,
+          description:
+            page.heroDescription ||
+            page.subtitle ||
+            "Review the complete loan guide before applying.",
+          bullets: activeTabs.flatMap((tab) => tab.bullets || []).slice(0, 8),
+          faqs: activeTabs.flatMap((tab) => tab.faqs || []),
+          filterKeys: ["all_details", "overview", "eligibility", "documents"],
+          sortOrder: 0,
+          isActive: true,
+        },
+        ...activeTabs,
+      ];
+    },
+    [page.heroDescription, page.subtitle, page.tabs, page.title],
   );
   const fields = useMemo(
     () =>
@@ -33,7 +64,11 @@ export function LoanDetailPage({ page }: { page: LoanSeoPageData }) {
         .slice(0, 5),
     [page.formFields],
   );
-  const [activeTab, setActiveTab] = useState(tabs[0]?.key || "overview");
+  const [activeTab, setActiveTab] = useState(
+    tabs.find((tab) => tab.key === "all_details")?.key ||
+      tabs[0]?.key ||
+      "all_details",
+  );
   const active = tabs.find((tab) => tab.key === activeTab) || tabs[0];
   const featureItems = (
     active?.bullets?.length
@@ -51,8 +86,23 @@ export function LoanDetailPage({ page }: { page: LoanSeoPageData }) {
     .toLowerCase();
 
   const sections = (() => {
+    if (active?.key === "all_details" || tabIdentity.includes("all detail")) {
+      return [
+        "features",
+        "benefits",
+        "eligibility",
+        "documents",
+        "emi_calculator",
+        "bank_comparison",
+        "verification",
+        "testimonials",
+        "faq",
+      ];
+    }
+    if (tabIdentity.includes("feature")) return ["features", "benefits"];
     if (tabIdentity.includes("eligib")) return ["benefits", "eligibility"];
     if (tabIdentity.includes("document")) return ["documents"];
+    if (tabIdentity.includes("review")) return ["testimonials"];
     if (
       tabIdentity.includes("fee") ||
       tabIdentity.includes("emi") ||
@@ -82,6 +132,8 @@ export function LoanDetailPage({ page }: { page: LoanSeoPageData }) {
   })();
 
   const showSection = (section: string) => sections.includes(section);
+  const faqItems =
+    active?.faqs?.length ? active.faqs : tabs.flatMap((tab) => tab.faqs || []);
 
   return (
     <main className="bg-white text-[#1f2329]">
@@ -120,9 +172,15 @@ export function LoanDetailPage({ page }: { page: LoanSeoPageData }) {
 
       {showSection("other_products") && <LoanOtherProducts />}
       {showSection("faq") && (
-        <LoanFAQSection faqs={active?.faqs} title={active?.title} />
+        <LoanFAQSection faqs={faqItems} title={active?.title} />
       )}
       {showSection("testimonials") && <Testimonials />}
+      <ProductLocationDirectory
+        productName={page.loanType}
+        productSlug={page.loanTypeSlug}
+        currentLocation={page.location}
+        pages={locationPages}
+      />
       <AppDownloadBanner />
     </main>
   );

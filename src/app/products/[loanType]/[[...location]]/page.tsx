@@ -10,10 +10,16 @@ import {
   isInsuranceProduct,
 } from "@/lib/productRouting";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { getLoanSeoPage } from "@/services/loanSeoPages";
+import {
+  getLoanSeoLocationPages,
+  getLoanSeoPage,
+} from "@/services/loanSeoPages";
 import { getPageSeoMetadata } from "@/services/seoMetadata";
 import { absoluteUrl, siteName } from "@/services/seoConfig";
-import { getInsuranceSeoPage } from "@/services/insuranceSeoPages";
+import {
+  getInsuranceSeoLocationPages,
+  getInsuranceSeoPage,
+} from "@/services/insuranceSeoPages";
 
 type PageProps = {
   params: Promise<{
@@ -63,7 +69,10 @@ export default async function ProductLoanPage({ params }: PageProps) {
 
   const location = parseLoanLocation(locationSegments);
   if (isInsuranceProduct(productSlug)) {
-    const page = await getInsuranceSeoPage(productSlug, location);
+    const [page, locationPages] = await Promise.all([
+      getInsuranceSeoPage(productSlug, location),
+      getInsuranceSeoLocationPages(productSlug),
+    ]);
     const canonical =
       page.canonicalPath || buildLoanPath(productSlug, location);
     return (
@@ -112,12 +121,15 @@ export default async function ProductLoanPage({ params }: PageProps) {
             },
           ]}
         />
-        <InsuranceDetailPage page={page} />
+        <InsuranceDetailPage page={page} locationPages={locationPages} />
       </>
     );
   }
 
-  const page = await getLoanSeoPage(productSlug, location);
+  const [page, locationPages] = await Promise.all([
+    getLoanSeoPage(productSlug, location),
+    getLoanSeoLocationPages(productSlug),
+  ]);
   const canonical = page.canonicalPath || buildLoanPath(productSlug, location);
   return (
     <>
@@ -165,7 +177,7 @@ export default async function ProductLoanPage({ params }: PageProps) {
           },
         ]}
       />
-      <LoanDetailPage page={page} />
+      <LoanDetailPage page={page} locationPages={locationPages} />
     </>
   );
 }
