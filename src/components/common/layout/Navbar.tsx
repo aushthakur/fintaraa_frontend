@@ -316,7 +316,7 @@ export default function Navbar() {
                 ? "/products"
                 : buildLoginRedirectHref({ redirectTo: "/products" })
             }
-            className="inline-flex h-10 items-center gap-2 rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-4 text-sm font-medium text-white no-underline shadow-[0_8px_18px_rgba(18,183,106,0.22)]"
+            className="inline-flex h-10 items-center gap-2 rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-4 text-sm font-medium text-white no-underline"
           >
             Apply Now
             <ArrowRight className="h-4 w-4" />
@@ -339,14 +339,14 @@ export default function Navbar() {
       </nav>
 
       {menuOpen && (
-        <div className="max-h-[calc(100dvh-6.75rem)] overflow-y-auto border-t border-[#e5eef8] bg-white px-4 pb-5 shadow-lg md:px-6 lg:hidden">
+        <div className="max-h-[calc(100dvh-6.75rem)] overflow-y-auto border-t border-[#e5eef8] bg-white px-4 pb-5 md:px-6 lg:hidden">
           <div className="mx-auto grid max-w-9xl gap-1">
             {navItems.map((item) => (
               <div key={item.label} className="border-b border-[#edf3f8] py-2">
                 <Link
                   href={item.href}
                   onClick={() => setMenuOpen(false)}
-                  className={`${underlineClass} flex items-center justify-between rounded-md px-3 py-2 text-[14px] font-extrabold text-[#101828] no-underline hover:text-[#195585]`}
+                  className={`${underlineClass} flex items-center justify-between rounded-md px-3 py-2 text-[14px] font-semibold text-[#101828] no-underline hover:text-[#195585]`}
                 >
                   {item.label}
                   {item.sections?.length ? (
@@ -357,7 +357,7 @@ export default function Navbar() {
                   <div className="grid gap-3 px-3 pb-2">
                     {item.sections.map((section) => (
                       <div key={section.title}>
-                        <p className="px-3 pt-2 text-[11px] font-black uppercase tracking-[0.12em] text-[#195585]">
+                        <p className="px-3 pt-2 text-[11px] font-bold uppercase tracking-[0.12em] text-[#195585]">
                           {section.title}
                         </p>
                         <div className="mt-1 grid gap-1">
@@ -389,7 +389,7 @@ export default function Navbar() {
                     : buildLoginRedirectHref({ redirectTo: "/products" })
                 }
                 onClick={() => setMenuOpen(false)}
-                className="rounded-full bg-[#12b76a] px-4 py-3 text-center text-[13px] font-extrabold text-white no-underline"
+                className="rounded-full bg-[#12b76a] px-4 py-3 text-center text-[13px] font-semibold text-white no-underline"
               >
                 Apply Now
               </Link>
@@ -499,13 +499,13 @@ function MegaDropdown({
     <div
       className={`pointer-events-none absolute ${dropdownAlignClass} top-full z-50 w-[min(92vw,52rem)] pt-5 opacity-0 transition duration-200 group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:opacity-100`}
     >
-      <div className="overflow-hidden border border-[#d9e9f6] bg-white shadow-[0_28px_80px_rgba(25,85,133,0.16)]">
+      <div className="overflow-hidden border border-[#d9e9f6] bg-white">
         <div className={`grid gap-0 ${columnCount}`}>
           <div className="bg-[linear-gradient(145deg,#195585,#0f6fba)] p-4 text-white">
             <div className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-white/12">
               <Sparkles className="h-5 w-5 text-[#7ee3a2]" />
             </div>
-            <h3 className="mt-5 text-[20px] font-extrabold leading-tight">
+            <h3 className="mt-5 text-[20px] font-semibold leading-tight">
               {item.label}
             </h3>
             <p className="mt-3 text-xs text-white/76">
@@ -514,7 +514,7 @@ function MegaDropdown({
             </p>
             <Link
               href={item.href}
-              className="mt-6 inline-flex h-10 whitespace-nowrap items-center gap-2 rounded-full bg-white px-4 text-[13px] font-extrabold text-[#195585] no-underline"
+              className="mt-6 inline-flex h-10 whitespace-nowrap items-center gap-2 rounded-full bg-white px-4 text-[13px] font-semibold text-[#195585] no-underline"
             >
               Explore
               <ArrowRight className="h-4 w-4" />
@@ -526,7 +526,7 @@ function MegaDropdown({
               key={section.title}
               className="border-l border-[#edf3f8] px-3 py-4"
             >
-              <p className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#195585]">
+              <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-[#195585]">
                 {section.title}
               </p>
               {section.subtitle ? (
@@ -545,7 +545,7 @@ function MegaDropdown({
                       <ArrowRight className="h-4 w-4" />
                     </span>
                     <span className="min-w-0">
-                      <span className="block truncate text-[13px] font-extrabold">
+                      <span className="block truncate text-[13px] font-semibold">
                         {link.label}
                       </span>
                       <span className="mt-0.5 line-clamp-1 block text-[11px] font-semibold text-[#667085]">
@@ -579,9 +579,9 @@ function CompactDropdown({
     <div
       className={`pointer-events-none absolute ${dropdownAlignClass} top-full z-50 w-86 pt-5 opacity-0 transition duration-200 group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:opacity-100`}
     >
-      <div className="rounded-xl border border-[#d9e9f6] bg-white p-3 shadow-[0_24px_70px_rgba(25,85,133,0.16)]">
+      <div className="rounded-xl border border-[#d9e9f6] bg-white p-3">
         <div className="rounded-lg bg-[#eef8ff] px-4 py-3">
-          <p className="line-clamp-1 text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#195585]">
+          <p className="line-clamp-1 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#195585]">
             {section.title}
           </p>
           {section.subtitle ? (
@@ -601,7 +601,7 @@ function CompactDropdown({
                 <ArrowRight className="h-4 w-4" />
               </span>
               <span className="min-w-0">
-                <span className="block truncate text-[13px] font-extrabold">
+                <span className="block truncate text-[13px] font-semibold">
                   {link.label}
                 </span>
                 <span className="mt-0.5 line-clamp-1 block text-[11px] font-semibold text-[#667085]">
@@ -636,7 +636,7 @@ function AuthButton({
         onClick={onClick}
         className={
           mobile
-            ? "rounded-full border border-[#12b76a] px-4 py-3 text-center text-[13px] font-extrabold text-[#0f5132] no-underline"
+            ? "rounded-full border border-[#12b76a] px-4 py-3 text-center text-[13px] font-semibold text-[#0f5132] no-underline"
             : "inline-flex h-10 items-center gap-2 rounded-full border border-[#12b76a] px-4 text-sm font-medium text-[#0f5132] no-underline"
         }
       >
@@ -663,12 +663,12 @@ function AuthButton({
       onClick={onClick}
       className={
         mobile
-          ? "flex items-center justify-center gap-3 rounded-full bg-[#eef8ff] px-4 py-3 text-center text-[13px] font-extrabold text-[#195585] no-underline"
-          : "inline-flex h-10 items-center gap-2 rounded-full bg-[#eef8ff] pl-1.5 pr-4 text-sm font-extrabold text-[#195585] no-underline ring-1 ring-[#d5ebfb]"
+          ? "flex items-center justify-center gap-3 rounded-full bg-[#eef8ff] px-4 py-3 text-center text-[13px] font-semibold text-[#195585] no-underline"
+          : "inline-flex h-10 items-center gap-2 rounded-full bg-[#eef8ff] pl-1.5 pr-4 text-sm font-semibold text-[#195585] no-underline ring-1 ring-[#d5ebfb]"
       }
       aria-label={`Open account profile for ${name}`}
     >
-      <span className="relative flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-linear-to-br from-[#195585] to-[#12b76a] text-[11px] font-extrabold text-white">
+      <span className="relative flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-linear-to-br from-[#195585] to-[#12b76a] text-[11px] font-semibold text-white">
         {avatar ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={avatar} alt={name} className="h-full w-full object-cover" />

@@ -2,7 +2,14 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { ArrowRight, Download } from "lucide-react";
+import {
+  ArrowRight,
+  BadgeCheck,
+  Download,
+  LockKeyhole,
+  ShieldCheck,
+  TrendingDown,
+} from "lucide-react";
 
 type CalculatorKey =
   | "home-loan"
@@ -1091,22 +1098,22 @@ function SliderCard({
   const percentageTrack = ((value - min) / (max - min)) * 100;
 
   return (
-    <div className="rounded-xl border border-gray-100 bg-white p-4 shadow-[0_2px_12px_rgba(0,0,0,0.01)] sm:p-6">
+    <div className="rounded-xl border border-[#e2edf8] bg-white p-4 sm:p-5">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
         <div className="min-w-0">
-          <h4 className="text-[13px] font-bold uppercase tracking-wider text-gray-400">
+          <h4 className="text-[12px] font-bold uppercase tracking-wider text-[#344054]">
             {title}
           </h4>
           {subtitle ? (
-            <p className="mt-0.5 text-[12px] font-medium text-gray-400">
+            <p className="mt-0.5 text-[12px] font-semibold text-[#8090a4]">
               {subtitle}
             </p>
           ) : null}
         </div>
 
-        <div className="flex h-11 w-full min-w-0 items-center justify-between rounded-lg border border-gray-100 bg-white px-3 sm:w-40">
+        <div className="flex h-12 w-full min-w-0 items-center justify-between rounded-xl border border-[#d7e5f3] bg-[#fbfdff] px-3 sm:w-44">
           {prefix ? (
-            <span className="text-[14px] font-bold text-gray-700">{prefix}</span>
+            <span className="text-[14px] font-bold text-[#07162d]">{prefix}</span>
           ) : null}
           <input
             type="number"
@@ -1115,10 +1122,10 @@ function SliderCard({
             max={max}
             step={step}
             onChange={(event) => onChange(clamp(Number(event.target.value), min, max))}
-            className="w-full min-w-0 border-0 bg-transparent text-right text-[15px] font-bold text-gray-800 outline-none focus:ring-0 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+            className="w-full min-w-0 border-0 bg-transparent text-right text-[15px] font-bold text-[#07162d] outline-none focus:ring-0 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
           />
           {suffix ? (
-            <span className="ml-1 shrink-0 text-[13px] font-bold text-blue-500">
+            <span className="ml-1 shrink-0 text-[13px] font-bold text-[#075cde]">
               {suffix}
             </span>
           ) : null}
@@ -1133,12 +1140,12 @@ function SliderCard({
           step={step}
           value={value}
           onChange={(event) => onChange(Number(event.target.value))}
-          className="h-1.5 w-full cursor-pointer appearance-none rounded-full accent-blue-500"
+          className="h-2 w-full cursor-pointer appearance-none rounded-full accent-[#075cde]"
           style={{
-            background: `linear-gradient(to right, #2563eb 0%, #2563eb ${percentageTrack}%, #e5e7eb ${percentageTrack}%, #e5e7eb 100%)`,
+            background: `linear-gradient(to right, #075cde 0%, #075cde ${percentageTrack}%, #e5e7eb ${percentageTrack}%, #e5e7eb 100%)`,
           }}
         />
-        <div className="mt-3 flex justify-between gap-3 text-[12px] font-medium text-gray-400">
+        <div className="mt-3 flex justify-between gap-3 text-[12px] font-bold text-[#8090a4]">
           <span>{minLabel}</span>
           <span className="text-right">{maxLabel}</span>
         </div>
@@ -1273,19 +1280,40 @@ export function EmiCalculator() {
   };
 
   return (
-    <section className="bg-[#fafbfc] px-4 py-8 md:px-6 lg:px-8">
-      <div className="mx-auto max-w-9xl">
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+    <section className="bg-white px-4 py-12 md:px-6 lg:px-8">
+      <div className="mx-auto max-w-9xl overflow-hidden rounded-2xl bg-[#f7fbff] p-4 sm:p-6 lg:p-8">
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
           <div>
-            <h2 className="text-[22px] font-bold tracking-tight text-gray-900 sm:text-[24px]">
-              EMI Calculator
+            <h2 className="text-[30px] font-bold leading-tight tracking-tight text-[#07162d] sm:text-[40px]">
+              Calculate Your{" "}
+              <span className="text-[#075cde]">{activeConfig.label}</span> EMI
             </h2>
-            <p className="mt-1 max-w-2xl text-[13px] font-semibold leading-6 text-gray-500 sm:text-[14px]">
-              Select a product and adjust fields to estimate monthly EMI,
-              interest and total repayment.
+            <p className="mt-3 max-w-2xl text-[15px] font-medium leading-7 text-[#61748f]">
+              Plan better. Borrow smarter. Calculate your EMI, interest and
+              total repayment instantly with a detailed loan breakup PDF.
             </p>
+            <div className="mt-5 grid max-w-2xl gap-3 sm:grid-cols-3">
+              {[
+                ["100% Secure", "Your data is safe"],
+                ["Instant Results", "No sign-up required"],
+                ["100% Accurate", "Real-time calculation"],
+              ].map(([label, text]) => (
+                <div
+                  key={label}
+                  className="flex items-start gap-2 text-[12px]"
+                >
+                  <BadgeCheck className="mt-0.5 h-4 w-4 shrink-0 text-[#075cde]" />
+                  <span>
+                    <span className="block font-semibold text-[#07162d]">
+                      {label}
+                    </span>
+                    <span className="font-semibold text-[#8090a4]">{text}</span>
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
-          <span className="rounded-full bg-white px-4 py-2 text-[12px] font-bold text-[#005ca8] shadow-xs">
+          <span className="inline-flex w-fit items-center text-[12px] font-semibold text-[#075cde]">
             {computedMetrics.months} month schedule
           </span>
         </div>
@@ -1298,10 +1326,10 @@ export function EmiCalculator() {
                 key={config.key}
                 type="button"
                 onClick={() => setActiveKey(config.key)}
-                className={`shrink-0 rounded-xl border px-5 py-2.5 text-[13px] font-semibold transition-all ${
+                  className={`shrink-0 rounded-lg border px-5 py-2.5 text-[13px] font-semibold transition-all ${
                   isSelected
-                    ? "border-[#12b76a] bg-[#12b76a] text-white shadow-sm"
-                    : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
+                    ? "border-[#075cde] bg-white text-[#075cde]"
+                    : "border-[#dceaf7] bg-white text-[#52657d] hover:border-[#075cde]"
                 }`}
               >
                 {config.label}
@@ -1310,11 +1338,11 @@ export function EmiCalculator() {
           })}
         </div>
 
-        <div className="mt-4 rounded-2xl border border-[#e6edf5] bg-white px-5 py-4">
-          <p className="text-[13px] font-bold text-[#0b192c]">
-            {activeConfig.label} Calculator
+        <div className="mt-4 rounded-xl bg-white px-5 py-4">
+          <p className="text-[14px] font-bold text-[#07162d]">
+            Adjust & Calculate
           </p>
-          <p className="mt-1 text-[13px] font-semibold leading-6 text-gray-500">
+          <p className="mt-1 text-[13px] font-semibold leading-6 text-[#61748f]">
             {activeConfig.description}
           </p>
         </div>
@@ -1333,17 +1361,20 @@ export function EmiCalculator() {
             <button
               type="button"
               onClick={handleDownloadBreakup}
-              className="mt-2 flex h-12 w-full items-center justify-center gap-2 rounded-xl border border-emerald-500 bg-white text-[13px] font-bold text-gray-700 transition-colors hover:bg-emerald-50/40 sm:text-[14px]"
+              className="mt-2 flex h-12 w-full items-center justify-center gap-2 rounded-xl border border-[#dceaf7] bg-white text-[13px] font-semibold text-[#07162d] transition-colors hover:border-[#075cde] hover:bg-[#f2f7ff] sm:text-[14px]"
             >
-              Download Loan Breakup PDF
-              <Download className="ml-1 h-4 w-4 text-gray-400" />
+              Download {activeConfig.label} Breakup PDF
+              <Download className="ml-1 h-4 w-4 text-[#075cde]" />
             </button>
           </div>
 
-          <aside className="flex flex-col overflow-hidden rounded-xl border border-gray-100 bg-white shadow-xs">
-            <div className="border-b border-gray-50 bg-[#f8fafc] px-6 py-4">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-blue-600">
-                Breakdown Summary
+          <aside className="flex flex-col overflow-hidden rounded-xl border border-[#e2edf8] bg-white">
+            <div className="flex items-center justify-between gap-4 border-b border-[#eef4fb] bg-white px-6 py-4">
+              <span className="text-[15px] font-bold text-[#07162d]">
+                Your Loan Summary
+              </span>
+              <span className="text-[11px] font-semibold text-[#087443]">
+                Save up to ₹6.2 Lakh
               </span>
             </div>
 
@@ -1371,12 +1402,12 @@ export function EmiCalculator() {
                 ].map((badge) => (
                   <div
                     key={badge.id}
-                    className={`rounded-xl border border-blue-50/60 p-3 text-center ${badge.bg}`}
+                    className={`rounded-lg p-3 text-center ${badge.bg}`}
                   >
-                    <p className="text-[9px] font-bold uppercase tracking-wider text-gray-400">
+                    <p className="text-[9px] font-bold uppercase tracking-wider text-[#8090a4]">
                       {badge.label}
                     </p>
-                    <p className="mt-1 whitespace-nowrap text-[14px] font-bold tracking-tight text-gray-800">
+                    <p className="mt-1 whitespace-nowrap text-[14px] font-bold tracking-tight text-[#07162d]">
                       {formatCurrencyIndian(badge.val)}
                     </p>
                   </div>
@@ -1385,16 +1416,16 @@ export function EmiCalculator() {
 
               <div className="my-8 flex justify-center">
                 <div
-                  className="relative flex h-52 w-52 items-center justify-center rounded-full shadow-inner"
+                  className="relative flex h-48 w-48 items-center justify-center rounded-full sm:h-52 sm:w-52"
                   style={{
-                    background: `conic-gradient(#2563eb 0% ${principalPercent}%, #84cc16 ${principalPercent}% 100%)`,
+                    background: `conic-gradient(#075cde 0% ${principalPercent}%, #12b76a ${principalPercent}% 100%)`,
                   }}
                 >
-                  <div className="flex h-38 w-38 flex-col items-center justify-center rounded-full bg-white text-center shadow-xs">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400">
+                  <div className="flex h-36 w-36 flex-col items-center justify-center rounded-full bg-white text-center sm:h-38 sm:w-38">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#8090a4]">
                       Total Amount
                     </span>
-                    <p className="mt-0.5 text-[18px] font-extrabold tracking-tight text-gray-800">
+                    <p className="mt-0.5 text-[18px] font-bold tracking-tight text-[#07162d]">
                       {formatCurrencyIndian(computedMetrics.totalPayable)}
                     </p>
                   </div>
@@ -1403,15 +1434,15 @@ export function EmiCalculator() {
 
               <div className="grid grid-cols-2 gap-x-6 gap-y-4 border-t border-gray-50 pt-5">
                 <div className="flex items-start gap-2.5">
-                  <span className="mt-1 h-3 w-3 shrink-0 rounded-full bg-blue-600" />
+                  <span className="mt-1 h-3 w-3 shrink-0 rounded-full bg-[#075cde]" />
                   <div>
-                    <p className="text-[12px] font-medium text-gray-400">
+                    <p className="text-[12px] font-bold text-[#8090a4]">
                       {computedMetrics.principalLabel}
                     </p>
-                    <p className="text-[15px] font-bold text-gray-800">
+                    <p className="text-[15px] font-bold text-[#07162d]">
                       {formatCurrencyIndian(computedMetrics.principal)}
                     </p>
-                    <span className="text-[11px] font-bold text-blue-600">
+                    <span className="text-[11px] font-bold text-[#075cde]">
                       ({principalPercent.toFixed(1)}%)
                     </span>
                   </div>
@@ -1420,13 +1451,13 @@ export function EmiCalculator() {
                 <div className="flex items-start gap-2.5">
                   <span className="mt-1 h-3 w-3 shrink-0 rounded-full bg-lime-500" />
                   <div>
-                    <p className="text-[12px] font-medium text-gray-400">
+                    <p className="text-[12px] font-bold text-[#8090a4]">
                       Total Interest
                     </p>
-                    <p className="text-[15px] font-bold text-gray-800">
+                    <p className="text-[15px] font-bold text-[#07162d]">
                       {formatCurrencyIndian(computedMetrics.totalInterest)}
                     </p>
-                    <span className="text-[11px] font-bold text-lime-600">
+                    <span className="text-[11px] font-bold text-[#0f7a4d]">
                       ({interestPercent.toFixed(1)}%)
                     </span>
                   </div>
@@ -1440,8 +1471,8 @@ export function EmiCalculator() {
                       key={metric.label}
                       className="flex items-center justify-between gap-4 text-[12px] font-bold"
                     >
-                      <span className="text-gray-500">{metric.label}</span>
-                      <span className="text-gray-900">
+                      <span className="text-[#61748f]">{metric.label}</span>
+                      <span className="text-[#07162d]">
                         {metric.type === "number"
                           ? formatNumberIndian(metric.value)
                           : formatCurrencyIndian(metric.value)}
@@ -1453,26 +1484,56 @@ export function EmiCalculator() {
 
               <Link
                 href={activeConfig.applyHref}
-                className="mt-6 flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#12b76a] text-[15px] font-bold text-white no-underline transition-transform hover:-translate-y-0.5"
+                className="mt-6 flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#075cde] text-[15px] font-semibold text-white no-underline transition hover:bg-[#064cb8]"
               >
                 Apply For This Loan
                 <ArrowRight className="h-4 w-4" />
               </Link>
 
-              <div className="mt-4 flex items-center justify-center gap-4 text-[11px] font-medium text-gray-400">
-                <span className="flex items-center gap-1">
-                  <span className="text-[13px] text-emerald-500">Secure</span>
-                </span>
-                <span>|</span>
-                <span>No hidden charges</span>
+              <div className="mt-4 grid gap-2 text-[11px] font-bold text-[#61748f] sm:grid-cols-3">
+                {[
+                  ["Safe & Secure", ShieldCheck],
+                  ["No Hidden Charges", LockKeyhole],
+                  ["Trusted by 2M+ Indians", BadgeCheck],
+                ].map(([label, Icon]) => {
+                  const SafeIcon = Icon as typeof ShieldCheck;
+                  return (
+                    <span
+                      key={label as string}
+                      className="flex items-center justify-center gap-1.5 rounded-lg bg-white px-2 py-2"
+                    >
+                      <SafeIcon className="h-3.5 w-3.5 text-[#075cde]" />
+                      {label as string}
+                    </span>
+                  );
+                })}
               </div>
 
-              <p className="mt-3 text-center text-[10px] font-medium italic leading-normal text-gray-300">
+              <p className="mt-3 text-center text-[10px] font-semibold italic leading-normal text-[#98a2b3]">
                 *EMI shown is indicative. Final rates may vary based on credit
                 assessment and lender policy.
               </p>
             </div>
           </aside>
+        </div>
+
+        <div className="mt-6 grid gap-3 rounded-xl bg-white p-3 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            ["Make informed decisions", "Compare and choose better"],
+            ["Plan your finances", "Know your affordability"],
+            ["Save more money", "Lower interest, higher savings"],
+            ["100% Private & Secure", "Your data is never shared"],
+          ].map(([label, text]) => (
+            <div key={label} className="flex items-start gap-3 rounded-xl bg-white p-4">
+              <TrendingDown className="mt-0.5 h-5 w-5 shrink-0 text-[#075cde]" />
+              <div>
+                <p className="text-[13px] font-bold text-[#07162d]">{label}</p>
+                <p className="mt-1 text-[12px] font-semibold text-[#61748f]">
+                  {text}
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>

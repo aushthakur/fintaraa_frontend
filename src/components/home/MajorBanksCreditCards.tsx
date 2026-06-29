@@ -3,16 +3,25 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { Loader2 } from "lucide-react";
+import {
+  ArrowRight,
+  BadgeCheck,
+  Gift,
+  Heart,
+  Loader2,
+  ShieldCheck,
+  Sparkles,
+  Star,
+  Tags,
+  Zap,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { BankLogoImage } from "@/components/common/BankLogoImage";
 import {
   buildCreditCardBankPath,
-  buildCreditCardDetailPath,
   buildCreditCardEligibilityPath,
   CreditCardProduct,
   fetchCreditCards,
-  getCreditCardApplyUrl,
   slugifyCreditCardValue,
   trackBankProductClick,
 } from "@/services/bankProducts";
@@ -34,11 +43,13 @@ const fallbackCreditCards: CreditCardProduct[] = [
     name: "SBI Cashback Credit Card",
     bankName: "SBI Card",
     image: "/assets/banks/sbi-logo.png",
-    shortDescription: "Cashback benefits on everyday online spends.",
+    shortDescription: "Save more on online spends, grocery and everyday shopping.",
     cardType: "Cashback",
-    rewardsType: "Cashback",
-    welcomeBenefits: "Welcome benefits as per bank policy.",
-    rewardStructure: "Cashback and milestone rewards.",
+    rewardsType: "5% Cashback",
+    welcomeBenefits: "Welcome voucher",
+    rewardStructure: "1% cashback on other spends",
+    annualFee: 999,
+    joiningFee: 999,
     priorityOrder: 1,
   },
   {
@@ -46,11 +57,13 @@ const fallbackCreditCards: CreditCardProduct[] = [
     name: "HDFC Millennia Credit Card",
     bankName: "HDFC Bank",
     image: "/assets/banks/hdfc.png",
-    shortDescription: "Popular shopping, dining and rewards card.",
+    shortDescription: "Popular shopping, dining and lifestyle rewards card.",
     cardType: "Lifestyle",
     rewardsType: "Reward Points",
-    welcomeBenefits: "Digital vouchers and partner benefits.",
-    rewardStructure: "Reward points on eligible spends.",
+    welcomeBenefits: "Digital vouchers",
+    rewardStructure: "Rewards on partner spends",
+    annualFee: 1000,
+    joiningFee: 1000,
     priorityOrder: 2,
   },
   {
@@ -58,11 +71,13 @@ const fallbackCreditCards: CreditCardProduct[] = [
     name: "ICICI Platinum Credit Card",
     bankName: "ICICI Bank",
     image: "/assets/banks/icici-logo.png",
-    shortDescription: "Simple card for rewards and daily convenience.",
+    shortDescription: "Simple card for rewards, convenience and daily payments.",
     cardType: "Rewards",
     rewardsType: "Reward Points",
-    welcomeBenefits: "Available as per bank policy.",
-    rewardStructure: "Points on retail spends.",
+    welcomeBenefits: "Bank policy benefits",
+    rewardStructure: "Points on retail spends",
+    annualFee: 499,
+    joiningFee: 499,
     priorityOrder: 3,
   },
   {
@@ -70,11 +85,13 @@ const fallbackCreditCards: CreditCardProduct[] = [
     name: "Axis Bank Rewards Credit Card",
     bankName: "Axis Bank",
     image: "/assets/banks/axis-bank.png",
-    shortDescription: "Rewards-led card for shopping and travel spends.",
+    shortDescription: "Rewards-led card for shopping, travel and dining.",
     cardType: "Rewards",
     rewardsType: "EDGE Rewards",
-    welcomeBenefits: "Shopping and partner benefits.",
-    rewardStructure: "Rewards on eligible purchases.",
+    welcomeBenefits: "Shopping benefits",
+    rewardStructure: "Rewards on eligible purchases",
+    annualFee: 750,
+    joiningFee: 750,
     priorityOrder: 4,
   },
   {
@@ -82,13 +99,22 @@ const fallbackCreditCards: CreditCardProduct[] = [
     name: "Kotak League Credit Card",
     bankName: "Kotak Mahindra Bank",
     image: "/assets/banks/kotak.png",
-    shortDescription: "Lifestyle card with rewards and offers.",
+    shortDescription: "Lifestyle card with points, milestone perks and offers.",
     cardType: "Lifestyle",
     rewardsType: "Reward Points",
-    welcomeBenefits: "Available as per bank policy.",
-    rewardStructure: "Points and milestone benefits.",
+    welcomeBenefits: "Partner benefits",
+    rewardStructure: "Points and milestone benefits",
+    annualFee: 999,
+    joiningFee: 999,
     priorityOrder: 5,
   },
+];
+
+const cardBadges = [
+  { label: "Popular", className: "text-[#b54708]", icon: Sparkles },
+  { label: "Best for cashback", className: "text-[#087443]", icon: Star },
+  { label: "Premium", className: "text-[#6941c6]", icon: Gift },
+  { label: "Best for shopping", className: "text-[#c01048]", icon: Tags },
 ];
 
 const normalizeBankKey = (bankName?: string) => {
@@ -115,6 +141,20 @@ const mergeWithFallbackCards = (cards: CreditCardProduct[]) => {
 
   return [...cards, ...missingFallbacks];
 };
+
+const formatFee = (value?: string | number) => {
+  if (value === undefined || value === null || value === "") return "₹499";
+  const numeric = Number(value);
+  if (Number.isFinite(numeric)) return `₹${numeric.toLocaleString("en-IN")}`;
+  return String(value);
+};
+
+const featureValue = (card: CreditCardProduct, fallback: string) =>
+  card.cashbackDetails ||
+  card.rewardStructure ||
+  card.rewardsType ||
+  card.welcomeBenefits ||
+  fallback;
 
 export function MajorBankCreditCards() {
   const router = useRouter();
@@ -175,209 +215,275 @@ export function MajorBankCreditCards() {
 
   const activeBankData = activeCards[0];
 
-  const handleDetails = async (card: CreditCardProduct) => {
-    const id = getCardId(card);
-    if (id) {
-      try {
-        await trackBankProductClick(id, "detail");
-      } catch {
-        // Non-blocking analytics.
-      }
-    }
-    router.push(buildCreditCardDetailPath(card));
-  };
-
-  const handleEligibility = (card: CreditCardProduct) => {
-    router.push(buildCreditCardEligibilityPath(card));
-  };
-
-  const handleApply = async (card: CreditCardProduct) => {
+  const handleEligibility = async (card: CreditCardProduct) => {
     const id = getCardId(card);
     if (id) {
       try {
         await trackBankProductClick(id, "apply");
       } catch {
-        // Tracking should not block redirect to the bank.
+        // Non-blocking analytics.
       }
     }
-
-    const url = getCreditCardApplyUrl(card);
-    if (url.startsWith("http")) {
-      window.open(url, "_blank", "noopener,noreferrer");
-    } else {
-      router.push(url);
-    }
+    router.push(buildCreditCardEligibilityPath(card));
   };
 
   return (
-    <section className="bg-white px-4 py-8 md:px-6 lg:px-8">
-      <div className="mx-auto max-w-9xl">
-        <div className="flex flex-col gap-3 border-b border-gray-100 pb-4 sm:flex-row sm:items-center sm:justify-between">
-          <h2 className="text-[20px] font-bold text-[#111111] md:text-[24px]">
-            Credit Cards by Major Banks
-          </h2>
-          <Link
-            href="/credit-cards"
-            className="flex items-center gap-1 text-[13px] font-medium text-[#08a045] no-underline transition-colors hover:text-[#067e36]"
-          >
-            View all banks
-            <span className="text-[14px]">➔</span>
-          </Link>
-        </div>
-
-        <div className="mt-5 flex min-w-0 gap-2 overflow-x-auto pb-3 scrollbar-hide">
-          {loading ? (
-            <span className="inline-flex items-center gap-2 text-[13px] font-semibold text-[#667085]">
-              <Loader2 className="h-4 w-4 animate-spin" />
-              Loading banks...
+    <section className="bg-white px-4 py-10 md:px-6 lg:px-8">
+      <div className="mx-auto max-w-9xl overflow-hidden rounded-2xl bg-[#f7fbff]">
+        <div className="relative grid items-stretch overflow-hidden lg:min-h-[320px] lg:grid-cols-[1.1fr_0.9fr]">
+          <div className="px-5 py-8 sm:px-8 lg:px-10">
+            <span className="inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-wide text-[#075cde]">
+              <ShieldCheck className="h-4 w-4" />
+              Trusted by millions of Indians
             </span>
-          ) : bankTabs.length ? (
-            bankTabs.map((tab) => {
-              const isActive = activeBank === tab;
-              return (
-                <button
-                  key={tab}
-                  type="button"
-                  onClick={() => {
-                    setActiveBank(tab);
-                  }}
-                  className={`shrink-0 rounded-full border px-5 py-2 text-[13px] font-medium transition-all ${
-                    isActive
-                      ? "border-[#08a045] bg-[#08a045] text-white"
-                      : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
-                  }`}
+            <h2 className="mt-4 max-w-2xl text-[30px] font-bold leading-tight tracking-tight text-[#07162d] sm:text-[40px]">
+              Find the Right Credit Card from{" "}
+              <span className="text-[#075cde]">Top Banks</span>
+            </h2>
+            <p className="mt-4 max-w-xl text-[15px] font-medium leading-7 text-[#61748f]">
+              Compare rewards, fees, cashback and eligibility in one place. One
+              card action per product keeps the next step clear.
+            </p>
+            <div className="mt-6 grid max-w-xl gap-3 sm:grid-cols-3">
+              {["Best rewards", "100% secure", "Quick approval"].map((item) => (
+                <div
+                  key={item}
+                  className="flex items-center gap-2 text-[12px] font-semibold text-[#07162d]"
                 >
-                  {tab}
-                </button>
-              );
-            })
-          ) : null}
+                  <BadgeCheck className="h-4 w-4 text-[#075cde]" />
+                  {item}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="relative min-h-[220px] bg-[#e9f2ff] sm:min-h-[300px]">
+            <Image
+              src="/assets/banks/visa-card.png"
+              alt="Featured credit cards"
+              fill
+              className="object-contain p-8"
+              unoptimized
+            />
+            <div className="absolute right-5 top-5 flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#075cde] sm:right-8 sm:top-8 sm:h-12 sm:w-12">
+              <Zap className="h-5 w-5" />
+            </div>
+          </div>
         </div>
 
-        <div className="mt-6 border-t border-gray-100 pt-6">
+        <div className="border-y border-[#dceaf7] bg-white px-4 py-3 sm:px-6">
+          <div className="flex min-w-0 items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
+            {loading ? (
+              <span className="inline-flex items-center gap-2 text-[13px] font-semibold text-[#667085]">
+                <Loader2 className="h-4 w-4 animate-spin" />
+                Loading banks...
+              </span>
+            ) : (
+              bankTabs.map((tab) => {
+                const isActive = activeBank === tab;
+                const sample = cards.find((card) => card.bankName === tab);
+                return (
+                  <button
+                    key={tab}
+                    type="button"
+                    onClick={() => setActiveBank(tab)}
+                    className={`inline-flex h-11 shrink-0 items-center gap-2 rounded-xl border px-4 text-[13px] font-bold transition-all ${
+                      isActive
+                        ? "border-[#075cde] bg-[#e9f2ff] text-[#075cde]"
+                        : "border-[#dceaf7] bg-white text-[#52657d] hover:border-[#075cde]"
+                    }`}
+                  >
+                    {sample?.image ? (
+                      <BankLogoImage
+                        src={sample.image}
+                        alt={tab}
+                        className="h-5 w-7 object-contain"
+                        unoptimized
+                      />
+                    ) : null}
+                    {tab}
+                  </button>
+                );
+              })
+            )}
+            <Link
+              href="/credit-cards"
+              className="ml-auto hidden h-11 shrink-0 items-center gap-2 rounded-xl px-3 text-[13px] font-bold text-[#075cde] no-underline hover:bg-[#f2f7ff] sm:inline-flex"
+            >
+              View all banks
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+
+        <div className="px-5 py-7 sm:px-8 lg:px-10">
           {error ? (
             <div className="rounded-xl border border-red-100 bg-red-50 p-5 text-[13px] font-semibold text-red-700">
               {error}
             </div>
           ) : null}
 
-          {!loading && !activeCards.length && !error ? (
-            <div className="rounded-xl border border-gray-100 bg-[#f8fbff] p-6 text-center text-[13px] font-semibold text-[#667085]">
-              Credit cards will appear here once active products are available.
-            </div>
-          ) : null}
-
           {activeBank ? (
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex min-w-0 items-start gap-4 sm:items-center">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#1e73be]/10 text-xl font-bold text-[#1e73be]">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#e9f2ff] text-xl font-bold text-[#075cde]">
                   {activeBankData?.image ? (
                     <BankLogoImage
                       src={activeBankData.image}
                       alt={activeBank}
-                      className="h-10 w-auto max-w-10 object-contain"
+                      className="h-9 w-auto max-w-10 object-contain"
+                      unoptimized
                     />
                   ) : (
                     activeBank.slice(0, 1)
                   )}
                 </div>
                 <div className="min-w-0">
-                  <h3 className="text-[22px] font-bold text-[#111111]">
+                  <h3 className="text-[22px] font-bold text-[#07162d]">
                     {activeBank} Credit Cards
                   </h3>
-                  <p className="mt-0.5 max-w-xl text-[12px] leading-relaxed text-gray-500">
-                    Choose from cards with rewards, cashback, lounge access and
-                    lifestyle benefits from {activeBank}.
+                  <p className="mt-1 max-w-xl text-[13px] font-semibold leading-6 text-[#61748f]">
+                    Great benefits, transparent fees and one clear eligibility
+                    step for every card.
                   </p>
                 </div>
               </div>
               <Link
                 href={activeBank ? buildCreditCardBankPath(activeBank) : "/credit-cards"}
-                className="flex items-center gap-1 self-start text-[13px] font-medium text-[#08a045] hover:underline sm:self-center"
+                className="inline-flex h-10 items-center gap-2 text-[13px] font-bold text-[#075cde] no-underline hover:underline"
               >
-                View all {activeBank} cards
-                <span className="text-[14px]">➔</span>
+                Explore all {activeBank} options
+                <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
           ) : null}
 
           {loading ? (
-            <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {Array.from({ length: 3 }).map((_, index) => (
+            <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+              {Array.from({ length: 4 }).map((_, index) => (
                 <div
                   key={index}
-                  className="h-82 animate-pulse rounded-[20px] border border-gray-200 bg-white p-5"
-                >
-                  <div className="h-34 rounded-lg bg-[#eef3f8]" />
-                  <div className="mt-4 h-4 w-3/4 rounded bg-[#eef3f8]" />
-                  <div className="mt-2 h-3 w-1/2 rounded bg-[#eef3f8]" />
-                  <div className="mt-8 h-12 rounded bg-[#eef3f8]" />
-                </div>
+                  className="h-[368px] animate-pulse rounded-xl border border-[#e2edf8] bg-white p-5"
+                />
               ))}
             </div>
           ) : activeCards.length ? (
-            <div className="mt-8 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
-              {activeCards.map((card) => (
-                <article
-                  key={getCardId(card) || card.name}
-                  className="flex flex-col justify-between rounded-[20px] border border-gray-200 bg-white p-5 transition-shadow hover:shadow-md"
-                >
-                  <div>
-                    <Image
-                      width={300}
-                      height={180}
-                      src="/assets/banks/visa-card.png"
-                      alt={card.name}
-                      className="h-auto w-full rounded-lg object-cover"
-                    />
-                    <h4 className="mt-4 text-[16px] font-bold text-[#111111]">
-                      {card.name}
-                    </h4>
-                    <p className="mt-1 text-[12px] text-gray-400">
-                      {card.shortDescription || card.subtitle || card.welcomeBenefits}
-                    </p>
-                    <div className="mt-4 border-t border-gray-50 pt-3">
-                      <div className="text-[11px] font-bold uppercase tracking-wide text-gray-800">
-                        Key Benefits
+            <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+              {activeCards.map((card, index) => {
+                const badge = cardBadges[index % cardBadges.length];
+                const BadgeIcon = badge.icon;
+                return (
+                  <article
+                    key={getCardId(card) || card.name}
+                    className="flex flex-col justify-between rounded-xl border border-[#e2edf8] bg-white p-4 transition-colors hover:border-[#bcd8f4]"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between gap-3">
+                        <span
+                          className={`inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wide ${badge.className}`}
+                        >
+                          <BadgeIcon className="h-3.5 w-3.5" />
+                          {badge.label}
+                        </span>
+                        <button
+                          type="button"
+                          aria-label={`Save ${card.name}`}
+                          className="flex h-8 w-8 items-center justify-center rounded-full border border-[#dceaf7] text-[#98a2b3] transition hover:border-[#075cde] hover:text-[#075cde]"
+                        >
+                          <Heart className="h-4 w-4" />
+                        </button>
                       </div>
-                      <div className="mt-2 flex justify-between gap-3 text-[12px]">
-                        <span className="font-normal text-gray-400">
-                          {card.loungeAccessAvailable ? "Lounge Access" : card.cardType}
-                        </span>
-                        <span className="font-normal text-gray-400">
-                          {card.rewardsType || "Rewards"}
-                        </span>
+
+                      <div className="relative mt-4 aspect-[1.58/1] overflow-hidden rounded-2xl bg-[#0b315f]">
+                        <Image
+                          width={360}
+                          height={228}
+                          src="/assets/banks/visa-card.png"
+                          alt={card.name}
+                          className="h-full w-full object-cover"
+                          unoptimized
+                        />
+                        {card.image ? (
+                          <div className="absolute left-3 top-3 rounded-lg bg-white/90 px-2 py-1">
+                            <BankLogoImage
+                              src={card.image}
+                              alt={card.bankName}
+                              className="h-5 w-14 object-contain"
+                              unoptimized
+                            />
+                          </div>
+                        ) : null}
+                      </div>
+
+                      <h4 className="mt-4 text-[15px] font-bold leading-snug text-[#07162d]">
+                        {card.name}
+                      </h4>
+                      <p className="mt-1 min-h-10 text-[12px] font-semibold leading-5 text-[#61748f]">
+                        {card.shortDescription || card.subtitle || card.welcomeBenefits}
+                      </p>
+
+                      <div className="mt-4 grid grid-cols-2 gap-3">
+                        {[
+                          ["Annual Fee", formatFee(card.annualFee)],
+                          ["Joining Fee", formatFee(card.joiningFee)],
+                          [
+                            card.rewardsType ? "Rewards" : "Benefit",
+                            featureValue(card, "Reward points"),
+                          ],
+                          [
+                            "Approval",
+                            card.processingTime || "Instant check",
+                          ],
+                        ].map(([label, value]) => (
+                          <div
+                            key={label}
+                            className="rounded-xl bg-white p-3"
+                          >
+                            <p className="text-[10px] font-bold uppercase tracking-wide text-[#8090a4]">
+                              {label}
+                            </p>
+                            <p className="mt-1 line-clamp-2 text-[12px] font-bold text-[#07162d]">
+                              {value}
+                            </p>
+                          </div>
+                        ))}
                       </div>
                     </div>
-                  </div>
 
-                  <div className="mt-6 grid gap-2 pt-2 sm:grid-cols-2">
-                    <button
-                      type="button"
-                      onClick={() => handleApply(card)}
-                      className="inline-flex h-9.5 items-center justify-center rounded-full bg-[#08a045] px-4 text-[13px] font-medium text-white shadow-sm transition-colors hover:bg-[#067e36]"
-                    >
-                      Apply Now
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleDetails(card)}
-                      className="inline-flex h-9.5 items-center justify-center rounded-full border border-[#08a045] bg-white px-4 text-[13px] font-medium text-[#08a045] transition-colors hover:bg-[#f3fbf6]"
-                    >
-                      View Details
-                    </button>
                     <button
                       type="button"
                       onClick={() => handleEligibility(card)}
-                      className="inline-flex h-9.5 items-center justify-center rounded-full border border-[#dcebf7] bg-[#f8fbff] px-4 text-[13px] font-medium text-[#005ca8] transition-colors hover:border-[#005ca8] sm:col-span-2"
+                      className="mt-5 inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#075cde] px-4 text-[13px] font-semibold text-white transition hover:bg-[#064cb8]"
                     >
-                      View Eligibility
+                      Check eligibility
+                      <ArrowRight className="h-4 w-4" />
                     </button>
-                  </div>
-                </article>
-              ))}
+                  </article>
+                );
+              })}
             </div>
-          ) : null}
+          ) : (
+            <div className="rounded-xl border border-[#dceaf7] bg-white p-6 text-center text-[13px] font-semibold text-[#667085]">
+              Credit cards will appear here once active products are available.
+            </div>
+          )}
+
+          <div className="mt-6 grid gap-3 rounded-2xl border border-[#dceaf7] bg-white p-3 sm:grid-cols-4">
+            {[
+              "Secure & 100% online process",
+              "Instant approval guidance",
+              "No hidden charges",
+              "More cards, more benefits",
+            ].map((item) => (
+              <div
+                key={item}
+                className="flex items-center justify-center gap-2 rounded-xl bg-white px-3 py-3 text-center text-[12px] font-bold text-[#075cde]"
+              >
+                <BadgeCheck className="h-4 w-4" />
+                {item}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

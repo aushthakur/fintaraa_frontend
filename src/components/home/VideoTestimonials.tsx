@@ -23,7 +23,7 @@ const videoData: WebsiteKnowledgeItem[] = [
     authorName: "Deepika Kumari",
     category: "Home Loan",
     location: "Delhi",
-    summary: "Fintaraa supported me financially when I needed it the most",
+    summary: "My ₹38L home loan options were compared clearly before I applied.",
     coverImageUrl: "/assets/images/testimonials/video-1.jpg",
     videoUrl:
       "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
@@ -35,7 +35,7 @@ const videoData: WebsiteKnowledgeItem[] = [
     authorName: "Arjun Mehta",
     category: "Credit Card",
     location: "Ahmedabad",
-    summary: "I compared cards easily and found benefits that matched my spends",
+    summary: "I found a cashback card that matched my fuel and grocery spends.",
     coverImageUrl: "/assets/images/testimonials/video-2.jpg",
     videoUrl:
       "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
@@ -47,7 +47,7 @@ const videoData: WebsiteKnowledgeItem[] = [
     authorName: "Neha & Rahul",
     category: "Home Loan",
     location: "Pune",
-    summary: "The team explained our eligibility and documents before applying",
+    summary: "Eligibility, EMI and document requirements were clear from day one.",
     coverImageUrl: "/assets/images/testimonials/video-3.jpg",
     videoUrl:
       "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
@@ -120,7 +120,7 @@ export function VideoTestimonials() {
       <div className="mx-auto max-w-9xl">
         <div className="mb-12 flex w-full flex-col items-center gap-4 sm:grid sm:grid-cols-3">
           <div className="hidden sm:block" />
-          <h2 className="text-[26px] md:text-[32px] font-extrabold text-[#111625] tracking-tight text-center">
+          <h2 className="text-[26px] md:text-[32px] font-semibold text-[#111625] tracking-tight text-center">
             Video Testimonials
           </h2>
           <div className="self-center sm:justify-self-end">
@@ -171,7 +171,7 @@ export function VideoTestimonials() {
                   setIsPaused(true);
                   setSelectedVideoUrl(item.videoUrl || null);
                 }}
-                className="w-65 sm:w-72.5 md:w-82.5 min-w-65 sm:min-w-72.5 md:min-w-82.5 shrink-0 rounded-2xl border border-gray-100 bg-white overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.015)] flex flex-col justify-between text-left outline-none transition-transform duration-200 hover:scale-[1.01]"
+                className="w-65 sm:w-72.5 md:w-82.5 min-w-65 sm:min-w-72.5 md:min-w-82.5 shrink-0 rounded-2xl border border-gray-100 bg-white overflow-hidden flex flex-col justify-between text-left outline-none transition-transform duration-200"
               >
                 {/* Image Frame Thumbnail */}
                 <div className="relative aspect-[1.62/1] w-full bg-slate-900 overflow-hidden pointer-events-none">
@@ -194,7 +194,7 @@ export function VideoTestimonials() {
 
                   {/* Play Button Overlay Graphic */}
                   <div className="absolute inset-0 flex items-center justify-center z-10 opacity-85">
-                    <div className="h-12 w-12 rounded-full bg-white/20 backdrop-blur-xs flex items-center justify-center ring-1 ring-white/40 text-white shadow-md">
+                    <div className="h-12 w-12 rounded-full bg-white/20 backdrop-blur-xs flex items-center justify-center ring-1 ring-white/40 text-white">
                       <Play className="h-5 w-5 fill-current ml-0.5" />
                     </div>
                   </div>
@@ -251,7 +251,7 @@ export function VideoTestimonials() {
                 animate={{ scale: 1, y: 0 }}
                 exit={{ scale: 0.95, y: 20 }}
                 transition={{ type: "spring", duration: 0.4 }}
-                className="relative w-full max-w-3xl overflow-hidden rounded-2xl bg-zinc-950 shadow-2xl border border-white/10"
+                className="relative w-full max-w-3xl overflow-hidden rounded-2xl bg-zinc-950 border border-white/10"
                 onClick={(e) => e.stopPropagation()} // Stop closing click propagation inside video frame boundaries
               >
                 {/* Close Action Trigger Button */}

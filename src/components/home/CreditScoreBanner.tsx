@@ -1,92 +1,141 @@
 "use client";
+
+import Image from "next/image";
 import Link from "next/link";
-import { User, ShieldCheck, Clock } from "lucide-react";
+import { ArrowRight, BadgeCheck, ShieldCheck, Star, Zap } from "lucide-react";
+
+const bureauLogos = [
+  { label: "experian", className: "text-purple-700" },
+  { label: "CRIF HIGH MARK", className: "text-blue-800" },
+  { label: "EQUIFAX", className: "text-red-700" },
+  { label: "CIBIL", className: "text-sky-600" },
+];
 
 export function CreditScoreBanner() {
   return (
-    <div className="mx-auto w-full max-w-9xl px-4 sm:px-6 lg:px-8 my-14">
-      {/* Main Banner Container */}
-      <div className="w-full rounded-[20px] bg-[#edf5fd] border border-[#d2e4ff] px-6 py-10 text-center">
-        
-        {/* Banner Title */}
-        <h2 className="text-[22px] sm:text-[26px] font-extrabold tracking-tight text-[#0a0f1d] md:text-[32px]">
-          Check your Credit Score in Minutes with <span className="text-[#195585] font-extrabold">Fintaraa</span>
-        </h2>
-
-        {/* Bureau Logos Section */}
-        <div className="mt-7 flex flex-wrap items-center justify-center gap-4">
-          {/* Experian */}
-          <div className="flex h-11 w-28.5 items-center justify-center rounded-[10px] bg-white border border-gray-100 shadow-[0_2px_6px_rgba(0,0,0,0.02)]">
-            <span className="text-[14px] font-black text-purple-700 tracking-tight">
-              <span className="text-[#e11d48] font-bold">●</span>experian
-            </span>
-          </div>
-
-          {/* CRIF */}
-          <div className="flex h-11 w-28.5 items-center justify-center rounded-[10px] bg-white border border-gray-100 shadow-[0_2px_6px_rgba(0,0,0,0.02)]">
-            <span className="text-[14px] font-extrabold italic text-blue-800 tracking-tighter">
-              CRIF <span className="text-[8px] block not-italic font-bold text-gray-400 -mt-1">HIGH MARK</span>
-            </span>
-          </div>
-
-          {/* EQUIFAX */}
-          <div className="flex h-11 w-28.5 items-center justify-center rounded-[10px] bg-white border border-gray-100 shadow-[0_2px_6px_rgba(0,0,0,0.02)]">
-            <span className="text-[15px] font-black tracking-tight text-[#b91c1c] uppercase">
-              Equifax
-            </span>
-          </div>
-
-          {/* CIBIL */}
-          <div className="flex h-11 w-28.5 items-center justify-center rounded-[10px] bg-white border border-gray-100 shadow-[0_2px_6px_rgba(0,0,0,0.02)]">
-            <div className="text-center">
-              <span className="text-[15px] font-black tracking-tight text-[#0284c7] block leading-none">
-                CIBIL
+    <section className="bg-white px-4 py-10 md:px-6 lg:px-8">
+      <div className="mx-auto max-w-9xl">
+        <div className="relative overflow-hidden rounded-2xl bg-[#eef6ff]">
+          <div className="grid items-stretch lg:grid-cols-[1.05fr_0.95fr]">
+            <div className="relative z-10 px-5 py-8 sm:px-8 lg:px-10 lg:py-12">
+              <span className="inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-wide text-[#075cde]">
+                <Zap className="h-4 w-4" />
+                100% free - instant results
               </span>
-              <span className="text-[7px] font-bold text-gray-400 block tracking-normal mt-0.5">
-                Part of TransUnion
-              </span>
+              <h2 className="mt-4 max-w-2xl text-[30px] font-bold leading-tight tracking-tight text-[#07162d] sm:text-[40px]">
+                Check Your Credit Score in Minutes with{" "}
+                <span className="text-[#075cde]">Fintaraa</span>
+              </h2>
+              <p className="mt-4 max-w-xl text-[15px] font-medium leading-7 text-[#4f627a]">
+                Get your credit score from trusted bureaus. No sign-ups hidden in
+                the flow, no hard enquiry, and no spam.
+              </p>
+
+              <div className="mt-6 grid max-w-xl grid-cols-2 gap-3 sm:grid-cols-4">
+                {bureauLogos.map((logo) => (
+                  <div
+                    key={logo.label}
+                    className="flex h-12 items-center justify-center rounded-xl bg-white px-3 text-center"
+                  >
+                    <span
+                      className={`text-[13px] font-bold leading-tight ${logo.className}`}
+                    >
+                      {logo.label}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
+                <Link
+                  href="/cibil-score"
+                  className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-[#075cde] px-6 text-[14px] font-semibold text-white no-underline transition hover:bg-[#064cb8]"
+                >
+                  Check Your Credit Score Now
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+                <div className="flex items-center gap-2 text-[12px] font-semibold text-[#07162d]">
+                  <Star className="h-4 w-4 fill-[#f8b400] text-[#f8b400]" />
+                  Trusted by 5L+ users - 4.9/5
+                </div>
+              </div>
+            </div>
+
+            <div className="relative min-h-[360px] overflow-hidden bg-white sm:min-h-[420px]">
+              <Image
+                src="/assets/images/hero1.png"
+                alt="Customer checking financial health with Fintaraa"
+                fill
+                className="object-cover"
+                unoptimized
+              />
+              <div className="absolute inset-0 bg-linear-to-t from-white via-white/10 to-transparent" />
+
+              <div className="absolute left-4 top-5 rounded-2xl bg-white/90 p-4 backdrop-blur sm:left-5 sm:top-7">
+                <div className="flex items-center gap-3">
+                  <div className="relative h-24 w-32">
+                    <Image
+                      src="/assets/images/cibil-gauge-graphic.png"
+                      alt="Credit score gauge"
+                      fill
+                      className="object-contain"
+                      unoptimized
+                    />
+                  </div>
+                  <div>
+                    <p className="text-[12px] font-bold uppercase tracking-wide text-[#61748f]">
+                      Your score
+                    </p>
+                    <p className="text-[36px] font-bold leading-none text-[#07162d] sm:text-[42px]">
+                      782
+                    </p>
+                    <p className="mt-1 text-[13px] font-bold text-[#0f7a4d]">
+                      Excellent
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="absolute bottom-5 left-5 right-5 grid gap-3 sm:grid-cols-3">
+                {[
+                  ["Track", "Monitor credit health"],
+                  ["Improve", "See score factors"],
+                  ["Achieve", "Unlock better offers"],
+                ].map(([label, text]) => (
+                  <div
+                    key={label}
+                    className="rounded-xl bg-white/90 p-3 backdrop-blur sm:p-4"
+                  >
+                    <BadgeCheck className="h-5 w-5 text-[#075cde]" />
+                    <p className="mt-2 text-[13px] font-bold text-[#07162d]">
+                      {label}
+                    </p>
+                    <p className="mt-1 text-[11px] font-bold text-[#61748f]">
+                      {text}
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Core Trust Badges Row */}
-        <div className="mt-8 flex flex-col sm:flex-row md:flex-row items-center justify-center gap-3.5 max-w-5xl mx-auto">
-          {/* Badge 1 */}
-          <div className="flex w-full md:w-auto items-center justify-center gap-2.5 bg-white rounded-[10px] py-3 px-6 shadow-[0_1px_3px_rgba(0,0,0,0.01)] border border-white">
-            <User className="h-4.5 w-4.5 text-[#195585]" strokeWidth={2.2} />
-            <span className="text-[13.5px] font-bold text-[#195585] tracking-tight">
-              Authorised credit bureau data
-            </span>
-          </div>
-
-          {/* Badge 2 */}
-          <div className="flex w-full md:w-auto items-center justify-center gap-2.5 bg-white rounded-[10px] py-3 px-6 shadow-[0_1px_3px_rgba(0,0,0,0.01)] border border-white">
-            <ShieldCheck className="h-4.5 w-4.5 text-[#195585]" strokeWidth={2.2} />
-            <span className="text-[13.5px] font-bold text-[#195585] tracking-tight">
-              100% free and instant
-            </span>
-          </div>
-
-          {/* Badge 3 */}
-          <div className="flex w-full md:w-auto items-center justify-center gap-2.5 bg-white rounded-[10px] py-3 px-6 shadow-[0_1px_3px_rgba(0,0,0,0.01)] border border-white">
-            <Clock className="h-4.5 w-4.5 text-[#195585]" strokeWidth={2.2} />
-            <span className="text-[13.5px] font-bold text-[#195585] tracking-tight">
-              No hard enquiry | No spam
-            </span>
+          <div className="grid gap-3 bg-white/70 p-4 sm:grid-cols-3">
+            {[
+              "Authorised credit bureau data",
+              "100% free and instant",
+              "No hard enquiry | No spam",
+            ].map((item) => (
+              <div
+                key={item}
+                className="flex items-center justify-center gap-2 text-[13px] font-semibold text-[#075cde]"
+              >
+                <ShieldCheck className="h-4 w-4" />
+                {item}
+              </div>
+            ))}
           </div>
         </div>
-
-        {/* Call to Action Button */}
-        <div className="mt-6 sm:mt-8">
-          <Link
-            href="/cibil-score"
-            className="inline-flex h-12 items-center justify-center rounded-full  bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-9 text-[14.5px] font-bold text-white no-underline transition-all shadow-[0_4px_14px_rgba(14,168,95,0.2)] hover:bg-[#0c9352]"
-          >
-            Check Credit Score Now
-          </Link>
-        </div>
-
       </div>
-    </div>
+    </section>
   );
 }

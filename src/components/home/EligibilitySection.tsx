@@ -1,41 +1,47 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import {
-  Info,
-  Check,
-  UserRound,
-  HandCoins,
-  CreditCard,
-  ShieldCheck,
-  ChevronDown,
+  ArrowRight,
+  BadgeCheck,
   CalendarDays,
-  BriefcaseBusiness,
+  Check,
+  ChevronDown,
+  CreditCard,
   Gauge,
+  HandCoins,
+  Info,
+  LockKeyhole,
+  ShieldCheck,
+  Star,
+  Umbrella,
+  UserRound,
+  BriefcaseBusiness,
   type LucideIcon,
 } from "lucide-react";
 import { loanProductDirectory } from "@/data/bankDirectory";
 
 const productOptions = [
   { label: "Loan", icon: HandCoins },
-  { label: "Insurance", icon: ShieldCheck },
+  { label: "Insurance", icon: Umbrella },
   { label: "Credit Card", icon: CreditCard },
 ];
 
 const amountOptions = [
-  { label: "Rs 2L", value: 200000 },
-  { label: "Rs 5L", value: 500000 },
-  { label: "Rs 10L", value: 1000000 },
-  { label: "Rs 20L", value: 2000000 },
-  { label: "Rs 30L", value: 3000000 },
+  { label: "₹2 L", value: 200000 },
+  { label: "₹5 L", value: 500000 },
+  { label: "₹10 L", value: 1000000 },
+  { label: "₹20 L", value: 2000000 },
+  { label: "₹30 L", value: 3000000 },
 ];
 
 const stepperItems = [
-  { step: "01", title: "Select", text: "Choose product" },
-  { step: "02", title: "Amount", text: "Set requirement" },
-  { step: "03", title: "Details", text: "Basic info" },
-  { step: "04", title: "Offers", text: "Matched results" },
+  { step: "1", title: "Select", text: "Choose product" },
+  { step: "2", title: "Amount", text: "Set requirement" },
+  { step: "3", title: "Details", text: "Basic information" },
+  { step: "4", title: "Offers", text: "Matched results" },
 ];
 
 const loanTypeOptions = loanProductDirectory.map((loan) => loan.name);
@@ -73,29 +79,29 @@ function PremiumSelect({
 
   return (
     <div className="relative">
-      <span className="text-[16px] font-medium text-[#2c2c2c]">{label}</span>
+      <span className="text-[13px] font-semibold text-[#344054]">{label}</span>
       <button
         type="button"
         onClick={() => setOpen((current) => !current)}
-        className={`mt-1 flex h-11 w-full items-center gap-3 border bg-white px-3 text-left text-[14px] font-semibold transition ${
+        className={`mt-1 flex h-11 w-full items-center gap-3 rounded-xl border bg-white px-3 text-left text-[13px] font-semibold transition ${
           open
-            ? "border-[#075596] shadow-[0_8px_18px_rgba(7,85,150,0.08)]"
-            : "border-[#ccd1d8] hover:border-[#075596]"
+            ? "border-[#075cde]"
+            : "border-[#d7e5f3] hover:border-[#075cde]"
         }`}
       >
-        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#eef8ff] text-[#075596]">
+        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#e9f2ff] text-[#075cde]">
           <Icon className="h-4 w-4" />
         </span>
         <span className="min-w-0 flex-1 truncate text-[#2f3a4a]">{value}</span>
         <ChevronDown
-          className={`h-4 w-4 shrink-0 text-[#667085] transition duration-300 ${
-            open ? "rotate-180 text-[#075596]" : ""
+          className={`h-4 w-4 shrink-0 text-[#667085] transition ${
+            open ? "rotate-180 text-[#075cde]" : ""
           }`}
         />
       </button>
 
       {open ? (
-        <div className="absolute left-0 right-0 top-full z-30 mt-2 overflow-hidden rounded-xl border border-[#dce7f3] bg-white p-1 shadow-[0_18px_42px_rgba(7,22,45,0.16)]">
+        <div className="absolute left-0 right-0 top-full z-30 mt-2 max-h-64 overflow-y-auto rounded-xl border border-[#dce7f3] bg-white p-1">
           {options.map((option) => {
             const selected = option === value;
             return (
@@ -108,8 +114,8 @@ function PremiumSelect({
                 }}
                 className={`flex h-10 w-full items-center justify-between rounded-lg px-3 text-left text-[13px] font-semibold transition ${
                   selected
-                    ? "bg-[#eef8ff] text-[#075596]"
-                    : "text-[#344054] hover:bg-[#f8fcff] hover:text-[#075596]"
+                    ? "bg-[#e9f2ff] text-[#075cde]"
+                    : "text-[#344054] hover:bg-[#f8fcff] hover:text-[#075cde]"
                 }`}
               >
                 <span>{option}</span>
@@ -131,6 +137,7 @@ export function EligibilitySection() {
   const [salaryType, setSalaryType] = useState(salaryOptions[0]);
   const [cibilScore, setCibilScore] = useState(720);
   const activeStep = cibilScore ? 3 : amount ? 2 : selectedProduct ? 1 : 0;
+
   const continueHref = useMemo(() => {
     if (selectedProduct === "Credit Card") return "/credit-cards";
     if (selectedProduct === "Insurance") return "/products";
@@ -147,256 +154,288 @@ export function EligibilitySection() {
 
     return `/eligibility-results?${params.toString()}`;
   }, [amount, cibilScore, purpose, salaryType, selectedProduct, tenure]);
+
   const continueLabel =
-    selectedProduct === "Loan" ? "Search Eligible Banks" : "Continue";
+    selectedProduct === "Loan" ? "Check Offers" : "Continue";
 
   return (
     <section
       id="eligibility-check"
-      className="bg-white px-4 py-28 md:px-6 lg:px-8 "
+      className="bg-white px-4 py-12 md:px-6 lg:px-8"
     >
-      <div className="mx-auto grid max-w-9xl items-center gap-12 lg:grid-cols-2 ">
-        <div className="lg:pl-2">
-          {/* Quick Apply Badge - Perfectly matching light border and muted text */}
-          <span className="inline-flex h-7 items-center rounded-full border border-gray-300 bg-white px-4 text.5 text-[12px] font-medium text-gray-500">
-            Quick Apply
-          </span>
+      <div className="mx-auto grid max-w-9xl overflow-hidden rounded-2xl bg-[#f7fbff] lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
+        <div className="relative flex flex-col justify-end overflow-hidden bg-[#e9f2ff] px-5 pt-7 sm:px-8 lg:min-h-[520px] lg:px-10">
+          <div className="relative z-10">
+            <div className="flex flex-wrap gap-2">
+              {["RBI Registered", "ISO 27001 Certified"].map((item) => (
+                <span
+                  key={item}
+                  className="inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-wide text-[#075cde]"
+                >
+                  <BadgeCheck className="h-3.5 w-3.5" />
+                  {item}
+                </span>
+              ))}
+            </div>
+            <h2 className="mt-5 max-w-lg text-[30px] font-bold leading-tight tracking-tight text-[#07162d] sm:text-[40px]">
+              Check Your Eligibility in{" "}
+              <span className="text-[#075cde]">30 Seconds</span>
+            </h2>
+            <p className="mt-4 max-w-md text-[15px] font-medium leading-7 text-[#52657d]">
+              Get matched with loan, insurance and card offers from trusted
+              partners without affecting your credit score.
+            </p>
 
-          {/* Main Header - Sharp layout matching the linebreaks and deep blue text of image_bbade7.png */}
-          <h2 className="mt-5 max-w-2xl text-[28px] sm:text-[38px] font-extrabold leading-[1.2] tracking-tight text-gray-900 md:text-[44px]">
-            Check Your Eligibility in{" "}
-            <span className="block text-[#00529b] sm:inline">30 Seconds</span>
-          </h2>
+            <div className="mt-6 grid max-w-md gap-3">
+              {[
+                ["100% Safe & Secure", "Bank-level encryption protects your data."],
+                ["Instant Results", "See matched offers in less than 30 seconds."],
+                ["No CIBIL Impact", "Checking eligibility will not affect your score."],
+              ].map(([title, text]) => (
+                <div
+                  key={title}
+                  className="flex items-start gap-3 rounded-xl bg-white/90 p-3"
+                >
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#e9f2ff] text-[#075cde]">
+                    <ShieldCheck className="h-5 w-5" />
+                  </span>
+                  <span>
+                    <span className="block text-[13px] font-semibold text-[#07162d]">
+                      {title}
+                    </span>
+                    <span className="mt-0.5 block text-[12px] font-semibold leading-5 text-[#61748f]">
+                      {text}
+                    </span>
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
 
-          {/* Description Text - Clean layout tracking with subtle muted text color */}
-          <p className="mt-5 max-w-xl text-[15px] font-normal leading-relaxed text-[#55585d]">
-            Answer a few quick questions to see offers that match your needs.
-            <br />
-            No impact on your CIBIL Score.
-          </p>
+          <div className="relative mt-6 h-64 w-full sm:h-76">
+            <Image
+              src="/assets/images/hero1.png"
+              alt="Fintaraa eligibility advisor"
+              fill
+              className="object-cover object-top"
+              unoptimized
+            />
+          </div>
 
-          {/* How it works Info Box - Borderless soft mint layout matching the image exactly */}
-          <div className="mt-10 max-w-xl rounded-xl bg-[#eafaf1] px-6 py-5">
-            <h3 className="text-[17px] font-bold text-gray-800">
-              How it works
-            </h3>
-
-            <ul className="mt-4 flex flex-col gap-2.5 text-[14px] font-medium text-[#3b414a]">
-              <li className="flex items-center">1. Choose your Product</li>
-              <li className="flex items-center">2. Select Amount</li>
-              <li className="flex items-center">3. Enter mobile number</li>
-              <li className="flex items-center">4. View eligible offers</li>
-            </ul>
+          <div className="relative z-10 mb-5 grid gap-3 rounded-xl bg-white/90 p-3 sm:grid-cols-2">
+            <div className="flex items-center gap-2">
+              <span className="flex -space-x-2">
+                {["user1.png", "user2.png", "user3.png"].map((file) => (
+                  <Image
+                    key={file}
+                    src={`/assets/images/${file}`}
+                    alt="Customer"
+                    width={28}
+                    height={28}
+                    className="rounded-full border-2 border-white"
+                    unoptimized
+                  />
+                ))}
+              </span>
+              <span className="text-[12px] font-semibold text-[#07162d]">
+                Trusted by 2M+ Indians
+              </span>
+            </div>
+            <div className="flex items-center gap-2 sm:justify-end">
+              <Star className="h-4 w-4 fill-[#f8b400] text-[#f8b400]" />
+              <span className="text-[12px] font-semibold text-[#07162d]">
+                4.8/5 Google rating
+              </span>
+            </div>
           </div>
         </div>
 
-        <div className="relative mx-auto w-full lg:pr-4">
-          <div className="absolute -left-5 -top-5 h-[107%] w-[72%] rounded-3xl bg-[#075596]" />
+        <div className="flex items-center p-4 sm:p-6 lg:p-8">
+          <div className="w-full rounded-2xl bg-white p-4 sm:p-6">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+              <div>
+                <h3 className="text-[22px] font-bold text-[#07162d]">
+                  Check Your Eligibility
+                </h3>
+                <p className="mt-1 text-[13px] font-semibold text-[#61748f]">
+                  Compact, secure, and personalised to your selected product.
+                </p>
+              </div>
+              <span className="inline-flex w-fit items-center gap-2 text-[11px] font-semibold uppercase tracking-wide text-[#087443]">
+                <LockKeyhole className="h-3.5 w-3.5" />
+                100% Secure
+              </span>
+            </div>
 
-          <div className="relative mr-auto  w-full lg:max-w-xl ">
-            <div className="relative rounded-2xl border border-[#e2e8f0] bg-white p-6 shadow-[0_10px_30px_rgba(0,0,0,0.02)] md:p-8">
-              <div className="w-full">
-                <div className="relative">
-                  <div className="absolute left-0 right-0 top-5 hidden h-1 rounded-full bg-[#e4edf5] sm:block" />
-                  <div
-                    className="absolute left-0 top-5 hidden h-1 rounded-full bg-linear-to-r from-[#195585] to-[#22c55e] transition-all duration-700 ease-out sm:block"
-                    style={{
-                      width: `${(activeStep / (stepperItems.length - 1)) * 100}%`,
-                    }}
-                  />
+            <div className="relative mt-6">
+              <div className="absolute left-0 right-0 top-4 h-1 rounded-full bg-[#e4edf5]" />
+              <div
+                className="absolute left-0 top-4 h-1 rounded-full bg-[#075cde] transition-all duration-500"
+                style={{
+                  width: `${(activeStep / (stepperItems.length - 1)) * 100}%`,
+                }}
+              />
+              <div className="relative grid grid-cols-4 gap-2">
+                {stepperItems.map((item, index) => {
+                  const complete = index < activeStep;
+                  const active = index === activeStep;
+                  return (
+                    <div key={item.step} className="text-center">
+                      <span
+                        className={`mx-auto flex h-9 w-9 items-center justify-center rounded-full border-2 text-[12px] font-bold ${
+                          complete
+                            ? "border-[#075cde] bg-[#075cde] text-white"
+                            : active
+                              ? "border-[#d9ebff] bg-[#075cde] text-white"
+                              : "border-[#e4edf5] bg-white text-[#98a2b3]"
+                        }`}
+                      >
+                        {complete ? <Check className="h-4 w-4" /> : item.step}
+                      </span>
+                      <p className="mt-2 text-[11px] font-semibold text-[#07162d] sm:text-[12px]">
+                        {item.title}
+                      </p>
+                      <p className="hidden text-[10px] font-bold text-[#8090a4] sm:block">
+                        {item.text}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
 
-                  <div className="relative grid gap-3 sm:grid-cols-4">
-                    {stepperItems.map((item, index) => {
-                      const completed = index < activeStep;
-                      const active = index === activeStep;
-                      return (
-                        <div
-                          key={item.step}
-                          className={`rounded-2xl border bg-white p-3 transition-all duration-500 sm:border-0 sm:bg-transparent sm:p-0 ${
-                            active
-                              ? "border-[#195585] shadow-[0_10px_24px_rgba(25,85,133,0.12)] sm:shadow-none"
-                              : "border-[#e4edf5]"
-                          }`}
-                        >
-                          <div
-                            className={`mx-auto flex h-11 w-11 items-center justify-center rounded-full border-4 text-[13px] font-extrabold transition-all duration-500 ${
-                              completed
-                                ? "border-[#22c55e] bg-[#22c55e] text-white"
-                                : active
-                                  ? "border-[#d9ebff] bg-[#195585] text-white shadow-[0_0_0_6px_rgba(25,85,133,0.08)]"
-                                  : "border-[#e4edf5] bg-white text-[#98a2b3]"
-                            }`}
-                          >
-                            {completed ? (
-                              <Check className="h-4 w-4" />
-                            ) : (
-                              item.step
-                            )}
-                          </div>
-                          <div className="mt-3 text-center">
-                            <p
-                              className={`text-[13px] font-extrabold ${
-                                active || completed
-                                  ? "text-[#07162d]"
-                                  : "text-[#98a2b3]"
-                              }`}
-                            >
-                              {item.title}
-                            </p>
-                            <p className="mt-0.5 text-[11px] font-semibold text-[#667085]">
-                              {item.text}
-                            </p>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
+            <form className="mt-7 flex flex-col gap-5">
+              <div>
+                <p className="text-[13px] font-semibold text-[#344054]">I want</p>
+                <div className="mt-2 grid grid-cols-3 gap-2">
+                  {productOptions.map(({ label, icon: Icon }) => (
+                    <button
+                      key={label}
+                      type="button"
+                      onClick={() => setSelectedProduct(label)}
+                      className={`flex h-11 items-center justify-center gap-2 rounded-xl border px-2 text-[12px] font-semibold transition ${
+                        selectedProduct === label
+                          ? "border-[#075cde] bg-[#075cde] text-white"
+                          : "border-[#d7e5f3] bg-white text-[#344054] hover:border-[#075cde]"
+                      }`}
+                    >
+                      <Icon className="h-4 w-4" />
+                      {label}
+                    </button>
+                  ))}
                 </div>
               </div>
 
-              <form className="mt-6 flex flex-col gap-5">
-                {/* Row 1: Select Product Type - Inline row to save space */}
-                <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                  <p className="text-[16px] font-bold text-[#2d3142]">
-                    Select Product
+              <div>
+                <div className="flex items-baseline justify-between gap-4">
+                  <p className="text-[13px] font-semibold text-[#344054]">
+                    Loan Amount
                   </p>
-                  <div className="flex flex-wrap gap-2">
-                    {productOptions.map(({ label }) => (
-                      <button
-                        key={label}
-                        type="button"
-                        onClick={() => setSelectedProduct(label)}
-                        className={`h-9 rounded-xl border px-5 text-[13px] font-semibold transition-all duration-150
-                    ${
-                      selectedProduct === label
-                        ? "border-[#00529b] bg-[#00529b] text-white"
-                        : "border-[#d1d5db] bg-white text-gray-700 hover:border-gray-400"
-                    }`}
-                      >
-                        {label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Row 2: Select Loan Amount Title & Display Values Layout Line */}
-                <div className="flex items-baseline justify-between pt-2">
-                  <p className="text-[14px] sm:text-[16px] font-bold text-[#2d3142]">
-                    Select Loan Amount
-                  </p>
-                  <p className="text-[24px] sm:text-[34px] font-bold tracking-tight text-[#2d3142]">
+                  <p className="text-[24px] font-bold tracking-tight text-[#07162d]">
                     ₹{formatAmount(amount)}
                   </p>
                 </div>
-
-                {/* Quick Amount Suggestion Toggles Row */}
-                <div className="grid grid-cols-3 sm:grid-cols-5 gap-2.5">
+                <input
+                  type="range"
+                  min={50000}
+                  max={5000000}
+                  step={50000}
+                  value={amount}
+                  onChange={(event) => setAmount(Number(event.target.value))}
+                  className="mt-3 h-2 w-full cursor-pointer appearance-none rounded-full accent-[#075cde]"
+                  style={{
+                    background: `linear-gradient(to right, #075cde 0%, #075cde ${((amount - 50000) / (5000000 - 50000)) * 100}%, #e2e8f0 ${((amount - 50000) / (5000000 - 50000)) * 100}%, #e2e8f0 100%)`,
+                  }}
+                />
+                <div className="mt-1 flex justify-between text-[11px] font-bold text-[#8090a4]">
+                  <span>₹50,000</span>
+                  <span>₹50,00,000</span>
+                </div>
+                <div className="mt-3 grid grid-cols-3 gap-2 sm:grid-cols-5">
                   {amountOptions.map((item) => (
                     <button
                       key={item.label}
                       type="button"
                       onClick={() => setAmount(item.value)}
-                      className={`h-11 rounded-md border text-[13px] font-bold transition-all duration-150
-                  ${
-                    amount === item.value
-                      ? "border-[#00529b] bg-[#00529b] text-white shadow-sm"
-                      : "border-[#e2e8f0] bg-white text-gray-700 hover:bg-gray-50"
-                  }`}
+                      className={`h-10 rounded-lg border text-[12px] font-semibold transition ${
+                        amount === item.value
+                          ? "border-[#075cde] bg-[#075cde] text-white"
+                          : "border-[#d7e5f3] bg-white text-[#344054] hover:border-[#075cde]"
+                      }`}
                     >
                       {item.label}
                     </button>
                   ))}
                 </div>
+              </div>
 
-                {/* Range Slider Track */}
-                <div className="relative w-full">
-                  <input
-                    type="range"
-                    min={50000}
-                    max={5000000}
-                    step={50000}
-                    value={amount}
-                    onChange={(e) => setAmount(Number(e.target.value))}
-                    className="h-2 w-full cursor-pointer appearance-none rounded-full bg-[#00529b] accent-[#00529b]"
-                    style={{
-                      background: `linear-gradient(to right, #00529b 0%, #00529b ${((amount - 50000) / (5000000 - 50000)) * 100}%, #e2e8f0 ${((amount - 50000) / (5000000 - 50000)) * 100}%, #e2e8f0 100%)`,
-                    }}
-                  />
-                  <div className="mt-1 flex justify-between text-[12px] font-medium text-gray-400">
-                    <span>₹ 50,000</span>
-                    <span>₹ 50,00,000</span>
-                  </div>
-                </div>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <PremiumSelect
+                  label="Loan Type"
+                  value={purpose}
+                  options={loanTypeOptions}
+                  icon={UserRound}
+                  onChange={setPurpose}
+                />
+                <PremiumSelect
+                  label="Tenure"
+                  value={tenure}
+                  options={tenureOptions}
+                  icon={CalendarDays}
+                  onChange={setTenure}
+                />
+              </div>
 
-                {/* Core Input Selectors Split Row */}
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <PremiumSelect
-                    label="Select Loan Type"
-                    value={purpose}
-                    options={loanTypeOptions}
-                    icon={UserRound}
-                    onChange={setPurpose}
-                  />
-                  <PremiumSelect
-                    label="Select Tenure"
-                    value={tenure}
-                    options={tenureOptions}
-                    icon={CalendarDays}
-                    onChange={setTenure}
-                  />
-                </div>
-
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <PremiumSelect
-                    label="Income Profile"
-                    value={salaryType}
-                    options={salaryOptions}
-                    icon={BriefcaseBusiness}
-                    onChange={setSalaryType}
-                  />
-                  <label className="block">
-                    <span className="text-[16px] font-medium text-[#2c2c2c]">
-                      CIBIL Score
+              <div className="grid gap-4 sm:grid-cols-2">
+                <PremiumSelect
+                  label="Employment Type"
+                  value={salaryType}
+                  options={salaryOptions}
+                  icon={BriefcaseBusiness}
+                  onChange={setSalaryType}
+                />
+                <label className="block">
+                  <span className="text-[13px] font-semibold text-[#344054]">
+                    CIBIL Score
+                  </span>
+                  <span className="mt-1 flex h-11 w-full items-center gap-3 rounded-xl border border-[#d7e5f3] bg-white px-3 transition hover:border-[#075cde]">
+                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#e9f2ff] text-[#075cde]">
+                      <Gauge className="h-4 w-4" />
                     </span>
-                    <span className="mt-1 flex h-11 w-full items-center gap-3 border border-[#ccd1d8] bg-white px-3 transition hover:border-[#075596]">
-                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#eef8ff] text-[#075596]">
-                        <Gauge className="h-4 w-4" />
-                      </span>
-                      <input
-                        type="number"
-                        min={300}
-                        max={900}
-                        value={cibilScore}
-                        onChange={(event) =>
-                          setCibilScore(Number(event.target.value || 0))
-                        }
-                        className="min-w-0 flex-1 border-0 bg-transparent text-[14px] font-semibold text-[#2f3a4a] outline-none"
-                        aria-label="CIBIL Score"
-                      />
-                    </span>
-                  </label>
-                </div>
+                    <input
+                      type="number"
+                      min={300}
+                      max={900}
+                      value={cibilScore}
+                      onChange={(event) =>
+                        setCibilScore(Number(event.target.value || 0))
+                      }
+                      className="min-w-0 flex-1 border-0 bg-transparent text-[13px] font-bold text-[#2f3a4a] outline-none"
+                      aria-label="CIBIL Score"
+                    />
+                  </span>
+                </label>
+              </div>
 
-                {/* Bottom Footer Elements: Tip + Button Side-by-Side to keep height minimal */}
-                <div className="mt-2 flex flex-col items-center justify-between gap-4 pt-2 sm:flex-row">
-                  {/* Warning Box */}
-                  <div className="flex items-center gap-2 rounded-lg bg-[#effdf5] px-4 py-2.5 text-[12px] font-medium text-[#2f3e46] sm:max-w-xs md:max-w-sm">
-                    <Info className="h-4 w-4 shrink-0 text-[#22c55e]" />
-                    <p className="leading-tight">
-                      Higher loan amount or longer tenure may increase your EMI
-                    </p>
-                  </div>
-
-                  {/* Premium Pill Green Button */}
-                  <Link
-                    href={continueHref}
-                    className="flex h-12 w-full whitespace-nowrap items-center justify-center rounded-full  bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-12 text-[15px] font-bold text-white no-underline shadow-[0_10px_20px_rgba(18,183,106,0.15)] transition-all duration-200 hover:bg-[#0ea85f] sm:w-auto min-w-45"
-                  >
-                    {continueLabel}
-                  </Link>
+              <div className="grid gap-3">
+                <div className="flex items-start gap-2 rounded-xl bg-[#ecfdf3] px-4 py-3 text-[12px] font-bold text-[#2f3e46]">
+                  <Info className="mt-0.5 h-4 w-4 shrink-0 text-[#0f7a4d]" />
+                  <p>
+                    Higher loan amount or longer tenure may increase your EMI.
+                  </p>
                 </div>
-              </form>
-            </div>
+                <Link
+                  href={continueHref}
+                  className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#075cde] px-6 text-[15px] font-semibold text-white no-underline transition hover:bg-[#064cb8]"
+                >
+                  {continueLabel}
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+                <p className="text-center text-[11px] font-bold text-[#8090a4]">
+                  Your information is 100% secure and encrypted.
+                </p>
+              </div>
+            </form>
           </div>
         </div>
       </div>

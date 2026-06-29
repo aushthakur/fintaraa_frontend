@@ -46,7 +46,8 @@ export const heroStats = [
 
 export const productSections = [
   {
-    title: "Get Instant Loan (Get Money in 5 Minutes -Complete Digital Process)",
+    title:
+      "Get Instant Loan (Get Money in 5 Minutes -Complete Digital Process)",
     cta: "View All",
     ctaHref: "/banks",
     tag: "Cashback Offers",
@@ -190,8 +191,7 @@ export const productSections = [
   },
   {
     title: "Explore Insurance Plans",
-    subtitle:
-      "Get Money in 5 Minutes -Complete Digital Process",
+    subtitle: "Get Money in 5 Minutes -Complete Digital Process",
     cta: "View All Insurance",
     products: [
       {
@@ -414,12 +414,12 @@ export const productSections = [
         icon: Calculator,
         tone: "orange",
       },
-      {
-        title: "Project Report",
-        text: "Get detailed project reports.",
-        icon: FileCheck2,
-        tone: "orange",
-      },
+      // {
+      //   title: "Project Report",
+      //   text: "Get detailed project reports.",
+      //   icon: FileCheck2,
+      //   tone: "orange",
+      // },
       {
         title: "Company Registration",
         text: "Register Pvt Ltd, LLP & OPC companies.",

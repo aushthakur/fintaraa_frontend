@@ -18,16 +18,17 @@ export type HomeBanner = {
 
 export const fallbackHomeBanners: HomeBanner[] = [
   {
-    eyebrow: "Fintaraa Financial Services",
-    title: "Get the Best Loan, Insurance & Credit Card",
-    highlightText: "Fast & Free",
-    description: "Compare offers from 30+ banks and NBFCs. Apply in minutes.",
-    image: "/assets/refer/header-credit-cards.png",
-    imageAlt: "Banking services application view dashboard",
+    eyebrow: "RBI registered partner network",
+    title: "Compare Loans, Insurance & Cards",
+    highlightText: "from 30+ Banks",
+    description:
+      "One secure check. Multiple trusted offers. No CIBIL impact and instant eligibility guidance.",
+    image: "/assets/images/hero1.png",
+    imageAlt: "Fintaraa advisor helping customers compare financial products",
     linkUrl: "/products",
-    buttonText: "View All Products",
+    buttonText: "Explore products",
     secondaryLinkUrl: "/#eligibility-check",
-    secondaryButtonText: "Check Eligibility Free",
+    secondaryButtonText: "Check my eligibility",
     displayDurationMs: 5000,
   },
 ];

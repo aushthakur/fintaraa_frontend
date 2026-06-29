@@ -12,44 +12,52 @@ import {
 
 const testimonialsData: WebsiteKnowledgeItem[] = [
   {
-    slug: "ananya-sharma",
-    title: "Ananya Sharma",
+    slug: "rajesh-kumar-personal-loan",
+    title: "Rajesh K.",
     type: "testimonial",
-    authorName: "Ananya Sharma",
-    location: "Mumbai",
-    authorAvatarUrl: "/assets/images/testimonials/client-1.jpg",
-    summary:
-      "Got my home loan options compared quickly and the documentation support was clear.",
-  },
-  {
-    slug: "rohan-mehta",
-    title: "Rohan Mehta",
-    type: "testimonial",
-    authorName: "Rohan Mehta",
-    location: "Ahmedabad",
-    authorAvatarUrl: "/assets/images/testimonials/client-2.jpg",
-    summary:
-      "The team helped me choose a credit card that matched my spending pattern.",
-  },
-  {
-    slug: "aditya-nair",
-    title: "Aditya Nair",
-    type: "testimonial",
-    authorName: "Aditya Nair",
+    authorName: "Rajesh K.",
     location: "Bengaluru",
-    authorAvatarUrl: "/assets/images/testimonials/client-3.jpg",
+    authorAvatarUrl: "/assets/images/testimonials/client-1.jpg",
+    rating: 5,
+    tags: ["Personal Loan", "₹8 Lakhs", "ICICI Bank", "48 hours"],
     summary:
-      "I could understand eligibility, EMI and required documents before applying.",
+      "Got my ₹8L personal loan from ICICI in 48 hours. The eligibility tool showed me exactly which documents I needed - no back and forth.",
   },
   {
-    slug: "priya-iyer",
-    title: "Priya Iyer",
+    slug: "sunita-m-term-insurance",
+    title: "Sunita M.",
     type: "testimonial",
-    authorName: "Priya Iyer",
+    authorName: "Sunita M.",
+    location: "Pune",
+    authorAvatarUrl: "/assets/images/testimonials/client-2.jpg",
+    rating: 4.5,
+    tags: ["Term Insurance", "₹520/mo", "HDFC Life"],
+    summary:
+      "Compared 6 term insurance plans in under 10 minutes. Went with HDFC Life at ₹520/month - would never have found that rate on my own.",
+  },
+  {
+    slug: "megha-credit-card",
+    title: "Megha S.",
+    type: "testimonial",
+    authorName: "Megha S.",
+    location: "Delhi",
+    authorAvatarUrl: "/assets/images/testimonials/client-3.jpg",
+    rating: 5,
+    tags: ["Credit Card", "SBI Card", "Cashback"],
+    summary:
+      "I was choosing between 4 cashback cards. Fintaraa showed annual fee, reward rate and eligibility clearly, so I picked the SBI card without confusion.",
+  },
+  {
+    slug: "arvind-home-loan",
+    title: "Arvind R.",
+    type: "testimonial",
+    authorName: "Arvind R.",
     location: "Chennai",
     authorAvatarUrl: "/assets/images/testimonials/client-4.jpg",
+    rating: 4.5,
+    tags: ["Home Loan", "₹42 Lakhs", "HDFC Bank", "12 days"],
     summary:
-      "Fintaraa made the loan process feel organised, transparent and easy to track.",
+      "For my ₹42L home loan, the EMI calculator and document checklist saved time. HDFC approval came through in 12 days with clear updates.",
   },
 ];
 
@@ -78,6 +86,14 @@ const normaliseTestimonials = (data: WebsiteKnowledgeItem[]) => {
         item.location ||
         testimonialsData[cleaned.length % testimonialsData.length]?.location ||
         "India",
+      rating:
+        item.rating ||
+        testimonialsData[cleaned.length % testimonialsData.length]?.rating ||
+        5,
+      tags:
+        item.tags?.length
+          ? item.tags
+          : testimonialsData[cleaned.length % testimonialsData.length]?.tags || [],
     });
 
     if (cleaned.length === homeTestimonialsLimit) break;
@@ -152,12 +168,12 @@ export function Testimonials() {
     return (
       <section className="overflow-hidden select-none bg-white px-4 py-16 md:px-6 lg:px-8">
         <div className="mx-auto max-w-9xl">
-          <h2 className="text-center text-[26px] font-extrabold tracking-tight text-[#111625] md:text-[32px]">
+          <h2 className="text-center text-[26px] font-semibold tracking-tight text-[#111625] md:text-[32px]">
             What Our Clients Say
           </h2>
           <div className="mt-12 flex gap-6 overflow-hidden">
             {Array.from({ length: 4 }).map((_, index) => (
-              <div key={index} className="h-52 w-77.5 shrink-0 animate-pulse rounded-[20px] bg-slate-100 sm:w-87.5 md:w-95" />
+              <div key={index} className="h-52 w-77.5 shrink-0 animate-pulse rounded-xl bg-slate-100 sm:w-87.5 md:w-95" />
             ))}
           </div>
         </div>
@@ -170,13 +186,13 @@ export function Testimonials() {
       <div className="mx-auto max-w-9xl">
         <div className="flex w-full flex-col items-center gap-4 sm:grid sm:grid-cols-3">
           <div className="hidden sm:block" />
-          <h2 className="text-center text-[26px] font-extrabold text-[#111625] md:text-[32px] tracking-tight">
+          <h2 className="text-center text-[26px] font-semibold text-[#111625] md:text-[32px] tracking-tight">
             What Our Clients Say
           </h2>
           <div className="self-center sm:justify-self-end">
             <Link
               href="/testimonials"
-              className="rounded-full bg-[#12b76a] px-6 py-2.5 text-[14px] font-bold text-white transition-all hover:bg-[#0fa35e]"
+              className="rounded-lg bg-[#12b76a] px-5 py-2.5 text-[14px] font-semibold text-white transition-all hover:bg-[#0fa35e]"
             >
               View All
             </Link>
@@ -211,7 +227,7 @@ export function Testimonials() {
             {duplicatedTestimonials.map((item, index) => (
               <article
                 key={`testimonial-card-${item.slug}-${index}`}
-                className="w-77.5 sm:w-87.5 md:w-95 shrink-0 rounded-[20px] border border-gray-100 bg-white p-6 shadow-[0_4px_20px_rgba(0,0,0,0.015)] flex flex-col justify-start select-none"
+                className="w-80 shrink-0 rounded-xl border border-[#e2edf8] bg-white p-6 flex flex-col justify-start select-none sm:w-[380px] md:w-[420px]"
               >
                 {/* Meta Layout Row */}
                 <div className="flex items-center gap-4 pointer-events-none">
@@ -227,10 +243,10 @@ export function Testimonials() {
                   </div>
 
                   <div className="flex flex-col">
-                    <h3 className="text-[16px] font-bold text-gray-800 leading-tight">
+                    <h3 className="text-[16px] font-bold text-[#07162d] leading-tight">
                       {item.authorName || item.title}
                     </h3>
-                    <p className="text-[12px] font-medium text-gray-400 mt-0.5">
+                    <p className="text-[12px] font-bold text-[#8090a4] mt-0.5">
                       {item.location}
                     </p>
 
@@ -238,7 +254,11 @@ export function Testimonials() {
                       {Array.from({ length: 5 }).map((_, i) => (
                         <Star
                           key={i}
-                          className="h-3.5 w-3.5 fill-current stroke-current"
+                          className={`h-3.5 w-3.5 ${
+                            i < Math.floor(item.rating || 5)
+                              ? "fill-current stroke-current"
+                              : "stroke-current text-orange-200"
+                          }`}
                         />
                       ))}
                     </div>
@@ -246,9 +266,22 @@ export function Testimonials() {
                 </div>
 
                 {/* Review Body */}
-                <p className="mt-5 text-[14px] font-normal leading-relaxed text-gray-500/90 whitespace-normal pointer-events-none">
+                <p className="mt-5 text-[14px] font-semibold leading-relaxed text-[#52657d] whitespace-normal pointer-events-none">
                   {item.summary}
                 </p>
+
+                {item.tags?.length ? (
+                  <div className="mt-5 flex flex-wrap gap-2 pointer-events-none">
+                    {item.tags.slice(0, 4).map((tag) => (
+                      <span
+                        key={tag}
+                        className="text-[11px] font-semibold text-[#087443]"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                ) : null}
               </article>
             ))}
           </motion.div>

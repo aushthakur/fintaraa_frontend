@@ -134,9 +134,9 @@ function ColHeading({ children }: { children: React.ReactNode }) {
 export const AppDownloadBanner = () => {
   return (
     <section className="bg-white px-4 py-8 md:px-6 lg:px-8">
-      <div className="mx-auto grid max-w-9xl gap-5 overflow-hidden rounded-[22px] border border-[#a8e5fb] bg-[radial-gradient(circle_at_94%_12%,rgba(24,194,225,0.12),transparent_16%),radial-gradient(circle_at_4%_90%,rgba(25,85,133,0.08),transparent_18%),linear-gradient(105deg,#f3fbff_0%,#ffffff_44%,#eafffb_100%)] px-4 py-6 shadow-[0_20px_55px_rgba(25,85,133,0.09)] md:px-6 lg:grid-cols-[1fr_0.82fr_1fr] lg:px-8">
+      <div className="mx-auto grid max-w-9xl gap-5 overflow-hidden rounded-2xl bg-white px-4 py-6 md:px-6 lg:grid-cols-[1fr_0.82fr_1fr] lg:px-8">
         <div className="flex flex-col justify-center py-3">
-          <h2 className="max-w-xl text-[22px] font-extrabold leading-[1.08] tracking-[-0.02em] text-[#07162d] md:text-[32px] xl:text-[36px]">
+          <h2 className="max-w-xl text-[22px] font-semibold leading-[1.08] tracking-[-0.02em] text-[#07162d] md:text-[32px] xl:text-[36px]">
             Manage Your Finances
             <span className="block bg-[linear-gradient(90deg,#0b7fe8,#176bff)] bg-clip-text text-transparent">
               Anytime, Anywhere
@@ -160,7 +160,7 @@ export const AppDownloadBanner = () => {
         </div>
 
         <div className="flex flex-col justify-center py-3 lg:pt-0">
-          <h3 className="text-[22px] font-extrabold tracking-[-0.01em] text-[#07162d] md:text-[26px]">
+          <h3 className="text-[22px] font-semibold tracking-[-0.01em] text-[#07162d] md:text-[26px]">
             Download the Fintaraa App Now!
           </h3>
           <p className="mt-3 text-[15px] font-medium text-[#344054] md:text-[17px]">
@@ -169,7 +169,7 @@ export const AppDownloadBanner = () => {
           <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
             <a
               href="/app"
-              className="inline-flex h-14 w-full items-center justify-center gap-3 rounded-xl bg-black px-5 text-white no-underline shadow-[0_14px_28px_rgba(0,0,0,0.16)] transition hover:-translate-y-0.5 hover:bg-[#111827] sm:w-auto"
+              className="inline-flex h-14 w-full items-center justify-center gap-3 rounded-xl bg-black px-5 text-white no-underline transition hover:bg-[#111827] sm:w-auto"
             >
               <FaGooglePlay className="h-7 w-7 text-[#34a853]" />
               <span>
@@ -181,7 +181,7 @@ export const AppDownloadBanner = () => {
             </a>
             <a
               href="/app"
-              className="inline-flex h-14 w-full items-center justify-center gap-3 rounded-xl bg-black px-5 text-white no-underline shadow-[0_14px_28px_rgba(0,0,0,0.16)] transition hover:-translate-y-0.5 hover:bg-[#111827] sm:w-auto"
+              className="inline-flex h-14 w-full items-center justify-center gap-3 rounded-xl bg-black px-5 text-white no-underline transition hover:bg-[#111827] sm:w-auto"
             >
               <FaApple className="h-7 w-7 text-white" />
               <span>

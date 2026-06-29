@@ -18,9 +18,9 @@ export function HomePage() {
     <main className="bg-white">
       <HeroSection />
 
-      <div className=" py-12 md:py-16 lg:pt-8">
+      <div className="py-12 md:py-16 lg:pt-8">
         {/* Global Centered Main Title Header */}
-        <div className="mx-auto max-w-9xl px-6 lg:px-8 mb-10">
+        <div className="mx-auto mb-10 max-w-9xl px-4 md:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-[32px] font-bold tracking-tight text-[#212529] md:text-[38px] lg:text-[42px] leading-tight">
               Explore Our Products & Services

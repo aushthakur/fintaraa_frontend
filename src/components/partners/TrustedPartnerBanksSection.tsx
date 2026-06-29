@@ -1,7 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, ChevronUp } from "lucide-react";
+import {
+  ArrowRight,
+  BadgeCheck,
+  ChevronUp,
+  LockKeyhole,
+  ShieldCheck,
+  UsersRound,
+} from "lucide-react";
 import { useMemo, useState } from "react";
 import { BankLogoImage } from "@/components/common/BankLogoImage";
 import {
@@ -23,6 +30,7 @@ type TrustedPartnerBanksSectionProps = {
   defaultShowAll?: boolean;
   showViewAllAction?: boolean;
   viewAllHref?: string;
+  flushX?: boolean;
 };
 
 const categoryCounts = trustedPartnerCategoryTabs.reduce(
@@ -53,8 +61,8 @@ function PartnerLogoTile({
       aria-label={`Open ${partner.name}`}
       className={`group flex shrink-0 items-center justify-center bg-white no-underline transition ${
         compact
-          ? "h-24 w-44 rounded-2xl border border-[#eef2f6] px-5 py-4 shadow-[0_4px_14px_rgba(16,24,40,0.03)] hover:border-[#cfe4f7]"
-          : "min-h-28 rounded-2xl border border-[#e4edf5] px-5 py-4 shadow-[0_10px_24px_rgba(16,24,40,0.04)] hover:-translate-y-0.5 hover:border-[#bddcf3] hover:shadow-[0_14px_30px_rgba(16,24,40,0.08)]"
+          ? "h-22 w-40 rounded-xl border border-[#eef2f6] px-4 py-4 hover:border-[#cfe4f7] sm:h-24 sm:w-44"
+          : "min-h-24 rounded-xl border border-[#e4edf5] px-4 py-4 hover:border-[#bddcf3]"
       }`}
     >
       <div className="flex w-full flex-col items-center justify-center gap-3">
@@ -67,7 +75,7 @@ function PartnerLogoTile({
           imageClassName="mix-blend-multiply"
         />
         {!compact ? (
-          <span className="line-clamp-1 text-center text-[12px] font-extrabold text-[#344054] transition group-hover:text-[#00529b]">
+          <span className="line-clamp-1 text-center text-[12px] font-semibold text-[#344054] transition group-hover:text-[#00529b]">
             {partner.name}
           </span>
         ) : null}
@@ -135,6 +143,7 @@ export function TrustedPartnerBanksSection({
   defaultShowAll = false,
   showViewAllAction = true,
   viewAllHref,
+  flushX = false,
 }: TrustedPartnerBanksSectionProps) {
   const [activeCategory, setActiveCategory] =
     useState<TrustedPartnerCategoryKey>("all");
@@ -160,20 +169,32 @@ export function TrustedPartnerBanksSection({
 
   return (
     <section className={`bg-white px-4 py-12 md:px-6 lg:px-8 ${className}`}>
-      <div className="mx-auto max-w-9xl">
-        <div className="flex flex-col gap-5 border-b border-gray-50 pb-6 lg:flex-row lg:items-center lg:justify-between">
+      <div
+        className={`mx-auto max-w-9xl ${
+          mode === "grid"
+            ? `overflow-hidden rounded-2xl bg-white ${
+                flushX ? "py-4 sm:py-6 lg:py-8" : "p-4 sm:p-6 lg:p-8"
+              }`
+            : ""
+        }`}
+      >
+        <div className="flex flex-col gap-5 border-b border-[#dceaf7] pb-6 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <h2 className="text-[20px] font-extrabold tracking-tight text-[#111625] md:text-[24px]">
+            <span className="mb-3 inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-wide text-[#075cde]">
+              <ShieldCheck className="h-4 w-4" />
+              Our trusted network
+            </span>
+            <h2 className="max-w-3xl text-[26px] font-bold leading-tight tracking-tight text-[#07162d] md:text-[36px]">
               {title}
             </h2>
-            <p className="mt-1 text-[13px] font-semibold text-[#667085]">
+            <p className="mt-3 max-w-2xl text-[14px] font-semibold leading-6 text-[#61748f]">
               {description ||
                 `${activeCount} partners available across selected product category.`}
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3 sm:gap-4 lg:ml-0">
-            <div className="flex items-center gap-2 overflow-x-auto pb-1 sm:gap-3 sm:pb-0">
+          <div className="flex min-w-0 flex-wrap items-center gap-3 sm:gap-4 lg:ml-0">
+            <div className="-mx-1 flex max-w-full items-center gap-2 overflow-x-auto px-1 pb-1 sm:mx-0 sm:gap-3 sm:px-0 sm:pb-0">
               {trustedPartnerCategoryTabs.map((category) => {
                 const isActive =
                   activeCategory === category.key &&
@@ -188,10 +209,10 @@ export function TrustedPartnerBanksSection({
                       setActiveCategory(category.key);
                       setShowAll(false);
                     }}
-                    className={`inline-flex h-10 shrink-0 items-center gap-2 rounded-xl border px-4 text-[13px] font-bold transition-all ${
+                    className={`inline-flex h-10 shrink-0 items-center gap-2 rounded-lg border px-4 text-[13px] font-semibold transition-all ${
                       isActive
-                        ? "border-[#12b76a] bg-[#12b76a] text-white shadow-sm"
-                        : "border-gray-200 bg-white text-gray-600 hover:border-[#12b76a] hover:text-[#0fa35e]"
+                        ? "border-[#075cde] bg-[#075cde] text-white"
+                        : "border-[#dceaf7] bg-white text-[#52657d] hover:border-[#075cde] hover:text-[#075cde]"
                     }`}
                   >
                     {category.label}
@@ -213,7 +234,7 @@ export function TrustedPartnerBanksSection({
               viewAllHref ? (
                 <Link
                   href={viewAllHref}
-                  className="inline-flex h-10 items-center gap-1 rounded-xl px-2 text-[13px] font-extrabold text-[#12b76a] no-underline transition-colors hover:text-[#0fa35e]"
+                  className="inline-flex h-10 items-center gap-1 rounded-xl px-2 text-[13px] font-semibold text-[#075cde] no-underline transition-colors hover:text-[#064cb8]"
                 >
                   View all Partners
                   <ArrowRight className="h-4 w-4" />
@@ -222,7 +243,7 @@ export function TrustedPartnerBanksSection({
                 <button
                   type="button"
                   onClick={handleViewAll}
-                  className="inline-flex h-10 items-center gap-1 rounded-xl px-2 text-[13px] font-extrabold text-[#12b76a] transition-colors hover:text-[#0fa35e]"
+                  className="inline-flex h-10 items-center gap-1 rounded-xl px-2 text-[13px] font-semibold text-[#075cde] transition-colors hover:text-[#064cb8]"
                 >
                   {showAll ? "Show less" : "View all Partners"}
                   {showAll ? (
@@ -260,6 +281,45 @@ export function TrustedPartnerBanksSection({
             </div>
           )}
         </div>
+
+        {mode === "grid" ? (
+          <div className="mt-6 grid gap-3 rounded-2xl border border-[#dceaf7] bg-white p-3 sm:grid-cols-3">
+            {[
+              {
+                title: "RBI Registered Partners",
+                text: "Partners are regulated and compliance-first.",
+                icon: BadgeCheck,
+              },
+              {
+                title: "Secure API Integrations",
+                text: "Bank-grade encryption and secure connections.",
+                icon: LockKeyhole,
+              },
+              {
+                title: "30+ Trusted Institutions",
+                text: "Built on transparency and reliability.",
+                icon: UsersRound,
+              },
+            ].map(({ title: cardTitle, text, icon: Icon }) => (
+              <div
+                key={cardTitle}
+                className="flex items-start gap-3 rounded-xl bg-white p-4"
+              >
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#e9f2ff] text-[#075cde]">
+                  <Icon className="h-5 w-5" />
+                </span>
+                <span>
+                  <span className="block text-[14px] font-bold text-[#07162d]">
+                    {cardTitle}
+                  </span>
+                  <span className="mt-1 block text-[12px] font-semibold leading-5 text-[#61748f]">
+                    {text}
+                  </span>
+                </span>
+              </div>
+            ))}
+          </div>
+        ) : null}
       </div>
     </section>
   );
