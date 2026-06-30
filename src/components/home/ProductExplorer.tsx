@@ -1,5 +1,6 @@
 "use client";
 
+import { Children, type ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -77,118 +78,146 @@ const bankOfferDetails: Record<
 
 const productMeta: Record<
   string,
-  { image?: string; rate?: string; hint?: string; badge?: string; cta?: string }
+  {
+    image?: string;
+    rate?: string;
+    hint?: string;
+    badge?: string;
+    detail?: string;
+    cta?: string;
+  }
 > = {
   "Personal Loan": {
     rate: "From 10.5% p.a.",
     hint: "Salaried & self-employed",
+    detail: "Instant approval guidance",
     badge: "Quick funds",
   },
   "Home Loan": {
     rate: "From 8.5% p.a.",
     hint: "Up to ₹5 Cr",
+    detail: "Long tenure, lower EMI",
     badge: "Low EMI",
     image: "/assets/contact/contact-hero.png",
   },
   "Business Loan": {
     rate: "From 12% p.a.",
     hint: "No collateral options",
+    detail: "Working capital support",
     badge: "Growth capital",
     image: "/assets/dsa/handshake.png",
   },
   "Vehicle Loan": {
     rate: "From 7.9% p.a.",
     hint: "Used & new cars",
+    detail: "Fast dealer coordination",
     badge: "Fast sanction",
     image: "/assets/refer/header-credit-cards.png",
   },
   "Education Loan": {
     rate: "Study funding",
     hint: "Domestic & overseas",
+    detail: "Course-based eligibility",
     badge: "Career ready",
     image: "/assets/blogs/blog4.png",
   },
   "Gold Loan": {
     rate: "Instant value",
     hint: "Against pledged gold",
+    detail: "Quick valuation process",
     badge: "Quick cash",
     image: "/assets/images/coin-bag.png",
   },
   "Loan Against Property": {
     rate: "High-ticket funding",
     hint: "Residential/commercial",
+    detail: "Secured large funding",
     badge: "Secured loan",
     image: "/assets/images/hero.png",
   },
   "Health Insurance": {
     image: "/assets/images/testimonials/client-1.jpg",
-    hint: "Stay covered, stay worry-free",
-    badge: "Family cover",
+    hint: "Cashless care, family floater and hospital-network options.",
+    detail: "Compare premiums, waiting periods and room-rent limits.",
+    badge: "Medical cover",
   },
   "Life Insurance": {
     image: "/assets/images/testimonials/client-2.jpg",
-    hint: "Secure your loved ones' future",
-    badge: "Protection",
+    hint: "Long-term financial protection for the people who depend on you.",
+    detail: "Review cover amount, payout terms and premium flexibility.",
+    badge: "Family security",
   },
   "Shop Insurance": {
     image: "/assets/services/gst-hero.png",
-    hint: "Protect your business",
+    hint: "Protect your shop from fire, theft, liability and business risk.",
+    detail: "Useful for retail stores, offices and small business owners.",
     badge: "Business cover",
   },
   "Stock Insurance": {
     image: "/assets/blogs/blog3.png",
-    hint: "Coverage for valuable stock",
+    hint: "Cover inventory and stock against unexpected damage or loss.",
+    detail: "Designed for traders, retailers and warehouse-led businesses.",
     badge: "Asset cover",
   },
   "Term Insurance": {
     image: "/assets/images/testimonials/client-3.jpg",
-    hint: "High coverage, low premium",
-    badge: "Low premium",
+    hint: "High life cover at a disciplined, affordable premium.",
+    detail: "Compare claim ratio, riders and payout preferences.",
+    badge: "Pure protection",
   },
   "Property Insurance": {
     image: "/assets/images/hero.png",
-    hint: "Protect your home and assets",
-    badge: "Home safety",
+    hint: "Secure your home, building and valuable assets from risk.",
+    detail: "Compare structure, contents and natural calamity coverage.",
+    badge: "Property safety",
   },
   "Travel Insurance": {
     image: "/assets/careers/life-5.jpg",
-    hint: "Travel smart, travel insured",
+    hint: "Travel with cover for medical, baggage and trip disruptions.",
+    detail: "Useful for domestic, international and frequent travellers.",
     badge: "Trip cover",
   },
   "Travel Cards": {
     image: "/assets/careers/life-5.jpg",
-    hint: "Earn miles. Fly more. Pay less.",
-    badge: "Travel",
+    hint: "Airport lounge access, miles and low forex markups.",
+    detail: "Best for frequent flyers and international spends.",
+    badge: "Travel rewards",
   },
   "Fuel Cards": {
     image: "/assets/images/hero1.png",
-    hint: "More savings on every fill",
-    badge: "Fuel",
+    hint: "Fuel surcharge waivers and savings on everyday refuels.",
+    detail: "Built for commuters, road trips and monthly fuel budgets.",
+    badge: "Fuel savings",
   },
   "Cashback Cards": {
     image: "/assets/banks/visa-card.png",
-    hint: "Cashback on every spend",
+    hint: "Earn direct value back on groceries, bills and online spends.",
+    detail: "Simple rewards for users who prefer cash value over points.",
     badge: "Cashback",
   },
   "Shopping Cards": {
     image: "/assets/blogs/blog2.png",
-    hint: "Shop more. Save more.",
-    badge: "Shopping",
+    hint: "Marketplace offers, brand deals and accelerated rewards.",
+    detail: "Good for online shoppers and seasonal sale purchases.",
+    badge: "Shopping perks",
   },
   "Rewards Cards": {
     image: "/assets/offers/offer.png",
-    hint: "Unlock premium rewards",
-    badge: "Rewards",
+    hint: "Convert regular spends into points, vouchers and upgrades.",
+    detail: "Compare redemption value, caps and partner benefits.",
+    badge: "Premium rewards",
   },
   "Balance Transfer": {
     image: "/assets/images/coin-bag.png",
-    hint: "Transfer balance. Save interest.",
-    badge: "Save EMI",
+    hint: "Move outstanding dues into easier repayment options.",
+    detail: "Useful for reducing interest pressure and planning EMIs.",
+    badge: "Save interest",
   },
   "Dining Cards": {
     image: "/assets/careers/life-4.jpg",
-    hint: "Offers for food lovers",
-    badge: "Dining",
+    hint: "Dining discounts, table offers and partner restaurant deals.",
+    detail: "Best for food lovers and frequent weekend plans.",
+    badge: "Dining offers",
   },
   "CIBIL Score Check": {
     image: "/assets/images/cibil-score-quality.png",
@@ -243,24 +272,14 @@ const isImageCategory = (title: string) =>
 function SectionTop({
   title,
   subtitle,
-  cta,
-  href,
   hero = false,
 }: {
   title: string;
   subtitle?: string;
-  cta?: string;
-  href?: string;
   hero?: boolean;
 }) {
   return (
-    <div
-      className={
-        hero
-          ? "mb-0 rounded-2xl bg-white p-5 sm:p-6"
-          : "mb-5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between"
-      }
-    >
+    <div className={hero ? "mb-0 rounded-2xl bg-white p-5 sm:p-6" : "mb-5"}>
       <div>
         {sectionEyebrow[title] ? (
           <p className="mb-2 inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-wide text-[#075cde]">
@@ -291,14 +310,25 @@ function SectionTop({
               "Compare options faster with useful details before you click."}
         </p>
       </div>
+    </div>
+  );
+}
 
-      <Link
-        href={href || "/products"}
-        className="inline-flex h-11 w-fit items-center justify-center gap-2 rounded-xl border border-[#bcd8f4] bg-white px-4 text-[13px] font-bold text-[#075cde] no-underline transition hover:border-[#075cde]"
-      >
-        {cta || "View All"}
-        <ArrowRight className="h-4 w-4" />
-      </Link>
+function ResponsiveSevenRow({ children }: { children: ReactNode }) {
+  const items = Children.toArray(children);
+
+  return (
+    <div className="-mx-4 overflow-x-auto px-4 pb-2 scrollbar-none md:-mx-6 md:px-6 xl:mx-0 xl:overflow-visible xl:px-0 xl:pb-0">
+      <div className="flex snap-x snap-mandatory gap-4 xl:grid xl:grid-cols-7">
+        {items.map((child, index) => (
+          <div
+            key={index}
+            className="w-[calc((100%-1rem)/1.5)] shrink-0 snap-start md:w-[calc((100%-2rem)/2.5)] xl:w-auto"
+          >
+            {child}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -315,7 +345,7 @@ function BankOfferCard({
   return (
     <Link
       href={product.href || productHref(product.title)}
-      className="group flex min-h-67.5 flex-col justify-between rounded-xl border border-[#e2edf8] bg-white p-4 no-underline transition-colors hover:border-[#bcd8f4]"
+      className="group flex h-full min-h-67.5 flex-col justify-between rounded-xl border border-[#e2edf8] bg-white p-4 no-underline transition-colors hover:border-[#bcd8f4]"
     >
       <div>
         <div className="flex items-center justify-between gap-3">
@@ -326,7 +356,7 @@ function BankOfferCard({
           >
             {index === 0 ? "Best offers" : "Verified"}
           </span>
-          <CheckCircle2 className="h-5 w-5 text-[#12b76a]" />
+          <CheckCircle2 className="h-4 w-4 text-[#12b76a]" />
         </div>
         <div className="mt-5 flex h-20 items-center justify-center">
           {product.logo ? (
@@ -352,12 +382,14 @@ function BankOfferCard({
               {details.rate}
             </span>
           </div>
-          {[details.perk, details.amount, details.speed].map((item) => (
-            <div key={item} className="flex items-center gap-2">
-              <BadgeCheck className="h-4 w-4 shrink-0 text-[#0f7a4d]" />
-              <span>{item}</span>
-            </div>
-          ))}
+          <div className="space-y-1">
+            {[details.perk, details.amount, details.speed].map((item) => (
+              <div key={item} className="flex items-center gap-2">
+                <BadgeCheck className="h-4 w-4 shrink-0 text-[#0f7a4d]" />
+                <span className="text-xs">{item}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
       <span className="mt-5 inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-[#e9f2ff] text-[13px] font-bold text-[#075cde] transition group-hover:bg-[#075cde] group-hover:text-white">
@@ -374,33 +406,50 @@ function InformativeCard({ product }: { product: ProductItem }) {
   return (
     <Link
       href={product.href || productHref(product.title)}
-      className="group flex min-h-40 flex-col justify-between rounded-xl border border-[#e2edf8] bg-white p-5 no-underline transition-colors hover:border-[#bcd8f4]"
+      className="group flex h-full min-h-48 flex-col justify-between rounded-xl border border-[#dceaf7] bg-white p-4 no-underline transition-colors hover:border-[#bcd8f4]"
     >
-      <div>
-        <div className="flex items-start justify-between gap-4">
-          <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#e9f2ff] text-[#075cde]">
+      <div className="flex min-h-0 flex-1 flex-col">
+        <div className="flex items-start gap-3">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#e9f2ff] text-[#075cde]">
             {Icon ? (
-              <Icon className="h-5 w-5" />
+              <Icon className="h-4 w-4" />
             ) : (
-              <Sparkles className="h-5 w-5" />
+              <Sparkles className="h-4 w-4" />
             )}
-          </span>
-          <span className="text-right text-[10px] font-bold uppercase tracking-wide text-[#087443]">
-            {meta.badge || "Matched"}
-          </span>
+          </div>
+          <div className="min-w-0">
+            <p className="text-[10px] font-bold uppercase tracking-wide text-[#075cde]">
+              {meta.badge || "Matched"}
+            </p>
+            <h3 className="mt-1 line-clamp-1 text-[15px] font-bold leading-snug text-[#07162d]">
+              {product.title}
+            </h3>
+          </div>
         </div>
-        <h3 className="mt-4 text-[17px] font-bold text-[#07162d]">
-          {product.title}
-        </h3>
-        <p className="mt-1 text-[13px] font-bold text-[#61748f]">
-          {meta.rate || product.text}
-        </p>
-        <p className="mt-2 flex items-center gap-1.5 text-[12px] font-bold text-[#0f7a4d]">
+
+        <div className="mt-2 border-t border-[#edf3f8] pt-2">
+          <p className="text-[10px] font-bold uppercase tracking-wide text-[#8090a4]">
+            Starting from
+          </p>
+          <p className="mt-1 text-[15px] font-bold leading-none text-[#075cde]">
+            {meta.rate || product.text}
+          </p>
+        </div>
+
+        <p className="mt-2 flex items-start gap-1.5 text-[10px] leading-5 text-[#344054]">
           <CheckCircle2 className="h-4 w-4" />
-          {meta.hint || "Eligibility guidance before applying"}
+          <span className="text-xs">
+            {meta.hint || "Eligibility guidance before applying"}
+          </span>
+        </p>
+        <p className="mt-2 flex items-start gap-1.5 text-[10px] leading-5 text-[#61748f]">
+          <BadgeCheck className="h-4 w-4 shrink-0 text-[#075cde]" />
+          <span className="text-xs">
+            {meta.detail || "Compare eligibility, documents and next steps."}
+          </span>
         </p>
       </div>
-      <span className="mt-5 inline-flex items-center gap-2 text-[13px] font-bold text-[#075cde]">
+      <span className="mt-4 inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-[#e9f2ff] text-[13px] font-bold text-[#075cde] transition group-hover:bg-[#075cde] group-hover:text-white">
         Check options
         <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
       </span>
@@ -414,7 +463,7 @@ function ImageProductCard({ product }: { product: ProductItem }) {
   return (
     <Link
       href={product.href || productHref(product.title)}
-      className="group overflow-hidden rounded-xl border border-[#e2edf8] bg-white no-underline transition-colors hover:border-[#bcd8f4]"
+      className="group flex h-full flex-col overflow-hidden rounded-xl border border-[#e2edf8] bg-white no-underline transition-colors hover:border-[#bcd8f4]"
     >
       <div className="relative aspect-[1.45/1] bg-white">
         {meta.image ? (
@@ -427,24 +476,37 @@ function ImageProductCard({ product }: { product: ProductItem }) {
           />
         ) : null}
         <div className="absolute inset-0 bg-linear-to-t from-[#07162d]/60 via-transparent to-transparent" />
-        <span className="absolute left-3 top-3 rounded-md bg-white/90 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-[#075cde]">
+        <span className="absolute left-3 top-3 inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wide text-white">
+          <Sparkles className="h-3.5 w-3.5 text-[#8fc7ff]" />
           {meta.badge || "Featured"}
         </span>
         <span className="absolute bottom-3 left-3 flex h-10 w-10 items-center justify-center rounded-xl bg-white text-[#075cde]">
           {Icon ? (
-            <Icon className="h-5 w-5" />
+            <Icon className="h-4 w-4" />
           ) : (
-            <Sparkles className="h-5 w-5" />
+            <Sparkles className="h-4 w-4" />
           )}
         </span>
       </div>
-      <div className="p-4">
-        <h3 className="text-[15px] font-bold text-[#07162d]">
+      <div className="flex flex-1 flex-col p-4">
+        <p className="mb-2 inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wide text-[#075cde]">
+          <CheckCircle2 className="h-3.5 w-3.5" />
+          Curated option
+        </p>
+        <h3 className="text-[16px] font-bold leading-snug text-[#07162d]">
           {product.title}
         </h3>
-        <p className="mt-1 min-h-10 text-[12px] font-bold leading-5 text-[#61748f]">
+        <p className="mt-2 line-clamp-2 text-[10px] text-[#52657d]">
           {meta.hint || product.text}
         </p>
+        {/* <p className="mt-2 min-h-10 flex-1 text-[11px] font-semibold leading-5 text-[#8090a4]">
+          {meta.detail ||
+            "Compare benefits, eligibility and next steps before applying."}
+        </p> */}
+        <span className="mt-3 inline-flex items-center gap-2 text-[12px] font-bold text-[#075cde]">
+          Compare options
+          <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
+        </span>
       </div>
     </Link>
   );
@@ -508,13 +570,25 @@ export function ProductExplorer({
             const otherServices = isOtherServices(title);
             const imageCategory = isImageCategory(title);
             const href = (section as any).ctaHref || "/products";
+            const ctaLabel = (section as any).cta || "View All";
             const products = section.products as ProductItem[];
+            const sectionCta = (
+              <div className="mt-6 flex w-full justify-center xl:mt-7">
+                <Link
+                  href={href}
+                  className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#075cde] px-6 text-[14px] font-bold text-white no-underline transition hover:bg-[#064cb8]"
+                >
+                  {ctaLabel}
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+            );
 
             return (
               <div
                 key={title}
                 className={
-                  bankSection || otherServices
+                  otherServices
                     ? "overflow-hidden rounded-2xl bg-white p-4 sm:p-6"
                     : ""
                 }
@@ -522,20 +596,20 @@ export function ProductExplorer({
                 <SectionTop
                   title={title}
                   subtitle={(section as any).subtitle}
-                  cta={(section as any).cta}
-                  href={href}
-                  hero={bankSection}
                 />
 
                 {bankSection ? (
-                  <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                    {products.map((product, index) => (
-                      <BankOfferCard
-                        key={product.title}
-                        product={product}
-                        index={index}
-                      />
-                    ))}
+                  <div className="mt-5">
+                    <ResponsiveSevenRow>
+                      {products.map((product, index) => (
+                        <BankOfferCard
+                          key={product.title}
+                          product={product}
+                          index={index}
+                        />
+                      ))}
+                    </ResponsiveSevenRow>
+                    {sectionCta}
                   </div>
                 ) : otherServices ? (
                   <>
@@ -547,18 +621,15 @@ export function ProductExplorer({
                         />
                       ))}
                     </div>
-                    <div className="mt-5 grid gap-3 rounded-2xl border border-[#dceaf7] bg-white p-3 sm:grid-cols-4">
+                    <div className="mt-5 grid gap-4 border-t border-[#dceaf7] pt-5 sm:grid-cols-4">
                       {[
                         ["100% Secure", "Your data is safe with us"],
                         ["Quick & Easy", "Simple process, faster results"],
                         ["Expert Support", "Get help from specialists"],
                         ["Trusted by Millions", "Join satisfied customers"],
                       ].map(([label, text]) => (
-                        <div
-                          key={label}
-                          className="flex items-start gap-3 rounded-xl bg-white p-4"
-                        >
-                          <BadgeCheck className="mt-0.5 h-5 w-5 shrink-0 text-[#075cde]" />
+                        <div key={label} className="flex items-start gap-3">
+                          <BadgeCheck className="mt-0.5 h-4 w-4 shrink-0 text-[#075cde]" />
                           <div>
                             <p className="text-[13px] font-bold text-[#07162d]">
                               {label}
@@ -570,19 +641,32 @@ export function ProductExplorer({
                         </div>
                       ))}
                     </div>
+                    {sectionCta}
                   </>
                 ) : imageCategory ? (
-                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                    {products.map((product) => (
-                      <ImageProductCard key={product.title} product={product} />
-                    ))}
-                  </div>
+                  <>
+                    <ResponsiveSevenRow>
+                      {products.map((product) => (
+                        <ImageProductCard
+                          key={product.title}
+                          product={product}
+                        />
+                      ))}
+                    </ResponsiveSevenRow>
+                    {sectionCta}
+                  </>
                 ) : (
-                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                    {products.map((product) => (
-                      <InformativeCard key={product.title} product={product} />
-                    ))}
-                  </div>
+                  <>
+                    <ResponsiveSevenRow>
+                      {products.map((product) => (
+                        <InformativeCard
+                          key={product.title}
+                          product={product}
+                        />
+                      ))}
+                    </ResponsiveSevenRow>
+                    {sectionCta}
+                  </>
                 )}
               </div>
             );

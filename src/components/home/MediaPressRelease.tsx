@@ -1,12 +1,14 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import React, { useEffect, useRef, useState } from "react";
+import { ArrowRight, CalendarDays, Newspaper } from "lucide-react";
 import { motion, useAnimationFrame, useMotionValue } from "framer-motion";
 import {
-  fetchWebsiteKnowledge,
+  stripHtml,
   formatKnowledgeDate,
+  fetchWebsiteKnowledge,
   type WebsiteKnowledgeItem,
 } from "@/services/websiteKnowledge";
 
@@ -16,16 +18,38 @@ const fallbackPress: WebsiteKnowledgeItem[] = [
     slug: "fintaraa-expands-assisted-loan-discovery",
     type: "press_release",
     category: "Company News",
+    summary:
+      "Fintaraa strengthens its assisted discovery experience for loan seekers across more partner-led journeys.",
     coverImageUrl: "/assets/images/media1.png",
     publishedAt: "2026-06-01",
   },
 ];
 
+function getPressSummary(post: WebsiteKnowledgeItem) {
+  return (
+    post.summary ||
+    post.excerpt ||
+    stripHtml(post.content || "") ||
+    "Read the latest company update, product announcement, or media coverage from Fintaraa."
+  );
+}
+
 function PressSkeleton() {
   return (
     <div className="flex gap-6">
       {Array.from({ length: 4 }).map((_, index) => (
-        <div key={index} className="h-80 w-65 shrink-0 animate-pulse rounded-2xl bg-slate-100 sm:w-70 md:w-73.75" />
+        <div
+          key={index}
+          className="h-108 w-76 shrink-0 animate-pulse rounded-2xl border border-[#e2edf8] bg-white sm:w-82 md:w-88"
+        >
+          <div className="h-56 rounded-t-2xl bg-slate-100" />
+          <div className="space-y-3 p-5">
+            <div className="h-4 w-28 rounded bg-slate-100" />
+            <div className="h-5 rounded bg-slate-100" />
+            <div className="h-5 w-4/5 rounded bg-slate-100" />
+            <div className="h-16 rounded bg-slate-100" />
+          </div>
+        </div>
       ))}
     </div>
   );
@@ -71,18 +95,19 @@ export function MediaPressRelease() {
   return (
     <section className="overflow-hidden select-none bg-white px-4 py-16 md:px-6 lg:px-8">
       <div className="mx-auto max-w-9xl">
-        <div className="mb-10 flex w-full flex-col items-center gap-4 sm:grid sm:grid-cols-3">
-          <div className="hidden sm:block" />
-          <h2 className="text-center text-[24px] font-bold tracking-tight text-[#111625] md:text-[28px]">
-            Media & Press Release
-          </h2>
-          <div className="self-center sm:justify-self-end">
-            <Link
-              href="/press-release"
-              className="rounded-full bg-[#12b76a] px-7 py-2.5 text-[14px] font-bold text-white transition-all hover:bg-[#0fa35e]"
-            >
-              View All
-            </Link>
+        <div className="mb-10">
+          <div className="max-w-2xl">
+            <p className="inline-flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-[0.12em] text-[#195585]">
+              <Newspaper className="h-3.5 w-3.5 text-[#075cde]" />
+              Newsroom
+            </p>
+            <h2 className="mt-3 text-[26px] font-extrabold tracking-tight text-[#111625] md:text-[32px]">
+              Media & Press Release
+            </h2>
+            <p className="mt-2 max-w-2xl text-[14px] font-semibold leading-6 text-[#667085]">
+              Company announcements, product updates, and media coverage from
+              Fintaraa.
+            </p>
           </div>
         </div>
 
@@ -119,33 +144,45 @@ export function MediaPressRelease() {
                       ? post.linkUrl
                       : `/press-release/${post.slug}`
                   }
-                  className="flex w-65 shrink-0 flex-col overflow-hidden rounded-2xl border border-gray-100/80 bg-white no-underline shadow-[0_4px_20px_rgba(0,0,0,0.01)] transition-shadow hover:shadow-[0_4px_24px_rgba(0,0,0,0.03)] sm:w-70 md:w-73.75"
+                  className="group flex h-108 w-76 shrink-0 flex-col overflow-hidden rounded-2xl border border-[#dfeaf5] bg-white no-underline transition duration-300 hover:-translate-y-1 hover:border-[#bcd3e8] sm:w-82 md:w-88"
                 >
-                  <div className="pointer-events-none relative aspect-[1.38/1] w-full bg-gray-100">
+                  <div className="pointer-events-none relative h-56 w-full overflow-hidden bg-[#eaf2f9]">
                     <Image
                       src={post.coverImageUrl || "/assets/images/media1.png"}
                       alt={post.title}
                       fill
+                      sizes="(max-width: 640px) 19rem, (max-width: 768px) 20.5rem, 22rem"
                       unoptimized
                       draggable={false}
-                      className="object-cover select-none"
+                      className="h-full w-full object-cover select-none transition duration-500 group-hover:scale-105"
                     />
+                    <div className="absolute inset-0 bg-linear-to-t from-black/45 via-black/5 to-transparent" />
                   </div>
-                  <div className="pointer-events-none flex flex-1 flex-col justify-between p-4">
+                  <div className="pointer-events-none flex flex-1 flex-col justify-between p-5">
                     <div>
-                      <span className="block text-[12px] font-medium tracking-tight text-gray-400">
-                        {post.category}
-                      </span>
-                      <h3 className="mt-1 text-[14px] font-bold leading-snug tracking-tight text-[#111625] md:text-[15px]">
+                      <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[12px] font-bold text-[#667085]">
+                        <span className="inline-flex items-center gap-1.5 text-[#075cde]">
+                          <Newspaper className="h-3.5 w-3.5" />
+                          {post.category || "Press Release"}
+                        </span>
+                        <span className="inline-flex items-center gap-1.5">
+                          <CalendarDays className="h-3.5 w-3.5 text-[#195585]" />
+                          {formatKnowledgeDate(post.publishedAt)}
+                        </span>
+                      </div>
+                      <h3 className="mt-3 line-clamp-2 text-[18px] font-extrabold leading-snug tracking-tight text-[#111625] transition group-hover:text-[#075cde]">
                         {post.title}
                       </h3>
+                      <p className="mt-2 line-clamp-1 text-[13px] font-semibold leading-6 text-[#667085]">
+                        {getPressSummary(post)}
+                      </p>
                     </div>
-                    <div className="mt-5 flex items-center justify-between border-t border-gray-50/60 pt-3">
-                      <span className="text-[12px] font-medium text-gray-400">
-                        {formatKnowledgeDate(post.publishedAt)}
+                    <div className="mt-3 flex items-center justify-between border-t border-[#edf2f7] pt-2">
+                      <span className="text-[12px] font-extrabold uppercase tracking-widest text-[#98a2b3]">
+                        Update
                       </span>
-                      <span className="text-[14px] font-bold text-[#12b76a]">
-                        →
+                      <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[#075cde] text-white transition group-hover:translate-x-1 group-hover:bg-[#064cb8]">
+                        <ArrowRight className="h-4 w-4" />
                       </span>
                     </div>
                   </div>
@@ -153,6 +190,16 @@ export function MediaPressRelease() {
               ))}
             </motion.div>
           )}
+        </div>
+
+        <div className="mt-8 flex justify-center">
+          <Link
+            href="/press-release"
+            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#075cde] px-6 text-[14px] font-bold text-white no-underline transition hover:bg-[#064cb8]"
+          >
+            View All
+            <ArrowRight className="h-4 w-4" />
+          </Link>
         </div>
       </div>
     </section>

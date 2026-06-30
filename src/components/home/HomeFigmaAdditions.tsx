@@ -116,7 +116,7 @@ export function HomeMediaSections() {
             </h2>
             <Link
               href="/blog"
-              className="rounded-full bg-[#12b76a] px-5 py-2 text-[12px] font-extrabold text-white no-underline"
+              className="rounded-full bg-[#075cde] px-5 py-2 text-[12px] font-extrabold text-white no-underline"
             >
               View all
             </Link>
@@ -156,7 +156,7 @@ export function HomeMediaSections() {
             </h2>
             <Link
               href="/blog"
-              className="rounded-full bg-[#12b76a] px-5 py-2 text-[12px] font-extrabold text-white no-underline"
+              className="rounded-full bg-[#075cde] px-5 py-2 text-[12px] font-extrabold text-white no-underline"
             >
               View all
             </Link>

@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import {
   ArrowRight,
@@ -43,7 +43,8 @@ const fallbackCreditCards: CreditCardProduct[] = [
     name: "SBI Cashback Credit Card",
     bankName: "SBI Card",
     image: "/assets/banks/sbi-logo.png",
-    shortDescription: "Save more on online spends, grocery and everyday shopping.",
+    shortDescription:
+      "Save more on online spends, grocery and everyday shopping.",
     cardType: "Cashback",
     rewardsType: "5% Cashback",
     welcomeBenefits: "Welcome voucher",
@@ -71,7 +72,8 @@ const fallbackCreditCards: CreditCardProduct[] = [
     name: "ICICI Platinum Credit Card",
     bankName: "ICICI Bank",
     image: "/assets/banks/icici-logo.png",
-    shortDescription: "Simple card for rewards, convenience and daily payments.",
+    shortDescription:
+      "Simple card for rewards, convenience and daily payments.",
     cardType: "Rewards",
     rewardsType: "Reward Points",
     welcomeBenefits: "Bank policy benefits",
@@ -132,7 +134,9 @@ const mergeWithFallbackCards = (cards: CreditCardProduct[]) => {
   const existingKeys = new Set(
     cards.map((card) => `${card.bankName}-${card.name}`.toLowerCase()),
   );
-  const existingBanks = new Set(cards.map((card) => normalizeBankKey(card.bankName)));
+  const existingBanks = new Set(
+    cards.map((card) => normalizeBankKey(card.bankName)),
+  );
   const missingFallbacks = fallbackCreditCards.filter(
     (card) =>
       !existingBanks.has(normalizeBankKey(card.bankName)) &&
@@ -177,7 +181,9 @@ export function MajorBankCreditCards() {
       } catch {
         if (!active) return;
         setCards(fallbackCreditCards);
-        setActiveBank((current) => current || fallbackCreditCards[0]?.bankName || "");
+        setActiveBank(
+          (current) => current || fallbackCreditCards[0]?.bankName || "",
+        );
         setError("");
       } finally {
         if (active) setLoading(false);
@@ -191,16 +197,16 @@ export function MajorBankCreditCards() {
 
   const bankTabs = useMemo(
     () =>
-      Array.from(new Set(cards.map((card) => card.bankName).filter(Boolean))).sort(
-        (a, b) => {
-          const aIndex = bankDisplayOrder.indexOf(a);
-          const bIndex = bankDisplayOrder.indexOf(b);
-          if (aIndex === -1 && bIndex === -1) return a.localeCompare(b);
-          if (aIndex === -1) return 1;
-          if (bIndex === -1) return -1;
-          return aIndex - bIndex;
-        },
-      ),
+      Array.from(
+        new Set(cards.map((card) => card.bankName).filter(Boolean)),
+      ).sort((a, b) => {
+        const aIndex = bankDisplayOrder.indexOf(a);
+        const bIndex = bankDisplayOrder.indexOf(b);
+        if (aIndex === -1 && bIndex === -1) return a.localeCompare(b);
+        if (aIndex === -1) return 1;
+        if (bIndex === -1) return -1;
+        return aIndex - bIndex;
+      }),
     [cards],
   );
 
@@ -208,7 +214,10 @@ export function MajorBankCreditCards() {
     () =>
       cards
         .filter((card) => card.bankName === activeBank)
-        .sort((a, b) => Number(a.priorityOrder || 999) - Number(b.priorityOrder || 999))
+        .sort(
+          (a, b) =>
+            Number(a.priorityOrder || 999) - Number(b.priorityOrder || 999),
+        )
         .slice(0, 4),
     [activeBank, cards],
   );
@@ -230,7 +239,7 @@ export function MajorBankCreditCards() {
   return (
     <section className="bg-white px-4 py-10 md:px-6 lg:px-8">
       <div className="mx-auto max-w-9xl overflow-hidden rounded-2xl bg-[#f7fbff]">
-        <div className="relative grid items-stretch overflow-hidden lg:min-h-[320px] lg:grid-cols-[1.1fr_0.9fr]">
+        <div className="relative grid items-stretch overflow-hidden lg:min-h-80 lg:grid-cols-[1.1fr_0.9fr]">
           <div className="px-5 py-8 sm:px-8 lg:px-10">
             <span className="inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-wide text-[#075cde]">
               <ShieldCheck className="h-4 w-4" />
@@ -257,7 +266,7 @@ export function MajorBankCreditCards() {
             </div>
           </div>
 
-          <div className="relative min-h-[220px] bg-[#e9f2ff] sm:min-h-[300px]">
+          <div className="relative min-h-55 bg-[#e9f2ff] sm:min-h-75">
             <Image
               src="/assets/banks/visa-card.png"
               alt="Featured credit cards"
@@ -306,17 +315,10 @@ export function MajorBankCreditCards() {
                 );
               })
             )}
-            <Link
-              href="/credit-cards"
-              className="ml-auto hidden h-11 shrink-0 items-center gap-2 rounded-xl px-3 text-[13px] font-bold text-[#075cde] no-underline hover:bg-[#f2f7ff] sm:inline-flex"
-            >
-              View all banks
-              <ArrowRight className="h-4 w-4" />
-            </Link>
           </div>
         </div>
 
-        <div className="px-5 py-7 sm:px-8 lg:px-10">
+        <div className="bg-white py-6">
           {error ? (
             <div className="rounded-xl border border-red-100 bg-red-50 p-5 text-[13px] font-semibold text-red-700">
               {error}
@@ -348,13 +350,6 @@ export function MajorBankCreditCards() {
                   </p>
                 </div>
               </div>
-              <Link
-                href={activeBank ? buildCreditCardBankPath(activeBank) : "/credit-cards"}
-                className="inline-flex h-10 items-center gap-2 text-[13px] font-bold text-[#075cde] no-underline hover:underline"
-              >
-                Explore all {activeBank} options
-                <ArrowRight className="h-4 w-4" />
-              </Link>
             </div>
           ) : null}
 
@@ -363,7 +358,7 @@ export function MajorBankCreditCards() {
               {Array.from({ length: 4 }).map((_, index) => (
                 <div
                   key={index}
-                  className="h-[368px] animate-pulse rounded-xl border border-[#e2edf8] bg-white p-5"
+                  className="h-92 animate-pulse rounded-xl border border-[#e2edf8] bg-white p-5"
                 />
               ))}
             </div>
@@ -419,7 +414,9 @@ export function MajorBankCreditCards() {
                         {card.name}
                       </h4>
                       <p className="mt-1 min-h-10 text-[12px] font-semibold leading-5 text-[#61748f]">
-                        {card.shortDescription || card.subtitle || card.welcomeBenefits}
+                        {card.shortDescription ||
+                          card.subtitle ||
+                          card.welcomeBenefits}
                       </p>
 
                       <div className="mt-4 grid grid-cols-2 gap-3">
@@ -430,15 +427,9 @@ export function MajorBankCreditCards() {
                             card.rewardsType ? "Rewards" : "Benefit",
                             featureValue(card, "Reward points"),
                           ],
-                          [
-                            "Approval",
-                            card.processingTime || "Instant check",
-                          ],
+                          ["Approval", card.processingTime || "Instant check"],
                         ].map(([label, value]) => (
-                          <div
-                            key={label}
-                            className="rounded-xl bg-white p-3"
-                          >
+                          <div key={label} className="rounded-xl bg-white p-3">
                             <p className="text-[10px] font-bold uppercase tracking-wide text-[#8090a4]">
                               {label}
                             </p>
@@ -467,6 +458,18 @@ export function MajorBankCreditCards() {
               Credit cards will appear here once active products are available.
             </div>
           )}
+
+          <div className="mt-6 flex justify-center">
+            <Link
+              href={
+                activeBank ? buildCreditCardBankPath(activeBank) : "/credit-cards"
+              }
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#075cde] px-6 text-[14px] font-bold text-white no-underline transition hover:bg-[#064cb8]"
+            >
+              {activeBank ? `Explore all ${activeBank} options` : "View all banks"}
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
 
           <div className="mt-6 grid gap-3 rounded-2xl border border-[#dceaf7] bg-white p-3 sm:grid-cols-4">
             {[

@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useMotionValue, useAnimationFrame } from "framer-motion";
-import { Star } from "lucide-react";
+import { ArrowRight, Star } from "lucide-react";
 import {
   fetchWebsiteKnowledge,
   type WebsiteKnowledgeItem,
@@ -184,19 +184,10 @@ export function Testimonials() {
   return (
     <section className="bg-white px-4 py-16 md:px-6 lg:px-8 overflow-hidden select-none">
       <div className="mx-auto max-w-9xl">
-        <div className="flex w-full flex-col items-center gap-4 sm:grid sm:grid-cols-3">
-          <div className="hidden sm:block" />
+        <div className="text-center">
           <h2 className="text-center text-[26px] font-semibold text-[#111625] md:text-[32px] tracking-tight">
             What Our Clients Say
           </h2>
-          <div className="self-center sm:justify-self-end">
-            <Link
-              href="/testimonials"
-              className="rounded-lg bg-[#12b76a] px-5 py-2.5 text-[14px] font-semibold text-white transition-all hover:bg-[#0fa35e]"
-            >
-              View All
-            </Link>
-          </div>
         </div>
 
         {/* Mask Carousel Viewport Container Frame */}
@@ -285,6 +276,16 @@ export function Testimonials() {
               </article>
             ))}
           </motion.div>
+        </div>
+
+        <div className="mt-8 flex justify-center">
+          <Link
+            href="/testimonials"
+            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#075cde] px-6 text-[14px] font-semibold text-white no-underline transition hover:bg-[#064cb8]"
+          >
+            View All
+            <ArrowRight className="h-4 w-4" />
+          </Link>
         </div>
       </div>
     </section>

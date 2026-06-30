@@ -191,7 +191,8 @@ export const productSections = [
   },
   {
     title: "Explore Insurance Plans",
-    subtitle: "Get Money in 5 Minutes -Complete Digital Process",
+    subtitle:
+      "Compare health, life, travel, property and business covers with a simple digital process.",
     cta: "View All Insurance",
     products: [
       {

@@ -389,7 +389,7 @@ export default function Navbar() {
                     : buildLoginRedirectHref({ redirectTo: "/products" })
                 }
                 onClick={() => setMenuOpen(false)}
-                className="rounded-full bg-[#12b76a] px-4 py-3 text-center text-[13px] font-semibold text-white no-underline"
+                className="rounded-full bg-[#075cde] px-4 py-3 text-center text-[13px] font-semibold text-white no-underline"
               >
                 Apply Now
               </Link>
@@ -636,8 +636,8 @@ function AuthButton({
         onClick={onClick}
         className={
           mobile
-            ? "rounded-full border border-[#12b76a] px-4 py-3 text-center text-[13px] font-semibold text-[#0f5132] no-underline"
-            : "inline-flex h-10 items-center gap-2 rounded-full border border-[#12b76a] px-4 text-sm font-medium text-[#0f5132] no-underline"
+            ? "rounded-full border border-[#075cde] px-4 py-3 text-center text-[13px] font-semibold text-[#075cde] no-underline"
+            : "inline-flex h-10 items-center gap-2 rounded-full border border-[#075cde] px-4 text-sm font-medium text-[#075cde] no-underline"
         }
       >
         <span className="inline-flex items-center justify-center gap-2">

@@ -1,9 +1,53 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
+import Image from "next/image";
+import {
+  ArrowRight,
+  CalendarDays,
+  BookOpenText,
+  Clock3,
+  FileText,
+  Landmark,
+  UserRound,
+  CreditCard,
+  ShieldCheck,
+  type LucideIcon,
+} from "lucide-react";
 import { type BlogPost, type BlogAuthor } from "@/data/blogs";
-import { formatKnowledgeDate } from "@/services/websiteKnowledge";
+import { formatKnowledgeDate, stripHtml } from "@/services/websiteKnowledge";
+
+type BlogCardPost = BlogPost & {
+  coverImageUrl?: string;
+  htmlContent?: string;
+  summary?: string;
+};
+
+type CategoryMeta = {
+  icon: LucideIcon;
+};
+
+const categoryMeta: Record<string, CategoryMeta> = {
+  Loans: {
+    icon: Landmark,
+  },
+  "Credit Score": {
+    icon: ShieldCheck,
+  },
+  Insurance: {
+    icon: FileText,
+  },
+  "Credit Cards": {
+    icon: CreditCard,
+  },
+  "Financial Planning": {
+    icon: BookOpenText,
+  },
+};
+
+const fallbackCategoryMeta: CategoryMeta = {
+  icon: BookOpenText,
+};
 
 function normalizeAuthor(author: string | BlogAuthor): BlogAuthor {
   if (typeof author === "string") {
@@ -16,119 +60,177 @@ function normalizeAuthor(author: string | BlogAuthor): BlogAuthor {
   return author;
 }
 
-export function BlogCardSection({ posts }: { posts: BlogPost[] }) {
-  // Graceful fallback to map identical layout content fields from image_e41c5f.jpg
-  const placeholderPosts = Array(6)
-    .fill(null)
-    .map((_, i) => ({
-      slug: `sample-post-${i}`,
-      title: "10 Smart Ways to Manage Your Monthly Budget",
-      thumbnail: `/assets/blogs/blog${i}.png`, // Swappable with real images
-      readTime: "5 min read",
-      publishedAt: "Jan 15, 2026",
-      author: {
-        name:
-          i % 3 === 0
-            ? "Rahul Sharma"
-            : i % 3 === 1
-              ? "Shivani Sharma"
-              : "Shivkumar",
-        role: "Financial Analyst",
-        avatar: "/assets/images/user1.png",
-      },
-    }));
+function getCategoryMeta(category: string) {
+  return categoryMeta[category] || fallbackCategoryMeta;
+}
 
-  const displayPosts = posts && posts.length > 0 ? posts : placeholderPosts;
+function getCoverImage(post: BlogCardPost, index: number) {
+  return post.coverImageUrl || `/assets/blogs/blog${(index % 6) + 1}.png`;
+}
+
+function getExcerpt(post: BlogCardPost) {
+  const summary = post.summary || stripHtml(post.htmlContent || "");
+  return (
+    post.excerpt ||
+    summary ||
+    "Read practical guidance from Fintaraa experts to compare options, avoid common mistakes, and make confident financial decisions."
+  );
+}
+
+export function BlogCardSection({ posts }: { posts: BlogPost[] }) {
+  const placeholderPosts: BlogCardPost[] = Array.from({ length: 6 }).map(
+    (_, i) => {
+      const categories = [
+        "Loans",
+        "Credit Score",
+        "Insurance",
+        "Credit Cards",
+        "Financial Planning",
+        "Loans",
+      ] as const;
+
+      return {
+        slug: `sample-post-${i}`,
+        title: "10 Smart Ways to Manage Your Monthly Budget",
+        excerpt:
+          "Build a practical spending plan, track cash flow, and keep room for savings before the month gets tight.",
+        category: categories[i],
+        readTime: "5 min read",
+        publishedAt: "2026-01-15",
+        author: {
+          name:
+            i % 3 === 0
+              ? "Rahul Sharma"
+              : i % 3 === 1
+                ? "Shivani Sharma"
+                : "Shivkumar",
+          role: "Financial Analyst",
+          avatar: "/assets/images/user1.png",
+        },
+        tags: ["Budgeting", "Planning"],
+        accent: "#005ca8",
+        body: [],
+        coverImageUrl: `/assets/blogs/blog${(i % 6) + 1}.png`,
+      };
+    },
+  );
+
+  const displayPosts: BlogCardPost[] =
+    posts && posts.length > 0 ? (posts as BlogCardPost[]) : placeholderPosts;
 
   return (
-    <section className="bg-white px-4 py-8 font-sans antialiased sm:px-6 sm:py-10 md:px-8 md:py-12 lg:px-16">
+    <section className="bg-[#f8fbff] px-4 py-10 font-sans antialiased sm:px-6 sm:py-12 md:px-8 lg:px-16">
       <div className="mx-auto max-w-9xl">
-        {/* Section Header */}
-        <div className="mb-6 flex items-center justify-between border-b border-gray-50 pb-2 sm:mb-8">
-          <h2 className="text-xl font-bold tracking-tight text-[#1a1d25] sm:text-2xl md:text-[22px] lg:text-[24px]">
-            Latest Article
-          </h2>
-          <Link
-            href="/blog/all"
-            className="text-xs font-bold text-[#005ca8] hover:underline sm:text-sm md:text-[13.5px]"
-          >
-            View all
-          </Link>
+        <div className="mb-7 border-b border-[#dfeaf5] pb-5 text-center sm:mb-8">
+          <div>
+            <p className="inline-flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-[0.12em] text-[#195585]">
+              <BookOpenText className="h-3.5 w-3.5 text-[#075cde]" />
+              Knowledge hub
+            </p>
+            <h2 className="mt-3 text-[24px] font-extrabold leading-tight tracking-tight text-[#111625] sm:text-[28px]">
+              Latest Articles
+            </h2>
+          </div>
         </div>
 
-        {/* 3-Column Balanced Card Grid */}
-        <div className="grid gap-4 sm:gap-5 md:grid-cols-2 md:gap-6 lg:grid-cols-3">
+        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {displayPosts.map((post, index) => {
             const authorInfo = normalizeAuthor(post.author);
             const publishedDate = formatKnowledgeDate(post.publishedAt);
+            const excerpt = getExcerpt(post);
+            const cardCategory = post.category || "Financial Planning";
+            const meta = getCategoryMeta(cardCategory);
+            const CategoryIcon = meta.icon;
+
             return (
-              <article
+              <Link
                 key={post.slug || index}
-                className="flex flex-col overflow-hidden rounded-2xl border border-[#e5edf5] bg-white shadow-[0_4px_16px_rgba(22,34,50,0.01)] transition-shadow duration-300 hover:shadow-md"
+                href={`/blog/${post.slug}`}
+                className="group block h-full no-underline"
               >
-                {/* Card Thumbnail Container - responsive height */}
-                <div className="relative h-40 w-full bg-gray-50 sm:h-44 md:h-48 lg:h-52 xl:h-56">
-                  {/* Visual placeholder using standard Image component */}
-                  <Image
-                    src={(post as any).coverImageUrl || `/assets/blogs/blog${index + 1}.png`}
-                    alt={post.title}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
+                <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-[#dfeaf5] bg-white transition duration-300 group-hover:-translate-y-1 group-hover:border-[#bcd3e8]">
+                  <div className="relative h-56 w-full overflow-hidden bg-[#eaf2f9]">
+                    <Image
+                      src={getCoverImage(post, index)}
+                      alt={post.title}
+                      fill
+                      unoptimized
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-linear-to-t from-black/35 via-black/5 to-transparent" />
+                  </div>
 
-                {/* Card Body Content - responsive padding */}
-                <div className="flex flex-1 flex-col justify-between gap-4 p-4 sm:gap-5 sm:p-5 md:p-6">
-                  <div className="space-y-3 sm:space-y-4">
-                    {/* Article Title - responsive text size */}
-                    <h3 className="max-w-xs text-sm font-bold leading-snug tracking-tight text-[#000000] sm:text-base md:text-[16px] lg:text-lg xl:text-xl">
-                      {post.title}
-                    </h3>
+                  <div className="flex flex-1 flex-col justify-between gap-5 p-5 sm:p-6">
+                    <div>
+                      <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[12px] font-bold text-[#667085]">
+                        <span className="inline-flex items-center gap-1.5 text-[#075cde]">
+                          <CategoryIcon className="h-3.5 w-3.5" />
+                          {cardCategory}
+                        </span>
+                        <span className="inline-flex items-center gap-1.5">
+                          <CalendarDays className="h-3.5 w-3.5 text-[#195585]" />
+                          {publishedDate}
+                        </span>
+                        <span className="inline-flex items-center gap-1.5">
+                          <Clock3 className="h-3.5 w-3.5 text-[#12b76a]" />
+                          {post.readTime}
+                        </span>
+                      </div>
 
-                    {/* Author Profile & Time Matrix */}
-                    <div className="flex items-center justify-between gap-2 pt-1">
-                      {/* Left profile info */}
-                      <div className="flex items-center gap-2 sm:gap-2.5">
-                        <div className="relative h-7 w-7 overflow-hidden rounded-full border border-white bg-gray-100 sm:h-8 sm:w-8 md:h-9 md:w-9">
-                          <Image
-                            src={authorInfo.avatar}
-                            alt={authorInfo.name}
-                            fill
-                            className="object-cover"
-                          />
+                      <h3 className="mt-4 line-clamp-2 text-[19px] font-extrabold leading-tight tracking-tight text-[#111625] transition group-hover:text-[#005ca8]">
+                        {post.title}
+                      </h3>
+
+                      <p className="mt-3 line-clamp-3 text-[14px] font-medium leading-6 text-[#667085]">
+                        {excerpt}
+                      </p>
+                    </div>
+
+                    <div className="flex items-center justify-between gap-4 border-t border-[#edf2f7] pt-4">
+                      <div className="flex min-w-0 items-center gap-3">
+                        <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full border-2 border-white bg-[#eef6ff] shadow-[0_8px_18px_rgba(16,24,40,0.08)]">
+                          {authorInfo.avatar ? (
+                            <Image
+                              src={authorInfo.avatar}
+                              alt={authorInfo.name}
+                              fill
+                              unoptimized
+                              className="object-cover"
+                            />
+                          ) : (
+                            <UserRound className="m-2 h-6 w-6 text-[#195585]" />
+                          )}
                         </div>
-                        <div>
-                          <h4 className="text-[11px] font-bold leading-none text-[#000000] sm:text-xs md:text-sm">
-                            {authorInfo.name}
-                          </h4>
-                          <p className="mt-0.5 text-[9px] font-medium text-[#93a2b2] sm:mt-1 sm:text-[10px] md:text-xs">
+                        <div className="min-w-0">
+                          <p className="truncate text-[12px] font-bold uppercase tracking-[0.08em] text-[#98a2b3]">
+                            By {authorInfo.name}
+                          </p>
+                          <p className="mt-0.5 truncate text-[13px] font-bold text-[#111625]">
                             {authorInfo.role}
                           </p>
                         </div>
                       </div>
 
-                      {/* Right timestamp meta block - responsive text */}
-                      <div className="flex shrink-0 flex-col items-end gap-1 whitespace-nowrap text-right text-[10px] font-medium leading-tight text-[#93a2b2] sm:text-[11px] md:text-xs lg:text-sm">
-                        <span>{post.readTime}</span>
-                        <span>{publishedDate}</span>
-                      </div>
+                      <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#005ca8] text-white transition group-hover:translate-x-1 group-hover:bg-[#064cb8]">
+                        <ArrowRight className="h-4 w-4" />
+                      </span>
                     </div>
                   </div>
-
-                  {/* Card Action Interactive Footer */}
-                  <div className="pt-1 sm:pt-2">
-                    <Link
-                      href={`/blog/${post.slug}`}
-                      className="inline-flex h-8 items-center justify-center gap-1.5 rounded-lg bg-[#005ca8] px-4 text-[11px] font-bold text-white no-underline transition-colors hover:bg-[#004b87] sm:h-9 sm:gap-2 sm:px-5 sm:text-xs md:text-[13px] lg:text-sm"
-                    >
-                      <span>Read more</span>
-                      <span className="mt-0.5 text-[12px] leading-none sm:text-sm md:text-[14px]">→</span>
-                    </Link>
-                  </div>
-                </div>
-              </article>
+                </article>
+              </Link>
             );
           })}
+        </div>
+
+        <div className="mt-8 flex justify-center">
+          <Link
+            href="/blog/all"
+            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#075cde] px-6 text-[14px] font-bold text-white no-underline transition hover:bg-[#064cb8]"
+          >
+            View all
+            <ArrowRight className="h-4 w-4" />
+          </Link>
         </div>
       </div>
     </section>

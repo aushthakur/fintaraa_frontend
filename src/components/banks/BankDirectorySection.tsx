@@ -28,7 +28,7 @@ export function BankDirectorySection({
           </div>
           <Link
             href="/banks"
-            className="inline-flex h-11 items-center gap-2 rounded-full bg-[#12b76a] px-5 text-[13px] font-extrabold text-white no-underline"
+            className="inline-flex h-11 items-center gap-2 rounded-full bg-[#075cde] px-5 text-[13px] font-extrabold text-white no-underline"
           >
             View bank pages
             <ArrowRight className="h-4 w-4" />
@@ -98,7 +98,7 @@ export function BankDirectorySection({
                 </Link>
                 <Link
                   href={`/banks/${bank.slug}/credit-card`}
-                  className="inline-flex h-10 items-center justify-center gap-1 rounded-full bg-[#12b76a] text-[12px] font-extrabold text-white no-underline"
+                  className="inline-flex h-10 items-center justify-center gap-1 rounded-full bg-[#075cde] text-[12px] font-extrabold text-white no-underline"
                 >
                   <CreditCard className="h-3.5 w-3.5" />
                   Cards

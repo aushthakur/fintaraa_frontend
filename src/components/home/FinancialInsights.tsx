@@ -8,6 +8,7 @@ import {
   ChevronLeft,
   CalendarDays,
   ChevronRight,
+  Tag,
 } from "lucide-react";
 import { A11y, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -56,13 +57,14 @@ function InsightCard({ post }: { post: BlogPost }) {
               {post.tags.slice(0, 2).map((tag) => (
                 <span
                   key={tag}
-                  className="rounded-full bg-[#eef8ff] px-3 py-1 text-[11px] font-extrabold text-[#195585]"
+                  className="inline-flex items-center gap-1.5 text-[11px] font-extrabold text-[#195585]"
                 >
+                  <Tag className="h-3.5 w-3.5" />
                   {tag}
                 </span>
               ))}
             </div>
-            <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#195585] text-white transition group-hover:translate-x-1 group-hover:bg-[#12b76a]">
+            <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#195585] text-white transition group-hover:translate-x-1 group-hover:bg-[#064cb8]">
               <ArrowRight className="h-4 w-4" />
             </span>
           </div>
@@ -80,10 +82,10 @@ export function FinancialInsights() {
       <div className="mx-auto max-w-9xl">
         <div className="mb-8 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
           <div>
-            <div className="inline-flex items-center gap-2 rounded-full bg-[#eef8ff] px-4 py-2 text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#195585]">
-              <Newspaper className="h-4 w-4 text-[#12b76a]" />
+            <p className="inline-flex items-center gap-2 text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#195585]">
+              <Newspaper className="h-4 w-4 text-[#075cde]" />
               Financial Insights
-            </div>
+            </p>
             <h2 className="mt-4 text-[32px] font-extrabold leading-tight text-[#07162d] md:text-[42px]">
               Latest guides for smarter money decisions
             </h2>
@@ -108,12 +110,6 @@ export function FinancialInsights() {
             >
               <ChevronRight className="h-5 w-5" />
             </button>
-            <Link
-              href="/blog"
-              className="hidden items-center gap-2 rounded-full bg-[#195585] px-5 py-3 text-[13px] font-extrabold text-white no-underline shadow-[0_14px_32px_rgba(25,85,133,0.18)] transition hover:-translate-y-0.5 hover:bg-[#12446c] md:inline-flex"
-            >
-              View all <ArrowRight className="h-4 w-4" />
-            </Link>
           </div>
         </div>
 
@@ -152,7 +148,7 @@ export function FinancialInsights() {
 
         <Link
           href="/blog"
-          className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#195585] px-5 py-3 text-[13px] font-extrabold text-white no-underline shadow-[0_14px_32px_rgba(25,85,133,0.18)] md:hidden"
+          className="mx-auto mt-6 flex w-fit items-center gap-2 rounded-xl bg-[#075cde] px-6 py-3 text-[13px] font-extrabold text-white no-underline transition hover:bg-[#064cb8]"
         >
           View all blogs <ArrowRight className="h-4 w-4" />
         </Link>

@@ -93,7 +93,7 @@ export function HomeLoanOffers() {
                 onClick={() => setActiveTab(tab)}
                 className={`shrink-0 rounded-xl border px-5 py-2.5 text-[13px] font-semibold transition-all ${
                   isSelected
-                    ? "border-[#12b76a] bg-[#12b76a] text-white font-bold"
+                    ? "border-[#075cde] bg-[#075cde] text-white font-bold"
                     : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
                 }`}
               >
@@ -162,7 +162,7 @@ export function HomeLoanOffers() {
         <div className="mt-10 flex justify-center">
           <Link
             href={`/products/${slugifyProduct(activeTab)}`}
-            className="inline-flex h-12 items-center justify-center rounded-full bg-[#12b76a] px-10 text-[14px] font-bold text-white shadow-sm transition-all hover:bg-[#0fa35e] hover:-translate-y-1 active:translate-y-0"
+            className="inline-flex h-12 items-center justify-center rounded-full bg-[#075cde] px-10 text-[14px] font-bold text-white shadow-sm transition-all hover:bg-[#064cb8] hover:-translate-y-1 active:translate-y-0"
           >
             Find the best rate for you!
           </Link>

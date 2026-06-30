@@ -147,6 +147,17 @@ select:disabled {
   .max-w-9xl {
     max-width: 100rem; /* 1600px */
   }
+
+  .scrollbar-none,
+  .scrollbar-hide {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .scrollbar-none::-webkit-scrollbar,
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 @keyframes marquee {
@@ -236,4 +247,25 @@ select:disabled {
     linear-gradient(rgba(25, 85, 133, 0.22) 1px, transparent 1px),
     linear-gradient(90deg, rgba(25, 85, 133, 0.22) 1px, transparent 1px);
   background-size: 44px 44px;
+}
+
+@keyframes heroCopyIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-copy-transition {
+  animation: heroCopyIn 520ms ease both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-copy-transition {
+    animation: none;
+  }
 }

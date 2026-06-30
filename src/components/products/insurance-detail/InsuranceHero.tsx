@@ -208,7 +208,7 @@ export function InsuranceHero({ page }: { page: InsuranceSeoPageData }) {
               <AuthRedirectLink
                 href={applyHref}
                 productSlug={page.insuranceTypeSlug}
-                className="mt-1 inline-flex h-12 items-center justify-center rounded-full border border-[#12b76a] bg-white px-5 text-[14px] font-extrabold text-[#12b76a] no-underline shadow-[0_10px_24px_rgba(18,183,106,0.14)] transition hover:bg-[#f3fbf6]"
+                className="mt-1 inline-flex h-12 items-center justify-center rounded-full border border-[#075cde] bg-white px-5 text-[14px] font-extrabold text-[#075cde] no-underline shadow-[0_10px_24px_rgba(7,92,222,0.14)] transition hover:bg-[#eef6ff]"
               >
                 Compare detailed plans
               </AuthRedirectLink>
