@@ -64,6 +64,8 @@ export const productHref = (title: string) => {
   if (slug === "gst-registration") return "/gst-registration";
   if (slug === "company-registration") return "/company-registration";
   if (slug === "roc-filing") return "/company-registration";
+  if (slug === "project-report" || slug === "tax-compliances")
+    return "/contact-us";
   if (slug === "refer-and-earn" || slug === "refer-earn")
     return "/refer-and-earn";
   if (slug === "offers" || slug === "offers-and-rewards") return "/offers";
@@ -75,9 +77,19 @@ export const productHref = (title: string) => {
   if (slug === "become-dsa") return "/become-dsa";
   if (slug === "contact-us") return "/contact-us";
   if (slug === "support") return "/support";
-  if (slug === "blog" || slug === "blog-and-articles" || slug === "articles")
+  if (
+    slug === "blog" ||
+    slug === "blogs" ||
+    slug === "blog-and-articles" ||
+    slug === "articles"
+  )
     return "/blog";
-  if (slug === "press-release" || slug === "press") return "/press-release";
+  if (
+    slug === "press-release" ||
+    slug === "media-and-press-release" ||
+    slug === "press"
+  )
+    return "/press-release";
   if (slug === "site-map" || slug === "sitemap") return "/sitemap";
   if (slug === "feedback" || slug === "subscribe") return "/contact-us";
   if (slug === "awards-and-recognitions") return "/about-us";

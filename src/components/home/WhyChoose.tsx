@@ -1,13 +1,11 @@
-import Image from "next/image";
 import {
   BadgeCheck,
   Clock3,
-  FileCheck2,
   Headphones,
   IndianRupee,
-  LockKeyhole,
   RefreshCw,
   ShieldCheck,
+  Star,
   Tags,
   ThumbsUp,
   UserCheck,
@@ -65,23 +63,34 @@ const stats = [
   { value: "4.8/5", label: "Customer rating", icon: ThumbsUp },
 ];
 
+const miniTestimonials = [
+  {
+    name: "Neha V.",
+    text: "Eligibility was clear and the team helped me compare my options quickly.",
+  },
+  {
+    name: "Amit J.",
+    text: "The document checklist and callback support kept the application moving.",
+  },
+];
+
 export function WhyChoose() {
   return (
-    <section className="bg-white px-4 py-12 md:px-6 lg:px-8">
-      <div className="mx-auto max-w-9xl overflow-hidden rounded-2xl bg-[#f7fbff] p-4 sm:p-6 lg:p-8">
-        <div className="grid gap-8 lg:grid-cols-[1fr_360px] lg:items-start">
+    <section className="bg-white px-4 py-10 md:px-6 lg:px-8">
+      <div className="mx-auto max-w-9xl overflow-hidden rounded-2xl bg-[#f7fbff] p-4 sm:p-6">
+        <div className="grid gap-6 lg:grid-cols-[1fr_300px] lg:items-start">
           <div>
             <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-[#075cde]">
               The Fintaraa advantage
             </p>
-            <h2 className="mt-3 max-w-3xl text-[30px] font-bold leading-tight tracking-tight text-[#07162d] sm:text-[40px]">
+            <h2 className="mt-3 max-w-3xl text-[28px] font-bold leading-tight tracking-tight text-[#07162d] sm:text-[34px]">
               Why Choose <span className="text-[#075cde]">Fintaraa?</span>
             </h2>
-            <p className="mt-4 max-w-2xl text-[15px] font-medium leading-7 text-[#61748f]">
+            <p className="mt-3 max-w-2xl text-[14px] font-medium leading-6 text-[#61748f]">
               We simplify your loan journey with expert guidance, transparent
               processes and complete peace of mind.
             </p>
-            <div className="mt-5 flex flex-wrap gap-2">
+            <div className="mt-4 flex flex-wrap gap-3">
               {[
                 "Trusted by 2M+ customers",
                 "RBI compliant & secure",
@@ -98,11 +107,11 @@ export function WhyChoose() {
             </div>
           </div>
 
-          <div className="hidden rounded-2xl bg-white p-8 text-center lg:block">
-            <div className="mx-auto flex h-32 w-32 items-center justify-center rounded-full bg-[#e9f2ff] text-[#075cde]">
-              <ShieldCheck className="h-16 w-16" />
+          <div className="hidden rounded-2xl bg-white p-5 lg:block">
+            <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-[#e9f2ff] text-[#075cde]">
+              <ShieldCheck className="h-10 w-10" />
             </div>
-            <div className="mt-5 grid grid-cols-2 gap-3 text-[12px] font-semibold text-[#61748f]">
+            <div className="mt-4 grid grid-cols-2 gap-2 text-[12px] font-semibold text-[#61748f]">
               {["Regulated", "People first", "Transparent", "Secure"].map(
                 (item) => (
                   <span key={item} className="rounded-xl bg-white px-3 py-2">
@@ -114,49 +123,36 @@ export function WhyChoose() {
           </div>
         </div>
 
-        <div className="mt-9 grid gap-4">
-          {reasons.map(({ number, title, text, points, icon: Icon, image }) => (
+        <div className="mt-7 grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+          {reasons.map(({ number, title, text, points, icon: Icon }) => (
             <article
               key={title}
-              className="grid overflow-hidden rounded-xl border border-[#e2edf8] bg-white md:grid-cols-[96px_1fr_300px]"
+              className="rounded-xl border border-[#e2edf8] bg-white p-4"
             >
-              <div className="flex items-center justify-center border-b border-[#eef4fb] bg-white p-5 md:border-b-0 md:border-r">
-                <span className="text-[26px] font-bold text-[#075cde]">
+              <div className="flex items-start justify-between gap-4">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#e9f2ff] text-[#075cde]">
+                  <Icon className="h-6 w-6" />
+                </span>
+                <span className="text-[20px] font-bold text-[#075cde]">
                   {number}
                 </span>
               </div>
-              <div className="flex items-start gap-4 p-5 sm:p-6">
-                <span className="flex h-13 w-13 shrink-0 items-center justify-center rounded-2xl bg-[#e9f2ff] text-[#075cde]">
-                  <Icon className="h-6 w-6" />
-                </span>
-                <div>
-                  <h3 className="text-[17px] font-bold text-[#07162d]">
-                    {title}
-                  </h3>
-                  <p className="mt-2 max-w-2xl text-[13px] font-semibold leading-6 text-[#61748f]">
-                    {text}
-                  </p>
-                  <div className="mt-3 grid gap-2 sm:grid-cols-2">
-                    {points.map((point) => (
-                      <span
-                        key={point}
-                        className="inline-flex items-center gap-2 text-[12px] font-semibold text-[#0f7a4d]"
-                      >
-                        <BadgeCheck className="h-4 w-4" />
-                        {point}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-              <div className="relative min-h-[160px] bg-white">
-                <Image
-                  src={image}
-                  alt={title}
-                  fill
-                  className="object-contain p-5"
-                  unoptimized
-                />
+              <h3 className="mt-4 text-[15px] font-bold leading-snug text-[#07162d]">
+                {title}
+              </h3>
+              <p className="mt-2 line-clamp-3 text-[12px] font-semibold leading-5 text-[#61748f]">
+                {text}
+              </p>
+              <div className="mt-3 grid gap-2">
+                {points.slice(0, 1).map((point) => (
+                  <span
+                    key={point}
+                    className="inline-flex items-center gap-2 text-[12px] font-semibold text-[#0f7a4d]"
+                  >
+                    <BadgeCheck className="h-4 w-4" />
+                    {point}
+                  </span>
+                ))}
               </div>
             </article>
           ))}
@@ -176,34 +172,22 @@ export function WhyChoose() {
           ))}
         </div>
 
-        <div className="mt-6 rounded-xl bg-white p-5">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-            <div className="flex items-start gap-3">
-              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#e9f2ff] text-[#075cde]">
-                <LockKeyhole className="h-6 w-6" />
-              </span>
-              <div>
-                <p className="text-[15px] font-bold text-[#07162d]">
-                  Our Promise to You: Secure. Reliable. Always.
-                </p>
-                <p className="mt-1 max-w-2xl text-[13px] font-semibold leading-6 text-[#61748f]">
-                  We show the best options for you, protect your privacy, and
-                  support you when you need us.
-                </p>
+        <div className="mt-6 grid gap-3 md:grid-cols-2">
+          {miniTestimonials.map((item) => (
+            <div key={item.name} className="rounded-xl bg-white p-4">
+              <div className="flex items-center gap-2 text-[#f59e0b]">
+                {Array.from({ length: 5 }).map((_, index) => (
+                  <Star key={index} className="h-3.5 w-3.5 fill-current" />
+                ))}
               </div>
+              <p className="mt-3 text-[13px] font-semibold leading-6 text-[#61748f]">
+                &quot;{item.text}&quot;
+              </p>
+              <p className="mt-2 text-[12px] font-bold text-[#07162d]">
+                {item.name}
+              </p>
             </div>
-            <div className="grid gap-2 sm:grid-cols-3">
-              {["No spam", "Unbiased options", "Always here"].map((item) => (
-                <span
-                  key={item}
-                  className="inline-flex items-center gap-2 text-[12px] font-semibold text-[#075cde]"
-                >
-                  <FileCheck2 className="h-4 w-4" />
-                  {item}
-                </span>
-              ))}
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </section>

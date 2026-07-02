@@ -244,11 +244,16 @@ const productMeta: Record<
     hint: "Stay compliant with annual filings and reminders.",
     cta: "Check compliance",
   },
-  // "Project Report": {
-  //   image: "/assets/blogs/blog-feature.png",
-  //   hint: "Get project reports for funding and planning.",
-  //   cta: "Create report",
-  // },
+  "Project Report": {
+    image: "/assets/images/blog-feature.png",
+    hint: "Get project reports for funding, tenders and planning.",
+    cta: "Request report",
+  },
+  "Tax Compliances": {
+    image: "/assets/services/itr-deadline-1.png",
+    hint: "Manage notices, filings and compliance deadlines with experts.",
+    cta: "Request support",
+  },
   "Company Registration": {
     image: "/assets/contact/contact-hero.png",
     hint: "Register your company online and move forward.",
@@ -260,7 +265,6 @@ const sectionEyebrow: Record<string, string> = {
   "Explore Insurance Plans": "Secure today, protected tomorrow",
   "Explore Credit Card Options": "Smart choices, bigger rewards",
   "Other financial services": "More services, more convenience",
-  "Explore Loan Options": "Choose by rate, eligibility and speed",
 };
 
 const isBankSection = (title: string) => title.includes("Get Instant Loan");
@@ -272,43 +276,63 @@ const isImageCategory = (title: string) =>
 function SectionTop({
   title,
   subtitle,
+  ctaLabel,
+  href,
   hero = false,
 }: {
   title: string;
   subtitle?: string;
+  ctaLabel?: string;
+  href?: string;
   hero?: boolean;
 }) {
+  const hideSubtitle =
+    isBankSection(title) ||
+    title === "Explore Loan Options" ||
+    title === "Explore Insurance Plans" ||
+    title === "Explore Credit Card Options";
+
   return (
     <div className={hero ? "mb-0 rounded-2xl bg-white p-5 sm:p-6" : "mb-5"}>
-      <div>
-        {sectionEyebrow[title] ? (
-          <p className="mb-2 inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-wide text-[#075cde]">
-            <Sparkles className="h-3.5 w-3.5" />
-            {sectionEyebrow[title]}
-          </p>
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          {sectionEyebrow[title] ? (
+            <p className="mb-2 inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-wide text-[#075cde]">
+              <Sparkles className="h-3.5 w-3.5" />
+              {sectionEyebrow[title]}
+            </p>
+          ) : null}
+          <h2
+            className={
+              hero
+                ? "max-w-3xl text-[28px] font-bold leading-tight tracking-tight text-[#07162d] sm:text-[38px]"
+                : "text-[24px] font-bold leading-tight tracking-tight text-[#07162d] sm:text-[30px]"
+            }
+          >
+            {isBankSection(title) ? (
+              <>
+                Get Instant Loan in 5 Minutes from{" "}
+                <span className="text-[#075cde]">30+ Trusted Banks & NBFCs</span>
+              </>
+            ) : (
+              title
+            )}
+          </h2>
+          {!hideSubtitle && (subtitle || title === "Other financial services") ? (
+            <p className="mt-2 max-w-2xl text-[14px] font-semibold leading-6 text-[#5f7189]">
+              {subtitle || "Explore useful services for business, tax, and compliance needs."}
+            </p>
+          ) : null}
+        </div>
+        {ctaLabel && href ? (
+          <Link
+            href={href}
+            className="inline-flex h-10 w-fit shrink-0 items-center justify-center gap-2 rounded-xl bg-[#075cde] px-5 text-[13px] font-bold text-white no-underline transition hover:bg-[#064cb8]"
+          >
+            {ctaLabel}
+            <ArrowRight className="h-4 w-4" />
+          </Link>
         ) : null}
-        <h2
-          className={
-            hero
-              ? "max-w-3xl text-[28px] font-bold leading-tight tracking-tight text-[#07162d] sm:text-[38px]"
-              : "text-[24px] font-bold leading-tight tracking-tight text-[#07162d] sm:text-[30px]"
-          }
-        >
-          {isBankSection(title) ? (
-            <>
-              Get Instant Loan from{" "}
-              <span className="text-[#075cde]">30+ Trusted Banks & NBFCs</span>
-            </>
-          ) : (
-            title
-          )}
-        </h2>
-        <p className="mt-2 max-w-2xl text-[14px] font-semibold leading-6 text-[#5f7189]">
-          {isBankSection(title)
-            ? "One application. Multiple offers. Best rates. 100% digital process."
-            : subtitle ||
-              "Compare options faster with useful details before you click."}
-        </p>
       </div>
     </div>
   );
@@ -383,7 +407,7 @@ function BankOfferCard({
             </span>
           </div>
           <div className="space-y-1">
-            {[details.perk, details.amount, details.speed].map((item) => (
+            {[details.perk, details.amount].map((item) => (
               <div key={item} className="flex items-center gap-2">
                 <BadgeCheck className="h-4 w-4 shrink-0 text-[#0f7a4d]" />
                 <span className="text-xs">{item}</span>
@@ -476,8 +500,8 @@ function ImageProductCard({ product }: { product: ProductItem }) {
           />
         ) : null}
         <div className="absolute inset-0 bg-linear-to-t from-[#07162d]/60 via-transparent to-transparent" />
-        <span className="absolute left-3 top-3 inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wide text-white">
-          <Sparkles className="h-3.5 w-3.5 text-[#8fc7ff]" />
+        <span className="absolute left-3 top-3 inline-flex max-w-[calc(100%-1.5rem)] items-center gap-1.5 rounded-full border border-white/35 bg-[#07162d]/85 px-2.5 py-1.5 text-[10px] font-bold uppercase tracking-wide text-white shadow-lg backdrop-blur-md">
+          <Sparkles className="h-3.5 w-3.5 shrink-0 text-[#8fc7ff]" />
           {meta.badge || "Featured"}
         </span>
         <span className="absolute bottom-3 left-3 flex h-10 w-10 items-center justify-center rounded-xl bg-white text-[#075cde]">
@@ -491,7 +515,7 @@ function ImageProductCard({ product }: { product: ProductItem }) {
       <div className="flex flex-1 flex-col p-4">
         <p className="mb-2 inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wide text-[#075cde]">
           <CheckCircle2 className="h-3.5 w-3.5" />
-          Curated option
+          {meta.badge || "Featured"}
         </p>
         <h3 className="text-[16px] font-bold leading-snug text-[#07162d]">
           {product.title}
@@ -572,17 +596,6 @@ export function ProductExplorer({
             const href = (section as any).ctaHref || "/products";
             const ctaLabel = (section as any).cta || "View All";
             const products = section.products as ProductItem[];
-            const sectionCta = (
-              <div className="mt-6 flex w-full justify-center xl:mt-7">
-                <Link
-                  href={href}
-                  className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#075cde] px-6 text-[14px] font-bold text-white no-underline transition hover:bg-[#064cb8]"
-                >
-                  {ctaLabel}
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </div>
-            );
 
             return (
               <div
@@ -596,6 +609,8 @@ export function ProductExplorer({
                 <SectionTop
                   title={title}
                   subtitle={(section as any).subtitle}
+                  ctaLabel={ctaLabel}
+                  href={href}
                 />
 
                 {bankSection ? (
@@ -609,7 +624,6 @@ export function ProductExplorer({
                         />
                       ))}
                     </ResponsiveSevenRow>
-                    {sectionCta}
                   </div>
                 ) : otherServices ? (
                   <>
@@ -621,27 +635,6 @@ export function ProductExplorer({
                         />
                       ))}
                     </div>
-                    <div className="mt-5 grid gap-4 border-t border-[#dceaf7] pt-5 sm:grid-cols-4">
-                      {[
-                        ["100% Secure", "Your data is safe with us"],
-                        ["Quick & Easy", "Simple process, faster results"],
-                        ["Expert Support", "Get help from specialists"],
-                        ["Trusted by Millions", "Join satisfied customers"],
-                      ].map(([label, text]) => (
-                        <div key={label} className="flex items-start gap-3">
-                          <BadgeCheck className="mt-0.5 h-4 w-4 shrink-0 text-[#075cde]" />
-                          <div>
-                            <p className="text-[13px] font-bold text-[#07162d]">
-                              {label}
-                            </p>
-                            <p className="mt-1 text-[12px] font-semibold text-[#61748f]">
-                              {text}
-                            </p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                    {sectionCta}
                   </>
                 ) : imageCategory ? (
                   <>
@@ -653,7 +646,6 @@ export function ProductExplorer({
                         />
                       ))}
                     </ResponsiveSevenRow>
-                    {sectionCta}
                   </>
                 ) : (
                   <>
@@ -665,7 +657,6 @@ export function ProductExplorer({
                         />
                       ))}
                     </ResponsiveSevenRow>
-                    {sectionCta}
                   </>
                 )}
               </div>

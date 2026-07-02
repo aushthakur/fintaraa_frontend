@@ -27,6 +27,7 @@ import {
   fetchHomeBanners,
   type HomeBanner,
 } from "@/services/homeBanners";
+import { LoanExpertButton } from "./LoanExpertPopup";
 
 const trustStats = [
   { value: "2M+", label: "customers", icon: UsersRound },
@@ -186,7 +187,7 @@ export function HeroSection() {
     selectedProduct === "Loan" ? "Check Offers" : "Continue";
 
   return (
-    <section className="relative h-[calc(100svh-6.75rem)] overflow-hidden bg-[#061a3d] px-4 py-5 text-white md:px-6 lg:px-8 lg:py-0">
+    <section className="relative min-h-[calc(100svh-6.75rem)] overflow-hidden bg-[#061a3d] px-4 py-5 text-white md:px-6 lg:min-h-[640px] lg:px-8 lg:py-8">
       <div className="absolute inset-0">
         {banners.map((banner, index) => (
           <Image
@@ -206,9 +207,9 @@ export function HeroSection() {
         <div className="absolute inset-x-0 bottom-0 h-28 bg-linear-to-t from-[#061a3d]/80 to-transparent" />
       </div>
 
-      <div className="relative z-10 mx-auto flex h-full max-w-9xl items-center py-6 lg:py-0">
-        <div className="grid w-full items-center gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(340px,400px)] xl:grid-cols-[minmax(0,1fr)_minmax(360px,420px)]">
-          <div className="max-w-3xl">
+      <div className="relative z-10 mx-auto flex min-h-[calc(100svh-8rem)] w-full max-w-[100vw] items-center py-6 lg:min-h-[580px] lg:max-w-9xl lg:py-0">
+        <div className="grid w-full min-w-0 max-w-full items-center gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(340px,400px)] xl:grid-cols-[minmax(0,1fr)_minmax(360px,420px)]">
+          <div className="mobile-hero-copy min-w-0 max-w-[calc(100vw-2rem)] lg:max-w-3xl">
             <div className="hidden flex-wrap gap-4 sm:flex">
               {proofItems.map((chip) => (
                 <span
@@ -240,7 +241,7 @@ export function HeroSection() {
                 ) : null}
               </h1>
 
-              <p className="mt-4 max-w-2xl text-[15px] font-medium leading-7 text-white/86 sm:text-[16px]">
+              <p className="mt-4 max-w-2xl break-words text-[15px] font-medium leading-7 text-white/86 sm:text-[16px]">
                 {activeDescription}
               </p>
             </div>
@@ -274,6 +275,7 @@ export function HeroSection() {
                 View all products
                 <ArrowRight className="h-4 w-4" />
               </Link>
+              <LoanExpertButton className="bg-white/12 px-4 text-white hover:bg-white/18" />
             </div>
 
             <div className="mt-6 hidden max-w-2xl gap-2 sm:grid sm:grid-cols-3">
@@ -296,7 +298,7 @@ export function HeroSection() {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-white/18 bg-white/94 p-4 text-[#07162d] shadow-[0_22px_64px_rgba(0,0,0,0.2)] backdrop-blur-xl sm:p-5 lg:justify-self-end">
+          <div className="mobile-hero-card w-full min-w-0 max-w-[calc(100vw-2rem)] overflow-hidden rounded-2xl border border-white/18 bg-white/94 p-4 text-[#07162d] shadow-[0_22px_64px_rgba(0,0,0,0.2)] backdrop-blur-xl sm:p-5 lg:max-w-none lg:justify-self-end">
             <div className="flex items-center justify-between gap-3">
               <div>
                 <p className="text-[19px] font-bold tracking-tight">
@@ -321,25 +323,27 @@ export function HeroSection() {
                       key={label}
                       type="button"
                       onClick={() => setSelectedProduct(label)}
-                      className={`flex h-10 items-center justify-center gap-1.5 border-b-2 text-[11px] font-bold transition ${
-                        active
-                          ? "border-[#075cde] text-[#075cde]"
-                          : "border-transparent text-[#344054] hover:text-[#075cde]"
-                      }`}
-                    >
-                      <Icon className="h-3.5 w-3.5" />
-                      {label}
+                    className={`flex h-10 min-w-0 items-center justify-center gap-1 border-b-2 px-1 text-[10px] font-bold transition sm:gap-1.5 sm:text-[11px] ${
+                      active
+                        ? "border-[#075cde] text-[#075cde]"
+                        : "border-transparent text-[#344054] hover:text-[#075cde]"
+                    }`}
+                  >
+                      <Icon className="h-3.5 w-3.5 shrink-0" />
+                      <span className="truncate">
+                        {label === "Credit Card" ? "Card" : label}
+                      </span>
                     </button>
                   );
                 })}
               </div>
 
               <div>
-                <div className="flex items-baseline justify-between gap-4">
+                <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
                   <p className="text-[11px] font-bold text-[#344054]">
                     Requirement Amount
                   </p>
-                  <p className="text-[22px] font-bold tracking-tight text-[#07162d]">
+                  <p className="text-[20px] font-bold tracking-tight text-[#07162d] sm:text-[22px]">
                     Rs. {formatAmount(amount)}
                   </p>
                 </div>
@@ -356,13 +360,13 @@ export function HeroSection() {
                   }}
                   aria-label="Requirement amount"
                 />
-                <div className="mt-2 grid grid-cols-5 gap-1.5">
+                <div className="mt-2 grid grid-cols-2 gap-1.5 sm:grid-cols-5">
                   {amountOptions.map((item) => (
                     <button
                       key={item.label}
                       type="button"
                       onClick={() => setAmount(item.value)}
-                      className={`h-8 rounded-lg border text-[10px] font-bold transition ${
+                      className={`min-w-0 truncate h-8 rounded-lg border px-1 text-[10px] font-bold transition ${
                         amount === item.value
                           ? "border-[#075cde] bg-[#075cde] text-white"
                           : "border-[#d7e5f3] bg-white text-[#344054] hover:border-[#075cde]"

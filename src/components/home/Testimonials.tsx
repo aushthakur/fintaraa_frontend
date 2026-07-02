@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { motion, useMotionValue, useAnimationFrame } from "framer-motion";
 import { ArrowRight, Star } from "lucide-react";
@@ -168,9 +167,18 @@ export function Testimonials() {
     return (
       <section className="overflow-hidden select-none bg-white px-4 py-16 md:px-6 lg:px-8">
         <div className="mx-auto max-w-9xl">
-          <h2 className="text-center text-[26px] font-semibold tracking-tight text-[#111625] md:text-[32px]">
-            What Our Clients Say
-          </h2>
+          <div className="flex items-center justify-between gap-4">
+            <h2 className="text-[26px] font-semibold tracking-tight text-[#111625] md:text-[32px]">
+              What Our Clients Say
+            </h2>
+            <Link
+              href="/testimonials"
+              className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-xl bg-[#075cde] px-5 text-[13px] font-semibold text-white no-underline transition hover:bg-[#064cb8]"
+            >
+              View All
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
           <div className="mt-12 flex gap-6 overflow-hidden">
             {Array.from({ length: 4 }).map((_, index) => (
               <div key={index} className="h-52 w-77.5 shrink-0 animate-pulse rounded-xl bg-slate-100 sm:w-87.5 md:w-95" />
@@ -184,10 +192,17 @@ export function Testimonials() {
   return (
     <section className="bg-white px-4 py-16 md:px-6 lg:px-8 overflow-hidden select-none">
       <div className="mx-auto max-w-9xl">
-        <div className="text-center">
-          <h2 className="text-center text-[26px] font-semibold text-[#111625] md:text-[32px] tracking-tight">
+        <div className="flex items-center justify-between gap-4">
+          <h2 className="text-[26px] font-semibold text-[#111625] md:text-[32px] tracking-tight">
             What Our Clients Say
           </h2>
+          <Link
+            href="/testimonials"
+            className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-xl bg-[#075cde] px-5 text-[13px] font-semibold text-white no-underline transition hover:bg-[#064cb8]"
+          >
+            View All
+            <ArrowRight className="h-4 w-4" />
+          </Link>
         </div>
 
         {/* Mask Carousel Viewport Container Frame */}
@@ -221,38 +236,26 @@ export function Testimonials() {
                 className="w-80 shrink-0 rounded-xl border border-[#e2edf8] bg-white p-6 flex flex-col justify-start select-none sm:w-[380px] md:w-[420px]"
               >
                 {/* Meta Layout Row */}
-                <div className="flex items-center gap-4 pointer-events-none">
-                  <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-full border border-gray-50 bg-gray-50">
-                    <Image
-                      src={item.authorAvatarUrl || "/assets/images/user1.png"}
-                      alt={item.authorName || item.title}
-                      fill
-                      unoptimized
-                      draggable={false}
-                      className="object-cover select-none"
-                    />
-                  </div>
-
-                  <div className="flex flex-col">
+                <div className="flex items-start justify-between gap-4 pointer-events-none">
+                  <div className="min-w-0">
                     <h3 className="text-[16px] font-bold text-[#07162d] leading-tight">
                       {item.authorName || item.title}
                     </h3>
                     <p className="text-[12px] font-bold text-[#8090a4] mt-0.5">
                       {item.location}
                     </p>
-
-                    <div className="mt-1.5 flex items-center gap-0.5 text-orange-500">
-                      {Array.from({ length: 5 }).map((_, i) => (
-                        <Star
-                          key={i}
-                          className={`h-3.5 w-3.5 ${
-                            i < Math.floor(item.rating || 5)
-                              ? "fill-current stroke-current"
-                              : "stroke-current text-orange-200"
-                          }`}
-                        />
-                      ))}
-                    </div>
+                  </div>
+                  <div className="flex shrink-0 items-center gap-0.5 text-orange-500">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <Star
+                        key={i}
+                        className={`h-3.5 w-3.5 ${
+                          i < Math.floor(item.rating || 5)
+                            ? "fill-current stroke-current"
+                            : "stroke-current text-orange-200"
+                        }`}
+                      />
+                    ))}
                   </div>
                 </div>
 
@@ -276,16 +279,6 @@ export function Testimonials() {
               </article>
             ))}
           </motion.div>
-        </div>
-
-        <div className="mt-8 flex justify-center">
-          <Link
-            href="/testimonials"
-            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#075cde] px-6 text-[14px] font-semibold text-white no-underline transition hover:bg-[#064cb8]"
-          >
-            View All
-            <ArrowRight className="h-4 w-4" />
-          </Link>
         </div>
       </div>
     </section>

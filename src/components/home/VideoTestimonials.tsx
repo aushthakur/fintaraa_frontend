@@ -9,7 +9,15 @@ import {
   useAnimationFrame,
   AnimatePresence,
 } from "framer-motion";
-import { ArrowRight, MapPin, Play, Quote, ShieldCheck, Star, X } from "lucide-react";
+import {
+  ArrowRight,
+  MapPin,
+  Play,
+  Quote,
+  ShieldCheck,
+  Star,
+  X,
+} from "lucide-react";
 import {
   fetchWebsiteKnowledge,
   type WebsiteKnowledgeItem,
@@ -23,7 +31,8 @@ const videoData: WebsiteKnowledgeItem[] = [
     authorName: "Deepika Kumari",
     category: "Home Loan",
     location: "Delhi",
-    summary: "My ₹38L home loan options were compared clearly before I applied.",
+    summary:
+      "My ₹38L home loan options were compared clearly before I applied.",
     coverImageUrl: "/assets/images/testimonials/video-1.jpg",
     videoUrl:
       "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
@@ -47,7 +56,8 @@ const videoData: WebsiteKnowledgeItem[] = [
     authorName: "Neha & Rahul",
     category: "Home Loan",
     location: "Pune",
-    summary: "Eligibility, EMI and document requirements were clear from day one.",
+    summary:
+      "Eligibility, EMI and document requirements were clear from day one.",
     coverImageUrl: "/assets/images/testimonials/video-3.jpg",
     videoUrl:
       "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
@@ -64,7 +74,8 @@ const normaliseVideoItems = (data: WebsiteKnowledgeItem[]) => {
   const source = data.length ? data : videoData;
   return source.slice(0, 12).map((item, index) => ({
     ...item,
-    coverImageUrl: item.coverImageUrl || videoCovers[index % videoCovers.length],
+    coverImageUrl:
+      item.coverImageUrl || videoCovers[index % videoCovers.length],
   }));
 };
 
@@ -118,19 +129,23 @@ export function VideoTestimonials() {
   return (
     <section className="overflow-hidden select-none bg-white px-4 py-16 md:px-6 lg:px-8">
       <div className="mx-auto max-w-9xl">
-        <div className="mb-12">
+        <div className="mb-12 flex items-start justify-between gap-4">
           <div className="max-w-2xl">
-            <p className="inline-flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-[0.12em] text-[#075cde]">
-              <ShieldCheck className="h-3.5 w-3.5 text-[#075cde]" />
-              Customer stories
-            </p>
-            <h2 className="mt-3 text-[26px] font-extrabold tracking-tight text-[#111625] md:text-[32px]">
+            <h2 className="text-[26px] font-extrabold tracking-tight text-[#111625] md:text-[32px]">
               Video Testimonials
             </h2>
             <p className="mt-2 max-w-2xl text-[14px] font-semibold leading-6 text-[#667085]">
-              Real journeys from customers who compared loans, cards, and financial options with Fintaraa.
+              Real journeys from customers who compared loans, cards, and
+              financial options with Fintaraa.
             </p>
           </div>
+          <Link
+            href="/video-testimonials"
+            className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-xl bg-[#075cde] px-5 text-[13px] font-bold text-white no-underline transition hover:bg-[#064cb8]"
+          >
+            View All
+            <ArrowRight className="h-4 w-4" />
+          </Link>
         </div>
 
         {/* Carousel Viewport Box */}
@@ -181,7 +196,7 @@ export function VideoTestimonials() {
                     setIsPaused(true);
                     setSelectedVideoUrl(item.videoUrl || null);
                   }}
-                  className="group flex h-[410px] w-[19rem] shrink-0 flex-col overflow-hidden rounded-2xl border border-[#dfeaf5] bg-white text-left no-underline outline-none transition duration-300 hover:-translate-y-1 hover:border-[#bcd3e8] sm:w-[20.5rem] md:w-[23rem]"
+                  className="group flex h-90 w-76 shrink-0 flex-col overflow-hidden rounded-2xl border border-[#dfeaf5] bg-white text-left no-underline outline-none transition duration-300 hover:-translate-y-1 hover:border-[#bcd3e8] sm:w-[20.5rem] md:w-[23rem]"
                 >
                   <div className="pointer-events-none relative h-56 w-full overflow-hidden bg-slate-950">
                     <Image
@@ -238,34 +253,23 @@ export function VideoTestimonials() {
                       <p className="mt-3 line-clamp-3 text-[14px] font-semibold leading-6 text-[#667085]">
                         {item.summary ||
                           "A Fintaraa customer shares how comparison and assisted guidance helped them choose confidently."}
+                        <span className="ml-2 inline-flex align-middle text-[#075cde]">
+                          <ArrowRight className="h-4 w-4" />
+                        </span>
                       </p>
                     </div>
 
-                    <div className="mt-5 flex items-center justify-between border-t border-[#edf2f7] pt-4">
-                      <span className="text-[13px] font-extrabold text-[#111625]">
-                        Watch testimonial
-                      </span>
+                    {/* <div className="mt-5 flex items-center justify-end border-t border-[#edf2f7] pt-4">
                       <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[#075cde] text-white transition group-hover:translate-x-1 group-hover:bg-[#064cb8]">
                         <ArrowRight className="h-4 w-4" />
                       </span>
-                    </div>
+                    </div> */}
                   </div>
                 </button>
               ))}
             </motion.div>
           )}
         </div>
-
-        <div className="mt-8 flex justify-center">
-          <Link
-            href="/video-testimonials"
-            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#075cde] px-6 text-[14px] font-bold text-white no-underline transition hover:bg-[#064cb8]"
-          >
-            View All
-            <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
-
         {/* Dynamic Video Lightbox Modal Popup */}
         <AnimatePresence>
           {selectedVideoUrl && (

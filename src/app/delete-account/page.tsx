@@ -13,9 +13,9 @@ import { getPageSeoMetadata } from "@/services/seoMetadata";
 import { absoluteUrl } from "@/services/seoConfig";
 
 const deletionUrl = absoluteUrl("/delete-account");
-const supportEmail = "support@fintaraa.com";
+const supportEmail = "customercare@fintaraa.com";
 const requestMailHref =
-  "mailto:support@fintaraa.com?subject=Fintaraa%20Account%20Deletion%20Request";
+  "mailto:customercare@fintaraa.com?subject=Fintaraa%20Account%20Deletion%20Request";
 
 const fallbackMetadata: Metadata = {
   title: "Delete Fintaraa Account",
@@ -27,7 +27,7 @@ const fallbackMetadata: Metadata = {
 };
 
 const requestSteps = [
-  "Email support@fintaraa.com from your registered email address, or mention your registered mobile number in the request.",
+  "Email customercare@fintaraa.com from your registered email address, or mention your registered mobile number in the request.",
   "Use the subject line: Fintaraa Account Deletion Request.",
   "Our support team may verify account ownership before processing deletion.",
   "Eligible account and personal data deletion requests are processed within 30 business days, subject to legal and regulatory retention requirements.",

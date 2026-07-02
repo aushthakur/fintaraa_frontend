@@ -58,6 +58,27 @@ main :where(p, li) {
 }
 
 @media (max-width: 767px) {
+  .mobile-site-nav {
+    position: relative;
+    width: 100dvw;
+    max-width: 100dvw;
+  }
+
+  .mobile-menu-toggle {
+    position: absolute;
+    right: 1rem;
+  }
+
+  .mobile-hero-copy,
+  .mobile-hero-card {
+    width: min(358px, calc(100dvw - 2rem));
+    max-width: min(358px, calc(100dvw - 2rem));
+  }
+
+  .mobile-hero-card * {
+    max-width: 100%;
+  }
+
   main :where(section) {
     scroll-margin-top: 5.5rem;
   }

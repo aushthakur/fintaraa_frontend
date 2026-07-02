@@ -95,7 +95,7 @@ export function MediaPressRelease() {
   return (
     <section className="overflow-hidden select-none bg-white px-4 py-16 md:px-6 lg:px-8">
       <div className="mx-auto max-w-9xl">
-        <div className="mb-10">
+        <div className="mb-10 flex items-start justify-between gap-4">
           <div className="max-w-2xl">
             <p className="inline-flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-[0.12em] text-[#195585]">
               <Newspaper className="h-3.5 w-3.5 text-[#075cde]" />
@@ -109,6 +109,13 @@ export function MediaPressRelease() {
               Fintaraa.
             </p>
           </div>
+          <Link
+            href="/press-release"
+            className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-xl bg-[#075cde] px-5 text-[13px] font-bold text-white no-underline transition hover:bg-[#064cb8]"
+          >
+            View All
+            <ArrowRight className="h-4 w-4" />
+          </Link>
         </div>
 
         <div
@@ -179,7 +186,7 @@ export function MediaPressRelease() {
                     </div>
                     <div className="mt-3 flex items-center justify-between border-t border-[#edf2f7] pt-2">
                       <span className="text-[12px] font-extrabold uppercase tracking-widest text-[#98a2b3]">
-                        Update
+                        {post.category || "Media"}
                       </span>
                       <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[#075cde] text-white transition group-hover:translate-x-1 group-hover:bg-[#064cb8]">
                         <ArrowRight className="h-4 w-4" />
@@ -192,15 +199,6 @@ export function MediaPressRelease() {
           )}
         </div>
 
-        <div className="mt-8 flex justify-center">
-          <Link
-            href="/press-release"
-            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#075cde] px-6 text-[14px] font-bold text-white no-underline transition hover:bg-[#064cb8]"
-          >
-            View All
-            <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
       </div>
     </section>
   );

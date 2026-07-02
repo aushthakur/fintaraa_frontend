@@ -18,7 +18,6 @@ import {
 import { useRouter } from "next/navigation";
 import { BankLogoImage } from "@/components/common/BankLogoImage";
 import {
-  buildCreditCardBankPath,
   buildCreditCardEligibilityPath,
   CreditCardProduct,
   fetchCreditCards,
@@ -36,6 +35,15 @@ const bankDisplayOrder = [
   "Kotak Mahindra Bank",
   "IndusInd Bank",
 ];
+
+const bankLogoFallbacks: Record<string, string> = {
+  sbi: "/assets/banks/sbi-logo.png",
+  hdfc: "/assets/banks/hdfc.png",
+  icici: "/assets/banks/icici-logo.png",
+  axis: "/assets/banks/axis-bank.png",
+  kotak: "/assets/banks/kotak-logo.png",
+  indusind: "/assets/banks/indusind.png",
+};
 
 const fallbackCreditCards: CreditCardProduct[] = [
   {
@@ -109,6 +117,20 @@ const fallbackCreditCards: CreditCardProduct[] = [
     annualFee: 999,
     joiningFee: 999,
     priorityOrder: 5,
+  },
+  {
+    _id: "fallback-indusind-card",
+    name: "IndusInd Legend Credit Card",
+    bankName: "IndusInd Bank",
+    image: "/assets/banks/indusind.png",
+    shortDescription: "Premium lifestyle card with travel and reward benefits.",
+    cardType: "Lifestyle",
+    rewardsType: "Reward Points",
+    welcomeBenefits: "Lifestyle privileges",
+    rewardStructure: "Rewards on eligible spends",
+    annualFee: 9999,
+    joiningFee: 9999,
+    priorityOrder: 6,
   },
 ];
 
@@ -196,24 +218,33 @@ export function MajorBankCreditCards() {
   }, []);
 
   const bankTabs = useMemo(
-    () =>
-      Array.from(
-        new Set(cards.map((card) => card.bankName).filter(Boolean)),
-      ).sort((a, b) => {
+    () => {
+      const names = Array.from(
+        new Set(
+          [...bankDisplayOrder, ...cards.map((card) => card.bankName)].filter(
+            Boolean,
+          ),
+        ),
+      );
+      return names.sort((a, b) => {
         const aIndex = bankDisplayOrder.indexOf(a);
         const bIndex = bankDisplayOrder.indexOf(b);
         if (aIndex === -1 && bIndex === -1) return a.localeCompare(b);
         if (aIndex === -1) return 1;
         if (bIndex === -1) return -1;
         return aIndex - bIndex;
-      }),
+      });
+    },
     [cards],
   );
 
   const activeCards = useMemo(
     () =>
       cards
-        .filter((card) => card.bankName === activeBank)
+        .filter(
+          (card) =>
+            normalizeBankKey(card.bankName) === normalizeBankKey(activeBank),
+        )
         .sort(
           (a, b) =>
             Number(a.priorityOrder || 999) - Number(b.priorityOrder || 999),
@@ -241,18 +272,25 @@ export function MajorBankCreditCards() {
       <div className="mx-auto max-w-9xl overflow-hidden rounded-2xl bg-[#f7fbff]">
         <div className="relative grid items-stretch overflow-hidden lg:min-h-80 lg:grid-cols-[1.1fr_0.9fr]">
           <div className="px-5 py-8 sm:px-8 lg:px-10">
-            <span className="inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-wide text-[#075cde]">
-              <ShieldCheck className="h-4 w-4" />
-              Trusted by millions of Indians
-            </span>
-            <h2 className="mt-4 max-w-2xl text-[30px] font-bold leading-tight tracking-tight text-[#07162d] sm:text-[40px]">
-              Find the Right Credit Card from{" "}
-              <span className="text-[#075cde]">Top Banks</span>
-            </h2>
-            <p className="mt-4 max-w-xl text-[15px] font-medium leading-7 text-[#61748f]">
-              Compare rewards, fees, cashback and eligibility in one place. One
-              card action per product keeps the next step clear.
-            </p>
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+              <div>
+                <span className="inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-wide text-[#075cde]">
+                  <ShieldCheck className="h-4 w-4" />
+                  Trusted by millions of Indians
+                </span>
+                <h2 className="mt-4 max-w-2xl text-[30px] font-bold leading-tight tracking-tight text-[#07162d] sm:text-[40px]">
+                  Find the Right Credit Card from{" "}
+                  <span className="text-[#075cde]">Top Banks</span>
+                </h2>
+              </div>
+              <Link
+                href="/credit-cards"
+                className="inline-flex h-10 w-fit shrink-0 items-center justify-center gap-2 rounded-xl bg-[#075cde] px-5 text-[13px] font-bold text-white no-underline transition hover:bg-[#064cb8]"
+              >
+                View All Cards
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
             <div className="mt-6 grid max-w-xl gap-3 sm:grid-cols-3">
               {["Best rewards", "100% secure", "Quick approval"].map((item) => (
                 <div
@@ -290,7 +328,11 @@ export function MajorBankCreditCards() {
             ) : (
               bankTabs.map((tab) => {
                 const isActive = activeBank === tab;
-                const sample = cards.find((card) => card.bankName === tab);
+                const normalizedTab = normalizeBankKey(tab);
+                const sample = cards.find(
+                  (card) => normalizeBankKey(card.bankName) === normalizedTab,
+                );
+                const logoSrc = sample?.image || bankLogoFallbacks[normalizedTab];
                 return (
                   <button
                     key={tab}
@@ -302,9 +344,9 @@ export function MajorBankCreditCards() {
                         : "border-[#dceaf7] bg-white text-[#52657d] hover:border-[#075cde]"
                     }`}
                   >
-                    {sample?.image ? (
+                    {logoSrc ? (
                       <BankLogoImage
-                        src={sample.image}
+                        src={logoSrc}
                         alt={tab}
                         className="h-5 w-7 object-contain"
                         unoptimized
@@ -329,9 +371,13 @@ export function MajorBankCreditCards() {
             <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex min-w-0 items-start gap-4 sm:items-center">
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#e9f2ff] text-xl font-bold text-[#075cde]">
-                  {activeBankData?.image ? (
+                  {activeBankData?.image ||
+                  bankLogoFallbacks[normalizeBankKey(activeBank)] ? (
                     <BankLogoImage
-                      src={activeBankData.image}
+                      src={
+                        activeBankData?.image ||
+                        bankLogoFallbacks[normalizeBankKey(activeBank)]
+                      }
                       alt={activeBank}
                       className="h-9 w-auto max-w-10 object-contain"
                       unoptimized
@@ -459,34 +505,6 @@ export function MajorBankCreditCards() {
             </div>
           )}
 
-          <div className="mt-6 flex justify-center">
-            <Link
-              href={
-                activeBank ? buildCreditCardBankPath(activeBank) : "/credit-cards"
-              }
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#075cde] px-6 text-[14px] font-bold text-white no-underline transition hover:bg-[#064cb8]"
-            >
-              {activeBank ? `Explore all ${activeBank} options` : "View all banks"}
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
-
-          <div className="mt-6 grid gap-3 rounded-2xl border border-[#dceaf7] bg-white p-3 sm:grid-cols-4">
-            {[
-              "Secure & 100% online process",
-              "Instant approval guidance",
-              "No hidden charges",
-              "More cards, more benefits",
-            ].map((item) => (
-              <div
-                key={item}
-                className="flex items-center justify-center gap-2 rounded-xl bg-white px-3 py-3 text-center text-[12px] font-bold text-[#075cde]"
-              >
-                <BadgeCheck className="h-4 w-4" />
-                {item}
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </section>

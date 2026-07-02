@@ -224,8 +224,8 @@ export function ContactSupportPanel() {
             {
               icon: Mail,
               title: "Email support",
-              value: "support@fintaraa.com",
-              href: "mailto:support@fintaraa.com",
+              value: "customercare@fintaraa.com",
+              href: "mailto:customercare@fintaraa.com",
               note: "Attach screenshots or documents where relevant.",
             },
             {

@@ -27,19 +27,22 @@ const financialServiceLinks = [
   "ITR Filing",
   "ROC Filing",
   "Company Registration",
+  "Project Report",
+  "Tax Compliances",
   "Credit Cards",
-  "All Others Credit Cards",
 ];
 
 const aboutCompanyLinks = [
-  "Feedback",
   "Site Map",
-  "Awards & Recognitions",
-  "Articles",
-  "Press Release",
-  "Subscribe",
-  "FAQ's",
   "About Us",
+  "Awards & Recognitions",
+  "Blogs",
+  "Articles",
+  "FAQ's",
+  "Media & Press Release",
+  "Press Release",
+  "Feedback",
+  "Subscribe",
 ];
 
 const loanLinks = [
@@ -80,7 +83,16 @@ const quickLinks = [
     icon: BadgeCheck,
   },
   { label: "Blog", href: "/blog", icon: Newspaper },
+  { label: "Application Status", href: "/application-status", icon: Wrench },
   { label: "Careers", href: "/careers", icon: BriefcaseBusiness },
+  {
+    label: "Partner Login",
+    href: buildLoginRedirectHref({
+      redirectTo: "/account/profile",
+      product: "partner",
+    }),
+    icon: Landmark,
+  },
   { label: "Franchise", href: "/franchise", icon: Landmark },
   { label: "Become DSA", href: "/become-dsa", icon: BadgeCheck },
   { label: "Contact Us", href: "/contact-us", icon: PhoneCall },
@@ -274,29 +286,29 @@ export default function Footer() {
 
             {/* Phone */}
             <a
-              href="tel:+911244567890"
+              href="tel:+919999175156"
               className="flex items-center gap-3 text-white no-underline transition-colors hover:text-white/80"
             >
               <PhoneCall className="h-4 w-4 shrink-0 text-white/70" />
-              +91 124 456 7890
+              +91 99991 75156
             </a>
 
             {/* WhatsApp */}
             <a
-              href="tel:+919876543210"
+              href="https://wa.me/919999175156"
               className="flex items-center gap-3 text-white no-underline transition-colors hover:text-white/80"
             >
               <MessageCircle className="h-4 w-4 shrink-0 text-white/70" />
-              +91 98765 43210
+              +91 99991 75156
             </a>
 
             {/* Email */}
             <a
-              href="mailto:support@fintaraa.com"
+              href="mailto:customercare@fintaraa.com"
               className="flex items-center gap-3 text-white no-underline transition-colors hover:text-white/80"
             >
               <Mail className="h-4 w-4 shrink-0 text-white/70" />
-              support@fintaraa.com
+              customercare@fintaraa.com
             </a>
 
             {/* Hours */}

@@ -19,7 +19,7 @@ const summary = [
   { label: "Loan Amount", value: "Rs50,000 - Rs10,00,000", icon: Landmark },
   { label: "Interest Rate", value: "10% - 28% p.a.", icon: Calculator },
   { label: "Tenure", value: "6 - 60 months", icon: ReceiptText },
-  { label: "Support", value: "support@fintaraa.com", icon: Mail },
+  { label: "Support", value: "customercare@fintaraa.com", icon: Mail },
 ];
 
 const sections = [
@@ -183,10 +183,10 @@ export default function LoanDisclosurePage() {
                 </p>
               </div>
               <a
-                href="mailto:support@fintaraa.com"
+                href="mailto:customercare@fintaraa.com"
                 className="inline-flex h-12 items-center justify-center rounded-full bg-white px-6 text-[14px] font-extrabold text-[#195585] no-underline"
               >
-                support@fintaraa.com
+                customercare@fintaraa.com
               </a>
             </div>
           </section>

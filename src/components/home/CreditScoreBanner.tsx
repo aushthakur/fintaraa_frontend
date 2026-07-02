@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ArrowRight, BadgeCheck, ShieldCheck, Star, Zap } from "lucide-react";
 
 const bureauLogos = [
-  { label: "experian", className: "text-purple-700" },
+  { label: "Experian", className: "text-purple-700" },
   { label: "CRIF HIGH MARK", className: "text-blue-800" },
   { label: "EQUIFAX", className: "text-red-700" },
   { label: "CIBIL", className: "text-sky-600" },
@@ -26,10 +26,18 @@ export function CreditScoreBanner() {
                 Check Your Credit Score in Minutes with{" "}
                 <span className="text-[#075cde]">Fintaraa</span>
               </h2>
-              <p className="mt-4 max-w-xl text-[15px] font-medium leading-7 text-[#4f627a]">
-                Get your credit score from trusted bureaus. No sign-ups hidden in
-                the flow, no hard enquiry, and no spam.
-              </p>
+              <div className="mt-4 grid max-w-xl gap-2 text-[14px] font-semibold leading-6 text-[#4f627a]">
+                {[
+                  "Authorised credit bureau data",
+                  "100% free and instant",
+                  "No hard enquiry | No spam",
+                ].map((item) => (
+                  <div key={item} className="flex items-center gap-2">
+                    <ShieldCheck className="h-4 w-4 shrink-0 text-[#075cde]" />
+                    {item}
+                  </div>
+                ))}
+              </div>
 
               <div className="mt-6 grid max-w-xl grid-cols-2 gap-3 sm:grid-cols-4">
                 {bureauLogos.map((logo) => (
@@ -119,21 +127,6 @@ export function CreditScoreBanner() {
             </div>
           </div>
 
-          <div className="grid gap-3 bg-white/70 p-4 sm:grid-cols-3">
-            {[
-              "Authorised credit bureau data",
-              "100% free and instant",
-              "No hard enquiry | No spam",
-            ].map((item) => (
-              <div
-                key={item}
-                className="flex items-center justify-center gap-2 text-[13px] font-semibold text-[#075cde]"
-              >
-                <ShieldCheck className="h-4 w-4" />
-                {item}
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </section>

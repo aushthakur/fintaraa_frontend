@@ -415,12 +415,18 @@ export const productSections = [
         icon: Calculator,
         tone: "orange",
       },
-      // {
-      //   title: "Project Report",
-      //   text: "Get detailed project reports.",
-      //   icon: FileCheck2,
-      //   tone: "orange",
-      // },
+      {
+        title: "Project Report",
+        text: "Get project reports for loan, funding and business planning.",
+        icon: FileCheck2,
+        tone: "orange",
+      },
+      {
+        title: "Tax Compliances",
+        text: "Get support for tax notices, filings and compliance tracking.",
+        icon: ReceiptText,
+        tone: "orange",
+      },
       {
         title: "Company Registration",
         text: "Register Pvt Ltd, LLP & OPC companies.",

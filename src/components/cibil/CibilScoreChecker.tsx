@@ -115,7 +115,7 @@ function PoweredByBureaus() {
             <span className="h-1 w-1 rounded-full bg-blue-500" />
           </div>
           <span className="font-sans text-[15px] font-bold tracking-tight text-[#3b2b80]">
-            experian<span className="font-light text-blue-500">.</span>
+            Experian<span className="font-light text-blue-500">.</span>
           </span>
         </div>
       </div>

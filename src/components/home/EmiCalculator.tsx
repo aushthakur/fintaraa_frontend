@@ -8,8 +8,8 @@ import {
   Download,
   LockKeyhole,
   ShieldCheck,
-  TrendingDown,
 } from "lucide-react";
+import { LoanExpertButton } from "./LoanExpertPopup";
 
 type CalculatorKey =
   | "home-loan"
@@ -1489,6 +1489,7 @@ export function EmiCalculator() {
                 Apply For This Loan
                 <ArrowRight className="h-4 w-4" />
               </Link>
+              <LoanExpertButton className="mt-3 h-12 w-full" />
 
               <div className="mt-4 grid gap-2 text-[11px] font-bold text-[#61748f] sm:grid-cols-3">
                 {[
@@ -1517,24 +1518,6 @@ export function EmiCalculator() {
           </aside>
         </div>
 
-        <div className="mt-6 grid gap-3 rounded-xl bg-white p-3 sm:grid-cols-2 lg:grid-cols-4">
-          {[
-            ["Make informed decisions", "Compare and choose better"],
-            ["Plan your finances", "Know your affordability"],
-            ["Save more money", "Lower interest, higher savings"],
-            ["100% Private & Secure", "Your data is never shared"],
-          ].map(([label, text]) => (
-            <div key={label} className="flex items-start gap-3 rounded-xl bg-white p-4">
-              <TrendingDown className="mt-0.5 h-5 w-5 shrink-0 text-[#075cde]" />
-              <div>
-                <p className="text-[13px] font-bold text-[#07162d]">{label}</p>
-                <p className="mt-1 text-[12px] font-semibold text-[#61748f]">
-                  {text}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
       </div>
     </section>
   );

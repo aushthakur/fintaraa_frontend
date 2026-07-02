@@ -171,9 +171,12 @@ function RecentBlogCard({ post }: { post: WebsiteKnowledgeItem }) {
           <h3 className="mt-3 line-clamp-2 text-[17px] font-extrabold leading-snug tracking-tight text-[#111625] transition group-hover:text-[#005ca8]">
             {post.title}
           </h3>
-          <p className="mt-2 line-clamp-3 text-[13px] font-medium leading-6 text-[#667085]">
+          <p className="mt-2 line-clamp-2 text-[13px] font-medium leading-6 text-[#667085]">
             {summary}
           </p>
+          <span className="mt-1 inline-flex text-[12px] font-bold text-[#075cde]">
+            More...
+          </span>
         </div>
 
         <div className="mt-4 flex items-center justify-between gap-3 border-t border-[#edf2f7] pt-4">
@@ -241,10 +244,17 @@ export function RecentBlogs() {
   return (
     <section className="overflow-hidden select-none bg-white px-4 py-16 md:px-6 lg:px-8">
       <div className="mx-auto max-w-9xl">
-        <div className="mb-10 text-center">
-          <h2 className="text-center text-[24px] font-bold tracking-tight text-[#111625] md:text-[28px]">
+        <div className="mb-10 flex items-center justify-between gap-4">
+          <h2 className="text-[24px] font-bold tracking-tight text-[#111625] md:text-[28px]">
             Recent Blogs
           </h2>
+          <Link
+            href="/blog"
+            className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-xl bg-[#075cde] px-5 text-[13px] font-bold text-white no-underline transition hover:bg-[#064cb8]"
+          >
+            View All Blogs
+            <ArrowRight className="h-4 w-4" />
+          </Link>
         </div>
 
         <div
@@ -276,15 +286,6 @@ export function RecentBlogs() {
           )}
         </div>
 
-        <div className="mt-8 flex justify-center">
-          <Link
-            href="/blog"
-            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#075cde] px-6 text-[14px] font-bold text-white no-underline transition hover:bg-[#064cb8]"
-          >
-            View All Blogs
-            <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
       </div>
     </section>
   );

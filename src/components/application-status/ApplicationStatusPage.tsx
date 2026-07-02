@@ -56,6 +56,20 @@ const serviceTypes: Array<{ label: string; value: ServiceRequestType }> = [
 
 const statusTabs = ["All", "Loan", "Insurance", "Service"];
 
+const isCompletedStatus = (value?: string) => {
+  const normalized = String(value || "").toLowerCase();
+  return [
+    "approved",
+    "closed",
+    "complete",
+    "completed",
+    "completed_success",
+    "disbursed",
+    "paid",
+    "resolved",
+  ].some((status) => normalized.includes(status));
+};
+
 const formatDate = (value?: string) => {
   if (!value) return "-";
   const date = new Date(value);
@@ -200,6 +214,15 @@ export function ApplicationStatusPage() {
     [items, tab],
   );
 
+  const heroCounts = useMemo(() => {
+    const completed = items.filter((item) => isCompletedStatus(item.status)).length;
+    return {
+      total: items.length,
+      completed,
+      active: Math.max(items.length - completed, 0),
+    };
+  }, [items]);
+
   useEffect(() => {
     let active = true;
     if (!isUserLoggedIn()) return;
@@ -274,7 +297,11 @@ export function ApplicationStatusPage() {
 
   return (
     <main className="bg-white">
-      <StatusHero />
+      <StatusHero
+        totalApplications={heroCounts.total}
+        activeApplications={heroCounts.active}
+        completedApplications={heroCounts.completed}
+      />
       <section className="px-4 pb-14 md:px-6 lg:px-8">
         <div className="mx-auto grid max-w-9xl gap-6">
           <div className="rounded-2xl border border-[#dce9f7] bg-[#f8fbff] p-5 md:p-6">

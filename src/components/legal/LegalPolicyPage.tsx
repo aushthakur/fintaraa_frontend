@@ -175,11 +175,11 @@ export function LegalPolicyPage({
                   </p>
                 </div>
                 <a
-                  href="mailto:support@fintaraa.com"
+                  href="mailto:customercare@fintaraa.com"
                   className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-white px-6 text-[14px] font-extrabold text-[#195585] no-underline"
                 >
                   <Mail className="h-4 w-4" />
-                  support@fintaraa.com
+                  customercare@fintaraa.com
                 </a>
               </div>
             </section>

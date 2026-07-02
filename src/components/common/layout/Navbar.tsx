@@ -6,9 +6,11 @@ import { useState } from "react";
 import { usePathname } from "next/navigation";
 import {
   X,
+  Bell,
   Mail,
   Menu,
   Phone,
+  Search,
   Sparkles,
   UserRound,
   ArrowRight,
@@ -135,10 +137,35 @@ const insuranceSections: NavSection[] = [
   },
 ];
 
+const cibilSections: NavSection[] = [
+  {
+    title: "Credit Score",
+    subtitle: "Know, track, and improve your score.",
+    links: [
+      {
+        label: "Know Your Score",
+        href: "/cibil-score",
+        description: "Check your score with a secure guided flow.",
+      },
+      {
+        label: "How to Improve Score",
+        href: "/blog/all?category=Credit%20Score",
+        description: "Read score improvement guides and tips.",
+      },
+      {
+        label: "Credit Report",
+        href: "/cibil-score/report",
+        description: "Understand report factors and offer readiness.",
+      },
+    ],
+  },
+];
+
 const navItems = [
   {
     label: "CIBIL Score",
     href: "/cibil-score",
+    sections: cibilSections,
   },
   { label: "Loans", href: "/products", sections: loanSections },
   { label: "Insurance", href: "/products", sections: insuranceSections },
@@ -194,6 +221,10 @@ const navItems = [
     ],
   },
   {
+    label: "Track Application",
+    href: "/application-status",
+  },
+  {
     label: "Contact Us",
     href: "/contact-us",
   },
@@ -206,9 +237,17 @@ const navItems = [
         subtitle: "Business and earning opportunities.",
         links: [
           {
-            label: "Franchise",
+            label: "Partner Login",
+            href: buildLoginRedirectHref({
+              redirectTo: "/account/profile",
+              product: "partner",
+            }),
+            description: "Login to manage partner profile and leads.",
+          },
+          {
+            label: "Become Partner",
             href: "/franchise",
-            description: "Open your own Fintaraa franchise.",
+            description: "Start a partner or franchise journey.",
           },
           {
             label: "Become DSA",
@@ -269,36 +308,36 @@ export default function Navbar() {
           </p>
           <div className="hidden items-center gap-5 lg:flex">
             <a
-              href="tel:18001234567"
+              href="tel:+919999175156"
               className="flex items-center gap-1.5 text-white/90 no-underline transition hover:text-white"
             >
               <Phone className="h-3.5 w-3.5" />
-              1800-123-4567
+              +91 99991 75156
             </a>
             <a
-              href="mailto:support@fintaraa.com"
+              href="mailto:customercare@fintaraa.com"
               className="flex items-center gap-1.5 text-white/90 no-underline transition hover:text-white"
             >
               <Mail className="h-3.5 w-3.5" />
-              support@fintaraa.com
+              customercare@fintaraa.com
             </a>
           </div>
         </div>
       </div>
 
-      <nav className="mx-auto flex h-18 max-w-9xl items-center justify-between gap-5 px-4 md:px-6 lg:px-8">
+      <nav className="mobile-site-nav mx-auto flex h-20 w-full max-w-9xl items-center justify-between gap-4 px-4 md:px-6 xl:px-6 2xl:px-8">
         <Link href="/" aria-label="Fintaraa home" className="shrink-0">
           <Image
             priority
             width={134}
             height={41}
             alt="Fintaraa"
-            className="h-auto w-18"
+            className="h-auto w-20"
             src="/assets/logo/logo.png"
           />
         </Link>
 
-        <div className="hidden flex-1 items-center justify-center gap-8 lg:flex">
+        <div className="hidden min-w-0 flex-1 items-center justify-center gap-4 xl:flex 2xl:gap-6">
           {navItems.map((item, index) => (
             <DesktopNavItem
               key={item.label}
@@ -309,17 +348,32 @@ export default function Navbar() {
           ))}
         </div>
 
-        <div className="hidden shrink-0 items-center gap-3 lg:flex">
+        <div className="hidden shrink-0 items-center gap-2 xl:flex 2xl:gap-3">
+          <form
+            action="/products"
+            method="get"
+            className="flex h-10 w-44 items-center gap-2 rounded-full border border-[#d7e5f3] bg-white px-3 text-[#344054] transition focus-within:border-[#075cde] 2xl:w-56"
+          >
+            <Search className="h-4 w-4 shrink-0 text-[#667085]" />
+            <input
+              name="search"
+              type="search"
+              placeholder="Search products"
+              className="min-w-0 flex-1 bg-transparent text-[13px] font-semibold outline-none placeholder:text-[#98a2b3]"
+            />
+          </form>
+
           <Link
             href={
               loggedIn
-                ? "/products"
-                : buildLoginRedirectHref({ redirectTo: "/products" })
+                ? "/account/profile"
+                : buildLoginRedirectHref({ redirectTo: "/account/profile" })
             }
-            className="inline-flex h-10 items-center gap-2 rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-4 text-sm font-medium text-white no-underline"
+            aria-label="Notifications"
+            className="relative inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#d7e5f3] text-[#344054] no-underline transition hover:border-[#075cde] hover:text-[#075cde] 2xl:h-11 2xl:w-11"
           >
-            Apply Now
-            <ArrowRight className="h-4 w-4" />
+            <Bell className="h-4.5 w-4.5" />
+            <span className="absolute right-2.5 top-2.5 h-2 w-2 rounded-full bg-[#f04438]" />
           </Link>
 
           <AuthButton
@@ -331,7 +385,7 @@ export default function Navbar() {
 
         <button
           aria-label="Toggle menu"
-          className="rounded-md border border-[#d0d5dd] p-2 text-[#101828] lg:hidden"
+          className="mobile-menu-toggle ml-auto rounded-md border border-[#d0d5dd] p-2 text-[#101828] xl:hidden"
           onClick={() => setMenuOpen((open) => !open)}
         >
           {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -339,8 +393,21 @@ export default function Navbar() {
       </nav>
 
       {menuOpen && (
-        <div className="max-h-[calc(100dvh-6.75rem)] overflow-y-auto border-t border-[#e5eef8] bg-white px-4 pb-5 md:px-6 lg:hidden">
+        <div className="max-h-[calc(100dvh-7.25rem)] overflow-y-auto border-t border-[#e5eef8] bg-white px-4 pb-5 md:px-6 xl:hidden">
           <div className="mx-auto grid max-w-9xl gap-1">
+            <form
+              action="/products"
+              method="get"
+              className="mt-4 flex h-11 items-center gap-2 rounded-xl border border-[#d7e5f3] bg-white px-3 text-[#344054]"
+            >
+              <Search className="h-4 w-4 shrink-0 text-[#667085]" />
+              <input
+                name="search"
+                type="search"
+                placeholder="Search loans, cards, insurance"
+                className="min-w-0 flex-1 bg-transparent text-[13px] font-semibold outline-none placeholder:text-[#98a2b3]"
+              />
+            </form>
             {navItems.map((item) => (
               <div key={item.label} className="border-b border-[#edf3f8] py-2">
                 <Link
@@ -382,17 +449,6 @@ export default function Navbar() {
               </div>
             ))}
             <div className="mt-4 grid gap-3">
-              <Link
-                href={
-                  loggedIn
-                    ? "/products"
-                    : buildLoginRedirectHref({ redirectTo: "/products" })
-                }
-                onClick={() => setMenuOpen(false)}
-                className="rounded-full bg-[#075cde] px-4 py-3 text-center text-[13px] font-semibold text-white no-underline"
-              >
-                Apply Now
-              </Link>
               <AuthButton
                 loggedIn={loggedIn}
                 name={profile.name}
@@ -444,7 +500,7 @@ function DesktopNavItem({
       <div className="group relative">
         <Link
           href={item.href}
-          className={`${underlineClass} flex items-center gap-1 text-base font-semibold no-underline transition ${
+          className={`${underlineClass} flex items-center gap-1 whitespace-nowrap text-[14px] font-semibold no-underline transition 2xl:text-[15px] ${
             active
               ? "text-[#195585] after:scale-x-100"
               : "text-[#101828] hover:text-[#195585]"
@@ -461,7 +517,7 @@ function DesktopNavItem({
   return (
     <Link
       href={item.href}
-      className={`${underlineClass} flex items-center gap-1 text-base font-semibold no-underline transition ${
+      className={`${underlineClass} flex items-center gap-1 whitespace-nowrap text-[14px] font-semibold no-underline transition 2xl:text-[15px] ${
         active
           ? "text-[#195585] after:scale-x-100"
           : "text-[#101828] hover:text-[#195585]"
@@ -637,7 +693,7 @@ function AuthButton({
         className={
           mobile
             ? "rounded-full border border-[#075cde] px-4 py-3 text-center text-[13px] font-semibold text-[#075cde] no-underline"
-            : "inline-flex h-10 items-center gap-2 rounded-full border border-[#075cde] px-4 text-sm font-medium text-[#075cde] no-underline"
+            : "inline-flex h-10 items-center gap-2 rounded-full border border-[#075cde] px-4 text-sm font-medium text-[#075cde] no-underline 2xl:h-11"
         }
       >
         <span className="inline-flex items-center justify-center gap-2">
@@ -664,11 +720,11 @@ function AuthButton({
       className={
         mobile
           ? "flex items-center justify-center gap-3 rounded-full bg-[#eef8ff] px-4 py-3 text-center text-[13px] font-semibold text-[#195585] no-underline"
-          : "inline-flex h-10 items-center gap-2 rounded-full bg-[#eef8ff] pl-1.5 pr-4 text-sm font-semibold text-[#195585] no-underline ring-1 ring-[#d5ebfb]"
+          : "inline-flex h-10 items-center gap-2 rounded-full bg-[#eef8ff] pl-1.5 pr-4 text-sm font-semibold text-[#195585] no-underline ring-1 ring-[#d5ebfb] 2xl:h-11"
       }
       aria-label={`Open account profile for ${name}`}
     >
-      <span className="relative flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-linear-to-br from-[#195585] to-[#12b76a] text-[11px] font-semibold text-white">
+      <span className="relative flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-linear-to-br from-[#195585] to-[#12b76a] text-[11px] font-semibold text-white 2xl:h-9 2xl:w-9 2xl:text-[12px]">
         {avatar ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={avatar} alt={name} className="h-full w-full object-cover" />
@@ -676,7 +732,7 @@ function AuthButton({
           initials
         )}
       </span>
-      <span className="max-w-36 truncate">Hi, {firstName}</span>
+      <span className="max-w-28 truncate 2xl:max-w-36">Hi, {firstName}</span>
     </Link>
   );
 }

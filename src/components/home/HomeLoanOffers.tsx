@@ -22,6 +22,9 @@ interface LoanRateOffer {
 
 const productTabs = loanProductDirectory.map((product) => product.name);
 
+const pluralLoanLabel = (value: string) =>
+  value.endsWith("Loan") ? `${value}s` : value;
+
 export function HomeLoanOffers() {
   const [activeTab, setActiveTab] = useState<string>("Home Loan");
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -58,19 +61,20 @@ export function HomeLoanOffers() {
         {/* Main Centered Styled Section Title */}
         <div className="w-full text-center mb-8">
           <h2 className="text-[24px] sm:text-[32px] md:text-[38px] font-bold text-gray-900 tracking-tight leading-tight">
-            Loans from <span className="text-[#12b76a]">7.10%*</span> Only with{" "}
+            {pluralLoanLabel(activeTab)} from{" "}
+            <span className="text-[#12b76a]">7.10%*</span> Only with{" "}
             <span className="text-[#00529c]">Fintaraa</span>
           </h2>
         </div>
 
         {/* Sub-Header Actions Row: Title + Search Bar Filter Input */}
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6">
+        <div className="mb-6 grid gap-4 sm:grid-cols-[1fr_minmax(220px,320px)_auto] sm:items-center">
           <h3 className="text-[18px] md:text-[20px] font-bold text-gray-900 tracking-tight">
             Lowest Interest Rates
           </h3>
 
           {/* Dashboard-Style Search Container Field */}
-          <div className="relative flex h-11 w-full sm:w-70 items-center rounded-xl border border-gray-200 bg-white px-3 transition-focus focus-within:border-gray-300">
+          <div className="relative flex h-11 w-full items-center rounded-xl border border-gray-200 bg-white px-3 transition-focus focus-within:border-gray-300">
             <input
               type="text"
               placeholder={`Search ${activeTab.toLowerCase()} offers or banks ...`}
@@ -80,6 +84,13 @@ export function HomeLoanOffers() {
             />
             <Search className="absolute right-3 h-4 w-4 text-gray-400 pointer-events-none" />
           </div>
+
+          <Link
+            href={`/products/${slugifyProduct(activeTab)}`}
+            className="inline-flex h-11 items-center justify-center rounded-xl bg-[#075cde] px-5 text-[13px] font-bold text-white no-underline transition hover:bg-[#064cb8]"
+          >
+            View All
+          </Link>
         </div>
 
         {/* Horizontal Nav Category Filter Tabs Track */}
@@ -158,15 +169,6 @@ export function HomeLoanOffers() {
           </div>
         ) : null}
 
-        {/* Central Main Conversion CTA Pill Action Button Block */}
-        <div className="mt-10 flex justify-center">
-          <Link
-            href={`/products/${slugifyProduct(activeTab)}`}
-            className="inline-flex h-12 items-center justify-center rounded-full bg-[#075cde] px-10 text-[14px] font-bold text-white shadow-sm transition-all hover:bg-[#064cb8] hover:-translate-y-1 active:translate-y-0"
-          >
-            Find the best rate for you!
-          </Link>
-        </div>
       </div>
     </section>
   );

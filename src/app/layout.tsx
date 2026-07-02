@@ -126,11 +126,11 @@ export default function RootLayout({
       name: siteName,
       url: siteUrl,
       logo: absoluteUrl("/assets/logo/logo.png"),
-      email: "support@fintaraa.com",
+      email: "customercare@fintaraa.com",
       contactPoint: [
         {
           "@type": "ContactPoint",
-          telephone: "+91-124-456-7890",
+          telephone: "+91-99991-75156",
           contactType: "customer support",
           areaServed: "IN",
           availableLanguage: ["en", "hi"],

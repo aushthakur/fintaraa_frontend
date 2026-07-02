@@ -46,8 +46,8 @@ export function CibilReportCompare({
                   </span>
                 </th>
                 <th className="pb-3 text-center">
-                  <span className="text-xs font-sans font-bold lowercase text-purple-600">
-                    experian
+                  <span className="text-xs font-sans font-bold text-purple-600">
+                    Experian
                   </span>
                   <span className="mt-0.5 block text-[11px] font-medium text-gray-400">
                     {dateText(data.bureauDates?.experian)}

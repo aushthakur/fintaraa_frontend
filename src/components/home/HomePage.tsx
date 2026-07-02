@@ -8,8 +8,8 @@ import { HomeLoanOffers } from "./HomeLoanOffers";
 import { ProductExplorer } from "./ProductExplorer";
 import { MediaPressRelease } from "./MediaPressRelease";
 import { CreditScoreBanner } from "./CreditScoreBanner";
+import { LoanExpertPopupHost } from "./LoanExpertPopup";
 import { VideoTestimonials } from "./VideoTestimonials";
-import { EligibilitySection } from "./EligibilitySection";
 import { AppDownloadBanner } from "../common/layout/Footer";
 import { MajorBankCreditCards } from "./MajorBanksCreditCards";
 
@@ -18,7 +18,7 @@ export function HomePage() {
     <main className="bg-white">
       <HeroSection />
 
-      <div className="py-12 md:py-16 lg:pt-8">
+      <div className="py-9 md:py-12 lg:pt-7">
         {/* Global Centered Main Title Header */}
         <div className="mx-auto mb-10 max-w-9xl px-4 md:px-6 lg:px-8">
           <div className="text-center">
@@ -66,10 +66,6 @@ export function HomePage() {
         sectionTitles={["Other financial services"]}
       />
 
-      <EligibilitySection />
-
-      {/* <CreditScoreMinuteBanner /> */}
-
       <PartnersStrip />
       <EmiCalculator />
       <WhyChoose />
@@ -79,6 +75,7 @@ export function HomePage() {
       <VideoTestimonials />
       <HomeLoanOffers />
       <AppDownloadBanner />
+      <LoanExpertPopupHost />
     </main>
   );
 }
