@@ -14,7 +14,12 @@ export function LoanTabs({
   const active = tabs.find((tab) => tab.key === activeTab) || tabs[0];
 
   return (
-    <section className="w-full bg-[#e3f0fc] px-4 py-4 my-10 antialiased sm:px-6 md:px-8">
+    <>
+      <div className="h-10" aria-hidden="true" />
+      <section
+        className="sticky z-[49] mb-10 w-full bg-[#e3f0fc] px-4 py-4 antialiased shadow-[0_12px_28px_rgba(0,82,156,0.08)] sm:px-6 md:px-8"
+        style={{ top: "var(--site-header-height, 8.25rem)" }}
+      >
       {/* 
         Scroll container matching the design blueprint. 
         no-scrollbar class can be added here if you want to mask the horizontal browser scroll line indicators.
@@ -38,6 +43,7 @@ export function LoanTabs({
           );
         })}
       </div>
-    </section>
+      </section>
+    </>
   );
 }

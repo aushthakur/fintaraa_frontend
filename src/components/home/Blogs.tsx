@@ -125,7 +125,7 @@ function BlogSkeleton() {
   );
 }
 
-function RecentBlogCard({ post }: { post: WebsiteKnowledgeItem }) {
+export function RecentBlogCard({ post }: { post: WebsiteKnowledgeItem }) {
   const category = post.category || "Financial Planning";
   const meta = getCategoryMeta(category);
   const CategoryIcon = meta.icon;
@@ -138,7 +138,7 @@ function RecentBlogCard({ post }: { post: WebsiteKnowledgeItem }) {
       href={`/blog/${post.slug}`}
       className="group flex h-108 w-[18rem] shrink-0 flex-col overflow-hidden rounded-2xl border border-[#dfeaf5] bg-white no-underline transition duration-300 hover:-translate-y-1 hover:border-[#bdd4e9] sm:w-[20rem] md:w-88"
     >
-      <div className="relative h-56 w-full overflow-hidden bg-[#eaf2f9]">
+      <div className="relative min-h-48 w-full overflow-hidden bg-[#eaf2f9]">
         <Image
           src={post.coverImageUrl || "/assets/banks/visa-card.png"}
           alt={post.title}
@@ -146,7 +146,7 @@ function RecentBlogCard({ post }: { post: WebsiteKnowledgeItem }) {
           sizes="(max-width: 640px) 18rem, (max-width: 768px) 20rem, 22rem"
           unoptimized
           draggable={false}
-          className="h-full w-full object-cover select-none transition duration-500 group-hover:scale-105"
+          className="w-full object-cover select-none h-56 transition duration-500 group-hover:scale-105"
         />
         <div className="absolute inset-0 bg-linear-to-t from-black/35 via-black/5 to-transparent" />
       </div>
@@ -174,9 +174,6 @@ function RecentBlogCard({ post }: { post: WebsiteKnowledgeItem }) {
           <p className="mt-2 line-clamp-2 text-[13px] font-medium leading-6 text-[#667085]">
             {summary}
           </p>
-          <span className="mt-1 inline-flex text-[12px] font-bold text-[#075cde]">
-            More...
-          </span>
         </div>
 
         <div className="mt-4 flex items-center justify-between gap-3 border-t border-[#edf2f7] pt-4">
@@ -242,9 +239,9 @@ export function RecentBlogs() {
   const displayPosts = [...posts, ...posts, ...posts];
 
   return (
-    <section className="overflow-hidden select-none bg-white px-4 py-16 md:px-6 lg:px-8">
+    <section className="overflow-hidden select-none bg-white px-4 py-8 md:px-6 lg:px-8">
       <div className="mx-auto max-w-9xl">
-        <div className="mb-10 flex items-center justify-between gap-4">
+        <div className="mb-2 flex items-center justify-between gap-4">
           <h2 className="text-[24px] font-bold tracking-tight text-[#111625] md:text-[28px]">
             Recent Blogs
           </h2>
@@ -285,7 +282,6 @@ export function RecentBlogs() {
             </motion.div>
           )}
         </div>
-
       </div>
     </section>
   );

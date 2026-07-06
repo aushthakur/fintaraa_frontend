@@ -10,23 +10,23 @@ import type { LoanSeoPageData } from "@/services/loanSeoPages";
 const sequentialSteps = [
   {
     stepNumber: "Step- 01",
-    title: "Enter Your Mobile Number",
-    description: "Enter your mobile number and basic details to get started.",
+    title: "Share Basic Details",
+    description: "Enter your mobile number, profile details, and requirement.",
   },
   {
     stepNumber: "Step- 02",
-    title: "Verify Your OTP",
-    description: "Enter the secure 6-digit one-time password sent to your device.",
+    title: "Verify Mobile OTP",
+    description: "Confirm the secure OTP sent to your registered mobile number.",
   },
   {
     stepNumber: "Step- 03",
-    title: "Check Loan Offers",
-    description: "View custom interest options tailored precisely to your profile.",
+    title: "Review Eligible Options",
+    description: "Check partner options matched to your profile and location.",
   },
   {
     stepNumber: "Step- 04",
-    title: "Instant Disbursement",
-    description: "Accept terms and watch money transfer direct to your bank account.",
+    title: "Submit Documents",
+    description: "Upload required documents and continue with assisted follow-up.",
   },
 ];
 
@@ -45,10 +45,11 @@ export function LoanVerificationSteps({ page }: { page: LoanSeoPageData }) {
         <div className="space-y-10">
           <div>
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Simple 4- Step verification
+              Steps to Apply for {page.loanType}
             </h2>
             <p className="mt-2 text-sm font-medium text-gray-400">
-              Our digital process is fast, paperless and incredibly easy
+              Follow a simple assisted process from profile check to partner
+              review.
             </p>
           </div>
 
@@ -96,7 +97,7 @@ export function LoanVerificationSteps({ page }: { page: LoanSeoPageData }) {
               productSlug={page.loanTypeSlug}
               className="inline-flex h-11 items-center justify-center gap-2 rounded-full  bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-6 text-sm font-bold text-white transition-all hover:bg-[#009948] active:scale-[0.99] no-underline shadow-sm"
             >
-              Get free credit score
+              Apply for {page.loanType}
               <ArrowRight className="h-4 w-4" strokeWidth={2.5} />
             </AuthRedirectLink>
           </div>

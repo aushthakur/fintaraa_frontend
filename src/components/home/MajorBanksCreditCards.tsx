@@ -5,15 +5,12 @@ import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import {
   ArrowRight,
-  BadgeCheck,
   Gift,
-  Heart,
+  // Heart,
   Loader2,
-  ShieldCheck,
   Sparkles,
   Star,
   Tags,
-  Zap,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { BankLogoImage } from "@/components/common/BankLogoImage";
@@ -175,12 +172,21 @@ const formatFee = (value?: string | number) => {
   return String(value);
 };
 
-const featureValue = (card: CreditCardProduct, fallback: string) =>
-  card.cashbackDetails ||
-  card.rewardStructure ||
-  card.rewardsType ||
-  card.welcomeBenefits ||
-  fallback;
+// const featureValue = (card: CreditCardProduct, fallback: string) =>
+//   card.cashbackDetails ||
+//   card.rewardStructure ||
+//   card.rewardsType ||
+//   card.welcomeBenefits ||
+//   fallback;
+
+const getBankLogoSrc = (bankName: string, cards: CreditCardProduct[]) => {
+  const bankKey = normalizeBankKey(bankName);
+  const matchingCard = cards.find(
+    (card) => normalizeBankKey(card.bankName) === bankKey && card.image,
+  );
+
+  return matchingCard?.image || bankLogoFallbacks[bankKey];
+};
 
 export function MajorBankCreditCards() {
   const router = useRouter();
@@ -217,26 +223,23 @@ export function MajorBankCreditCards() {
     };
   }, []);
 
-  const bankTabs = useMemo(
-    () => {
-      const names = Array.from(
-        new Set(
-          [...bankDisplayOrder, ...cards.map((card) => card.bankName)].filter(
-            Boolean,
-          ),
+  const bankTabs = useMemo(() => {
+    const names = Array.from(
+      new Set(
+        [...bankDisplayOrder, ...cards.map((card) => card.bankName)].filter(
+          Boolean,
         ),
-      );
-      return names.sort((a, b) => {
-        const aIndex = bankDisplayOrder.indexOf(a);
-        const bIndex = bankDisplayOrder.indexOf(b);
-        if (aIndex === -1 && bIndex === -1) return a.localeCompare(b);
-        if (aIndex === -1) return 1;
-        if (bIndex === -1) return -1;
-        return aIndex - bIndex;
-      });
-    },
-    [cards],
-  );
+      ),
+    );
+    return names.sort((a, b) => {
+      const aIndex = bankDisplayOrder.indexOf(a);
+      const bIndex = bankDisplayOrder.indexOf(b);
+      if (aIndex === -1 && bIndex === -1) return a.localeCompare(b);
+      if (aIndex === -1) return 1;
+      if (bIndex === -1) return -1;
+      return aIndex - bIndex;
+    });
+  }, [cards]);
 
   const activeCards = useMemo(
     () =>
@@ -253,7 +256,10 @@ export function MajorBankCreditCards() {
     [activeBank, cards],
   );
 
-  const activeBankData = activeCards[0];
+  const activeBankLogoSrc = useMemo(
+    () => (activeBank ? getBankLogoSrc(activeBank, cards) : ""),
+    [activeBank, cards],
+  );
 
   const handleEligibility = async (card: CreditCardProduct) => {
     const id = getCardId(card);
@@ -269,56 +275,24 @@ export function MajorBankCreditCards() {
 
   return (
     <section className="bg-white px-4 py-10 md:px-6 lg:px-8">
-      <div className="mx-auto max-w-9xl overflow-hidden rounded-2xl bg-[#f7fbff]">
-        <div className="relative grid items-stretch overflow-hidden lg:min-h-80 lg:grid-cols-[1.1fr_0.9fr]">
-          <div className="px-5 py-8 sm:px-8 lg:px-10">
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-              <div>
-                <span className="inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-wide text-[#075cde]">
-                  <ShieldCheck className="h-4 w-4" />
-                  Trusted by millions of Indians
-                </span>
-                <h2 className="mt-4 max-w-2xl text-[30px] font-bold leading-tight tracking-tight text-[#07162d] sm:text-[40px]">
-                  Find the Right Credit Card from{" "}
-                  <span className="text-[#075cde]">Top Banks</span>
-                </h2>
-              </div>
-              <Link
-                href="/credit-cards"
-                className="inline-flex h-10 w-fit shrink-0 items-center justify-center gap-2 rounded-xl bg-[#075cde] px-5 text-[13px] font-bold text-white no-underline transition hover:bg-[#064cb8]"
-              >
-                View All Cards
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </div>
-            <div className="mt-6 grid max-w-xl gap-3 sm:grid-cols-3">
-              {["Best rewards", "100% secure", "Quick approval"].map((item) => (
-                <div
-                  key={item}
-                  className="flex items-center gap-2 text-[12px] font-semibold text-[#07162d]"
-                >
-                  <BadgeCheck className="h-4 w-4 text-[#075cde]" />
-                  {item}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="relative min-h-55 bg-[#e9f2ff] sm:min-h-75">
-            <Image
-              src="/assets/banks/visa-card.png"
-              alt="Featured credit cards"
-              fill
-              className="object-contain p-8"
-              unoptimized
-            />
-            <div className="absolute right-5 top-5 flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#075cde] sm:right-8 sm:top-8 sm:h-12 sm:w-12">
-              <Zap className="h-5 w-5" />
-            </div>
+      <div className="mx-auto max-w-9xl overflow-hidden rounded-2xl">
+        <div className="pb-6">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <h2 className="max-w-3xl text-[24px] font-bold leading-tight tracking-tight text-gray-900 sm:text-[32px] md:text-[38px]">
+              Find the Right Credit Card
+              {/* <span className="text-[#075cde]">Top Banks</span> */}
+            </h2>
+            <Link
+              href="/credit-cards"
+              className="inline-flex h-10 w-fit shrink-0 items-center justify-center gap-2 rounded-xl bg-[#075cde] px-5 text-[13px] font-bold text-white no-underline transition hover:bg-[#064cb8]"
+            >
+              View All Cards
+              <ArrowRight className="h-4 w-4" />
+            </Link>
           </div>
         </div>
 
-        <div className="border-y border-[#dceaf7] bg-white px-4 py-3 sm:px-6">
+        <div className="bg-white">
           <div className="flex min-w-0 items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
             {loading ? (
               <span className="inline-flex items-center gap-2 text-[13px] font-semibold text-[#667085]">
@@ -328,11 +302,7 @@ export function MajorBankCreditCards() {
             ) : (
               bankTabs.map((tab) => {
                 const isActive = activeBank === tab;
-                const normalizedTab = normalizeBankKey(tab);
-                const sample = cards.find(
-                  (card) => normalizeBankKey(card.bankName) === normalizedTab,
-                );
-                const logoSrc = sample?.image || bankLogoFallbacks[normalizedTab];
+                const logoSrc = getBankLogoSrc(tab, cards);
                 return (
                   <button
                     key={tab}
@@ -371,13 +341,9 @@ export function MajorBankCreditCards() {
             <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex min-w-0 items-start gap-4 sm:items-center">
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#e9f2ff] text-xl font-bold text-[#075cde]">
-                  {activeBankData?.image ||
-                  bankLogoFallbacks[normalizeBankKey(activeBank)] ? (
+                  {activeBankLogoSrc ? (
                     <BankLogoImage
-                      src={
-                        activeBankData?.image ||
-                        bankLogoFallbacks[normalizeBankKey(activeBank)]
-                      }
+                      src={activeBankLogoSrc}
                       alt={activeBank}
                       className="h-9 w-auto max-w-10 object-contain"
                       unoptimized
@@ -390,10 +356,10 @@ export function MajorBankCreditCards() {
                   <h3 className="text-[22px] font-bold text-[#07162d]">
                     {activeBank} Credit Cards
                   </h3>
-                  <p className="mt-1 max-w-xl text-[13px] font-semibold leading-6 text-[#61748f]">
+                  {/* <p className="mt-1 max-w-xl text-[13px] font-semibold leading-6 text-[#61748f]">
                     Great benefits, transparent fees and one clear eligibility
                     step for every card.
-                  </p>
+                  </p> */}
                 </div>
               </div>
             </div>
@@ -426,13 +392,13 @@ export function MajorBankCreditCards() {
                           <BadgeIcon className="h-3.5 w-3.5" />
                           {badge.label}
                         </span>
-                        <button
+                        {/* <button
                           type="button"
                           aria-label={`Save ${card.name}`}
                           className="flex h-8 w-8 items-center justify-center rounded-full border border-[#dceaf7] text-[#98a2b3] transition hover:border-[#075cde] hover:text-[#075cde]"
                         >
                           <Heart className="h-4 w-4" />
-                        </button>
+                        </button> */}
                       </div>
 
                       <div className="relative mt-4 aspect-[1.58/1] overflow-hidden rounded-2xl bg-[#0b315f]">
@@ -459,7 +425,7 @@ export function MajorBankCreditCards() {
                       <h4 className="mt-4 text-[15px] font-bold leading-snug text-[#07162d]">
                         {card.name}
                       </h4>
-                      <p className="mt-1 min-h-10 text-[12px] font-semibold leading-5 text-[#61748f]">
+                      <p className="mt-1 line-clamp-2 min-h-10 text-[12px] font-semibold leading-5 text-[#61748f]">
                         {card.shortDescription ||
                           card.subtitle ||
                           card.welcomeBenefits}
@@ -469,13 +435,13 @@ export function MajorBankCreditCards() {
                         {[
                           ["Annual Fee", formatFee(card.annualFee)],
                           ["Joining Fee", formatFee(card.joiningFee)],
-                          [
-                            card.rewardsType ? "Rewards" : "Benefit",
-                            featureValue(card, "Reward points"),
-                          ],
-                          ["Approval", card.processingTime || "Instant check"],
+                          // [
+                          //   card.rewardsType ? "Rewards" : "Benefit",
+                          //   featureValue(card, "Reward points"),
+                          // ],
+                          // ["Approval", card.processingTime || "Instant check"],
                         ].map(([label, value]) => (
-                          <div key={label} className="rounded-xl bg-white p-3">
+                          <div key={label} className="rounded-xl bg-white">
                             <p className="text-[10px] font-bold uppercase tracking-wide text-[#8090a4]">
                               {label}
                             </p>
@@ -504,7 +470,6 @@ export function MajorBankCreditCards() {
               Credit cards will appear here once active products are available.
             </div>
           )}
-
         </div>
       </div>
     </section>

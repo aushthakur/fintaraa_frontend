@@ -70,7 +70,7 @@ export function HomeLoanOffers() {
         {/* Sub-Header Actions Row: Title + Search Bar Filter Input */}
         <div className="mb-6 grid gap-4 sm:grid-cols-[1fr_minmax(220px,320px)_auto] sm:items-center">
           <h3 className="text-[18px] md:text-[20px] font-bold text-gray-900 tracking-tight">
-            Lowest Interest Rates
+            Lowest Interest Rates*
           </h3>
 
           {/* Dashboard-Style Search Container Field */}
@@ -168,7 +168,6 @@ export function HomeLoanOffers() {
             No matching offers found. Try another bank or product search.
           </div>
         ) : null}
-
       </div>
     </section>
   );

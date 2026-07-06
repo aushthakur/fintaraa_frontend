@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import {
   X,
@@ -294,11 +294,41 @@ const hrefPath = (href: string) => href.split("?")[0];
 export default function Navbar() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  const headerRef = useRef<HTMLElement | null>(null);
   const { profile } = useCurrentUser();
   const loggedIn = Boolean(profile.raw);
 
+  useEffect(() => {
+    const header = headerRef.current;
+    if (!header) return;
+
+    const updateHeaderHeight = () => {
+      document.documentElement.style.setProperty(
+        "--site-header-height",
+        `${header.getBoundingClientRect().height}px`,
+      );
+    };
+
+    updateHeaderHeight();
+    window.addEventListener("resize", updateHeaderHeight);
+
+    const observer =
+      typeof ResizeObserver !== "undefined"
+        ? new ResizeObserver(updateHeaderHeight)
+        : null;
+    observer?.observe(header);
+
+    return () => {
+      window.removeEventListener("resize", updateHeaderHeight);
+      observer?.disconnect();
+    };
+  }, []);
+
   return (
-    <header className="sticky top-0 z-50 overflow-x-clip border-b border-[#e5eef8] bg-white/95 backdrop-blur">
+    <header
+      ref={headerRef}
+      className="sticky top-0 z-50 overflow-x-clip border-b border-[#e5eef8] bg-white/95 backdrop-blur"
+    >
       <div className="bg-[#002B4D] px-4 text-white md:px-6 lg:pl-8 lg:pr-10">
         <div className="mx-auto flex min-h-9 max-w-9xl items-center justify-center gap-4 py-2 text-center text-[11px] font-semibold sm:justify-between sm:text-left">
           <p className="flex items-center justify-center gap-2 leading-4">
@@ -308,11 +338,11 @@ export default function Navbar() {
           </p>
           <div className="hidden items-center gap-5 lg:flex">
             <a
-              href="tel:+919999175156"
+              href="tel:+918448282680"
               className="flex items-center gap-1.5 text-white/90 no-underline transition hover:text-white"
             >
               <Phone className="h-3.5 w-3.5" />
-              +91 99991 75156
+              +91 84482 82680
             </a>
             <a
               href="mailto:customercare@fintaraa.com"
@@ -408,46 +438,58 @@ export default function Navbar() {
                 className="min-w-0 flex-1 bg-transparent text-[13px] font-semibold outline-none placeholder:text-[#98a2b3]"
               />
             </form>
-            {navItems.map((item) => (
-              <div key={item.label} className="border-b border-[#edf3f8] py-2">
-                <Link
-                  href={item.href}
-                  onClick={() => setMenuOpen(false)}
-                  className={`${underlineClass} flex items-center justify-between rounded-md px-3 py-2 text-[14px] font-semibold text-[#101828] no-underline hover:text-[#195585]`}
+            {navItems.map((item) => {
+              const hideDescriptions =
+                item.label === "Loans" || item.label === "Insurance";
+
+              return (
+                <div
+                  key={item.label}
+                  className="border-b border-[#edf3f8] py-2"
                 >
-                  {item.label}
+                  <Link
+                    href={item.href}
+                    onClick={() => setMenuOpen(false)}
+                    className={`${underlineClass} flex items-center justify-between rounded-md px-3 py-2 text-[14px] font-semibold text-[#101828] no-underline hover:text-[#195585]`}
+                  >
+                    {item.label}
+                    {item.sections?.length ? (
+                      <ChevronDown className="h-4 w-4" />
+                    ) : null}
+                  </Link>
                   {item.sections?.length ? (
-                    <ChevronDown className="h-4 w-4" />
-                  ) : null}
-                </Link>
-                {item.sections?.length ? (
-                  <div className="grid gap-3 px-3 pb-2">
-                    {item.sections.map((section) => (
-                      <div key={section.title}>
-                        <p className="px-3 pt-2 text-[11px] font-bold uppercase tracking-[0.12em] text-[#195585]">
-                          {section.title}
-                        </p>
-                        <div className="mt-1 grid gap-1">
-                          {section.links.map((link) => (
-                            <Link
-                              key={`${item.label}-${link.href}-${link.label}`}
-                              href={link.href}
-                              onClick={() => setMenuOpen(false)}
-                              className="rounded-md px-3 py-2 text-[13px] font-semibold text-[#667085] no-underline hover:bg-[#eef8ff] hover:text-[#195585]"
-                            >
-                              {link.label}
-                              <span className="mt-0.5 line-clamp-1 block text-[11px] font-medium text-[#8b95a3]">
-                                {link.description}
-                              </span>
-                            </Link>
-                          ))}
+                    <div className="grid gap-3 px-3 pb-2">
+                      {item.sections.map((section) => (
+                        <div key={section.title}>
+                          <p className="px-3 pt-2 text-[11px] font-bold uppercase tracking-[0.12em] text-[#195585]">
+                            {section.title}
+                          </p>
+                          <div className="mt-1 grid gap-1">
+                            {section.links.map((link) => (
+                              <Link
+                                key={`${item.label}-${link.href}-${link.label}`}
+                                href={link.href}
+                                onClick={() => setMenuOpen(false)}
+                                className={`relative rounded-md px-2 text-[13px] font-semibold text-[#667085] no-underline transition after:absolute after:bottom-0 after:left-2 after:right-2 after:h-0.5 after:origin-left after:scale-x-0 after:bg-[#195585] after:transition-transform after:duration-300 hover:text-[#195585] hover:after:scale-x-100 ${
+                                  hideDescriptions ? "py-1.5" : "py-2"
+                                }`}
+                              >
+                                {link.label}
+                                {!hideDescriptions && link.description ? (
+                                  <span className="mt-0.5 line-clamp-1 block text-[11px] font-medium text-[#8b95a3]">
+                                    {link.description}
+                                  </span>
+                                ) : null}
+                              </Link>
+                            ))}
+                          </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : null}
-              </div>
-            ))}
+                      ))}
+                    </div>
+                  ) : null}
+                </div>
+              );
+            })}
             <div className="mt-4 grid gap-3">
               <AuthButton
                 loggedIn={loggedIn}
@@ -543,6 +585,7 @@ function MegaDropdown({
   const compact = sections.length <= 1 && totalLinks <= 4;
   if (compact) return <CompactDropdown align={align} item={item} />;
 
+  const hideDescriptions = item.label === "Loans" || item.label === "Insurance";
   const dropdownAlignClass = align === "right" ? "right-0" : "left-0";
   const columnCount =
     sections.length >= 3
@@ -585,28 +628,29 @@ function MegaDropdown({
               <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-[#195585]">
                 {section.title}
               </p>
-              {section.subtitle ? (
+              {!hideDescriptions && section.subtitle ? (
                 <p className="mt-1 text-[12px] font-semibold leading-5 text-[#667085]">
                   {section.subtitle}
                 </p>
               ) : null}
-              <div className="mt-4 grid gap-1.5">
+              <div className="mt-2 grid gap-1.5">
                 {section.links.map((link) => (
                   <Link
                     key={`${section.title}-${link.href}-${link.label}`}
                     href={link.href}
-                    className="group/item flex items-center gap-3 rounded-2xl py-2 text-[#07162d] no-underline transition"
+                    className={`group/item relative block rounded-lg px-2 text-[#07162d] no-underline transition after:absolute after:bottom-0 after:left-2 after:right-2 after:h-0.5 after:origin-left after:scale-x-0 after:bg-[#195585] after:transition-transform after:duration-300 after:ease-out hover:after:scale-x-100 ${
+                      hideDescriptions ? "py-1.5" : "py-2"
+                    }`}
                   >
-                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#eef8ff] text-[#195585] transition group-hover/item:bg-[#195585] group-hover/item:text-white">
-                      <ArrowRight className="h-4 w-4" />
-                    </span>
                     <span className="min-w-0">
-                      <span className="block truncate text-[13px] font-semibold">
+                      <span className="inline-block max-w-full truncate text-[13px] font-semibold group-hover/item:text-[#195585]">
                         {link.label}
                       </span>
-                      <span className="mt-0.5 line-clamp-1 block text-[11px] font-semibold text-[#667085]">
-                        {link.description}
-                      </span>
+                      {!hideDescriptions && link.description ? (
+                        <span className="mt-0.5 line-clamp-1 block text-[11px] font-semibold text-[#667085]">
+                          {link.description}
+                        </span>
+                      ) : null}
                     </span>
                   </Link>
                 ))}
@@ -628,6 +672,7 @@ function CompactDropdown({
 }) {
   const section = item.sections?.[0];
   const dropdownAlignClass = align === "right" ? "right-0" : "left-0";
+  const hideDescriptions = item.label === "Loans" || item.label === "Insurance";
 
   if (!section) return null;
 
@@ -636,33 +681,24 @@ function CompactDropdown({
       className={`pointer-events-none absolute ${dropdownAlignClass} top-full z-50 w-86 pt-5 opacity-0 transition duration-200 group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:opacity-100`}
     >
       <div className="rounded-xl border border-[#d9e9f6] bg-white p-3">
-        <div className="rounded-lg bg-[#eef8ff] px-4 py-3">
-          <p className="line-clamp-1 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#195585]">
-            {section.title}
-          </p>
-          {section.subtitle ? (
-            <p className="mt-1 line-clamp-1 text-[12px] font-semibold text-[#667085]">
-              {section.subtitle}
-            </p>
-          ) : null}
-        </div>
-        <div className="mt-2 grid gap-1">
+        <div className="grid gap-1">
           {section.links.map((link) => (
             <Link
               key={`${section.title}-${link.href}-${link.label}`}
               href={link.href}
-              className="group/item flex items-center gap-3 rounded-lg px-3 py-2.5 text-[#07162d] no-underline transition hover:bg-[#f6fbff]"
+              className={`group/item relative block rounded-lg px-2 text-[#07162d] no-underline transition after:absolute after:bottom-0 after:left-2 after:right-2 after:h-0.5 after:origin-left after:scale-x-0 after:bg-[#195585] after:transition-transform after:duration-300 after:ease-out hover:after:scale-x-100 ${
+                hideDescriptions ? "py-1.5" : "py-2"
+              }`}
             >
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#eef8ff] text-[#195585] transition group-hover/item:bg-[#195585] group-hover/item:text-white">
-                <ArrowRight className="h-4 w-4" />
-              </span>
               <span className="min-w-0">
-                <span className="block truncate text-[13px] font-semibold">
+                <span className="inline-block max-w-full truncate text-[13px] font-semibold group-hover/item:text-[#195585]">
                   {link.label}
                 </span>
-                <span className="mt-0.5 line-clamp-1 block text-[11px] font-semibold text-[#667085]">
-                  {link.description}
-                </span>
+                {!hideDescriptions && link.description ? (
+                  <span className="mt-0.5 line-clamp-1 block text-[11px] font-semibold text-[#667085]">
+                    {link.description}
+                  </span>
+                ) : null}
               </span>
             </Link>
           ))}

@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useState } from "react";
 import {
   Building2,
   LocateFixed,
@@ -87,34 +90,56 @@ const makeTitle = (
 function LinkRow({
   items,
   maxItems = 120,
+  step = 10,
 }: {
   items: DirectoryItem[];
   maxItems?: number;
+  step?: number;
 }) {
-  const visible = items.slice(0, maxItems);
+  const [visibleCount, setVisibleCount] = useState(step);
+  const cappedItems = items.slice(0, maxItems);
+  const visible = cappedItems.slice(0, visibleCount);
   if (!visible.length) return null;
+  const hasMore = visible.length < cappedItems.length;
 
   return (
-    <p className="mx-auto mt-4 max-w-8xl text-center text-[15px] font-medium leading-8 text-[#8b95a3] md:text-[17px] md:leading-9">
+    <div className="mx-auto mt-4 max-w-8xl text-center text-[15px] font-semibold leading-8 text-[#8b95a3] md:text-[16px] md:leading-9">
       {visible.map((item, index) => (
-        <span key={item.key}>
+        <span key={item.key} className="inline">
           <Link
             href={item.href}
-            className="text-[#7f8995] no-underline transition hover:text-[#00529b]"
+            className="text-[#667085] no-underline transition hover:text-[#00529b]"
           >
             {item.label}
           </Link>
           {index < visible.length - 1 ? (
-            <span className="px-2 text-[#ccd4dc]">/</span>
+            <span className="px-3 text-[18px] font-black text-[#00529b]/45">
+              |
+            </span>
           ) : null}
         </span>
       ))}
-      {items.length > maxItems ? (
-        <span className="pl-2 text-[13px] font-semibold text-[#98a2b3]">
-          +{items.length - maxItems} more
-        </span>
+      {hasMore ? (
+        <>
+          {visible.length ? (
+            <span className="px-3 text-[18px] font-black text-[#00529b]/45">
+              |
+            </span>
+          ) : null}
+          <button
+            type="button"
+            onClick={() =>
+              setVisibleCount((current) =>
+                Math.min(current + step, cappedItems.length),
+              )
+            }
+            className="text-[15px] font-black text-[#00529b] underline-offset-4 transition hover:underline"
+          >
+            Show more ({cappedItems.length - visible.length})
+          </button>
+        </>
       ) : null}
-    </p>
+    </div>
   );
 }
 
@@ -246,7 +271,7 @@ export function ProductLocationDirectory({
   const hasPincode = Boolean(current.pincode);
   const hasArea = Boolean(current.area);
 
-  const titlePrefix = `${productName} Location Pages`;
+  const titlePrefix = `${productName} Locations`;
 
   return (
     <section className="bg-[#fbfcfd] px-4 py-8 md:px-6 lg:px-8">
@@ -260,13 +285,13 @@ export function ProductLocationDirectory({
               maxItems={50}
             />
             <DirectorySection
-              title={`Popular ${productName} City Pages`}
+              title={`Popular ${productName} Cities`}
               icon={Building2}
               items={cityItems}
               maxItems={80}
             />
             <DirectorySection
-              title={`Popular ${productName} Area Pages`}
+              title={`Popular ${productName} Areas`}
               icon={MapPin}
               items={areaItems}
               maxItems={100}
@@ -275,21 +300,21 @@ export function ProductLocationDirectory({
         ) : (
           <>
             <DirectorySection
-              title={`${productName} Pages In ${current.state}`}
+              title={`${productName} In ${current.state}`}
               icon={Navigation}
               items={hasCity ? pincodeItems : cityItems}
               maxItems={100}
             />
             {hasCity ? (
               <DirectorySection
-                title={`${productName} Pincode Pages In ${current.city}`}
+                title={`${productName} Pincodes In ${current.city}`}
                 icon={LocateFixed}
                 items={pincodeItems}
                 maxItems={120}
               />
             ) : (
               <DirectorySection
-                title={`${productName} Pincode Pages In ${current.state}`}
+                title={`${productName} Pincodes In ${current.state}`}
                 icon={LocateFixed}
                 items={pincodeItems}
                 maxItems={120}
@@ -298,10 +323,10 @@ export function ProductLocationDirectory({
             <DirectorySection
               title={
                 hasPincode
-                  ? `${productName} Area Pages In ${current.pincode}`
+                  ? `${productName} Areas In ${current.pincode}`
                   : hasCity
-                    ? `${productName} Area Pages In ${current.city}`
-                    : `${productName} Area Pages In ${current.state}`
+                    ? `${productName} Areas In ${current.city}`
+                    : `${productName} Areas In ${current.state}`
               }
               icon={MapPin}
               items={areaItems}
@@ -309,7 +334,7 @@ export function ProductLocationDirectory({
             />
             {hasArea ? (
               <DirectorySection
-                title={`More ${productName} State Pages`}
+                title={`More ${productName} States`}
                 icon={Map}
                 items={stateItems}
                 maxItems={50}

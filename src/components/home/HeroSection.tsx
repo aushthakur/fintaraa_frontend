@@ -5,27 +5,27 @@ import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import {
   ArrowRight,
-  BadgeCheck,
+  // BadgeCheck,
   BriefcaseBusiness,
   CalendarDays,
   ChevronDown,
   CreditCard,
   Gauge,
   HandCoins,
-  Info,
-  LockKeyhole,
-  ShieldCheck,
+  // Info,
   Umbrella,
   UserRound,
   UsersRound,
+  LockKeyhole,
+  ShieldCheck,
   type LucideIcon,
 } from "lucide-react";
-import { AnimatedCounter } from "@/components/common/AnimatedCounter";
 import { loanProductDirectory } from "@/data/bankDirectory";
+import { AnimatedCounter } from "@/components/common/AnimatedCounter";
 import {
-  fallbackHomeBanners,
-  fetchHomeBanners,
   type HomeBanner,
+  fetchHomeBanners,
+  fallbackHomeBanners,
 } from "@/services/homeBanners";
 import { LoanExpertButton } from "./LoanExpertPopup";
 
@@ -35,7 +35,7 @@ const trustStats = [
   { value: "256-bit", label: "secure", icon: LockKeyhole },
 ];
 
-const proofItems = ["RBI registered", "ISO 27001 certified", "No CIBIL impact"];
+// const proofItems = ["RBI registered", "ISO 27001 certified", "No CIBIL impact"];
 
 const productTabs = [
   { label: "Loan", icon: HandCoins },
@@ -43,13 +43,13 @@ const productTabs = [
   { label: "Credit Card", icon: CreditCard },
 ];
 
-const amountOptions = [
-  { label: "Rs. 2L", value: 200000 },
-  { label: "Rs. 5L", value: 500000 },
-  { label: "Rs. 10L", value: 1000000 },
-  { label: "Rs. 20L", value: 2000000 },
-  { label: "Rs. 30L", value: 3000000 },
-];
+// const amountOptions = [
+//   { label: "Rs. 2L", value: 200000 },
+//   { label: "Rs. 5L", value: 500000 },
+//   { label: "Rs. 10L", value: 1000000 },
+//   { label: "Rs. 20L", value: 2000000 },
+//   { label: "Rs. 30L", value: 3000000 },
+// ];
 
 const loanTypeOptions = loanProductDirectory.map((loan) => loan.name);
 const tenureOptions = ["5 Years", "3 Years", "7 Years", "10 Years"];
@@ -70,10 +70,14 @@ const resolveBannerHref = (buttonText?: string, href?: string) => {
   return href || "";
 };
 
-const formatAmount = (value: number) =>
-  new Intl.NumberFormat("en-IN", {
+const formatAmount = (value: number | string) => {
+  const numericValue = Number(value);
+  if (!Number.isFinite(numericValue)) return String(value);
+
+  return new Intl.NumberFormat("en-IN", {
     maximumFractionDigits: 0,
-  }).format(value);
+  }).format(numericValue);
+};
 
 const getTenureYears = (value: string) => Number(value.match(/\d+/)?.[0] || 5);
 
@@ -119,7 +123,7 @@ export function HeroSection() {
   const [banners, setBanners] = useState<HomeBanner[]>(fallbackHomeBanners);
   const [activeIndex, setActiveIndex] = useState(0);
   const [selectedProduct, setSelectedProduct] = useState(productTabs[0].label);
-  const [amount, setAmount] = useState(1000000);
+  const [amount, setAmount] = useState("1000000");
   const [purpose, setPurpose] = useState(loanTypeOptions[0]);
   const [tenure, setTenure] = useState(tenureOptions[0]);
   const [salaryType, setSalaryType] = useState(salaryOptions[0]);
@@ -159,11 +163,11 @@ export function HeroSection() {
       "One secure check. Multiple trusted offers. No CIBIL impact.",
     [activeBanner.description],
   );
-  const primaryHref =
-    resolveBannerHref(
-      activeBanner.secondaryButtonText,
-      activeBanner.secondaryLinkUrl,
-    ) || "/#eligibility-check";
+  // const primaryHref =
+  //   resolveBannerHref(
+  //     activeBanner.secondaryButtonText,
+  //     activeBanner.secondaryLinkUrl,
+  //   ) || "/#eligibility-check";
   const secondaryHref =
     resolveBannerHref(activeBanner.buttonText, activeBanner.linkUrl) ||
     "/products";
@@ -175,7 +179,7 @@ export function HeroSection() {
     const params = new URLSearchParams({
       product: "loan",
       loanType,
-      amount: String(amount),
+      amount: amount || "0",
       salaryType,
       cibilScore: String(cibilScore),
       tenureYears: String(getTenureYears(tenure)),
@@ -187,7 +191,7 @@ export function HeroSection() {
     selectedProduct === "Loan" ? "Check Offers" : "Continue";
 
   return (
-    <section className="relative min-h-[calc(100svh-6.75rem)] overflow-hidden bg-[#061a3d] px-4 py-5 text-white md:px-6 lg:min-h-[640px] lg:px-8 lg:py-8">
+    <section className="relative min-h-[calc(100svh-6.75rem)] overflow-hidden bg-[#061a3d] px-4 py-5 text-white md:px-6 lg:min-h-[540px] lg:px-8">
       <div className="absolute inset-0">
         {banners.map((banner, index) => (
           <Image
@@ -207,10 +211,10 @@ export function HeroSection() {
         <div className="absolute inset-x-0 bottom-0 h-28 bg-linear-to-t from-[#061a3d]/80 to-transparent" />
       </div>
 
-      <div className="relative z-10 mx-auto flex min-h-[calc(100svh-8rem)] w-full max-w-[100vw] items-center py-6 lg:min-h-[580px] lg:max-w-9xl lg:py-0">
+      <div className="relative z-10 mx-auto max-w-9xl flex min-h-[calc(100svh-8rem)] w-full max-w-[100vw] items-center py-6 lg:min-h-[520px] lg:max-w-9xl lg:py-0">
         <div className="grid w-full min-w-0 max-w-full items-center gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(340px,400px)] xl:grid-cols-[minmax(0,1fr)_minmax(360px,420px)]">
           <div className="mobile-hero-copy min-w-0 max-w-[calc(100vw-2rem)] lg:max-w-3xl">
-            <div className="hidden flex-wrap gap-4 sm:flex">
+            {/* <div className="hidden flex-wrap gap-4 sm:flex">
               {proofItems.map((chip) => (
                 <span
                   key={chip}
@@ -220,17 +224,17 @@ export function HeroSection() {
                   {chip}
                 </span>
               ))}
-            </div>
+            </div> */}
 
             <div
               key={activeBanner._id || `${activeBanner.title}-${activeIndex}`}
               className="hero-copy-transition"
             >
-              {activeBanner.eyebrow ? (
+              {/* {activeBanner.eyebrow ? (
                 <p className="mt-6 text-[11px] font-bold uppercase tracking-[0.18em] text-[#9ed0ff]">
                   {activeBanner.eyebrow}
                 </p>
-              ) : null}
+              ) : null} */}
 
               <h1 className="mt-3 max-w-4xl text-[32px] font-bold leading-[1.08] tracking-tight text-white sm:text-[42px] lg:text-[56px] xl:text-[60px]">
                 {activeBanner.title}
@@ -246,7 +250,7 @@ export function HeroSection() {
               </p>
             </div>
 
-            <div className="mt-5 hidden max-w-2xl gap-2 md:grid md:grid-cols-3">
+            {/* <div className="mt-5 hidden max-w-2xl gap-2 md:grid md:grid-cols-3">
               {["100% free", "Instant results", "No hidden charges"].map(
                 (item) => (
                   <div
@@ -258,19 +262,19 @@ export function HeroSection() {
                   </div>
                 ),
               )}
-            </div>
+            </div> */}
 
             <div className="mt-6 hidden flex-col gap-3 sm:flex sm:flex-row sm:items-center">
-              <Link
+              {/* <Link
                 href={primaryHref}
                 className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#075cde] px-5 text-[14px] font-semibold text-white no-underline transition hover:bg-[#064cb8]"
               >
                 Check my eligibility - free & instant
                 <ArrowRight className="h-4 w-4" />
-              </Link>
+              </Link> */}
               <Link
                 href={secondaryHref}
-                className="inline-flex h-11 items-center justify-center gap-2 text-[13px] font-semibold text-white/88 no-underline transition hover:text-white"
+                className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#075cde] px-5 text-[14px] font-semibold text-white no-underline transition hover:bg-[#064cb8]"
               >
                 View all products
                 <ArrowRight className="h-4 w-4" />
@@ -323,12 +327,12 @@ export function HeroSection() {
                       key={label}
                       type="button"
                       onClick={() => setSelectedProduct(label)}
-                    className={`flex h-10 min-w-0 items-center justify-center gap-1 border-b-2 px-1 text-[10px] font-bold transition sm:gap-1.5 sm:text-[11px] ${
-                      active
-                        ? "border-[#075cde] text-[#075cde]"
-                        : "border-transparent text-[#344054] hover:text-[#075cde]"
-                    }`}
-                  >
+                      className={`flex h-10 min-w-0 items-center justify-center gap-1 border-b-2 px-1 text-[10px] font-bold transition sm:gap-1.5 sm:text-[11px] ${
+                        active
+                          ? "border-[#075cde] text-[#075cde]"
+                          : "border-transparent text-[#344054] hover:text-[#075cde]"
+                      }`}
+                    >
                       <Icon className="h-3.5 w-3.5 shrink-0" />
                       <span className="truncate">
                         {label === "Credit Card" ? "Card" : label}
@@ -344,23 +348,26 @@ export function HeroSection() {
                     Requirement Amount
                   </p>
                   <p className="text-[20px] font-bold tracking-tight text-[#07162d] sm:text-[22px]">
-                    Rs. {formatAmount(amount)}
+                    {amount ? `Rs. ${formatAmount(amount)}` : "Enter amount"}
                   </p>
                 </div>
-                <input
-                  type="range"
-                  min={50000}
-                  max={5000000}
-                  step={50000}
-                  value={amount}
-                  onChange={(event) => setAmount(Number(event.target.value))}
-                  className="mt-2 h-1.5 w-full cursor-pointer appearance-none rounded-full accent-[#075cde]"
-                  style={{
-                    background: `linear-gradient(to right, #075cde 0%, #075cde ${((amount - 50000) / (5000000 - 50000)) * 100}%, #e2e8f0 ${((amount - 50000) / (5000000 - 50000)) * 100}%, #e2e8f0 100%)`,
-                  }}
-                  aria-label="Requirement amount"
-                />
-                <div className="mt-2 grid grid-cols-2 gap-1.5 sm:grid-cols-5">
+                <label className="mt-2 flex h-11 w-full items-center gap-2 rounded-xl border border-[#d7e5f3] bg-white px-3 transition focus-within:border-[#075cde]">
+                  <span className="text-[13px] font-bold text-[#075cde]">
+                    Rs.
+                  </span>
+                  <input
+                    type="number"
+                    inputMode="numeric"
+                    value={amount}
+                    onChange={(event) =>
+                      setAmount(event.target.value.replace(/\D/g, ""))
+                    }
+                    placeholder="Enter amount"
+                    className="min-w-0 flex-1 bg-transparent text-[14px] font-bold text-[#07162d] outline-none [appearance:textfield] placeholder:text-[#98a2b3] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                    aria-label="Requirement amount"
+                  />
+                </label>
+                {/* <div className="mt-2 grid grid-cols-2 gap-1.5 sm:grid-cols-5">
                   {amountOptions.map((item) => (
                     <button
                       key={item.label}
@@ -375,7 +382,7 @@ export function HeroSection() {
                       {item.label}
                     </button>
                   ))}
-                </div>
+                </div> */}
               </div>
 
               <div className="grid gap-2.5 sm:grid-cols-2">
@@ -426,13 +433,13 @@ export function HeroSection() {
                 </label>
               </div>
 
-              <div className="flex items-start gap-2 text-[11px] font-bold leading-5 text-[#61748f]">
+              {/* <div className="flex items-start gap-2 text-[11px] font-bold leading-5 text-[#61748f]">
                 <Info className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#075cde]" />
                 <p>
                   No hard enquiry. Matched offers open with your selected
                   inputs.
                 </p>
-              </div>
+              </div> */}
 
               <Link
                 href={continueHref}
@@ -441,9 +448,9 @@ export function HeroSection() {
                 {continueLabel}
                 <ArrowRight className="h-4 w-4" />
               </Link>
-              <p className="text-center text-[10px] font-bold text-[#667085]">
+              {/* <p className="text-center text-[10px] font-bold text-[#667085]">
                 Your information is encrypted and never sold.
-              </p>
+              </p> */}
             </form>
           </div>
         </div>

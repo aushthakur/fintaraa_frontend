@@ -132,11 +132,11 @@ export const buildFallbackLoanSeoPage = (
     location,
     badges: ["Secure profile", "Partner-backed", "Assisted application"],
     filterKeys: [
-      "all_details",
       "overview",
       "features",
       "eligibility",
       "documents",
+      "steps_to_apply",
       "emi_calculator",
       "fees_and_charges",
       "reviews",
@@ -144,44 +144,24 @@ export const buildFallbackLoanSeoPage = (
     ],
     tabs: [
       {
-        key: "all_details",
-        label: "All Details",
-        eyebrow: "Complete guide",
-        title: `${scoped} complete details`,
-        description:
-          "Review the important eligibility, document, EMI, fee, review, and FAQ details before applying.",
-        content: [
-          `${scoped} can be compared across partner requirements, expected documentation, repayment comfort, and support timelines.`,
-          "Use this complete view when you want the full page context without switching between individual tabs.",
-        ],
-        bullets: [
-          "Check eligibility, documents, EMI, fees, reviews, and FAQs together.",
-          "Prepare PAN, address, income, and bank details before applying.",
-          "Continue with the guided Fintaraa application journey.",
-        ],
-        filterKeys: ["all_details", "complete_guide"],
-        sortOrder: 0,
-        isActive: true,
-      },
-      {
         key: "overview",
         label: "Overview",
         eyebrow: "Loan guide",
         title: `${scoped} overview`,
         description:
-          "Use this page to understand the loan journey before you submit a complete application.",
+          "Use this complete view to understand the loan journey before you submit an application.",
         bullets: [
-          "Compare eligibility signals and document requirements.",
+          "Compare eligibility, documents, EMI, fees, reviews, and FAQs together.",
+          "Understand the assisted steps before you start the application.",
           "Prepare KYC, income, and bank details before applying.",
-          "Continue to the Fintaraa application flow when ready.",
         ],
         stats: [
           { label: "Journey", value: "Digital" },
           { label: "Support", value: "Assisted" },
           { label: "Security", value: "Encrypted" },
         ],
-        filterKeys: ["overview", "loan_guide"],
-        sortOrder: 1,
+        filterKeys: ["overview", "complete_guide", "loan_guide"],
+        sortOrder: 0,
         isActive: true,
       },
       {
@@ -234,6 +214,23 @@ export const buildFallbackLoanSeoPage = (
         isActive: true,
       },
       {
+        key: "steps_to_apply",
+        label: "Steps to Apply",
+        eyebrow: "Application process",
+        title: `Steps to apply for ${scoped}`,
+        description:
+          "Follow the guided Fintaraa journey to share details, verify your mobile number, review matched options, and submit documents.",
+        bullets: [
+          "Start with mobile number, PAN, income, and location details.",
+          "Verify OTP and complete the secure assisted application flow.",
+          "Review matched partner options before document submission.",
+          "Upload requested documents and track follow-up with Fintaraa support.",
+        ],
+        filterKeys: ["steps_to_apply", "apply", "process", "verification"],
+        sortOrder: 5,
+        isActive: true,
+      },
+      {
         key: "emi_calculator",
         label: "EMI Calculator",
         eyebrow: "Repayment view",
@@ -246,7 +243,7 @@ export const buildFallbackLoanSeoPage = (
           "Longer tenures can reduce monthly EMI but increase total repayment.",
         ],
         filterKeys: ["emi_calculator", "emi", "repayment"],
-        sortOrder: 5,
+        sortOrder: 6,
         isActive: true,
       },
       {
@@ -262,7 +259,7 @@ export const buildFallbackLoanSeoPage = (
           "Avoid duplicate applications with multiple lenders.",
         ],
         filterKeys: ["fees", "emi", "repayment"],
-        sortOrder: 6,
+        sortOrder: 7,
         isActive: true,
       },
       {
@@ -278,7 +275,7 @@ export const buildFallbackLoanSeoPage = (
           "EMI and fee visibility helps users compare options more carefully.",
         ],
         filterKeys: ["reviews", "testimonials"],
-        sortOrder: 7,
+        sortOrder: 8,
         isActive: true,
       },
       {
@@ -310,7 +307,7 @@ export const buildFallbackLoanSeoPage = (
           },
         ],
         filterKeys: ["faqs", "questions"],
-        sortOrder: 8,
+        sortOrder: 9,
         isActive: true,
       },
     ],

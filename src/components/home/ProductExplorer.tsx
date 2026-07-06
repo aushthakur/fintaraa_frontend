@@ -270,6 +270,7 @@ const sectionEyebrow: Record<string, string> = {
 const isBankSection = (title: string) => title.includes("Get Instant Loan");
 const isOtherServices = (title: string) => title === "Other financial services";
 const isImageCategory = (title: string) =>
+  title === "Explore Loan Options" ||
   title === "Explore Insurance Plans" ||
   title === "Explore Credit Card Options";
 
@@ -312,15 +313,19 @@ function SectionTop({
             {isBankSection(title) ? (
               <>
                 Get Instant Loan in 5 Minutes from{" "}
-                <span className="text-[#075cde]">30+ Trusted Banks & NBFCs</span>
+                <span className="text-[#075cde]">
+                  30+ Trusted Banks & NBFCs
+                </span>
               </>
             ) : (
               title
             )}
           </h2>
-          {!hideSubtitle && (subtitle || title === "Other financial services") ? (
+          {!hideSubtitle &&
+          (subtitle || title === "Other financial services") ? (
             <p className="mt-2 max-w-2xl text-[14px] font-semibold leading-6 text-[#5f7189]">
-              {subtitle || "Explore useful services for business, tax, and compliance needs."}
+              {subtitle ||
+                "Explore useful services for business, tax, and compliance needs."}
             </p>
           ) : null}
         </div>
@@ -369,7 +374,7 @@ function BankOfferCard({
   return (
     <Link
       href={product.href || productHref(product.title)}
-      className="group flex h-full min-h-67.5 flex-col justify-between rounded-xl border border-[#e2edf8] bg-white p-4 no-underline transition-colors hover:border-[#bcd8f4]"
+      className="group flex h-full min-h-64 flex-col justify-between rounded-xl border border-[#e2edf8] bg-white py-4 px-3 no-underline transition-colors hover:border-[#bcd8f4]"
     >
       <div>
         <div className="flex items-center justify-between gap-3">
@@ -382,7 +387,7 @@ function BankOfferCard({
           </span>
           <CheckCircle2 className="h-4 w-4 text-[#12b76a]" />
         </div>
-        <div className="mt-5 flex h-20 items-center justify-center">
+        <div className="mt-5 flex h-16 items-center justify-center">
           {product.logo ? (
             <Image
               src={product.logo}
@@ -397,12 +402,12 @@ function BankOfferCard({
         <h3 className="mt-4 text-center text-[17px] font-bold text-[#07162d]">
           {product.title}
         </h3>
-        <div className="mt-4 grid gap-3 text-[12px] font-bold text-[#52657d]">
+        <div className="mt-4 grid gap-2 text-[12px] font-bold text-[#52657d]">
           <div>
-            <span className="block text-[11px] uppercase tracking-wide text-[#8090a4]">
-              Interest rate
+            <span className="block text-[10px] tracking-wide text-[#8090a4]">
+              ROI Starts from
             </span>
-            <span className="text-[20px] font-bold text-[#075cde]">
+            <span className="text-[18px] font-bold text-[#075cde]">
               {details.rate}
             </span>
           </div>
@@ -410,13 +415,13 @@ function BankOfferCard({
             {[details.perk, details.amount].map((item) => (
               <div key={item} className="flex items-center gap-2">
                 <BadgeCheck className="h-4 w-4 shrink-0 text-[#0f7a4d]" />
-                <span className="text-xs">{item}</span>
+                <span className="text-xs line-clamp-1">{item}</span>
               </div>
             ))}
           </div>
         </div>
       </div>
-      <span className="mt-5 inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-[#e9f2ff] text-[13px] font-bold text-[#075cde] transition group-hover:bg-[#075cde] group-hover:text-white">
+      <span className="mt-2 inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-[#e9f2ff] text-[13px] font-bold text-[#075cde] transition group-hover:bg-[#075cde] group-hover:text-white">
         Claim offer
         <ArrowRight className="h-4 w-4" />
       </span>
@@ -481,7 +486,17 @@ function InformativeCard({ product }: { product: ProductItem }) {
   );
 }
 
-function ImageProductCard({ product }: { product: ProductItem }) {
+function ImageProductCard({
+  product,
+  hideIcon = false,
+  centerTopBadge = false,
+  hideContentBadge = false,
+}: {
+  product: ProductItem;
+  centerTopBadge?: boolean;
+  hideIcon?: boolean;
+  hideContentBadge?: boolean;
+}) {
   const meta = productMeta[product.title] || {};
   const Icon = product.icon;
   return (
@@ -500,27 +515,36 @@ function ImageProductCard({ product }: { product: ProductItem }) {
           />
         ) : null}
         <div className="absolute inset-0 bg-linear-to-t from-[#07162d]/60 via-transparent to-transparent" />
-        <span className="absolute left-3 top-3 inline-flex max-w-[calc(100%-1.5rem)] items-center gap-1.5 rounded-full border border-white/35 bg-[#07162d]/85 px-2.5 py-1.5 text-[10px] font-bold uppercase tracking-wide text-white shadow-lg backdrop-blur-md">
-          <Sparkles className="h-3.5 w-3.5 shrink-0 text-[#8fc7ff]" />
-          {meta.badge || "Featured"}
-        </span>
-        <span className="absolute bottom-3 left-3 flex h-10 w-10 items-center justify-center rounded-xl bg-white text-[#075cde]">
-          {Icon ? (
-            <Icon className="h-4 w-4" />
-          ) : (
-            <Sparkles className="h-4 w-4" />
-          )}
-        </span>
+        {centerTopBadge ? (
+          <span className="absolute inset-x-0 top-0 z-10 flex min-h-7 items-center justify-center rounded-t-xl bg-[#075cde] px-3 text-center text-[10px] font-bold uppercase tracking-wide text-white shadow-lg backdrop-blur-md [text-shadow:0_1px_8px_rgba(7,22,45,0.75)]">
+            {meta.badge || "Featured"}
+          </span>
+        ) : (
+          <span className="absolute inset-x-0 top-0 z-10 flex min-h-7 items-center justify-center rounded-t-xl bg-[#075cde] px-3 text-center text-[10px] font-bold uppercase tracking-wide text-white shadow-lg backdrop-blur-md [text-shadow:0_1px_8px_rgba(7,22,45,0.75)]">
+            {meta.badge || "Featured"}
+          </span>
+        )}
+        {!hideIcon ? (
+          <span className="absolute bottom-3 left-3 flex h-10 w-10 items-center justify-center rounded-xl bg-white text-[#075cde]">
+            {Icon ? (
+              <Icon className="h-4 w-4" />
+            ) : (
+              <Sparkles className="h-4 w-4" />
+            )}
+          </span>
+        ) : null}
       </div>
       <div className="flex flex-1 flex-col p-4">
-        <p className="mb-2 inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wide text-[#075cde]">
-          <CheckCircle2 className="h-3.5 w-3.5" />
-          {meta.badge || "Featured"}
-        </p>
-        <h3 className="text-[16px] font-bold leading-snug text-[#07162d]">
+        {!hideContentBadge ? (
+          <p className="mb-2 inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wide text-[#075cde]">
+            <CheckCircle2 className="h-3.5 w-3.5" />
+            {meta.badge || "Featured"}
+          </p>
+        ) : null}
+        <h3 className="text-[16px] line-clamp-1 font-bold leading-snug text-[#07162d]">
           {product.title}
         </h3>
-        <p className="mt-2 line-clamp-2 text-[10px] text-[#52657d]">
+        <p className="mt-2 line-clamp-1 text-[10px] text-[#52657d]">
           {meta.hint || product.text}
         </p>
         {/* <p className="mt-2 min-h-10 flex-1 text-[11px] font-semibold leading-5 text-[#8090a4]">
@@ -541,16 +565,16 @@ function ServiceWorkflowCard({ product }: { product: ProductItem }) {
   return (
     <Link
       href={product.href || productHref(product.title)}
-      className="group grid min-h-40.5 overflow-hidden rounded-xl border border-[#e2edf8] bg-white no-underline transition-colors hover:border-[#bcd8f4] sm:grid-cols-[112px_minmax(0,1fr)]"
+      className="group grid min-h-32 overflow-hidden rounded-xl border border-[#e2edf8] bg-white no-underline transition-colors hover:border-[#bcd8f4] sm:grid-cols-[112px_minmax(0,1fr)]"
     >
-      <div className="relative h-36 bg-white sm:h-auto">
+      <div className="relative h-28 bg-white sm:h-auto">
         {meta.image ? (
           <Image
             src={meta.image}
             alt={product.title}
             fill
             unoptimized
-            className="object-cover"
+            className="object-contain my-auto"
           />
         ) : null}
       </div>
@@ -559,11 +583,11 @@ function ServiceWorkflowCard({ product }: { product: ProductItem }) {
           <h3 className="text-[16px] font-bold leading-snug text-[#07162d]">
             {product.title}
           </h3>
-          <p className="mt-2 text-[12px] font-bold leading-5 text-[#61748f]">
+          <p className="mt-2 text-xs  line-clamp-2 text-[#61748f]">
             {meta.hint || product.text}
           </p>
         </div>
-        <span className="mt-4 inline-flex items-center gap-2 text-[12px] font-bold text-[#075cde]">
+        <span className="mt-2 inline-flex items-center gap-2 text-[14px] font-bold text-[#075cde]">
           {meta.cta || "Start workflow"}
           <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
         </span>
@@ -627,7 +651,7 @@ export function ProductExplorer({
                   </div>
                 ) : otherServices ? (
                   <>
-                    <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                    <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
                       {products.map((product) => (
                         <ServiceWorkflowCard
                           key={product.title}
@@ -639,12 +663,21 @@ export function ProductExplorer({
                 ) : imageCategory ? (
                   <>
                     <ResponsiveSevenRow>
-                      {products.map((product) => (
-                        <ImageProductCard
-                          key={product.title}
-                          product={product}
-                        />
-                      ))}
+                      {products.map((product) => {
+                        const compactImageHeader =
+                          title === "Explore Loan Options" ||
+                          title === "Explore Credit Card Options";
+
+                        return (
+                          <ImageProductCard
+                            key={product.title}
+                            product={product}
+                            centerTopBadge={compactImageHeader}
+                            hideContentBadge={compactImageHeader}
+                            hideIcon={title === "Explore Loan Options"}
+                          />
+                        );
+                      })}
                     </ResponsiveSevenRow>
                   </>
                 ) : (

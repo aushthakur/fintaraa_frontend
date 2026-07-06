@@ -1,8 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, BadgeCheck, ShieldCheck, Star, Zap } from "lucide-react";
+import Image from "next/image";
+import { ArrowRight, ShieldCheck, Star, Zap } from "lucide-react";
 
 const bureauLogos = [
   { label: "Experian", className: "text-purple-700" },
@@ -103,30 +103,8 @@ export function CreditScoreBanner() {
                   </div>
                 </div>
               </div>
-
-              <div className="absolute bottom-5 left-5 right-5 grid gap-3 sm:grid-cols-3">
-                {[
-                  ["Track", "Monitor credit health"],
-                  ["Improve", "See score factors"],
-                  ["Achieve", "Unlock better offers"],
-                ].map(([label, text]) => (
-                  <div
-                    key={label}
-                    className="rounded-xl bg-white/90 p-3 backdrop-blur sm:p-4"
-                  >
-                    <BadgeCheck className="h-5 w-5 text-[#075cde]" />
-                    <p className="mt-2 text-[13px] font-bold text-[#07162d]">
-                      {label}
-                    </p>
-                    <p className="mt-1 text-[11px] font-bold text-[#61748f]">
-                      {text}
-                    </p>
-                  </div>
-                ))}
-              </div>
             </div>
           </div>
-
         </div>
       </div>
     </section>

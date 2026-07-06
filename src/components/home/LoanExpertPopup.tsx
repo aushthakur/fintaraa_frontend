@@ -51,8 +51,8 @@ export function LoanExpertPopupHost() {
       </button>
 
       <Modal
-        width="w-full max-w-3xl"
         isVisible={open}
+        width="w-[90%] lg:w-[35%]"
         onClose={() => setOpen(false)}
       >
         <ContactConsultationForm />

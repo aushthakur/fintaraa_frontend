@@ -10,7 +10,10 @@ export function LoanTestimonials() {
         </h2>
         <div className="mt-6 grid gap-5 md:grid-cols-3">
           {testimonials.map((item) => (
-            <div key={item.name} className="border-t border-[#dfe5ec] pt-5 text-left">
+            <div
+              key={item.name}
+              className="border-t border-[#dfe5ec] pt-5 text-left"
+            >
               <div className="flex items-center gap-3">
                 <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#e8f4ff] text-[#005ca8]">
                   <UserRound className="h-5 w-5" />

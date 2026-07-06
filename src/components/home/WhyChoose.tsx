@@ -5,7 +5,7 @@ import {
   IndianRupee,
   RefreshCw,
   ShieldCheck,
-  Star,
+  // Star,
   Tags,
   ThumbsUp,
   UserCheck,
@@ -63,34 +63,34 @@ const stats = [
   { value: "4.8/5", label: "Customer rating", icon: ThumbsUp },
 ];
 
-const miniTestimonials = [
-  {
-    name: "Neha V.",
-    text: "Eligibility was clear and the team helped me compare my options quickly.",
-  },
-  {
-    name: "Amit J.",
-    text: "The document checklist and callback support kept the application moving.",
-  },
-];
+// const miniTestimonials = [
+//   {
+//     name: "Neha V.",
+//     text: "Eligibility was clear and the team helped me compare my options quickly.",
+//   },
+//   {
+//     name: "Amit J.",
+//     text: "The document checklist and callback support kept the application moving.",
+//   },
+// ];
 
 export function WhyChoose() {
   return (
-    <section className="bg-white px-4 py-10 md:px-6 lg:px-8">
+    <section className="bg-white px-4 md:px-6 lg:px-8">
       <div className="mx-auto max-w-9xl overflow-hidden rounded-2xl bg-[#f7fbff] p-4 sm:p-6">
         <div className="grid gap-6 lg:grid-cols-[1fr_300px] lg:items-start">
           <div>
-            <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-[#075cde]">
+            {/* <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-[#075cde]">
               The Fintaraa advantage
-            </p>
+            </p> */}
             <h2 className="mt-3 max-w-3xl text-[28px] font-bold leading-tight tracking-tight text-[#07162d] sm:text-[34px]">
               Why Choose <span className="text-[#075cde]">Fintaraa?</span>
             </h2>
-            <p className="mt-3 max-w-2xl text-[14px] font-medium leading-6 text-[#61748f]">
+            {/* <p className="mt-3 max-w-2xl text-[14px] font-medium leading-6 text-[#61748f]">
               We simplify your loan journey with expert guidance, transparent
               processes and complete peace of mind.
-            </p>
-            <div className="mt-4 flex flex-wrap gap-3">
+            </p> */}
+            {/* <div className="mt-4 flex flex-wrap gap-3">
               {[
                 "Trusted by 2M+ customers",
                 "RBI compliant & secure",
@@ -104,10 +104,10 @@ export function WhyChoose() {
                   {item}
                 </span>
               ))}
-            </div>
+            </div> */}
           </div>
 
-          <div className="hidden rounded-2xl bg-white p-5 lg:block">
+          {/* <div className="hidden rounded-2xl bg-white p-5 lg:block">
             <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-[#e9f2ff] text-[#075cde]">
               <ShieldCheck className="h-10 w-10" />
             </div>
@@ -120,7 +120,7 @@ export function WhyChoose() {
                 ),
               )}
             </div>
-          </div>
+          </div> */}
         </div>
 
         <div className="mt-7 grid gap-4 md:grid-cols-2 xl:grid-cols-5">
@@ -172,7 +172,7 @@ export function WhyChoose() {
           ))}
         </div>
 
-        <div className="mt-6 grid gap-3 md:grid-cols-2">
+        {/* <div className="mt-6 grid gap-3 md:grid-cols-2">
           {miniTestimonials.map((item) => (
             <div key={item.name} className="rounded-xl bg-white p-4">
               <div className="flex items-center gap-2 text-[#f59e0b]">
@@ -188,7 +188,7 @@ export function WhyChoose() {
               </p>
             </div>
           ))}
-        </div>
+        </div> */}
       </div>
     </section>
   );

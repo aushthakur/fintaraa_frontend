@@ -286,20 +286,20 @@ export default function Footer() {
 
             {/* Phone */}
             <a
-              href="tel:+919999175156"
+              href="tel:+918448282680"
               className="flex items-center gap-3 text-white no-underline transition-colors hover:text-white/80"
             >
               <PhoneCall className="h-4 w-4 shrink-0 text-white/70" />
-              +91 99991 75156
+              +91 84482 82680
             </a>
 
             {/* WhatsApp */}
             <a
-              href="https://wa.me/919999175156"
+              href="https://wa.me/918448282680"
               className="flex items-center gap-3 text-white no-underline transition-colors hover:text-white/80"
             >
               <MessageCircle className="h-4 w-4 shrink-0 text-white/70" />
-              +91 99991 75156
+              +91 84482 82680
             </a>
 
             {/* Email */}

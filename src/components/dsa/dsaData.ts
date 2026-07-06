@@ -127,17 +127,65 @@ export const partnerBenefits = [
   "Advanced Partner Dashboard",
 ];
 
+export const dsaOfferings = [
+  {
+    title: "Personal Loans",
+    text: "Refer salaried and self-employed customers for quick loan matching.",
+    icon: Banknote,
+  },
+  {
+    title: "Business Loans",
+    text: "Support MSMEs and business owners with working capital options.",
+    icon: BadgeIndianRupee,
+  },
+  {
+    title: "Home Loans",
+    text: "Assist customers with home purchase, balance transfer, and top-up needs.",
+    icon: Home,
+  },
+  {
+    title: "Loan Against Property",
+    text: "Connect high-ticket secured loan customers with partner lenders.",
+    icon: Landmark,
+  },
+  {
+    title: "Credit Cards",
+    text: "Offer cards across rewards, cashback, shopping, travel, and fuel use cases.",
+    icon: CreditCard,
+  },
+  {
+    title: "Insurance",
+    text: "Refer protection products for health, life, travel, and business cover.",
+    icon: ShieldCheck,
+  },
+];
+
 export const whyChooseItems = [
-  { title: "Expert Legal Support", icon: Scale },
-  { title: "Transparent Process", icon: FileSignature },
-  { title: "100% Compliances Assured", icon: ShieldCheck },
-  { title: "End to End Support", icon: Headphones },
-  { title: "Affordable Pricing", icon: BadgeCheck },
-  { title: "Expert Legal Support", icon: Scale },
-  { title: "Transparent Process", icon: FileSignature },
-  { title: "100% Compliances Assured", icon: ShieldCheck },
-  { title: "End to End Support", icon: Headphones },
-  { title: "Affordable Pricing", icon: BadgeCheck },
+  {
+    title: "Transparent Process",
+    text: "Every lead moves through clear stages, status updates, and documented next steps.",
+    icon: FileSignature,
+  },
+  {
+    title: "Compliance-first Support",
+    text: "Customer consent, documents, and partner checks are handled with structured controls.",
+    icon: ShieldCheck,
+  },
+  {
+    title: "Dedicated Partner Desk",
+    text: "Get help with product fitment, lender coordination, and payout queries.",
+    icon: Headphones,
+  },
+  {
+    title: "Simple Partner Onboarding",
+    text: "Training, product guidance, and referral workflows are designed for quick adoption.",
+    icon: BadgeCheck,
+  },
+  {
+    title: "Professional Documentation",
+    text: "Use organized request records and support notes for cleaner customer handling.",
+    icon: Scale,
+  },
 ];
 
 export const dsaFaqs = [
@@ -158,4 +206,31 @@ export const journeyItems = [
   { title: "Bank Review", icon: Landmark },
   { title: "Approval", icon: CircleCheck },
   { title: "Commission", icon: Handshake },
+];
+
+export const dsaTestimonials = [
+  {
+    name: "Rohit Sharma",
+    role: "Loan Consultant",
+    location: "Jaipur",
+    rating: 5,
+    metric: "32 leads submitted",
+    text: "Fintaraa helped me move from manual follow-ups to a clear partner flow. I can track every customer request and the team responds quickly when documents are pending.",
+  },
+  {
+    name: "Neha Agarwal",
+    role: "Insurance Advisor",
+    location: "Indore",
+    rating: 5,
+    metric: "18 approvals assisted",
+    text: "The training and product support made it easier to pitch loans and cards to my existing clients. Status visibility is the biggest advantage for my daily work.",
+  },
+  {
+    name: "Amit Verma",
+    role: "Financial Distributor",
+    location: "Delhi NCR",
+    rating: 4,
+    metric: "Monthly payout cycle",
+    text: "I joined for loan referrals, but the dashboard and bank coordination helped me expand into credit cards too. The process is transparent from lead to payout.",
+  },
 ];

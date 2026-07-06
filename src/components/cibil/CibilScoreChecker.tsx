@@ -24,7 +24,7 @@ import { fetchUserCibil, type UserCibilResponse } from "@/services/cibil";
 type Step = "phone" | "otp" | "details" | "score";
 
 const inputClass =
-  "h-12 w-full rounded-xl border border-[#d7e4f2] bg-white px-3 text-[14px] font-bold text-[#111827] outline-none transition placeholder:text-[#9aa8b8] focus:border-[#00529c] focus:ring-2 focus:ring-[#e4f1ff] disabled:bg-slate-50 disabled:text-slate-500";
+  "h-10 w-full rounded-lg border border-[#d7e4f2] bg-white px-3 text-[13px] font-bold text-[#111827] outline-none transition placeholder:text-[#9aa8b8] focus:border-[#00529c] focus:ring-2 focus:ring-[#e4f1ff] disabled:bg-slate-50 disabled:text-slate-500 sm:h-11";
 
 const normalizePhone = (value: string) => value.replace(/\D/g, "").slice(-10);
 const normalizePan = (value: string) =>
@@ -87,7 +87,7 @@ function CreditReportTermsCopy() {
 
 function PoweredByBureaus() {
   return (
-    <div className="mt-8 flex flex-col items-center">
+    <div className="mt-5 flex flex-col items-center">
       <div className="relative flex w-full items-center justify-center">
         <div className="absolute inset-0 flex items-center" aria-hidden="true">
           <div className="h-px w-full bg-linear-to-r from-transparent via-gray-300 to-transparent" />
@@ -97,7 +97,7 @@ function PoweredByBureaus() {
         </span>
       </div>
 
-      <div className="mt-4 flex items-center gap-5 select-none">
+      <div className="mt-3 flex items-center gap-5 select-none">
         <div className="flex flex-col items-start leading-none">
           <span className="text-[18px] font-black tracking-tight text-[#008ccf]">
             CIBIL
@@ -343,38 +343,40 @@ export function CibilScoreChecker() {
   const actionLabel = score ? "Refetch Credit Score" : "Get Credit Score";
 
   return (
-    <div className="w-full max-w-120 overflow-hidden rounded-b-lg border border-gray-200/80 bg-white shadow-[0_10px_32px_rgba(0,0,0,0.04)] mx-auto lg:mx-0">
-      <div className="bg-[#00529c] px-5 py-3.5 text-center">
-        <p className="text-[13px] font-normal tracking-wide text-white">
+    <div className="mx-auto w-full max-w-120 overflow-hidden rounded-b-lg border border-gray-200/80 bg-white shadow-[0_10px_24px_rgba(0,0,0,0.035)] lg:mx-0">
+      <div className="bg-[#00529c] px-4 py-2.5 text-center">
+        <p className="text-[12px] font-normal tracking-wide text-white">
           Check free credit score{" "}
           <span className="font-extrabold">with live CIBIL fetch</span>
         </p>
       </div>
 
-      <div className="p-6 pt-6 sm:p-8">
-        <div className="flex items-start justify-between gap-4">
+      <div className="p-4 sm:p-5">
+        <div className="flex items-start justify-between gap-3">
           <div>
-            <h2 className="text-[22px] font-bold tracking-tight text-[#222222] sm:text-[26px]">
+            <h2 className="text-[20px] font-bold tracking-tight text-[#222222] sm:text-[22px]">
               {step === "score" ? "Your Credit Score" : "Check Your Score Now"}
             </h2>
-            <p className="mt-1 text-[14px] font-medium text-gray-500">
-              {hasUserSession
-                ? "Profile details are prefilled from your account."
-                : "Verify your mobile to continue."}
-            </p>
+            {step !== "score" ? (
+              <p className="mt-1 text-[13px] font-medium text-gray-500">
+                {hasUserSession
+                  ? "Confirm your details to fetch your score."
+                  : "Verify your mobile to continue."}
+              </p>
+            ) : null}
           </div>
           {hasUserSession ? (
-            <span className="inline-flex whitespace-nowrap items-center gap-1 rounded-full bg-emerald-50 px-3 py-1 text-[11px] font-black text-emerald-700">
-              <CheckCircle2 className="h-3.5 w-3.5" />
+            <span className="inline-flex whitespace-nowrap items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-black text-emerald-700">
+              <CheckCircle2 className="h-3 w-3" />
               Logged in
             </span>
           ) : null}
         </div>
 
         {step === "phone" ? (
-          <form onSubmit={handleSendOtp} className="mt-6 grid gap-4">
-            <label className="grid gap-1.5">
-              <span className="text-[12px] font-black text-[#344054]">
+          <form onSubmit={handleSendOtp} className="mt-4 grid gap-3">
+            <label className="grid gap-1">
+              <span className="text-[11px] font-black text-[#344054]">
                 Mobile Number
               </span>
               <div className="relative">
@@ -389,14 +391,14 @@ export function CibilScoreChecker() {
                 />
               </div>
             </label>
-            <p className="text-[13px] font-medium leading-normal text-gray-600/90">
+            <p className="text-[12px] font-medium leading-normal text-gray-600/90">
               You will receive an OTP on mentioned number
             </p>
             <CreditReportTermsCopy />
             <button
               type="submit"
               disabled={loading}
-              className="flex h-13 w-full items-center justify-center gap-2 rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] text-[16px] font-bold text-white transition-colors hover:bg-[#17a34f] disabled:opacity-70 active:scale-[0.995]"
+              className="flex h-11 w-full items-center justify-center gap-2 rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] text-[14px] font-bold text-white transition-colors hover:bg-[#17a34f] disabled:opacity-70 active:scale-[0.995]"
             >
               {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
               {loading ? "Sending OTP..." : "Get Free Credit Score"}
@@ -405,9 +407,9 @@ export function CibilScoreChecker() {
         ) : null}
 
         {step === "otp" ? (
-          <form onSubmit={handleVerifyOtp} className="mt-6 grid gap-4">
-            <label className="grid gap-1.5">
-              <span className="text-[12px] font-black text-[#344054]">
+          <form onSubmit={handleVerifyOtp} className="mt-4 grid gap-3">
+            <label className="grid gap-1">
+              <span className="text-[11px] font-black text-[#344054]">
                 OTP Code
               </span>
               <input
@@ -443,7 +445,7 @@ export function CibilScoreChecker() {
             <button
               type="submit"
               disabled={loading}
-              className="flex h-13 w-full items-center justify-center gap-2 rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] text-[15px] font-bold text-white disabled:opacity-70"
+              className="flex h-11 w-full items-center justify-center gap-2 rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] text-[14px] font-bold text-white disabled:opacity-70"
             >
               {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
               Verify OTP
@@ -452,30 +454,33 @@ export function CibilScoreChecker() {
         ) : null}
 
         {step === "details" || step === "score" ? (
-          <div className="mt-6 grid gap-4">
+          <div className="mt-4 grid gap-3">
             {step === "score" ? (
-              <div className="rounded-3xl border border-[#e2e8f0] bg-[#f8fbff] p-5 text-center">
-                <p className="text-[12px] font-black uppercase tracking-[0.18em] text-[#00529c]">
-                  CIBIL Score
-                </p>
-                <p className="mt-2 text-[54px] font-black leading-none text-[#111827]">
-                  {score || "—"}
-                </p>
-                <p className="mt-2 text-[12px] font-bold text-[#667085]">
-                  Last fetched: {formatDateTime(lastFetchedAt)}
-                </p>
-                {scoreData?.refreshAvailableInDays ? (
-                  <p className="mt-1 text-[11px] font-bold text-amber-700">
-                    Refresh available in {scoreData.refreshAvailableInDays}{" "}
-                    day(s).
+              <div className="rounded-2xl border border-[#e2e8f0] bg-[#f8fbff] px-4 py-3">
+                <div className="flex items-center justify-between gap-4">
+                  <div className="min-w-0">
+                    <p className="text-[11px] font-black uppercase tracking-[0.16em] text-[#00529c]">
+                      CIBIL Score
+                    </p>
+                    <p className="mt-1 text-[11px] font-bold leading-snug text-[#667085]">
+                      Last fetched: {formatDateTime(lastFetchedAt)}
+                    </p>
+                    {scoreData?.refreshAvailableInDays ? (
+                      <p className="mt-0.5 text-[11px] font-bold text-amber-700">
+                        Refresh in {scoreData.refreshAvailableInDays} day(s).
+                      </p>
+                    ) : null}
+                  </div>
+                  <p className="shrink-0 text-[48px] font-black leading-none text-[#111827]">
+                    {score || "—"}
                   </p>
-                ) : null}
+                </div>
               </div>
             ) : null}
 
-            <div className="grid gap-3 sm:grid-cols-2">
-              <label className="grid gap-1.5">
-                <span className="text-[12px] font-black text-[#344054]">
+            <div className="grid gap-2.5 sm:grid-cols-2">
+              <label className="grid gap-1">
+                <span className="text-[11px] font-black text-[#344054]">
                   Full Name as per PAN
                 </span>
                 <input
@@ -485,14 +490,14 @@ export function CibilScoreChecker() {
                   onChange={(event) => setField("name", event.target.value)}
                 />
               </label>
-              <label className="grid gap-1.5">
-                <span className="text-[12px] font-black text-[#344054]">
+              <label className="grid gap-1">
+                <span className="text-[11px] font-black text-[#344054]">
                   Mobile
                 </span>
                 <input className={inputClass} value={form.mobile} disabled />
               </label>
-              <label className="grid gap-1.5">
-                <span className="text-[12px] font-black text-[#344054]">
+              <label className="grid gap-1">
+                <span className="text-[11px] font-black text-[#344054]">
                   PAN Number
                 </span>
                 <input
@@ -503,8 +508,8 @@ export function CibilScoreChecker() {
                   onChange={(event) => setField("panCard", event.target.value)}
                 />
               </label>
-              <label className="grid gap-1.5">
-                <span className="text-[12px] font-black text-[#344054]">
+              <label className="grid gap-1">
+                <span className="text-[11px] font-black text-[#344054]">
                   Gender
                 </span>
                 <select
@@ -518,12 +523,12 @@ export function CibilScoreChecker() {
               </label>
             </div>
 
-            <div className={score ? "grid gap-3 sm:grid-cols-2" : ""}>
+            <div className={score ? "grid gap-2.5 sm:grid-cols-2" : ""}>
               <button
                 type="button"
                 disabled={loading || !canFetch}
                 onClick={() => handleFetchScore(Boolean(score))}
-                className="flex h-13 w-full items-center justify-center gap-2 rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] text-[15px] font-bold text-white disabled:cursor-not-allowed disabled:opacity-70"
+                className="flex h-11 w-full items-center justify-center gap-2 rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] text-[14px] font-bold text-white disabled:cursor-not-allowed disabled:opacity-70"
               >
                 {loading ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
@@ -538,7 +543,7 @@ export function CibilScoreChecker() {
               {score ? (
                 <Link
                   href="/cibil-score/report"
-                  className="flex h-13 w-full items-center justify-center gap-2 rounded-full border border-[#00529c] bg-white text-[15px] font-bold text-[#00529c] no-underline transition-colors hover:bg-[#eef8ff]"
+                  className="flex h-11 w-full items-center justify-center gap-2 rounded-full border border-[#00529c] bg-white text-[14px] font-bold text-[#00529c] no-underline transition-colors hover:bg-[#eef8ff]"
                 >
                   <FileText className="h-4 w-4" />
                   View Full Report
@@ -555,7 +560,7 @@ export function CibilScoreChecker() {
           <p className="mt-4 text-[12px] font-bold text-red-600">{error}</p>
         ) : null}
 
-        <PoweredByBureaus />
+        {step === "score" ? null : <PoweredByBureaus />}
       </div>
     </div>
   );

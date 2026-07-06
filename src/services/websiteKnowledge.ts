@@ -102,6 +102,24 @@ const blogPostToKnowledgeItem = (post: BlogPost): WebsiteKnowledgeItem => {
   };
 };
 
+export function getFallbackBlogKnowledgeItems({
+  category,
+  limit = 3,
+}: {
+  category?: string;
+  limit?: number;
+} = {}): WebsiteKnowledgeItem[] {
+  const categoryMatches = category
+    ? blogPosts.filter((post) => post.category === category)
+    : blogPosts;
+  const source = categoryMatches.length ? categoryMatches : blogPosts;
+
+  return source.slice(0, limit).map((post, index) => ({
+    ...blogPostToKnowledgeItem(post),
+    coverImageUrl: `/assets/blogs/blog${(index % 6) + 1}.png`,
+  }));
+}
+
 const fallbackBlogBySlug = (slug: string) => {
   const post = blogPosts.find((item) => item.slug === slug);
   return post ? blogPostToKnowledgeItem(post) : null;
@@ -110,10 +128,12 @@ const fallbackBlogBySlug = (slug: string) => {
 export async function fetchWebsiteKnowledge({
   type,
   sectionKey,
+  category,
   limit = 5,
 }: {
   type: WebsiteKnowledgeType;
   sectionKey?: string;
+  category?: string;
   limit?: number;
 }): Promise<WebsiteKnowledgeItem[]> {
   const params = new URLSearchParams({
@@ -122,6 +142,7 @@ export async function fetchWebsiteKnowledge({
     pagination: "false",
   });
   if (sectionKey) params.set("sectionKey", sectionKey);
+  if (category) params.set("category", category);
   const url = buildApiUrl(`/knowledge?${params}`);
   if (!url) return [];
 

@@ -93,21 +93,13 @@ export function MediaPressRelease() {
   const duplicatedPress = [...items, ...items, ...items];
 
   return (
-    <section className="overflow-hidden select-none bg-white px-4 py-16 md:px-6 lg:px-8">
+    <section className="overflow-hidden select-none bg-white px-4 pt-8 md:px-6 lg:px-8">
       <div className="mx-auto max-w-9xl">
-        <div className="mb-10 flex items-start justify-between gap-4">
+        <div className="mb-2 flex items-start justify-between gap-4">
           <div className="max-w-2xl">
-            <p className="inline-flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-[0.12em] text-[#195585]">
-              <Newspaper className="h-3.5 w-3.5 text-[#075cde]" />
-              Newsroom
-            </p>
             <h2 className="mt-3 text-[26px] font-extrabold tracking-tight text-[#111625] md:text-[32px]">
               Media & Press Release
             </h2>
-            <p className="mt-2 max-w-2xl text-[14px] font-semibold leading-6 text-[#667085]">
-              Company announcements, product updates, and media coverage from
-              Fintaraa.
-            </p>
           </div>
           <Link
             href="/press-release"
@@ -198,7 +190,6 @@ export function MediaPressRelease() {
             </motion.div>
           )}
         </div>
-
       </div>
     </section>
   );

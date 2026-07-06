@@ -127,17 +127,17 @@ export function VideoTestimonials() {
   });
 
   return (
-    <section className="overflow-hidden select-none bg-white px-4 py-16 md:px-6 lg:px-8">
+    <section className="overflow-hidden select-none bg-white px-4 pt-12 md:px-6 lg:px-8">
       <div className="mx-auto max-w-9xl">
-        <div className="mb-12 flex items-start justify-between gap-4">
+        <div className="mb-2 flex items-start justify-between gap-4">
           <div className="max-w-2xl">
             <h2 className="text-[26px] font-extrabold tracking-tight text-[#111625] md:text-[32px]">
               Video Testimonials
             </h2>
-            <p className="mt-2 max-w-2xl text-[14px] font-semibold leading-6 text-[#667085]">
+            {/* <p className="mt-2 max-w-2xl text-[14px] font-semibold leading-6 text-[#667085]">
               Real journeys from customers who compared loans, cards, and
               financial options with Fintaraa.
-            </p>
+            </p> */}
           </div>
           <Link
             href="/video-testimonials"
@@ -228,7 +228,7 @@ export function VideoTestimonials() {
                     </div>
                   </div>
 
-                  <div className="pointer-events-none flex flex-1 flex-col justify-between p-5">
+                  <div className="pointer-events-none relative flex flex-1 flex-col justify-between p-5">
                     <div>
                       <div className="flex items-center justify-between gap-4">
                         <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1.5">
@@ -253,7 +253,7 @@ export function VideoTestimonials() {
                       <p className="mt-3 line-clamp-3 text-[14px] font-semibold leading-6 text-[#667085]">
                         {item.summary ||
                           "A Fintaraa customer shares how comparison and assisted guidance helped them choose confidently."}
-                        <span className="ml-2 inline-flex align-middle text-[#075cde]">
+                        <span className="inline-flex absolute z-50 bottom-3 right-3 h-7 w-7 items-center justify-center rounded-full bg-[#075cde] text-white transition group-hover:translate-x-1 group-hover:bg-[#064cb8]">
                           <ArrowRight className="h-4 w-4" />
                         </span>
                       </p>

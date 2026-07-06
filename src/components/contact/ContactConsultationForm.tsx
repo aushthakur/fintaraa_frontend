@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { FormEvent, useMemo, useState } from "react";
 import {
   AlertCircle,
@@ -8,10 +9,10 @@ import {
   Loader2,
   Mail,
   MapPin,
+  MessageCircle,
   MessageSquare,
   Phone,
   Send,
-  ShieldCheck,
   User,
 } from "lucide-react";
 import { buildApiUrl } from "@/services/apiUrl";
@@ -38,6 +39,28 @@ const nameRegex = /^[A-Za-z][A-Za-z\s.'-]{1,79}$/;
 const mobileRegex = /^(?:\+91[\s-]?)?[6-9]\d{9}$/;
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const cityRegex = /^[A-Za-z][A-Za-z\s.'-]{1,79}$/;
+
+const contactLinks = [
+  {
+    label: "Call",
+    value: "+91 84482 82680",
+    href: "tel:+918448282680",
+    icon: Phone,
+  },
+  {
+    label: "WhatsApp",
+    value: "+91 84482 82680",
+    href: "https://wa.me/918448282680",
+    icon: MessageCircle,
+    external: true,
+  },
+  {
+    label: "Email",
+    value: "customercare@fintaraa.com",
+    href: "mailto:customercare@fintaraa.com",
+    icon: Mail,
+  },
+];
 
 export function ContactConsultationForm() {
   const [form, setForm] = useState<FormState>(initialForm);
@@ -132,12 +155,8 @@ export function ContactConsultationForm() {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      noValidate
-      className="rounded-3xl border border-[#dce7f3] bg-white p-5 shadow-[0_22px_60px_rgba(16,24,40,0.08)] md:p-7"
-    >
-      <div className="mb-6 flex flex-col gap-4 border-b border-[#eef2f6] pb-5 md:flex-row md:items-center md:justify-between">
+    <form onSubmit={handleSubmit} noValidate className="rounded-3xl bg-white">
+      <div className="mb-4 flex flex-col gap-4 border-[#eef2f6] md:flex-row md:items-center md:justify-between">
         <div>
           <p className="text-[12px] font-bold uppercase tracking-[0.14em] text-[#1d5fbf]">
             Callback Request
@@ -148,10 +167,6 @@ export function ContactConsultationForm() {
           <p className="mt-1 text-[13px] leading-6 text-[#667085]">
             Our team usually responds within one business day.
           </p>
-        </div>
-        <div className="inline-flex items-center gap-2 rounded-full bg-[#ecfdf3] px-4 py-2 text-[12px] font-bold text-[#027a48]">
-          <ShieldCheck className="h-4 w-4" />
-          Secure enquiry
         </div>
       </div>
 
@@ -199,7 +214,8 @@ export function ContactConsultationForm() {
 
       <label className="mt-4 block">
         <span className="mb-1.5 block text-[12px] font-bold text-[#344054]">
-          Message <span className="font-semibold text-[#98a2b3]">(optional)</span>
+          Message{" "}
+          <span className="font-semibold text-[#98a2b3]">(optional)</span>
         </span>
         <div
           className={`relative rounded-2xl border bg-white transition ${
@@ -261,6 +277,27 @@ export function ContactConsultationForm() {
           </>
         )}
       </button>
+
+      <div className="mt-4 text-center space-y-1 flex flex-col justify-center w-full">
+        {contactLinks.map(({ label, value, href, external }) => (
+          <Link
+            key={label}
+            href={href}
+            target={external ? "_blank" : undefined}
+            rel={external ? "noopener noreferrer" : undefined}
+            className="flex mx-auto w-full items-center gap-2 rounded-2xl bg-[#fbfdff] px-3 text-[#344054] no-underline transition"
+          >
+            <span className="min-w-full flex mx-auto justify-center">
+              <span className="text-[11px] font-bold uppercase tracking-[0.08em] text-[#667085]">
+                {label}:{" "}
+              </span>
+              <span className="truncate text-[12px] font-extrabold">
+                {value}
+              </span>
+            </span>
+          </Link>
+        ))}
+      </div>
 
       <p className="mt-3 text-center text-[11px] font-medium text-[#98a2b3]">
         By submitting, you agree to be contacted by Fintaraa support.

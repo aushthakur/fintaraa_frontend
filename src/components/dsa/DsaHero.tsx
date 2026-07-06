@@ -1,26 +1,26 @@
-import Image from "next/image";
 import Link from "next/link";
-import { Building2, BadgeIndianRupee, Zap } from "lucide-react";
-import { AnimatedCounter } from "@/components/common/AnimatedCounter";
-import { dsaStats } from "./dsaData";
+import Image from "next/image";
+// import { dsaStats } from "./dsaData";
+// import { Building2, BadgeIndianRupee, Zap } from "lucide-react";
+// import { AnimatedCounter } from "@/components/common/AnimatedCounter";
 
-const heroBadges = [
-  {
-    label: "30+ Bank Tie-ups",
-    icon: Building2,
-    className: "left-4 top-24 md:left-0",
-  },
-  {
-    label: "High Commissions",
-    icon: BadgeIndianRupee,
-    className: "right-4 top-10 md:right-2",
-  },
-  {
-    label: "Fast Payouts",
-    icon: Zap,
-    className: "right-2 bottom-20 md:right-0",
-  },
-];
+// const heroBadges = [
+//   {
+//     label: "30+ Bank Tie-ups",
+//     icon: Building2,
+//     className: "left-4 top-24 md:left-0",
+//   },
+//   {
+//     label: "High Commissions",
+//     icon: BadgeIndianRupee,
+//     className: "right-4 top-10 md:right-2",
+//   },
+//   {
+//     label: "Fast Payouts",
+//     icon: Zap,
+//     className: "right-2 bottom-20 md:right-0",
+//   },
+// ];
 
 export function DsaHero() {
   return (
@@ -29,13 +29,12 @@ export function DsaHero() {
         <div className="absolute left-[-22px] top-10 h-32 w-32 rounded-[28px] bg-[#d7e8fb] opacity-75 [clip-path:polygon(0_50%,50%_0,100%_50%,50%_100%)]" />
         <div className="absolute left-[-12px] top-0 h-40 w-40 rounded-[34px] bg-[#eaf3ff] opacity-80 [clip-path:polygon(0_50%,50%_0,100%_50%,50%_100%)]" />
       </div>
-      <div className="relative mx-auto grid max-w-9xl gap-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-10">
-        <div className="relative z-10 max-w-2xl">
-          <h1 className="max-w-xl text-[34px] font-extrabold leading-[1.03] tracking-[-0.05em] text-[#33393f] md:text-[48px] xl:text-[54px]">
+      <div className="relative mx-auto grid max-w-9xl gap-6 lg:grid-cols-5 lg:items-center lg:gap-10">
+        <div className="relative z-10 col-span-2 max-w-2xl">
+          <h1 className="max-w-xl text-[28px] font-extrabold leading-[1.03] tracking-[-0.05em] text-[#33393f] md:text-[40px] xl:text-[46px]">
             Become a Fintaraa
             <span className="block text-[#0d64bf]">DSA Partner</span>
-            <span className="block">&amp; Earn</span>
-            <span className="block">High Commissions</span>
+            <span className="block">& Earn High Commissions</span>
           </h1>
           <p className="mt-5 max-w-lg text-[14px] font-medium leading-7 text-[#6f7681] md:text-[15px]">
             Partner with 30+ leading banks and NBFCs. Refer loans, credit cards
@@ -48,7 +47,7 @@ export function DsaHero() {
               href="#dsa-form"
               className="inline-flex h-12 items-center justify-center rounded-full bg-[#1cb45c] px-8 text-[14px] font-bold text-white no-underline shadow-[0_14px_30px_rgba(28,180,92,0.22)] transition hover:-translate-y-0.5 hover:bg-[#16954d]"
             >
-              Become a Partner
+              Join Fintaraa Today!
             </Link>
             <a
               href="tel:+918001234567"
@@ -58,7 +57,7 @@ export function DsaHero() {
             </a>
           </div>
 
-          <div className="mt-8 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          {/* <div className="mt-8 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
             {dsaStats.map(({ value, label, icon: Icon }) => (
               <div
                 key={label}
@@ -78,21 +77,21 @@ export function DsaHero() {
                 </div>
               </div>
             ))}
-          </div>
+          </div> */}
         </div>
 
-        <div className="relative min-h-82.5 md:min-h-130">
+        <div className="relative col-span-3 min-h-82.5 md:min-h-100">
           <Image
             src="/assets/dsa/hero-quality.png"
             alt="Fintaraa DSA partners"
             fill
             priority
             unoptimized
-            sizes="(min-width: 1024px) 50vw, 100vw"
-            className="object-contain object-center"
+            sizes="(min-width: 1024px) 60vw, 110vw"
+            className="object-cover object-center"
           />
 
-          {heroBadges.map(({ label, icon: Icon, className }) => (
+          {/* {heroBadges.map(({ label, icon: Icon, className }) => (
             <div
               key={label}
               className={`absolute z-10 flex items-center gap-2 rounded-[14px] border border-[#edf1f6] bg-white px-3 py-2 shadow-[0_10px_30px_rgba(16,24,40,0.08)] ${className}`}
@@ -104,7 +103,7 @@ export function DsaHero() {
                 {label}
               </span>
             </div>
-          ))}
+          ))} */}
         </div>
       </div>
     </section>

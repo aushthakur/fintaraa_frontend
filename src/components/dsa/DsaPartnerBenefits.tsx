@@ -2,7 +2,7 @@ import Image from "next/image";
 import { CircleCheck } from "lucide-react";
 import { PartnerLeadForm } from "@/components/services/shared/PartnerLeadForm";
 import {
-  commissionRows,
+  // commissionRows,
   dsaBenefits,
   eligibleProfiles,
   partnerBenefits,
@@ -59,8 +59,8 @@ export function DsaPartnerBenefits() {
           })}
         </div>
 
-        <div className="mt-8 grid gap-6 lg:grid-cols-[0.88fr_1.12fr]">
-          <div className="rounded-[24px] border border-[#e3eaf3] bg-white p-5 shadow-[0_10px_30px_rgba(16,24,40,0.04)]">
+        <div className="mt-8 grid gap-6 lg:grid-cols-1">
+          {/* <div className="rounded-[24px] border border-[#e3eaf3] bg-white p-5 shadow-[0_10px_30px_rgba(16,24,40,0.04)]">
             <h3 className="text-[22px] font-extrabold tracking-[-0.02em] text-[#33393f]">
               Commission Structure
             </h3>
@@ -84,7 +84,7 @@ export function DsaPartnerBenefits() {
                 </tbody>
               </table>
             </div>
-          </div>
+          </div> */}
 
           <div>
             <h3 className="text-[22px] font-extrabold tracking-[-0.02em] text-[#33393f]">
@@ -131,6 +131,7 @@ export function DsaPartnerBenefits() {
                 primarySelectLabel="Partner Profile"
                 primarySelectPlaceholder="Select partner profile"
                 primaryOptions={[
+                  "FreeLancer",
                   "Loan consultant",
                   "Insurance advisor",
                   "Financial distributor",

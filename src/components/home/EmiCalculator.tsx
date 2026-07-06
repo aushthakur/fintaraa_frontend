@@ -9,6 +9,7 @@ import {
   LockKeyhole,
   ShieldCheck,
 } from "lucide-react";
+import { AuthRedirectLink } from "@/components/auth/AuthRedirectLink";
 import { LoanExpertButton } from "./LoanExpertPopup";
 
 type CalculatorKey =
@@ -43,7 +44,11 @@ type CalculatorResult = {
   totalPayable: number;
   months: number;
   repaymentPrincipal?: number;
-  extraMetrics?: Array<{ label: string; value: number; type?: "currency" | "number" }>;
+  extraMetrics?: Array<{
+    label: string;
+    value: number;
+    type?: "currency" | "number";
+  }>;
 };
 
 type CalculatorConfig = {
@@ -54,6 +59,14 @@ type CalculatorConfig = {
   defaultValues: CalculatorValues;
   fields: CalculatorField[];
   calculate: (values: CalculatorValues) => CalculatorResult;
+};
+
+type EmiCalculatorProps = {
+  defaultLoanType?: string;
+  displayLoanLabel?: string;
+  lockedLoanType?: boolean;
+  applyHrefOverride?: string;
+  applyProductSlug?: string;
 };
 
 interface CalculatorCardProps extends Omit<CalculatorField, "key"> {
@@ -137,7 +150,9 @@ const buildAmortizationSchedule = (
     }
 
     const emi = roundMoney(principalPaid + interest);
-    const closingBalance = roundMoney(Math.max(0, openingBalance - principalPaid));
+    const closingBalance = roundMoney(
+      Math.max(0, openingBalance - principalPaid),
+    );
     cumulativeInterest = roundMoney(cumulativeInterest + interest);
 
     rows.push({
@@ -346,7 +361,12 @@ const buildLoanBreakupPdf = (data: LoanBreakupPdfData) => {
   nextY = drawDetailGrid(firstPage, "Input Parameters", data.inputs, nextY - 8);
 
   if (data.extras.length) {
-    nextY = drawDetailGrid(firstPage, "Additional Details", data.extras, nextY - 8);
+    nextY = drawDetailGrid(
+      firstPage,
+      "Additional Details",
+      data.extras,
+      nextY - 8,
+    );
   }
 
   firstPage.push(pdfRect(42, Math.max(86, nextY - 28), 528, 42, "#F0FDF4"));
@@ -366,7 +386,9 @@ const buildLoanBreakupPdf = (data: LoanBreakupPdfData) => {
       { size: 7.7, color: "#64748B" },
     ),
   );
-  firstPage.push(pdfText("Page 1", 568, 34, { size: 8, color: "#94A3B8", align: "right" }));
+  firstPage.push(
+    pdfText("Page 1", 568, 34, { size: 8, color: "#94A3B8", align: "right" }),
+  );
   pages.push(firstPage.join("\n"));
 
   const rowsPerPage = 28;
@@ -375,7 +397,9 @@ const buildLoanBreakupPdf = (data: LoanBreakupPdfData) => {
     const pageNumber = pages.length + 1;
     const page: string[] = [];
 
-    page.push(pdfText("Loan Amortization Schedule", 42, 750, { size: 15, bold: true }));
+    page.push(
+      pdfText("Loan Amortization Schedule", 42, 750, { size: 15, bold: true }),
+    );
     page.push(
       pdfText(data.productLabel, 42, 732, {
         size: 9,
@@ -517,7 +541,8 @@ const calculatorConfigs: CalculatorConfig[] = [
   {
     key: "home-loan",
     label: "Home Loan",
-    description: "Calculate EMI using property value, down payment, rate and tenure.",
+    description:
+      "Calculate EMI using property value, down payment, rate and tenure.",
     applyHref: "/products/home-loan",
     defaultValues: {
       propertyValue: 7500000,
@@ -1082,6 +1107,45 @@ const initialValues = calculatorConfigs.reduce(
   {} as Record<CalculatorKey, CalculatorValues>,
 );
 
+const calculatorAliases: Record<string, CalculatorKey> = {
+  "vehicle-loan": "car-loan",
+  "used-car-loan": "car-loan",
+  "two-wheeler-loan": "car-loan",
+  "instant-loan": "personal-loan",
+  "top-up-loan": "personal-loan",
+  "balance-transfer-loan": "personal-loan",
+  "renovation-loan": "home-loan",
+  "working-capital-loan": "business-loan",
+  "machinery-loan": "business-loan",
+  "industrial-loan": "business-loan",
+  "commercial-purchases-loan": "business-loan",
+  "dod-loan": "business-loan",
+  "od-loan": "business-loan",
+  "agriculture-loan": "business-loan",
+  "loan-against-car": "car-loan",
+  "loan-against-car-value": "car-loan",
+  "loan-against-security": "loan-against-property",
+};
+
+const normalizeCalculatorSlug = (value: string) =>
+  value
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+
+const resolveCalculatorKey = (
+  value: string | undefined,
+  fallback: CalculatorKey,
+): CalculatorKey => {
+  if (!value) return fallback;
+
+  const slug = normalizeCalculatorSlug(value);
+  const directConfig = calculatorConfigs.find((config) => config.key === slug);
+
+  return directConfig?.key || calculatorAliases[slug] || fallback;
+};
+
 function SliderCard({
   title,
   subtitle,
@@ -1113,7 +1177,9 @@ function SliderCard({
 
         <div className="flex h-12 w-full min-w-0 items-center justify-between rounded-xl border border-[#d7e5f3] bg-[#fbfdff] px-3 sm:w-44">
           {prefix ? (
-            <span className="text-[14px] font-bold text-[#07162d]">{prefix}</span>
+            <span className="text-[14px] font-bold text-[#07162d]">
+              {prefix}
+            </span>
           ) : null}
           <input
             type="number"
@@ -1121,7 +1187,9 @@ function SliderCard({
             min={min}
             max={max}
             step={step}
-            onChange={(event) => onChange(clamp(Number(event.target.value), min, max))}
+            onChange={(event) =>
+              onChange(clamp(Number(event.target.value), min, max))
+            }
             className="w-full min-w-0 border-0 bg-transparent text-right text-[15px] font-bold text-[#07162d] outline-none focus:ring-0 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
           />
           {suffix ? (
@@ -1154,8 +1222,18 @@ function SliderCard({
   );
 }
 
-export function EmiCalculator() {
-  const [activeKey, setActiveKey] = useState<CalculatorKey>("home-loan");
+export function EmiCalculator({
+  defaultLoanType,
+  displayLoanLabel,
+  lockedLoanType = false,
+  applyHrefOverride,
+  applyProductSlug,
+}: EmiCalculatorProps = {}) {
+  const fallbackActiveKey: CalculatorKey = defaultLoanType
+    ? "personal-loan"
+    : "home-loan";
+  const defaultActiveKey = resolveCalculatorKey(defaultLoanType, fallbackActiveKey);
+  const [activeKey, setActiveKey] = useState<CalculatorKey>(defaultActiveKey);
   const [valuesByCalculator, setValuesByCalculator] =
     useState<Record<CalculatorKey, CalculatorValues>>(initialValues);
 
@@ -1171,6 +1249,8 @@ export function EmiCalculator() {
     () => activeConfig.calculate(activeValues),
     [activeConfig, activeValues],
   );
+  const activeLoanLabel = displayLoanLabel || activeConfig.label;
+  const applyHref = applyHrefOverride || activeConfig.applyHref;
 
   const totalPayable = Math.max(computedMetrics.totalPayable, 1);
   const principalPercent = Math.min(
@@ -1216,7 +1296,8 @@ export function EmiCalculator() {
     const monthlyRate = (activeValues.interestRate || 0) / 12;
     const extraDetails: PdfDetail[] = [
       ...(computedMetrics.repaymentPrincipal &&
-      Math.abs(computedMetrics.repaymentPrincipal - computedMetrics.principal) > 0.5
+      Math.abs(computedMetrics.repaymentPrincipal - computedMetrics.principal) >
+        0.5
         ? [
             {
               label: "Repayment Principal",
@@ -1233,7 +1314,7 @@ export function EmiCalculator() {
       })),
     ];
     const pdf = buildLoanBreakupPdf({
-      productLabel: activeConfig.label,
+      productLabel: activeLoanLabel,
       description: activeConfig.description,
       generatedAt: `Generated on ${new Date().toLocaleString("en-IN", {
         day: "2-digit",
@@ -1244,7 +1325,7 @@ export function EmiCalculator() {
       })}`,
       inputs,
       summary: [
-        { label: "Product", value: activeConfig.label },
+        { label: "Product", value: activeLoanLabel },
         {
           label: computedMetrics.principalLabel,
           value: formatCurrencyPdf(computedMetrics.principal),
@@ -1275,9 +1356,12 @@ export function EmiCalculator() {
       extras: extraDetails,
       schedule,
     });
-    const fileName = `fintaraa-${activeConfig.key}-breakup.pdf`;
+    const fileName = `fintaraa-${applyProductSlug || activeConfig.key}-breakup.pdf`;
     downloadPdf(fileName, pdf);
   };
+
+  const applyButtonClasses =
+    "mt-6 flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#075cde] text-[15px] font-semibold text-white no-underline transition hover:bg-[#064cb8]";
 
   return (
     <section className="bg-white px-4 py-12 md:px-6 lg:px-8">
@@ -1286,22 +1370,19 @@ export function EmiCalculator() {
           <div>
             <h2 className="text-[30px] font-bold leading-tight tracking-tight text-[#07162d] sm:text-[40px]">
               Calculate Your{" "}
-              <span className="text-[#075cde]">{activeConfig.label}</span> EMI
+              <span className="text-[#075cde]">{activeLoanLabel}</span> EMI
             </h2>
-            <p className="mt-3 max-w-2xl text-[15px] font-medium leading-7 text-[#61748f]">
+            {/* <p className="mt-3 max-w-2xl text-[15px] font-medium leading-7 text-[#61748f]">
               Plan better. Borrow smarter. Calculate your EMI, interest and
               total repayment instantly with a detailed loan breakup PDF.
-            </p>
-            <div className="mt-5 grid max-w-2xl gap-3 sm:grid-cols-3">
+            </p> */}
+            {/* <div className="mt-5 grid max-w-2xl gap-3 sm:grid-cols-3">
               {[
                 ["100% Secure", "Your data is safe"],
                 ["Instant Results", "No sign-up required"],
                 ["100% Accurate", "Real-time calculation"],
               ].map(([label, text]) => (
-                <div
-                  key={label}
-                  className="flex items-start gap-2 text-[12px]"
-                >
+                <div key={label} className="flex items-start gap-2 text-[12px]">
                   <BadgeCheck className="mt-0.5 h-4 w-4 shrink-0 text-[#075cde]" />
                   <span>
                     <span className="block font-semibold text-[#07162d]">
@@ -1311,41 +1392,43 @@ export function EmiCalculator() {
                   </span>
                 </div>
               ))}
-            </div>
+            </div> */}
           </div>
           <span className="inline-flex w-fit items-center text-[12px] font-semibold text-[#075cde]">
             {computedMetrics.months} month schedule
           </span>
         </div>
 
-        <div className="-mx-4 mt-5 flex gap-2 overflow-x-auto px-4 pb-2 scrollbar-none sm:mx-0 sm:px-0">
-          {calculatorConfigs.map((config) => {
-            const isSelected = activeKey === config.key;
-            return (
-              <button
-                key={config.key}
-                type="button"
-                onClick={() => setActiveKey(config.key)}
+        {!lockedLoanType ? (
+          <div className="-mx-4 mt-5 flex gap-2 overflow-x-auto px-4 pb-2 scrollbar-none sm:mx-0 sm:px-0">
+            {calculatorConfigs.map((config) => {
+              const isSelected = activeKey === config.key;
+              return (
+                <button
+                  key={config.key}
+                  type="button"
+                  onClick={() => setActiveKey(config.key)}
                   className={`shrink-0 rounded-lg border px-5 py-2.5 text-[13px] font-semibold transition-all ${
-                  isSelected
-                    ? "border-[#075cde] bg-white text-[#075cde]"
-                    : "border-[#dceaf7] bg-white text-[#52657d] hover:border-[#075cde]"
-                }`}
-              >
-                {config.label}
-              </button>
-            );
-          })}
-        </div>
+                    isSelected
+                      ? "border-[#075cde] bg-white text-[#075cde]"
+                      : "border-[#dceaf7] bg-white text-[#52657d] hover:border-[#075cde]"
+                  }`}
+                >
+                  {config.label}
+                </button>
+              );
+            })}
+          </div>
+        ) : null}
 
-        <div className="mt-4 rounded-xl bg-white px-5 py-4">
+        {/* <div className="mt-4 rounded-xl bg-white px-5 py-4">
           <p className="text-[14px] font-bold text-[#07162d]">
             Adjust & Calculate
           </p>
           <p className="mt-1 text-[13px] font-semibold leading-6 text-[#61748f]">
             {activeConfig.description}
           </p>
-        </div>
+        </div> */}
 
         <div className="mt-6 grid gap-6 lg:grid-cols-[1.3fr_1fr]">
           <div className="grid gap-4">
@@ -1363,7 +1446,7 @@ export function EmiCalculator() {
               onClick={handleDownloadBreakup}
               className="mt-2 flex h-12 w-full items-center justify-center gap-2 rounded-xl border border-[#dceaf7] bg-white text-[13px] font-semibold text-[#07162d] transition-colors hover:border-[#075cde] hover:bg-[#f2f7ff] sm:text-[14px]"
             >
-              Download {activeConfig.label} Breakup PDF
+              Download {activeLoanLabel} Breakup PDF
               <Download className="ml-1 h-4 w-4 text-[#075cde]" />
             </button>
           </div>
@@ -1482,13 +1565,21 @@ export function EmiCalculator() {
                 </div>
               ) : null}
 
-              <Link
-                href={activeConfig.applyHref}
-                className="mt-6 flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#075cde] text-[15px] font-semibold text-white no-underline transition hover:bg-[#064cb8]"
-              >
-                Apply For This Loan
-                <ArrowRight className="h-4 w-4" />
-              </Link>
+              {applyProductSlug ? (
+                <AuthRedirectLink
+                  href={applyHref}
+                  productSlug={applyProductSlug}
+                  className={applyButtonClasses}
+                >
+                  Apply For This Loan
+                  <ArrowRight className="h-4 w-4" />
+                </AuthRedirectLink>
+              ) : (
+                <Link href={applyHref} className={applyButtonClasses}>
+                  Apply For This Loan
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              )}
               <LoanExpertButton className="mt-3 h-12 w-full" />
 
               <div className="mt-4 grid gap-2 text-[11px] font-bold text-[#61748f] sm:grid-cols-3">
@@ -1517,7 +1608,6 @@ export function EmiCalculator() {
             </div>
           </aside>
         </div>
-
       </div>
     </section>
   );

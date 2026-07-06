@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import {
   CheckCircle2,
   ClipboardList,
@@ -16,6 +17,7 @@ import {
   ServiceRequestType,
 } from "@/services/serviceRequests";
 import { isUserLoggedIn } from "@/hooks/authStorage";
+import { AUTH_CHANGED_EVENT } from "@/lib/authEvents";
 
 const steps = [
   { label: "Inquiry Submitted", icon: ClipboardList },
@@ -112,10 +114,12 @@ export function ServiceRequestTracker({
   title,
   idLabel,
   serviceType,
+  requireLogin = false,
 }: {
   title: string;
   idLabel: string;
   serviceType: ServiceRequestType;
+  requireLogin?: boolean;
 }) {
   const [mobile, setMobile] = useState("");
   const [queryId, setQueryId] = useState("");
@@ -123,8 +127,25 @@ export function ServiceRequestTracker({
   const [selectedId, setSelectedId] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [authReady, setAuthReady] = useState(!requireLogin);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
+    if (!requireLogin) return;
+
+    const syncAuth = () => {
+      setLoggedIn(isUserLoggedIn());
+      setAuthReady(true);
+    };
+
+    syncAuth();
+    window.addEventListener(AUTH_CHANGED_EVENT, syncAuth);
+    return () => window.removeEventListener(AUTH_CHANGED_EVENT, syncAuth);
+  }, [requireLogin]);
+
+  useEffect(() => {
+    if (requireLogin && (!authReady || !loggedIn)) return;
+
     let active = true;
     queueMicrotask(() => {
       if (!active) return;
@@ -149,10 +170,11 @@ export function ServiceRequestTracker({
       active = false;
       window.removeEventListener("service-request-created", onCreated);
     };
-  }, [serviceType]);
+  }, [authReady, loggedIn, requireLogin, serviceType]);
 
   useEffect(() => {
     let active = true;
+    if (requireLogin && (!authReady || !loggedIn)) return;
     if (!isUserLoggedIn()) return;
 
     const loadLinkedRequests = async () => {
@@ -177,7 +199,7 @@ export function ServiceRequestTracker({
     return () => {
       active = false;
     };
-  }, [serviceType]);
+  }, [authReady, loggedIn, requireLogin, serviceType]);
 
   const selectedRequest = useMemo(
     () => requests.find((request) => request._id === selectedId) || requests[0],
@@ -217,6 +239,36 @@ export function ServiceRequestTracker({
       setLoading(false);
     }
   };
+
+  if (requireLogin && !authReady) {
+    return null;
+  }
+
+  if (requireLogin && !loggedIn) {
+    return (
+      <section className="px-4 py-8 md:px-6 lg:px-8">
+        <div className="mx-auto max-w-9xl">
+          <div className="max-w-2xl">
+            <p className="text-[12px] font-black uppercase tracking-wide text-[#13a653]">
+              Track Status
+            </p>
+            <h2 className="mt-1 text-[24px] font-black tracking-[-0.01em] text-[#005ca8] md:text-[28px]">
+              {title}
+            </h2>
+            <p className="mt-2 text-[14px] font-semibold leading-6 text-[#667085] md:text-[15px]">
+              Please login first to track your DSA partner status.
+            </p>
+            <Link
+              href="/login"
+              className="mt-4 inline-flex h-10 items-center justify-center rounded-full bg-[#075cde] px-5 text-[13px] font-black text-white no-underline transition hover:bg-[#064cb8]"
+            >
+              Login
+            </Link>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="px-4 py-8 md:px-6 lg:px-8">

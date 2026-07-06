@@ -15,6 +15,9 @@ import { FaqAccordion } from "@/components/common/FaqAccordion";
 import { Testimonials } from "@/components/home/Testimonials";
 import { ProductLocationDirectory } from "../ProductLocationDirectory";
 import type { InsuranceSeoLocationPage } from "@/services/insuranceSeoPages";
+import { getApplyHref } from "@/components/application/flowRegistry";
+import { ProductDetailPopupBanner } from "@/components/products/ProductDetailPopupBanner";
+import { ProductRelatedBlogs } from "../ProductRelatedBlogs";
 
 export function InsuranceDetailPage({
   page,
@@ -50,13 +53,28 @@ export function InsuranceDetailPage({
     tabIdentity.includes("compare");
   const isFaq = tabIdentity.includes("faq") || tabIdentity.includes("question");
   const isReview = tabIdentity.includes("review") || tabIdentity.includes("testimonial");
+  const applyHref = getApplyHref({
+    category: "insurance",
+    productSlug: page.insuranceTypeSlug,
+    referrer: page.canonicalPath || `/products/${page.insuranceTypeSlug}`,
+  });
 
   return (
-    <main className="bg-white text-[#111827]">
+    <main className="overflow-visible bg-white text-[#111827]">
+      <ProductDetailPopupBanner
+        category="insurance"
+        productName={page.insuranceType}
+        productSlug={page.insuranceTypeSlug}
+        applyHref={applyHref}
+      />
       <InsuranceHero page={page} />
       <LoanStatsBar />
 
-      <section className="my-10 w-full bg-[#e3f0fc] px-4 py-4 antialiased sm:px-6 md:px-8">
+      <div className="h-10" aria-hidden="true" />
+      <section
+        className="sticky z-[49] mb-10 w-full bg-[#e3f0fc] px-4 py-4 antialiased shadow-[0_12px_28px_rgba(0,82,156,0.08)] sm:px-6 md:px-8"
+        style={{ top: "var(--site-header-height, 8.25rem)" }}
+      >
         <div className="mx-auto flex max-w-7xl items-center gap-3 overflow-x-auto py-1">
           {tabs.map((tab) => {
             const isSelected = active?.key === tab.key;
@@ -97,6 +115,10 @@ export function InsuranceDetailPage({
       ) : null}
       {isFaq ? <FaqAccordion lookupPathname="/products/[insuranceType]" /> : null}
       {isReview ? <Testimonials /> : null}
+      <ProductRelatedBlogs
+        category="Insurance"
+        productName={page.insuranceType}
+      />
       <ProductLocationDirectory
         productName={page.insuranceType}
         productSlug={page.insuranceTypeSlug}

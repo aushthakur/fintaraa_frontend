@@ -3,11 +3,11 @@
 import Link from "next/link";
 import {
   ArrowRight,
-  BadgeCheck,
+  // BadgeCheck,
   ChevronUp,
-  LockKeyhole,
-  ShieldCheck,
-  UsersRound,
+  // LockKeyhole,
+  // ShieldCheck,
+  // UsersRound,
 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { BankLogoImage } from "@/components/common/BankLogoImage";
@@ -139,7 +139,6 @@ export function TrustedPartnerBanksSection({
   mode = "marquee",
   className = "",
   title = "Our Trusted Partner Banks & NBFCs",
-  description,
   defaultShowAll = false,
   showViewAllAction = true,
   viewAllHref,
@@ -156,7 +155,7 @@ export function TrustedPartnerBanksSection({
   const displayedPartners = showAll ? trustedPartners : filteredPartners;
   const marqueePartners = filteredPartners.slice(0, 14);
   const rows = splitRows(marqueePartners);
-  const activeCount = displayedPartners.length;
+  // const activeCount = displayedPartners.length;
 
   const handleViewAll = () => {
     if (showAll) {
@@ -168,7 +167,7 @@ export function TrustedPartnerBanksSection({
   };
 
   return (
-    <section className={`bg-white px-4 py-12 md:px-6 lg:px-8 ${className}`}>
+    <section className={`bg-white px-4 md:px-6 lg:px-8 ${className}`}>
       <div
         className={`mx-auto max-w-9xl ${
           mode === "grid"
@@ -180,17 +179,17 @@ export function TrustedPartnerBanksSection({
       >
         <div className="flex flex-col gap-5 border-b border-[#dceaf7] pb-6 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <span className="mb-3 inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-wide text-[#075cde]">
+            {/* <span className="mb-3 inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-wide text-[#075cde]">
               <ShieldCheck className="h-4 w-4" />
               Our trusted network
-            </span>
+            </span> */}
             <h2 className="max-w-3xl text-[26px] font-bold leading-tight tracking-tight text-[#07162d] md:text-[36px]">
               {title}
             </h2>
-            <p className="mt-3 max-w-2xl text-[14px] font-semibold leading-6 text-[#61748f]">
+            {/* <p className="mt-3 max-w-2xl text-[14px] font-semibold leading-6 text-[#61748f]">
               {description ||
                 `${activeCount} partners available across selected product category.`}
-            </p>
+            </p> */}
           </div>
 
           <div className="flex min-w-0 flex-wrap items-center gap-3 sm:gap-4 lg:ml-0">
@@ -234,7 +233,7 @@ export function TrustedPartnerBanksSection({
               viewAllHref ? (
                 <Link
                   href={viewAllHref}
-                  className="inline-flex h-10 items-center gap-1 rounded-xl px-2 text-[13px] font-semibold text-[#075cde] no-underline transition-colors hover:text-[#064cb8]"
+                  className="inline-flex h-10 items-center gap-1 rounded-xl px-2 text-[15px] font-semibold text-[#075cde] no-underline transition-colors hover:text-[#064cb8]"
                 >
                   View all Partners
                   <ArrowRight className="h-4 w-4" />
@@ -282,7 +281,7 @@ export function TrustedPartnerBanksSection({
           )}
         </div>
 
-        {mode === "grid" ? (
+        {/* {mode === "grid" ? (
           <div className="mt-6 grid gap-3 rounded-2xl border border-[#dceaf7] bg-white p-3 sm:grid-cols-3">
             {[
               {
@@ -319,7 +318,7 @@ export function TrustedPartnerBanksSection({
               </div>
             ))}
           </div>
-        ) : null}
+        ) : null} */}
       </div>
     </section>
   );

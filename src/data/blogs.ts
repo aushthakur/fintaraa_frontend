@@ -226,6 +226,168 @@ export const blogPosts: BlogPost[] = [
       },
     ],
   },
+  {
+    slug: "business-loan-documents-cash-flow-checklist",
+    title: "Business Loan Documents and Cash Flow Checks",
+    excerpt:
+      "Know the records lenders usually review before approving working capital or growth funding.",
+    category: "Loans",
+    author: "Fintaraa Business Loan Team",
+    publishedAt: "2026-03-28",
+    readTime: "6 min read",
+    tags: ["Business Loan", "Documents", "Cash Flow"],
+    accent: "#2563eb",
+    body: [
+      {
+        heading: "Organize financial records first",
+        content: [
+          "Business loan review usually starts with banking, turnover, GST or ITR records, existing obligations, and repayment capacity.",
+          "Clean documentation helps partners understand seasonality, margins, and actual cash flow instead of relying only on declared income.",
+        ],
+      },
+      {
+        heading: "Separate need from eligibility",
+        content: [
+          "The amount required for expansion may be different from the amount a lender is comfortable approving. Compare EMI impact before finalizing tenure.",
+        ],
+      },
+      {
+        heading: "Keep owner KYC ready",
+        content: [
+          "PAN, Aadhaar, business proof, address proof, and bank statements are commonly requested for proprietor, partner, or director verification.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "gold-loan-valuation-and-repayment-guide",
+    title: "Gold Loan Valuation and Repayment Guide",
+    excerpt:
+      "Understand purity checks, loan-to-value, interest options, and closure terms before pledging gold.",
+    category: "Loans",
+    author: "Fintaraa Gold Loan Desk",
+    publishedAt: "2026-03-22",
+    readTime: "5 min read",
+    tags: ["Gold Loan", "Valuation", "Repayment"],
+    accent: "#d97706",
+    body: [
+      {
+        heading: "Valuation decides eligible amount",
+        content: [
+          "Gold loan amount depends on purity, weight, prevailing rate, and partner loan-to-value policy. Decorative stones and non-gold parts are usually excluded.",
+        ],
+      },
+      {
+        heading: "Compare repayment structures",
+        content: [
+          "Some plans require regular EMI, while others allow interest servicing with principal closure at the end. Pick the structure that fits cash flow.",
+        ],
+      },
+      {
+        heading: "Check auction and renewal terms",
+        content: [
+          "Read overdue, renewal, part-release, and auction rules carefully so there is no confusion during repayment stress.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "health-insurance-coverage-checklist",
+    title: "Health Insurance Coverage Checklist Before Buying",
+    excerpt:
+      "Compare waiting periods, room rent limits, network hospitals, exclusions, and claim support before choosing a plan.",
+    category: "Insurance",
+    author: "Fintaraa Insurance Team",
+    publishedAt: "2026-03-18",
+    readTime: "7 min read",
+    tags: ["Health Insurance", "Coverage", "Claims"],
+    accent: "#0f766e",
+    body: [
+      {
+        heading: "Review limits beyond sum insured",
+        content: [
+          "A policy can look sufficient on sum insured but still include room rent, disease-wise, co-pay, or waiting period conditions.",
+          "Compare these conditions with your city, hospital preference, and family health history.",
+        ],
+      },
+      {
+        heading: "Check hospital access",
+        content: [
+          "Network hospital availability matters during emergencies. Keep nearby hospital options and cashless claim process in mind.",
+        ],
+      },
+      {
+        heading: "Declare health details correctly",
+        content: [
+          "Accurate declarations reduce claim disputes. Share existing conditions, medication, surgeries, and lifestyle details honestly.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "car-insurance-claim-documents-guide",
+    title: "Car Insurance Claim Documents Guide",
+    excerpt:
+      "Prepare claim intimation, RC, licence, policy copy, repair estimate, and photos for smoother vehicle claim processing.",
+    category: "Insurance",
+    author: "Fintaraa Motor Insurance Desk",
+    publishedAt: "2026-03-12",
+    readTime: "5 min read",
+    tags: ["Car Insurance", "Claims", "Documents"],
+    accent: "#0891b2",
+    body: [
+      {
+        heading: "Intimate the claim early",
+        content: [
+          "After an accident or damage event, inform the insurer or assistance desk quickly. Delayed intimation can complicate inspection and approval.",
+        ],
+      },
+      {
+        heading: "Keep vehicle papers available",
+        content: [
+          "RC, driving licence, policy copy, repair estimate, and photos are commonly required. Theft and third-party incidents may need additional police documentation.",
+        ],
+      },
+      {
+        heading: "Understand cashless and reimbursement flow",
+        content: [
+          "Cashless garages can reduce upfront payment, while reimbursement claims require bills and payment proof after repairs.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "life-insurance-riders-explained",
+    title: "Life Insurance Riders Explained Simply",
+    excerpt:
+      "Accidental death, critical illness, waiver of premium, and income riders can add protection when chosen carefully.",
+    category: "Insurance",
+    author: "Fintaraa Protection Desk",
+    publishedAt: "2026-03-06",
+    readTime: "6 min read",
+    tags: ["Life Insurance", "Riders", "Protection"],
+    accent: "#7c3aed",
+    body: [
+      {
+        heading: "Riders should solve a real gap",
+        content: [
+          "Add-ons are useful when they match family risk, income dependency, health exposure, or loan obligations. Avoid adding riders only because premium difference looks small.",
+        ],
+      },
+      {
+        heading: "Read trigger conditions",
+        content: [
+          "Critical illness and disability riders have precise definitions, waiting periods, and exclusions. These decide whether a claim is payable.",
+        ],
+      },
+      {
+        heading: "Keep affordability stable",
+        content: [
+          "Protection works best when premiums remain comfortable across the full policy term, including riders and future renewals.",
+        ],
+      },
+    ],
+  },
 ];
 
 export const blogCategories = [

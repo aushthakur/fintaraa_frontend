@@ -60,7 +60,9 @@ const testimonialsData: WebsiteKnowledgeItem[] = [
   },
 ];
 
-const testimonialAvatars = testimonialsData.map((item) => item.authorAvatarUrl || "");
+const testimonialAvatars = testimonialsData.map(
+  (item) => item.authorAvatarUrl || "",
+);
 const homeTestimonialsLimit = 12;
 
 const normaliseTestimonials = (data: WebsiteKnowledgeItem[]) => {
@@ -70,7 +72,9 @@ const normaliseTestimonials = (data: WebsiteKnowledgeItem[]) => {
 
   for (const item of source) {
     const name = item.authorName || item.title || item.slug;
-    const key = String(name || "").trim().toLowerCase();
+    const key = String(name || "")
+      .trim()
+      .toLowerCase();
     if (!key || seen.has(key)) continue;
     seen.add(key);
 
@@ -89,10 +93,10 @@ const normaliseTestimonials = (data: WebsiteKnowledgeItem[]) => {
         item.rating ||
         testimonialsData[cleaned.length % testimonialsData.length]?.rating ||
         5,
-      tags:
-        item.tags?.length
-          ? item.tags
-          : testimonialsData[cleaned.length % testimonialsData.length]?.tags || [],
+      tags: item.tags?.length
+        ? item.tags
+        : testimonialsData[cleaned.length % testimonialsData.length]?.tags ||
+          [],
     });
 
     if (cleaned.length === homeTestimonialsLimit) break;
@@ -101,12 +105,15 @@ const normaliseTestimonials = (data: WebsiteKnowledgeItem[]) => {
   for (const item of testimonialsData) {
     if (cleaned.length === homeTestimonialsLimit) break;
     const name = item.authorName || item.title || item.slug;
-    const key = String(name || "").trim().toLowerCase();
+    const key = String(name || "")
+      .trim()
+      .toLowerCase();
     if (!key || seen.has(key)) continue;
     seen.add(key);
     cleaned.push({
       ...item,
-      authorAvatarUrl: testimonialAvatars[cleaned.length % testimonialAvatars.length],
+      authorAvatarUrl:
+        testimonialAvatars[cleaned.length % testimonialAvatars.length],
     });
   }
 
@@ -181,7 +188,10 @@ export function Testimonials() {
           </div>
           <div className="mt-12 flex gap-6 overflow-hidden">
             {Array.from({ length: 4 }).map((_, index) => (
-              <div key={index} className="h-52 w-77.5 shrink-0 animate-pulse rounded-xl bg-slate-100 sm:w-87.5 md:w-95" />
+              <div
+                key={index}
+                className="h-52 w-77.5 shrink-0 animate-pulse rounded-xl bg-slate-100 sm:w-87.5 md:w-95"
+              />
             ))}
           </div>
         </div>
@@ -190,7 +200,7 @@ export function Testimonials() {
   }
 
   return (
-    <section className="bg-white px-4 py-16 md:px-6 lg:px-8 overflow-hidden select-none">
+    <section className="bg-white px-4 pt-16 md:px-6 lg:px-8 overflow-hidden select-none">
       <div className="mx-auto max-w-9xl">
         <div className="flex items-center justify-between gap-4">
           <h2 className="text-[26px] font-semibold text-[#111625] md:text-[32px] tracking-tight">
@@ -208,7 +218,7 @@ export function Testimonials() {
         {/* Mask Carousel Viewport Container Frame */}
         <div
           ref={containerRef}
-          className="relative w-full overflow-hidden py-4 mt-12"
+          className="relative w-full overflow-hidden py-4"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
