@@ -1,26 +1,33 @@
 "use client";
 
 import Link from "next/link";
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, ReactNode, useEffect, useMemo, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowRight,
   CheckCircle2,
   ClipboardList,
   FileSearch,
+  Hash,
   Loader2,
+  Phone,
   Search,
   ShieldCheck,
   UserCheck,
 } from "lucide-react";
 import { AppDownloadBanner } from "@/components/common/layout/Footer";
 import { StatusHero } from "./StatusHero";
-import { isUserLoggedIn } from "@/hooks/authStorage";
+import { getAuthType } from "@/hooks/authStorage";
 import {
   fetchAccountInsuranceApplications,
   fetchAccountLoanApplications,
   type AccountInsuranceQuery,
   type AccountLoanQuery,
 } from "@/services/accountActivity";
+import {
+  fetchPartnerLeadEvents,
+  type PartnerLeadEvent,
+} from "@/services/partner";
 import {
   fetchServiceRequestHistory,
   type ServiceRequestRecord,
@@ -46,12 +53,24 @@ type StatusItem = {
   }>;
 };
 
-const serviceTypes: Array<{ label: string; value: ServiceRequestType }> = [
-  { label: "GST Registration", value: "gst_registration" },
-  { label: "ITR Filing", value: "itr_filing" },
-  { label: "Company Registration", value: "company_registration" },
-  { label: "Franchise Partner", value: "franchise_partner" },
-  { label: "DSA Partner", value: "dsa_partner" },
+const serviceTypes: Array<{
+  label: string;
+  shortLabel: string;
+  value: ServiceRequestType;
+}> = [
+  { label: "GST Registration", shortLabel: "GST", value: "gst_registration" },
+  { label: "ITR Filing", shortLabel: "ITR", value: "itr_filing" },
+  {
+    label: "Company Registration",
+    shortLabel: "Company",
+    value: "company_registration",
+  },
+  {
+    label: "Franchise Partner",
+    shortLabel: "Franchise",
+    value: "franchise_partner",
+  },
+  { label: "DSA Partner", shortLabel: "DSA", value: "dsa_partner" },
 ];
 
 const statusTabs = ["All", "Loan", "Insurance", "Service"];
@@ -172,6 +191,101 @@ const mapService = (item: ServiceRequestRecord): StatusItem => ({
   timeline: item.timeline || [],
 });
 
+const mapPartnerLead = (item: PartnerLeadEvent): StatusItem => {
+  const productType =
+    item.productType === "insurance" ||
+    String(item.loanType || "").toLowerCase().startsWith("insurance_")
+      ? "insurance"
+      : "loan";
+  const title =
+    productType === "insurance"
+      ? titleCase(String(item.loanType || "insurance").replace(/^insurance_/, ""))
+      : titleCase(item.loanType || "Loan Application");
+
+  return {
+    id: item.id || item._id || item.loanId || `${item.mobile}-${item.createdAt}`,
+    queryId: item.loanId || item.id || item._id || "-",
+    type: productType,
+    title,
+    subtitle: [item.customerName, item.mobile].filter(Boolean).join(" • "),
+    status: item.status || "Submitted",
+    amount: formatCurrency(item.loanAmount),
+    assigned: item.assignedAgentName || item.assignedLanderName,
+    updatedAt: item.updatedAt || item.createdAt,
+    timeline: loanTimeline(item.status),
+  };
+};
+
+function TrackSearchField({
+  id,
+  label,
+  value,
+  placeholder,
+  icon,
+  active,
+  onFocus,
+  onBlur,
+  onChange,
+  inputMode,
+}: {
+  id: string;
+  label: string;
+  value: string;
+  placeholder: string;
+  icon: ReactNode;
+  active: boolean;
+  onFocus: () => void;
+  onBlur: () => void;
+  onChange: (value: string) => void;
+  inputMode?: "text" | "numeric";
+}) {
+  return (
+    <motion.label
+      htmlFor={id}
+      animate={{
+        borderColor: active ? "#005ca8" : "#dce9f7",
+        backgroundColor: active ? "#ffffff" : "#f8fbff",
+      }}
+      transition={{ duration: 0.2 }}
+      className="group relative flex h-[4.25rem] items-center gap-3 border px-4"
+    >
+      <span
+        className={`flex h-9 w-9 shrink-0 items-center justify-center transition ${
+          active ? "bg-[#005ca8] text-white" : "bg-white text-[#005ca8]"
+        }`}
+      >
+        {icon}
+      </span>
+      <span className="min-w-0 flex-1">
+        <span
+          className={`block text-[11px] font-black uppercase tracking-[0.12em] transition ${
+            active ? "text-[#005ca8]" : "text-[#667085]"
+          }`}
+        >
+          {label}
+        </span>
+        <input
+          id={id}
+          value={value}
+          inputMode={inputMode}
+          onFocus={onFocus}
+          onBlur={onBlur}
+          onChange={(event) => onChange(event.target.value)}
+          placeholder={placeholder}
+          className="mt-1 w-full bg-transparent text-[14px] font-black text-[#07162d] outline-none placeholder:text-[#98a2b3]"
+        />
+      </span>
+      {active ? (
+        <motion.span
+          layoutId="application-search-active-line"
+          className="absolute bottom-0 left-0 h-0.5 w-full bg-[#005ca8]"
+          transition={{ type: "spring", stiffness: 420, damping: 34 }}
+        />
+      ) : null}
+    </motion.label>
+  );
+}
+
 function StatusSkeleton() {
   return (
     <div className="grid gap-5 lg:grid-cols-3">
@@ -200,6 +314,13 @@ export function ApplicationStatusPage() {
     useState<ServiceRequestType>("gst_registration");
   const [queryId, setQueryId] = useState("");
   const [mobile, setMobile] = useState("");
+  const [activeSearchField, setActiveSearchField] = useState<
+    "queryId" | "mobile" | null
+  >(null);
+  const viewerType = useMemo(() => {
+    const authType = getAuthType();
+    return authType === "user" || authType === "agency" ? authType : null;
+  }, []);
 
   const selected = useMemo(
     () => items.find((item) => item.id === selectedId) || items[0],
@@ -225,12 +346,31 @@ export function ApplicationStatusPage() {
 
   useEffect(() => {
     let active = true;
-    if (!isUserLoggedIn()) return;
+    if (!viewerType) return;
 
     const load = async () => {
       setLoading(true);
       setError("");
       try {
+        if (viewerType === "agency") {
+          const partnerLeads = await fetchPartnerLeadEvents({
+            stage: "all",
+            page: 1,
+            limit: 100,
+          });
+          if (!active) return;
+          const next = (partnerLeads.result || [])
+            .map(mapPartnerLead)
+            .sort(
+              (a, b) =>
+                new Date(b.updatedAt || 0).getTime() -
+                new Date(a.updatedAt || 0).getTime(),
+            );
+          setItems(next);
+          setSelectedId(next[0]?.id || "");
+          return;
+        }
+
         const [loans, insurance, gst, itr, company, franchise, dsa] =
           await Promise.all([
             fetchAccountLoanApplications(),
@@ -264,7 +404,7 @@ export function ApplicationStatusPage() {
     return () => {
       active = false;
     };
-  }, []);
+  }, [viewerType]);
 
   const trackRequest = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -302,77 +442,127 @@ export function ApplicationStatusPage() {
         activeApplications={heroCounts.active}
         completedApplications={heroCounts.completed}
       />
-      <section className="px-4 pb-14 md:px-6 lg:px-8">
+      <section className="px-4 py-8 md:px-6 lg:px-8">
         <div className="mx-auto grid max-w-9xl gap-6">
-          <div className="rounded-2xl border border-[#dce9f7] bg-[#f8fbff] p-5 md:p-6">
-            <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+          <div className="bg-white">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
               <div>
-                <p className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-[12px] font-black uppercase tracking-[0.14em] text-[#005ca8]">
-                  <ClipboardList className="h-4 w-4" />
-                  Live application tracking
+                <p className="text-[12px] font-black uppercase tracking-[0.14em] text-[#667085]">
+                  {viewerType === "agency" ? "Partner view" : "Track request"}
                 </p>
-                <h2 className="mt-4 text-[28px] font-black text-[#111827]">
-                  Track submitted applications and service requests
+                <h2 className="mt-1 text-[24px] font-black tracking-[-0.01em] text-[#111827] md:text-[30px]">
+                  {viewerType === "agency"
+                    ? "Partner applications"
+                    : "Find submitted applications"}
                 </h2>
-                <p className="mt-2 max-w-2xl text-[15px] font-semibold leading-7 text-[#667085]">
-                  Logged-in users see linked loan, insurance, GST, ITR, company,
-                  franchise, and DSA requests automatically.
-                </p>
               </div>
-              {!isUserLoggedIn() ? (
-                <Link
-                  href="/login?referrer=/application-status"
-                  className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[#13a653] px-5 text-[13px] font-black text-white no-underline"
-                >
-                  Login to view linked applications
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
+              {!viewerType ? (
+                <div className="flex flex-wrap gap-2">
+                  <Link
+                    href="/login?referrer=/application-status"
+                    className="inline-flex h-11 items-center justify-center gap-2 bg-[#13a653] px-5 text-[13px] font-black text-white no-underline"
+                  >
+                    Customer login
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                  <Link
+                    href="/partner/login?redirect=/application-status"
+                    className="inline-flex h-11 items-center justify-center gap-2 bg-[#005ca8] px-5 text-[13px] font-black text-white no-underline"
+                  >
+                    Partner login
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </div>
               ) : null}
             </div>
 
-            <form
+            <motion.form
               onSubmit={trackRequest}
-              className="mt-6 grid gap-3 rounded-2xl bg-white p-4 md:grid-cols-[1fr_1fr_1fr_auto]"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.28, ease: "easeOut" }}
+              className="mt-5 overflow-hidden border border-[#dce9f7] bg-white shadow-[0_20px_60px_rgba(0,92,168,0.08)]"
             >
-              <select
-                value={searchServiceType}
-                onChange={(event) =>
-                  setSearchServiceType(event.target.value as ServiceRequestType)
-                }
-                className="h-11 rounded-xl border border-[#dce9f7] bg-white px-3 text-[13px] font-bold text-[#344054] outline-none focus:border-[#005ca8]"
-              >
+              <div className="flex gap-2 overflow-x-auto border-b border-[#e7eef6] bg-[#f8fbff] p-2">
                 {serviceTypes.map((item) => (
-                  <option key={item.value} value={item.value}>
-                    {item.label}
-                  </option>
+                  <button
+                    key={item.value}
+                    type="button"
+                    onClick={() => setSearchServiceType(item.value)}
+                    className={`relative h-10 shrink-0 overflow-hidden px-4 text-[12px] font-black uppercase tracking-[0.08em] transition ${
+                      searchServiceType === item.value
+                        ? "text-white"
+                        : "text-[#667085] hover:bg-white hover:text-[#005ca8]"
+                    }`}
+                    title={item.label}
+                  >
+                    {searchServiceType === item.value ? (
+                      <motion.span
+                        layoutId="application-status-service-pill"
+                        className="absolute inset-0 bg-[#005ca8]"
+                        transition={{
+                          type: "spring",
+                          stiffness: 420,
+                          damping: 34,
+                        }}
+                      />
+                    ) : null}
+                    <span className="relative z-10">{item.shortLabel}</span>
+                  </button>
                 ))}
-              </select>
-              <input
-                value={queryId}
-                onChange={(event) => setQueryId(event.target.value)}
-                placeholder="Query ID"
-                className="h-11 rounded-xl border border-[#dce9f7] px-3 text-[13px] font-bold outline-none placeholder:text-[#98a2b3] focus:border-[#005ca8]"
-              />
-              <input
-                value={mobile}
-                onChange={(event) => setMobile(event.target.value)}
-                placeholder="Mobile number"
-                className="h-11 rounded-xl border border-[#dce9f7] px-3 text-[13px] font-bold outline-none placeholder:text-[#98a2b3] focus:border-[#005ca8]"
-              />
-              <button
-                type="submit"
-                disabled={loading}
-                className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#005ca8] px-5 text-[13px] font-black text-white disabled:opacity-70"
-              >
-                {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Search className="h-4 w-4" />}
-                Track
-              </button>
-            </form>
-            {error ? (
-              <p className="mt-4 rounded-xl bg-red-50 px-4 py-3 text-[13px] font-bold text-red-700">
-                {error}
-              </p>
-            ) : null}
+              </div>
+              <div className="grid gap-3 p-3 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] md:p-4">
+                <TrackSearchField
+                  id="application-query-id"
+                  label="Query ID"
+                  value={queryId}
+                  placeholder="FT-ITR-20260619-XXXXX"
+                  icon={<Hash className="h-4 w-4" />}
+                  active={activeSearchField === "queryId"}
+                  onFocus={() => setActiveSearchField("queryId")}
+                  onBlur={() => setActiveSearchField(null)}
+                  onChange={setQueryId}
+                />
+                <TrackSearchField
+                  id="application-mobile"
+                  label="Mobile Number"
+                  value={mobile}
+                  placeholder="10-digit mobile"
+                  icon={<Phone className="h-4 w-4" />}
+                  active={activeSearchField === "mobile"}
+                  onFocus={() => setActiveSearchField("mobile")}
+                  onBlur={() => setActiveSearchField(null)}
+                  onChange={(value) => setMobile(value.replace(/\D/g, "").slice(0, 10))}
+                  inputMode="numeric"
+                />
+                <motion.button
+                  whileHover={{ y: -1 }}
+                  whileTap={{ scale: 0.98 }}
+                  type="submit"
+                  disabled={loading}
+                  className="inline-flex h-[4.25rem] items-center justify-center gap-2 bg-[#005ca8] px-6 text-[13px] font-black text-white shadow-[0_14px_30px_rgba(0,92,168,0.22)] transition hover:bg-[#004f91] disabled:opacity-70 md:min-w-[9rem]"
+                >
+                  {loading ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Search className="h-4 w-4" />
+                  )}
+                  Track
+                </motion.button>
+              </div>
+            </motion.form>
+            <AnimatePresence>
+              {error ? (
+                <motion.p
+                  initial={{ opacity: 0, y: -6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  className="mt-4 bg-red-50 px-4 py-3 text-[13px] font-bold text-red-700"
+                >
+                  {error}
+                </motion.p>
+              ) : null}
+            </AnimatePresence>
           </div>
 
           <div className="flex flex-wrap gap-2">

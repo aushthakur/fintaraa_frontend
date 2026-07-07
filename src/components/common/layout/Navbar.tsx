@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
-import { usePathname } from "next/navigation";
+import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import {
   X,
   Bell,
@@ -17,13 +17,20 @@ import {
   ChevronDown,
   ShieldCheck,
 } from "lucide-react";
+import { getAuthToken, getAuthType } from "@/hooks/authStorage";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { AUTH_CHANGED_EVENT } from "@/lib/authEvents";
 import {
   productHref as resolveProductHref,
   isLoanProduct,
   isInsuranceProduct,
 } from "@/lib/productRouting";
 import { buildLoginRedirectHref } from "@/lib/loginRedirect";
+import {
+  fetchPartnerProfile,
+  getCachedPartnerProfile,
+  type PartnerProfile,
+} from "@/services/partner";
 
 type NavLink = {
   label: string;
@@ -238,10 +245,7 @@ const navItems = [
         links: [
           {
             label: "Partner Login",
-            href: buildLoginRedirectHref({
-              redirectTo: "/account/profile",
-              product: "partner",
-            }),
+            href: "/partner/login",
             description: "Login to manage partner profile and leads.",
           },
           {
@@ -286,17 +290,303 @@ const navItems = [
   },
 ] satisfies NavItem[];
 
+type StaticSearchEntry = {
+  label: string;
+  href: string;
+  category: string;
+  keywords?: string[];
+};
+
+const productSearchEntries: StaticSearchEntry[] = [
+  "Personal Loan",
+  "Education Loan",
+  "Vehicle Loan",
+  "Gold Loan",
+  "Loan Against Car",
+  "Instant Loan",
+  "Loan Against Property",
+  "Renovation Loan",
+  "Working Capital Loan",
+  "Loan Against Security",
+  "Machinery Loan",
+  "Home Loan",
+  "Business Loan",
+  "DOD Loan",
+  "OD Loan",
+  "Industrial Loan",
+  "Commercial Purchases Loan",
+].map((label) => ({
+  label,
+  href: resolveProductHref(label),
+  category: "Loans",
+  keywords: ["loan", "finance", "eligibility", label],
+}));
+
+const insuranceSearchEntries: StaticSearchEntry[] = [
+  "Life Insurance",
+  "Health Insurance",
+  "Vehicle Insurance",
+  "Car Insurance",
+  "Bike Insurance",
+  "Property Insurance",
+  "Home Insurance",
+  "Stock Insurance",
+  "Machinery Insurance",
+  "Term Insurance",
+  "Travel Insurance",
+  "Retirement Plan",
+  "Shop Insurance",
+].map((label) => ({
+  label,
+  href: resolveProductHref(label),
+  category: "Insurance",
+  keywords: ["insurance", "cover", "policy", label],
+}));
+
+const creditCardSearchEntries: StaticSearchEntry[] = [
+  "Credit Cards",
+  "Travel Cards",
+  "Fuel Cards",
+  "Cashback Cards",
+  "Shopping Cards",
+  "Premium Cards",
+  "Rewards Cards",
+  "Balance Transfer",
+].map((label) => ({
+  label,
+  href: label === "Credit Cards" ? "/credit-cards" : "/credit-cards",
+  category: "Credit Cards",
+  keywords: ["card", "credit card", "rewards", "cashback", label],
+}));
+
+const serviceSearchEntries: StaticSearchEntry[] = [
+  { label: "Credit Score", href: "/cibil-score", category: "Services" },
+  { label: "Credit Report", href: "/cibil-score/report", category: "Services" },
+  { label: "ITR Filing", href: "/itr-filing", category: "Services" },
+  { label: "GST Registration", href: "/gst-registration", category: "Services" },
+  {
+    label: "Company Registration",
+    href: "/company-registration",
+    category: "Services",
+  },
+  { label: "Digital Payments", href: "/products", category: "Services" },
+  { label: "Financial Planning", href: "/products", category: "Services" },
+  { label: "Document Help", href: "/support", category: "Support" },
+  { label: "Mobile App Support", href: "/support", category: "Support" },
+  { label: "Application Status", href: "/application-status", category: "Account" },
+  { label: "Products", href: "/products", category: "Explore" },
+  { label: "Offers", href: "/offers", category: "Explore" },
+  { label: "Knowledge Hub", href: "/knowledge-hub", category: "Explore" },
+  { label: "Blog", href: "/blog", category: "Explore" },
+  { label: "Contact Us", href: "/contact-us", category: "Support" },
+  { label: "Support", href: "/support", category: "Support" },
+  { label: "About Us", href: "/about-us", category: "Company" },
+  { label: "Careers", href: "/careers", category: "Company" },
+  { label: "Press Release", href: "/press-release", category: "Company" },
+  { label: "Partner Login", href: "/partner/login", category: "Partner" },
+  { label: "Partner Profile", href: "/partner/profile", category: "Partner" },
+  { label: "Become Partner", href: "/franchise", category: "Partner" },
+  { label: "Become DSA", href: "/become-dsa", category: "Partner" },
+  { label: "Refer And Earn", href: "/refer-and-earn", category: "Partner" },
+  { label: "Privacy Policy", href: "/privacy-policy", category: "Legal" },
+  { label: "Terms And Conditions", href: "/terms-and-conditions", category: "Legal" },
+  { label: "Loan Disclosure", href: "/loan-disclosure", category: "Legal" },
+  { label: "Delete Account", href: "/delete-account", category: "Account" },
+];
+
+const navSearchEntries: StaticSearchEntry[] = (() => {
+  const fromNav = navItems.flatMap((item) => [
+    {
+      label: item.label,
+      href: item.href,
+      category: "Navigation",
+      keywords: [item.label],
+    },
+    ...(item.sections || []).flatMap((section) =>
+      section.links.map((link) => ({
+        label: link.label,
+        href: link.href,
+        category: section.title,
+        keywords: [section.title, section.subtitle, link.description].filter(
+          Boolean,
+        ) as string[],
+      })),
+    ),
+  ]);
+
+  const deduped = new Map<string, StaticSearchEntry>();
+  [
+    ...productSearchEntries,
+    ...insuranceSearchEntries,
+    ...creditCardSearchEntries,
+    ...serviceSearchEntries,
+    ...fromNav,
+  ].forEach((entry) => {
+    const key = `${entry.label.toLowerCase()}::${entry.href}`;
+    if (!deduped.has(key)) deduped.set(key, entry);
+  });
+  return Array.from(deduped.values());
+})();
+
+const popularSearchEntries = [
+  "Personal Loan",
+  "Credit Cards",
+  "Health Insurance",
+  "Credit Score",
+  "Application Status",
+  "Partner Login",
+]
+  .map((label) => navSearchEntries.find((entry) => entry.label === label))
+  .filter(Boolean) as StaticSearchEntry[];
+
+const normalizeSearchText = (value: string) =>
+  value.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+
+const searchNavEntries = (query: string) => {
+  const normalized = normalizeSearchText(query);
+  if (!normalized) return popularSearchEntries;
+  const words = normalized.split(/\s+/).filter(Boolean);
+
+  return navSearchEntries
+    .map((entry) => {
+      const haystack = normalizeSearchText(
+        [entry.label, entry.category, entry.href, ...(entry.keywords || [])].join(
+          " ",
+        ),
+      );
+      const label = normalizeSearchText(entry.label);
+      const allWordsMatch = words.every((word) => haystack.includes(word));
+      if (!allWordsMatch) return null;
+
+      let score = 20;
+      if (label === normalized) score += 120;
+      if (label.startsWith(normalized)) score += 90;
+      if (label.includes(normalized)) score += 55;
+      if (normalizeSearchText(entry.category).includes(normalized)) score += 20;
+      words.forEach((word) => {
+        if (label.startsWith(word)) score += 8;
+      });
+
+      return { entry, score };
+    })
+    .filter(Boolean)
+    .sort((a, b) => {
+      const left = a as { entry: StaticSearchEntry; score: number };
+      const right = b as { entry: StaticSearchEntry; score: number };
+      if (right.score !== left.score) return right.score - left.score;
+      return left.entry.label.length - right.entry.label.length;
+    })
+    .slice(0, 8)
+    .map((result) => (result as { entry: StaticSearchEntry }).entry);
+};
+
 const underlineClass =
   "relative after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-full after:origin-left after:scale-x-0 after:bg-[#195585] after:transition-transform after:duration-300 after:ease-out hover:after:scale-x-100";
 
 const hrefPath = (href: string) => href.split("?")[0];
 
+const stringValue = (value: unknown) =>
+  typeof value === "string" ? value.trim() : "";
+
+type NavbarAuthProfile = {
+  raw: unknown;
+  name: string;
+  avatar?: string;
+  href: string;
+};
+
+const normalizePartnerNavProfile = (
+  profile?: PartnerProfile | null,
+): NavbarAuthProfile | null => {
+  if (!profile) return null;
+  const personal = profile.kycProfile?.personalDetails || {};
+  const name =
+    stringValue(personal.fullName) ||
+    stringValue(profile.name) ||
+    stringValue(profile.email) ||
+    stringValue(profile.mobile) ||
+    "Partner";
+  const avatar =
+    stringValue(profile.avatar) || stringValue(profile.profilePictureUrl);
+
+  return {
+    raw: profile,
+    name,
+    avatar,
+    href: "/partner/profile",
+  };
+};
+
 export default function Navbar() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [partnerProfile, setPartnerProfile] =
+    useState<NavbarAuthProfile | null>(null);
   const headerRef = useRef<HTMLElement | null>(null);
   const { profile } = useCurrentUser();
-  const loggedIn = Boolean(profile.raw);
+  const customerProfile: NavbarAuthProfile | null = profile.raw
+    ? {
+        raw: profile.raw,
+        name: profile.name,
+        avatar: profile.avatar,
+        href: "/account/profile",
+      }
+    : null;
+  const activeProfile = partnerProfile || customerProfile;
+  const loggedIn = Boolean(activeProfile?.raw);
+  const profileHref = activeProfile?.href || "/account/profile";
+
+  useEffect(() => {
+    let active = true;
+    let fetchedForToken = "";
+
+    const refreshPartnerProfile = async (allowFetch: boolean) => {
+      const isAgencySession = getAuthType() === "agency";
+      const token = isAgencySession ? getAuthToken() : null;
+
+      if (!token) {
+        fetchedForToken = "";
+        if (active) setPartnerProfile(null);
+        return;
+      }
+
+      const cached = normalizePartnerNavProfile(getCachedPartnerProfile());
+      if (active) {
+        setPartnerProfile(
+          cached || {
+            raw: { role: "agency" },
+            name: "Partner",
+            href: "/partner/profile",
+          },
+        );
+      }
+
+      if (!allowFetch || fetchedForToken === token) return;
+      fetchedForToken = token;
+
+      try {
+        const current = await fetchPartnerProfile();
+        if (active) setPartnerProfile(normalizePartnerNavProfile(current));
+      } catch {
+        if (active && cached) setPartnerProfile(cached);
+      }
+    };
+
+    void refreshPartnerProfile(true);
+
+    const handleAuthChange = () => {
+      void refreshPartnerProfile(false);
+    };
+
+    window.addEventListener(AUTH_CHANGED_EVENT, handleAuthChange);
+    window.addEventListener("storage", handleAuthChange);
+
+    return () => {
+      active = false;
+      window.removeEventListener(AUTH_CHANGED_EVENT, handleAuthChange);
+      window.removeEventListener("storage", handleAuthChange);
+    };
+  }, []);
 
   useEffect(() => {
     const header = headerRef.current;
@@ -379,24 +669,12 @@ export default function Navbar() {
         </div>
 
         <div className="hidden shrink-0 items-center gap-2 xl:flex 2xl:gap-3">
-          <form
-            action="/products"
-            method="get"
-            className="flex h-10 w-44 items-center gap-2 rounded-full border border-[#d7e5f3] bg-white px-3 text-[#344054] transition focus-within:border-[#075cde] 2xl:w-56"
-          >
-            <Search className="h-4 w-4 shrink-0 text-[#667085]" />
-            <input
-              name="search"
-              type="search"
-              placeholder="Search products"
-              className="min-w-0 flex-1 bg-transparent text-[13px] font-semibold outline-none placeholder:text-[#98a2b3]"
-            />
-          </form>
+          <NavbarSearch />
 
           <Link
             href={
               loggedIn
-                ? "/account/profile"
+                ? profileHref
                 : buildLoginRedirectHref({ redirectTo: "/account/profile" })
             }
             aria-label="Notifications"
@@ -408,8 +686,9 @@ export default function Navbar() {
 
           <AuthButton
             loggedIn={loggedIn}
-            name={profile.name}
-            avatar={profile.avatar}
+            name={activeProfile?.name || "User"}
+            avatar={activeProfile?.avatar}
+            href={profileHref}
           />
         </div>
 
@@ -425,19 +704,7 @@ export default function Navbar() {
       {menuOpen && (
         <div className="max-h-[calc(100dvh-7.25rem)] overflow-y-auto border-t border-[#e5eef8] bg-white px-4 pb-5 md:px-6 xl:hidden">
           <div className="mx-auto grid max-w-9xl gap-1">
-            <form
-              action="/products"
-              method="get"
-              className="mt-4 flex h-11 items-center gap-2 rounded-xl border border-[#d7e5f3] bg-white px-3 text-[#344054]"
-            >
-              <Search className="h-4 w-4 shrink-0 text-[#667085]" />
-              <input
-                name="search"
-                type="search"
-                placeholder="Search loans, cards, insurance"
-                className="min-w-0 flex-1 bg-transparent text-[13px] font-semibold outline-none placeholder:text-[#98a2b3]"
-              />
-            </form>
+            <NavbarSearch mobile onNavigate={() => setMenuOpen(false)} />
             {navItems.map((item) => {
               const hideDescriptions =
                 item.label === "Loans" || item.label === "Insurance";
@@ -493,8 +760,9 @@ export default function Navbar() {
             <div className="mt-4 grid gap-3">
               <AuthButton
                 loggedIn={loggedIn}
-                name={profile.name}
-                avatar={profile.avatar}
+                name={activeProfile?.name || "User"}
+                avatar={activeProfile?.avatar}
+                href={profileHref}
                 mobile
                 onClick={() => setMenuOpen(false)}
               />
@@ -503,6 +771,123 @@ export default function Navbar() {
         </div>
       )}
     </header>
+  );
+}
+
+function NavbarSearch({
+  mobile = false,
+  onNavigate,
+}: {
+  mobile?: boolean;
+  onNavigate?: () => void;
+}) {
+  const router = useRouter();
+  const [query, setQuery] = useState("");
+  const [focused, setFocused] = useState(false);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const trimmedQuery = query.trim();
+  const results = useMemo(() => searchNavEntries(query), [query]);
+  const showSuggestions = focused && results.length > 0;
+
+  const clearCloseTimer = () => {
+    if (closeTimer.current) {
+      clearTimeout(closeTimer.current);
+      closeTimer.current = null;
+    }
+  };
+
+  const navigateTo = (href: string) => {
+    clearCloseTimer();
+    setFocused(false);
+    setQuery("");
+    onNavigate?.();
+    router.push(href);
+  };
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const target = results[0] || {
+      href: trimmedQuery ? "/products" : "/products",
+    };
+    navigateTo(target.href);
+  };
+
+  return (
+    <div className={mobile ? "relative mt-4 w-full" : "relative w-48 2xl:w-64"}>
+      <form
+        onSubmit={handleSubmit}
+        className={`flex items-center gap-2 border border-[#d7e5f3] bg-white text-[#344054] transition focus-within:border-[#075cde] focus-within:shadow-[0_12px_30px_rgba(7,92,222,0.10)] ${
+          mobile ? "h-11 rounded-xl px-3" : "h-10 rounded-full px-3 2xl:h-11"
+        }`}
+      >
+        <Search className="h-4 w-4 shrink-0 text-[#667085]" />
+        <input
+          value={query}
+          type="search"
+          placeholder={mobile ? "Search loans, cards, insurance" : "Search"}
+          onChange={(event) => setQuery(event.target.value)}
+          onFocus={() => {
+            clearCloseTimer();
+            setFocused(true);
+          }}
+          onBlur={() => {
+            closeTimer.current = setTimeout(() => setFocused(false), 140);
+          }}
+          className="min-w-0 flex-1 bg-transparent text-[13px] font-semibold outline-none placeholder:text-[#98a2b3]"
+        />
+        {trimmedQuery ? (
+          <button
+            type="button"
+            aria-label="Clear search"
+            onMouseDown={(event) => event.preventDefault()}
+            onClick={() => {
+              setQuery("");
+              setFocused(true);
+            }}
+            className="text-[#98a2b3] transition hover:text-[#195585]"
+          >
+            <X className="h-3.5 w-3.5" />
+          </button>
+        ) : null}
+      </form>
+
+      {showSuggestions ? (
+        <div
+          className={
+            mobile
+              ? "mt-2 overflow-hidden rounded-xl border border-[#d9e9f6] bg-white shadow-[0_16px_40px_rgba(16,24,40,0.10)]"
+              : "absolute right-0 top-[calc(100%+0.65rem)] z-50 w-[21rem] overflow-hidden rounded-xl border border-[#d9e9f6] bg-white shadow-[0_22px_60px_rgba(16,24,40,0.14)]"
+          }
+        >
+          <div className="border-b border-[#edf3f8] bg-[#f7fbff] px-3 py-2">
+            <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[#667085]">
+              {trimmedQuery ? "Search results" : "Popular searches"}
+            </p>
+          </div>
+          <div className="grid max-h-80 overflow-y-auto p-2">
+            {results.map((item) => (
+              <button
+                key={`${item.label}-${item.href}`}
+                type="button"
+                onMouseDown={(event) => event.preventDefault()}
+                onClick={() => navigateTo(item.href)}
+                className="group flex items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-left transition hover:bg-[#eef8ff]"
+              >
+                <span className="min-w-0">
+                  <span className="block truncate text-[13px] font-extrabold text-[#07162d] group-hover:text-[#195585]">
+                    {item.label}
+                  </span>
+                  <span className="mt-0.5 block truncate text-[11px] font-semibold text-[#667085]">
+                    {item.category}
+                  </span>
+                </span>
+                <ArrowRight className="h-4 w-4 shrink-0 text-[#98a2b3] transition group-hover:translate-x-0.5 group-hover:text-[#195585]" />
+              </button>
+            ))}
+          </div>
+        </div>
+      ) : null}
+    </div>
   );
 }
 
@@ -712,12 +1097,14 @@ function AuthButton({
   loggedIn,
   name,
   avatar,
+  href,
   mobile = false,
   onClick,
 }: {
   loggedIn: boolean;
   name: string;
   avatar?: string;
+  href: string;
   mobile?: boolean;
   onClick?: () => void;
 }) {
@@ -751,14 +1138,14 @@ function AuthButton({
 
   return (
     <Link
-      href="/account/profile"
+      href={href}
       onClick={onClick}
       className={
         mobile
           ? "flex items-center justify-center gap-3 rounded-full bg-[#eef8ff] px-4 py-3 text-center text-[13px] font-semibold text-[#195585] no-underline"
           : "inline-flex h-10 items-center gap-2 rounded-full bg-[#eef8ff] pl-1.5 pr-4 text-sm font-semibold text-[#195585] no-underline ring-1 ring-[#d5ebfb] 2xl:h-11"
       }
-      aria-label={`Open account profile for ${name}`}
+      aria-label={`Open profile for ${name}`}
     >
       <span className="relative flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-linear-to-br from-[#195585] to-[#12b76a] text-[11px] font-semibold text-white 2xl:h-9 2xl:w-9 2xl:text-[12px]">
         {avatar ? (

@@ -18,11 +18,18 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { submitApplication } from "./payload";
+import { WhatsAppConsent } from "@/components/common/WhatsAppConsent";
 import { getCurrentUser } from "@/services/auth";
 import type { FormField, FormFlow } from "./flows";
 import { buildLoginRedirectHref } from "@/lib/loginRedirect";
+import { buildWebsiteConsentPayload } from "@/lib/formConsent";
 import { getAuthToken, getAuthType } from "@/hooks/authStorage";
+import { Post } from "@/hooks/apiUtils";
 import { fetchCarRcDetails } from "@/services/applicationLookups";
+import {
+  searchCompanyBankCategories,
+  type CompanyBankCategoryMatch,
+} from "@/services/companyBankCategories";
 import { humanizeProduct, type ApplicationCategory } from "./flowRegistry";
 import { CoApplicantsSection, type CoApplicant } from "./CoApplicantsSection";
 
@@ -446,6 +453,59 @@ function FieldInput({
   onRcLookup?: () => void;
   rcLookupLoading?: boolean;
 }) {
+  const isCompanyLookupField =
+    field.key === "companyName" || field.key === "employerName";
+  const [companyMatches, setCompanyMatches] = useState<
+    CompanyBankCategoryMatch[]
+  >([]);
+  const [companyLookupLoading, setCompanyLookupLoading] = useState(false);
+
+  useEffect(() => {
+    if (!isCompanyLookupField) return;
+    const query = String(value || "").trim();
+
+    let active = true;
+    const timer = window.setTimeout(async () => {
+      if (query.length < 2) {
+        setCompanyMatches([]);
+        return;
+      }
+      setCompanyLookupLoading(true);
+      try {
+        const results = await searchCompanyBankCategories({
+          q: query,
+          bankName: values.bankName,
+          limit: 8,
+        });
+        if (active) setCompanyMatches(results);
+      } finally {
+        if (active) setCompanyLookupLoading(false);
+      }
+    }, 250);
+
+    return () => {
+      active = false;
+      window.clearTimeout(timer);
+    };
+  }, [isCompanyLookupField, value, values.bankName]);
+
+  const handleCompanyInputChange = (nextValue: string) => {
+    onChange(field.key, nextValue);
+    onChange("companyCategory", []);
+    onChange("companyCategoryBankName", "");
+    onChange("companyCategorySourceId", "");
+    onChange("companyCategoryPrimary", "");
+  };
+
+  const handleCompanyMatchSelect = (match: CompanyBankCategoryMatch) => {
+    onChange(field.key, match.companyName);
+    onChange("companyCategory", match.categories || []);
+    onChange("companyCategoryBankName", match.bankName || "");
+    onChange("companyCategorySourceId", match._id || "");
+    onChange("companyCategoryPrimary", match.primaryCategory || "");
+    setCompanyMatches([]);
+  };
+
   if (field.type === "coApplicants") {
     return (
       <div className="col-span-full" data-application-field={field.key}>
@@ -578,6 +638,56 @@ function FieldInput({
             {rcLookupLoading ? "Fetching" : field.verifyLabel || "Fetch"}
           </button>
         </div>
+      ) : isCompanyLookupField ? (
+        <div className="relative">
+          <input
+            className={fieldClass}
+            type={field.type === "number" ? "text" : field.type}
+            value={value || ""}
+            maxLength={field.maxLength}
+            placeholder={field.placeholder || field.label}
+            autoComplete="organization"
+            onChange={(event) => handleCompanyInputChange(event.target.value)}
+          />
+          {(companyLookupLoading || companyMatches.length > 0) && (
+            <div className="absolute left-0 right-0 top-[calc(100%+6px)] z-30 overflow-hidden rounded-xl border border-[#dce9f7] bg-white shadow-lg">
+              {companyLookupLoading ? (
+                <div className="px-3 py-2 text-[12px] font-bold text-[#667085]">
+                  Searching companies...
+                </div>
+              ) : (
+                companyMatches.map((match) => (
+                  <button
+                    key={match._id}
+                    type="button"
+                    onClick={() => handleCompanyMatchSelect(match)}
+                    className="flex w-full items-center justify-between gap-3 border-b border-[#eef4fb] px-3 py-2 text-left last:border-b-0 hover:bg-[#f7fbff]"
+                  >
+                    <span>
+                      <span className="block text-[12px] font-black text-[#111827]">
+                        {match.companyName}
+                      </span>
+                      <span className="text-[11px] font-semibold text-[#667085]">
+                        {match.bankName}
+                      </span>
+                    </span>
+                    <span className="shrink-0 rounded-full bg-[#eaf3ff] px-2.5 py-1 text-[10px] font-black text-[#005ca8]">
+                      {(match.categories || []).join(", ")}
+                    </span>
+                  </button>
+                ))
+              )}
+            </div>
+          )}
+          {Array.isArray(values.companyCategory) &&
+          values.companyCategory.length > 0 &&
+          values.companyCategoryBankName ? (
+            <div className="mt-2 rounded-lg bg-[#f0f8ff] px-3 py-2 text-[11px] font-bold text-[#005ca8]">
+              {values.companyCategoryBankName}:{" "}
+              {values.companyCategory.join(", ")}
+            </div>
+          ) : null}
+        </div>
       ) : (
         <input
           className={fieldClass}
@@ -645,6 +755,8 @@ export function ApplicationFlowPage({
   );
   const [submitMessage, setSubmitMessage] = useState("");
   const [submitError, setSubmitError] = useState("");
+  const [whatsappConsent, setWhatsappConsent] = useState(false);
+  const [whatsappConsentError, setWhatsappConsentError] = useState("");
   const activeTab = flow.tabFieldKey
     ? values[flow.tabFieldKey] || flow.tabs?.[0]?.key
     : undefined;
@@ -957,6 +1069,11 @@ export function ApplicationFlowPage({
     }
     if (loading) return;
     if (!validateStep()) return;
+    if (!whatsappConsent) {
+      setWhatsappConsentError("Please accept WhatsApp communication consent.");
+      setSubmitError("Please accept the communication consent before submitting.");
+      return;
+    }
     if (getAuthType() !== "user" || !getAuthToken()) {
       setSubmitError(
         "Please login with your mobile number before submitting this application.",
@@ -967,8 +1084,36 @@ export function ApplicationFlowPage({
     setLoading(true);
     setSubmitError("");
     setSubmitMessage("");
+    setWhatsappConsentError("");
     try {
-      await submitApplication({ category, flowKey, values, referrer });
+      await submitApplication({
+        category,
+        flowKey,
+        values: {
+          ...values,
+          ...buildWebsiteConsentPayload("website_application_flow"),
+        },
+        referrer,
+      });
+      void Post(
+        "form-submit-clicks",
+        {
+          formType: category === "insurance" ? "insurance" : "loan",
+          action: "submitted",
+          stepIndex,
+          totalSteps: flow.steps.length,
+          meta: {
+            source: "website",
+            platform: "website",
+            formSource: "website_application_flow",
+            flowKey,
+            productName: flow.title || humanizeProduct(productSlug),
+            productSlug,
+          },
+        },
+        10000,
+        true,
+      ).catch(() => undefined);
       setSubmitMessage(
         "Application saved successfully. Our team will contact you for the next step.",
       );
@@ -1157,6 +1302,21 @@ export function ApplicationFlowPage({
                 ))}
               </motion.section>
             </AnimatePresence>
+
+            {isLastStep ? (
+              <WhatsAppConsent
+                checked={whatsappConsent}
+                error={whatsappConsentError}
+                className="mt-6"
+                onChange={(checked) => {
+                  setWhatsappConsent(checked);
+                  if (checked) {
+                    setWhatsappConsentError("");
+                    setSubmitError("");
+                  }
+                }}
+              />
+            ) : null}
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
               {stepIndex > 0 ? (

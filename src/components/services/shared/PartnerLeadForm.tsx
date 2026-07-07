@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { Loader2, LockKeyhole } from "lucide-react";
+import { WhatsAppConsent } from "@/components/common/WhatsAppConsent";
+import { buildWebsiteConsentPayload } from "@/lib/formConsent";
 import { ServiceRequestProgress } from "@/components/services/shared/ServiceRequestProgress";
 import { ServiceRequestSuccess } from "@/components/services/shared/ServiceRequestSuccess";
 import {
@@ -54,6 +56,7 @@ export function PartnerLeadForm({
   const [request, setRequest] = useState<ServiceRequestRecord | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [whatsappConsent, setWhatsappConsent] = useState(false);
 
   const updateField = (key: keyof typeof form, value: string) => {
     setForm((current) => ({ ...current, [key]: value }));
@@ -81,10 +84,15 @@ export function PartnerLeadForm({
       setError(`Please select ${primarySelectLabel.toLowerCase()} and ${secondarySelectLabel.toLowerCase()}.`);
       return;
     }
+    if (!whatsappConsent) {
+      setError("Please accept WhatsApp communication consent.");
+      return;
+    }
 
     setSubmitting(true);
     setError("");
     try {
+      const consentPayload = buildWebsiteConsentPayload(source);
       const result = await createServiceRequest({
         serviceType,
         name: form.name.trim(),
@@ -92,8 +100,9 @@ export function PartnerLeadForm({
         email: form.email.trim(),
         businessName: form.businessName.trim(),
         state: form.city.trim(),
+        ...consentPayload,
         details: {
-          source,
+          ...consentPayload,
           city: form.city.trim(),
           businessName: form.businessName.trim(),
           [primarySelectLabel]: form.primary,
@@ -117,6 +126,7 @@ export function PartnerLeadForm({
         secondary: "",
         notes: "",
       });
+      setWhatsappConsent(false);
     } catch (err) {
       setError((err as Error).message || "Unable to submit request.");
     } finally {
@@ -190,6 +200,14 @@ export function PartnerLeadForm({
             className="min-h-24 rounded-xl border border-[#d7dfe9] bg-white px-3 py-3 text-[13px] font-semibold outline-none placeholder:text-[#98a2b3] focus:border-[#0d64bf]"
           />
         </label>
+        <WhatsAppConsent
+          checked={whatsappConsent}
+          className="sm:col-span-2"
+          onChange={(checked) => {
+            setWhatsappConsent(checked);
+            if (checked) setError("");
+          }}
+        />
         {error ? (
           <p className="rounded-xl bg-red-50 px-3 py-2 text-[12px] font-bold text-red-700 sm:col-span-2">
             {error}

@@ -8,6 +8,8 @@ import {
   JobPosting,
   submitCareerApplication,
 } from "@/services/careers";
+import { WhatsAppConsent } from "@/components/common/WhatsAppConsent";
+import { buildWebsiteConsentPayload } from "@/lib/formConsent";
 
 const nameRegex = /^[A-Za-z][A-Za-z\s.'-]{1,99}$/;
 const mobileRegex = /^(?:\+91[\s-]?)?[6-9]\d{9}$/;
@@ -29,6 +31,7 @@ export function CareersJoin() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [whatsappConsent, setWhatsappConsent] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -91,7 +94,12 @@ export function CareersJoin() {
       setError("Please upload your resume.");
       return;
     }
+    if (!whatsappConsent) {
+      setError("Please accept WhatsApp communication consent.");
+      return;
+    }
 
+    const consentPayload = buildWebsiteConsentPayload("website_careers_join");
     const payload = new FormData();
     payload.append("name", form.name.trim());
     payload.append("phone", form.phone.trim());
@@ -101,6 +109,15 @@ export function CareersJoin() {
     payload.append("coverLetter", form.coverLetter.trim());
     payload.append("jobId", selectedJobId);
     payload.append("jobTitle", selectedJob?.title || "Open Role");
+    payload.append("source", consentPayload.source);
+    payload.append("platform", consentPayload.platform);
+    payload.append("sourcePlatform", consentPayload.sourcePlatform);
+    payload.append("formSource", consentPayload.formSource);
+    payload.append("whatsappConsent", String(consentPayload.whatsappConsent));
+    payload.append(
+      "communicationConsent",
+      JSON.stringify(consentPayload.communicationConsent),
+    );
     payload.append("resume", resume);
 
     setSubmitting(true);
@@ -120,6 +137,7 @@ export function CareersJoin() {
         coverLetter: "",
       });
       setResume(null);
+      setWhatsappConsent(false);
     } catch (err) {
       setError((err as Error).message || "Unable to submit application.");
     } finally {
@@ -228,6 +246,14 @@ export function CareersJoin() {
                 className="h-10 rounded-lg border border-[#d9dfe8] px-3 py-2 text-[12px]"
               />
             </label>
+            <WhatsAppConsent
+              checked={whatsappConsent}
+              className="md:col-span-2"
+              onChange={(checked) => {
+                setWhatsappConsent(checked);
+                if (checked) setError("");
+              }}
+            />
             {error ? (
               <p className="rounded-lg bg-red-50 px-3 py-2 text-[12px] font-bold text-red-700 md:col-span-2">
                 {error}

@@ -1,4 +1,5 @@
 import { Post } from "@/hooks/apiUtils";
+import { buildWebsiteSourcePayload } from "@/lib/formConsent";
 import type { ApplicationCategory } from "./flowRegistry";
 
 type Payload = Record<string, any>;
@@ -197,13 +198,16 @@ const appendCoApplicantFiles = (formData: FormData, values: Payload) => {
 const buildLoanPayload = (flowKey: string, values: Payload, referrer?: string) => {
   const { firstName, lastName } = normalizeName(values.fullName || values.name);
   const loanType = loanTypeMap[flowKey] || "personal_loan";
+  const source = buildWebsiteSourcePayload("website_application_flow");
   const policyDetails = buildPolicyDetails(values, {
+    ...source,
     coApplicants: values.coApplicant ? values.coApplicants : undefined,
     referrer,
   });
 
   return removeEmpty({
     status: "draft",
+    dataSource: source.source,
     loanType,
     loanAmount:
       toNumber(values.loanAmount) ||
@@ -253,6 +257,7 @@ const buildInsurancePayload = (
   const { firstName, lastName } = normalizeName(
     values.fullName || values.name || values.firstName,
   );
+  const source = buildWebsiteSourcePayload("website_application_flow");
 
   return removeEmpty({
     typeOfInsurance: insuranceTypeMap[flowKey] || "health",
@@ -276,7 +281,11 @@ const buildInsurancePayload = (
       toNumber(values.salary),
     kycDocumentType: (values.kycDocumentType || "pan").toLowerCase(),
     kycDocumentUrl: "pending_upload",
-    policyDetails: buildPolicyDetails(values, { referrer, metaFlowKey: flowKey }),
+    policyDetails: buildPolicyDetails(values, {
+      ...source,
+      referrer,
+      metaFlowKey: flowKey,
+    }),
   });
 };
 

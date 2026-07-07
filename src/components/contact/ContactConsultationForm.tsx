@@ -16,6 +16,8 @@ import {
   User,
 } from "lucide-react";
 import { buildApiUrl } from "@/services/apiUrl";
+import { WhatsAppConsent } from "@/components/common/WhatsAppConsent";
+import { buildWebsiteConsentPayload } from "@/lib/formConsent";
 
 type FormState = {
   fullName: string;
@@ -25,7 +27,7 @@ type FormState = {
   message: string;
 };
 
-type FormErrors = Partial<Record<keyof FormState, string>>;
+type FormErrors = Partial<Record<keyof FormState | "whatsappConsent", string>>;
 
 const initialForm: FormState = {
   fullName: "",
@@ -68,6 +70,7 @@ export function ContactConsultationForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [whatsappConsent, setWhatsappConsent] = useState(false);
 
   const isDirty = useMemo(
     () => Object.values(form).some((value) => value.trim().length > 0),
@@ -100,6 +103,9 @@ export function ContactConsultationForm() {
     if (form.message.trim().length > 1000) {
       nextErrors.message = "Message must be under 1000 characters.";
     }
+    if (!whatsappConsent) {
+      nextErrors.whatsappConsent = "Please accept WhatsApp communication consent.";
+    }
 
     setErrors(nextErrors);
     return Object.keys(nextErrors).length === 0;
@@ -129,7 +135,7 @@ export function ContactConsultationForm() {
           email: form.email.trim(),
           city: form.city.trim(),
           message: form.message.trim(),
-          source: "website_contact_page",
+          ...buildWebsiteConsentPayload("website_contact_page"),
         }),
       });
 
@@ -142,6 +148,7 @@ export function ContactConsultationForm() {
 
       setSubmitSuccess(true);
       setForm(initialForm);
+      setWhatsappConsent(false);
       setErrors({});
     } catch (error) {
       setSubmitError(
@@ -245,6 +252,18 @@ export function ContactConsultationForm() {
           </span>
         )}
       </label>
+
+      <WhatsAppConsent
+        checked={whatsappConsent}
+        error={errors.whatsappConsent}
+        className="mt-4"
+        onChange={(checked) => {
+          setWhatsappConsent(checked);
+          setErrors((current) => ({ ...current, whatsappConsent: undefined }));
+          setSubmitError("");
+          setSubmitSuccess(false);
+        }}
+      />
 
       {submitError ? (
         <div className="mt-4 flex items-start gap-2 rounded-2xl border border-[#fecaca] bg-[#fff5f5] px-4 py-3 text-[13px] font-semibold text-[#b42318]">

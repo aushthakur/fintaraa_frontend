@@ -256,6 +256,7 @@ export const productSections = [
     subtitle:
       "Pick cards for travel, fuel, shopping, cashback, and premium rewards.",
     cta: "View All Cards",
+    ctaHref: "/credit-cards",
     products: [
       {
         title: "Travel Cards",

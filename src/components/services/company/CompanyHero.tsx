@@ -5,6 +5,8 @@ import { useState } from "react";
 import { CheckCircle2, Loader2, LockKeyhole } from "lucide-react";
 import { ServiceRequestProgress } from "@/components/services/shared/ServiceRequestProgress";
 import { ServiceRequestSuccess } from "@/components/services/shared/ServiceRequestSuccess";
+import { WhatsAppConsent } from "@/components/common/WhatsAppConsent";
+import { buildWebsiteConsentPayload } from "@/lib/formConsent";
 import {
   createServiceRequest,
   type ServiceRequestRecord,
@@ -67,6 +69,7 @@ export function CompanyHero() {
   const [request, setRequest] = useState<ServiceRequestRecord | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [whatsappConsent, setWhatsappConsent] = useState(false);
 
   const updateField = (key: keyof typeof form, value: string) => {
     setForm((current) => ({ ...current, [key]: value }));
@@ -90,10 +93,17 @@ export function CompanyHero() {
       setError("Please select business type and service required.");
       return;
     }
+    if (!whatsappConsent) {
+      setError("Please accept WhatsApp communication consent.");
+      return;
+    }
 
     setSubmitting(true);
     setError("");
     try {
+      const consentPayload = buildWebsiteConsentPayload(
+        "website_company_registration",
+      );
       const result = await createServiceRequest({
         serviceType: "company_registration",
         name: form.name.trim(),
@@ -101,10 +111,11 @@ export function CompanyHero() {
         email: form.email.trim(),
         businessType: form.businessType,
         businessName: form.businessType,
+        ...consentPayload,
         details: {
+          ...consentPayload,
           serviceRequired: form.serviceRequired,
           briefRequirements: form.briefRequirements.trim(),
-          source: "website_company_registration",
         },
       });
       setRequest(result);
@@ -121,6 +132,7 @@ export function CompanyHero() {
         serviceRequired: "",
         briefRequirements: "",
       });
+      setWhatsappConsent(false);
     } catch (err) {
       setError((err as Error).message || "Unable to submit company request.");
     } finally {
@@ -301,6 +313,13 @@ export function CompanyHero() {
                   className="min-h-24 rounded-lg border border-[#d9dfe8] px-4 py-3 text-[13px] font-medium outline-none placeholder:text-[#a0a7b2] focus:border-[#005ca8]"
                 />
               </label>
+              <WhatsAppConsent
+                checked={whatsappConsent}
+                onChange={(checked) => {
+                  setWhatsappConsent(checked);
+                  if (checked) setError("");
+                }}
+              />
               {error ? (
                 <p className="rounded-lg bg-red-50 px-3 py-2 text-[13px] font-bold text-red-700">
                   {error}

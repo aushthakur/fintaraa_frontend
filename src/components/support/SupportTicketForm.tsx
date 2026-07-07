@@ -3,6 +3,8 @@
 import { FormEvent, useState } from "react";
 import { MessageCircle, PlusCircle, Sparkles } from "lucide-react";
 import { createTicket } from "@/services/accountHelp";
+import { WhatsAppConsent } from "@/components/common/WhatsAppConsent";
+import { buildWebsiteConsentPayload } from "@/lib/formConsent";
 
 const categories = [
   "Application support",
@@ -21,6 +23,8 @@ export function SupportTicketForm({
 }) {
   const [submitting, setSubmitting] = useState(false);
   const [created, setCreated] = useState(false);
+  const [error, setError] = useState("");
+  const [whatsappConsent, setWhatsappConsent] = useState(false);
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -29,19 +33,29 @@ export function SupportTicketForm({
 
   const submit = async (event: FormEvent) => {
     event.preventDefault();
-    if (!form.title.trim() || !form.description.trim()) return;
+    setError("");
+    if (!form.title.trim() || !form.description.trim()) {
+      setError("Add a subject and description.");
+      return;
+    }
+    if (!whatsappConsent) {
+      setError("Please accept WhatsApp communication consent.");
+      return;
+    }
     setSubmitting(true);
     try {
       await createTicket({
         title: form.title.trim(),
         description: form.description.trim(),
         tags: [form.category],
+        ...buildWebsiteConsentPayload("website_support_ticket"),
       });
       setForm({
         title: "",
         description: "",
         category: categories[0],
       });
+      setWhatsappConsent(false);
       setCreated(true);
       await onCreated();
     } finally {
@@ -112,6 +126,21 @@ export function SupportTicketForm({
           </div>
         </label>
       </div>
+
+      <WhatsAppConsent
+        checked={whatsappConsent}
+        className="mt-5"
+        onChange={(checked) => {
+          setWhatsappConsent(checked);
+          if (checked) setError("");
+        }}
+      />
+
+      {error ? (
+        <p className="mt-3 rounded-lg bg-red-50 px-3 py-2 text-[12px] font-bold text-red-700">
+          {error}
+        </p>
+      ) : null}
 
       <div className="mt-6 flex flex-col gap-3 bg-[#07162d] p-4 text-white sm:flex-row sm:items-center sm:justify-between">
         <p className="text-[13px] font-semibold leading-6 text-white/72">

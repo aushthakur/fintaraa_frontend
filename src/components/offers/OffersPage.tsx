@@ -15,8 +15,10 @@ import {
   WalletCards,
 } from "lucide-react";
 import { AppDownloadBanner } from "@/components/common/layout/Footer";
+import { WhatsAppConsent } from "@/components/common/WhatsAppConsent";
 import { getAuthToken, getAuthType } from "@/hooks/authStorage";
 import { buildLoginRedirectHref } from "@/lib/loginRedirect";
+import { buildWebsiteConsentPayload } from "@/lib/formConsent";
 import {
   applyForOffer,
   fetchEligibleOffers,
@@ -102,6 +104,7 @@ export function OffersPage() {
   const [applyingId, setApplyingId] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
+  const [whatsappConsent, setWhatsappConsent] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -146,13 +149,19 @@ export function OffersPage() {
       );
       return;
     }
+    if (!whatsappConsent) {
+      setError("Please accept WhatsApp communication consent before applying.");
+      setMessage("");
+      return;
+    }
     setApplyingId(offer._id);
     setError("");
     setMessage("");
     try {
+      const consentPayload = buildWebsiteConsentPayload("website_offers_page");
       await applyForOffer(offer._id, {
         metadata: {
-          source: "website_offers_page",
+          ...consentPayload,
           productCategory: offer.productCategory,
           productType: offer.productType,
         },
@@ -213,6 +222,15 @@ export function OffersPage() {
               {error}
             </div>
           ) : null}
+
+          <WhatsAppConsent
+            checked={whatsappConsent}
+            className="mt-6 max-w-3xl"
+            onChange={(checked) => {
+              setWhatsappConsent(checked);
+              if (checked) setError("");
+            }}
+          />
 
           <div className="mt-8">
             {loading ? (

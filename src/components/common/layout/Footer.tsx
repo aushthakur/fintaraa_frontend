@@ -87,10 +87,7 @@ const quickLinks = [
   { label: "Careers", href: "/careers", icon: BriefcaseBusiness },
   {
     label: "Partner Login",
-    href: buildLoginRedirectHref({
-      redirectTo: "/account/profile",
-      product: "partner",
-    }),
+    href: "/partner/login",
     icon: Landmark,
   },
   { label: "Franchise", href: "/franchise", icon: Landmark },

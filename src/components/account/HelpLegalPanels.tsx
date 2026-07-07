@@ -37,6 +37,8 @@ import {
   type KnowledgeType,
   type SupportTicket,
 } from "@/services/accountHelp";
+import { WhatsAppConsent } from "@/components/common/WhatsAppConsent";
+import { buildWebsiteConsentPayload } from "@/lib/formConsent";
 
 const fallbackFaqs: FaqItem[] = [
   {
@@ -161,6 +163,8 @@ export function ContactSupportPanel() {
   const [tickets, setTickets] = useState<SupportTicket[]>([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const [whatsappConsent, setWhatsappConsent] = useState(false);
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -186,15 +190,25 @@ export function ContactSupportPanel() {
 
   const submitTicket = async (event: FormEvent) => {
     event.preventDefault();
-    if (!form.title.trim() || !form.description.trim()) return;
+    setSubmitError("");
+    if (!form.title.trim() || !form.description.trim()) {
+      setSubmitError("Add a subject and description.");
+      return;
+    }
+    if (!whatsappConsent) {
+      setSubmitError("Please accept WhatsApp communication consent.");
+      return;
+    }
     setSubmitting(true);
     try {
       await createTicket({
         title: form.title.trim(),
         description: form.description.trim(),
         tags: [form.category],
+        ...buildWebsiteConsentPayload("website_account_support_ticket"),
       });
       setForm({ title: "", description: "", category: "Application support" });
+      setWhatsappConsent(false);
       const data = await fetchTickets();
       setTickets(data);
     } finally {
@@ -302,6 +316,18 @@ export function ContactSupportPanel() {
             rows={4}
             className="resize-none border-0 border-b border-[#cfddea] bg-transparent py-3 text-[14px] font-medium leading-6 text-[#07162d] outline-none placeholder:text-[#98a2b3] focus:border-[#195585]"
           />
+          <WhatsAppConsent
+            checked={whatsappConsent}
+            onChange={(checked) => {
+              setWhatsappConsent(checked);
+              if (checked) setSubmitError("");
+            }}
+          />
+          {submitError ? (
+            <p className="rounded-lg bg-red-50 px-3 py-2 text-[12px] font-bold text-red-700">
+              {submitError}
+            </p>
+          ) : null}
           <button
             type="submit"
             disabled={submitting}

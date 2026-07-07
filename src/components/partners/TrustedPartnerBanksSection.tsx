@@ -172,7 +172,7 @@ export function TrustedPartnerBanksSection({
         className={`mx-auto max-w-9xl ${
           mode === "grid"
             ? `overflow-hidden rounded-2xl bg-white ${
-                flushX ? "py-4 sm:py-6 lg:py-8" : "p-4 sm:p-6 lg:p-8"
+                flushX ? "py-4 sm:py-6 lg:py-8" : ""
               }`
             : ""
         }`}

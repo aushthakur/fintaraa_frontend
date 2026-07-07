@@ -41,6 +41,7 @@ const routeLabels: Record<string, string> = {
   "loan-disclosure": "Loan Disclosure",
   login: "Login",
   offers: "Offers",
+  partner: "Partner",
   partners: "Partners",
   "partners-by-product": "Partners By Product",
   press: "Press",
@@ -77,7 +78,7 @@ const acronymMap: Record<string, string> = {
   Sbi: "SBI",
 };
 
-const hiddenPrefixes = ["/account/profile"];
+const hiddenPrefixes = ["/account/profile", "/partner/profile"];
 
 const safeDecode = (value: string) => {
   try {
@@ -93,7 +94,8 @@ const titleCase = (value: string) =>
     .replace(/\s+/g, " ")
     .trim()
     .replace(/\b\w+/g, (word) => {
-      const normalized = word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+      const normalized =
+        word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
       return acronymMap[normalized] || normalized;
     });
 
@@ -125,7 +127,10 @@ const buildBreadcrumbs = (pathname: string): BreadcrumbItem[] => {
 export function SiteBreadcrumbs() {
   const pathname = usePathname();
 
-  if (!pathname || hiddenPrefixes.some((prefix) => pathname.startsWith(prefix))) {
+  if (
+    !pathname ||
+    hiddenPrefixes.some((prefix) => pathname.startsWith(prefix))
+  ) {
     return null;
   }
 
@@ -133,10 +138,7 @@ export function SiteBreadcrumbs() {
   if (!items.length) return null;
 
   return (
-    <nav
-      aria-label="Breadcrumb"
-      className="border-b border-[#edf2f7] bg-white px-4 py-3 md:px-6 lg:px-8"
-    >
+    <nav aria-label="Breadcrumb" className="bg-white px-4 py-3 md:px-6 lg:px-8">
       <ol className="mx-auto flex max-w-9xl items-center gap-2 overflow-x-auto whitespace-nowrap text-[12px] font-bold text-[#667085]">
         {items.map((item, index) => {
           const isLast = index === items.length - 1;

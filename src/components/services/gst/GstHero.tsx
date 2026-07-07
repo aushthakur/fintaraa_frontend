@@ -15,6 +15,8 @@ import {
   createServiceRequest,
   ServiceRequestRecord,
 } from "@/services/serviceRequests";
+import { WhatsAppConsent } from "@/components/common/WhatsAppConsent";
+import { buildWebsiteConsentPayload } from "@/lib/formConsent";
 import { ServiceRequestSuccess } from "@/components/services/shared/ServiceRequestSuccess";
 
 const trustBadges = [
@@ -78,6 +80,7 @@ export function GstHero() {
   const [request, setRequest] = useState<ServiceRequestRecord | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [whatsappConsent, setWhatsappConsent] = useState(false);
 
   const updateField = (key: keyof typeof form, value: string) => {
     setForm((current) => ({ ...current, [key]: value }));
@@ -97,10 +100,15 @@ export function GstHero() {
       setError("Please select business type, GST requirement and state.");
       return;
     }
+    if (!whatsappConsent) {
+      setError("Please accept WhatsApp communication consent.");
+      return;
+    }
 
     setSubmitting(true);
     setError("");
     try {
+      const consentPayload = buildWebsiteConsentPayload("website_gst_registration");
       const result = await createServiceRequest({
         serviceType: "gst_registration",
         businessName: form.businessName.trim(),
@@ -108,6 +116,7 @@ export function GstHero() {
         businessType: form.businessType,
         gstRequirement: form.gstRequirement,
         state: form.state,
+        ...consentPayload,
       });
       setRequest(result);
       if (typeof window !== "undefined") {
@@ -244,6 +253,14 @@ export function GstHero() {
                   </select>
                 </label>
               ))}
+
+              <WhatsAppConsent
+                checked={whatsappConsent}
+                onChange={(checked) => {
+                  setWhatsappConsent(checked);
+                  if (checked) setError("");
+                }}
+              />
 
               {error ? (
                 <p className="rounded-lg bg-red-50 px-3 py-2 text-[13px] font-bold text-red-700">

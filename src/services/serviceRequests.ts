@@ -35,6 +35,10 @@ export type ServiceRequestRecord = {
   state?: string;
   employmentType?: string;
   annualIncome?: string;
+  source?: string;
+  platform?: string;
+  whatsappConsent?: boolean;
+  communicationConsent?: Record<string, unknown>;
   status: string;
   currentStage: string;
   currentStageIndex: number;

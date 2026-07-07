@@ -8,6 +8,8 @@ import {
   createServiceRequest,
   ServiceRequestRecord,
 } from "@/services/serviceRequests";
+import { WhatsAppConsent } from "@/components/common/WhatsAppConsent";
+import { buildWebsiteConsentPayload } from "@/lib/formConsent";
 import { ServiceRequestSuccess } from "@/components/services/shared/ServiceRequestSuccess";
 
 const employmentTypes = [
@@ -56,6 +58,7 @@ export function ItrHero() {
   const [request, setRequest] = useState<ServiceRequestRecord | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [whatsappConsent, setWhatsappConsent] = useState(false);
 
   const updateField = (key: keyof typeof form, value: string) => {
     setForm((current) => ({ ...current, [key]: value }));
@@ -75,16 +78,22 @@ export function ItrHero() {
       setError("Please select employment type and annual income.");
       return;
     }
+    if (!whatsappConsent) {
+      setError("Please accept WhatsApp communication consent.");
+      return;
+    }
 
     setSubmitting(true);
     setError("");
     try {
+      const consentPayload = buildWebsiteConsentPayload("website_itr_filing");
       const result = await createServiceRequest({
         serviceType: "itr_filing",
         name: form.name.trim(),
         mobile: form.mobile.trim(),
         employmentType: form.employmentType,
         annualIncome: form.annualIncome,
+        ...consentPayload,
       });
       setRequest(result);
       if (typeof window !== "undefined") {
@@ -202,6 +211,14 @@ export function ItrHero() {
                   </select>
                 </label>
               ))}
+
+              <WhatsAppConsent
+                checked={whatsappConsent}
+                onChange={(checked) => {
+                  setWhatsappConsent(checked);
+                  if (checked) setError("");
+                }}
+              />
 
               {error ? (
                 <p className="rounded-lg bg-red-50 px-3 py-2 text-[13px] font-bold text-red-700">

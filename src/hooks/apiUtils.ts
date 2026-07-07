@@ -61,6 +61,8 @@ export const request = async <T>(
       "Cache-Control": "no-cache, no-store, must-revalidate",
       Pragma: "no-cache",
       Expires: "0",
+      "X-Source-Platform": "website",
+      "X-Client-Platform": "website",
     };
 
     const response = await api.request({

@@ -183,6 +183,16 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${inter.variable} ${poppins.variable} ${geistMono.variable} ${bodoni.variable} ${highlightSerif.variable} h-full antialiased`}
     >
+      <head>
+        <script
+          id="fintaraa-site-schema"
+          type="application/ld+json"
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
+          }}
+        />
+      </head>
       <body
         className="min-h-full flex flex-col overflow-x-clip font-sans"
         suppressHydrationWarning
@@ -191,14 +201,6 @@ export default function RootLayout({
           <AppShell>{children}</AppShell>
         </Providers>
         <div id="modal-root" />
-        <Script
-          id="fintaraa-site-schema"
-          type="application/ld+json"
-          strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
-          }}
-        />
         {clarityProjectId ? (
           <Script id="microsoft-clarity" strategy="afterInteractive">
             {`

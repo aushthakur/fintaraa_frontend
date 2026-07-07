@@ -8,7 +8,10 @@ import { SiteBreadcrumbs } from "@/components/common/layout/SiteBreadcrumbs";
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const hideFooter =
-    pathname === "/account/profile" || pathname.startsWith("/account/profile/");
+    pathname === "/account/profile" ||
+    pathname.startsWith("/account/profile/") ||
+    pathname === "/partner/profile" ||
+    pathname.startsWith("/partner/profile/");
   const allowStickyContent = pathname.startsWith("/products/");
 
   return (

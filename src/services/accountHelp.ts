@@ -228,6 +228,12 @@ export const createTicket = async (payload: {
   title: string;
   description: string;
   tags: string[];
+  source?: string;
+  platform?: string;
+  sourcePlatform?: string;
+  formSource?: string;
+  whatsappConsent?: boolean;
+  communicationConsent?: Record<string, unknown>;
 }) => Post<unknown>("support/tickets", payload, 10000);
 
 export const fetchTicketById = async (

@@ -1,6 +1,6 @@
 "use client";
 
-import { clearAuthSession, getAuthToken } from "@/hooks/authStorage";
+import { clearAuthSession, getAuthToken, getAuthType } from "@/hooks/authStorage";
 import { useMemo, useSyncExternalStore } from "react";
 import { AUTH_CHANGED_EVENT } from "@/lib/authEvents";
 import { fetchCurrentUser, type CurrentUser } from "@/services/profile";
@@ -13,6 +13,7 @@ const hasValue = (value: unknown) =>
 
 function getCachedUser(): CurrentUser | null {
   if (typeof window === "undefined") return null;
+  if (getAuthType() !== "user") return null;
   const raw = localStorage.getItem("user");
   if (!raw) return null;
   try {
@@ -80,14 +81,15 @@ const loadCurrentUserOnce = async (force = false) => {
   loadGeneration = generation;
 
   inFlight = (async () => {
-    const cached = getCachedUser();
+    const authType = getAuthType();
+    const cached = authType === "user" ? getCachedUser() : null;
     if (generation !== loadGeneration) return;
     if (cached) setStoreState({ user: cached });
 
     const token = getAuthToken();
-    if (!token) {
+    if (authType !== "user" || !token) {
       if (generation !== loadGeneration) return;
-      setStoreState({ user: cached || null, loading: false });
+      setStoreState({ user: null, loading: false });
       return;
     }
 
@@ -135,7 +137,7 @@ const refreshCurrentUser = () => {
 const forceRefreshCurrentUser = () => {
   queueMicrotask(() => {
     const cached = getCachedUser();
-    const token = getAuthToken();
+    const token = getAuthType() === "user" ? getAuthToken() : null;
     setStoreState({ user: cached, loading: Boolean(token) });
     void loadCurrentUserOnce(true);
   });
