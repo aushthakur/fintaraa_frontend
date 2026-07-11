@@ -11,6 +11,25 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --brand-blue: #075cde;
+  --brand-blue-dark: #004b93;
+  --brand-blue-soft: #e9f2ff;
+  --site-page-x: 1rem;
+  --site-section-y: 2rem;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --site-page-x: 1.5rem;
+    --site-section-y: 2.75rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --site-page-x: 2rem;
+    --site-section-y: 3.5rem;
+  }
 }
 
 body {
@@ -57,6 +76,58 @@ main :where(p, li) {
   text-wrap: pretty;
 }
 
+main
+  :where(
+    [class*="text-[#087443]"],
+    [class*="text-[#0f7a4d]"],
+    [class*="text-[#12b76a]"],
+    [class*="text-[#13a653]"],
+    [class*="text-[#22c55e]"],
+    [class*="text-[#16a34a]"],
+    [class*="text-[#2a9f55]"],
+    [class*="text-[#027a48]"],
+    [class*="text-[#067647]"],
+    [class*="text-[#079455]"],
+    [class*="text-emerald"]
+  ) {
+  color: var(--brand-blue) !important;
+}
+
+main
+  :where(
+    [class*="bg-[#13a653]"],
+    [class*="bg-[#12b76a]"],
+    [class*="from-[#0fae5e]"],
+    [class*="to-[#17cb70]"],
+    [class*="bg-emerald"]
+  ) {
+  background: var(--brand-blue) !important;
+  background-image: none !important;
+}
+
+main
+  :where(
+    [class*="bg-[#ecfdf3]"],
+    [class*="bg-[#e8f8ef]"],
+    [class*="bg-[#dff7e8]"],
+    [class*="bg-[#f0fdf4]"],
+    [class*="bg-[#f6fef9]"],
+    [class*="bg-emerald-50"],
+    [class*="bg-emerald-100"]
+  ) {
+  background: var(--brand-blue-soft) !important;
+}
+
+main
+  :where(
+    [class*="border-[#13a653]"],
+    [class*="border-[#12b76a]"],
+    [class*="border-[#22c55e]"],
+    [class*="border-emerald"]
+  ) {
+  border-color: var(--brand-blue) !important;
+}
+
 @media (max-width: 767px) {
   .mobile-site-nav {
     position: relative;
@@ -71,8 +142,8 @@ main :where(p, li) {
 
   .mobile-hero-copy,
   .mobile-hero-card {
-    width: min(358px, calc(100dvw - 2rem));
-    max-width: min(358px, calc(100dvw - 2rem));
+    width: 100%;
+    max-width: 100%;
   }
 
   .mobile-hero-card * {
@@ -85,6 +156,80 @@ main :where(p, li) {
 
   main :where([class*="shadow-"]) {
     --tw-shadow-color: rgba(15, 23, 42, 0.08);
+  }
+
+  main :where(section) {
+    scroll-margin-top: 6rem;
+  }
+
+  main :where(input, select, textarea) {
+    font-size: 16px;
+  }
+
+  main :where(a, button, input, select, textarea) {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  main :where(section[class*="px-6"], section[class*="px-8"]) {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  main
+    :where(
+      section[class*="py-14"],
+      section[class*="py-16"],
+      section[class*="py-18"],
+      section[class*="py-20"]
+    ) {
+    padding-top: 2.5rem !important;
+    padding-bottom: 2.5rem !important;
+  }
+
+  main
+    :where(
+      section[class*="pt-14"],
+      section[class*="pt-16"],
+      section[class*="pt-18"],
+      section[class*="pt-20"]
+    ) {
+    padding-top: 2.5rem !important;
+  }
+
+  main
+    :where(
+      section[class*="pb-14"],
+      section[class*="pb-16"],
+      section[class*="pb-18"],
+      section[class*="pb-20"]
+    ) {
+    padding-bottom: 2.5rem !important;
+  }
+
+  main h1[class] {
+    font-size: clamp(1.75rem, 8vw, 2.35rem) !important;
+    line-height: 1.12 !important;
+    letter-spacing: -0.02em !important;
+  }
+
+  main
+    :where(
+      h2[class*="text-[30px]"],
+      h2[class*="text-[32px]"],
+      h2[class*="text-[34px]"],
+      h2[class*="text-[36px]"],
+      h2[class*="text-[38px]"],
+      h2[class*="text-[40px]"],
+      h2[class*="text-[42px]"],
+      h2[class*="text-[44px]"],
+      h2[class*="text-[48px]"],
+      h2[class*="text-[50px]"],
+      h2[class*="text-[54px]"],
+      h2[class*="text-[60px]"]
+    ) {
+    font-size: clamp(1.4rem, 6.2vw, 1.85rem) !important;
+    line-height: 1.16 !important;
+    letter-spacing: -0.015em !important;
   }
 }
 
@@ -167,6 +312,24 @@ select:disabled {
 
   .max-w-9xl {
     max-width: 100rem; /* 1600px */
+  }
+
+  .site-container {
+    width: 100%;
+    max-width: 100rem;
+    margin-inline: auto;
+    padding-inline: var(--site-page-x);
+  }
+
+  .site-section {
+    padding: var(--site-section-y) var(--site-page-x);
+  }
+
+  .site-heading {
+    font-size: clamp(1.45rem, 4vw, 2.25rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    font-weight: 800;
   }
 
   .scrollbar-none,

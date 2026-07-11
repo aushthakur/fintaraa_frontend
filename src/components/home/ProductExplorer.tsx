@@ -6,7 +6,6 @@ import Link from "next/link";
 import {
   Sparkles,
   ArrowRight,
-  BadgeCheck,
   CheckCircle2,
   type LucideIcon,
 } from "lucide-react";
@@ -274,6 +273,18 @@ const isImageCategory = (title: string) =>
   title === "Explore Insurance Plans" ||
   title === "Explore Credit Card Options";
 
+const sectionHref = (title: string, fallback?: string) => {
+  if (fallback) return fallback;
+  if (title === "Explore Loan Options") return "/products?category=loans";
+  if (title === "Explore Insurance Plans")
+    return "/products?category=insurance";
+  if (title === "Explore Credit Card Options")
+    return "/products?category=credit-cards";
+  if (title === "Other financial services")
+    return "/products?category=services";
+  return "/products";
+};
+
 function SectionTop({
   title,
   subtitle,
@@ -294,11 +305,11 @@ function SectionTop({
     title === "Explore Credit Card Options";
 
   return (
-    <div className={hero ? "mb-0 rounded-2xl bg-white p-5 sm:p-6" : "mb-5"}>
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-        <div>
+    <div className={hero ? "mb-0 rounded-xl bg-white p-4 sm:p-5" : "mb-4"}>
+      <div className="flex items-center justify-between gap-3">
+        <div className="min-w-0 flex-1">
           {sectionEyebrow[title] ? (
-            <p className="mb-2 inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-wide text-[#075cde]">
+            <p className="mb-2 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wide text-[#075cde] md:text-[12px]">
               <Sparkles className="h-3.5 w-3.5" />
               {sectionEyebrow[title]}
             </p>
@@ -306,8 +317,8 @@ function SectionTop({
           <h2
             className={
               hero
-                ? "max-w-3xl text-[28px] font-bold leading-tight tracking-tight text-[#07162d] sm:text-[38px]"
-                : "text-[24px] font-bold leading-tight tracking-tight text-[#07162d] sm:text-[30px]"
+                ? "max-w-3xl text-[24px] font-bold leading-tight tracking-tight text-[#07162d] sm:text-[34px]"
+                : "text-[20px] font-bold leading-tight tracking-tight text-[#07162d] sm:text-[28px]"
             }
           >
             {isBankSection(title) ? (
@@ -332,10 +343,11 @@ function SectionTop({
         {ctaLabel && href ? (
           <Link
             href={href}
-            className="inline-flex h-10 w-fit shrink-0 items-center justify-center gap-2 rounded-xl bg-[#075cde] px-5 text-[13px] font-bold text-white no-underline transition hover:bg-[#064cb8]"
+            className="inline-flex h-9 shrink-0 items-center justify-center gap-1 rounded-lg bg-[#e9f2ff] px-3 text-[12px] font-bold leading-none text-[#075cde] no-underline transition hover:bg-[#d9eaff] sm:h-10 sm:gap-2 sm:bg-[#075cde] sm:px-4 sm:text-[13px] sm:text-white sm:hover:bg-[#064cb8]"
           >
-            {ctaLabel}
-            <ArrowRight className="h-4 w-4" />
+            <span className="hidden sm:inline">{ctaLabel}</span>
+            <span className="sm:hidden">View</span>
+            <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
           </Link>
         ) : null}
       </div>
@@ -348,11 +360,11 @@ function ResponsiveSevenRow({ children }: { children: ReactNode }) {
 
   return (
     <div className="-mx-4 overflow-x-auto px-4 pb-2 scrollbar-none md:-mx-6 md:px-6 xl:mx-0 xl:overflow-visible xl:px-0 xl:pb-0">
-      <div className="flex snap-x snap-mandatory gap-4 xl:grid xl:grid-cols-7">
+      <div className="flex snap-x snap-mandatory gap-3 md:gap-4 xl:grid xl:grid-cols-7">
         {items.map((child, index) => (
           <div
             key={index}
-            className="w-[calc((100%-1rem)/1.5)] shrink-0 snap-start md:w-[calc((100%-2rem)/2.5)] xl:w-auto"
+            className="w-[min(76vw,20rem)] shrink-0 snap-start sm:w-[18rem] md:w-[17.5rem] xl:w-auto"
           >
             {child}
           </div>
@@ -362,32 +374,35 @@ function ResponsiveSevenRow({ children }: { children: ReactNode }) {
   );
 }
 
-function BankOfferCard({
-  product,
-  index,
-}: {
-  product: ProductItem;
-  index: number;
-}) {
+function ResponsiveServicesRow({ children }: { children: ReactNode }) {
+  const items = Children.toArray(children);
+
+  return (
+    <div className="-mx-4 overflow-x-auto px-4 pb-2 scrollbar-none md:-mx-6 md:px-6 xl:mx-0 xl:overflow-visible xl:px-0 xl:pb-0">
+      <div className="flex snap-x snap-mandatory gap-3 md:gap-4 xl:grid xl:grid-cols-4">
+        {items.map((child, index) => (
+          <div
+            key={index}
+            className="w-[min(82vw,22rem)] shrink-0 snap-start sm:w-[22rem] md:w-[24rem] xl:w-auto"
+          >
+            {child}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function BankOfferCard({ product }: { product: ProductItem }) {
   const details =
     bankOfferDetails[product.title] || bankOfferDetails["ICICI Bank"];
   return (
     <Link
       href={product.href || productHref(product.title)}
-      className="group flex h-full min-h-64 flex-col justify-between rounded-xl border border-[#e2edf8] bg-white py-4 px-3 no-underline transition-colors hover:border-[#bcd8f4]"
+      className="group flex h-full min-h-60 flex-col justify-between rounded-xl border border-[#e2edf8] bg-white px-3 py-4 no-underline transition-colors hover:border-[#bcd8f4]"
     >
       <div>
-        <div className="flex items-center justify-between gap-3">
-          <span
-            className={`text-[10px] font-bold uppercase tracking-wide ${
-              index === 0 ? "text-[#075cde]" : "text-[#087443]"
-            }`}
-          >
-            {index === 0 ? "Best offers" : "Verified"}
-          </span>
-          <CheckCircle2 className="h-4 w-4 text-[#12b76a]" />
-        </div>
-        <div className="mt-5 flex h-16 items-center justify-center">
+        <div className="flex h-16 items-center justify-center">
           {product.logo ? (
             <Image
               src={product.logo}
@@ -399,7 +414,7 @@ function BankOfferCard({
             />
           ) : null}
         </div>
-        <h3 className="mt-4 text-center text-[17px] font-bold text-[#07162d]">
+        <h3 className="mt-4 text-center text-[16px] font-bold leading-tight text-[#07162d]">
           {product.title}
         </h3>
         <div className="mt-4 grid gap-2 text-[12px] font-bold text-[#52657d]">
@@ -414,7 +429,7 @@ function BankOfferCard({
           <div className="space-y-1">
             {[details.perk, details.amount].map((item) => (
               <div key={item} className="flex items-center gap-2">
-                <BadgeCheck className="h-4 w-4 shrink-0 text-[#0f7a4d]" />
+                <CheckCircle2 className="h-4 w-4 shrink-0 text-[#075cde]" />
                 <span className="text-xs line-clamp-1">{item}</span>
               </div>
             ))}
@@ -450,7 +465,7 @@ function InformativeCard({ product }: { product: ProductItem }) {
             <p className="text-[10px] font-bold uppercase tracking-wide text-[#075cde]">
               {meta.badge || "Matched"}
             </p>
-            <h3 className="mt-1 line-clamp-1 text-[15px] font-bold leading-snug text-[#07162d]">
+            <h3 className="mt-1 line-clamp-2 text-[15px] font-bold leading-snug text-[#07162d]">
               {product.title}
             </h3>
           </div>
@@ -465,15 +480,15 @@ function InformativeCard({ product }: { product: ProductItem }) {
           </p>
         </div>
 
-        <p className="mt-2 flex items-start gap-1.5 text-[10px] leading-5 text-[#344054]">
+        <p className="mt-2 flex items-start gap-1.5 text-[13px] leading-5 text-[#344054]">
           <CheckCircle2 className="h-4 w-4" />
-          <span className="text-xs">
+          <span>
             {meta.hint || "Eligibility guidance before applying"}
           </span>
         </p>
-        <p className="mt-2 flex items-start gap-1.5 text-[10px] leading-5 text-[#61748f]">
-          <BadgeCheck className="h-4 w-4 shrink-0 text-[#075cde]" />
-          <span className="text-xs">
+        <p className="mt-2 flex items-start gap-1.5 text-[13px] leading-5 text-[#61748f]">
+          <CheckCircle2 className="h-4 w-4 shrink-0 text-[#075cde]" />
+          <span>
             {meta.detail || "Compare eligibility, documents and next steps."}
           </span>
         </p>
@@ -489,11 +504,9 @@ function InformativeCard({ product }: { product: ProductItem }) {
 function ImageProductCard({
   product,
   hideIcon = false,
-  centerTopBadge = false,
-  hideContentBadge = false,
+  hideContentBadge = true,
 }: {
   product: ProductItem;
-  centerTopBadge?: boolean;
   hideIcon?: boolean;
   hideContentBadge?: boolean;
 }) {
@@ -515,15 +528,6 @@ function ImageProductCard({
           />
         ) : null}
         <div className="absolute inset-0 bg-linear-to-t from-[#07162d]/60 via-transparent to-transparent" />
-        {centerTopBadge ? (
-          <span className="absolute inset-x-0 top-0 z-10 flex min-h-7 items-center justify-center rounded-t-xl bg-[#075cde] px-3 text-center text-[10px] font-bold uppercase tracking-wide text-white shadow-lg backdrop-blur-md [text-shadow:0_1px_8px_rgba(7,22,45,0.75)]">
-            {meta.badge || "Featured"}
-          </span>
-        ) : (
-          <span className="absolute inset-x-0 top-0 z-10 flex min-h-7 items-center justify-center rounded-t-xl bg-[#075cde] px-3 text-center text-[10px] font-bold uppercase tracking-wide text-white shadow-lg backdrop-blur-md [text-shadow:0_1px_8px_rgba(7,22,45,0.75)]">
-            {meta.badge || "Featured"}
-          </span>
-        )}
         {!hideIcon ? (
           <span className="absolute bottom-3 left-3 flex h-10 w-10 items-center justify-center rounded-xl bg-white text-[#075cde]">
             {Icon ? (
@@ -541,10 +545,10 @@ function ImageProductCard({
             {meta.badge || "Featured"}
           </p>
         ) : null}
-        <h3 className="text-[16px] line-clamp-1 font-bold leading-snug text-[#07162d]">
+        <h3 className="line-clamp-2 text-[16px] font-bold leading-snug text-[#07162d]">
           {product.title}
         </h3>
-        <p className="mt-2 line-clamp-1 text-[10px] text-[#52657d]">
+        <p className="mt-2 line-clamp-2 text-[13px] leading-5 text-[#52657d]">
           {meta.hint || product.text}
         </p>
         {/* <p className="mt-2 min-h-10 flex-1 text-[11px] font-semibold leading-5 text-[#8090a4]">
@@ -607,17 +611,17 @@ export function ProductExplorer({
   return (
     <section
       className={`bg-white px-4 md:px-6 lg:px-8 ${
-        compactSpacing ? "py-7" : "py-8"
+        compactSpacing ? "py-5 md:py-7" : "py-6 md:py-8"
       }`}
     >
       <div className="mx-auto max-w-9xl">
-        <div className="flex flex-col gap-10">
+        <div className="flex flex-col gap-8 md:gap-10">
           {visibleSections.map((section) => {
             const title = section.title;
             const bankSection = isBankSection(title);
             const otherServices = isOtherServices(title);
             const imageCategory = isImageCategory(title);
-            const href = (section as any).ctaHref || "/products";
+            const href = sectionHref(title, (section as any).ctaHref);
             const ctaLabel = (section as any).cta || "View All";
             const products = section.products as ProductItem[];
 
@@ -626,7 +630,7 @@ export function ProductExplorer({
                 key={title}
                 className={
                   otherServices
-                    ? "overflow-hidden rounded-2xl bg-white p-4 sm:p-6"
+                    ? "overflow-hidden rounded-xl bg-white p-0 sm:p-0"
                     : ""
                 }
               >
@@ -638,28 +642,27 @@ export function ProductExplorer({
                 />
 
                 {bankSection ? (
-                  <div className="mt-5">
+                  <div className="mt-4">
                     <ResponsiveSevenRow>
-                      {products.map((product, index) => (
+                      {products.map((product) => (
                         <BankOfferCard
                           key={product.title}
                           product={product}
-                          index={index}
                         />
                       ))}
                     </ResponsiveSevenRow>
                   </div>
                 ) : otherServices ? (
-                  <>
-                    <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+                  <div className="mt-4">
+                    <ResponsiveServicesRow>
                       {products.map((product) => (
                         <ServiceWorkflowCard
                           key={product.title}
                           product={product}
                         />
                       ))}
-                    </div>
-                  </>
+                    </ResponsiveServicesRow>
+                  </div>
                 ) : imageCategory ? (
                   <>
                     <ResponsiveSevenRow>
@@ -672,7 +675,6 @@ export function ProductExplorer({
                           <ImageProductCard
                             key={product.title}
                             product={product}
-                            centerTopBadge={compactImageHeader}
                             hideContentBadge={compactImageHeader}
                             hideIcon={title === "Explore Loan Options"}
                           />

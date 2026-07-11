@@ -47,7 +47,7 @@ const toneClass: Record<string, string> = {
   blue: "bg-[#e4f4ff] text-[#195585]",
   brown: "bg-[#fff3e5] text-[#a36a19]",
   gold: "bg-[#fff3c6] text-[#d4a42f]",
-  green: "bg-[#dff7e8] text-[#2a9f55]",
+  green: "bg-[#e9f2ff] text-[#075cde]",
   olive: "bg-[#fbffd8] text-[#8a941a]",
   orange: "bg-[#fff4eb] text-[#f28c28]",
   pink: "bg-[#ffd5f1] text-[#f1129d]",
@@ -510,6 +510,27 @@ const productSections = [
 
 const categories = ["All", ...productSections.map((section) => section.title)];
 
+const categoryFromQuery = (value: string | null) => {
+  const normalized = String(value || "").toLowerCase();
+  if (["loan", "loans"].includes(normalized)) return "Explore Loan Options";
+  if (["insurance", "insurances"].includes(normalized))
+    return "Explore Insurance Plans";
+  if (["card", "cards", "credit-card", "credit-cards"].includes(normalized))
+    return "Explore Credit Card Options";
+  if (["services", "additional-services"].includes(normalized))
+    return "Explore Additional Services";
+  return "All";
+};
+
+const categoryLabel = (value: string) => {
+  if (value === "All") return "All";
+  if (value === "Explore Loan Options") return "Loans";
+  if (value === "Explore Insurance Plans") return "Insurance";
+  if (value === "Explore Credit Card Options") return "Cards";
+  if (value === "Explore Additional Services") return "Services";
+  return value.replace("Explore ", "");
+};
+
 function ProductVisualCard({
   title,
   text,
@@ -536,6 +557,8 @@ function ProductVisualCard({
             src={meta.image}
             alt={title}
             fill
+            loading="eager"
+            sizes="(min-width: 1536px) 14vw, (min-width: 1280px) 20vw, (min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
             className="object-cover"
             unoptimized
           />
@@ -551,22 +574,19 @@ function ProductVisualCard({
           </div>
         )}
         <div className="absolute inset-0 bg-linear-to-t from-[#07162d]/60 via-transparent to-transparent" />
-        <span className="absolute inset-x-0 top-0 z-10 flex min-h-7 items-center justify-center rounded-t-xl bg-[#075cde] px-3 text-center text-[10px] font-bold uppercase tracking-wide text-white shadow-lg backdrop-blur-md [text-shadow:0_1px_8px_rgba(7,22,45,0.75)]">
-          {meta.badge || "Featured"}
-        </span>
       </div>
       <div className="flex flex-1 flex-col p-4">
         <div className="flex items-start justify-between gap-2">
-          <h3 className="line-clamp-1 text-[16px] font-bold leading-snug text-[#07162d]">
+          <h3 className="line-clamp-2 text-[16px] font-bold leading-snug text-[#07162d]">
             {title}
           </h3>
           {isManaged ? (
-            <span className="shrink-0 rounded-full bg-[#ecfdf3] px-2 py-1 text-[9px] font-black uppercase tracking-[0.08em] text-[#027a48]">
+            <span className="shrink-0 rounded-full bg-[#e9f2ff] px-2 py-1 text-[9px] font-black uppercase tracking-[0.08em] text-[#075cde]">
               Managed
             </span>
           ) : null}
         </div>
-        <p className="mt-2 line-clamp-1 text-[10px] text-[#52657d]">
+        <p className="mt-2 line-clamp-2 text-[13px] leading-5 text-[#52657d]">
           {text}
         </p>
         <span className="mt-3 inline-flex items-center gap-2 text-[12px] font-bold text-[#075cde]">
@@ -589,6 +609,15 @@ export function ProductsPage() {
     (count, section) => count + section.products.length,
     0,
   );
+
+  useEffect(() => {
+    queueMicrotask(() => {
+      const params = new URLSearchParams(window.location.search);
+      setCategory(categoryFromQuery(params.get("category")));
+      const search = params.get("q") || params.get("search");
+      if (search) setQuery(search);
+    });
+  }, []);
 
   useEffect(() => {
     let active = true;
@@ -637,15 +666,15 @@ export function ProductsPage() {
 
   return (
     <main className="bg-white">
-      <section className="relative overflow-hidden px-4 py-7 md:px-6 lg:px-8">
+      <section className="relative overflow-hidden px-4 py-6 md:px-6 md:py-8 lg:px-8">
         {/* <div className="absolute inset-0 bg-[radial-gradient(circle_at_14%_18%,rgba(25,85,133,0.10),transparent_24%),radial-gradient(circle_at_88%_8%,rgba(18,183,106,0.12),transparent_22%),linear-gradient(180deg,#f5fbff_0%,#ffffff_72%)]" /> */}
         <div className="relative mx-auto max-w-9xl">
           <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
             <div className="min-w-0 shrink-0">
-              <h1 className="text-[24px] font-black leading-tight tracking-[-0.02em] text-[#07162d] md:text-[30px]">
-                Fintaraa Products & Services.
+              <h1 className="text-[24px] font-black leading-tight tracking-tight text-[#07162d] md:text-[30px]">
+                Fintaraa Products & Services
               </h1>
-              <p className="mt-1 text-[12px] font-bold text-[#667085]">
+              <p className="mt-1 text-[13px] font-bold text-[#667085]">
                 Showing {visibleProducts} of {totalProducts} products
               </p>
               {/* <p className="mt-5 max-w-3xl text-[16px] text-[#5d6b7c]">
@@ -681,7 +710,7 @@ export function ProductsPage() {
                   value={query}
                   onChange={(event) => setQuery(event.target.value)}
                   placeholder="Search personal loan, cashback cards, health insurance..."
-                  className="h-11 w-full rounded-full border border-[#dbe7f2] bg-white pl-9 pr-4 text-[13px] font-semibold text-[#07162d] outline-none placeholder:text-[#98a2b3] focus:border-[#195585]"
+                  className="h-11 w-full rounded-xl border border-[#dbe7f2] bg-white pl-9 pr-4 text-[13px] font-semibold text-[#07162d] outline-none placeholder:text-[#98a2b3] focus:border-[#195585]"
                 />
               </label>
 
@@ -690,7 +719,7 @@ export function ProductsPage() {
                   type="button"
                   onClick={() => setFiltersOpen((current) => !current)}
                   aria-expanded={filtersOpen}
-                  className="inline-flex h-10 shrink-0 items-center gap-2 rounded-full bg-[#eef8ff] px-3 text-[12px] font-extrabold text-[#195585] transition hover:bg-[#e1f2ff]"
+                  className="inline-flex h-10 shrink-0 items-center gap-2 rounded-xl bg-[#eef8ff] px-3 text-[12px] font-extrabold text-[#195585] transition hover:bg-[#e1f2ff]"
                 >
                   <SlidersHorizontal className="h-4 w-4" />
                   Filter
@@ -705,13 +734,13 @@ export function ProductsPage() {
                       key={item}
                       type="button"
                       onClick={() => setCategory(item)}
-                      className={`h-10 shrink-0 rounded-full px-3.5 text-[12px] font-extrabold transition ${
+                      className={`h-10 shrink-0 rounded-xl px-3.5 text-[12px] font-extrabold transition ${
                         category === item
                           ? "bg-[#195585] text-white"
                           : "bg-[#f3faff] text-[#195585] hover:bg-[#e7f4ff]"
                       }`}
                     >
-                      {item === "All" ? "All" : item.replace("Explore ", "")}
+                      {categoryLabel(item)}
                     </button>
                   ))}
                 </div>
@@ -721,26 +750,26 @@ export function ProductsPage() {
         </div>
       </section>
 
-      <section className="px-4 pb-20 md:px-6 lg:px-8">
-        <div className="mx-auto grid max-w-9xl gap-14">
+      <section className="px-4 pb-10 md:px-6 md:pb-12 lg:px-8">
+        <div className="mx-auto grid max-w-9xl gap-10 md:gap-12">
           {filteredSections.length ? (
             filteredSections.map((section) => (
               <div key={section.title}>
-                <div className="mb-7 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+                <div className="mb-5 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
                   <div>
-                    <h2 className="mt-3 text-[30px] font-black tracking-[-0.02em] text-[#07162d]">
+                    <h2 className="text-[22px] font-black leading-tight tracking-tight text-[#07162d] md:text-[26px]">
                       {section.title}
                     </h2>
                     {/* <p className="mt-2 max-w-2xl text-[15px] font-semibold leading-7 text-[#667085]">
                       {section.subtitle}
                     </p> */}
                   </div>
-                  <span className="w-fit rounded-full bg-[#ecfdf3] px-4 py-2 text-[12px] font-extrabold text-[#067647]">
+                  <span className="w-fit rounded-full bg-[#e9f2ff] px-4 py-2 text-[12px] font-extrabold text-[#075cde]">
                     {section.products.length} products
                   </span>
                 </div>
 
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-7">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7">
                   {section.products.map(({ title, text, icon: Icon, tone }) => {
                     const slug = slugifyProduct(title);
                     const isManaged = managedSlugs.has(slug);

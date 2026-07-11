@@ -620,11 +620,14 @@ export default function Navbar() {
       className="sticky top-0 z-50 overflow-x-clip border-b border-[#e5eef8] bg-white/95 backdrop-blur"
     >
       <div className="bg-[#002B4D] px-4 text-white md:px-6 lg:pl-8 lg:pr-10">
-        <div className="mx-auto flex min-h-9 max-w-9xl items-center justify-center gap-4 py-2 text-center text-[11px] font-semibold sm:justify-between sm:text-left">
+        <div className="mx-auto flex min-h-8 max-w-9xl items-center justify-center gap-4 py-1.5 text-center text-[11px] font-semibold sm:justify-between sm:py-2 sm:text-left">
           <p className="flex items-center justify-center gap-2 leading-4">
-            <ShieldCheck className="h-4 w-4 shrink-0 text-[#7ee3a2]" />
-            Compare offers from regulated banks, NBFCs and insurers with secure
-            assisted applications.
+            <ShieldCheck className="h-4 w-4 shrink-0 text-[#8fc7ff]" />
+            <span className="sm:hidden">Secure finance marketplace.</span>
+            <span className="hidden sm:inline">
+              Compare offers from regulated banks, NBFCs and insurers with
+              secure assisted applications.
+            </span>
           </p>
           <div className="hidden items-center gap-5 lg:flex">
             <a
@@ -652,7 +655,7 @@ export default function Navbar() {
             width={134}
             height={41}
             alt="Fintaraa"
-            className="h-auto w-20"
+            className="h-auto w-24 sm:w-28"
             src="/assets/logo/logo.png"
           />
         </Link>
@@ -987,7 +990,7 @@ function MegaDropdown({
         <div className={`grid gap-0 ${columnCount}`}>
           <div className="bg-[linear-gradient(145deg,#195585,#0f6fba)] p-4 text-white">
             <div className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-white/12">
-              <Sparkles className="h-5 w-5 text-[#7ee3a2]" />
+              <Sparkles className="h-5 w-5 text-[#8fc7ff]" />
             </div>
             <h3 className="mt-5 text-[20px] font-semibold leading-tight">
               {item.label}
@@ -1147,7 +1150,7 @@ function AuthButton({
       }
       aria-label={`Open profile for ${name}`}
     >
-      <span className="relative flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-linear-to-br from-[#195585] to-[#12b76a] text-[11px] font-semibold text-white 2xl:h-9 2xl:w-9 2xl:text-[12px]">
+      <span className="relative flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-linear-to-br from-[#195585] to-[#075cde] text-[11px] font-semibold text-white 2xl:h-9 2xl:w-9 2xl:text-[12px]">
         {avatar ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={avatar} alt={name} className="h-full w-full object-cover" />

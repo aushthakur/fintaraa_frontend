@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
@@ -11,7 +12,6 @@ import {
   Percent,
   ShieldCheck,
   Sparkles,
-  Tag,
   WalletCards,
 } from "lucide-react";
 import { AppDownloadBanner } from "@/components/common/layout/Footer";
@@ -37,8 +37,60 @@ const categories = [
 const categoryMeta: Record<string, { icon: typeof WalletCards; tone: string }> = {
   loan: { icon: WalletCards, tone: "bg-[#eef6ff] text-[#005ca8]" },
   card: { icon: CreditCard, tone: "bg-[#f2efff] text-[#5b43d6]" },
-  insurance: { icon: ShieldCheck, tone: "bg-[#eaf8ef] text-[#12964f]" },
+  insurance: { icon: ShieldCheck, tone: "bg-[#eef6ff] text-[#005ca8]" },
 };
+
+type OfferDisplayRecord = OfferRecord & {
+  visual?: string;
+};
+
+const publicFallbackOffers: OfferDisplayRecord[] = [
+  {
+    _id: "fallback-loan-offer",
+    title: "Instant loan processing support",
+    lenderName: "Fintaraa partner banks",
+    productCategory: "loan",
+    productType: "personal-loan",
+    rateLabel: "From 10.5% p.a.",
+    amountLabel: "Up to Rs. 25 Lakh",
+    badge: "Popular",
+    description:
+      "Compare personal loan options with assisted eligibility and document guidance.",
+    ctaText: "Check Eligibility",
+    tags: ["Digital process", "Quick callback", "Bank offers"],
+    visual: "/assets/home/hero-banners/instant-digital-loan.png",
+  },
+  {
+    _id: "fallback-card-offer",
+    title: "Rewards and cashback credit cards",
+    lenderName: "Fintaraa card partners",
+    productCategory: "card",
+    productType: "credit-card",
+    rateLabel: "Lifetime value",
+    amountLabel: "Multiple cards",
+    badge: "Rewards",
+    description:
+      "Explore cards for shopping, travel, fuel, cashback, and reward points.",
+    ctaText: "Explore Cards",
+    tags: ["Cashback", "Travel", "Fuel"],
+    visual: "/assets/home/hero-banners/credit-card-rewards.png",
+  },
+  {
+    _id: "fallback-insurance-offer",
+    title: "Health and family protection plans",
+    lenderName: "Fintaraa insurance partners",
+    productCategory: "insurance",
+    productType: "health-insurance",
+    rateLabel: "Compare premium",
+    amountLabel: "Family cover",
+    badge: "Protection",
+    description:
+      "Review cover, premium, waiting periods, and claim support before buying.",
+    ctaText: "Explore Cover",
+    tags: ["Health", "Family", "Claims"],
+    visual: "/assets/home/hero-banners/insurance-family-protection.png",
+  },
+];
 
 const isLoggedIn = () => getAuthType() === "user" && Boolean(getAuthToken());
 
@@ -74,16 +126,23 @@ function OfferSkeleton() {
 
 function EmptyOffers({ onReset }: { onReset: () => void }) {
   return (
-    <div className="mx-auto max-w-xl py-14 text-center">
-      <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#eef6ff] text-[#005ca8]">
-        <Tag className="h-7 w-7" />
+    <div className="mx-auto grid max-w-3xl gap-5 py-10 text-center">
+      <div className="mx-auto h-28 w-28 overflow-hidden rounded-2xl bg-[#eef6ff] p-3">
+        <Image
+          src="/assets/offers/offer.png"
+          alt="Fintaraa offers and rewards"
+          width={160}
+          height={160}
+          unoptimized
+          className="h-full w-full object-contain"
+        />
       </div>
       <h3 className="mt-5 text-[22px] font-black text-[#111827]">
-        No matching offers right now
+        Offers are being refreshed
       </h3>
       <p className="mt-2 text-[15px] font-semibold leading-7 text-[#667085]">
-        Try another category or check again later. Active bank and partner offers
-        will appear here automatically.
+        Switch category or view the current featured offers. Bank and partner
+        offers update automatically when new campaigns go live.
       </p>
       <button
         type="button"
@@ -115,7 +174,9 @@ export function OffersPage() {
         const result = isLoggedIn()
           ? (await fetchEligibleOffers()).offers
           : await fetchPublicOffers({ limit: 60 });
-        if (active) setOffers(result);
+        if (active) {
+          setOffers(result.length || isLoggedIn() ? result : publicFallbackOffers);
+        }
       } catch (err) {
         if (active) {
           setError((err as Error).message || "Unable to load offers.");
@@ -242,77 +303,93 @@ export function OffersPage() {
                     categoryMeta[offer.productCategory || "loan"] ||
                     categoryMeta.loan;
                   const Icon = meta.icon;
+                  const visual = (offer as OfferDisplayRecord).visual;
                   return (
                     <article
                       key={offer._id}
-                      className="flex min-h-76 flex-col rounded-2xl border border-[#e4edf6] bg-white p-5 shadow-[0_18px_48px_rgba(16,24,40,0.06)] transition hover:-translate-y-0.5 hover:shadow-[0_22px_60px_rgba(16,24,40,0.09)]"
+                      className="flex min-h-76 flex-col overflow-hidden rounded-xl border border-[#e4edf6] bg-white shadow-[0_18px_48px_rgba(16,24,40,0.06)] transition hover:-translate-y-0.5 hover:shadow-[0_22px_60px_rgba(16,24,40,0.09)]"
                     >
-                      <div className="flex items-start justify-between gap-3">
+                      {visual ? (
+                        <div className="relative h-36 bg-[#f6fbff]">
+                          <Image
+                            src={visual}
+                            alt={offer.title}
+                            fill
+                            unoptimized
+                            className="object-cover"
+                          />
+                          <div className="absolute inset-0 bg-linear-to-t from-[#07162d]/35 to-transparent" />
+                        </div>
+                      ) : null}
+
+                      <div className="flex items-start justify-between gap-3 p-5 pb-0">
                         <span
                           className={`inline-flex h-11 w-11 items-center justify-center rounded-2xl ${meta.tone}`}
                         >
                           <Icon className="h-5 w-5" />
                         </span>
-                        <span className="rounded-full bg-[#ecfdf3] px-3 py-1 text-[11px] font-black uppercase tracking-wide text-[#027a48]">
+                        <span className="rounded-full bg-[#eef6ff] px-3 py-1 text-[11px] font-black uppercase tracking-wide text-[#005ca8]">
                           {offer.badge || "Active"}
                         </span>
                       </div>
-                      <h3 className="mt-5 text-[20px] font-black leading-7 text-[#111827]">
-                        {offer.title}
-                      </h3>
-                      <p className="mt-1 text-[13px] font-bold text-[#005ca8]">
-                        {offer.lenderName}
-                      </p>
-                      <p className="mt-3 line-clamp-2 text-[13px] font-semibold leading-6 text-[#667085]">
-                        {offer.description ||
-                          "Apply through Fintaraa and our team will help you with the next steps."}
-                      </p>
+                      <div className="flex flex-1 flex-col p-5 pt-0">
+                        <h3 className="mt-5 text-[20px] font-black leading-7 text-[#111827]">
+                          {offer.title}
+                        </h3>
+                        <p className="mt-1 text-[13px] font-bold text-[#005ca8]">
+                          {offer.lenderName}
+                        </p>
+                        <p className="mt-3 line-clamp-2 text-[13px] font-semibold leading-6 text-[#667085]">
+                          {offer.description ||
+                            "Apply through Fintaraa and our team will help you with the next steps."}
+                        </p>
 
-                      <div className="mt-5 grid gap-2 sm:grid-cols-3">
-                        {[
-                          [Percent, offer.rateLabel || "Best rate"],
-                          [WalletCards, offer.amountLabel || "Flexible limit"],
-                          [CalendarDays, formatDate(offer.validTo)],
-                        ].map(([MetricIcon, value]) => {
-                          const Metric = MetricIcon as typeof Percent;
-                          return (
-                            <div
-                              key={String(value)}
-                              className="rounded-xl bg-[#f8fbff] px-3 py-2"
+                        <div className="mt-5 grid gap-2 sm:grid-cols-3">
+                          {[
+                            [Percent, offer.rateLabel || "Best rate"],
+                            [WalletCards, offer.amountLabel || "Flexible limit"],
+                            [CalendarDays, formatDate(offer.validTo)],
+                          ].map(([MetricIcon, value]) => {
+                            const Metric = MetricIcon as typeof Percent;
+                            return (
+                              <div
+                                key={String(value)}
+                                className="rounded-xl bg-[#f8fbff] px-3 py-2"
+                              >
+                                <Metric className="h-4 w-4 text-[#005ca8]" />
+                                <p className="mt-1 text-[11px] font-black leading-4 text-[#344054]">
+                                  {String(value)}
+                                </p>
+                              </div>
+                            );
+                          })}
+                        </div>
+
+                        <div className="mt-5 flex flex-wrap gap-2">
+                          {(offer.tags || []).slice(0, 3).map((tag) => (
+                            <span
+                              key={tag}
+                              className="rounded-full bg-[#f3f7fb] px-3 py-1 text-[11px] font-bold text-[#667085]"
                             >
-                              <Metric className="h-4 w-4 text-[#005ca8]" />
-                              <p className="mt-1 text-[11px] font-black leading-4 text-[#344054]">
-                                {String(value)}
-                              </p>
-                            </div>
-                          );
-                        })}
-                      </div>
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
 
-                      <div className="mt-5 flex flex-wrap gap-2">
-                        {(offer.tags || []).slice(0, 3).map((tag) => (
-                          <span
-                            key={tag}
-                            className="rounded-full bg-[#f3f7fb] px-3 py-1 text-[11px] font-bold text-[#667085]"
-                          >
-                            {tag}
-                          </span>
-                        ))}
+                        <button
+                          type="button"
+                          onClick={() => handleApply(offer)}
+                          disabled={applyingId === offer._id}
+                          className="mt-auto inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#005ca8] px-5 text-[13px] font-black text-white transition hover:bg-[#004b93] disabled:cursor-not-allowed disabled:opacity-70"
+                        >
+                          {applyingId === offer._id ? (
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                          ) : (
+                            <BadgeCheck className="h-4 w-4" />
+                          )}
+                          {offer.ctaText || "Apply Now"}
+                        </button>
                       </div>
-
-                      <button
-                        type="button"
-                        onClick={() => handleApply(offer)}
-                        disabled={applyingId === offer._id}
-                        className="mt-auto inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[#13a653] px-5 text-[13px] font-black text-white transition hover:bg-[#0f8f45] disabled:cursor-not-allowed disabled:opacity-70"
-                      >
-                        {applyingId === offer._id ? (
-                          <Loader2 className="h-4 w-4 animate-spin" />
-                        ) : (
-                          <BadgeCheck className="h-4 w-4" />
-                        )}
-                        {offer.ctaText || "Apply Now"}
-                      </button>
                     </article>
                   );
                 })}

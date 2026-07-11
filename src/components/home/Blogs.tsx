@@ -136,7 +136,7 @@ export function RecentBlogCard({ post }: { post: WebsiteKnowledgeItem }) {
   return (
     <Link
       href={`/blog/${post.slug}`}
-      className="group flex h-108 w-[18rem] shrink-0 flex-col overflow-hidden rounded-2xl border border-[#dfeaf5] bg-white no-underline transition duration-300 hover:-translate-y-1 hover:border-[#bdd4e9] sm:w-[20rem] md:w-88"
+      className="group flex w-[18rem] shrink-0 flex-col overflow-hidden rounded-2xl border border-[#dfeaf5] bg-white no-underline transition duration-300 hover:-translate-y-1 hover:border-[#bdd4e9] sm:w-[20rem] md:w-88"
     >
       <div className="relative min-h-48 w-full overflow-hidden bg-[#eaf2f9]">
         <Image

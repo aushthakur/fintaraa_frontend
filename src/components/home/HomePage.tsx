@@ -18,16 +18,7 @@ export function HomePage() {
     <main className="bg-white">
       <HeroSection />
 
-      <div className="py-9 md:py-12 lg:pt-7">
-        {/* Global Centered Main Title Header */}
-        <div className="mx-auto mb-10 max-w-9xl px-4 md:px-6 lg:px-8">
-          <div className="text-center">
-            <h1 className="text-[32px] font-bold tracking-tight text-[#212529] md:text-[38px] lg:text-[42px] leading-tight">
-              Explore Our Products & Services
-            </h1>
-          </div>
-        </div>
-
+      <div className="py-6 md:py-8 lg:py-10">
         {/* Sequential Dynamic Horizontal Rows */}
         <div className="flex flex-col">
           {/* Row 1: Get Instant Loan - Banks */}

@@ -31,6 +31,7 @@ type TrustedPartnerBanksSectionProps = {
   showViewAllAction?: boolean;
   viewAllHref?: string;
   flushX?: boolean;
+  mobileScroller?: boolean;
 };
 
 const categoryCounts = trustedPartnerCategoryTabs.reduce(
@@ -61,7 +62,7 @@ function PartnerLogoTile({
       aria-label={`Open ${partner.name}`}
       className={`group flex shrink-0 items-center justify-center bg-white no-underline transition ${
         compact
-          ? "h-22 w-40 rounded-xl border border-[#eef2f6] px-4 py-4 hover:border-[#cfe4f7] sm:h-24 sm:w-44"
+          ? "h-18 w-32 rounded-xl border border-[#eef2f6] px-3 py-3 hover:border-[#cfe4f7] sm:h-22 sm:w-40 sm:px-4 sm:py-4"
           : "min-h-24 rounded-xl border border-[#e4edf5] px-4 py-4 hover:border-[#bddcf3]"
       }`}
     >
@@ -69,7 +70,7 @@ function PartnerLogoTile({
         <BankLogoImage
           src={partner.logo}
           alt={partner.name}
-          className={compact ? "h-10 w-full" : "h-11 w-full max-w-36"}
+          className={compact ? "h-9 w-full sm:h-10" : "h-11 w-full max-w-36"}
           sizes={compact ? "150px" : "(min-width: 1280px) 160px, 33vw"}
           unoptimized
           imageClassName="mix-blend-multiply"
@@ -118,10 +119,41 @@ function PartnerMarquee({
 function PartnerGrid({
   partners,
   activeCategory,
+  mobileScroller = false,
 }: {
   partners: TrustedPartner[];
   activeCategory: TrustedPartnerCategoryKey;
+  mobileScroller?: boolean;
 }) {
+  if (mobileScroller) {
+    return (
+      <>
+        <div className="-mx-4 overflow-x-auto px-4 pb-2 scrollbar-none md:-mx-6 md:px-6 lg:hidden">
+          <div className="flex snap-x snap-mandatory gap-3">
+            {partners.map((partner) => (
+              <div key={partner.slug} className="shrink-0 snap-start">
+                <PartnerLogoTile
+                  partner={partner}
+                  href={getTrustedPartnerHref(partner, activeCategory)}
+                  compact
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="hidden grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid xl:grid-cols-6">
+          {partners.map((partner) => (
+            <PartnerLogoTile
+              key={partner.slug}
+              partner={partner}
+              href={getTrustedPartnerHref(partner, activeCategory)}
+            />
+          ))}
+        </div>
+      </>
+    );
+  }
+
   return (
     <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6">
       {partners.map((partner) => (
@@ -143,6 +175,7 @@ export function TrustedPartnerBanksSection({
   showViewAllAction = true,
   viewAllHref,
   flushX = false,
+  mobileScroller = false,
 }: TrustedPartnerBanksSectionProps) {
   const [activeCategory, setActiveCategory] =
     useState<TrustedPartnerCategoryKey>("all");
@@ -177,19 +210,30 @@ export function TrustedPartnerBanksSection({
             : ""
         }`}
       >
-        <div className="flex flex-col gap-5 border-b border-[#dceaf7] pb-6 lg:flex-row lg:items-center lg:justify-between">
-          <div>
+        <div className="flex flex-col gap-4 border-b border-[#dceaf7] pb-4 md:gap-5 md:pb-6 lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex items-center justify-between gap-3">
+            <div className="min-w-0 flex-1">
             {/* <span className="mb-3 inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-wide text-[#075cde]">
               <ShieldCheck className="h-4 w-4" />
               Our trusted network
             </span> */}
-            <h2 className="max-w-3xl text-[26px] font-bold leading-tight tracking-tight text-[#07162d] md:text-[36px]">
-              {title}
-            </h2>
+              <h2 className="max-w-3xl text-[22px] font-bold leading-tight tracking-tight text-[#07162d] md:text-[34px]">
+                {title}
+              </h2>
             {/* <p className="mt-3 max-w-2xl text-[14px] font-semibold leading-6 text-[#61748f]">
               {description ||
                 `${activeCount} partners available across selected product category.`}
             </p> */}
+            </div>
+            {showViewAllAction && viewAllHref ? (
+              <Link
+                href={viewAllHref}
+                className="inline-flex h-9 shrink-0 items-center justify-center gap-1 rounded-lg bg-[#e9f2ff] px-3 text-[12px] font-semibold leading-none text-[#075cde] no-underline transition-colors hover:bg-[#d9eaff] lg:hidden"
+              >
+                View
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+            ) : null}
           </div>
 
           <div className="flex min-w-0 flex-wrap items-center gap-3 sm:gap-4 lg:ml-0">
@@ -208,13 +252,20 @@ export function TrustedPartnerBanksSection({
                       setActiveCategory(category.key);
                       setShowAll(false);
                     }}
-                    className={`inline-flex h-10 shrink-0 items-center gap-2 rounded-lg border px-4 text-[13px] font-semibold transition-all ${
+                    className={`inline-flex h-9 shrink-0 items-center gap-2 rounded-lg border px-3 text-[12px] font-semibold leading-none transition-all md:h-10 md:px-4 md:text-[13px] ${
                       isActive
                         ? "border-[#075cde] bg-[#075cde] text-white"
                         : "border-[#dceaf7] bg-white text-[#52657d] hover:border-[#075cde] hover:text-[#075cde]"
                     }`}
                   >
-                    {category.label}
+                    <span className="sm:hidden">
+                      {category.key === "credit-card"
+                        ? "Cards"
+                        : category.key === "credit-bureau"
+                          ? "Bureau"
+                          : category.label}
+                    </span>
+                    <span className="hidden sm:inline">{category.label}</span>
                     <span
                       className={`rounded-full px-1.5 py-0.5 text-[10px] ${
                         isActive
@@ -233,7 +284,7 @@ export function TrustedPartnerBanksSection({
               viewAllHref ? (
                 <Link
                   href={viewAllHref}
-                  className="inline-flex h-10 items-center gap-1 rounded-xl px-2 text-[15px] font-semibold text-[#075cde] no-underline transition-colors hover:text-[#064cb8]"
+                  className="hidden h-10 items-center gap-1 rounded-xl px-2 text-[15px] font-semibold text-[#075cde] no-underline transition-colors hover:text-[#064cb8] lg:inline-flex"
                 >
                   View all Partners
                   <ArrowRight className="h-4 w-4" />
@@ -256,26 +307,29 @@ export function TrustedPartnerBanksSection({
           </div>
         </div>
 
-        <div className="mt-8">
+        <div className="mt-5 md:mt-8">
           {showAll || mode === "grid" ? (
             <PartnerGrid
               partners={displayedPartners}
               activeCategory={showAll ? "all" : activeCategory}
+              mobileScroller={mobileScroller && !showAll}
             />
           ) : (
             <div className="relative overflow-hidden rounded-2xl bg-white py-2">
-              <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-linear-to-r from-white via-white/80 to-transparent" />
-              <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-linear-to-l from-white via-white/80 to-transparent" />
-              <div className="flex flex-col gap-4">
+              <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-10 bg-linear-to-r from-white via-white/80 to-transparent md:w-24" />
+              <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-linear-to-l from-white via-white/80 to-transparent md:w-24" />
+              <div className="flex flex-col gap-3 md:gap-4">
                 <PartnerMarquee
                   partners={rows[0]}
                   activeCategory={activeCategory}
                 />
-                <PartnerMarquee
-                  partners={rows[1]}
-                  activeCategory={activeCategory}
-                  reverse
-                />
+                <div className="hidden sm:block">
+                  <PartnerMarquee
+                    partners={rows[1]}
+                    activeCategory={activeCategory}
+                    reverse
+                  />
+                </div>
               </div>
             </div>
           )}

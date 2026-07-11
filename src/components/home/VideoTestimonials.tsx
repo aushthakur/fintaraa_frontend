@@ -129,7 +129,7 @@ export function VideoTestimonials() {
   return (
     <section className="overflow-hidden select-none bg-white px-4 pt-12 md:px-6 lg:px-8">
       <div className="mx-auto max-w-9xl">
-        <div className="mb-2 flex items-start justify-between gap-4">
+        <div className="mb-2 flex items-center justify-between gap-4">
           <div className="max-w-2xl">
             <h2 className="text-[26px] font-extrabold tracking-tight text-[#111625] md:text-[32px]">
               Video Testimonials
@@ -141,7 +141,7 @@ export function VideoTestimonials() {
           </div>
           <Link
             href="/video-testimonials"
-            className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-xl bg-[#075cde] px-5 text-[13px] font-bold text-white no-underline transition hover:bg-[#064cb8]"
+            className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-xl bg-[#075cde] px-5 text-[13px] font-bold leading-none text-white no-underline transition hover:bg-[#064cb8]"
           >
             View All
             <ArrowRight className="h-4 w-4" />

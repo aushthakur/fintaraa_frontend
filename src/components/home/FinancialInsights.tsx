@@ -96,6 +96,14 @@ export function FinancialInsights() {
           </div>
 
           <div className="flex items-center gap-3">
+            <Link
+              href="/blog"
+              className="inline-flex h-9 shrink-0 items-center justify-center gap-1 rounded-lg bg-[#e9f2ff] px-3 text-[12px] font-extrabold leading-none text-[#075cde] no-underline transition hover:bg-[#d9eaff] md:h-11 md:gap-2 md:rounded-xl md:bg-[#075cde] md:px-5 md:text-[13px] md:text-white md:hover:bg-[#064cb8]"
+            >
+              <span className="hidden md:inline">View all blogs</span>
+              <span className="md:hidden">View</span>
+              <ArrowRight className="h-3.5 w-3.5 md:h-4 md:w-4" />
+            </Link>
             <button
               type="button"
               aria-label="Previous insights"
@@ -146,12 +154,6 @@ export function FinancialInsights() {
           ))}
         </Swiper>
 
-        <Link
-          href="/blog"
-          className="mx-auto mt-6 flex w-fit items-center gap-2 rounded-xl bg-[#075cde] px-6 py-3 text-[13px] font-extrabold text-white no-underline transition hover:bg-[#064cb8]"
-        >
-          View all blogs <ArrowRight className="h-4 w-4" />
-        </Link>
       </div>
     </section>
   );

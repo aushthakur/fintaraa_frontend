@@ -8,6 +8,7 @@ export function PartnersStrip() {
       description="Compare offers from 30+ verified banks, NBFCs and credit bureaus in one secure platform."
       viewAllHref="/partners/all"
       flushX
+      mobileScroller
     />
   );
 }

@@ -10,7 +10,7 @@ export function SectionHeader({
   action?: string;
 }) {
   return (
-    <div className="mb-5 flex items-end justify-between gap-4">
+    <div className="mb-5 flex items-center justify-between gap-4">
       <div>
         {eyebrow && (
           <p className="mb-1 text-[11px] font-semibold text-[#7a8494]">
@@ -24,7 +24,7 @@ export function SectionHeader({
       {action && (
         <Link
           href="/products"
-          className="shrink-0 text-[12px] font-bold text-[#09a34a] no-underline"
+          className="inline-flex h-9 shrink-0 items-center justify-center rounded-lg bg-[#e9f2ff] px-3 text-[12px] font-bold leading-none text-[#075cde] no-underline transition hover:bg-[#d9eaff] md:bg-transparent md:px-0"
         >
           {action}
         </Link>

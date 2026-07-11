@@ -277,17 +277,18 @@ export function MajorBankCreditCards() {
     <section className="bg-white px-4 py-10 md:px-6 lg:px-8">
       <div className="mx-auto max-w-9xl overflow-hidden rounded-2xl">
         <div className="pb-6">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <h2 className="max-w-3xl text-[24px] font-bold leading-tight tracking-tight text-gray-900 sm:text-[32px] md:text-[38px]">
+          <div className="flex items-center justify-between gap-3">
+            <h2 className="min-w-0 max-w-3xl flex-1 text-[22px] font-bold leading-tight tracking-tight text-gray-900 sm:text-[32px] md:text-[38px]">
               Find the Right Credit Card
               {/* <span className="text-[#075cde]">Top Banks</span> */}
             </h2>
             <Link
               href="/credit-cards"
-              className="inline-flex h-10 w-fit shrink-0 items-center justify-center gap-2 rounded-xl bg-[#075cde] px-5 text-[13px] font-bold text-white no-underline transition hover:bg-[#064cb8]"
+              className="inline-flex h-9 shrink-0 items-center justify-center gap-1 rounded-lg bg-[#e9f2ff] px-3 text-[12px] font-bold leading-none text-[#075cde] no-underline transition hover:bg-[#d9eaff] sm:h-10 sm:gap-2 sm:bg-[#075cde] sm:px-5 sm:text-[13px] sm:text-white sm:hover:bg-[#064cb8]"
             >
-              View All Cards
-              <ArrowRight className="h-4 w-4" />
+              <span className="hidden sm:inline">View All Cards</span>
+              <span className="sm:hidden">View</span>
+              <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             </Link>
           </div>
         </div>
