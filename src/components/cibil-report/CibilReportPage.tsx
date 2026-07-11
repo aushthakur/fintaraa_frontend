@@ -1,7 +1,14 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Loader2 } from "lucide-react";
+import Link from "next/link";
+import {
+  ArrowRight,
+  BellRing,
+  Database,
+  Loader2,
+  RefreshCcw,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { AppDownloadBanner } from "@/components/common/layout/Footer";
 import { getAuthToken, getAuthType } from "@/hooks/authStorage";
@@ -10,10 +17,13 @@ import { buildLoginRedirectHref } from "@/lib/loginRedirect";
 import { CibilEligibleOffers } from "./CibilEligibleOffers";
 import { CibilMonitoringTips } from "./CibilMonitoringTips";
 import { CibilReportCompare } from "./CibilReportCompare";
+import { CibilReportDetails } from "./CibilReportDetails";
 import { CibilReportHero } from "./CibilReportHero";
 import { CibilReportSocial } from "./CibilReportSocial";
 import {
+  type BureauScoreHistoryRecord,
   fetchUserCibil,
+  fetchUserCibilHistory,
   fetchUserCibilPdf,
   type UserCibilPdfResponse,
   type UserCibilResponse,
@@ -26,6 +36,9 @@ export function CibilReportPage() {
   const [authReady, setAuthReady] = useState(false);
   const [cibilData, setCibilData] = useState<UserCibilResponse | null>(null);
   const [pdfData, setPdfData] = useState<UserCibilPdfResponse | null>(null);
+  const [scoreHistory, setScoreHistory] = useState<
+    BureauScoreHistoryRecord[]
+  >([]);
   const [reportLoading, setReportLoading] = useState(false);
   const [reportError, setReportError] = useState("");
   const [pdfLoading, setPdfLoading] = useState(false);
@@ -64,8 +77,9 @@ export function CibilReportPage() {
         user: (user as Record<string, unknown> | null) || null,
         cibil: cibilData || userCibilSnapshot,
         pdf: pdfData,
+        history: scoreHistory,
       }),
-    [cibilData, pdfData, user, userCibilSnapshot],
+    [cibilData, pdfData, scoreHistory, user, userCibilSnapshot],
   );
 
   useEffect(() => {
@@ -91,26 +105,35 @@ export function CibilReportPage() {
   }, [router]);
 
   useEffect(() => {
-    if (!authReady) return;
+    if (!authReady || loading) return;
     let active = true;
 
     const loadReport = async () => {
       setReportLoading(true);
       setReportError("");
-      try {
-        const result = await fetchUserCibil(false);
-        if (!active) return;
-        setCibilData(result || userCibilSnapshot);
-      } catch (error) {
-        if (!active) return;
+      const from = new Date();
+      from.setFullYear(from.getFullYear() - 1);
+      const [reportResult, historyResult] = await Promise.allSettled([
+        fetchUserCibil(false, { silent: true }),
+        fetchUserCibilHistory({ from: from.toISOString(), limit: 50 }),
+      ]);
+      if (!active) return;
+
+      if (reportResult.status === "fulfilled") {
+        setCibilData(reportResult.value || userCibilSnapshot);
+      } else {
         if (userCibilSnapshot) setCibilData(userCibilSnapshot);
         setReportError(
-          (error as Error).message ||
-            "Unable to load your latest CIBIL report right now.",
+          reportResult.reason instanceof Error
+            ? reportResult.reason.message
+            : "Unable to load your latest CIBIL report right now.",
         );
-      } finally {
-        if (active) setReportLoading(false);
       }
+
+      if (historyResult.status === "fulfilled") {
+        setScoreHistory(historyResult.value?.result || []);
+      }
+      setReportLoading(false);
     };
 
     void loadReport();
@@ -118,14 +141,21 @@ export function CibilReportPage() {
     return () => {
       active = false;
     };
-  }, [authReady, userCibilSnapshot]);
+  }, [authReady, loading, userCibilSnapshot]);
 
   const handleRefreshReport = async () => {
     setReportLoading(true);
     setReportError("");
     try {
-      const result = await fetchUserCibil(true);
+      const result = await fetchUserCibil(true, { silent: true });
       setCibilData(result || null);
+      const from = new Date();
+      from.setFullYear(from.getFullYear() - 1);
+      const history = await fetchUserCibilHistory({
+        from: from.toISOString(),
+        limit: 50,
+      }).catch(() => null);
+      if (history) setScoreHistory(history.result || []);
     } catch (error) {
       setReportError(
         (error as Error).message ||
@@ -148,7 +178,7 @@ export function CibilReportPage() {
     setPdfLoading(true);
     setReportError("");
     try {
-      const result = await fetchUserCibilPdf();
+      const result = await fetchUserCibilPdf({ silent: true });
       setPdfData(result || null);
       const link = buildCibilReportData({
         user: (user as Record<string, unknown> | null) || null,
@@ -174,35 +204,89 @@ export function CibilReportPage() {
   if (!authReady || loading) {
     return (
       <main className="flex min-h-[60vh] items-center justify-center bg-white px-4">
-        <div className="flex items-center gap-2 rounded-full border border-[#dce9f7] px-5 py-3 text-[13px] font-bold text-[#195585]">
-          <Loader2 className="h-4 w-4 animate-spin" />
-          Loading your CIBIL report...
+        <div className="flex items-center gap-3 text-[13px] font-bold text-[#254e69]">
+          <span className="flex h-10 w-10 items-center justify-center rounded-md bg-[#e8f3fb] text-[#075cde]">
+            <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" />
+          </span>
+          Loading your saved CIBIL report...
         </div>
       </main>
     );
   }
 
+  const refreshDays = reportData.refreshAvailableInDays || 0;
+  const refreshLocked = refreshDays > 0;
+  const statusMessage = reportLoading
+    ? "Syncing your saved profile and latest bureau data."
+    : reportError
+      ? reportError.replace(/^[^A-Za-z0-9]+/, "")
+      : refreshLocked
+        ? `The next bureau refresh is available in ${refreshDays} day${
+            refreshDays === 1 ? "" : "s"
+          }.`
+        : cibilData?.message ||
+          "Your latest saved credit report is available in this dashboard.";
+
   return (
     <main className="bg-white">
-      {(reportLoading || reportError || cibilData?.message) && (
-        <section className="px-4 pt-5 md:px-6 lg:px-8">
-          <div className="mx-auto flex max-w-9xl flex-col gap-3 rounded border border-[#c7def3] bg-[#f8fbff] px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-[12px] font-bold text-[#005ca8]">
-              {reportLoading
-                ? "Fetching latest CIBIL data from backend..."
-                : reportError || cibilData?.message}
-            </p>
-            <button
-              type="button"
-              onClick={handleRefreshReport}
-              disabled={reportLoading}
-              className="inline-flex h-9 items-center justify-center rounded-full border border-[#13a653] px-4 text-[12px] font-extrabold text-[#13a653] disabled:cursor-not-allowed disabled:opacity-60"
+      <section className="bg-white px-4 py-5 md:px-6 lg:px-8">
+        <div
+          className={`mx-auto flex max-w-9xl flex-col gap-4 rounded-lg border px-4 py-3.5 sm:flex-row sm:items-center sm:justify-between ${
+            reportError
+              ? "border-[#efc8cc] bg-[#fff7f8]"
+              : "border-[#cbdfea] bg-[#f7fbfd]"
+          }`}
+          aria-live="polite"
+        >
+          <div className="flex min-w-0 items-start gap-3">
+            <span
+              className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-md ${
+                reportError
+                  ? "bg-[#ffe8ea] text-[#b4232d]"
+                  : "bg-[#e8f3fb] text-[#075cde]"
+              }`}
             >
-              {reportLoading ? "Refreshing..." : "Refresh Report"}
-            </button>
+              {reportLoading ? (
+                <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+              ) : (
+                <Database className="h-4 w-4" aria-hidden="true" />
+              )}
+            </span>
+            <div>
+              <p className="text-[12px] font-extrabold text-[#254e69]">
+                {reportLoading
+                  ? "Syncing credit report"
+                  : reportError
+                    ? "Saved profile fallback active"
+                    : reportData.sourceLabel}
+              </p>
+              <p className="mt-1 text-[10px] font-semibold leading-4 text-[#7890a2] sm:text-[11px]">
+                {statusMessage}
+                {reportData.lastConsentLabel
+                  ? ` Consent recorded ${reportData.lastConsentLabel}.`
+                  : ""}
+              </p>
+            </div>
           </div>
-        </section>
-      )}
+          <button
+            type="button"
+            onClick={handleRefreshReport}
+            disabled={reportLoading || refreshLocked}
+            className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-md border border-[#a8cbdc] bg-white px-4 text-[11px] font-extrabold text-[#075cde] transition-colors hover:border-[#075cde] disabled:cursor-not-allowed disabled:text-[#8ca0af]"
+          >
+            <RefreshCcw
+              className={`h-4 w-4 ${reportLoading ? "animate-spin" : ""}`}
+              aria-hidden="true"
+            />
+            {reportLoading
+              ? "Syncing..."
+              : refreshLocked
+                ? `Refresh in ${refreshDays} day${refreshDays === 1 ? "" : "s"}`
+                : "Refresh report"}
+          </button>
+        </div>
+      </section>
+
       <CibilReportHero
         data={reportData}
         downloadingReport={pdfLoading}
@@ -214,93 +298,37 @@ export function CibilReportPage() {
         onDownloadReport={handleDownloadReport}
       />
       <CibilEligibleOffers score={reportData.score} />
-      <section className="px-4 py-6 md:px-6 lg:px-8">
-        <div className="mx-auto grid max-w-9xl gap-5">
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {reportData.detailMetrics.map((item) => (
-              <div
-                key={item.label}
-                className="rounded border border-[#c7def3] bg-white px-4 py-4 shadow-[0_8px_24px_rgba(16,24,40,0.04)]"
-              >
-                <div className="flex items-start gap-3">
-                  <span className="text-[22px]">{item.icon}</span>
-                  <div>
-                    <p className="text-[12px] font-extrabold text-[#005ca8]">
-                      {item.label}
-                    </p>
-                    <p className="mt-1 text-[20px] font-extrabold text-[#1f2937]">
-                      {item.value}
-                    </p>
-                    <p className="mt-1 text-[11px] font-semibold text-[#98a2b3]">
-                      {item.subLabel}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+      <CibilReportDetails data={reportData} />
 
-          <div className="grid gap-4 lg:grid-cols-3">
-            {reportData.detailSections.map((section) => (
-              <div
-                key={section.title}
-                className="rounded border border-[#c7def3] bg-[#f8fbff] p-4"
-              >
-                <h3 className="text-[14px] font-extrabold text-[#1f2937]">
-                  {section.title}
-                </h3>
-                <div className="mt-3 grid gap-2">
-                  {(section.rows.length
-                    ? section.rows
-                    : [{ label: "Status", value: "No data reported yet" }]
-                  ).map((row) => (
-                    <div
-                      key={`${section.title}-${row.label}-${row.value}`}
-                      className="flex items-start justify-between gap-3 rounded bg-white px-3 py-2 text-[12px]"
-                    >
-                      <span className="font-bold text-[#667085]">
-                        {row.label}
-                      </span>
-                      <span className="text-right font-semibold text-[#1f2937]">
-                        {row.value}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
+      <section className="border-y border-[#dce9f1] bg-[#f4f9fc] px-4 py-6 md:px-6 lg:px-8">
+        <div className="mx-auto flex max-w-9xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-start gap-3">
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-[#e8f3fb] text-[#075cde]">
+              <BellRing className="h-4 w-4" aria-hidden="true" />
+            </span>
+            <div>
+              <p className="text-[12px] font-extrabold text-[#254e69]">
+                Credit profile alerts
+              </p>
+              <p className="mt-1 text-[11px] font-semibold leading-5 text-[#7890a2]">
+                Report and application updates are sent using your saved communication preferences.
+              </p>
+            </div>
           </div>
-
-          <div className="rounded border border-[#c7def3] bg-white p-4">
-            <h3 className="text-[14px] font-extrabold text-[#1f2937]">
-              Recommendations
-            </h3>
-            <ul className="mt-3 grid gap-2 text-[12px] font-semibold leading-5 text-[#667085]">
-              {reportData.recommendations.map((item) => (
-                <li key={item} className="rounded bg-[#f8fbff] px-3 py-2">
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </section>
-      <section className="px-4 py-6 md:px-6 lg:px-8">
-        <div className="mx-auto max-w-9xl rounded border border-[#c7def3] bg-[#e8f4ff] px-4 sm:px-5 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-          <p className="text-[12px] font-semibold text-[#005ca8]">
-            You will receive alerts when your credit report changes.
-          </p>
-          <a
+          <Link
             href="/support"
-            className="rounded-full border border-[#13a653] px-6 py-2 text-[12px] font-extrabold text-[#13a653] whitespace-nowrap self-start sm:self-center"
+            className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-md border border-[#a8cbdc] bg-white px-4 text-[11px] font-extrabold text-[#075cde] no-underline transition-colors hover:border-[#075cde]"
           >
-            Need help? Contact Support
-          </a>
+            Contact support
+            <ArrowRight className="h-4 w-4" aria-hidden="true" />
+          </Link>
         </div>
       </section>
+
       <CibilMonitoringTips
         history={reportData.scoreHistory}
         improvementPoints={reportData.improvementPoints}
+        recommendations={reportData.recommendations}
       />
       <CibilReportSocial />
       <AppDownloadBanner />

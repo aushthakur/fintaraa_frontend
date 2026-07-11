@@ -1,164 +1,245 @@
-import Image from "next/image";
+"use client";
+
 import Link from "next/link";
-import { AuthRedirectLink } from "@/components/auth/AuthRedirectLink";
-import { getApplyHref } from "@/components/application/flowRegistry";
-import { slugifyProduct } from "@/lib/productRouting";
+import { useEffect, useMemo, useState } from "react";
+import { motion, MotionConfig } from "framer-motion";
+import type { LucideIcon } from "lucide-react";
+import {
+  ArrowRight,
+  BadgeCheck,
+  CreditCard,
+  Landmark,
+  Loader2,
+  ShieldCheck,
+  Sparkles,
+} from "lucide-react";
+import {
+  fetchEligibleOffers,
+  type OfferRecord,
+} from "@/services/offers";
 
-const loanOffers = [
-  {
-    bankName: "HDFC Bank",
-    subtitle: "Personal Loan",
-    logo: "/assets/banks/hdfc.png",
-    amount: "Up to ₹40 Lakh",
-    interestRate: "10.49%",
-  },
-  {
-    bankName: "ICICI Bank",
-    subtitle: "Personal Loan",
-    logo: "/assets/banks/icici.png",
-    amount: "Up to ₹35 Lakh",
-    interestRate: "10.65%",
-  },
-  {
-    bankName: "Kotak",
-    subtitle: "Personal Loan",
-    logo: "/assets/banks/kotak.png",
-    amount: "Up to ₹30 Lakh",
-    interestRate: "11.25%",
-  },
-];
+type OfferCategory = "all" | "loan" | "card" | "insurance";
 
-export function CibilEligibleOffers({ score = 782 }: { score?: number }) {
+const categoryLabels: Record<OfferCategory, string> = {
+  all: "All matches",
+  loan: "Loans",
+  card: "Credit cards",
+  insurance: "Insurance",
+};
+
+const categoryIcons: Record<Exclude<OfferCategory, "all">, LucideIcon> = {
+  loan: Landmark,
+  card: CreditCard,
+  insurance: ShieldCheck,
+};
+
+const categoryTone: Record<Exclude<OfferCategory, "all">, string> = {
+  loan: "bg-[#e8f3fb] text-[#075cde]",
+  card: "bg-[#f0ecff] text-[#6548c7]",
+  insurance: "bg-[#e9f8ef] text-[#168447]",
+};
+
+export function CibilEligibleOffers({ score = 0 }: { score?: number }) {
+  const [offers, setOffers] = useState<OfferRecord[]>([]);
+  const [category, setCategory] = useState<OfferCategory>("all");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    let active = true;
+    const load = async () => {
+      try {
+        const result = await fetchEligibleOffers();
+        if (active) setOffers(result.offers || []);
+      } catch (loadError) {
+        if (active) {
+          setError(
+            loadError instanceof Error
+              ? loadError.message
+              : "Unable to load profile-matched offers.",
+          );
+        }
+      } finally {
+        if (active) setLoading(false);
+      }
+    };
+    void load();
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const availableCategories = useMemo(() => {
+    const found = new Set(
+      offers
+        .map((offer) => offer.productCategory)
+        .filter(Boolean) as Array<Exclude<OfferCategory, "all">>,
+    );
+    return (["all", "loan", "card", "insurance"] as OfferCategory[]).filter(
+      (item) => item === "all" || found.has(item),
+    );
+  }, [offers]);
+
+  const visibleOffers = useMemo(
+    () =>
+      offers
+        .filter(
+          (offer) =>
+            category === "all" || offer.productCategory === category,
+        )
+        .slice(0, 4),
+    [category, offers],
+  );
+
   return (
-    <section className="bg-[#f7faff] px-4 py-10 md:px-6 lg:px-8  font-sans">
-      <div className="mx-auto w-full max-w-9xl">
-        
-        {/* Top Header Section */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-          <div>
-            <h2 className="text-[22px] sm:text-[28px] font-bold text-[#2d3142]">
-              Loans You Are Eligible For
-            </h2>
-            <p className="mt-1 text-[15px] text-[#7c8293]">
-              Based on your CIBIL Score of{" "}
-              <span className="font-semibold text-[#4a5060]">{score}</span>
-            </p>
-          </div>
-          
-          <div className="flex items-center gap-4 self-start sm:self-center">
-           
-            <div className="bg-white border border-[#e2e8f0] text-[#13a653] font-medium text-[13px] px-4 py-2 rounded-md shadow-sm">
-              High Approval Chances
-            </div>
-          </div>
-        </div>
-
-        {/* Tab Navigation Headers */}
-        <div className="mb-4 flex gap-8 border-b border-[#dce4ec] pb-0 overflow-x-auto md:gap-12">
-          <button className="text-[#005ca8] font-bold text-[14px] md:text-[15px] pb-3 border-b-4 border-[#005ca8] whitespace-nowrap">
-            Personal Loan
-          </button>
-          <button className="text-[#005ca8] font-medium text-[14px] md:text-[15px] pb-3 whitespace-nowrap opacity-80 hover:opacity-100">
-            Home Loan
-          </button>
-          <button className="text-[#005ca8] font-medium text-[14px] md:text-[15px] pb-3 whitespace-nowrap opacity-80 hover:opacity-100">
-            Car Loan
-          </button>
-          <button className="text-[#005ca8] font-medium text-[14px] md:text-[15px] pb-3 whitespace-nowrap opacity-80 hover:opacity-100">
-            Credit Card
-          </button>
-        </div>
-
-        {/* Offer Rows Container */}
-        <div className="divide-y divide-[#e5eaf0] rounded-lg">
-          {loanOffers.map((offer) => {
-            const applyHref = getApplyHref({
-              category: "loan",
-              productSlug: "personal-loan",
-              bankSlug: slugifyProduct(offer.bankName),
-              referrer: "/cibil-score/report",
-            });
-
-            return (
-            <div 
-              key={offer.bankName} 
-              className="grid grid-cols-1 sm:grid-cols-4 items-center gap-4 p-5 sm:p-6 text-left"
-            >
-              {/* Column 1: Bank Brand Identity */}
-              <div className="flex flex-col gap-1">
-                <div className="relative w-28 h-8">
-                  <Image
-                    src={offer.logo}
-                    alt={offer.bankName}
-                    fill
-                    sizes="112px"
-                    className="object-contain object-left"
-                  />
-                </div>
-                <span className="text-[12px] text-[#7c8293] font-medium mt-0.5">
-                  {offer.subtitle}
-                </span>
-              </div>
-
-              {/* Column 2: Loan Value Limit */}
-              <div className="text-[14px] font-bold text-[#2d3142] sm:text-left">
-                {offer.amount}
-              </div>
-
-              {/* Column 3: Rate Info */}
-              <div className="text-[13px] text-[#7c8293]">
-                <div className="text-[12px] text-[#9099a8]">Interest Rate</div>
-                <div>
-                  <span className="font-bold text-[#2d3142] text-[14px]">{offer.interestRate}</span>
-                  <span className="text-[12px] text-[#667085] ml-1">p.a. onwards</span>
-                </div>
-              </div>
-
-              {/* Column 4: CTAs */}
-              <div className="sm:text-right">
-                <AuthRedirectLink
-                  href={applyHref}
-                  productSlug="personal-loan"
-                  className="inline-flex items-center justify-center rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] hover:brightness-110 transition-all w-full sm:w-auto px-6 py-2.5 text-[13px] font-bold text-white tracking-wide whitespace-nowrap"
-                >
-                  Apply Now <span className="ml-2">→</span>
-                </AuthRedirectLink>
-              </div>
-            </div>
-            );
-          })}
-        </div>
-
-        {/* View More Trigger */}
-        <div className="mt-5 text-center">
-          <Link 
-            href="/products" 
-            className="inline-flex items-center gap-1.5 text-[13px] font-bold text-[#005ca8] hover:underline"
+    <MotionConfig reducedMotion="user">
+      <section className="border-y border-[#dce9f1] bg-[#f4f9fc] px-4 py-10 md:px-6 md:py-12 lg:px-8">
+        <div className="mx-auto max-w-9xl">
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between"
           >
-            View more loan offers 
-            <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg" className="mt-0.5">
-              <path d="M1 1L5 5L9 1" stroke="#005ca8" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </Link>
-        </div>
-
-        {/* Bottom Alert/Help Banner Section */}
-        <div className="mt-8 flex flex-col items-start justify-between gap-4 rounded-xl border border-[#d6e6f7] bg-[#eef6ff] p-4 sm:flex-row sm:items-center">
-          <div className="flex items-start gap-3">
-            {/* Informational Blue Circle Icon */}
-            <div className="mt-0.5 shrink-0 w-4 h-4 rounded-full border border-[#005ca8] text-[#005ca8] flex items-center justify-center text-[10px] font-bold">
-              i
+            <div>
+              <p className="inline-flex items-center gap-2 text-[12px] font-extrabold text-[#075cde]">
+                <Sparkles className="h-4 w-4" aria-hidden="true" />
+                Profile-based matching
+              </p>
+              <h2 className="mt-3 text-[26px] font-extrabold leading-tight text-[#102f49] sm:text-[30px]">
+                Offers matched to your credit profile
+              </h2>
+              <p className="mt-2 text-[14px] font-medium text-[#667f91]">
+                Based on your saved CIBIL score of{" "}
+                <span className="font-extrabold text-[#254e69]">
+                  {score || "not available"}
+                </span>
+                . Final eligibility remains subject to lender assessment.
+              </p>
             </div>
-            <p className="text-[12px] md:text-[13px] text-[#42526e] leading-normal font-medium">
-              You will receive SMS, WhatsApp & push notifications on your registered mobile number at every status update.
-            </p>
-          </div>
-          <button className="shrink-0 bg-white border border-[#0fae5e] text-[#0fae5e] hover:bg-[#f3faf6] transition-colors font-medium text-[13px] px-5 py-2 rounded-full shadow-xs">
-            Need help? Contact Support
-          </button>
-        </div>
 
-      </div>
-    </section>
+            {availableCategories.length > 1 ? (
+              <div className="flex max-w-full gap-2 overflow-x-auto pb-1">
+                {availableCategories.map((item) => (
+                  <button
+                    key={item}
+                    type="button"
+                    onClick={() => setCategory(item)}
+                    className={`h-10 shrink-0 rounded-md border px-3.5 text-[11px] font-extrabold transition-colors ${
+                      category === item
+                        ? "border-[#075cde] bg-[#075cde] text-white"
+                        : "border-[#cbdde8] bg-white text-[#526e82] hover:border-[#8ebbd3] hover:text-[#075cde]"
+                    }`}
+                  >
+                    {categoryLabels[item]}
+                  </button>
+                ))}
+              </div>
+            ) : null}
+          </motion.div>
+
+          <div className="mt-6 overflow-hidden rounded-lg border border-[#cddfe9] bg-white">
+            {loading ? (
+              <div className="flex min-h-44 items-center justify-center gap-2 text-[12px] font-bold text-[#526e82]">
+                <Loader2 className="h-4 w-4 animate-spin text-[#075cde]" aria-hidden="true" />
+                Matching offers with your profile...
+              </div>
+            ) : visibleOffers.length ? (
+              <div className="divide-y divide-[#e2ebf1]">
+                {visibleOffers.map((offer, index) => {
+                  const offerCategory = (offer.productCategory ||
+                    "loan") as Exclude<OfferCategory, "all">;
+                  const Icon = categoryIcons[offerCategory] || Landmark;
+                  return (
+                    <motion.article
+                      key={offer._id}
+                      initial={{ opacity: 0, y: 10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, amount: 0.2 }}
+                      transition={{ duration: 0.35, delay: index * 0.05 }}
+                      className="grid gap-4 p-4 sm:p-5 lg:grid-cols-[minmax(0,1.35fr)_minmax(150px,0.55fr)_minmax(150px,0.55fr)_auto] lg:items-center"
+                    >
+                      <div className="flex min-w-0 items-start gap-3">
+                        <span
+                          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-md ${categoryTone[offerCategory] || categoryTone.loan}`}
+                        >
+                          <Icon className="h-5 w-5" aria-hidden="true" />
+                        </span>
+                        <div className="min-w-0">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <p className="text-[11px] font-extrabold text-[#075cde]">
+                              {offer.lenderName || "Fintaraa partner"}
+                            </p>
+                            {offer.badge ? (
+                              <span className="rounded-md bg-[#edf6fc] px-2 py-0.5 text-[9px] font-extrabold text-[#526e82]">
+                                {offer.badge}
+                              </span>
+                            ) : null}
+                          </div>
+                          <h3 className="mt-1 text-[15px] font-extrabold leading-5 text-[#102f49]">
+                            {offer.title}
+                          </h3>
+                          <p className="mt-1 line-clamp-2 text-[11px] font-medium leading-5 text-[#7890a2]">
+                            {offer.description ||
+                              "Review the current partner terms before applying."}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div>
+                        <p className="text-[9px] font-bold uppercase text-[#8ca0af]">
+                          Offer value
+                        </p>
+                        <p className="mt-1 text-[13px] font-extrabold text-[#254e69]">
+                          {offer.amountLabel || "Flexible value"}
+                        </p>
+                      </div>
+
+                      <div>
+                        <p className="text-[9px] font-bold uppercase text-[#8ca0af]">
+                          Rate or benefit
+                        </p>
+                        <p className="mt-1 text-[13px] font-extrabold text-[#254e69]">
+                          {offer.rateLabel || "Partner terms"}
+                        </p>
+                      </div>
+
+                      <Link
+                        href="/offers"
+                        className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-[#075cde] px-4 text-[11px] font-extrabold text-white no-underline transition-colors hover:bg-[#064cb8]"
+                      >
+                        Review offer
+                        <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                      </Link>
+                    </motion.article>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="flex min-h-48 flex-col items-center justify-center px-5 py-8 text-center">
+                <span className="flex h-11 w-11 items-center justify-center rounded-md bg-[#e8f3fb] text-[#075cde]">
+                  <BadgeCheck className="h-5 w-5" aria-hidden="true" />
+                </span>
+                <h3 className="mt-3 text-[15px] font-extrabold text-[#102f49]">
+                  No profile-matched offers available yet
+                </h3>
+                <p className="mt-2 max-w-lg text-[11px] font-medium leading-5 text-[#7890a2]">
+                  {error ||
+                    "New lender campaigns will appear here automatically when they match your profile."}
+                </p>
+                <Link
+                  href="/products"
+                  className="mt-4 inline-flex items-center gap-2 text-[11px] font-extrabold text-[#075cde] no-underline"
+                >
+                  Browse all products
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </Link>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+    </MotionConfig>
   );
 }

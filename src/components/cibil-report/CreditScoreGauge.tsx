@@ -26,6 +26,7 @@ const MAX_SCORE = 900;
 const RADIAN = Math.PI / 180;
 
 const getRating = (score: number) => {
+  if (!score) return { label: "Not fetched", color: "#667085" };
   if (score < 580) return { label: "Poor", color: "#ef4444" };
   if (score < 670) return { label: "Fair", color: "#f59e0b" };
   if (score < 740) return { label: "Good", color: "#3b82f6" };
@@ -206,7 +207,7 @@ const CreditScoreGauge: React.FC<CreditScoreGaugeProps> = ({
           fontWeight={900}
           fill="#111827"
         >
-          {score}
+          {score > 0 ? score : "—"}
         </Text>
 
         <Text

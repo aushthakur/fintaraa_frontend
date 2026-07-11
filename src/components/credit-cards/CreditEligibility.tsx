@@ -13,7 +13,7 @@ export function CreditEligibility() {
         {/* Left Column: Heading, Value Props & Illustration */}
         <div className="flex flex-col justify-between h-full">
           <div>
-            <h2 className="text-[36px] md:text-[44px] font-bold leading-[1.15] text-[#005ca8] tracking-tight">
+            <h2 className="text-[30px] font-bold leading-[1.16] text-[#005ca8] md:text-[38px]">
               Check your <br />
               <span className="text-[#05437a]">credit card eligibility</span>
             </h2>

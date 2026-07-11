@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { motion } from "framer-motion";
 import {
   BriefcaseBusiness,
   Gift,
@@ -48,9 +49,14 @@ export function CreditCardsHero() {
       </div>
       <div className="mx-auto grid max-w-9xl gap-4 md:grid-cols-[1.3fr_0.7fr] md:items-center">
         {/* LEFT CONTAINER: HERO COPY */}
-        <div className="relative z-10 flex flex-col justify-start ps-0 sm:ps-10 mt-4 sm:mt-10 lg:pt-4">
+        <motion.div
+          initial={{ opacity: 0.95, x: -16 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+          className="relative z-10 mt-4 flex flex-col justify-start ps-0 sm:mt-10 sm:ps-10 lg:pt-4"
+        >
           <div className="relative max-w-2xl">
-            <div className="absolute h-24 w-56 rotate-12  md:rotate-0 sm:h-36 sm:w-64 -left-2 sm:-left-16 md:-left-18 -top-4 md:-top-16">
+            <div className="absolute -left-1 -top-6 h-20 w-36 sm:-left-16 sm:-top-16 sm:h-36 sm:w-64 md:-left-18">
               <Image
                 src="/assets/images/credit-gauge.png"
                 alt="Credit Score Meter Gauge"
@@ -60,7 +66,7 @@ export function CreditCardsHero() {
                 className="object-contain object-left"
               />
             </div>
-            <h1 className="max-w-2xl text-3xl mt-8 md:mt-10 font-extrabold leading-[1.15] tracking-tight text-[#111625] sm:text-5xl md:text-6xl">
+            <h1 className="mt-14 max-w-2xl text-[32px] font-extrabold leading-[1.14] text-[#111625] sm:mt-10 sm:text-[40px] lg:text-[48px]">
               Find the Best Credit
               <span className="block text-[#005ca8]">
                 Cards for Your Lifestyle
@@ -79,9 +85,18 @@ export function CreditCardsHero() {
               <Gift className="h-4 w-4" />
             </AuthRedirectLink>
           </div>
-        </div>
+        </motion.div>
 
-        <div className="relative mx-auto w-full max-w-100 md:mx-0">
+        <motion.div
+          initial={{ opacity: 0.95, x: 16 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{
+            duration: 0.65,
+            delay: 0.08,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+          className="relative mx-auto w-full max-w-100 md:mx-0"
+        >
           <div className="absolute inset-0 block translate-x-2 translate-y-2 rounded-[18px] bg-[#00529c] sm:translate-x-3 sm:translate-y-3" />
 
           <div className="relative rounded-[18px] border border-[#d9dfe8] bg-white p-5 shadow-[0_10px_26px_rgba(0,92,168,0.12)] sm:p-6">
@@ -181,7 +196,7 @@ export function CreditCardsHero() {
               100% secure. Soft check only, no impact on credit score.
             </p>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

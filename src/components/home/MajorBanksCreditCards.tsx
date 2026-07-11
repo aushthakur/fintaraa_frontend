@@ -278,7 +278,7 @@ export function MajorBankCreditCards() {
       <div className="mx-auto max-w-9xl overflow-hidden rounded-2xl">
         <div className="pb-6">
           <div className="flex items-center justify-between gap-3">
-            <h2 className="min-w-0 max-w-3xl flex-1 text-[22px] font-bold leading-tight tracking-tight text-gray-900 sm:text-[32px] md:text-[38px]">
+            <h2 className="min-w-0 max-w-3xl flex-1 text-[22px] font-bold leading-tight text-gray-900 sm:text-[30px] md:text-[34px]">
               Find the Right Credit Card
               {/* <span className="text-[#075cde]">Top Banks</span> */}
             </h2>

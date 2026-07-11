@@ -22,7 +22,7 @@ export function CreditScoreBanner() {
                 <Zap className="h-4 w-4" />
                 100% free - instant results
               </span>
-              <h2 className="mt-4 max-w-2xl text-[30px] font-bold leading-tight tracking-tight text-[#07162d] sm:text-[40px]">
+              <h2 className="mt-4 max-w-2xl text-[28px] font-bold leading-tight text-[#07162d] sm:text-[36px]">
                 Check Your Credit Score in Minutes with{" "}
                 <span className="text-[#075cde]">Fintaraa</span>
               </h2>

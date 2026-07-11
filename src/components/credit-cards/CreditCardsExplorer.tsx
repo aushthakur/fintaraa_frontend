@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { motion } from "framer-motion";
 import {
   CheckCircle2,
   ChevronDown,
@@ -695,13 +696,22 @@ export function CreditCardsExplorer({
               <CardsSkeleton />
             ) : filteredCards.length ? (
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                {filteredCards.map((card) => {
+                {filteredCards.map((card, cardIndex) => {
                   const cardId = getCardId(card);
                   const benefits = getCardBenefits(card);
                   const tags = getCardTags(card);
                   return (
-                    <article
+                    <motion.article
                       key={cardId || card.name}
+                      initial={{ opacity: 0.96, y: 14 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      whileHover={{ y: -4 }}
+                      viewport={{ once: true, amount: 0.12 }}
+                      transition={{
+                        duration: 0.45,
+                        delay: Math.min(cardIndex * 0.035, 0.18),
+                        ease: [0.22, 1, 0.36, 1],
+                      }}
                       className="flex flex-col justify-between rounded-2xl border border-[#e2edf6] bg-white p-4 shadow-xs transition-shadow hover:shadow-sm"
                     >
                       <div>
@@ -840,7 +850,7 @@ export function CreditCardsExplorer({
                           </button>
                         </div>
                       </div>
-                    </article>
+                    </motion.article>
                   );
                 })}
               </div>

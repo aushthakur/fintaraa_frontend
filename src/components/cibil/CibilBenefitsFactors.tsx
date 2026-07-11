@@ -1,166 +1,319 @@
 "use client";
 
-import React from "react";
-import { ChartNoAxesCombined, CreditCard, ShieldCheck } from "lucide-react";
-import { History, BarChart3, LineChart, FileText } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { motion, MotionConfig } from "framer-motion";
+import {
+  ArrowRight,
+  BarChart3,
+  ChartNoAxesCombined,
+  CreditCard,
+  FileText,
+  History,
+  Landmark,
+  LineChart,
+  ShieldCheck,
+  Target,
+  TrendingUp,
+} from "lucide-react";
 
 const factors = [
   {
-    title: "Payment History",
-    desc: "Paying your EMIs and bills on time helps improve your CIBIL score",
+    title: "Payment history",
+    desc: "Consistent EMI and card-bill payments support a healthier repayment record.",
     icon: History,
+    color: "text-[#075cde]",
+    surface: "bg-[#e7f2ff]",
   },
   {
-    title: "Credit Utilization",
-    desc: "Using only a small part of your credit limit shows responsible usage.",
+    title: "Credit utilisation",
+    desc: "Using a smaller share of your available revolving limit signals controlled usage.",
     icon: CreditCard,
+    color: "text-[#07845e]",
+    surface: "bg-[#edf9f3]",
   },
   {
-    title: "Credit Age",
-    desc: "Older credit accounts help build a stronger credit history.",
+    title: "Credit age",
+    desc: "Older, well-managed accounts help establish a longer borrowing track record.",
     icon: BarChart3,
+    color: "text-[#9a6700]",
+    surface: "bg-[#fff8e5]",
   },
   {
-    title: "Credit Mix",
-    desc: "A healthy mix of loans and credit cards can improve your score.",
+    title: "Credit mix",
+    desc: "A balanced record across secured and unsecured credit can strengthen the profile.",
     icon: LineChart,
+    color: "text-[#7c4bc1]",
+    surface: "bg-[#f5efff]",
   },
   {
-    title: "Credit Enquiries",
-    desc: "Too many loan or card applications in a short time can lower your score.",
+    title: "Credit enquiries",
+    desc: "Several applications in a short period can indicate elevated credit dependence.",
     icon: FileText,
+    color: "text-[#c44732]",
+    surface: "bg-[#fff1ed]",
   },
 ];
 
 const benefits = [
   {
-    title: "Know Your Credit Health",
-    text: "Understand your credit worthiness",
+    number: "01",
+    title: "Know your credit health",
+    text: "See where your current credit profile stands before applying.",
+    icon: Target,
+    color: "text-[#075cde]",
+    surface: "bg-[#e7f2ff]",
+  },
+  {
+    number: "02",
+    title: "Plan loan eligibility",
+    text: "Use the score as one input while preparing for a loan application.",
+    icon: Landmark,
+    color: "text-[#07845e]",
+    surface: "bg-[#edf9f3]",
+  },
+  {
+    number: "03",
+    title: "Review credit access",
+    text: "Understand how lenders may view your card and borrowing profile.",
     icon: CreditCard,
+    color: "text-[#9a6700]",
+    surface: "bg-[#fff8e5]",
   },
   {
-    title: "Better Loan Eligibility",
-    text: "Improve chances of loan approval",
-    icon: ShieldCheck, // Custom stamp-style visual to match image_9eb7ab.png
-  },
-  {
-    title: "Higher Credit Limits",
-    text: "Get better credit card offers",
-    icon: CreditCard,
-  },
-  {
-    title: "Financial Planning",
-    text: "Plan your finances better",
+    number: "04",
+    title: "Track financial progress",
+    text: "Monitor changes over time and identify areas that need attention.",
     icon: ChartNoAxesCombined,
+    color: "text-[#7c4bc1]",
+    surface: "bg-[#f5efff]",
   },
 ];
 
 export function CibilBenefitsFactors() {
   return (
-    <>
-      {/* SECTION 1: Why Check Your CIBIL Score? (image_9eb7ab.png) */}
-      <section className="w-full select-none bg-[#00529c] px-4 py-10 text-white md:px-6 md:py-14 lg:px-8">
+    <MotionConfig reducedMotion="user">
+      <section className="w-full bg-[#eef7fc] px-4 py-14 md:px-6 md:py-20 lg:px-8">
         <div className="mx-auto max-w-9xl">
-          {/* Main Underlined Section Heading Stack */}
-          <div className="flex flex-col items-start">
-            <h2 className="relative inline-block pb-2 text-[22px] font-bold tracking-tight text-white sm:text-[28px] md:text-[34px]">
-              Why Check Your CIBIL Score?
-              {/* White accent bottom rule highlight */}
-              <div className="absolute bottom-0 left-0 h-[2.5px] w-full rounded-full bg-white opacity-90" />
-            </h2>
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,0.95fr)_minmax(360px,0.65fr)] lg:items-end lg:gap-16">
+            <motion.div
+              initial={{ opacity: 0.95, x: -14 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <p className="flex items-center gap-2 text-[11px] font-bold uppercase text-[#075cde]">
+                <TrendingUp className="h-4 w-4" aria-hidden="true" />
+                Credit awareness
+              </p>
+              <h2 className="mt-3 max-w-2xl text-[28px] font-bold leading-[1.16] text-[#102f49] sm:text-[34px]">
+                Why check your CIBIL score?
+              </h2>
+              <p className="mt-4 max-w-2xl text-[14px] font-medium leading-7 text-[#587287] md:text-[15px]">
+                Regular monitoring gives you a clearer view of your credit health
+                before an important loan or credit-card decision.
+              </p>
+            </motion.div>
 
-            <p className="mt-3 max-w-xl text-[13px] font-normal leading-6 text-white/85 md:text-[15px]">
-              Checking your score regularly helps you stay financially healthy
-              and get the best offers.
-            </p>
+            <motion.div
+              initial={{ opacity: 0.95, x: 14 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              className="flex items-center gap-5 border-y border-[#c7dfec] py-5"
+            >
+              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-white text-[#07845e]">
+                <ShieldCheck className="h-6 w-6" aria-hidden="true" />
+              </span>
+              <div>
+                <p className="text-[14px] font-bold text-[#103e60]">
+                  Checking does not lower your score
+                </p>
+                <p className="mt-1 text-[12px] font-medium leading-5 text-[#60798c]">
+                  Viewing your own report is treated differently from a lender&apos;s
+                  hard credit enquiry.
+                </p>
+              </div>
+            </motion.div>
           </div>
 
-          {/* Premium White Content Cards Layout Grid */}
-          <div className="mt-7 grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-4 lg:grid-cols-4">
-            {benefits.map(({ title, text, icon: Icon }) => (
-              <article
-                key={title}
-                className="flex h-full min-w-0 items-start gap-3 rounded-xl bg-white p-4 shadow-[0_4px_25px_rgba(0,0,0,0.02)] transition-transform duration-200 hover:scale-[1.01] sm:p-5 lg:flex-col lg:gap-0"
-              >
-                {/* Embedded Soft-Colored Icon Box Container */}
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#e8f4ff] text-[#00529c] lg:h-11 lg:w-11">
-                  <Icon className="h-4.5 w-4.5 stroke-[1.8] lg:h-5 lg:w-5" />
-                </div>
-
-                {/* Card Context Data Details Group */}
-                <div className="min-w-0 lg:mt-5">
-                  <h3 className="wrap-break-word text-[14px] font-bold leading-tight tracking-tight text-gray-900 md:text-[15px] lg:text-[16px]">
-                    {title}
-                  </h3>
-                  <p className="mt-1.5 text-[12px] font-medium leading-5 text-gray-500 md:text-[13px]">
-                    {text}
-                  </p>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION 2: What Affects Your CIBIL Score? (image_9eb010.png) */}
-      <section className="w-full select-none bg-white px-4 py-10 md:px-6 md:py-12 lg:px-8">
-        <div className="mx-auto max-w-9xl">
-          {/* Section Heading Group Layout */}
-          <div className="mb-7 flex flex-col items-start text-left md:mb-9">
-            <h2 className="text-[22px] font-bold tracking-tight text-[#222222] sm:text-[30px]">
-              What affects your Score?
-            </h2>
-            <p className="mt-2 max-w-xl text-[13px] font-medium leading-6 text-gray-500 md:text-[14px]">
-              Understand the key factors that shape your CIBIL score.
-            </p>
-          </div>
-
-          {/* Dynamic Card Matrix Grid matching image_9eb010.png */}
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-            {factors.map((item) => {
-              const IconComponent = item.icon;
+          <div className="mt-10 grid border-y border-[#c7dfec] sm:grid-cols-2 lg:grid-cols-4">
+            {benefits.map((item, index) => {
+              const Icon = item.icon;
               return (
-                <article
+                <motion.article
                   key={item.title}
-                  className="flex h-full min-w-0 items-start gap-3 rounded-xl border border-gray-200/80 bg-white p-4 text-left shadow-[0_2px_12px_rgba(0,0,0,0.005)] xl:flex-col xl:gap-0"
+                  initial={{ opacity: 0.95, y: 14 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.35 }}
+                  transition={{
+                    duration: 0.48,
+                    delay: index * 0.05,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                  className={`grid min-w-0 grid-cols-[40px_minmax(0,1fr)] gap-x-4 py-5 sm:block sm:px-5 sm:py-6 lg:px-6 ${
+                    index === 1
+                      ? "border-t border-[#c7dfec] sm:border-l sm:border-t-0"
+                      : index === 2
+                        ? "border-t border-[#c7dfec] lg:border-l lg:border-t-0"
+                        : index === 3
+                          ? "border-t border-[#c7dfec] sm:border-l lg:border-t-0"
+                          : ""
+                  }`}
                 >
-                  {/* Micro-Icon Box Wrapper Container */}
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#e8f4ff] text-[#00529c]">
-                    <IconComponent className="h-4 w-4 stroke-[1.75]" />
+                  <div className="flex items-center justify-between gap-4">
+                    <span className={`flex h-10 w-10 items-center justify-center rounded-lg ${item.surface} ${item.color}`}>
+                      <Icon className="h-5 w-5" aria-hidden="true" />
+                    </span>
+                    <span className="hidden text-[12px] font-bold text-[#8aa0af] sm:block">
+                      {item.number}
+                    </span>
                   </div>
-
-                  {/* Content Details Block */}
-                  <div className="min-w-0 xl:mt-5">
-                    <h3 className="wrap-break-word text-[14px] font-bold leading-tight tracking-tight text-gray-900 md:text-[15px]">
-                      {item.title}
-                    </h3>
-                    <p className="mt-1.5 text-[12px] font-medium leading-5 text-gray-500">
-                      {item.desc}
+                  <div className="min-w-0">
+                    <div className="flex items-start justify-between gap-3 sm:mt-5">
+                      <h3 className="text-[16px] font-bold leading-snug text-[#102f49]">
+                        {item.title}
+                      </h3>
+                      <span className="text-[11px] font-bold text-[#8aa0af] sm:hidden">
+                        {item.number}
+                      </span>
+                    </div>
+                    <p className="mt-2 text-[12px] font-medium leading-5 text-[#5c7487]">
+                      {item.text}
                     </p>
                   </div>
-                </article>
+                </motion.article>
               );
             })}
           </div>
-
-          {/* Bottom Integrated Action Dashboard Banner Layout Block */}
-          <div className="mt-14 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between rounded-xl border border-blue-100/60 bg-[#f0f7ff] p-5 md:p-8 md:px-10">
-            <div className="flex flex-col text-left">
-              <p className="text-[16px] sm:text-[18px] md:text-[20px] font-bold text-[#1d2939] tracking-tight">
-                Join millions who are monitoring their CIBIL score with Fintaraa
-              </p>
-              <p className="mt-1.5 text-[14px] font-medium text-gray-400">
-                It’s a quick, secure and completely FREE!
-              </p>
-            </div>
-
-            {/* Custom Styled Shield Icon Matching Right Hand Silhouette Placement */}
-            <div className="text-[#00529c] shrink-0 flex items-center justify-center">
-              <ShieldCheck className="h-16 w-16 stroke-[1.2] fill-[#00529c]/5" />
-            </div>
-          </div>
         </div>
       </section>
-    </>
+
+      <section className="w-full bg-white px-4 py-14 md:px-6 md:py-20 lg:px-8">
+        <div className="mx-auto max-w-9xl">
+          <div className="grid gap-12 lg:grid-cols-[300px_minmax(0,1fr)] lg:gap-20">
+            <motion.div
+              initial={{ opacity: 0.95, y: 14 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.25 }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <p className="text-[11px] font-bold uppercase text-[#075cde]">
+                Credit profile signals
+              </p>
+              <h2 className="mt-3 text-[28px] font-bold leading-[1.16] text-[#102f49] sm:text-[34px]">
+                What affects your score?
+              </h2>
+              <p className="mt-4 text-[14px] font-medium leading-7 text-[#587287]">
+                Your score reflects a combination of repayment and borrowing
+                behaviour, not a single transaction.
+              </p>
+
+              <div className="mt-8 flex h-30 items-end gap-2" aria-hidden="true">
+                {[46, 64, 82, 102, 120].map((height, index) => (
+                  <motion.span
+                    key={height}
+                    initial={{ height: 0 }}
+                    whileInView={{ height }}
+                    viewport={{ once: true, amount: 0.6 }}
+                    transition={{
+                      duration: 0.55,
+                      delay: index * 0.07,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
+                    className={`w-8 rounded-t-sm ${
+                      index === 4
+                        ? "bg-[#07845e]"
+                        : index === 3
+                          ? "bg-[#28a8c7]"
+                          : "bg-[#76b9e6]"
+                    }`}
+                  />
+                ))}
+              </div>
+              <p className="mt-3 text-[11px] font-semibold text-[#7890a2]">
+                Five core signals viewed together
+              </p>
+            </motion.div>
+
+            <div className="grid border-t border-[#d8e6ef] sm:grid-cols-2">
+              {factors.map((item, index) => {
+                const Icon = item.icon;
+                return (
+                  <motion.article
+                    key={item.title}
+                    initial={{ opacity: 0.95, y: 12 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.35 }}
+                    transition={{
+                      duration: 0.45,
+                      delay: Math.min(index * 0.05, 0.18),
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
+                    className={`flex min-w-0 gap-4 border-b border-[#d8e6ef] py-6 sm:px-6 ${
+                      index % 2 === 0 ? "sm:border-r sm:pl-0" : "sm:pr-0"
+                    } ${index === factors.length - 1 ? "sm:col-span-2 sm:border-r-0 sm:px-0" : ""}`}
+                  >
+                    <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${item.surface} ${item.color}`}>
+                      <Icon className="h-5 w-5" aria-hidden="true" />
+                    </span>
+                    <div className="min-w-0">
+                      <div className="flex items-center justify-between gap-3">
+                        <h3 className="text-[16px] font-bold text-[#102f49]">
+                          {item.title}
+                        </h3>
+                        <span className="text-[10px] font-bold text-[#9aabb8]">
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
+                      </div>
+                      <p className="mt-2 text-[12px] font-medium leading-5 text-[#5c7487]">
+                        {item.desc}
+                      </p>
+                    </div>
+                  </motion.article>
+                );
+              })}
+            </div>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0.95, y: 14 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-12 grid items-center gap-6 border-y border-[#cfe2ef] bg-[#f1f8fc] px-5 py-6 sm:grid-cols-[minmax(0,1fr)_auto] md:px-8"
+          >
+            <div className="flex items-center gap-4">
+              <span className="relative hidden h-16 w-24 shrink-0 sm:block">
+                <Image
+                  src="/assets/images/security.png"
+                  alt="Secure credit report verification"
+                  fill
+                  sizes="96px"
+                  className="object-contain"
+                />
+              </span>
+              <div>
+                <h3 className="text-[18px] font-bold text-[#102f49]">
+                  Monitor your credit health with Fintaraa
+                </h3>
+                <p className="mt-1 text-[13px] font-medium leading-5 text-[#60788b]">
+                  Access your score securely and review your latest credit profile.
+                </p>
+              </div>
+            </div>
+            <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
+              <Link
+                href="/cibil-score/report"
+                className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-[#075cde] px-5 text-[13px] font-bold text-white no-underline hover:bg-[#064cb8] sm:w-auto"
+              >
+                Check my score
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </Link>
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
+    </MotionConfig>
   );
 }

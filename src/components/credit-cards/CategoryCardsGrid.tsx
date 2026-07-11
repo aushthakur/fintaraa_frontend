@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { motion } from "framer-motion";
 import {
   Banknote,
   Plane,
@@ -86,9 +89,18 @@ export function ExploreCategories() {
 
         {/* Categories Grid */}
         <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 md:grid-cols-4 md:gap-4 xl:grid-cols-8">
-          {categories.map(({ title, icon: Icon, iconBg, iconColor }) => (
-            <div
+          {categories.map(({ title, icon: Icon, iconBg, iconColor }, index) => (
+            <motion.div
               key={title}
+              initial={{ opacity: 0.95, y: 14 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              whileHover={{ y: -4 }}
+              viewport={{ once: true, amount: 0.45 }}
+              transition={{
+                duration: 0.45,
+                delay: Math.min(index * 0.04, 0.2),
+                ease: [0.22, 1, 0.36, 1],
+              }}
               className="flex min-h-22 cursor-pointer items-center gap-2.5 rounded-xl border border-[#e3ebf3] bg-white p-3 text-left shadow-[0_4px_12px_rgba(22,34,50,0.02)] transition-shadow duration-200 hover:shadow-md md:min-h-36.25 md:flex-col md:justify-center md:p-5 md:text-center"
             >
               {/* Colored Circular Icon Container */}
@@ -107,7 +119,7 @@ export function ExploreCategories() {
                   Cards
                 </p>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

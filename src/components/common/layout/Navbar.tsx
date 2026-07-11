@@ -2,8 +2,18 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import {
+  FormEvent,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
+import { createPortal } from "react-dom";
 import { usePathname, useRouter } from "next/navigation";
+import { AnimatePresence, motion, MotionConfig } from "framer-motion";
+import type { LucideIcon } from "lucide-react";
 import {
   X,
   Bell,
@@ -16,6 +26,10 @@ import {
   ArrowRight,
   ChevronDown,
   ShieldCheck,
+  Clock3,
+  CreditCard,
+  FileText,
+  Landmark,
 } from "lucide-react";
 import { getAuthToken, getAuthType } from "@/hooks/authStorage";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
@@ -144,36 +158,8 @@ const insuranceSections: NavSection[] = [
   },
 ];
 
-const cibilSections: NavSection[] = [
-  {
-    title: "Credit Score",
-    subtitle: "Know, track, and improve your score.",
-    links: [
-      {
-        label: "Know Your Score",
-        href: "/cibil-score",
-        description: "Check your score with a secure guided flow.",
-      },
-      {
-        label: "How to Improve Score",
-        href: "/blog/all?category=Credit%20Score",
-        description: "Read score improvement guides and tips.",
-      },
-      {
-        label: "Credit Report",
-        href: "/cibil-score/report",
-        description: "Understand report factors and offer readiness.",
-      },
-    ],
-  },
-];
-
 const navItems = [
-  {
-    label: "CIBIL Score",
-    href: "/cibil-score",
-    sections: cibilSections,
-  },
+  { label: "CIBIL Score", href: "/cibil-score" },
   { label: "Loans", href: "/products", sections: loanSections },
   { label: "Insurance", href: "/products", sections: insuranceSections },
   {
@@ -451,6 +437,35 @@ const popularSearchEntries = [
   .map((label) => navSearchEntries.find((entry) => entry.label === label))
   .filter(Boolean) as StaticSearchEntry[];
 
+const searchShortcuts: StaticSearchEntry[] = [
+  { label: "Loans", href: "/products", category: "Explore" },
+  { label: "Credit Cards", href: "/credit-cards", category: "Explore" },
+  { label: "Insurance", href: "/products", category: "Explore" },
+  { label: "CIBIL Score", href: "/cibil-score", category: "Services" },
+  { label: "Offers", href: "/offers", category: "Explore" },
+  {
+    label: "Track Application",
+    href: "/application-status",
+    category: "Account",
+  },
+];
+
+const getSearchIcon = (entry: StaticSearchEntry): LucideIcon => {
+  const value = `${entry.label} ${entry.category}`.toLowerCase();
+  if (value.includes("loan")) return Landmark;
+  if (value.includes("card")) return CreditCard;
+  if (value.includes("insurance") || value.includes("cibil")) {
+    return ShieldCheck;
+  }
+  if (value.includes("status") || value.includes("account")) return Clock3;
+  if (value.includes("offer")) return Sparkles;
+  return FileText;
+};
+
+const subscribeToClient = () => () => undefined;
+const getClientSnapshot = () => true;
+const getServerSnapshot = () => false;
+
 const normalizeSearchText = (value: string) =>
   value
     .toLowerCase()
@@ -713,19 +728,23 @@ export default function Navbar() {
           />
         </div>
 
-        <button
-          aria-label="Toggle menu"
-          className="mobile-menu-toggle ml-auto rounded-md border border-[#d0d5dd] p-2 text-[#101828] xl:hidden"
-          onClick={() => setMenuOpen((open) => !open)}
-        >
-          {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
+        <div className="ml-auto flex items-center gap-2 xl:hidden">
+          <NavbarSearch compact onOpen={() => setMenuOpen(false)} />
+          <button
+            type="button"
+            aria-label="Toggle menu"
+            aria-expanded={menuOpen}
+            className="flex h-10 w-10 items-center justify-center rounded-md border border-[#d0d5dd] text-[#101828]"
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
       </nav>
 
       {menuOpen && (
         <div className="max-h-[calc(100dvh-6.25rem)] overflow-y-auto border-t border-[#e5eef8] bg-white px-4 pb-5 md:max-h-[calc(100dvh-6.75rem)] md:px-6 xl:hidden">
           <div className="mx-auto grid max-w-9xl gap-1">
-            <NavbarSearch mobile onNavigate={() => setMenuOpen(false)} />
             {navItems.map((item) => {
               const hideDescriptions =
                 item.label === "Loans" || item.label === "Insurance";
@@ -797,29 +816,77 @@ export default function Navbar() {
 
 function NavbarSearch({
   mobile = false,
+  compact = false,
   onNavigate,
+  onOpen,
 }: {
   mobile?: boolean;
+  compact?: boolean;
   onNavigate?: () => void;
+  onOpen?: () => void;
 }) {
   const router = useRouter();
   const [query, setQuery] = useState("");
-  const [focused, setFocused] = useState(false);
-  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [open, setOpen] = useState(false);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const dialogRef = useRef<HTMLElement | null>(null);
+  const mounted = useSyncExternalStore(
+    subscribeToClient,
+    getClientSnapshot,
+    getServerSnapshot,
+  );
   const trimmedQuery = query.trim();
   const results = useMemo(() => searchNavEntries(query), [query]);
-  const showSuggestions = focused && results.length > 0;
 
-  const clearCloseTimer = () => {
-    if (closeTimer.current) {
-      clearTimeout(closeTimer.current);
-      closeTimer.current = null;
-    }
+  useEffect(() => {
+    if (!open) return;
+    const frame = window.requestAnimationFrame(() => inputRef.current?.focus());
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setOpen(false);
+        setQuery("");
+        return;
+      }
+      if (event.key === "Tab" && dialogRef.current) {
+        const focusable = Array.from(
+          dialogRef.current.querySelectorAll<HTMLElement>(
+            'button:not([disabled]), input:not([disabled]), [href], [tabindex]:not([tabindex="-1"])',
+          ),
+        ).filter((element) => element.offsetParent !== null);
+        if (!focusable.length) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [open]);
+
+  const openSearch = () => {
+    onOpen?.();
+    setOpen(true);
+  };
+
+  const closeSearch = () => {
+    setOpen(false);
+    setQuery("");
   };
 
   const navigateTo = (href: string) => {
-    clearCloseTimer();
-    setFocused(false);
+    setOpen(false);
     setQuery("");
     onNavigate?.();
     router.push(href);
@@ -827,88 +894,225 @@ function NavbarSearch({
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const target = results[0] || {
-      href: trimmedQuery ? "/products" : "/products",
-    };
+    const target = results[0] || { href: "/products" };
     navigateTo(target.href);
   };
 
+  const searchPanel = (
+    <AnimatePresence>
+      {open ? (
+        <MotionConfig reducedMotion="user">
+          <>
+            <motion.button
+              type="button"
+              aria-label="Close site search"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={closeSearch}
+              className="fixed inset-x-0 bottom-0 z-[70] bg-[#082b4c]/20 backdrop-blur-[2px]"
+              style={{ top: "var(--site-header-height, 6rem)" }}
+            />
+            <motion.section
+              ref={dialogRef}
+              role="dialog"
+              aria-modal="true"
+              aria-label="Search Fintaraa"
+              initial={{ opacity: 0.96, y: -14 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+              className="fixed inset-x-0 z-[80] overflow-y-auto border-y border-[#cfe1ed] bg-white"
+              style={{
+                top: "var(--site-header-height, 6rem)",
+                maxHeight: "calc(100dvh - var(--site-header-height, 6rem))",
+              }}
+            >
+              <div className="mx-auto max-w-9xl px-4 py-5 md:px-6 md:py-6 2xl:px-8">
+                <div className="flex items-center gap-3">
+                  <div className="hidden w-44 shrink-0 items-center gap-3 lg:flex">
+                    <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#e8f3fb] text-[#075cde]">
+                      <Search className="h-5 w-5" aria-hidden="true" />
+                    </span>
+                    <div>
+                      <p className="text-[13px] font-bold text-[#102f49]">
+                        Search Fintaraa
+                      </p>
+                      <p className="mt-0.5 text-[10px] font-semibold text-[#7890a2]">
+                        Products and services
+                      </p>
+                    </div>
+                  </div>
+
+                  <form
+                    onSubmit={handleSubmit}
+                    className="flex h-12 min-w-0 flex-1 items-center gap-3 rounded-lg border border-[#bcd7e7] bg-[#f7fbfe] px-3 transition-colors focus-within:border-[#075cde] focus-within:bg-white sm:h-13 sm:px-4"
+                  >
+                    <Search className="h-4.5 w-4.5 shrink-0 text-[#527189]" aria-hidden="true" />
+                    <input
+                      ref={inputRef}
+                      value={query}
+                      type="text"
+                      inputMode="search"
+                      aria-label="Search loans, cards, insurance and services"
+                      placeholder="Search loans, cards, insurance or services"
+                      onChange={(event) => setQuery(event.target.value)}
+                      className="min-w-0 flex-1 bg-transparent text-[14px] font-semibold text-[#102f49] outline-none placeholder:text-[#8da0af] sm:text-[15px]"
+                    />
+                    {trimmedQuery ? (
+                      <button
+                        type="button"
+                        aria-label="Clear search"
+                        title="Clear search"
+                        onClick={() => setQuery("")}
+                        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-[#7890a2] transition-colors hover:bg-[#e9f3fa] hover:text-[#075cde]"
+                      >
+                        <X className="h-4 w-4" aria-hidden="true" />
+                      </button>
+                    ) : null}
+                    <button
+                      type="submit"
+                      aria-label="Open first search result"
+                      title="Search"
+                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-[#075cde] text-white transition-colors hover:bg-[#064cb8]"
+                    >
+                      <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                    </button>
+                  </form>
+
+                  <button
+                    type="button"
+                    onClick={closeSearch}
+                    aria-label="Close search"
+                    title="Close search"
+                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-[#cfe1ed] text-[#527189] transition-colors hover:border-[#8ebbd3] hover:text-[#075cde]"
+                  >
+                    <X className="h-5 w-5" aria-hidden="true" />
+                  </button>
+                </div>
+
+                <div className="mt-5">
+                  <div>
+                    <div className="flex items-center justify-between gap-3">
+                      <p className="text-[10px] font-bold uppercase text-[#7890a2]">
+                        Explore quickly
+                      </p>
+                      <p className="hidden text-[10px] font-semibold text-[#8ca0af] sm:block">
+                        Direct routes to popular journeys
+                      </p>
+                    </div>
+                    <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3 xl:grid-cols-6">
+                      {searchShortcuts.map((item) => {
+                        const Icon = getSearchIcon(item);
+                        return (
+                          <button
+                            key={item.label}
+                            type="button"
+                            onClick={() => navigateTo(item.href)}
+                            className="flex min-w-0 items-center gap-2.5 rounded-lg border border-[#d9e7f0] bg-white px-3 py-2.5 text-left text-[12px] font-bold text-[#294d67] transition-colors hover:border-[#8ebbd3] hover:bg-[#f2f8fc] hover:text-[#075cde]"
+                          >
+                            <Icon className="h-4 w-4 shrink-0 text-[#075cde]" aria-hidden="true" />
+                            <span className="truncate">{item.label}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <div className="mt-5 min-w-0 border-t border-[#d9e7f0] pt-4">
+                    <div className="flex items-center justify-between gap-4">
+                      <div>
+                        <p className="text-[10px] font-bold uppercase text-[#7890a2]">
+                          {trimmedQuery ? "Search results" : "Popular destinations"}
+                        </p>
+                        <p className="mt-1 text-[13px] font-semibold text-[#526e82]">
+                          {trimmedQuery
+                            ? `${results.length} matching destinations`
+                            : "Frequently visited financial journeys"}
+                        </p>
+                      </div>
+                      {trimmedQuery ? (
+                        <span className="shrink-0 text-[11px] font-bold text-[#075cde]">
+                          {results.length} found
+                        </span>
+                      ) : null}
+                    </div>
+
+                    {results.length ? (
+                      <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+                        {results.map((item) => {
+                          const Icon = getSearchIcon(item);
+                          return (
+                            <button
+                              key={`${item.label}-${item.href}`}
+                              type="button"
+                              onClick={() => navigateTo(item.href)}
+                              className="group flex min-w-0 items-center gap-3 rounded-lg border border-[#d9e7f0] bg-white p-3 text-left transition-colors hover:border-[#8ebbd3] hover:bg-[#f4f9fc]"
+                            >
+                              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#e9f3fa] text-[#075cde]">
+                                <Icon className="h-4 w-4" aria-hidden="true" />
+                              </span>
+                              <span className="min-w-0 flex-1">
+                                <span className="block truncate text-[12px] font-bold text-[#102f49] group-hover:text-[#075cde]">
+                                  {item.label}
+                                </span>
+                                <span className="mt-0.5 block truncate text-[10px] font-semibold text-[#7890a2]">
+                                  {item.category}
+                                </span>
+                              </span>
+                              <ArrowRight className="h-3.5 w-3.5 shrink-0 text-[#9aaeba] transition-transform group-hover:translate-x-0.5 group-hover:text-[#075cde]" aria-hidden="true" />
+                            </button>
+                          );
+                        })}
+                      </div>
+                    ) : (
+                      <div className="mt-3 flex min-h-24 items-center gap-3 border-y border-[#d9e7f0] py-5">
+                        <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#eef5fa] text-[#7890a2]">
+                          <Search className="h-5 w-5" aria-hidden="true" />
+                        </span>
+                        <div>
+                          <p className="text-[13px] font-bold text-[#102f49]">
+                            No matching destination
+                          </p>
+                          <p className="mt-1 text-[11px] font-semibold text-[#7890a2]">
+                            Try a product, service, bank or account journey.
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </motion.section>
+          </>
+        </MotionConfig>
+      ) : null}
+    </AnimatePresence>
+  );
+
   return (
-    <div className={mobile ? "relative mt-4 w-full" : "relative w-48 2xl:w-64"}>
-      <form
-        onSubmit={handleSubmit}
-        className={`flex items-center gap-2 border border-[#d7e5f3] bg-white text-[#344054] transition focus-within:border-[#075cde] focus-within:shadow-[0_12px_30px_rgba(7,92,222,0.10)] ${
-          mobile ? "h-11 rounded-xl px-3" : "h-10 rounded-full px-3 2xl:h-11"
+    <>
+      <button
+        type="button"
+        onClick={openSearch}
+        aria-expanded={open}
+        aria-haspopup="dialog"
+        aria-label={compact ? "Open site search" : undefined}
+        className={`flex items-center border border-[#d7e5f3] bg-white text-[#344054] transition-colors hover:border-[#8ebbd3] hover:bg-[#f7fbfe] hover:text-[#075cde] ${
+          compact
+            ? "h-10 w-10 justify-center rounded-md"
+            : mobile
+              ? "h-11 w-full gap-2 rounded-lg px-3 text-[13px] font-semibold"
+              : "h-10 w-48 gap-2 rounded-lg px-3 text-[13px] font-semibold 2xl:h-11 2xl:w-64"
         }`}
       >
-        <Search className="h-4 w-4 shrink-0 text-[#667085]" />
-        <input
-          value={query}
-          type="search"
-          placeholder={mobile ? "Search loans, cards, insurance" : "Search"}
-          onChange={(event) => setQuery(event.target.value)}
-          onFocus={() => {
-            clearCloseTimer();
-            setFocused(true);
-          }}
-          onBlur={() => {
-            closeTimer.current = setTimeout(() => setFocused(false), 140);
-          }}
-          className="min-w-0 flex-1 bg-transparent text-[13px] font-semibold outline-none placeholder:text-[#98a2b3]"
-        />
-        {trimmedQuery ? (
-          <button
-            type="button"
-            aria-label="Clear search"
-            onMouseDown={(event) => event.preventDefault()}
-            onClick={() => {
-              setQuery("");
-              setFocused(true);
-            }}
-            className="text-[#98a2b3] transition hover:text-[#195585]"
-          >
-            <X className="h-3.5 w-3.5" />
-          </button>
+        <Search className="h-4 w-4 shrink-0" aria-hidden="true" />
+        {!compact ? (
+          <span className="truncate text-[#7890a2]">Search Fintaraa</span>
         ) : null}
-      </form>
-
-      {showSuggestions ? (
-        <div
-          className={
-            mobile
-              ? "mt-2 overflow-hidden rounded-xl border border-[#d9e9f6] bg-white shadow-[0_16px_40px_rgba(16,24,40,0.10)]"
-              : "absolute right-0 top-[calc(100%+0.65rem)] z-50 w-84 overflow-hidden rounded-xl border border-[#d9e9f6] bg-white shadow-[0_22px_60px_rgba(16,24,40,0.14)]"
-          }
-        >
-          <div className="border-b border-[#edf3f8] bg-[#f7fbff] px-3 py-2">
-            <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[#667085]">
-              {trimmedQuery ? "Search results" : "Popular searches"}
-            </p>
-          </div>
-          <div className="grid max-h-80 overflow-y-auto p-2">
-            {results.map((item) => (
-              <button
-                key={`${item.label}-${item.href}`}
-                type="button"
-                onMouseDown={(event) => event.preventDefault()}
-                onClick={() => navigateTo(item.href)}
-                className="group flex items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-left transition hover:bg-[#eef8ff]"
-              >
-                <span className="min-w-0">
-                  <span className="block truncate text-[13px] font-extrabold text-[#07162d] group-hover:text-[#195585]">
-                    {item.label}
-                  </span>
-                  <span className="mt-0.5 block truncate text-[11px] font-semibold text-[#667085]">
-                    {item.category}
-                  </span>
-                </span>
-                <ArrowRight className="h-4 w-4 shrink-0 text-[#98a2b3] transition group-hover:translate-x-0.5 group-hover:text-[#195585]" />
-              </button>
-            ))}
-          </div>
-        </div>
-      ) : null}
-    </div>
+      </button>
+      {mounted ? createPortal(searchPanel, document.body) : null}
+    </>
   );
 }
 

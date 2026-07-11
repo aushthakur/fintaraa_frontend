@@ -10,6 +10,14 @@ export type CurrentUser = Record<string, unknown> & {
   customerId?: string;
   panCard?: string;
   aadhaarCard?: string;
+  cibilScore?: number;
+  cibilLastFetchedAt?: string;
+  cibilReport?: Record<string, unknown>;
+  cibilRequestPayload?: Record<string, unknown>;
+  cibilPdfLastFetchedAt?: string;
+  cibilPdfReport?: Record<string, unknown>;
+  experianScore?: number;
+  experianLastFetchedAt?: string;
   isKycVerified?: boolean;
   personalDetails?: Record<string, unknown>;
   employmentDetails?: Record<string, unknown>;

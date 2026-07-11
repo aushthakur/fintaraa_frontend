@@ -2,11 +2,16 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { motion } from "framer-motion";
 import {
   ArrowRight,
   BadgeCheck,
+  CalendarDays,
+  Calculator,
   Download,
+  Landmark,
   LockKeyhole,
+  Percent,
   ShieldCheck,
 } from "lucide-react";
 import { AuthRedirectLink } from "@/components/auth/AuthRedirectLink";
@@ -1366,36 +1371,24 @@ export function EmiCalculator({
   return (
     <section className="bg-white px-4 py-12 md:px-6 lg:px-8">
       <div className="mx-auto max-w-9xl overflow-hidden rounded-2xl bg-[#f7fbff] p-4 sm:p-6 lg:p-8">
-        <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
-          <div>
-            <h2 className="text-[30px] font-bold leading-tight tracking-tight text-[#07162d] sm:text-[40px]">
+        <div className="flex flex-col gap-5 border-b border-[#dce9f4] pb-6 lg:flex-row lg:items-end lg:justify-between">
+          <div className="max-w-3xl">
+            <p className="flex items-center gap-2 text-[11px] font-bold uppercase text-[#075cde]">
+              <Calculator className="h-4 w-4" aria-hidden="true" />
+              EMI planning
+            </p>
+            <h2 className="mt-2 text-[28px] font-bold leading-[1.16] text-[#07162d] sm:text-[34px]">
               Calculate Your{" "}
               <span className="text-[#075cde]">{activeLoanLabel}</span> EMI
             </h2>
-            {/* <p className="mt-3 max-w-2xl text-[15px] font-medium leading-7 text-[#61748f]">
-              Plan better. Borrow smarter. Calculate your EMI, interest and
-              total repayment instantly with a detailed loan breakup PDF.
-            </p> */}
-            {/* <div className="mt-5 grid max-w-2xl gap-3 sm:grid-cols-3">
-              {[
-                ["100% Secure", "Your data is safe"],
-                ["Instant Results", "No sign-up required"],
-                ["100% Accurate", "Real-time calculation"],
-              ].map(([label, text]) => (
-                <div key={label} className="flex items-start gap-2 text-[12px]">
-                  <BadgeCheck className="mt-0.5 h-4 w-4 shrink-0 text-[#075cde]" />
-                  <span>
-                    <span className="block font-semibold text-[#07162d]">
-                      {label}
-                    </span>
-                    <span className="font-semibold text-[#8090a4]">{text}</span>
-                  </span>
-                </div>
-              ))}
-            </div> */}
+            <p className="mt-3 max-w-2xl text-[14px] font-medium leading-6 text-[#61748f] sm:text-[15px]">
+              {activeConfig.description} Review the projected monthly payment,
+              total interest and repayment schedule before applying.
+            </p>
           </div>
-          <span className="inline-flex w-fit items-center text-[12px] font-semibold text-[#075cde]">
-            {computedMetrics.months} month schedule
+          <span className="inline-flex w-fit shrink-0 items-center gap-2 rounded-lg bg-white px-3 py-2 text-[12px] font-semibold text-[#075cde]">
+            <CalendarDays className="h-4 w-4" aria-hidden="true" />
+            {computedMetrics.months}-month projection
           </span>
         </div>
 
@@ -1404,10 +1397,12 @@ export function EmiCalculator({
             {calculatorConfigs.map((config) => {
               const isSelected = activeKey === config.key;
               return (
-                <button
+                <motion.button
                   key={config.key}
                   type="button"
                   onClick={() => setActiveKey(config.key)}
+                  whileHover={{ y: -1 }}
+                  whileTap={{ scale: 0.98 }}
                   className={`shrink-0 rounded-lg border px-5 py-2.5 text-[13px] font-semibold transition-all ${
                     isSelected
                       ? "border-[#075cde] bg-white text-[#075cde]"
@@ -1415,7 +1410,7 @@ export function EmiCalculator({
                   }`}
                 >
                   {config.label}
-                </button>
+                </motion.button>
               );
             })}
           </div>
@@ -1431,7 +1426,69 @@ export function EmiCalculator({
         </div> */}
 
         <div className="mt-6 grid gap-6 lg:grid-cols-[1.3fr_1fr]">
-          <div className="grid gap-4">
+          <motion.div
+            key={activeConfig.key}
+            initial={{ opacity: 0.96, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
+            className="min-w-0"
+          >
+            <div className="mb-5">
+              <div className="flex items-start gap-3">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#e7f1ff] text-[#075cde]">
+                  <Landmark className="h-5 w-5" aria-hidden="true" />
+                </span>
+                <div>
+                  <p className="text-[11px] font-bold uppercase text-[#075cde]">
+                    Repayment assumptions
+                  </p>
+                  <h3 className="mt-1 text-[18px] font-bold leading-tight text-[#07162d]">
+                    Structure your {activeLoanLabel}
+                  </h3>
+                  <p className="mt-1 text-[12px] font-medium leading-5 text-[#71839a]">
+                    Reducing-balance estimate based on the selected amount, rate
+                    and repayment period.
+                  </p>
+                </div>
+              </div>
+
+              <dl className="mt-5 grid grid-cols-3 border-y border-[#dce9f4] bg-white">
+                {[
+                  {
+                    label: computedMetrics.principalLabel,
+                    value: formatCurrencyIndian(computedMetrics.principal),
+                    icon: Landmark,
+                  },
+                  {
+                    label: "Interest rate",
+                    value: `${formatDecimalIndian(activeValues.interestRate)}% p.a.`,
+                    icon: Percent,
+                  },
+                  {
+                    label: "Repayment period",
+                    value: `${computedMetrics.months} months`,
+                    icon: CalendarDays,
+                  },
+                ].map(({ label, value, icon: Icon }, index) => (
+                  <div
+                    key={label}
+                    className={`min-w-0 px-2.5 py-3 sm:px-4 ${
+                      index > 0 ? "border-l border-[#dce9f4]" : ""
+                    }`}
+                  >
+                    <dt className="flex items-center gap-1.5 text-[9px] font-bold uppercase leading-4 text-[#8090a4] sm:text-[10px]">
+                      <Icon className="h-3.5 w-3.5 shrink-0 text-[#075cde]" aria-hidden="true" />
+                      <span className="line-clamp-2">{label}</span>
+                    </dt>
+                    <dd className="mt-1.5 break-words text-[12px] font-bold leading-4 text-[#07162d] sm:text-[13px]">
+                      {value}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+
+            <div className="grid gap-4">
             {activeConfig.fields.map(({ key: fieldKey, ...field }) => (
               <SliderCard
                 key={fieldKey}
@@ -1449,9 +1506,16 @@ export function EmiCalculator({
               Download {activeLoanLabel} Breakup PDF
               <Download className="ml-1 h-4 w-4 text-[#075cde]" />
             </button>
-          </div>
+            </div>
+          </motion.div>
 
-          <aside className="flex flex-col overflow-hidden rounded-xl border border-[#e2edf8] bg-white">
+          <motion.aside
+            initial={{ opacity: 0.96, x: 14 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+            className="flex flex-col overflow-hidden rounded-xl border border-[#e2edf8] bg-white"
+          >
             <div className="flex items-center justify-between gap-4 border-b border-[#eef4fb] bg-white px-6 py-4">
               <span className="text-[15px] font-bold text-[#07162d]">
                 Your Loan Summary
@@ -1606,7 +1670,7 @@ export function EmiCalculator({
                 assessment and lender policy.
               </p>
             </div>
-          </aside>
+          </motion.aside>
         </div>
       </div>
     </section>

@@ -5,7 +5,7 @@ import { AboutPage } from "@/components/about/AboutPage";
 const fallbackMetadata: Metadata = {
   title: "About Fintaraa",
   description:
-    "Learn about Fintaraa, our vision, and how we help customers compare financial products.",
+    "Learn about Fintaraa, a unit of Xpertserve Services Pvt. Ltd., founded in 2016 to simplify loans with transparent, fast and personalised financial support.",
 };
 
 export async function generateMetadata(): Promise<Metadata> {

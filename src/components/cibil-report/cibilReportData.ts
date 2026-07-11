@@ -3,37 +3,41 @@ import type {
   CibilReportViewData,
   CibilScoreHistoryPoint,
 } from "./types";
-import type { UserCibilResponse, UserCibilPdfResponse } from "@/services/cibil";
+import type {
+  BureauScoreHistoryRecord,
+  UserCibilPdfResponse,
+  UserCibilResponse,
+} from "@/services/cibil";
 
 const DEFAULT_SCORE = 0;
 
 const DEFAULT_SUMMARY_ROWS: CibilReportSummaryRow[] = [
   {
-    icon: "💳",
+    icon: "payment",
     label: "Payment History",
     subLabel: "% of On time Payments",
     value: "—",
   },
   {
-    icon: "💳",
+    icon: "utilization",
     label: "Credit Card Utilization",
     subLabel: "% of Credit Limit Used",
     value: "—",
   },
   {
-    icon: "🗂️",
+    icon: "enquiries",
     label: "Credit Enquiries",
     subLabel: "All Loans & Credit Card",
     value: "—",
   },
   {
-    icon: "📊",
+    icon: "accounts",
     label: "Credit Mix",
     subLabel: "All Credit Accounts",
     value: "—",
   },
   {
-    icon: "📅",
+    icon: "age",
     label: "Credit Age",
     subLabel: "Oldest Credit Account",
     value: "—",
@@ -44,6 +48,7 @@ type BuildInput = {
   user: Record<string, unknown> | null;
   cibil?: UserCibilResponse | null;
   pdf?: UserCibilPdfResponse | null;
+  history?: BureauScoreHistoryRecord[];
 };
 
 const closedStatuses = new Set(["12", "13", "14", "15", "16", "17", "97", "98", "99"]);
@@ -355,20 +360,142 @@ const extractCreditReportLink = (...sources: any[]) => {
   return "";
 };
 
-const buildHistory = (score: number): CibilScoreHistoryPoint[] => {
-  const finalScore = score > 0 ? score : 700;
-  const months = ["May", "Jun", "Jul", "Aug", "Sep", "Oct"];
-  const start = Math.max(300, finalScore - 72);
-  return months.map((month, index) => ({
-    month,
-    score: Math.min(900, Math.round(start + index * ((finalScore - start) / 5))),
-  }));
+const scoreFromHistory = (record: BureauScoreHistoryRecord) => {
+  const raw =
+    record.bureau === "experian"
+      ? record.experianScore || record.bureauScore
+      : record.cibilScore || record.bureauScore;
+  const score = toNumber(raw, 0);
+  return score >= 300 && score <= 900 ? score : undefined;
 };
+
+const dateFromHistory = (record: BureauScoreHistoryRecord) =>
+  parseBureauDate(record.fetchedAt || record.createdAt);
+
+const formatHistoryMonth = (date: Date) =>
+  date.toLocaleDateString("en-IN", { month: "short", year: "2-digit" });
+
+const extractEmbeddedHistory = (report: unknown): CibilScoreHistoryPoint[] => {
+  const target = extractCreditReport(report);
+  const scoreSection = target?.SCORE || target?.score;
+  const scoreHistory =
+    scoreSection?.ScoreHistory ||
+    scoreSection?.ScoreHistoryDetails ||
+    scoreSection?.ScoreHistoryDetail ||
+    scoreSection?.Score_History ||
+    scoreSection?.SCORE_HISTORY ||
+    scoreSection?.scores ||
+    scoreSection?.history;
+  const history =
+    scoreHistory ||
+    target?.scoreHistory ||
+    target?.score_history ||
+    target?.data?.scoreHistory ||
+    target?.data?.score_history ||
+    target?.data?.scores ||
+    target?.data?.history?.scores ||
+    target?.data?.history ||
+    [];
+
+  if (!Array.isArray(history)) return [];
+
+  return history
+    .map((item: any, index) => {
+      const score = toNumber(
+        item?.Score ||
+          item?.score ||
+          item?.creditScore ||
+          item?.credit_score ||
+          item?.value,
+        0,
+      );
+      if (score < 300 || score > 900) return null;
+      const rawDate =
+        item?.ReportDate ||
+        item?.reportDate ||
+        item?.date ||
+        item?.period ||
+        item?.time;
+      const date = parseBureauDate(rawDate);
+      const month = date
+        ? formatHistoryMonth(date)
+        : String(item?.label || `Report ${index + 1}`);
+      return {
+        month,
+        score,
+        ...(date ? { date: date.toISOString() } : {}),
+      };
+    })
+    .filter((item): item is CibilScoreHistoryPoint => Boolean(item));
+};
+
+const buildHistory = ({
+  records,
+  report,
+  score,
+  reportDate,
+}: {
+  records: BureauScoreHistoryRecord[];
+  report: unknown;
+  score: number;
+  reportDate?: Date;
+}): CibilScoreHistoryPoint[] => {
+  const apiPoints = records
+    .filter((record) => !record.bureau || record.bureau === "cibil")
+    .map((record) => {
+      const historyScore = scoreFromHistory(record);
+      const date = dateFromHistory(record);
+      if (!historyScore || !date) return null;
+      return {
+        month: formatHistoryMonth(date),
+        score: historyScore,
+        date: date.toISOString(),
+      };
+    })
+    .filter((item): item is NonNullable<typeof item> => item !== null)
+    .sort((left, right) =>
+      String(left.date || "").localeCompare(String(right.date || "")),
+    );
+
+  const embeddedPoints = extractEmbeddedHistory(report);
+  let points = apiPoints.length >= 2 ? apiPoints : embeddedPoints;
+
+  if (!points.length && score > 0) {
+    const date = reportDate || new Date();
+    points = [
+      {
+        month: formatHistoryMonth(date),
+        score,
+        date: date.toISOString(),
+      },
+    ];
+  }
+
+  const deduped = new Map<string, CibilScoreHistoryPoint>();
+  points.forEach((point) => {
+    const key = point.date?.slice(0, 10) || `${point.month}-${point.score}`;
+    deduped.set(key, point);
+  });
+  return Array.from(deduped.values()).slice(-12);
+};
+
+const latestHistoryRecord = (
+  records: BureauScoreHistoryRecord[],
+  bureau: "cibil" | "experian",
+) =>
+  records
+    .filter((record) => record.bureau === bureau && scoreFromHistory(record))
+    .sort(
+      (left, right) =>
+        (dateFromHistory(right)?.getTime() || 0) -
+        (dateFromHistory(left)?.getTime() || 0),
+    )[0];
 
 export const buildCibilReportData = ({
   user,
   cibil,
   pdf,
+  history: historyRecords = [],
 }: BuildInput): CibilReportViewData => {
   const userReport = user?.cibilReport as Record<string, unknown> | undefined;
   const report = (cibil?.report || userReport || {}) as Record<string, unknown>;
@@ -377,10 +504,13 @@ export const buildCibilReportData = ({
   const reportDate =
     extractReportDate(report, cibil?.lastFetchedAt || user?.cibilLastFetchedAt) ||
     extractReportDate(userReport, user?.cibilLastFetchedAt);
+  const latestCibilHistory = latestHistoryRecord(historyRecords, "cibil");
+  const latestExperianHistory = latestHistoryRecord(historyRecords, "experian");
 
   const score =
     cibil?.cibilScore ||
     numberValue(user, ["cibilScore"], undefined) ||
+    (latestCibilHistory ? scoreFromHistory(latestCibilHistory) : undefined) ||
     numberValue(report, [
       "data.credit_score",
       "data.score",
@@ -442,6 +572,22 @@ export const buildCibilReportData = ({
   const totalOutstanding =
     toNumber(outstanding?.Outstanding_Balance_All) ||
     totalLoanBalance + totalCardBalance;
+  const securedOutstanding = toNumber(
+    outstanding?.Outstanding_Balance_Secured,
+  );
+  const unsecuredOutstanding = toNumber(
+    outstanding?.Outstanding_Balance_UnSecured,
+  );
+  const creditMix =
+    securedOutstanding > 0 && unsecuredOutstanding > 0
+      ? "Mixed"
+      : securedOutstanding > 0
+        ? "Secured"
+        : unsecuredOutstanding > 0
+          ? "Unsecured"
+          : summaryTotalAccounts > 0
+            ? "Reported"
+            : "—";
   const paymentHistory = computePaymentStats(accounts);
   const utilization =
     totalLimit > 0
@@ -460,10 +606,18 @@ export const buildCibilReportData = ({
       "data.credit_report.CAPS.CAPS_Summary.CAPSLast90Days",
     ]) || 0;
   const creditAge = formatCreditAge(oldestOpenDate, reportDate || new Date());
-  const history = buildHistory(score);
+  const scoreHistory = buildHistory({
+    records: historyRecords,
+    report,
+    score,
+    reportDate,
+  });
   const reportHref =
     extractCreditReportLink(pdf?.report, cibil?.report, report, user?.cibilPdfReport) ||
     "/cibil-score/report";
+  const bureauHeader =
+    creditReport?.CreditProfileHeader || creditReport?.creditProfileHeader;
+  const bureauDetails = buildRows(bureauHeader);
 
   return {
     userName: textValue(
@@ -476,15 +630,41 @@ export const buildCibilReportData = ({
     reportDateLabel: formatReportDate(reportDate || cibil?.lastFetchedAt || user?.cibilLastFetchedAt),
     compareDateLabel: formatScoreDate(reportDate || cibil?.lastFetchedAt || user?.cibilLastFetchedAt),
     reportHref,
-    scoreHistory: history,
-    improvementPoints: Math.max(0, history[history.length - 1].score - history[0].score),
+    reportAvailable: Boolean(score || accounts.length || Object.keys(report).length),
+    cached: Boolean(cibil?.cached),
+    sourceLabel: cibil?.cached ? "Saved profile report" : "Latest bureau report",
+    refreshAvailableInDays: cibil?.refreshAvailableInDays,
+    lastConsentLabel: cibil?.lastConsentAt
+      ? formatReportDate(cibil.lastConsentAt)
+      : undefined,
+    scoreHistory,
+    improvementPoints:
+      scoreHistory.length >= 2
+        ? scoreHistory[scoreHistory.length - 1].score - scoreHistory[0].score
+        : 0,
     bureauScores: {
       cibil: score || undefined,
-      experian: numberValue(user, ["experianScore"], undefined),
+      equifax: numberValue(user, ["equifaxScore"], undefined),
+      experian:
+        numberValue(user, ["experianScore"], undefined) ||
+        (latestExperianHistory
+          ? scoreFromHistory(latestExperianHistory)
+          : undefined),
+      crif: numberValue(user, ["crifScore"], undefined),
     },
     bureauDates: {
-      cibil: formatScoreDate(reportDate || cibil?.lastFetchedAt || user?.cibilLastFetchedAt),
-      experian: formatScoreDate(user?.experianLastFetchedAt),
+      cibil: formatScoreDate(
+        reportDate ||
+          cibil?.lastFetchedAt ||
+          user?.cibilLastFetchedAt ||
+          dateFromHistory(latestCibilHistory || {}),
+      ),
+      equifax: formatScoreDate(user?.equifaxLastFetchedAt),
+      experian: formatScoreDate(
+        user?.experianLastFetchedAt ||
+          dateFromHistory(latestExperianHistory || {}),
+      ),
+      crif: formatScoreDate(user?.crifLastFetchedAt),
     },
     summaryRows: [
       {
@@ -501,7 +681,7 @@ export const buildCibilReportData = ({
       },
       {
         ...DEFAULT_SUMMARY_ROWS[3],
-        value: summaryTotalAccounts ? String(summaryTotalAccounts) : "—",
+        value: creditMix,
       },
       {
         ...DEFAULT_SUMMARY_ROWS[4],
@@ -510,37 +690,37 @@ export const buildCibilReportData = ({
     ],
     detailMetrics: [
       {
-        icon: "🏦",
+        icon: "active-loans",
         label: "Active Loans",
         subLabel: "Open loan accounts",
         value: String(activeLoans || Math.max(0, summaryActiveAccounts - creditCards) || 0),
       },
       {
-        icon: "✅",
+        icon: "closed-loans",
         label: "Closed Loans",
         subLabel: "Closed loan accounts",
         value: String(closedLoans || summaryClosedAccounts || 0),
       },
       {
-        icon: "💳",
+        icon: "credit-cards",
         label: "Credit Cards",
         subLabel: "Reported card accounts",
         value: String(creditCards || 0),
       },
       {
-        icon: "📈",
+        icon: "utilization",
         label: "Utilization Ratio",
         subLabel: "Credit limit used",
         value: formatPercent(utilization),
       },
       {
-        icon: "🔎",
+        icon: "enquiries",
         label: "Enquiries",
         subLabel: "Recent bureau enquiries",
         value: enquiryCount ? String(enquiryCount) : "0",
       },
       {
-        icon: "🧾",
+        icon: "payment",
         label: "Payment History",
         subLabel: "On-time payment behaviour",
         value: formatPercent(paymentHistory),
@@ -557,11 +737,11 @@ export const buildCibilReportData = ({
           { label: "Total Outstanding", value: formatCurrency(totalOutstanding) },
           {
             label: "Secured Outstanding",
-            value: formatCurrency(toNumber(outstanding?.Outstanding_Balance_Secured)),
+            value: formatCurrency(securedOutstanding),
           },
           {
             label: "Unsecured Outstanding",
-            value: formatCurrency(toNumber(outstanding?.Outstanding_Balance_UnSecured)),
+            value: formatCurrency(unsecuredOutstanding),
           },
         ],
       },
@@ -584,10 +764,17 @@ export const buildCibilReportData = ({
         ],
       },
       {
-        title: "Raw Bureau Highlights",
-        rows: buildRows(
-          getPathValue(report, ["data.summary", "summary", "data.account_summary", "account_summary"]),
-        ),
+        title: "Bureau Report Details",
+        rows: bureauDetails.length
+          ? bureauDetails
+          : buildRows(
+              getPathValue(report, [
+                "data.summary",
+                "summary",
+                "data.account_summary",
+                "account_summary",
+              ]),
+            ),
       },
     ],
     recommendations: (() => {
@@ -595,16 +782,25 @@ export const buildCibilReportData = ({
         "data.recommendations",
         "recommendations",
       ]);
-      return recommendations.length
-        ? recommendations
-        : [
-            score >= 750
-              ? "Maintain low utilization and continue paying all dues on time."
-              : "Reduce credit utilization and avoid multiple applications in a short period.",
-            overdueAccounts
-              ? "Clear overdue balances and check whether the lender has updated the bureau record."
-              : "Review active accounts regularly and report incorrect bureau data.",
-          ];
+      if (recommendations.length) return recommendations;
+
+      return [
+        paymentHistory !== undefined && paymentHistory < 95
+          ? "Bring every EMI and card payment up to date, then keep future payments on schedule."
+          : "Continue paying every EMI and credit card bill on or before the due date.",
+        utilization !== undefined && utilization > 30
+          ? "Reduce revolving card balances toward 30% or less of the available limit."
+          : "Keep card utilization controlled and avoid using the full available limit.",
+        enquiryCount > 3
+          ? "Space out new credit applications to reduce repeated hard enquiries."
+          : "Apply for new credit selectively and only when it matches a real need.",
+        overdueAccounts > 0
+          ? "Clear overdue balances and confirm that lenders update the bureau after settlement."
+          : "Review active and closed accounts for incorrect balances, ownership, or status.",
+        creditAge !== "—"
+          ? "Keep older, well-managed accounts open when they remain useful and affordable."
+          : "Build a longer credit history with a small number of responsibly managed accounts.",
+      ];
     })(),
   };
 };

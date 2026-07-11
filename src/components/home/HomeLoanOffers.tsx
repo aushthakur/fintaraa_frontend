@@ -138,7 +138,7 @@ export function HomeLoanOffers() {
       <div className="mx-auto max-w-9xl rounded-3xl border border-gray-200 p-6 md:p-10 shadow-[0_4px_30px_rgba(0,0,0,0.015)]">
         {/* Main Centered Styled Section Title */}
         <div className="w-full text-center mb-8">
-          <h2 className="text-[24px] sm:text-[32px] md:text-[38px] font-bold text-gray-900 tracking-tight leading-tight">
+          <h2 className="text-[24px] font-bold leading-tight text-gray-900 sm:text-[30px] md:text-[34px]">
             {pluralLoanLabel(activeTab)} from{" "}
             <span className="text-[#12b76a]">7.10%*</span> Only with{" "}
             <span className="text-[#00529c]">Fintaraa</span>

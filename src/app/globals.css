@@ -76,6 +76,21 @@ main :where(p, li) {
   text-wrap: pretty;
 }
 
+.about-page :where(h1, h2, h3, p, li, span) {
+  overflow-wrap: break-word;
+  text-wrap: wrap;
+}
+
+.about-page :where(.max-w-9xl, .max-w-3xl, .max-w-2xl, .max-w-xl) {
+  width: 100%;
+}
+
+@media (max-width: 767px) {
+  .about-page :where(.max-w-9xl, .max-w-3xl, .max-w-2xl, .max-w-xl) {
+    max-width: calc(100vw - 2rem);
+  }
+}
+
 main
   :where(
     [class*="text-[#087443]"],

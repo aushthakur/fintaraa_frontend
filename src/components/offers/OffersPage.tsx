@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { motion, MotionConfig } from "framer-motion";
 import {
   ArrowRight,
   BadgeCheck,
@@ -29,10 +30,10 @@ import {
 import { OffersHero } from "./OffersHero";
 
 const categories = [
-  { label: "All Offers", value: "all" },
-  { label: "Loans", value: "loan" },
-  { label: "Credit Cards", value: "card" },
-  { label: "Insurance", value: "insurance" },
+  { label: "All Offers", value: "all", icon: Sparkles },
+  { label: "Loans", value: "loan", icon: WalletCards },
+  { label: "Credit Cards", value: "card", icon: CreditCard },
+  { label: "Insurance", value: "insurance", icon: ShieldCheck },
 ];
 
 const categoryMeta: Record<
@@ -122,6 +123,12 @@ const publicFallbackOffers: OfferDisplayRecord[] = [
 
 const isLoggedIn = () => getAuthType() === "user" && Boolean(getAuthToken());
 
+const normalizeOfferSearch = (value: string) =>
+  value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+
 const formatDate = (value?: string) => {
   if (!value) return "Limited period";
   const date = new Date(value);
@@ -139,20 +146,20 @@ function OfferSkeleton() {
       {Array.from({ length: 6 }).map((_, index) => (
         <div
           key={index}
-          className="overflow-hidden rounded-2xl border border-[#e5edf6] bg-white shadow-[0_16px_40px_rgba(16,24,40,0.05)]"
+          className="overflow-hidden rounded-lg border border-[#e1ebf2] bg-white"
         >
           <div className="aspect-video bg-[#edf3f8]" />
           <div className="p-4 md:p-5">
-            <div className="h-5 w-24 rounded-full bg-[#edf3f8]" />
+            <div className="h-5 w-24 rounded-md bg-[#edf3f8]" />
             <div className="mt-4 h-6 w-4/5 rounded bg-[#edf3f8]" />
             <div className="mt-3 h-4 w-full rounded bg-[#edf3f8]" />
             <div className="mt-2 h-4 w-2/3 rounded bg-[#edf3f8]" />
             <div className="mt-5 grid grid-cols-3 gap-2">
-              <div className="h-14 rounded-xl bg-[#edf3f8]" />
-              <div className="h-14 rounded-xl bg-[#edf3f8]" />
-              <div className="h-14 rounded-xl bg-[#edf3f8]" />
+              <div className="h-14 rounded-md bg-[#edf3f8]" />
+              <div className="h-14 rounded-md bg-[#edf3f8]" />
+              <div className="h-14 rounded-md bg-[#edf3f8]" />
             </div>
-            <div className="mt-5 h-10 rounded-xl bg-[#edf3f8]" />
+            <div className="mt-5 h-10 rounded-md bg-[#edf3f8]" />
           </div>
         </div>
       ))}
@@ -160,10 +167,16 @@ function OfferSkeleton() {
   );
 }
 
-function EmptyOffers({ onReset }: { onReset: () => void }) {
+function EmptyOffers({
+  onReset,
+  searching,
+}: {
+  onReset: () => void;
+  searching: boolean;
+}) {
   return (
     <div className="mx-auto grid max-w-3xl gap-5 py-10 text-center">
-      <div className="mx-auto h-28 w-28 overflow-hidden rounded-2xl bg-[#eef6ff] p-3">
+      <div className="mx-auto h-28 w-28 overflow-hidden rounded-lg bg-[#eef6ff] p-3">
         <Image
           src="/assets/offers/offer.png"
           alt="Fintaraa offers and rewards"
@@ -174,16 +187,17 @@ function EmptyOffers({ onReset }: { onReset: () => void }) {
         />
       </div>
       <h3 className="mt-5 text-[22px] font-extrabold text-[#111827]">
-        Offers are being refreshed
+        {searching ? "No matching offers found" : "Offers are being refreshed"}
       </h3>
       <p className="mt-2 text-[15px] font-semibold leading-7 text-[#667085]">
-        Switch category or view the current featured offers. Bank and partner
-        offers update automatically when new campaigns go live.
+        {searching
+          ? "Try another bank, product, or benefit, or return to all current offers."
+          : "Switch category or view the current featured offers. Bank and partner offers update automatically when new campaigns go live."}
       </p>
       <button
         type="button"
         onClick={onReset}
-        className="mt-6 inline-flex h-11 items-center justify-center rounded-full bg-[#005ca8] px-5 text-[13px] font-extrabold text-white"
+        className="mt-6 inline-flex h-11 items-center justify-center rounded-md bg-[#075cde] px-5 text-[13px] font-extrabold text-white transition-colors hover:bg-[#064cb8]"
       >
         View all offers
       </button>
@@ -195,6 +209,7 @@ export function OffersPage() {
   const router = useRouter();
   const [offers, setOffers] = useState<OfferRecord[]>([]);
   const [category, setCategory] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
   const [applyingId, setApplyingId] = useState("");
   const [error, setError] = useState("");
@@ -230,13 +245,34 @@ export function OffersPage() {
     };
   }, []);
 
-  const filteredOffers = useMemo(
-    () =>
-      category === "all"
-        ? offers
-        : offers.filter((offer) => offer.productCategory === category),
-    [category, offers],
-  );
+  const filteredOffers = useMemo(() => {
+    const words = normalizeOfferSearch(searchQuery).split(/\s+/).filter(Boolean);
+
+    return offers.filter((offer) => {
+      if (category !== "all" && offer.productCategory !== category) {
+        return false;
+      }
+      if (!words.length) return true;
+
+      const searchable = normalizeOfferSearch(
+        [
+          offer.title,
+          offer.lenderName,
+          offer.description,
+          offer.productCategory,
+          offer.productType,
+          offer.badge,
+          offer.rateLabel,
+          offer.amountLabel,
+          ...(offer.tags || []),
+        ]
+          .filter(Boolean)
+          .join(" "),
+      );
+
+      return words.every((word) => searchable.includes(word));
+    });
+  }, [category, offers, searchQuery]);
 
   const handleApply = async (offer: OfferRecord) => {
     if (!isLoggedIn()) {
@@ -276,69 +312,97 @@ export function OffersPage() {
   };
 
   return (
-    <main className="bg-white">
-      <OffersHero />
-      <section className="px-4 py-10 md:px-6 lg:px-8">
-        <div className="mx-auto max-w-9xl">
-          <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
-            <div>
-              <p className="inline-flex items-center gap-2 rounded-full bg-[#eef6ff] px-4 py-2 text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#005ca8]">
-                <Sparkles className="h-4 w-4" />
-                Live partner offers
-              </p>
-              <h2 className="mt-4 text-[28px] font-extrabold tracking-[-0.02em] text-[#111827] md:text-[36px]">
-                Exclusive offers matched to your profile
-              </h2>
-              <p className="mt-2 max-w-2xl text-[15px] font-semibold leading-7 text-[#667085]">
-                Browse active loan, card, and insurance offers managed from the
-                admin panel.
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {categories.map((item) => (
-                <button
-                  key={item.value}
-                  type="button"
-                  onClick={() => setCategory(item.value)}
-                  className={`h-11 rounded-full px-5 text-[13px] font-extrabold transition ${
-                    category === item.value
-                      ? "bg-[#005ca8] text-white shadow-[0_12px_26px_rgba(0,92,168,0.18)]"
-                      : "bg-[#f3f7fb] text-[#475467] hover:bg-[#e8f1fb]"
-                  }`}
+    <MotionConfig reducedMotion="user">
+      <main className="bg-white">
+        <OffersHero
+          offerCount={filteredOffers.length}
+          query={searchQuery}
+          onQueryChange={setSearchQuery}
+        />
+        <section className="px-4 py-10 md:px-6 md:py-12 lg:px-8 lg:py-14">
+          <div className="mx-auto max-w-9xl">
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.25 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between"
+            >
+              <div>
+                <p className="inline-flex items-center gap-2 text-[12px] font-extrabold text-[#075cde]">
+                  <Sparkles className="h-4 w-4" aria-hidden="true" />
+                  Live partner offers
+                </p>
+                <h2 className="mt-3 max-w-2xl text-[27px] font-extrabold leading-tight text-[#102f49] sm:text-[31px] lg:text-[34px]">
+                  Benefits selected for real financial needs
+                </h2>
+                <p className="mt-3 max-w-2xl text-[14px] font-medium leading-7 text-[#667f91] sm:text-[15px]">
+                  Compare current value, validity, and key benefits before you
+                  continue with an application.
+                </p>
+              </div>
+              <div>
+                <p className="mb-2 text-[11px] font-bold text-[#7890a2]">
+                  {loading
+                    ? "Loading available offers"
+                    : `${filteredOffers.length} ${
+                        filteredOffers.length === 1 ? "offer" : "offers"
+                      } available`}
+                </p>
+                <div
+                  className="flex max-w-full gap-2 overflow-x-auto pb-1"
+                  aria-label="Filter offers by category"
                 >
-                  {item.label}
-                </button>
-              ))}
-            </div>
-          </div>
+                  {categories.map((item) => {
+                    const CategoryIcon = item.icon;
+                    return (
+                      <motion.button
+                        key={item.value}
+                        type="button"
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => setCategory(item.value)}
+                        className={`inline-flex h-10 shrink-0 items-center gap-2 rounded-lg border px-3.5 text-[12px] font-extrabold transition-colors sm:h-11 sm:px-4 ${
+                          category === item.value
+                            ? "border-[#075cde] bg-[#075cde] text-white"
+                            : "border-[#d9e6ef] bg-white text-[#526e82] hover:border-[#9ec5db] hover:bg-[#f4f9fc] hover:text-[#075cde]"
+                        }`}
+                      >
+                        <CategoryIcon className="h-4 w-4" aria-hidden="true" />
+                        {item.label}
+                      </motion.button>
+                    );
+                  })}
+                </div>
+              </div>
+            </motion.div>
 
-          {message ? (
-            <div className="mt-6 flex items-center gap-2 rounded-2xl bg-[#ecfdf3] px-4 py-3 text-[13px] font-extrabold text-[#027a48]">
-              <CheckCircle2 className="h-4 w-4" />
-              {message}
-            </div>
-          ) : null}
-          {error ? (
-            <div className="mt-6 rounded-2xl bg-red-50 px-4 py-3 text-[13px] font-extrabold text-red-700">
-              {error}
-            </div>
-          ) : null}
+            {message ? (
+              <div className="mt-6 flex items-center gap-2 rounded-lg bg-[#ecfdf3] px-4 py-3 text-[13px] font-extrabold text-[#027a48]">
+                <CheckCircle2 className="h-4 w-4" />
+                {message}
+              </div>
+            ) : null}
+            {error ? (
+              <div className="mt-6 rounded-lg bg-red-50 px-4 py-3 text-[13px] font-extrabold text-red-700">
+                {error}
+              </div>
+            ) : null}
 
-          <WhatsAppConsent
-            checked={whatsappConsent}
-            className="mt-6 max-w-3xl"
-            onChange={(checked) => {
-              setWhatsappConsent(checked);
-              if (checked) setError("");
-            }}
-          />
+            <WhatsAppConsent
+              checked={whatsappConsent}
+              className="mt-6 max-w-3xl"
+              onChange={(checked) => {
+                setWhatsappConsent(checked);
+                if (checked) setError("");
+              }}
+            />
 
-          <div className="mt-8">
-            {loading ? (
-              <OfferSkeleton />
-            ) : filteredOffers.length ? (
-              <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 lg:gap-5">
-                {filteredOffers.map((offer) => {
+            <div className="mt-8">
+              {loading ? (
+                <OfferSkeleton />
+              ) : filteredOffers.length ? (
+                <div className="grid gap-4 sm:grid-cols-2 lg:gap-5 xl:grid-cols-3 2xl:grid-cols-4">
+                  {filteredOffers.map((offer, index) => {
                   const meta =
                     categoryMeta[offer.productCategory || "loan"] ||
                     categoryMeta.loan;
@@ -362,10 +426,20 @@ export function OffersPage() {
                     },
                   ];
 
-                  return (
-                    <div
+                    return (
+                      <motion.article
                       key={offer._id}
-                      className="group flex min-w-0 flex-col overflow-hidden rounded-2xl border border-[#dfeaf5] bg-white shadow-[0_16px_42px_rgba(16,24,40,0.06)] transition hover:-translate-y-0.5 hover:border-[#bdd8ef] hover:shadow-[0_22px_60px_rgba(16,24,40,0.1)]"
+                      layout
+                      initial={{ opacity: 0, y: 18 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      whileHover={{ y: -3 }}
+                      viewport={{ once: true, amount: 0.12 }}
+                      transition={{
+                        duration: 0.42,
+                        delay: Math.min(index * 0.05, 0.2),
+                        ease: [0.22, 1, 0.36, 1],
+                      }}
+                      className="group flex min-w-0 flex-col overflow-hidden rounded-lg border border-[#dce8f0] bg-white transition-colors hover:border-[#9fc8df]"
                     >
                       <div
                         className={`relative overflow-hidden bg-linear-to-br ${meta.surface}`}
@@ -382,21 +456,20 @@ export function OffersPage() {
                           ) : (
                             <div className="absolute inset-0 flex items-center justify-center">
                               <span
-                                className={`inline-flex h-16 w-16 items-center justify-center rounded-2xl ${meta.tone}`}
+                                className={`inline-flex h-16 w-16 items-center justify-center rounded-lg ${meta.tone}`}
                               >
                                 <Icon className="h-7 w-7" />
                               </span>
                             </div>
                           )}
-                          <div className="absolute inset-0 bg-linear-to-t from-[#061528]/70 via-[#061528]/10 to-transparent" />
                           <div className="absolute left-3 top-3 flex max-w-[calc(100%-1.5rem)] items-center gap-2">
                             <span
-                              className={`inline-flex h-7 max-w-38 items-center gap-1.5 rounded-full px-2.5 text-[10px] font-extrabold ${meta.chip}`}
+                              className={`inline-flex h-7 max-w-38 items-center gap-1.5 rounded-md px-2.5 text-[10px] font-extrabold ${meta.chip}`}
                             >
                               <Icon className="h-3.5 w-3.5 shrink-0" />
                               <span className="truncate">{meta.label}</span>
                             </span>
-                            <span className="inline-flex h-7 max-w-28 items-center rounded-full bg-white/90 px-2.5 text-[10px] font-extrabold uppercase tracking-wide text-[#005ca8] backdrop-blur">
+                            <span className="inline-flex h-7 max-w-28 items-center rounded-md border border-white/80 bg-white/90 px-2.5 text-[10px] font-extrabold uppercase text-[#075cde] backdrop-blur">
                               <span className="truncate">
                                 {offer.badge || "Active"}
                               </span>
@@ -410,7 +483,8 @@ export function OffersPage() {
                           <p className="min-w-0 truncate text-[12px] font-extrabold text-[#005ca8] md:text-[13px]">
                             {offer.lenderName}
                           </p>
-                          <span className="shrink-0 rounded-full bg-[#ecfdf3] px-2.5 py-1 text-[10px] font-extrabold text-[#027a48]">
+                          <span className="inline-flex shrink-0 items-center gap-1.5 text-[10px] font-extrabold text-[#027a48]">
+                            <span className="h-1.5 w-1.5 rounded-full bg-[#12b76a]" />
                             Live
                           </span>
                         </div>
@@ -423,19 +497,19 @@ export function OffersPage() {
                             "Apply through Fintaraa and our team will help you with the next steps."}
                         </p>
 
-                        <div className="my-4 grid grid-cols-3 gap-1.5 rounded-2xl border border-[#edf3f8] bg-[#fbfdff] p-1.5">
+                        <div className="my-4 grid grid-cols-3 border-y border-[#e7eef4] py-3">
                           {highlights.map((item) => {
                             const Metric = item.icon;
                             return (
                               <div
                                 key={item.label}
-                                className="min-w-0 rounded-xl bg-white px-2 py-2 shadow-[0_4px_14px_rgba(16,24,40,0.03)]"
+                                className="min-w-0 border-r border-[#e7eef4] px-2 last:border-r-0"
                               >
-                                <div className="flex items-center gap-1 text-[9px] font-extrabold uppercase tracking-wide text-[#7a869a]">
+                                <div className="flex items-center gap-1 text-[9px] font-extrabold uppercase text-[#7a869a]">
                                   <Metric className="h-3.5 w-3.5 shrink-0 text-[#005ca8]" />
                                   <span className="truncate">{item.label}</span>
                                 </div>
-                                <p className="mt-1 line-clamp-1 text-[10.5px] font-extrabold leading-4 text-[#1f2937] md:text-[11px]">
+                                <p className="mt-1 min-h-8 text-[10.5px] font-extrabold leading-4 text-[#1f2937] md:text-[11px]">
                                   {item.value}
                                 </p>
                               </div>
@@ -447,7 +521,7 @@ export function OffersPage() {
                           {(offer.tags || []).slice(0, 3).map((tag) => (
                             <span
                               key={tag}
-                              className="max-w-full truncate rounded-full bg-[#f3f7fb] px-2.5 py-1 text-[10.5px] font-bold text-[#667085] md:px-3 md:text-[11px]"
+                              className="max-w-full truncate rounded-md bg-[#f3f7fb] px-2.5 py-1 text-[10.5px] font-bold text-[#667085] md:px-3 md:text-[11px]"
                             >
                               {tag}
                             </span>
@@ -458,7 +532,7 @@ export function OffersPage() {
                           type="button"
                           onClick={() => handleApply(offer)}
                           disabled={applyingId === offer._id}
-                          className="mt-4 inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#005ca8] px-4 text-[13px] font-extrabold text-white transition hover:bg-[#004b93] disabled:cursor-not-allowed disabled:opacity-70 md:mt-auto"
+                          className="mt-4 inline-flex h-11 items-center justify-center gap-2 rounded-md bg-[#075cde] px-4 text-[13px] font-extrabold text-white transition-colors hover:bg-[#064cb8] disabled:cursor-not-allowed disabled:opacity-70 md:mt-auto"
                         >
                           {applyingId === offer._id ? (
                             <Loader2 className="h-4 w-4 animate-spin" />
@@ -469,17 +543,24 @@ export function OffersPage() {
                           <ArrowRight className="h-4 w-4" />
                         </button>
                       </div>
-                    </div>
-                  );
-                })}
-              </div>
-            ) : (
-              <EmptyOffers onReset={() => setCategory("all")} />
-            )}
+                      </motion.article>
+                    );
+                  })}
+                </div>
+              ) : (
+                <EmptyOffers
+                  searching={Boolean(searchQuery.trim()) || category !== "all"}
+                  onReset={() => {
+                    setCategory("all");
+                    setSearchQuery("");
+                  }}
+                />
+              )}
+            </div>
           </div>
-        </div>
-      </section>
-      <AppDownloadBanner />
-    </main>
+        </section>
+        <AppDownloadBanner />
+      </main>
+    </MotionConfig>
   );
 }

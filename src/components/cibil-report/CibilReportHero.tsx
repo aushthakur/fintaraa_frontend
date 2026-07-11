@@ -1,8 +1,55 @@
 "use client";
 
-import { ArrowDownToLine } from "lucide-react";
+import { motion, MotionConfig } from "framer-motion";
+import type { LucideIcon } from "lucide-react";
+import {
+  ArrowDownToLine,
+  BadgeCheck,
+  CalendarClock,
+  CircleCheckBig,
+  CreditCard,
+  Database,
+  FileCheck2,
+  Gauge,
+  Layers3,
+  SearchCheck,
+  ShieldCheck,
+} from "lucide-react";
 import CreditScoreGauge from "./CreditScoreGauge";
-import type { CibilReportViewData } from "./types";
+import type {
+  CibilMetricIcon,
+  CibilReportViewData,
+} from "./types";
+
+const metricIcons: Record<CibilMetricIcon, LucideIcon> = {
+  payment: CircleCheckBig,
+  utilization: Gauge,
+  enquiries: SearchCheck,
+  accounts: Layers3,
+  age: CalendarClock,
+  "active-loans": BadgeCheck,
+  "closed-loans": CircleCheckBig,
+  "credit-cards": CreditCard,
+};
+
+const metricTones: Record<CibilMetricIcon, string> = {
+  payment: "bg-[#e9f8ef] text-[#168447]",
+  utilization: "bg-[#fff4dd] text-[#a15c00]",
+  enquiries: "bg-[#f0ecff] text-[#6548c7]",
+  accounts: "bg-[#e8f3fb] text-[#075cde]",
+  age: "bg-[#e7f7f6] text-[#087f77]",
+  "active-loans": "bg-[#e8f3fb] text-[#075cde]",
+  "closed-loans": "bg-[#e9f8ef] text-[#168447]",
+  "credit-cards": "bg-[#f0ecff] text-[#6548c7]",
+};
+
+const scoreBand = (score: number) => {
+  if (!score) return { label: "Not fetched", tone: "text-[#667f91]" };
+  if (score < 650) return { label: "Needs attention", tone: "text-[#c2413a]" };
+  if (score < 700) return { label: "Fair", tone: "text-[#a15c00]" };
+  if (score < 750) return { label: "Good", tone: "text-[#075cde]" };
+  return { label: "Excellent", tone: "text-[#168447]" };
+};
 
 export function CibilReportHero({
   data,
@@ -13,149 +60,178 @@ export function CibilReportHero({
   downloadingReport?: boolean;
   onDownloadReport?: () => void;
 }) {
+  const band = scoreBand(data.score);
+
   return (
-    <section className="relative w-full max-w-9xl mx-auto bg-white px-4 sm:px-6 py-8 sm:py-10 antialiased text-[#111827] overflow-hidden">
-      <div className="absolute inset-0 overflow-visible pointer-events-none z-0">
-        {/* Left-most rectangle bleeding off the screen */}
-        <div
-          className="absolute hidden md:block bg-[#e0effe]"
-          style={{
-            width: "55px",
-            height: "90px",
-            top: "-20px",
-            left: "-15px",
-            borderRadius: "5px",
-            transform: "rotate(140deg)",
-          }}
-        />
-        {/* Right parallel rectangle matching the screenshot position */}
-        <div
-          className="absolute hidden md:block bg-[#e0effe]"
-          style={{
-            width: "60px",
-            height: "120px",
-            top: "-80px",
-            left: "40px",
-            borderRadius: "5px",
-            transform: "rotate(140deg)",
-          }}
-        />
-      </div>
-      <div className="grid items-start gap-8 sm:gap-10 md:gap-12 grid-cols-1 md:grid-cols-2 mt-3 ms-0 sm:ms-6">
-        {/* LEFT SIDE: CREDIT SCORE */}
-        <div className="w-full space-y-4">
-          <div>
-            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-gray-900">
-              You are on FREE Credit Score Plan
-            </h1>
-
-            <div className="mt-3 flex gap-3">
-              <button
-                type="button"
-                className="rounded-md bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-5 py-2 text-xs font-bold text-white transition-colors hover:brightness-110"
-              >
-                CIBIL
-              </button>
-
-              <button
-                type="button"
-                className="rounded-md border border-gray-300 bg-white px-5 py-2 text-xs font-bold text-gray-400 hover:text-gray-600 transition-colors"
-              >
-                EXPERIAN
-              </button>
-            </div>
-
-            <p className="mt-4 text-sm font-medium text-gray-700">
-              Hey <span className="font-bold text-blue-600">{data.userName}!</span>{" "}
-              Your Credit Score as of {data.scoreDateLabel}
-            </p>
-          </div>
-
-          {/* SCORE CARD CONTAINER */}
-          <div className="w-full max-w-md rounded-2xl border border-gray-200 bg-white p-4 sm:p-6 mx-auto md:mx-0">
-            <h3 className="text-base text-center font-bold tracking-tight text-gray-700">
-              Your Current Score
-            </h3>
-
-            {/* Reusable Gauge Component - responsive via ResizeObserver */}
-            <div className="flex justify-center w-full">
-              <CreditScoreGauge score={data.score} scale={1.5} />
-            </div>
-
-            <div className="flex flex-col items-center gap-3">
-              <button
-                type="button"
-                onClick={onDownloadReport}
-                disabled={downloadingReport}
-                className="flex h-11 w-full items-center justify-center rounded-xl bg-linear-to-r from-[#0fae5e] to-[#17cb70] text-sm font-bold text-white transition-all hover:brightness-110 active:scale-[0.99]"
-              >
-                {downloadingReport ? "Preparing Report..." : "Download Full Report"}
-              </button>
-
-              <p className="text-[11px] font-semibold text-gray-400">
-                Report Date: {data.reportDateLabel}
+    <MotionConfig reducedMotion="user">
+      <section className="border-b border-[#d9e8f2] bg-[#f3f9fd] px-4 py-9 md:px-6 md:py-11 lg:px-8">
+        <div className="mx-auto max-w-9xl">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between"
+          >
+            <div>
+              <div className="flex items-center gap-2 text-[12px] font-bold text-[#075cde]">
+                <span className="flex h-8 w-8 items-center justify-center rounded-md bg-[#ddecf8]">
+                  <FileCheck2 className="h-4 w-4" aria-hidden="true" />
+                </span>
+                Free credit score plan
+              </div>
+              <h1 className="mt-4 text-[31px] font-extrabold leading-tight text-[#102f49] sm:text-[36px] lg:text-[40px]">
+                Your CIBIL credit report
+              </h1>
+              <p className="mt-3 max-w-2xl text-[14px] font-medium leading-7 text-[#58758a] sm:text-[15px]">
+                Hi <span className="font-bold text-[#254e69]">{data.userName}</span>,
+                this overview is built from the latest report saved securely to
+                your Fintaraa profile.
               </p>
             </div>
-          </div>
-        </div>
 
-        {/* RIGHT SIDE: QUICK REPORT SUMMARY */}
-        <div className="w-full">
-          <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 mb-4 sm:mb-6 text-center md:text-left">
-            Quick Report Summary
-          </h2>
-
-          <div className="rounded-2xl border border-gray-300 bg-white p-4 sm:p-6 mx-auto md:mx-0">
-            <div className="divide-y divide-gray-100">
-              {data.summaryRows.map((row, idx) => (
-                <div
-                  key={idx}
-                  className="flex items-center justify-between py-3 sm:py-4 first:pt-0 last:pb-5"
-                >
-                  <div className="flex items-center gap-3 sm:gap-4">
-                    <span className="shrink-0 text-xl sm:text-2xl w-5 sm:w-6 text-center">
-                      {row.icon}
-                    </span>
-                    <div>
-                      <h4 className="text-[13px] sm:text-[15px] font-bold tracking-tight text-gray-800 leading-snug">
-                        {row.label}
-                      </h4>
-                      <p className="text-[11px] sm:text-xs font-medium text-gray-400 mt-0.5">
-                        {row.subLabel}
-                      </p>
-                    </div>
-                  </div>
-
-                  <span className="text-[13px] sm:text-[15px] font-bold text-gray-900 shrink-0">
-                    {row.value}
-                  </span>
-                </div>
-              ))}
+            <div className="flex flex-wrap gap-x-5 gap-y-2 text-[11px] font-bold text-[#526e82]">
+              <span className="inline-flex items-center gap-2">
+                <Database className="h-4 w-4 text-[#075cde]" aria-hidden="true" />
+                {data.sourceLabel}
+              </span>
+              <span className="inline-flex items-center gap-2">
+                <CalendarClock className="h-4 w-4 text-[#075cde]" aria-hidden="true" />
+                Updated {data.scoreDateLabel}
+              </span>
+              <span className="inline-flex items-center gap-2">
+                <ShieldCheck className="h-4 w-4 text-[#168447]" aria-hidden="true" />
+                Profile synced
+              </span>
             </div>
+          </motion.div>
 
-            {/* Bottom Action Card */}
-            <div className="flex items-center justify-between rounded-2xl border border-[#bbf2d1] bg-[#e6f7ed] px-4 sm:px-5 py-3 sm:py-4 mt-2">
-              <div>
-                <p className="text-[13px] sm:text-[15px] font-bold text-[#00a653]">
-                  Oldest Credit Account
-                </p>
-                <p className="text-[11px] sm:text-xs font-medium text-gray-400 mt-0.5">
-                  In depth analysis of your Credit Score
-                </p>
+          <div className="mt-7 grid gap-5 lg:grid-cols-[minmax(0,0.88fr)_minmax(0,1.12fr)]">
+            <motion.article
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+              className="flex min-h-110 flex-col rounded-lg border border-[#c9dfec] bg-white p-5 sm:p-6"
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-[12px] font-extrabold text-[#075cde]">
+                    TransUnion CIBIL
+                  </p>
+                  <h2 className="mt-1 text-[20px] font-extrabold text-[#102f49]">
+                    Current credit score
+                  </h2>
+                </div>
+                <span className="inline-flex items-center gap-1.5 rounded-md bg-[#e9f8ef] px-2.5 py-1.5 text-[10px] font-extrabold text-[#168447]">
+                  <BadgeCheck className="h-3.5 w-3.5" aria-hidden="true" />
+                  Profile verified
+                </span>
+              </div>
+
+              <div className="mx-auto mt-2 w-full max-w-105 flex-1">
+                <CreditScoreGauge score={data.score} scale={1.05} />
+              </div>
+
+              <div className="grid grid-cols-2 border-y border-[#e3edf3] py-3">
+                <div className="border-r border-[#e3edf3] pr-3">
+                  <p className="text-[10px] font-bold text-[#7890a2]">Score band</p>
+                  <p className={`mt-1 text-[14px] font-extrabold ${band.tone}`}>
+                    {band.label}
+                  </p>
+                </div>
+                <div className="pl-4">
+                  <p className="text-[10px] font-bold text-[#7890a2]">Report date</p>
+                  <p className="mt-1 text-[14px] font-extrabold text-[#254e69]">
+                    {data.reportDateLabel}
+                  </p>
+                </div>
               </div>
 
               <button
                 type="button"
                 onClick={onDownloadReport}
-                disabled={downloadingReport}
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] text-white transition-transform hover:scale-105 active:scale-95 shadow-sm"
+                disabled={downloadingReport || !data.reportAvailable}
+                className="mt-4 inline-flex h-11 w-full items-center justify-center gap-2 rounded-md bg-[#075cde] px-4 text-[13px] font-extrabold text-white transition-colors hover:bg-[#064cb8] disabled:cursor-not-allowed disabled:opacity-60"
               >
-                <ArrowDownToLine className="h-5 w-5" strokeWidth={2.5} />
+                <ArrowDownToLine className="h-4 w-4" aria-hidden="true" />
+                {downloadingReport ? "Preparing report..." : "Download full report"}
               </button>
-            </div>
+            </motion.article>
+
+            <motion.article
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.14, ease: [0.22, 1, 0.36, 1] }}
+              className="rounded-lg border border-[#c9dfec] bg-white p-5 sm:p-6"
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-[12px] font-extrabold text-[#075cde]">
+                    At-a-glance factors
+                  </p>
+                  <h2 className="mt-1 text-[20px] font-extrabold text-[#102f49]">
+                    Quick report summary
+                  </h2>
+                </div>
+                <span className="rounded-md bg-[#edf6fc] px-2.5 py-1.5 text-[10px] font-bold text-[#526e82]">
+                  Live profile data
+                </span>
+              </div>
+
+              <div className="mt-5 divide-y divide-[#e6eef3]">
+                {data.summaryRows.map((row) => {
+                  const Icon = metricIcons[row.icon];
+                  return (
+                    <div
+                      key={row.label}
+                      className="flex items-center justify-between gap-4 py-3.5 first:pt-0 last:pb-0"
+                    >
+                      <div className="flex min-w-0 items-center gap-3">
+                        <span
+                          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-md ${metricTones[row.icon]}`}
+                        >
+                          <Icon className="h-4 w-4" aria-hidden="true" />
+                        </span>
+                        <div className="min-w-0">
+                          <h3 className="text-[13px] font-extrabold text-[#254e69]">
+                            {row.label}
+                          </h3>
+                          <p className="mt-0.5 text-[10px] font-semibold text-[#7890a2] sm:text-[11px]">
+                            {row.subLabel}
+                          </p>
+                        </div>
+                      </div>
+                      <span className="max-w-30 text-right text-[14px] font-extrabold text-[#102f49] sm:text-[15px]">
+                        {row.value}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="mt-5 flex flex-col gap-3 border-t border-[#e3edf3] pt-4 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p className="text-[12px] font-extrabold text-[#254e69]">
+                    Detailed bureau analysis
+                  </p>
+                  <p className="mt-1 text-[10px] font-semibold text-[#7890a2]">
+                    Accounts, balances, enquiries and payment behaviour
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={onDownloadReport}
+                  disabled={downloadingReport || !data.reportAvailable}
+                  title="Download detailed CIBIL report"
+                  className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-md border border-[#a9cde0] px-3.5 text-[11px] font-extrabold text-[#075cde] transition-colors hover:border-[#075cde] hover:bg-[#f0f7fc] disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  <ArrowDownToLine className="h-4 w-4" aria-hidden="true" />
+                  Full report
+                </button>
+              </div>
+            </motion.article>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </MotionConfig>
   );
 }
