@@ -196,7 +196,7 @@ export function CibilReportPage() {
               type="button"
               onClick={handleRefreshReport}
               disabled={reportLoading}
-              className="inline-flex h-9 items-center justify-center rounded-full border border-[#13a653] px-4 text-[12px] font-black text-[#13a653] disabled:cursor-not-allowed disabled:opacity-60"
+              className="inline-flex h-9 items-center justify-center rounded-full border border-[#13a653] px-4 text-[12px] font-extrabold text-[#13a653] disabled:cursor-not-allowed disabled:opacity-60"
             >
               {reportLoading ? "Refreshing..." : "Refresh Report"}
             </button>
@@ -225,10 +225,10 @@ export function CibilReportPage() {
                 <div className="flex items-start gap-3">
                   <span className="text-[22px]">{item.icon}</span>
                   <div>
-                    <p className="text-[12px] font-black text-[#005ca8]">
+                    <p className="text-[12px] font-extrabold text-[#005ca8]">
                       {item.label}
                     </p>
-                    <p className="mt-1 text-[20px] font-black text-[#1f2937]">
+                    <p className="mt-1 text-[20px] font-extrabold text-[#1f2937]">
                       {item.value}
                     </p>
                     <p className="mt-1 text-[11px] font-semibold text-[#98a2b3]">
@@ -246,7 +246,7 @@ export function CibilReportPage() {
                 key={section.title}
                 className="rounded border border-[#c7def3] bg-[#f8fbff] p-4"
               >
-                <h3 className="text-[14px] font-black text-[#1f2937]">
+                <h3 className="text-[14px] font-extrabold text-[#1f2937]">
                   {section.title}
                 </h3>
                 <div className="mt-3 grid gap-2">
@@ -272,7 +272,7 @@ export function CibilReportPage() {
           </div>
 
           <div className="rounded border border-[#c7def3] bg-white p-4">
-            <h3 className="text-[14px] font-black text-[#1f2937]">
+            <h3 className="text-[14px] font-extrabold text-[#1f2937]">
               Recommendations
             </h3>
             <ul className="mt-3 grid gap-2 text-[12px] font-semibold leading-5 text-[#667085]">
@@ -292,7 +292,7 @@ export function CibilReportPage() {
           </p>
           <a
             href="/support"
-            className="rounded-full border border-[#13a653] px-6 py-2 text-[12px] font-black text-[#13a653] whitespace-nowrap self-start sm:self-center"
+            className="rounded-full border border-[#13a653] px-6 py-2 text-[12px] font-extrabold text-[#13a653] whitespace-nowrap self-start sm:self-center"
           >
             Need help? Contact Support
           </a>

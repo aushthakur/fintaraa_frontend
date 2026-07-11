@@ -48,7 +48,7 @@ export function BlogVisual({
           {category}
         </p>
         <h3
-          className={`mt-2 max-w-xl font-black leading-tight ${
+          className={`mt-2 max-w-xl font-extrabold leading-tight ${
             compact ? "text-[18px]" : "text-[34px]"
           }`}
         >

@@ -57,10 +57,10 @@ export default function SitemapPage() {
   return (
     <main className="bg-white px-4 py-12 md:px-6 lg:px-8">
       <section className="mx-auto max-w-9xl">
-        <p className="text-[12px] font-black uppercase tracking-[0.16em] text-[#005ca8]">
+        <p className="text-[12px] font-extrabold uppercase tracking-[0.16em] text-[#005ca8]">
           Sitemap
         </p>
-        <h1 className="mt-4 text-[38px] font-black tracking-[-0.02em] text-[#111827] md:text-[54px]">
+        <h1 className="mt-4 text-[38px] font-extrabold tracking-[-0.02em] text-[#111827] md:text-[54px]">
           Find every important page
         </h1>
         <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
@@ -69,7 +69,7 @@ export default function SitemapPage() {
               key={group.title}
               className="rounded-2xl border border-[#e4edf6] bg-white p-5 shadow-[0_18px_48px_rgba(16,24,40,0.05)]"
             >
-              <h2 className="text-[18px] font-black text-[#111827]">
+              <h2 className="text-[18px] font-extrabold text-[#111827]">
                 {group.title}
               </h2>
               <div className="mt-4 grid gap-2">

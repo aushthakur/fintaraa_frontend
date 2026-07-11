@@ -7,7 +7,7 @@ export function DsaWhyChoose() {
       <div className="mx-auto max-w-9xl">
         <div className="grid gap-6 rounded-[28px] bg-[#0b5aa8] p-5 text-white md:p-7 lg:grid-cols-[0.9fr_1.4fr] lg:items-start">
           <div>
-            <p className="text-[12px] font-black uppercase tracking-wide text-[#9ee6bd]">
+            <p className="text-[12px] font-extrabold uppercase tracking-wide text-[#9ee6bd]">
               Why Choose Fintaraa?
             </p>
             <h2 className="mt-2 max-w-md text-[26px] font-extrabold leading-tight tracking-[-0.03em] md:text-[34px]">
@@ -19,7 +19,7 @@ export function DsaWhyChoose() {
             </p>
 
             <div className="mt-6 rounded-[20px] bg-white/10 p-4">
-              <div className="flex items-center gap-2 text-[13px] font-black text-white">
+              <div className="flex items-center gap-2 text-[13px] font-extrabold text-white">
                 <CheckCircle2 className="h-4 w-4 text-[#9ee6bd]" />
                 Built for partner growth
               </div>

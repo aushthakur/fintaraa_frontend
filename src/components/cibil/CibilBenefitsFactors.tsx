@@ -59,41 +59,43 @@ export function CibilBenefitsFactors() {
   return (
     <>
       {/* SECTION 1: Why Check Your CIBIL Score? (image_9eb7ab.png) */}
-      <section className="bg-[#00529c] px-4 py-16 md:px-6 lg:px-8 w-full select-none text-white">
+      <section className="w-full select-none bg-[#00529c] px-4 py-10 text-white md:px-6 md:py-14 lg:px-8">
         <div className="mx-auto max-w-9xl">
           {/* Main Underlined Section Heading Stack */}
           <div className="flex flex-col items-start">
-            <h2 className="text-[24px] sm:text-[28px] md:text-[36px] font-bold tracking-tight text-white relative pb-2 inline-block">
+            <h2 className="relative inline-block pb-2 text-[22px] font-bold tracking-tight text-white sm:text-[28px] md:text-[34px]">
               Why Check Your CIBIL Score?
               {/* White accent bottom rule highlight */}
-              <div className="absolute bottom-0 left-0 w-full h-[2.5px] bg-white rounded-full opacity-90" />
+              <div className="absolute bottom-0 left-0 h-[2.5px] w-full rounded-full bg-white opacity-90" />
             </h2>
 
-            <p className="mt-4 max-w-xl text-[14px] md:text-[15px] font-normal text-white/85 leading-relaxed">
+            <p className="mt-3 max-w-xl text-[13px] font-normal leading-6 text-white/85 md:text-[15px]">
               Checking your score regularly helps you stay financially healthy
               and get the best offers.
             </p>
           </div>
 
           {/* Premium White Content Cards Layout Grid */}
-          <div className="mt-12 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-7 grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-4 lg:grid-cols-4">
             {benefits.map(({ title, text, icon: Icon }) => (
               <article
                 key={title}
-                className="rounded-2xl bg-white p-6 md:p-7 flex flex-col justify-start min-h-55 transition-transform duration-200 hover:scale-[1.01] shadow-[0_4px_25px_rgba(0,0,0,0.02)]"
+                className="flex h-full min-w-0 items-start gap-3 rounded-xl bg-white p-4 shadow-[0_4px_25px_rgba(0,0,0,0.02)] transition-transform duration-200 hover:scale-[1.01] sm:p-5 lg:flex-col lg:gap-0"
               >
                 {/* Embedded Soft-Colored Icon Box Container */}
-                <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-[#e8f4ff] text-[#00529c]">
-                  <Icon className="h-5 w-5 stroke-[1.8]" />
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#e8f4ff] text-[#00529c] lg:h-11 lg:w-11">
+                  <Icon className="h-4.5 w-4.5 stroke-[1.8] lg:h-5 lg:w-5" />
                 </div>
 
                 {/* Card Context Data Details Group */}
-                <h3 className="mt-6 text-[16px] font-bold text-gray-900 leading-tight tracking-tight">
-                  {title}
-                </h3>
-                <p className="mt-2 text-[13px] font-medium leading-relaxed text-gray-500 max-w-52.5">
-                  {text}
-                </p>
+                <div className="min-w-0 lg:mt-5">
+                  <h3 className="wrap-break-word text-[14px] font-bold leading-tight tracking-tight text-gray-900 md:text-[15px] lg:text-[16px]">
+                    {title}
+                  </h3>
+                  <p className="mt-1.5 text-[12px] font-medium leading-5 text-gray-500 md:text-[13px]">
+                    {text}
+                  </p>
+                </div>
               </article>
             ))}
           </div>
@@ -101,39 +103,41 @@ export function CibilBenefitsFactors() {
       </section>
 
       {/* SECTION 2: What Affects Your CIBIL Score? (image_9eb010.png) */}
-      <section className="bg-white px-4 py-12 md:px-6 lg:px-8 w-full select-none">
+      <section className="w-full select-none bg-white px-4 py-10 md:px-6 md:py-12 lg:px-8">
         <div className="mx-auto max-w-9xl">
           {/* Section Heading Group Layout */}
-          <div className="flex flex-col items-start text-left mb-10">
-            <h2 className="text-[24px] sm:text-[32px] font-bold tracking-tight text-[#222222]">
+          <div className="mb-7 flex flex-col items-start text-left md:mb-9">
+            <h2 className="text-[22px] font-bold tracking-tight text-[#222222] sm:text-[30px]">
               What affects your Score?
             </h2>
-            <p className="mt-2 text-[14px] font-medium text-gray-500 max-w-xl leading-relaxed">
+            <p className="mt-2 max-w-xl text-[13px] font-medium leading-6 text-gray-500 md:text-[14px]">
               Understand the key factors that shape your CIBIL score.
             </p>
           </div>
 
           {/* Dynamic Card Matrix Grid matching image_9eb010.png */}
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
             {factors.map((item) => {
               const IconComponent = item.icon;
               return (
                 <article
                   key={item.title}
-                  className="min-h-62.5 rounded-xl border border-gray-200/80 bg-white p-5 flex flex-col justify-start text-left shadow-[0_2px_12px_rgba(0,0,0,0.005)]"
+                  className="flex h-full min-w-0 items-start gap-3 rounded-xl border border-gray-200/80 bg-white p-4 text-left shadow-[0_2px_12px_rgba(0,0,0,0.005)] xl:flex-col xl:gap-0"
                 >
                   {/* Micro-Icon Box Wrapper Container */}
-                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#e8f4ff] text-[#00529c] mb-6">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#e8f4ff] text-[#00529c]">
                     <IconComponent className="h-4 w-4 stroke-[1.75]" />
                   </div>
 
                   {/* Content Details Block */}
-                  <h3 className="text-[15px] font-bold text-gray-900 tracking-tight leading-tight">
-                    {item.title}
-                  </h3>
-                  <p className="mt-3 text-[12px] font-medium leading-relaxed text-gray-500">
-                    {item.desc}
-                  </p>
+                  <div className="min-w-0 xl:mt-5">
+                    <h3 className="wrap-break-word text-[14px] font-bold leading-tight tracking-tight text-gray-900 md:text-[15px]">
+                      {item.title}
+                    </h3>
+                    <p className="mt-1.5 text-[12px] font-medium leading-5 text-gray-500">
+                      {item.desc}
+                    </p>
+                  </div>
                 </article>
               );
             })}

@@ -86,6 +86,7 @@ export function BlogDetailClient({ slug }: { slug: string }) {
             alt={post.title}
             fill
             unoptimized
+            sizes="(max-width: 768px) 100vw, 896px"
             className="object-cover"
             priority
           />
@@ -115,6 +116,7 @@ export function BlogDetailClient({ slug }: { slug: string }) {
                         alt={authorName}
                         fill
                         unoptimized
+                        sizes="32px"
                         className="object-cover"
                       />
                     </div>
@@ -179,6 +181,7 @@ export function BlogDetailClient({ slug }: { slug: string }) {
                         alt={article.title}
                         fill
                         unoptimized
+                        sizes="96px"
                         className="object-cover"
                       />
                     </div>

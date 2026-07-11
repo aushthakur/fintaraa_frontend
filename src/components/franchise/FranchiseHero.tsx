@@ -38,15 +38,15 @@ export function FranchiseHero() {
         {/* Left: Text */}
         <div className="relative z-10">
           <h1 className="leading-[1.05]">
-            <span className="block text-[44px] font-[800] text-[#2B2F38]">
+            <span className="block text-[44px] font-extrabold text-[#2B2F38]">
               Open Your Own
             </span>
 
-            <span className="mt-1 block text-[44px] font-[800] text-[#005CA8]">
+            <span className="mt-1 block text-[44px] font-extrabold text-[#005CA8]">
               Fintaraa Franchise
             </span>
 
-            <span className="mt-3 block text-[34px] font-[800] text-[#2B2F38]">
+            <span className="mt-3 block text-[34px] font-extrabold text-[#2B2F38]">
               &amp; Build a Profitable Business
             </span>
           </h1>
@@ -83,13 +83,13 @@ export function FranchiseHero() {
           />
           {/* Floating badge chips visible in Figma */}
           {/* <div className="absolute right-4 top-4 flex flex-col gap-2">
-            <span className="rounded-full bg-white px-3 py-1.5 text-[11px] font-black text-[#005ca8] shadow-md">
+            <span className="rounded-full bg-white px-3 py-1.5 text-[11px] font-extrabold text-[#005ca8] shadow-md">
               30+ Bank Tie-ups
             </span>
-            <span className="rounded-full bg-white px-3 py-1.5 text-[11px] font-black text-[#005ca8] shadow-md">
+            <span className="rounded-full bg-white px-3 py-1.5 text-[11px] font-extrabold text-[#005ca8] shadow-md">
               High Commissions
             </span>
-            <span className="rounded-full bg-white px-3 py-1.5 text-[11px] font-black text-[#005ca8] shadow-md">
+            <span className="rounded-full bg-white px-3 py-1.5 text-[11px] font-extrabold text-[#005ca8] shadow-md">
               Fast Payouts
             </span>
           </div> */}
@@ -101,7 +101,7 @@ export function FranchiseHero() {
         {franchiseStats.map(({ value, label, icon: Icon }) => (
           <div
             key={label}
-            className="flex items-center gap-3 rounded-[12px] bg-white px-4 py-2 shadow-[0_2px_10px_rgba(0,0,0,0.05)]"
+            className="flex items-center gap-3 rounded-xl bg-white px-4 py-2 shadow-[0_2px_10px_rgba(0,0,0,0.05)]"
           >
             <div className="flex h-10 w-10 items-center justify-center rounded-[10px] bg-[#EDF5FF]">
               <Icon className="h-10 w-10 text-[#005CA8]" />

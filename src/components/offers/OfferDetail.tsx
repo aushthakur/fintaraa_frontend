@@ -20,7 +20,7 @@ export function OfferDetail() {
   return (
     <section className="px-4 pb-10 md:px-6 lg:px-8">
       <div className="mx-auto max-w-9xl">
-        <div className="rounded-[12px] border border-[#49a7ff] bg-[#eaf4ff] p-6 shadow-[0_4px_18px_rgba(73,167,255,0.14)]">
+        <div className="rounded-xl border border-[#49a7ff] bg-[#eaf4ff] p-6 shadow-[0_4px_18px_rgba(73,167,255,0.14)]">
           <div className="grid gap-8 md:grid-cols-[1fr_267px] md:items-center">
             <div className="relative min-h-65 md:min-h-70">
               <BankLogoImage
@@ -70,7 +70,7 @@ export function OfferDetail() {
               </span>
               <span>
                 <span className="block text-[12px] font-semibold">{label}</span>
-                <span className="mt-2 block text-[20px] font-black text-[#111827]">
+                <span className="mt-2 block text-[20px] font-extrabold text-[#111827]">
                   {value}
                 </span>
               </span>
@@ -81,7 +81,7 @@ export function OfferDetail() {
         <div className="grid gap-10 bg-white px-8 pb-8 md:grid-cols-[1fr_1fr_auto] md:items-end">
           {detailLists.map(({ title, rows }) => (
             <div key={title}>
-              <h3 className="text-[22px] font-black">{title}</h3>
+              <h3 className="text-[22px] font-extrabold">{title}</h3>
               <div className="mt-5 grid gap-4">
                 {rows.map((row) => (
                   <p
@@ -98,7 +98,7 @@ export function OfferDetail() {
           <AuthRedirectLink
             href="/offers"
             productSlug="offer"
-            className="inline-flex h-13 min-w-60 items-center justify-center rounded-full bg-[#13a653] text-[14px] font-black text-white no-underline"
+            className="inline-flex h-13 min-w-60 items-center justify-center rounded-full bg-[#13a653] text-[14px] font-extrabold text-white no-underline"
           >
             Apply Now
           </AuthRedirectLink>
@@ -111,7 +111,7 @@ export function OfferDetail() {
           </p>
           <Link
             href="/support"
-            className="inline-flex h-11 items-center justify-center rounded-full border border-[#13a653] px-6 text-[13px] font-black text-[#13a653] no-underline"
+            className="inline-flex h-11 items-center justify-center rounded-full border border-[#13a653] px-6 text-[13px] font-extrabold text-[#13a653] no-underline"
           >
             Need help? Contact Support
           </Link>
@@ -127,7 +127,7 @@ export function OfferDetail() {
               className="object-contain"
             />
           </div>
-          <h2 className="text-[36px] font-black leading-tight text-[#005ca8]">
+          <h2 className="text-[36px] font-extrabold leading-tight text-[#005ca8]">
             Get Cashback in your Fintaraa Wallet or UPI
             <span className="mt-3 block text-[18px] font-semibold text-[#111827]">
               Easy, Fast & Hassle-free

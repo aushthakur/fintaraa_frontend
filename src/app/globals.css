@@ -321,6 +321,19 @@ select:disabled {
     padding-inline: var(--site-page-x);
   }
 
+  .mobile-safe-container {
+    width: min(100%, calc(100vw - 2rem));
+    max-width: calc(100vw - 2rem);
+    margin-inline: auto;
+  }
+
+  @media (min-width: 768px) {
+    .mobile-safe-container {
+      width: 100%;
+      max-width: 100rem;
+    }
+  }
+
   .site-section {
     padding: var(--site-section-y) var(--site-page-x);
   }

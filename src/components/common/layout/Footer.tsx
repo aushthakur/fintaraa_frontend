@@ -143,9 +143,9 @@ function ColHeading({ children }: { children: React.ReactNode }) {
 export const AppDownloadBanner = () => {
   return (
     <section className="bg-white px-4 py-6 md:px-6 md:py-8 lg:px-8">
-      <div className="mx-auto grid max-w-9xl gap-5 overflow-hidden rounded-xl bg-white py-4 md:py-6 lg:grid-cols-[1fr_0.82fr_1fr]">
-        <div className="flex flex-col justify-center py-3">
-          <h2 className="max-w-xl text-[22px] font-semibold leading-[1.12] tracking-tight text-[#07162d] md:text-[30px] xl:text-[34px]">
+      <div className="mobile-safe-container grid gap-4 overflow-hidden rounded-xl bg-white py-4 md:gap-5 md:py-6 lg:grid-cols-[1fr_0.82fr_1fr]">
+        <div className="order-1 flex flex-col justify-center py-2 md:py-3 lg:order-0">
+          <h2 className="max-w-xl text-[22px] font-bold leading-[1.12] tracking-tight text-[#07162d] md:text-[30px] xl:text-[34px]">
             Manage Your Finances
             <span className="block bg-[linear-gradient(90deg,#0b7fe8,#176bff)] bg-clip-text text-transparent">
               Anytime, Anywhere
@@ -157,47 +157,49 @@ export const AppDownloadBanner = () => {
           </p>
         </div>
 
-        <div className="relative hidden items-end justify-center lg:flex">
+        <div className="relative order-2 flex min-h-52 items-end justify-center overflow-hidden rounded-xl bg-[#f3f9ff] sm:min-h-60 lg:order-0 lg:min-h-0 lg:rounded-none lg:bg-transparent">
           <Image
             src="/assets/refer/footer.png"
             alt="Fintaraa mobile app preview"
             width={420}
             height={360}
             unoptimized
-            className="h-full w-full object-cover"
+            className="h-auto max-h-64 w-full max-w-80 object-contain sm:max-h-72 sm:max-w-90 lg:h-full lg:max-h-none lg:max-w-none lg:object-cover"
           />
         </div>
 
-        <div className="flex flex-col justify-center py-3 lg:pt-0">
+        <div className="order-3 flex flex-col justify-center py-2 md:py-3 lg:order-0 lg:pt-0">
           <h3 className="text-[22px] font-semibold tracking-[-0.01em] text-[#07162d] md:text-[26px]">
             Download the Fintaraa App Now!
           </h3>
           <p className="mt-3 text-[15px] font-medium text-[#344054] md:text-[17px]">
             Get smarter insights and better offers on the go.
           </p>
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+          <div className="mt-5 flex flex-row gap-2.5 sm:mt-6 sm:flex-wrap sm:gap-3">
             <a
               href="/app"
-              className="inline-flex h-14 w-full items-center justify-center gap-3 rounded-xl bg-black px-5 text-white no-underline transition hover:bg-[#111827] sm:w-auto"
+              className="inline-flex h-12 min-w-0 flex-1 items-center justify-center gap-2 rounded-xl bg-black px-2.5 text-white no-underline transition hover:bg-[#111827] sm:h-14 sm:flex-none sm:gap-3 sm:px-5"
             >
-              <FaGooglePlay className="h-7 w-7 text-white" />
-              <span>
-                <span className="block text-[10px] font-bold uppercase leading-none">
+              <FaGooglePlay className="h-5 w-5 shrink-0 text-white sm:h-7 sm:w-7" />
+              <span className="min-w-0">
+                <span className="block text-[8.5px] font-bold uppercase leading-none sm:text-[10px]">
                   Get it on
                 </span>
-                <span className="text-[16px] font-semibold">Google Play</span>
+                <span className="block text-[12px] font-semibold leading-tight sm:text-[16px]">
+                  Google Play
+                </span>
               </span>
             </a>
             <a
               href="/app"
-              className="inline-flex h-14 w-full items-center justify-center gap-3 rounded-xl bg-black px-5 text-white no-underline transition hover:bg-[#111827] sm:w-auto"
+              className="inline-flex h-12 min-w-0 flex-1 items-center justify-center gap-2 rounded-xl bg-black px-2.5 text-white no-underline transition hover:bg-[#111827] sm:h-14 sm:flex-none sm:gap-3 sm:px-5"
             >
-              <FaApple className="h-7 w-7 text-white" />
-              <span>
-                <span className="block text-[10px] font-bold leading-none">
+              <FaApple className="h-5 w-5 shrink-0 text-white sm:h-7 sm:w-7" />
+              <span className="min-w-0">
+                <span className="block text-[8.5px] font-bold leading-none sm:text-[10px]">
                   Download on the
                 </span>
-                <span className="text-[16px] font-semibold leading-none">
+                <span className="block text-[12px] font-semibold leading-tight sm:text-[16px]">
                   App Store
                 </span>
               </span>

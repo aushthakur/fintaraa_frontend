@@ -6,7 +6,7 @@ export function OffersHero() {
     <section className="bg-[#e8f4ff] px-4 py-14 md:px-6 lg:px-8">
       <div className="mx-auto grid max-w-9xl gap-8 md:grid-cols-[1fr_0.8fr] md:items-center">
         <div>
-          <h1 className="text-[48px] font-black tracking-[-0.03em] text-[#005ca8]">
+          <h1 className="text-[48px] font-extrabold tracking-[-0.03em] text-[#005ca8]">
             Offers & Rewards
           </h1>
           <p className="mt-4 text-[18px] font-medium text-[#111827]">

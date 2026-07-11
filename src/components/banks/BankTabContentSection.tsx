@@ -10,28 +10,28 @@ export function BankTabContentSection({
   page: BankSeoPageData;
   tab: BankSeoTab;
 }) {
-  const bullets =
-    tab.bullets?.length
-      ? tab.bullets
-      : tab.key.includes("why")
-        ? page.whyApply
-        : [];
+  const bullets = tab.bullets?.length
+    ? tab.bullets
+    : tab.key.includes("why")
+      ? page.whyApply
+      : [];
   const content = tab.content || [];
-  const hasContent = Boolean(tab.title || tab.content?.length || bullets.length);
-  const fallbackTitle =
-    tab.key.includes("review")
-      ? `${page.bankName} customer reviews`
-      : `${tab.label} for ${page.bankName} ${page.productName}`;
+  const hasContent = Boolean(
+    tab.title || tab.content?.length || bullets.length,
+  );
+  const fallbackTitle = tab.key.includes("review")
+    ? `${page.bankName} customer reviews`
+    : `${tab.label} for ${page.bankName} ${page.productName}`;
 
   return (
     <section className="bg-white px-4 py-12 md:px-8">
       <div className="mx-auto max-w-9xl">
         <div className="rounded-2xl border border-[#e3ebf3] bg-white p-5 shadow-[0_12px_34px_rgba(16,24,40,0.04)] md:p-8">
           <div className="max-w-3xl">
-            <p className="text-[12px] font-black uppercase tracking-[0.16em] text-[#005ca8]">
+            <p className="text-[12px] font-extrabold uppercase tracking-[0.16em] text-[#005ca8]">
               {tab.label}
             </p>
-            <h2 className="mt-2 text-[24px] font-black tracking-tight text-[#07162d] md:text-[30px]">
+            <h2 className="mt-2 text-[24px] font-extrabold tracking-tight text-[#07162d] md:text-[30px]">
               {tab.title || fallbackTitle}
             </h2>
             {tab.content?.length || tab.description ? (
@@ -70,10 +70,7 @@ export function BankTabContentSection({
                   <div key={item} className="rounded-xl bg-[#f8fbff] p-4">
                     <div className="flex gap-1 text-amber-400">
                       {Array.from({ length: 5 }).map((_, index) => (
-                        <Star
-                          key={index}
-                          className="h-4 w-4 fill-current"
-                        />
+                        <Star key={index} className="h-4 w-4 fill-current" />
                       ))}
                     </div>
                     <p className="mt-3 text-[13px] font-bold text-[#07162d]">

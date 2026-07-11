@@ -62,16 +62,18 @@ export function CreditCardsHero() {
             </div>
             <h1 className="max-w-2xl text-3xl mt-8 md:mt-10 font-extrabold leading-[1.15] tracking-tight text-[#111625] sm:text-5xl md:text-6xl">
               Find the Best Credit
-              <span className="block text-[#005ca8]">Cards for Your Lifestyle</span>
+              <span className="block text-[#005ca8]">
+                Cards for Your Lifestyle
+              </span>
             </h1>
             <p className="mt-3 max-w-lg text-[14px] md:text-[15px] font-medium leading-relaxed text-gray-500/90">
-              Find the perfect card for cashback, travel, fuel savings,
-              rewards and more from top banks.
+              Find the perfect card for cashback, travel, fuel savings, rewards
+              and more from top banks.
             </p>
             <AuthRedirectLink
               href="/credit-cards"
               productSlug="credit-card"
-              className="mt-6 inline-flex h-12 items-center gap-2 rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-7 text-[14px] font-black text-white no-underline"
+              className="mt-6 inline-flex h-12 items-center gap-2 rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-7 text-[14px] font-extrabold text-white no-underline"
             >
               Apply for Credit Card
               <Gift className="h-4 w-4" />
@@ -85,7 +87,7 @@ export function CreditCardsHero() {
           <div className="relative rounded-[18px] border border-[#d9dfe8] bg-white p-5 shadow-[0_10px_26px_rgba(0,92,168,0.12)] sm:p-6">
             <div className="flex items-start justify-between gap-3">
               <div>
-                <h2 className="text-[21px] font-black leading-tight text-[#111827]">
+                <h2 className="text-[21px] font-extrabold leading-tight text-[#111827]">
                   Check your card offers
                 </h2>
                 <p className="mt-1 text-[12px] font-semibold leading-5 text-[#667085]">
@@ -99,7 +101,7 @@ export function CreditCardsHero() {
 
             <form className="mt-5 grid gap-3">
               <label className="grid gap-1.5">
-                <span className="text-[11px] font-black uppercase tracking-[0.08em] text-[#475467]">
+                <span className="text-[11px] font-extrabold uppercase tracking-[0.08em] text-[#475467]">
                   Full Name
                 </span>
                 <div className="relative">
@@ -113,11 +115,11 @@ export function CreditCardsHero() {
               </label>
 
               <label className="grid gap-1.5">
-                <span className="text-[11px] font-black uppercase tracking-[0.08em] text-[#475467]">
+                <span className="text-[11px] font-extrabold uppercase tracking-[0.08em] text-[#475467]">
                   Mobile Number
                 </span>
                 <div className="flex h-11 overflow-hidden rounded-xl border border-[#d8e4f0] bg-[#f8fbff] transition focus-within:border-[#005ca8] focus-within:bg-white focus-within:ring-2 focus-within:ring-[#e4f1ff]">
-                  <span className="flex items-center border-r border-[#d8e4f0] bg-[#eef8ff] px-3 text-[13px] font-black text-[#005ca8]">
+                  <span className="flex items-center border-r border-[#d8e4f0] bg-[#eef8ff] px-3 text-[13px] font-extrabold text-[#005ca8]">
                     +91
                   </span>
                   <div className="relative min-w-0 flex-1">
@@ -135,7 +137,7 @@ export function CreditCardsHero() {
 
               <div className="grid gap-3 sm:grid-cols-2">
                 <label className="grid gap-1.5">
-                  <span className="text-[11px] font-black uppercase tracking-[0.08em] text-[#475467]">
+                  <span className="text-[11px] font-extrabold uppercase tracking-[0.08em] text-[#475467]">
                     Monthly Income
                   </span>
                   <div className="relative">
@@ -150,7 +152,7 @@ export function CreditCardsHero() {
                 </label>
 
                 <label className="grid gap-1.5">
-                  <span className="text-[11px] font-black uppercase tracking-[0.08em] text-[#475467]">
+                  <span className="text-[11px] font-extrabold uppercase tracking-[0.08em] text-[#475467]">
                     Employment Type
                   </span>
                   <div className="relative">

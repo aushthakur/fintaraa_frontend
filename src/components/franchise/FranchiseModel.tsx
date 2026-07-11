@@ -14,18 +14,18 @@ function DataTable({
 }) {
   return (
     <div className="rounded-xl border border-[#d9e2ec] bg-white p-6">
-      <h3 className="text-center text-[18px] font-black text-[#111827]">
+      <h3 className="text-center text-[18px] font-extrabold text-[#111827]">
         {title}
       </h3>
       <p className="mt-1 text-center text-[12px] font-semibold text-[#8b95a3]">
         {subtitle}
       </p>
       <div className="mt-5 overflow-x-auto">
-        <table className="w-full min-w-[420px] border-collapse text-[13px]">
+        <table className="w-full min-w-105 border-collapse text-[13px]">
           <thead className="border-b border-[#dce3eb] text-[#005ca8]">
             <tr>
               {headers.map((header) => (
-                <th key={header} className="pb-3 text-left font-black">
+                <th key={header} className="pb-3 text-left font-extrabold">
                   {header}
                 </th>
               ))}
@@ -39,7 +39,7 @@ function DataTable({
                     key={cell}
                     className={`py-4 ${
                       index === 1
-                        ? "font-black text-[#111827]"
+                        ? "font-extrabold text-[#111827]"
                         : "font-semibold text-[#667085]"
                     }`}
                   >
@@ -59,21 +59,21 @@ export function FranchiseModel() {
   return (
     <section className="px-4 py-10 md:px-6 lg:px-8">
       <div className="mx-auto max-w-9xl">
-        <h2 className="text-[18px] font-[700] text-[#222]">
+        <h2 className="text-[18px] font-bold text-[#222]">
           Understanding Our Franchise Model
         </h2>
 
         {/* 6-step horizontal flow with arrows */}
         <div className="mt-6 overflow-x-auto pb-2">
-          <div className="grid min-w-[760px] grid-cols-6 gap-2">
-          {franchiseSteps.map((step, index) => (
-            <div key={step.title} className="relative text-center">
-              <span className="mx-auto flex h-13.5 w-13.5 items-center justify-center rounded-[12px] bg-[#EEF6FF]">
-                <ShieldCheck className="h-10 w-10 text-[#005CA8]" />
-              </span>
-              {index < franchiseSteps.length - 1 ? (
-                <ArrowRight
-                  className="
+          <div className="grid min-w-190 grid-cols-6 gap-2">
+            {franchiseSteps.map((step, index) => (
+              <div key={step.title} className="relative text-center">
+                <span className="mx-auto flex h-13.5 w-13.5 items-center justify-center rounded-xl bg-[#EEF6FF]">
+                  <ShieldCheck className="h-10 w-10 text-[#005CA8]" />
+                </span>
+                {index < franchiseSteps.length - 1 ? (
+                  <ArrowRight
+                    className="
   absolute
   -right-6.5
   top-2.5
@@ -81,16 +81,16 @@ export function FranchiseModel() {
   w-8.5
   text-[#005CA8]
   "
-                />
-              ) : null}
-              <h3 className="mt-4 text-[12px] font-black leading-5 text-[#111827]">
-                {step.title}
-              </h3>
-              <p className="mt-1 text-[11px] font-medium leading-5 text-[#667085]">
-                {step.text}
-              </p>
-            </div>
-          ))}
+                  />
+                ) : null}
+                <h3 className="mt-4 text-[12px] font-extrabold leading-5 text-[#111827]">
+                  {step.title}
+                </h3>
+                <p className="mt-1 text-[11px] font-medium leading-5 text-[#667085]">
+                  {step.text}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
 

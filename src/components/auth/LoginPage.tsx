@@ -1,12 +1,12 @@
 "use client";
 
-import type { ReactNode } from "react";
 import Image from "next/image";
+import type { ReactNode } from "react";
 import { useRouter } from "next/navigation";
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { getSafeRedirectTarget } from "@/lib/loginRedirect";
 import { Phone, ArrowRight, LockKeyhole } from "lucide-react";
 import { getAuthToken, getAuthType } from "@/hooks/authStorage";
-import { getSafeRedirectTarget } from "@/lib/loginRedirect";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import {
   sendOtp,
   verifyOtp,
@@ -30,12 +30,12 @@ export function LoginPage({ redirectParam }: { redirectParam?: string } = {}) {
     () => getSafeRedirectTarget(redirectParam),
     [redirectParam],
   );
-  const [step, setStep] = useState<AuthStep>("phone");
-  const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const [accountExisted, setAccountExisted] = useState<boolean | null>(null);
-  const [acceptPolicies, setAcceptPolicies] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [step, setStep] = useState<AuthStep>("phone");
   const [consentCibil, setConsentCibil] = useState(false);
+  const [acceptPolicies, setAcceptPolicies] = useState(false);
+  const [accountExisted, setAccountExisted] = useState<boolean | null>(null);
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -44,12 +44,13 @@ export function LoginPage({ redirectParam }: { redirectParam?: string } = {}) {
     otp: "",
   });
 
-  const digits = useMemo(() => normalizePhone(form.mobile), [form.mobile]);
   const pan = useMemo(() => normalizePAN(form.panCard), [form.panCard]);
+  const digits = useMemo(() => normalizePhone(form.mobile), [form.mobile]);
   const validEmail = !form.email.trim() || emailRegex.test(form.email.trim());
+
   const validPan = /^([A-Z]{5}[0-9]{4}[A-Z])$/.test(pan);
-  const validPhone = digits.length >= 10 && digits.length <= 15;
   const validOtp = form.otp.replace(/\D/g, "").length === 6;
+  const validPhone = digits.length >= 10 && digits.length <= 15;
 
   useEffect(() => {
     if (getAuthType() === "user" && getAuthToken()) {
@@ -194,9 +195,9 @@ export function LoginPage({ redirectParam }: { redirectParam?: string } = {}) {
   };
 
   return (
-    <main className="min-h-screen bg-white px-4 pb-8 md:px-6 lg:px-8">
+    <main className="min-h-screen bg-white pb-8 md:px-6 lg:px-8">
       <div className="mx-auto grid min-h-[calc(100vh-10rem)] max-w-9xl overflow-hidden rounded-[36px] px-4 lg:grid-cols-[1.08fr_0.92fr] lg:gap-8 lg:px-8">
-        <section className="relative flex min-h-136 flex-col overflow-hidden rounded-[28px] p-6 md:p-10">
+        <section className="relative flex min-h-136 flex-col overflow-hidden rounded-[28px] md:p-10">
           <div className="relative z-10">
             <h1 className="mt-8 max-w-3xl text-[42px] font-bold leading-[0.98] tracking-[-0.03em] text-[#07162d] md:text-[54px]">
               Unlock your

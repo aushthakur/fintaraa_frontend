@@ -105,28 +105,24 @@ const getApplyLink = (result: EligibilityCriteriaResult) => {
 
 const ResultStatus = ({ result }: { result: EligibilityCriteriaResult }) =>
   result.eligible ? (
-    <span className="inline-flex items-center gap-1.5 rounded-full bg-[#eafaf1] px-3 py-1 text-[12px] font-black text-[#168447]">
+    <span className="inline-flex items-center gap-1.5 rounded-full bg-[#eafaf1] px-3 py-1 text-[12px] font-extrabold text-[#168447]">
       <CheckCircle2 className="h-3.5 w-3.5" />
       Eligible
     </span>
   ) : (
-    <span className="inline-flex items-center gap-1.5 rounded-full bg-[#fff7ed] px-3 py-1 text-[12px] font-black text-[#b45309]">
+    <span className="inline-flex items-center gap-1.5 rounded-full bg-[#fff7ed] px-3 py-1 text-[12px] font-extrabold text-[#b45309]">
       <AlertTriangle className="h-3.5 w-3.5" />
       Review terms
     </span>
   );
 
-const ResultCard = ({
-  result,
-}: {
-  result: EligibilityCriteriaResult;
-}) => {
+const ResultCard = ({ result }: { result: EligibilityCriteriaResult }) => {
   const bankInfo = resolveBank(result.bankName);
   const loanSlug = loanTypeToSlug(result.loanType);
 
   return (
-    <article className="rounded-2xl bg-[#f8fbff] p-4">
-      <div className="flex items-start justify-between gap-4">
+    <article className="overflow-hidden rounded-2xl bg-[#f8fbff] p-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
         <Link
           href={`/banks/${bankInfo.slug}/${loanSlug}`}
           className="flex min-w-0 items-center gap-3 no-underline"
@@ -143,22 +139,24 @@ const ResultCard = ({
               <Landmark className="h-5 w-5" />
             </span>
           )}
-          <span className="truncate text-[16px] font-black text-[#07162d]">
+          <span className="truncate text-[16px] font-extrabold text-[#07162d]">
             {result.bankName}
           </span>
         </Link>
-        <ResultStatus result={result} />
+        <span className="self-start">
+          <ResultStatus result={result} />
+        </span>
       </div>
       <dl className="mt-4 grid grid-cols-2 gap-3 text-[13px]">
         <div>
           <dt className="font-bold text-[#7a8699]">ROI</dt>
-          <dd className="mt-1 font-black text-[#07162d]">
+          <dd className="mt-1 font-extrabold text-[#07162d]">
             {formatPercent(result.roi)} p.a.
           </dd>
         </div>
         <div>
           <dt className="font-bold text-[#7a8699]">Max loan</dt>
-          <dd className="mt-1 font-black text-[#07162d]">
+          <dd className="mt-1 font-extrabold text-[#07162d]">
             {formatCurrency(result.maximumLoanAmount)}
           </dd>
         </div>
@@ -166,7 +164,7 @@ const ResultCard = ({
       <AuthRedirectLink
         href={getApplyLink(result)}
         productSlug={loanSlug}
-        className="mt-4 inline-flex h-10 w-full items-center justify-center rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] text-[13px] font-black text-white no-underline"
+        className="mt-4 inline-flex h-10 w-full items-center justify-center rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] text-[13px] font-extrabold text-white no-underline"
       >
         Apply Now
       </AuthRedirectLink>
@@ -188,7 +186,7 @@ const ResultCardsSection = ({
       <div className="mx-auto max-w-9xl">
         <div className="mb-3 flex items-center gap-2">
           <SlidersHorizontal className="h-5 w-5 text-[#00529b]" />
-          <h2 className="text-[22px] font-black tracking-tight">{title}</h2>
+          <h2 className="text-[22px] font-extrabold tracking-tight">{title}</h2>
         </div>
         <div className="grid gap-4 lg:grid-cols-3">
           {results.map((result, index) => (
@@ -274,8 +272,8 @@ export default async function EligibilityResultsPage({
 
   return (
     <main className="bg-white text-[#111827]">
-      <section className="px-4 pt-4 pb-3 md:px-6 lg:px-8">
-        <div className="mx-auto max-w-9xl">
+      <section className="px-4 pb-3 pt-3 md:px-6 md:pt-4 lg:px-8">
+        <div className="mobile-safe-container">
           <div>
             <Link
               href="/#eligibility-check"
@@ -284,7 +282,7 @@ export default async function EligibilityResultsPage({
               <ArrowRight className="h-4 w-4 rotate-180" />
               Back to eligibility check
             </Link>
-            <h1 className="mt-3 max-w-3xl text-[30px] font-black leading-tight tracking-tight text-[#07162d] md:text-[42px]">
+            <h1 className="mt-3 max-w-3xl text-[26px] font-extrabold leading-tight tracking-tight text-[#07162d] sm:text-[30px] md:text-[42px]">
               Eligible banks for {loanLabel}
             </h1>
             {/* <p className="mt-2 max-w-2xl text-[14px] font-medium leading-6 text-[#5f6b7a]">
@@ -296,16 +294,16 @@ export default async function EligibilityResultsPage({
 
           <form
             action="/eligibility-results"
-            className="mt-4 grid gap-3 rounded-2xl bg-[#f4f8fb] p-3 md:grid-cols-6 xl:grid-cols-12"
+            className="mt-3 grid grid-cols-2 gap-2 rounded-xl bg-[#f4f8fb] p-2 sm:gap-3 sm:p-3 md:mt-4 md:grid-cols-6 md:rounded-2xl xl:grid-cols-12"
           >
-            <label className="md:col-span-2 xl:col-span-2">
-              <span className="text-[12px] font-black uppercase tracking-wide text-[#64748b]">
+            <label className="col-span-2 md:col-span-2 xl:col-span-2">
+              <span className="text-[10px] font-extrabold uppercase tracking-wide text-[#64748b] md:text-[12px]">
                 Loan type
               </span>
               <select
                 name="loanType"
                 defaultValue={loanType}
-                className="mt-2 h-12 w-full rounded-2xl border border-[#d9e4ef] bg-white px-4 text-[14px] font-bold outline-none focus:border-[#00529b]"
+                className="mt-1 h-10 w-full rounded-xl border border-[#d9e4ef] bg-white px-3 text-[13px] font-bold outline-none focus:border-[#00529b] md:mt-2 md:h-12 md:rounded-2xl md:px-4 md:text-[14px]"
               >
                 {visibleLoanTypeOptions.map((item) => (
                   <option key={item.value} value={item.value}>
@@ -315,35 +313,35 @@ export default async function EligibilityResultsPage({
               </select>
             </label>
             <label className="xl:col-span-2">
-              <span className="text-[12px] font-black uppercase tracking-wide text-[#64748b]">
+              <span className="text-[10px] font-extrabold uppercase tracking-wide text-[#64748b] md:text-[12px]">
                 Amount
               </span>
               <input
                 name="amount"
                 defaultValue={amount}
                 inputMode="numeric"
-                className="mt-2 h-12 w-full rounded-2xl border border-[#d9e4ef] bg-white px-4 text-[14px] font-bold outline-none focus:border-[#00529b]"
+                className="mt-1 h-10 w-full rounded-xl border border-[#d9e4ef] bg-white px-3 text-[13px] font-bold outline-none focus:border-[#00529b] md:mt-2 md:h-12 md:rounded-2xl md:px-4 md:text-[14px]"
               />
             </label>
             <label className="xl:col-span-1">
-              <span className="text-[12px] font-black uppercase tracking-wide text-[#64748b]">
+              <span className="text-[10px] font-extrabold uppercase tracking-wide text-[#64748b] md:text-[12px]">
                 CIBIL
               </span>
               <input
                 name="cibilScore"
                 defaultValue={cibilScore}
                 inputMode="numeric"
-                className="mt-2 h-12 w-full rounded-2xl border border-[#d9e4ef] bg-white px-4 text-[14px] font-bold outline-none focus:border-[#00529b]"
+                className="mt-1 h-10 w-full rounded-xl border border-[#d9e4ef] bg-white px-3 text-[13px] font-bold outline-none focus:border-[#00529b] md:mt-2 md:h-12 md:rounded-2xl md:px-4 md:text-[14px]"
               />
             </label>
-            <label className="xl:col-span-2">
-              <span className="text-[12px] font-black uppercase tracking-wide text-[#64748b]">
+            <label className="col-span-2 md:col-span-2 xl:col-span-2">
+              <span className="text-[10px] font-extrabold uppercase tracking-wide text-[#64748b] md:text-[12px]">
                 Profile
               </span>
               <select
                 name="salaryType"
                 defaultValue={salaryType}
-                className="mt-2 h-12 w-full rounded-2xl border border-[#d9e4ef] bg-white px-4 text-[14px] font-bold outline-none focus:border-[#00529b]"
+                className="mt-1 h-10 w-full rounded-xl border border-[#d9e4ef] bg-white px-3 text-[13px] font-bold outline-none focus:border-[#00529b] md:mt-2 md:h-12 md:rounded-2xl md:px-4 md:text-[14px]"
               >
                 {salaryTypeOptions.map((item) => (
                   <option key={item} value={item}>
@@ -353,52 +351,52 @@ export default async function EligibilityResultsPage({
               </select>
             </label>
             <label className="xl:col-span-1">
-              <span className="text-[12px] font-black uppercase tracking-wide text-[#64748b]">
+              <span className="text-[10px] font-extrabold uppercase tracking-wide text-[#64748b] md:text-[12px]">
                 Tenure
               </span>
               <input
                 name="tenureYears"
                 defaultValue={tenureYears}
                 inputMode="numeric"
-                className="mt-2 h-12 w-full rounded-2xl border border-[#d9e4ef] bg-white px-4 text-[14px] font-bold outline-none focus:border-[#00529b]"
+                className="mt-1 h-10 w-full rounded-xl border border-[#d9e4ef] bg-white px-3 text-[13px] font-bold outline-none focus:border-[#00529b] md:mt-2 md:h-12 md:rounded-2xl md:px-4 md:text-[14px]"
               />
             </label>
             <label className="md:col-span-2 xl:col-span-2">
-              <span className="text-[12px] font-black uppercase tracking-wide text-[#64748b]">
+              <span className="text-[10px] font-extrabold uppercase tracking-wide text-[#64748b] md:text-[12px]">
                 Bank or keyword
               </span>
               <input
                 name="q"
                 defaultValue={bank || q}
                 placeholder="Axis, HDFC, SBI..."
-                className="mt-2 h-12 w-full rounded-2xl border border-[#d9e4ef] bg-white px-4 text-[14px] font-bold outline-none focus:border-[#00529b]"
+                className="mt-1 h-10 w-full rounded-xl border border-[#d9e4ef] bg-white px-3 text-[13px] font-bold outline-none focus:border-[#00529b] md:mt-2 md:h-12 md:rounded-2xl md:px-4 md:text-[14px]"
               />
             </label>
             <button
               type="submit"
-              className="inline-flex h-12 items-center justify-center gap-2 self-end rounded-full bg-[#00529b] px-6 text-[14px] font-black text-white md:col-span-2 xl:col-span-2"
+              className="col-span-2 inline-flex h-10 items-center justify-center gap-2 self-end rounded-full bg-[#00529b] px-5 text-[13px] font-extrabold text-white md:col-span-2 md:h-12 md:px-6 md:text-[14px] xl:col-span-2"
             >
               <Search className="h-4 w-4" />
               Search Banks
             </button>
           </form>
 
-          <div className="mt-3 flex flex-wrap gap-3 rounded-2xl bg-[#f7fbff] p-3">
+          <div className="mt-2 grid grid-cols-2 gap-2 rounded-xl bg-[#f7fbff] p-2 sm:mt-3 sm:gap-3 sm:rounded-2xl sm:p-3 md:grid-cols-4">
             {summaryItems.map((item) => {
               const Icon = item.icon;
               return (
                 <div
                   key={item.label}
-                  className="flex min-w-[150px] flex-1 items-center gap-3 rounded-xl bg-white px-4 py-3"
+                  className="flex min-w-0 items-center gap-2 rounded-xl bg-white px-3 py-2 md:gap-3 md:px-4 md:py-3"
                 >
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#eef6ff] text-[#00529b]">
-                    <Icon className="h-4.5 w-4.5" />
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#eef6ff] text-[#00529b] md:h-10 md:w-10 md:rounded-xl">
+                    <Icon className="h-4 w-4 md:h-4.5 md:w-4.5" />
                   </span>
-                  <span>
+                  <span className="min-w-0">
                     <span className="block text-[10px] font-bold uppercase tracking-wide text-[#7a8699]">
                       {item.label}
                     </span>
-                    <span className="mt-0.5 block text-[17px] font-black text-[#07162d]">
+                    <span className="mt-0.5 block truncate text-[14px] font-extrabold text-[#07162d] md:text-[17px]">
                       {item.value}
                     </span>
                   </span>
@@ -423,7 +421,7 @@ export default async function EligibilityResultsPage({
 
       <section className="px-4 py-8 md:px-6 lg:px-8">
         <div className="mx-auto max-w-9xl">
-          <h2 className="text-[24px] font-black tracking-tight">
+          <h2 className="text-[24px] font-extrabold tracking-tight">
             Bank eligibility comparison
           </h2>
           <div className="mt-5 overflow-x-auto rounded-3xl border border-[#e4edf5]">
@@ -438,7 +436,7 @@ export default async function EligibilityResultsPage({
                     "Fees",
                     "Action",
                   ].map((heading) => (
-                    <th key={heading} className="px-5 py-4 font-black">
+                    <th key={heading} className="px-5 py-4 font-extrabold">
                       {heading}
                     </th>
                   ))}
@@ -468,7 +466,7 @@ export default async function EligibilityResultsPage({
                           ) : (
                             <Landmark className="h-5 w-5 text-[#00529b]" />
                           )}
-                          <span className="font-black text-[#07162d]">
+                          <span className="font-extrabold text-[#07162d]">
                             {result.bankName}
                           </span>
                         </Link>
@@ -505,7 +503,7 @@ export default async function EligibilityResultsPage({
                                 <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-[#d97706]" />
                               )}
                               <span>
-                                <span className="font-black text-[#07162d]">
+                                <span className="font-extrabold text-[#07162d]">
                                   {check.label}:
                                 </span>{" "}
                                 <span className="text-[#64748b]">
@@ -527,7 +525,7 @@ export default async function EligibilityResultsPage({
                         <AuthRedirectLink
                           href={getApplyLink(result)}
                           productSlug={loanSlug}
-                          className="inline-flex h-9 items-center justify-center rounded-full bg-[#13a653] px-5 text-[12px] font-black text-white no-underline"
+                          className="inline-flex h-9 items-center justify-center rounded-full bg-[#13a653] px-5 text-[12px] font-extrabold text-white no-underline"
                         >
                           Apply Now
                         </AuthRedirectLink>
@@ -554,48 +552,48 @@ export default async function EligibilityResultsPage({
 
       {results.length > 0 ? (
         <section className="px-4 pb-16 md:px-6 lg:px-8">
-          <div className="mx-auto max-w-9xl">
-            <h2 className="text-[24px] font-black tracking-tight">
+          <div className="mobile-safe-container">
+            <h2 className="text-[24px] font-extrabold tracking-tight">
               All lender terms
             </h2>
-            <div className="mt-5 space-y-4">
+            <div className="mt-4 grid gap-3">
               {results.map((result) => {
                 const bankInfo = resolveBank(result.bankName);
                 const loanSlug = loanTypeToSlug(result.loanType);
                 return (
                   <article
                     key={`${result._id}-terms`}
-                    className="rounded-3xl bg-[#f8fbff] p-5"
+                    className="rounded-2xl border border-[#dbe8f4] bg-white px-3 py-3 md:px-4 md:py-4"
                   >
-                    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="flex items-start justify-between gap-3">
                       <Link
                         href={`/banks/${bankInfo.slug}/${loanSlug}`}
-                        className="flex items-center gap-3 text-[17px] font-black text-[#07162d] no-underline"
+                        className="flex min-w-0 items-center gap-3 text-[15px] font-extrabold text-[#07162d] no-underline md:text-[17px]"
                       >
                         {bankInfo.logo ? (
                           <BankLogoImage
                             src={bankInfo.logo}
                             alt={bankInfo.name}
-                            className="h-8 w-24"
+                            className="h-7 w-20 md:h-8 md:w-24"
                             imageClassName="object-left"
                           />
                         ) : (
                           <Landmark className="h-5 w-5 text-[#00529b]" />
                         )}
-                        {result.bankName}
+                        <span className="truncate">{result.bankName}</span>
                       </Link>
                       <ResultStatus result={result} />
                     </div>
-                    <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                    <div className="mt-3 grid grid-cols-2 gap-x-3 border-t border-[#e4edf5] pt-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                       {(result.terms || []).map((term, termIndex) => (
                         <div
                           key={`${result._id}-term-${termIndex}`}
-                          className="rounded-2xl bg-white px-4 py-3"
+                          className="min-w-0 border-b border-[#edf3f8] py-1.5"
                         >
-                          <p className="text-[11px] font-black uppercase tracking-wide text-[#7a8699]">
+                          <p className="truncate text-[9px] font-extrabold uppercase tracking-wide text-[#7a8699] md:text-[10px]">
                             {term.label}
                           </p>
-                          <p className="mt-1 text-[13px] font-bold leading-5 text-[#07162d]">
+                          <p className="mt-0.5 line-clamp-2 text-[11px] font-bold leading-4 text-[#07162d] md:text-[12px]">
                             {term.value}
                           </p>
                         </div>

@@ -29,7 +29,7 @@ export function AboutHero() {
       </div>
 
       <div className="relative z-10 mx-auto max-w-9xl">
-        <h1 className="text-[36px] font-black leading-[1.02] tracking-[-0.06em] text-[#2b2f38] md:text-[48px] lg:text-[60px]">
+        <h1 className="text-[36px] font-extrabold leading-[1.02] tracking-[-0.06em] text-[#2b2f38] md:text-[48px] lg:text-[60px]">
           About
           <span className="block text-[#0d64bf]">Fintaraa</span>
         </h1>

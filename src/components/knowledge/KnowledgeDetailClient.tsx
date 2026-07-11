@@ -66,7 +66,9 @@ export function KnowledgeDetailClient({
           return;
         }
         setItem(record);
-        setRelated(list.filter((entry) => entry.slug !== record.slug).slice(0, 4));
+        setRelated(
+          list.filter((entry) => entry.slug !== record.slug).slice(0, 4),
+        );
       })
       .catch(() => mounted && setMissing(true))
       .finally(() => mounted && setLoading(false));
@@ -89,7 +91,7 @@ export function KnowledgeDetailClient({
         <div className="mx-auto max-w-7xl">
           <Link
             href={config.hrefRoot}
-            className="inline-flex h-10 items-center gap-2 rounded-full border border-[#dce9f7] bg-white px-4 text-[13px] font-black text-[#005ca8] no-underline"
+            className="inline-flex h-10 items-center gap-2 rounded-full border border-[#dce9f7] bg-white px-4 text-[13px] font-extrabold text-[#005ca8] no-underline"
           >
             <ArrowLeft className="h-4 w-4" />
             Back to {config.title}
@@ -97,10 +99,10 @@ export function KnowledgeDetailClient({
 
           <div className="mt-6 grid gap-8 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-end">
             <div>
-              <p className="text-[12px] font-black uppercase tracking-[0.18em] text-[#005ca8]">
+              <p className="text-[12px] font-extrabold uppercase tracking-[0.18em] text-[#005ca8]">
                 {item.category || config.detailLabel}
               </p>
-              <h1 className="mt-3 max-w-4xl text-[32px] font-black tracking-tight text-[#07162d] md:text-[48px]">
+              <h1 className="mt-3 max-w-4xl text-[32px] font-extrabold tracking-tight text-[#07162d] md:text-[48px]">
                 {item.title}
               </h1>
               <p className="mt-4 max-w-3xl text-[15px] font-semibold leading-7 text-[#667085]">
@@ -122,7 +124,7 @@ export function KnowledgeDetailClient({
             </div>
 
             <div className="rounded-3xl border border-[#dce9f7] bg-white p-5 shadow-[0_14px_38px_rgba(16,24,40,0.05)]">
-              <p className="text-[12px] font-black uppercase tracking-[0.16em] text-[#98a2b3]">
+              <p className="text-[12px] font-extrabold uppercase tracking-[0.16em] text-[#98a2b3]">
                 Published by
               </p>
               <div className="mt-4 flex items-center gap-3">
@@ -136,7 +138,7 @@ export function KnowledgeDetailClient({
                   />
                 </div>
                 <div>
-                  <p className="text-[14px] font-black text-[#07162d]">
+                  <p className="text-[14px] font-extrabold text-[#07162d]">
                     {item.authorName || "Fintaraa Editorial"}
                   </p>
                   <p className="text-[12px] font-semibold text-[#667085]">
@@ -172,7 +174,11 @@ export function KnowledgeDetailClient({
               ) : (
                 <div className="relative h-78 md:h-110">
                   <Image
-                    src={item.coverImageUrl || item.authorAvatarUrl || config.fallbackImage}
+                    src={
+                      item.coverImageUrl ||
+                      item.authorAvatarUrl ||
+                      config.fallbackImage
+                    }
                     alt={item.title}
                     fill
                     unoptimized
@@ -203,7 +209,7 @@ export function KnowledgeDetailClient({
 
           <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
             <div className="rounded-3xl border border-[#dce9f7] bg-[#f8fbff] p-5">
-              <h2 className="text-[17px] font-black text-[#07162d]">
+              <h2 className="text-[17px] font-extrabold text-[#07162d]">
                 More {config.listingTitle}
               </h2>
               <div className="mt-4 space-y-3">
@@ -227,7 +233,7 @@ export function KnowledgeDetailClient({
                       />
                     </div>
                     <div className="min-w-0">
-                      <p className="line-clamp-2 text-[12px] font-black leading-5">
+                      <p className="line-clamp-2 text-[12px] font-extrabold leading-5">
                         {entry.title}
                       </p>
                       <p className="mt-1 text-[10px] font-bold text-[#98a2b3]">

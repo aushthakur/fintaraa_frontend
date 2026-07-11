@@ -7,6 +7,7 @@ import {
   ChevronUp,
   ExternalLink,
   Search,
+  SlidersHorizontal,
   Star,
   X,
 } from "lucide-react";
@@ -85,7 +86,9 @@ const getCardBenefits = (card: CreditCardProduct) =>
     .slice(0, 3) as string[];
 
 const getCardTags = (card: CreditCardProduct) =>
-  Array.from(new Set([card.cardType, card.rewardsType].filter(Boolean))) as string[];
+  Array.from(
+    new Set([card.cardType, card.rewardsType].filter(Boolean)),
+  ) as string[];
 
 const textOrFallback = (value: unknown, fallback = "Not specified") =>
   String(value || "").trim() || fallback;
@@ -110,7 +113,10 @@ function FilterGroup({
       </div>
       <div className="space-y-2 text-[12px] font-medium text-[#4a5568]">
         {options.map((option) => (
-          <label key={option} className="flex cursor-pointer items-center gap-2.5">
+          <label
+            key={option}
+            className="flex cursor-pointer items-center gap-2.5"
+          >
             <input
               type="checkbox"
               checked={selected.includes(option)}
@@ -167,6 +173,7 @@ export function CreditCardsExplorer({
   const [featuredOnly, setFeaturedOnly] = useState(false);
   const [compareIds, setCompareIds] = useState<string[]>([]);
   const [compareOpen, setCompareOpen] = useState(false);
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -215,6 +222,23 @@ export function CreditCardsExplorer({
       active = false;
     };
   }, [initialBankSlug, initialCardTypeSlug]);
+
+  useEffect(() => {
+    if (!filtersOpen) return;
+
+    const originalOverflow = document.body.style.overflow;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setFiltersOpen(false);
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [filtersOpen]);
 
   const filteredBanks = useMemo(
     () =>
@@ -266,6 +290,28 @@ export function CreditCardsExplorer({
       }),
     [
       cards,
+      featuredOnly,
+      loungeOnly,
+      selectedBanks,
+      selectedCardTypes,
+      selectedFees,
+      selectedIncome,
+      selectedNetworks,
+      selectedRewards,
+    ],
+  );
+
+  const activeFilterCount = useMemo(
+    () =>
+      selectedBanks.length +
+      selectedCardTypes.length +
+      selectedFees.length +
+      selectedIncome.length +
+      selectedRewards.length +
+      selectedNetworks.length +
+      (loungeOnly ? 1 : 0) +
+      (featuredOnly ? 1 : 0),
+    [
       featuredOnly,
       loungeOnly,
       selectedBanks,
@@ -419,135 +465,217 @@ export function CreditCardsExplorer({
     },
   ];
 
+  const renderFilters = (isMobile = false) => (
+    <div className="space-y-5">
+      <div className="flex items-center justify-between border-b border-[#f0f4f8] pb-2">
+        <div className="flex items-center gap-2">
+          <span className="text-[14px] font-bold text-[#1a1d25]">
+            Filters
+          </span>
+          {activeFilterCount ? (
+            <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-[#005ca8] px-1.5 text-[10px] font-extrabold text-white">
+              {activeFilterCount}
+            </span>
+          ) : null}
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={clearFilters}
+            className="text-[12px] font-medium text-[#7a869a] hover:text-[#005ca8]"
+          >
+            Clear All
+          </button>
+          {isMobile ? (
+            <button
+              type="button"
+              onClick={() => setFiltersOpen(false)}
+              className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#d8e3ef] text-[#64748b]"
+              aria-label="Close filters"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          ) : null}
+        </div>
+      </div>
+
+      <div className="space-y-3">
+        <div className="flex items-center justify-between text-[13px] font-bold">
+          <span>Banks</span>
+          <ChevronUp className="h-4 w-4 text-[#7a869a]" />
+        </div>
+        <div className="relative flex h-8 items-center rounded-md border border-[#e2e8f0] bg-[#f4f7fa] px-2.5">
+          <Search className="mr-2 h-3.5 w-3.5 text-[#9aa5b5]" />
+          <input
+            type="text"
+            value={bankSearch}
+            onChange={(event) => setBankSearch(event.target.value)}
+            placeholder="Search Bank"
+            className="w-full bg-transparent text-[12px] outline-none placeholder:text-[#9aa5b5]"
+          />
+        </div>
+        <div className="max-h-52 space-y-2 overflow-y-auto pr-1 text-[12px] font-medium text-[#4a5568]">
+          {filteredBanks.map((bank) => (
+            <label
+              key={bank}
+              className="flex cursor-pointer items-center gap-2.5"
+            >
+              <input
+                type="checkbox"
+                checked={selectedBanks.includes(bank)}
+                onChange={() =>
+                  toggleSelected(bank, selectedBanks, setSelectedBanks)
+                }
+                className="rounded border-[#cbd5e1] text-[#005ca8] focus:ring-0"
+              />
+              <span>{bank}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      <FilterGroup
+        title="Card Type"
+        options={filters.cardTypes}
+        selected={selectedCardTypes}
+        onToggle={(value) =>
+          toggleSelected(value, selectedCardTypes, setSelectedCardTypes)
+        }
+      />
+      <FilterGroup
+        title="Annual Fee"
+        options={filters.annualFeeBuckets}
+        selected={selectedFees}
+        onToggle={(value) =>
+          toggleSelected(value, selectedFees, setSelectedFees)
+        }
+      />
+      <FilterGroup
+        title="Income Requirement"
+        options={filters.incomeBuckets}
+        selected={selectedIncome}
+        onToggle={(value) =>
+          toggleSelected(value, selectedIncome, setSelectedIncome)
+        }
+      />
+      <FilterGroup
+        title="Rewards Type"
+        options={filters.rewardsTypes}
+        selected={selectedRewards}
+        onToggle={(value) =>
+          toggleSelected(value, selectedRewards, setSelectedRewards)
+        }
+      />
+      <FilterGroup
+        title="Network"
+        options={filters.networks}
+        selected={selectedNetworks}
+        onToggle={(value) =>
+          toggleSelected(value, selectedNetworks, setSelectedNetworks)
+        }
+      />
+
+      <label className="flex cursor-pointer items-center gap-2.5 border-t border-[#f0f4f8] pt-4 text-[12px] font-medium text-[#4a5568]">
+        <input
+          type="checkbox"
+          checked={loungeOnly}
+          onChange={(event) => setLoungeOnly(event.target.checked)}
+          className="rounded border-[#cbd5e1] text-[#005ca8] focus:ring-0"
+        />
+        <span>Lounge Access</span>
+      </label>
+      <label className="flex cursor-pointer items-center gap-2.5 text-[12px] font-medium text-[#4a5568]">
+        <input
+          type="checkbox"
+          checked={featuredOnly}
+          onChange={(event) => setFeaturedOnly(event.target.checked)}
+          className="rounded border-[#cbd5e1] text-[#005ca8] focus:ring-0"
+        />
+        <span>Featured Cards</span>
+      </label>
+
+      {["Credit Score", "Welcome Benefits"].map((header) => (
+        <div
+          key={header}
+          className="flex cursor-pointer items-center justify-between border-t border-[#f0f4f8] pt-4 text-[13px] font-bold text-[#1a1d25]"
+        >
+          <span>{header}</span>
+          <ChevronDown className="h-4 w-4 text-[#7a869a]" />
+        </div>
+      ))}
+    </div>
+  );
+
   return (
     <section className="bg-[#f8faff] px-4 py-8 font-sans text-[#1a1d25] antialiased md:px-6 lg:px-8">
       <div className="mx-auto max-w-9xl">
-        <div className="grid items-start gap-5 lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-6">
-          <aside className="space-y-5 rounded-xl border border-[#e2edf6] bg-white p-5 shadow-xs lg:sticky lg:top-28">
-            <div className="flex items-center justify-between border-b border-[#f0f4f8] pb-2">
-              <span className="text-[14px] font-bold text-[#1a1d25]">
-                Filters
-              </span>
+        <div
+          className={`fixed inset-0 z-50 lg:hidden ${
+            filtersOpen
+              ? "visible pointer-events-auto"
+              : "invisible pointer-events-none delay-200"
+          }`}
+          aria-hidden={!filtersOpen}
+        >
+          <button
+            type="button"
+            aria-label="Close filters"
+            tabIndex={filtersOpen ? 0 : -1}
+            onClick={() => setFiltersOpen(false)}
+            className={`absolute inset-0 bg-[#102033]/50 backdrop-blur-[2px] transition-opacity duration-200 ${
+              filtersOpen ? "opacity-100" : "opacity-0"
+            }`}
+          />
+          <aside
+            role="dialog"
+            aria-modal="true"
+            aria-label="Credit card filters"
+            className={`absolute left-0 top-0 flex h-full w-[min(88vw,22rem)] flex-col bg-white shadow-[18px_0_48px_rgba(15,23,42,0.24)] transition-transform duration-300 ease-out ${
+              filtersOpen ? "translate-x-0" : "-translate-x-full"
+            }`}
+          >
+            <div className="min-h-0 flex-1 overflow-y-auto p-4">
+              {renderFilters(true)}
+            </div>
+            <div className="border-t border-[#e2edf6] bg-white p-3">
               <button
                 type="button"
-                onClick={clearFilters}
-                className="text-[12px] font-medium text-[#7a869a] hover:text-[#005ca8]"
+                onClick={() => setFiltersOpen(false)}
+                className="h-11 w-full rounded-xl bg-[#005ca8] text-[13px] font-extrabold text-white shadow-[0_10px_24px_rgba(0,92,168,0.22)]"
               >
-                Clear All
+                Show {filteredCards.length} Cards
               </button>
             </div>
+          </aside>
+        </div>
 
-            <div className="space-y-3">
-              <div className="flex items-center justify-between text-[13px] font-bold">
-                <span>Banks</span>
-                <ChevronUp className="h-4 w-4 text-[#7a869a]" />
-              </div>
-              <div className="relative flex h-8 items-center rounded-md border border-[#e2e8f0] bg-[#f4f7fa] px-2.5">
-                <Search className="mr-2 h-3.5 w-3.5 text-[#9aa5b5]" />
-                <input
-                  type="text"
-                  value={bankSearch}
-                  onChange={(event) => setBankSearch(event.target.value)}
-                  placeholder="Search Bank"
-                  className="w-full bg-transparent text-[12px] outline-none placeholder:text-[#9aa5b5]"
-                />
-              </div>
-              <div className="max-h-52 space-y-2 overflow-y-auto pr-1 text-[12px] font-medium text-[#4a5568]">
-                {filteredBanks.map((bank) => (
-                  <label
-                    key={bank}
-                    className="flex cursor-pointer items-center gap-2.5"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={selectedBanks.includes(bank)}
-                      onChange={() =>
-                        toggleSelected(bank, selectedBanks, setSelectedBanks)
-                      }
-                      className="rounded border-[#cbd5e1] text-[#005ca8] focus:ring-0"
-                    />
-                    <span>{bank}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-
-            <FilterGroup
-              title="Card Type"
-              options={filters.cardTypes}
-              selected={selectedCardTypes}
-              onToggle={(value) =>
-                toggleSelected(value, selectedCardTypes, setSelectedCardTypes)
-              }
-            />
-            <FilterGroup
-              title="Annual Fee"
-              options={filters.annualFeeBuckets}
-              selected={selectedFees}
-              onToggle={(value) =>
-                toggleSelected(value, selectedFees, setSelectedFees)
-              }
-            />
-            <FilterGroup
-              title="Income Requirement"
-              options={filters.incomeBuckets}
-              selected={selectedIncome}
-              onToggle={(value) =>
-                toggleSelected(value, selectedIncome, setSelectedIncome)
-              }
-            />
-            <FilterGroup
-              title="Rewards Type"
-              options={filters.rewardsTypes}
-              selected={selectedRewards}
-              onToggle={(value) =>
-                toggleSelected(value, selectedRewards, setSelectedRewards)
-              }
-            />
-            <FilterGroup
-              title="Network"
-              options={filters.networks}
-              selected={selectedNetworks}
-              onToggle={(value) =>
-                toggleSelected(value, selectedNetworks, setSelectedNetworks)
-              }
-            />
-
-            <label className="flex cursor-pointer items-center gap-2.5 border-t border-[#f0f4f8] pt-4 text-[12px] font-medium text-[#4a5568]">
-              <input
-                type="checkbox"
-                checked={loungeOnly}
-                onChange={(event) => setLoungeOnly(event.target.checked)}
-                className="rounded border-[#cbd5e1] text-[#005ca8] focus:ring-0"
-              />
-              <span>Lounge Access</span>
-            </label>
-            <label className="flex cursor-pointer items-center gap-2.5 text-[12px] font-medium text-[#4a5568]">
-              <input
-                type="checkbox"
-                checked={featuredOnly}
-                onChange={(event) => setFeaturedOnly(event.target.checked)}
-                className="rounded border-[#cbd5e1] text-[#005ca8] focus:ring-0"
-              />
-              <span>Featured Cards</span>
-            </label>
-
-            {["Credit Score", "Welcome Benefits"].map((header) => (
-              <div
-                key={header}
-                className="flex cursor-pointer items-center justify-between border-t border-[#f0f4f8] pt-4 text-[13px] font-bold text-[#1a1d25]"
-              >
-                <span>{header}</span>
-                <ChevronDown className="h-4 w-4 text-[#7a869a]" />
-              </div>
-            ))}
+        <div className="grid items-start gap-5 lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-6">
+          <aside className="hidden rounded-xl border border-[#e2edf6] bg-white p-5 shadow-xs lg:sticky lg:top-28 lg:block">
+            {renderFilters()}
           </aside>
 
           <div className="min-w-0 space-y-4">
             <div className="flex flex-col justify-between gap-3 rounded-xl border border-[#e2edf6] bg-white px-5 py-3 sm:flex-row sm:items-center">
-              <span className="text-[14px] font-bold text-[#1a1d25]">
-                {loading ? "Loading cards..." : `${filteredCards.length} Cards Found`}
-              </span>
+              <div className="flex min-w-0 items-center justify-between gap-3 sm:flex-1">
+                <span className="text-[14px] font-bold text-[#1a1d25]">
+                  {loading
+                    ? "Loading cards..."
+                    : `${filteredCards.length} Cards Found`}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setFiltersOpen(true)}
+                  className="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-lg border border-[#cbd5e1] bg-white px-3 text-[12px] font-extrabold text-[#005ca8] shadow-xs lg:hidden"
+                >
+                  <SlidersHorizontal className="h-3.5 w-3.5" />
+                  <span>Filters</span>
+                  {activeFilterCount ? (
+                    <span className="inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-[#005ca8] px-1 text-[9px] font-extrabold text-white">
+                      {activeFilterCount}
+                    </span>
+                  ) : null}
+                </button>
+              </div>
               <div className="flex flex-wrap items-center gap-2 text-[12px]">
                 <span className="font-medium text-[#7a869a]">Sort By:</span>
                 <div className="flex cursor-pointer items-center gap-2 rounded-lg border border-[#cbd5e1] bg-white px-3 py-1.5 font-bold">
@@ -586,7 +714,7 @@ export function CreditCardsExplorer({
                                 className="h-6 w-auto max-w-24 object-contain"
                               />
                             ) : null}
-                            <span className="text-[12px] font-black text-[#005ca8]">
+                            <span className="text-[12px] font-extrabold text-[#005ca8]">
                               {card.bankName}
                             </span>
                           </div>
@@ -601,7 +729,7 @@ export function CreditCardsExplorer({
                           </label>
                         </div>
 
-                        <div className="relative mt-3 flex h-28 w-full flex-col justify-between overflow-hidden rounded-xl bg-gradient-to-br from-[#0c2340] to-[#1d3557] p-3 text-white shadow-sm">
+                        <div className="relative mt-3 flex h-28 w-full flex-col justify-between overflow-hidden rounded-xl bg-linear-to-br from-[#0c2340] to-[#1d3557] p-3 text-white shadow-sm">
                           <div className="flex items-start justify-between">
                             <div className="text-[9px] font-semibold uppercase tracking-wider opacity-70">
                               {card.bankName}
@@ -620,7 +748,7 @@ export function CreditCardsExplorer({
                               <div className="font-mono text-[7px] opacity-50">
                                 {card.cardType || "CREDIT"}
                               </div>
-                              <div className="text-[11px] font-black italic tracking-wide opacity-90">
+                              <div className="text-[11px] font-extrabold italic tracking-wide opacity-90">
                                 {card.cardNetwork || "CARD"}
                               </div>
                             </div>
@@ -678,7 +806,8 @@ export function CreditCardsExplorer({
 
                         <div className="mb-4 text-left">
                           <div className="text-[12px] font-bold text-[#005ca8]">
-                            {card.welcomeBenefits || "Welcome benefits available"}
+                            {card.welcomeBenefits ||
+                              "Welcome benefits available"}
                           </div>
                           <div className="text-[10px] font-medium text-[#9aa5b5]">
                             Welcome Benefit
@@ -721,7 +850,8 @@ export function CreditCardsExplorer({
                   No credit cards match these filters.
                 </p>
                 <p className="mt-2 text-[12px] font-medium text-[#7a869a]">
-                  Clear filters or try a different bank, fee, reward, or network.
+                  Clear filters or try a different bank, fee, reward, or
+                  network.
                 </p>
               </div>
             )}
@@ -801,7 +931,7 @@ export function CreditCardsExplorer({
           <div className="max-h-[92vh] w-full max-w-6xl overflow-hidden rounded-2xl bg-white shadow-[0_28px_80px_rgba(15,23,42,0.28)]">
             <div className="flex flex-col gap-3 border-b border-[#e2edf6] px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <p className="text-[11px] font-black uppercase tracking-wide text-[#005ca8]">
+                <p className="text-[11px] font-extrabold uppercase tracking-wide text-[#005ca8]">
                   Credit Card Comparison
                 </p>
                 <h3 className="mt-1 text-[20px] font-extrabold text-[#1a1d25]">
@@ -820,12 +950,12 @@ export function CreditCardsExplorer({
 
             <div className="max-h-[calc(92vh-82px)] overflow-auto p-4 sm:p-5">
               <div
-                className="grid min-w-[760px] gap-3"
+                className="grid min-w-190 gap-3"
                 style={{
                   gridTemplateColumns: `170px repeat(${compareCards.length}, minmax(180px, 1fr))`,
                 }}
               >
-                <div className="rounded-xl bg-[#f8fbff] p-3 text-[12px] font-black text-[#64748b]">
+                <div className="rounded-xl bg-[#f8fbff] p-3 text-[12px] font-extrabold text-[#64748b]">
                   Card
                 </div>
                 {compareCards.map((card) => (
@@ -841,7 +971,7 @@ export function CreditCardsExplorer({
                           className="h-6 w-auto max-w-20 object-contain"
                         />
                       ) : null}
-                      <span className="text-[11px] font-black text-[#005ca8]">
+                      <span className="text-[11px] font-extrabold text-[#005ca8]">
                         {card.bankName}
                       </span>
                     </div>
@@ -863,7 +993,7 @@ export function CreditCardsExplorer({
 
                 {compareRows.map((row) => (
                   <div key={row.label} className="contents">
-                    <div className="rounded-xl border border-[#eef3f8] bg-white p-3 text-[12px] font-black text-[#1a1d25]">
+                    <div className="rounded-xl border border-[#eef3f8] bg-white p-3 text-[12px] font-extrabold text-[#1a1d25]">
                       {row.label}
                     </div>
                     {compareCards.map((card) => (
@@ -877,7 +1007,7 @@ export function CreditCardsExplorer({
                   </div>
                 ))}
 
-                <div className="rounded-xl bg-[#f8fbff] p-3 text-[12px] font-black text-[#64748b]">
+                <div className="rounded-xl bg-[#f8fbff] p-3 text-[12px] font-extrabold text-[#64748b]">
                   Action
                 </div>
                 {compareCards.map((card) => (
@@ -888,7 +1018,7 @@ export function CreditCardsExplorer({
                     <button
                       type="button"
                       onClick={() => handleApply(card)}
-                      className="h-10 w-full rounded-full bg-[#1cb45c] text-[12px] font-black text-white shadow-[0_10px_20px_rgba(28,180,92,0.18)] transition hover:bg-[#159a4e]"
+                      className="h-10 w-full rounded-full bg-[#1cb45c] text-[12px] font-extrabold text-white shadow-[0_10px_20px_rgba(28,180,92,0.18)] transition hover:bg-[#159a4e]"
                     >
                       Apply Now
                     </button>

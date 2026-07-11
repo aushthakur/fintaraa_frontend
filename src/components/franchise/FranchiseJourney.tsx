@@ -5,7 +5,7 @@ export function FranchiseJourney() {
     <section className="px-4 pb-10 md:px-6 lg:px-8">
       <div className="mx-auto grid max-w-9xl gap-8 rounded-2xl bg-[#edf6ff] p-8 md:grid-cols-[1fr_0.9fr] md:items-center">
         <div>
-          <h2 className="text-[24px] font-black leading-tight text-[#005ca8]">
+          <h2 className="text-[24px] font-extrabold leading-tight text-[#005ca8]">
             Your Journey to
             <span className="block text-[#111827]">
               Franchise Business Growth
@@ -19,7 +19,7 @@ export function FranchiseJourney() {
             {journeyItems.map(({ title, icon: Icon }) => (
               <span
                 key={title}
-                className="flex items-center gap-2 text-[12px] font-black text-[#005ca8]"
+                className="flex items-center gap-2 text-[12px] font-extrabold text-[#005ca8]"
               >
                 <Icon className="h-4 w-4" />
                 {title}
@@ -28,7 +28,7 @@ export function FranchiseJourney() {
           </div>
           <a
             href="#franchise-form"
-            className="mt-6 inline-flex h-10 items-center justify-center rounded-lg bg-[#005ca8] px-6 text-[12px] font-black text-white no-underline transition-opacity hover:opacity-90"
+            className="mt-6 inline-flex h-10 items-center justify-center rounded-lg bg-[#005ca8] px-6 text-[12px] font-extrabold text-white no-underline transition-opacity hover:opacity-90"
           >
             Start Your Application Now
           </a>
@@ -36,7 +36,7 @@ export function FranchiseJourney() {
 
         {/* Mock app/form card */}
         <div className="rounded-xl bg-white p-5 shadow-[0_18px_40px_rgba(0,92,168,0.12)]">
-          <div className="mb-4 text-[12px] font-black text-[#005ca8]">
+          <div className="mb-4 text-[12px] font-extrabold text-[#005ca8]">
             Partner Application
           </div>
           <div className="grid gap-3">

@@ -282,7 +282,7 @@ export function HeroSection() {
                 ) : null}
               </h1>
 
-              <p className="mt-3 max-w-2xl break-words text-[14px] font-medium leading-6 text-white/86 sm:text-[15px] sm:leading-7">
+              <p className="mt-3 max-w-2xl wrap-break-word text-[14px] font-medium leading-6 text-white/86 sm:text-[15px] sm:leading-7">
                 {activeDescription}
               </p>
             </div>

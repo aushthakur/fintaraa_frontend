@@ -52,11 +52,11 @@ export function AboutDetails() {
       <div className="mx-auto max-w-9xl">
         <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
           <div>
-            <span className="inline-flex items-center gap-2 rounded-full bg-[#eef8ff] px-3 py-1.5 text-[11px] font-black uppercase tracking-[0.14em] text-[#195585]">
+            <span className="inline-flex items-center gap-2 rounded-full bg-[#eef8ff] px-3 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.14em] text-[#195585]">
               <Building2 className="h-3.5 w-3.5 text-[#12b76a]" />
               Company Profile
             </span>
-            <h2 className="mt-4 text-[28px] font-black tracking-[-0.02em] text-[#07162d] md:text-[36px]">
+            <h2 className="mt-4 text-[28px] font-extrabold tracking-[-0.02em] text-[#07162d] md:text-[36px]">
               A guided financial marketplace for Indian customers.
             </h2>
             <p className="mt-4 text-[15px] font-medium leading-8 text-[#667085] md:text-[17px]">
@@ -80,7 +80,7 @@ export function AboutDetails() {
                 key={item.label}
                 className="rounded-2xl border border-[#e4edf5] bg-[#f8fcff] p-5"
               >
-                <div className="text-[26px] font-black text-[#0d64bf]">
+                <div className="text-[26px] font-extrabold text-[#0d64bf]">
                   {item.value}
                 </div>
                 <p className="mt-2 text-[13px] font-bold leading-5 text-[#667085]">
@@ -100,7 +100,7 @@ export function AboutDetails() {
               <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#ecfdf3] text-[#12b76a]">
                 <Icon className="h-5 w-5" />
               </span>
-              <h3 className="mt-4 text-[17px] font-black text-[#07162d]">
+              <h3 className="mt-4 text-[17px] font-extrabold text-[#07162d]">
                 {title}
               </h3>
               <p className="mt-2 text-[13px] font-semibold leading-6 text-[#667085]">
@@ -111,7 +111,7 @@ export function AboutDetails() {
         </div>
 
         <div className="mt-12 rounded-3xl bg-[#f8fcff] p-6 ring-1 ring-[#e4edf5] md:p-8">
-          <h2 className="text-[22px] font-black text-[#07162d]">
+          <h2 className="text-[22px] font-extrabold text-[#07162d]">
             How We Work
           </h2>
           <div className="mt-6 grid gap-3 md:grid-cols-2 lg:grid-cols-3">

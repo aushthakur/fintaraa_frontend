@@ -83,6 +83,7 @@ export function BlogHeroSection() {
               src="/assets/images/blog-hero.png"
               alt="Financial Analysis Mobile Graphs Illustration"
               fill
+              sizes="(max-width: 768px) 100vw, 50vw"
               className="object-contain"
               priority
             />

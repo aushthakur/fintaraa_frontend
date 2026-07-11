@@ -56,7 +56,7 @@ const steps = [
     visual: (
       <div className="relative flex items-center justify-center h-12 w-10 border-2 border-[#005ca8] rounded-md bg-white">
         <div className="absolute top-1.5 h-0.5 w-3 bg-gray-200 rounded-full" />
-        <span className="text-[10px] font-black text-[#005ca8] bg-white px-0.5 tracking-tighter z-10 whitespace-nowrap">
+        <span className="text-[10px] font-extrabold text-[#005ca8] bg-white px-0.5 tracking-tighter z-10 whitespace-nowrap">
           ****
         </span>
         <div className="absolute bottom-1 h-1 w-1 rounded-full bg-[#005ca8]" />

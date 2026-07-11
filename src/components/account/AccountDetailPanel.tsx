@@ -1631,7 +1631,7 @@ function SoftSelect({
 }) {
   return (
     <label className="grid gap-1">
-      <span className="text-[11px] font-black uppercase tracking-[0.12em] text-[#667085]">
+      <span className="text-[11px] font-extrabold uppercase tracking-[0.12em] text-[#667085]">
         {label}
       </span>
       <select
@@ -1881,7 +1881,7 @@ function ApplicationDetailsModal({
               />
             </span>
             <div>
-              <p className="text-[11px] font-black uppercase tracking-wide text-[#005ca8]">
+              <p className="text-[11px] font-extrabold uppercase tracking-wide text-[#005ca8]">
                 {application.reference}
               </p>
               <h3 className="mt-1 text-[20px] font-extrabold text-[#1a1d25]">
@@ -1910,7 +1910,7 @@ function ApplicationDetailsModal({
               >
                 <div className="flex items-start justify-between gap-4">
                   <div>
-                    <p className="text-[10px] font-black uppercase tracking-[0.18em] text-white/60">
+                    <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-white/60">
                       Current status
                     </p>
                     <h4 className="mt-2 text-[28px] font-extrabold leading-tight">
@@ -1921,7 +1921,7 @@ function ApplicationDetailsModal({
                       {formatDisplayDate(application.updatedAt)}.
                     </p>
                   </div>
-                  <span className="rounded-full bg-white/12 px-3 py-1 text-[11px] font-black uppercase tracking-[0.12em]">
+                  <span className="rounded-full bg-white/12 px-3 py-1 text-[11px] font-extrabold uppercase tracking-[0.12em]">
                     {application.category}
                   </span>
                 </div>
@@ -1963,7 +1963,7 @@ function ApplicationDetailsModal({
                       >
                         <div className="flex flex-col items-center">
                           <span
-                            className={`flex min-h-8 min-w-8 items-center justify-center rounded-full text-[12px] font-black ring-4 ${
+                            className={`flex min-h-8 min-w-8 items-center justify-center rounded-full text-[12px] font-extrabold ring-4 ${
                               done
                                 ? "bg-[#12b76a] text-white ring-[#ecfdf3]"
                                 : active
@@ -1985,7 +1985,7 @@ function ApplicationDetailsModal({
                               {step.label}
                             </h5>
                             <span
-                              className={`rounded-full px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wide ${
+                              className={`rounded-full px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wide ${
                                 done
                                   ? "bg-[#ecfdf3] text-[#067647]"
                                   : active
@@ -2043,7 +2043,7 @@ function ApplicationDetailsModal({
                       Application chat
                     </h4>
                   </div>
-                  <span className="rounded-full bg-[#f2f6fb] px-2.5 py-1 text-[10px] font-black uppercase tracking-wide text-[#667085]">
+                  <span className="rounded-full bg-[#f2f6fb] px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wide text-[#667085]">
                     {application.chatKind ? "Live" : "Support"}
                   </span>
                 </div>
@@ -2269,7 +2269,7 @@ function AccountApplicationsPanel() {
               <FileSearch className="h-6 w-6" />
             </span>
             <div>
-              <p className="text-[12px] font-black uppercase tracking-[0.16em] text-[#195585]">
+              <p className="text-[12px] font-extrabold uppercase tracking-[0.16em] text-[#195585]">
                 Application command center
               </p>
               <h3 className="mt-2 text-[20px] font-extrabold text-[#07162d] md:text-[24px]">
@@ -2369,11 +2369,11 @@ function AccountApplicationsPanel() {
               >
                 <div>
                   <div className="flex h-7 items-center justify-between gap-2">
-                    <span className="truncate text-[12px] font-black text-[#005ca8]">
+                    <span className="truncate text-[12px] font-extrabold text-[#005ca8]">
                       {record.reference}
                     </span>
                     <span
-                      className={`shrink-0 rounded-full px-2.5 py-1 text-[10px] font-black uppercase tracking-widest ring-1 ${getStatusTone(record.status)}`}
+                      className={`shrink-0 rounded-full px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-widest ring-1 ${getStatusTone(record.status)}`}
                     >
                       {record.status}
                     </span>
@@ -2399,7 +2399,7 @@ function AccountApplicationsPanel() {
                         <div className="font-mono text-[7px] uppercase opacity-50">
                           {record.category}
                         </div>
-                        <div className="max-w-[58%] truncate text-right text-[11px] font-black italic tracking-wide opacity-90">
+                        <div className="max-w-[58%] truncate text-right text-[11px] font-extrabold italic tracking-wide opacity-90">
                           {record.stage}
                         </div>
                       </div>
@@ -2713,12 +2713,12 @@ function MyOffersPanel() {
                         className="h-6 w-auto max-w-24 object-contain"
                       />
                     ) : null}
-                    <span className="truncate text-[12px] font-black text-[#005ca8]">
+                    <span className="truncate text-[12px] font-extrabold text-[#005ca8]">
                       {offer.bank}
                     </span>
                   </div>
                   <span
-                    className={`shrink-0 rounded-full px-2.5 py-1 text-[10px] font-black uppercase tracking-widest ring-1 ${
+                    className={`shrink-0 rounded-full px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-widest ring-1 ${
                       offer.profileMatch
                         ? "bg-[#ecfdf3] text-[#067647] ring-[#abefc6]"
                         : "bg-[#fffaeb] text-[#b54708] ring-[#fedf89]"
@@ -2747,7 +2747,7 @@ function MyOffersPanel() {
                       <div className="font-mono text-[7px] opacity-50">
                         {offer.type || "CREDIT"}
                       </div>
-                      <div className="text-[11px] font-black italic tracking-wide opacity-90">
+                      <div className="text-[11px] font-extrabold italic tracking-wide opacity-90">
                         {offer.network || "CARD"}
                       </div>
                     </div>

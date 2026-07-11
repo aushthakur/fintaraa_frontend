@@ -196,6 +196,7 @@ export function BlogCardSection({ posts }: { posts: BlogPost[] }) {
                               alt={authorInfo.name}
                               fill
                               unoptimized
+                              sizes="40px"
                               className="object-cover"
                             />
                           ) : (

@@ -50,11 +50,11 @@ export default function ToolsPage() {
   return (
     <main className="bg-white px-4 py-12 md:px-6 lg:px-8">
       <section className="mx-auto max-w-9xl">
-        <p className="inline-flex items-center gap-2 rounded-full bg-[#eef6ff] px-4 py-2 text-[12px] font-black uppercase tracking-[0.16em] text-[#005ca8]">
+        <p className="inline-flex items-center gap-2 rounded-full bg-[#eef6ff] px-4 py-2 text-[12px] font-extrabold uppercase tracking-[0.16em] text-[#005ca8]">
           <Calculator className="h-4 w-4" />
           Tools
         </p>
-        <h1 className="mt-5 text-[38px] font-black tracking-[-0.02em] text-[#111827] md:text-[54px]">
+        <h1 className="mt-5 text-[38px] font-extrabold tracking-[-0.02em] text-[#111827] md:text-[54px]">
           Financial tools and trackers
         </h1>
         <p className="mt-4 max-w-3xl text-[17px] font-semibold leading-8 text-[#667085]">
@@ -71,7 +71,7 @@ export default function ToolsPage() {
               <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#eef6ff] text-[#005ca8]">
                 <Icon className="h-5 w-5" />
               </span>
-              <h2 className="mt-5 text-[18px] font-black text-[#111827]">
+              <h2 className="mt-5 text-[18px] font-extrabold text-[#111827]">
                 {title}
               </h2>
               <p className="mt-2 text-[13px] font-semibold leading-6 text-[#667085]">

@@ -8,7 +8,7 @@ export function FranchiseBenefits() {
     <section className="px-4 pb-10 md:px-6 lg:px-8">
       <div className="mx-auto max-w-9xl">
         {/* Section heading */}
-        <h2 className="text-[22px] font-[700] text-[#222222]">
+        <h2 className="text-[22px] font-bold text-[#222222]">
           What You Get with Fintaraa Franchise
         </h2>
 
@@ -23,7 +23,7 @@ export function FranchiseBenefits() {
                 <Icon className="h-5 w-5" />
               </span>
               <span>
-                <span className="block text-[13px] font-black text-[#111827]">
+                <span className="block text-[13px] font-extrabold text-[#111827]">
                   {title}
                 </span>
                 <span className="mt-1 block text-[11px] font-semibold leading-5 text-[#667085]">
@@ -41,7 +41,7 @@ export function FranchiseBenefits() {
         >
           {/* Form */}
           <div>
-            <h2 className="text-[20px] font-black text-[#111827]">
+            <h2 className="text-[20px] font-extrabold text-[#111827]">
               Request Franchise Information
             </h2>
             <p className="mt-1 text-[12px] font-semibold text-[#667085]">
@@ -79,7 +79,7 @@ export function FranchiseBenefits() {
 
           {/* Benefits aside */}
           <aside className="rounded-xl bg-[#e8f4ff] p-5">
-            <h3 className="text-[18px] font-black text-[#111827]">
+            <h3 className="text-[18px] font-extrabold text-[#111827]">
               Benefits You Get
             </h3>
             <div className="mt-4 grid gap-3">

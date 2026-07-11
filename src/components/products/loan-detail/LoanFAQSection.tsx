@@ -14,7 +14,7 @@ export function LoanFAQSection({
     return (
       <section className="bg-white px-4 py-12 md:px-6 lg:px-8">
         <div className="mx-auto max-w-5xl">
-          <h2 className="text-[24px] font-black tracking-tight text-[#07162d]">
+          <h2 className="text-[24px] font-extrabold tracking-tight text-[#07162d]">
             {title || "Frequently Asked Questions"}
           </h2>
           <div className="mt-5 divide-y divide-[#e4edf5] rounded-2xl bg-white">

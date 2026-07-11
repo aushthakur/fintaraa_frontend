@@ -22,10 +22,10 @@ export function ServiceRequestSuccess({
               <CheckCircle2 className="h-7 w-7" />
             </span>
             <div>
-              <p className="text-[13px] font-black uppercase tracking-wide text-[#128545]">
+              <p className="text-[13px] font-extrabold uppercase tracking-wide text-[#128545]">
                 Request Created Successfully
               </p>
-              <h3 className="mt-1 text-[20px] font-black text-[#1f2937] md:text-[22px]">
+              <h3 className="mt-1 text-[20px] font-extrabold text-[#1f2937] md:text-[22px]">
                 {title}
               </h3>
               <p className="mt-2 max-w-2xl text-[14px] font-semibold leading-6 text-[#667085] md:text-[15px]">
@@ -34,8 +34,10 @@ export function ServiceRequestSuccess({
             </div>
           </div>
           <div className="rounded-xl border border-[#cdebd8] bg-white px-4 py-3">
-            <p className="text-[12px] font-black text-[#98a2b3]">Your Query ID</p>
-            <p className="mt-1 text-[16px] font-black text-[#005ca8]">
+            <p className="text-[12px] font-extrabold text-[#98a2b3]">
+              Your Query ID
+            </p>
+            <p className="mt-1 text-[16px] font-extrabold text-[#005ca8]">
               {request.queryId}
             </p>
           </div>
@@ -46,7 +48,7 @@ export function ServiceRequestSuccess({
         <div className="flex items-start gap-3 rounded-xl bg-[#f8fbff] p-3">
           <ClipboardCheck className="mt-0.5 h-5 w-5 shrink-0 text-[#005ca8]" />
           <div>
-            <p className="text-[13px] font-black text-[#1f2937]">
+            <p className="text-[13px] font-extrabold text-[#1f2937]">
               Current Stage
             </p>
             <p className="mt-1 text-[13px] font-semibold text-[#667085]">
@@ -57,7 +59,7 @@ export function ServiceRequestSuccess({
         <div className="flex items-start gap-3 rounded-xl bg-[#f8fbff] p-3">
           <Clock3 className="mt-0.5 h-5 w-5 shrink-0 text-[#005ca8]" />
           <div>
-            <p className="text-[13px] font-black text-[#1f2937]">
+            <p className="text-[13px] font-extrabold text-[#1f2937]">
               What happens next?
             </p>
             <p className="mt-1 text-[13px] font-semibold leading-5 text-[#667085]">
@@ -68,7 +70,7 @@ export function ServiceRequestSuccess({
         <div className="flex items-start gap-3 rounded-xl bg-[#f8fbff] p-3">
           <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[#1cb45c]" />
           <div>
-            <p className="text-[13px] font-black text-[#1f2937]">
+            <p className="text-[13px] font-extrabold text-[#1f2937]">
               Track anytime
             </p>
             <p className="mt-1 text-[13px] font-semibold leading-5 text-[#667085]">

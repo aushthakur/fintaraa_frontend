@@ -119,7 +119,9 @@ const personName = (value: unknown) => {
   if (!value) return undefined;
   if (typeof value === "string") return value;
   const item = value as Record<string, unknown>;
-  return String(item.name || item.username || item.email || item.mobile || "").trim();
+  return String(
+    item.name || item.username || item.email || item.mobile || "",
+  ).trim();
 };
 
 const loanTimeline = (status?: string): StatusItem["timeline"] => {
@@ -131,21 +133,24 @@ const loanTimeline = (status?: string): StatusItem["timeline"] => {
     "Partner Decision",
     "Completed",
   ];
-  const activeIndex = current.includes("complete") || current.includes("approved")
-    ? 4
-    : current.includes("document")
-      ? 2
-      : current.includes("review")
-        ? 1
-        : 0;
+  const activeIndex =
+    current.includes("complete") || current.includes("approved")
+      ? 4
+      : current.includes("document")
+        ? 2
+        : current.includes("review")
+          ? 1
+          : 0;
   return stages.map((stage, index) => ({
     stage,
     status:
-      index < activeIndex ? "completed" : index === activeIndex ? "active" : "pending",
+      index < activeIndex
+        ? "completed"
+        : index === activeIndex
+          ? "active"
+          : "pending",
     remarks:
-      index === activeIndex
-        ? "Latest application status from backend."
-        : "",
+      index === activeIndex ? "Latest application status from backend." : "",
     updatedBy: index === activeIndex ? "Fintaraa" : "",
   }));
 };
@@ -194,16 +199,21 @@ const mapService = (item: ServiceRequestRecord): StatusItem => ({
 const mapPartnerLead = (item: PartnerLeadEvent): StatusItem => {
   const productType =
     item.productType === "insurance" ||
-    String(item.loanType || "").toLowerCase().startsWith("insurance_")
+    String(item.loanType || "")
+      .toLowerCase()
+      .startsWith("insurance_")
       ? "insurance"
       : "loan";
   const title =
     productType === "insurance"
-      ? titleCase(String(item.loanType || "insurance").replace(/^insurance_/, ""))
+      ? titleCase(
+          String(item.loanType || "insurance").replace(/^insurance_/, ""),
+        )
       : titleCase(item.loanType || "Loan Application");
 
   return {
-    id: item.id || item._id || item.loanId || `${item.mobile}-${item.createdAt}`,
+    id:
+      item.id || item._id || item.loanId || `${item.mobile}-${item.createdAt}`,
     queryId: item.loanId || item.id || item._id || "-",
     type: productType,
     title,
@@ -247,7 +257,7 @@ function TrackSearchField({
         backgroundColor: active ? "#ffffff" : "#f8fbff",
       }}
       transition={{ duration: 0.2 }}
-      className="group relative flex h-[4.25rem] items-center gap-3 border px-4"
+      className="group relative flex h-17 items-center gap-3 border px-4"
     >
       <span
         className={`flex h-9 w-9 shrink-0 items-center justify-center transition ${
@@ -258,7 +268,7 @@ function TrackSearchField({
       </span>
       <span className="min-w-0 flex-1">
         <span
-          className={`block text-[11px] font-black uppercase tracking-[0.12em] transition ${
+          className={`block text-[11px] font-extrabold uppercase tracking-[0.12em] transition ${
             active ? "text-[#005ca8]" : "text-[#667085]"
           }`}
         >
@@ -272,7 +282,7 @@ function TrackSearchField({
           onBlur={onBlur}
           onChange={(event) => onChange(event.target.value)}
           placeholder={placeholder}
-          className="mt-1 w-full bg-transparent text-[14px] font-black text-[#07162d] outline-none placeholder:text-[#98a2b3]"
+          className="mt-1 w-full bg-transparent text-[14px] font-extrabold text-[#07162d] outline-none placeholder:text-[#98a2b3]"
         />
       </span>
       {active ? (
@@ -336,7 +346,9 @@ export function ApplicationStatusPage() {
   );
 
   const heroCounts = useMemo(() => {
-    const completed = items.filter((item) => isCompletedStatus(item.status)).length;
+    const completed = items.filter((item) =>
+      isCompletedStatus(item.status),
+    ).length;
     return {
       total: items.length,
       completed,
@@ -394,7 +406,8 @@ export function ApplicationStatusPage() {
         setItems(next);
         setSelectedId(next[0]?.id || "");
       } catch (err) {
-        if (active) setError((err as Error).message || "Unable to load status.");
+        if (active)
+          setError((err as Error).message || "Unable to load status.");
       } finally {
         if (active) setLoading(false);
       }
@@ -427,7 +440,8 @@ export function ApplicationStatusPage() {
         return Array.from(map.values());
       });
       setSelectedId(mapped[0]?.id || selectedId);
-      if (!mapped.length) setError("No request found for the submitted details.");
+      if (!mapped.length)
+        setError("No request found for the submitted details.");
     } catch (err) {
       setError((err as Error).message || "Unable to track request.");
     } finally {
@@ -447,10 +461,10 @@ export function ApplicationStatusPage() {
           <div className="bg-white">
             <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
               <div>
-                <p className="text-[12px] font-black uppercase tracking-[0.14em] text-[#667085]">
+                <p className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#667085]">
                   {viewerType === "agency" ? "Partner view" : "Track request"}
                 </p>
-                <h2 className="mt-1 text-[24px] font-black tracking-[-0.01em] text-[#111827] md:text-[30px]">
+                <h2 className="mt-1 text-[24px] font-extrabold tracking-[-0.01em] text-[#111827] md:text-[30px]">
                   {viewerType === "agency"
                     ? "Partner applications"
                     : "Find submitted applications"}
@@ -460,14 +474,14 @@ export function ApplicationStatusPage() {
                 <div className="flex flex-wrap gap-2">
                   <Link
                     href="/login?referrer=/application-status"
-                    className="inline-flex h-11 items-center justify-center gap-2 bg-[#13a653] px-5 text-[13px] font-black text-white no-underline"
+                    className="inline-flex h-11 items-center justify-center gap-2 bg-[#13a653] px-5 text-[13px] font-extrabold text-white no-underline"
                   >
                     Customer login
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                   <Link
                     href="/partner/login?redirect=/application-status"
-                    className="inline-flex h-11 items-center justify-center gap-2 bg-[#005ca8] px-5 text-[13px] font-black text-white no-underline"
+                    className="inline-flex h-11 items-center justify-center gap-2 bg-[#005ca8] px-5 text-[13px] font-extrabold text-white no-underline"
                   >
                     Partner login
                     <ArrowRight className="h-4 w-4" />
@@ -489,7 +503,7 @@ export function ApplicationStatusPage() {
                     key={item.value}
                     type="button"
                     onClick={() => setSearchServiceType(item.value)}
-                    className={`relative h-10 shrink-0 overflow-hidden px-4 text-[12px] font-black uppercase tracking-[0.08em] transition ${
+                    className={`relative h-10 shrink-0 overflow-hidden px-4 text-[12px] font-extrabold uppercase tracking-[0.08em] transition ${
                       searchServiceType === item.value
                         ? "text-white"
                         : "text-[#667085] hover:bg-white hover:text-[#005ca8]"
@@ -532,7 +546,9 @@ export function ApplicationStatusPage() {
                   active={activeSearchField === "mobile"}
                   onFocus={() => setActiveSearchField("mobile")}
                   onBlur={() => setActiveSearchField(null)}
-                  onChange={(value) => setMobile(value.replace(/\D/g, "").slice(0, 10))}
+                  onChange={(value) =>
+                    setMobile(value.replace(/\D/g, "").slice(0, 10))
+                  }
                   inputMode="numeric"
                 />
                 <motion.button
@@ -540,7 +556,7 @@ export function ApplicationStatusPage() {
                   whileTap={{ scale: 0.98 }}
                   type="submit"
                   disabled={loading}
-                  className="inline-flex h-[4.25rem] items-center justify-center gap-2 bg-[#005ca8] px-6 text-[13px] font-black text-white shadow-[0_14px_30px_rgba(0,92,168,0.22)] transition hover:bg-[#004f91] disabled:opacity-70 md:min-w-[9rem]"
+                  className="inline-flex h-17 items-center justify-center gap-2 bg-[#005ca8] px-6 text-[13px] font-extrabold text-white shadow-[0_14px_30px_rgba(0,92,168,0.22)] transition hover:bg-[#004f91] disabled:opacity-70 md:min-w-36"
                 >
                   {loading ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
@@ -571,7 +587,7 @@ export function ApplicationStatusPage() {
                 key={item}
                 type="button"
                 onClick={() => setTab(item)}
-                className={`h-10 rounded-full px-5 text-[12px] font-black ${
+                className={`h-10 rounded-full px-5 text-[12px] font-extrabold ${
                   tab === item
                     ? "bg-[#005ca8] text-white"
                     : "bg-[#f3f7fb] text-[#667085]"
@@ -599,14 +615,14 @@ export function ApplicationStatusPage() {
                     }`}
                   >
                     <div className="flex items-start justify-between gap-3">
-                      <span className="rounded-full bg-[#eef6ff] px-3 py-1 text-[11px] font-black uppercase tracking-wide text-[#005ca8]">
+                      <span className="rounded-full bg-[#eef6ff] px-3 py-1 text-[11px] font-extrabold uppercase tracking-wide text-[#005ca8]">
                         {item.type}
                       </span>
-                      <span className="rounded-full bg-[#ecfdf3] px-3 py-1 text-[11px] font-black text-[#027a48]">
+                      <span className="rounded-full bg-[#ecfdf3] px-3 py-1 text-[11px] font-extrabold text-[#027a48]">
                         {titleCase(item.status)}
                       </span>
                     </div>
-                    <h3 className="mt-4 text-[18px] font-black text-[#111827]">
+                    <h3 className="mt-4 text-[18px] font-extrabold text-[#111827]">
                       {item.title}
                     </h3>
                     <p className="mt-1 text-[13px] font-semibold text-[#667085]">
@@ -615,7 +631,9 @@ export function ApplicationStatusPage() {
                     <div className="mt-4 grid gap-2 text-[12px] font-bold text-[#475467]">
                       <span>Query ID: {item.queryId}</span>
                       <span>Last updated: {formatDate(item.updatedAt)}</span>
-                      {item.assigned ? <span>Assigned: {item.assigned}</span> : null}
+                      {item.assigned ? (
+                        <span>Assigned: {item.assigned}</span>
+                      ) : null}
                     </div>
                   </button>
                 ))}
@@ -625,17 +643,17 @@ export function ApplicationStatusPage() {
                 <div className="rounded-2xl border border-[#dce9f7] bg-white p-5 shadow-[0_18px_52px_rgba(16,24,40,0.06)] md:p-7">
                   <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
                     <div>
-                      <p className="text-[12px] font-black uppercase tracking-[0.16em] text-[#13a653]">
+                      <p className="text-[12px] font-extrabold uppercase tracking-[0.16em] text-[#13a653]">
                         Selected application
                       </p>
-                      <h2 className="mt-2 text-[26px] font-black text-[#111827]">
+                      <h2 className="mt-2 text-[26px] font-extrabold text-[#111827]">
                         {selected.title}
                       </h2>
                       <p className="mt-1 text-[14px] font-semibold text-[#667085]">
                         {selected.queryId}
                       </p>
                     </div>
-                    <span className="rounded-full bg-[#eef6ff] px-4 py-2 text-[12px] font-black text-[#005ca8]">
+                    <span className="rounded-full bg-[#eef6ff] px-4 py-2 text-[12px] font-extrabold text-[#005ca8]">
                       {titleCase(selected.status)}
                     </span>
                   </div>
@@ -647,10 +665,10 @@ export function ApplicationStatusPage() {
                       ["Assigned", selected.assigned || "Pending"],
                     ].map(([label, value]) => (
                       <div key={label} className="rounded-xl bg-[#f8fbff] p-4">
-                        <p className="text-[11px] font-black uppercase tracking-wide text-[#98a2b3]">
+                        <p className="text-[11px] font-extrabold uppercase tracking-wide text-[#98a2b3]">
                           {label}
                         </p>
-                        <p className="mt-1 text-[14px] font-black text-[#111827]">
+                        <p className="mt-1 text-[14px] font-extrabold text-[#111827]">
                           {value}
                         </p>
                       </div>
@@ -658,7 +676,7 @@ export function ApplicationStatusPage() {
                   </div>
 
                   <div className="mt-7">
-                    <h3 className="text-[18px] font-black text-[#111827]">
+                    <h3 className="text-[18px] font-extrabold text-[#111827]">
                       Progress Timeline
                     </h3>
                     <div className="mt-5 grid gap-5">
@@ -689,7 +707,7 @@ export function ApplicationStatusPage() {
                               <Icon className="h-5 w-5" />
                             </span>
                             <div>
-                              <p className="text-[15px] font-black text-[#111827]">
+                              <p className="text-[15px] font-extrabold text-[#111827]">
                                 {step.stage}
                               </p>
                               <p className="mt-1 text-[13px] font-semibold leading-6 text-[#667085]">
@@ -713,7 +731,7 @@ export function ApplicationStatusPage() {
               <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#eef6ff] text-[#005ca8]">
                 <ClipboardList className="h-7 w-7" />
               </div>
-              <h3 className="mt-5 text-[22px] font-black text-[#111827]">
+              <h3 className="mt-5 text-[22px] font-extrabold text-[#111827]">
                 No applications found
               </h3>
               <p className="mt-2 text-[15px] font-semibold leading-7 text-[#667085]">
@@ -722,7 +740,7 @@ export function ApplicationStatusPage() {
               </p>
               <Link
                 href="/products"
-                className="mt-6 inline-flex h-11 items-center justify-center rounded-full bg-[#13a653] px-5 text-[13px] font-black text-white no-underline"
+                className="mt-6 inline-flex h-11 items-center justify-center rounded-full bg-[#13a653] px-5 text-[13px] font-extrabold text-white no-underline"
               >
                 Explore products
               </Link>

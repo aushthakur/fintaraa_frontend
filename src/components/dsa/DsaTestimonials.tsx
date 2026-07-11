@@ -16,7 +16,7 @@ export function DsaTestimonials() {
       <div className="mx-auto max-w-9xl">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className="text-[12px] font-black uppercase tracking-wide text-[#13a653]">
+            <p className="text-[12px] font-extrabold uppercase tracking-wide text-[#13a653]">
               Partner Reviews
             </p>
             <h2 className="mt-1 text-[24px] font-extrabold tracking-[-0.03em] text-[#33393f] md:text-[30px]">
@@ -34,11 +34,11 @@ export function DsaTestimonials() {
               <div>
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex items-center gap-3">
-                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#edf5ff] text-[13px] font-black text-[#0d64bf]">
+                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#edf5ff] text-[13px] font-extrabold text-[#0d64bf]">
                       {initials(item.name)}
                     </span>
                     <span>
-                      <span className="block text-[14px] font-black text-[#22272e]">
+                      <span className="block text-[14px] font-extrabold text-[#22272e]">
                         {item.name}
                       </span>
                       <span className="text-[12px] font-semibold text-[#7d8794]">
@@ -67,7 +67,7 @@ export function DsaTestimonials() {
                 </p>
               </div>
 
-              <div className="mt-5 rounded-full bg-[#eaf3ff] px-4 py-2 text-center text-[12px] font-black text-[#0d64bf]">
+              <div className="mt-5 rounded-full bg-[#eaf3ff] px-4 py-2 text-center text-[12px] font-extrabold text-[#0d64bf]">
                 {item.metric}
               </div>
             </article>

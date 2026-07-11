@@ -1,12 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { 
-  UserCheck, 
-  RefreshCw, 
-  ShieldCheck, 
-  HelpCircle, 
-  Tag 
+import {
+  UserCheck,
+  RefreshCw,
+  ShieldCheck,
+  HelpCircle,
+  Tag,
 } from "lucide-react";
 
 const featureItems = [
@@ -27,19 +27,19 @@ export function WhyChooseFintaraa() {
   return (
     <section className="bg-[#004E96] px-6 py-10 md:px-12 lg:px-16 text-white font-sans antialiased relative">
       <div className="mx-auto max-w-9xl">
-        
         {/* Top Header Block Row */}
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <h2 className="text-[24px] md:text-[28px] font-black tracking-tight">
+          <h2 className="text-[24px] md:text-[28px] font-extrabold tracking-tight">
             Why Choose Fintaraa?
           </h2>
-          
+
           {/* Right Corner: Floating 3D Security Shield Graphic */}
           <div className="relative w-24 h-20 hidden sm:block">
             <Image
               src="/assets/blogs/security-shield-trust.png" // Replace with your shield illustration path
               alt="Security Shield Trust Illustration"
               fill
+              sizes="96px"
               className="object-contain object-right"
             />
           </div>
@@ -58,7 +58,7 @@ export function WhyChooseFintaraa() {
                 <div className="shrink-0 text-[#005ca8]">
                   <Icon className="h-5 w-5 stroke-2" />
                 </div>
-                
+
                 {/* Left-Aligned Double-Line/Single-line text label */}
                 <span className="text-[13px] font-bold text-[#005ca8] leading-tight select-none">
                   {item.label}
@@ -67,7 +67,6 @@ export function WhyChooseFintaraa() {
             );
           })}
         </div>
-
       </div>
     </section>
   );

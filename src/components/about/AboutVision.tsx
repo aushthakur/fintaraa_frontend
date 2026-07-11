@@ -27,7 +27,7 @@ export function AboutVision() {
             {cards.map((title, index) => (
               <article
                 key={`${title}-${index}`}
-                className="rounded-[12px] border border-[#cfeede] bg-white p-5 shadow-[0_10px_22px_rgba(16,24,40,0.08)] md:p-6"
+                className="rounded-xl border border-[#cfeede] bg-white p-5 shadow-[0_10px_22px_rgba(16,24,40,0.08)] md:p-6"
               >
                 <span className="block h-14 w-14 rounded-[10px] bg-[#d1d5db]" />
                 <h3 className="mt-5 text-[16px] font-medium leading-6 text-[#111827]">

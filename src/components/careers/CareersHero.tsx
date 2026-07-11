@@ -56,7 +56,7 @@ export function CareersHero() {
         {careerStats.map(({ title, icon: Icon }) => (
           <div
             key={title}
-            className="flex items-center gap-3 rounded-[12px] bg-white px-4 py-2 shadow-[0_2px_10px_rgba(0,0,0,0.05)]"
+            className="flex items-center gap-3 rounded-xl bg-white px-4 py-2 shadow-[0_2px_10px_rgba(0,0,0,0.05)]"
           >
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#edf5ff] text-[#0d64bf]">
               <Icon className="h-4 w-4" />

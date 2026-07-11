@@ -57,10 +57,10 @@ export function ProfileSummary() {
               style={{ width: `${profile.completion.percent}%` }}
             />
           </div>
-          <p className="mt-3 break-words text-[12px] font-semibold text-[#667085]">
+          <p className="mt-3 wrap-break-word text-[12px] font-semibold text-[#667085]">
             Customer ID: {profile.customerId}
           </p>
-          <p className="mt-1 break-words text-[12px] font-semibold text-[#667085]">
+          <p className="mt-1 wrap-break-word text-[12px] font-semibold text-[#667085]">
             Mail ID: {profile.email}
           </p>
         </div>

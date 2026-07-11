@@ -9,19 +9,30 @@ export function CreditArticlesFaq() {
       <section className="px-4 pb-16 md:px-6 lg:px-8">
         <div className="mx-auto max-w-9xl">
           <div className="flex items-center justify-between">
-            <h2 className="text-[18px] font-black">Learn & Make Informed Decisions</h2>
-            <Link href="/blog" className="text-[12px] font-black text-[#005ca8] no-underline">
+            <h2 className="text-[18px] font-extrabold">
+              Learn & Make Informed Decisions
+            </h2>
+            <Link
+              href="/blog"
+              className="text-[12px] font-extrabold text-[#005ca8] no-underline"
+            >
               Explore All Articles →
             </Link>
           </div>
           <div className="mt-8 grid gap-5 md:grid-cols-4">
             {articleCards.map((title) => (
-              <article key={title} className="rounded border border-[#d7dfe8] bg-white p-6">
+              <article
+                key={title}
+                className="rounded border border-[#d7dfe8] bg-white p-6"
+              >
                 <FileText className="h-6 w-6 text-[#005ca8]" />
-                <h3 className="mt-8 min-h-12 text-[13px] font-black leading-5">
+                <h3 className="mt-8 min-h-12 text-[13px] font-extrabold leading-5">
                   {title}
                 </h3>
-                <Link href="/blog" className="mt-6 block text-[12px] font-black text-[#005ca8] no-underline">
+                <Link
+                  href="/blog"
+                  className="mt-6 block text-[12px] font-extrabold text-[#005ca8] no-underline"
+                >
                   Read More →
                 </Link>
               </article>

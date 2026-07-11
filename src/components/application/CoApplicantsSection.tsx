@@ -70,7 +70,11 @@ const inputClass =
   "h-11 w-full rounded-xl border border-[#dce9f7] bg-white px-3 text-[13px] font-semibold text-[#111827] outline-none transition placeholder:text-[#9aa8b8] focus:border-[#005ca8] focus:ring-2 focus:ring-[#e5f1ff]";
 
 const isValidPan = (value?: string) =>
-  /^[A-Z]{5}[0-9]{4}[A-Z]$/.test(String(value || "").trim().toUpperCase());
+  /^[A-Z]{5}[0-9]{4}[A-Z]$/.test(
+    String(value || "")
+      .trim()
+      .toUpperCase(),
+  );
 
 const normalizeMobile = (value?: string) =>
   String(value || "")
@@ -120,11 +124,20 @@ export function CoApplicantsSection({
   onChange: (value: CoApplicant[]) => void;
   error?: string;
 }) {
-  const applicants = useMemo(() => (Array.isArray(value) ? value : []), [value]);
-  const [documentCatalog, setDocumentCatalog] = useState<DocumentCatalogItem[]>([]);
+  const applicants = useMemo(
+    () => (Array.isArray(value) ? value : []),
+    [value],
+  );
+  const [documentCatalog, setDocumentCatalog] = useState<DocumentCatalogItem[]>(
+    [],
+  );
   const [catalogLoading, setCatalogLoading] = useState(true);
-  const [openSelectorIndex, setOpenSelectorIndex] = useState<number | null>(null);
-  const [fetchingCibilIndex, setFetchingCibilIndex] = useState<number | null>(null);
+  const [openSelectorIndex, setOpenSelectorIndex] = useState<number | null>(
+    null,
+  );
+  const [fetchingCibilIndex, setFetchingCibilIndex] = useState<number | null>(
+    null,
+  );
   const [cibilError, setCibilError] = useState("");
 
   useEffect(() => {
@@ -132,16 +145,17 @@ export function CoApplicantsSection({
     fetchDocumentCatalog()
       .then((items) => {
         if (!active) return;
-        const activeItems =
-          items
-            .filter((item) => item?.label)
-            .filter((item) => item.isActive !== false)
-            .sort((a, b) => {
-              const sortOrder = (a.sortOrder || 0) - (b.sortOrder || 0);
-              if (sortOrder !== 0) return sortOrder;
-              return a.label.localeCompare(b.label);
-            });
-        setDocumentCatalog(activeItems.length ? activeItems : fallbackDocumentCatalog);
+        const activeItems = items
+          .filter((item) => item?.label)
+          .filter((item) => item.isActive !== false)
+          .sort((a, b) => {
+            const sortOrder = (a.sortOrder || 0) - (b.sortOrder || 0);
+            if (sortOrder !== 0) return sortOrder;
+            return a.label.localeCompare(b.label);
+          });
+        setDocumentCatalog(
+          activeItems.length ? activeItems : fallbackDocumentCatalog,
+        );
       })
       .catch(() => {
         if (active) setDocumentCatalog(fallbackDocumentCatalog);
@@ -180,7 +194,9 @@ export function CoApplicantsSection({
 
   const selectAllExtraDocuments = (index: number) => {
     const current = applicants[index];
-    const existing = new Map((current.documents || []).map((doc) => [doc.key, doc]));
+    const existing = new Map(
+      (current.documents || []).map((doc) => [doc.key, doc]),
+    );
     updateAt(index, {
       documents: documentCatalog.map((doc) => ({
         key: doc.key,
@@ -197,7 +213,9 @@ export function CoApplicantsSection({
     const current = applicants[index];
     updateAt(index, {
       documents: (current.documents || []).map((doc) =>
-        doc.key === key ? { ...doc, files: [...(doc.files || []), ...files] } : doc,
+        doc.key === key
+          ? { ...doc, files: [...(doc.files || []), ...files] }
+          : doc,
       ),
     });
   };
@@ -207,7 +225,10 @@ export function CoApplicantsSection({
     updateAt(index, {
       documents: (current.documents || []).map((doc) =>
         doc.key === key
-          ? { ...doc, files: doc.files.filter((_, index) => index !== fileIndex) }
+          ? {
+              ...doc,
+              files: doc.files.filter((_, index) => index !== fileIndex),
+            }
           : doc,
       ),
     });
@@ -216,7 +237,9 @@ export function CoApplicantsSection({
   const fetchCibilForApplicant = async (index: number) => {
     const current = applicants[index];
     const name = String(current?.name || "").trim();
-    const panNumber = String(current?.pan || "").trim().toUpperCase();
+    const panNumber = String(current?.pan || "")
+      .trim()
+      .toUpperCase();
     const mobile = normalizeMobile(current?.mobile);
     const gender = current?.gender || "male";
 
@@ -271,13 +294,13 @@ export function CoApplicantsSection({
   };
 
   return (
-    <div className="col-span-full rounded-3xl border border-slate-200 bg-gradient-to-br from-white to-slate-50 p-5 shadow-sm">
+    <div className="col-span-full rounded-3xl border border-slate-200 bg-linear-to-br from-white to-slate-50 p-5 shadow-sm">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="max-w-2xl">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-[#64748b]">
+          <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#64748b]">
             Co-Applicants
           </p>
-          <h3 className="mt-1 text-lg font-black text-[#0f172a]">
+          <h3 className="mt-1 text-lg font-extrabold text-[#0f172a]">
             Add, edit, and preview supporting KYC files
           </h3>
           <p className="mt-1 text-sm font-medium leading-5 text-[#475569]">
@@ -286,11 +309,11 @@ export function CoApplicantsSection({
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
-          <span className="rounded-full border border-slate-200 bg-white px-3 py-1 text-[11px] font-black uppercase tracking-wide text-slate-500">
+          <span className="rounded-full border border-slate-200 bg-white px-3 py-1 text-[11px] font-extrabold uppercase tracking-wide text-slate-500">
             {applicants.length} applicant{applicants.length === 1 ? "" : "s"}
           </span>
           <span
-            className={`rounded-full px-3 py-1 text-[11px] font-black uppercase tracking-wide ${
+            className={`rounded-full px-3 py-1 text-[11px] font-extrabold uppercase tracking-wide ${
               applicants.length
                 ? "bg-emerald-100 text-emerald-700"
                 : "bg-slate-100 text-slate-600"
@@ -301,7 +324,7 @@ export function CoApplicantsSection({
           <button
             type="button"
             onClick={addApplicant}
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-full bg-[#0b4c7a] px-4 text-[12px] font-black text-white shadow-sm transition hover:bg-[#083d62]"
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-full bg-[#0b4c7a] px-4 text-[12px] font-extrabold text-white shadow-sm transition hover:bg-[#083d62]"
           >
             <Plus className="h-4 w-4" />
             Add co-applicant
@@ -312,7 +335,7 @@ export function CoApplicantsSection({
       {applicants.length === 0 ? (
         <div className="mt-4 rounded-2xl border border-dashed border-[#cbd5e1] bg-white p-6 text-center">
           <UserPlus className="mx-auto h-7 w-7 text-[#64748b]" />
-          <p className="mt-2 text-[14px] font-black text-[#0f172a]">
+          <p className="mt-2 text-[14px] font-extrabold text-[#0f172a]">
             No co-applicant added yet
           </p>
           <p className="mt-1 text-[12px] font-medium text-[#64748b]">
@@ -321,7 +344,7 @@ export function CoApplicantsSection({
           <button
             type="button"
             onClick={addApplicant}
-            className="mt-4 inline-flex h-10 items-center justify-center gap-2 rounded-full bg-[#0b4c7a] px-4 text-[12px] font-black text-white"
+            className="mt-4 inline-flex h-10 items-center justify-center gap-2 rounded-full bg-[#0b4c7a] px-4 text-[12px] font-extrabold text-white"
           >
             <Plus className="h-4 w-4" />
             Add first co-applicant
@@ -338,11 +361,11 @@ export function CoApplicantsSection({
               >
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
-                    <div className="inline-flex rounded-full bg-[#0f172a] px-3 py-1 text-[11px] font-black uppercase tracking-wide text-white">
+                    <div className="inline-flex rounded-full bg-[#0f172a] px-3 py-1 text-[11px] font-extrabold uppercase tracking-wide text-white">
                       Co-applicant {index + 1}
                     </div>
                     {extractCibilScore(applicant.cibil) ? (
-                      <p className="mt-1 text-[12px] font-black text-[#15803d]">
+                      <p className="mt-1 text-[12px] font-extrabold text-[#15803d]">
                         CIBIL: {extractCibilScore(applicant.cibil)}
                       </p>
                     ) : (
@@ -356,21 +379,23 @@ export function CoApplicantsSection({
                       type="button"
                       disabled={fetchingCibilIndex === index}
                       onClick={() => fetchCibilForApplicant(index)}
-                      className="inline-flex h-9 items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 text-[11px] font-black text-slate-700 transition hover:border-[#0b4c7a] hover:text-[#0b4c7a] disabled:cursor-not-allowed disabled:opacity-70"
+                      className="inline-flex h-9 items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 text-[11px] font-extrabold text-slate-700 transition hover:border-[#0b4c7a] hover:text-[#0b4c7a] disabled:cursor-not-allowed disabled:opacity-70"
                     >
                       {fetchingCibilIndex === index ? (
                         <Loader2 className="h-3.5 w-3.5 animate-spin" />
                       ) : (
                         <ShieldCheck className="h-3.5 w-3.5" />
                       )}
-                      {fetchingCibilIndex === index ? "Fetching" : "Fetch CIBIL"}
+                      {fetchingCibilIndex === index
+                        ? "Fetching"
+                        : "Fetch CIBIL"}
                     </button>
                     {pdfLink ? (
                       <a
                         href={pdfLink}
                         target="_blank"
                         rel="noreferrer"
-                        className="inline-flex h-9 items-center gap-2 rounded-full bg-[#e8f2fb] px-3 text-[11px] font-black text-[#0b4c7a] no-underline"
+                        className="inline-flex h-9 items-center gap-2 rounded-full bg-[#e8f2fb] px-3 text-[11px] font-extrabold text-[#0b4c7a] no-underline"
                       >
                         <Download className="h-3.5 w-3.5" />
                         PDF
@@ -379,7 +404,7 @@ export function CoApplicantsSection({
                     <button
                       type="button"
                       onClick={() => removeApplicant(index)}
-                      className="inline-flex h-9 items-center justify-center gap-2 rounded-full border border-red-100 bg-red-50 px-3 text-[11px] font-black text-red-700"
+                      className="inline-flex h-9 items-center justify-center gap-2 rounded-full border border-red-100 bg-red-50 px-3 text-[11px] font-extrabold text-red-700"
                     >
                       <Trash2 className="h-3.5 w-3.5" />
                       Remove
@@ -389,29 +414,33 @@ export function CoApplicantsSection({
 
                 <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-5">
                   <label className="grid gap-1.5">
-                    <span className="text-xs font-black uppercase tracking-wide text-slate-500">
+                    <span className="text-xs font-extrabold uppercase tracking-wide text-slate-500">
                       Name
                     </span>
                     <input
                       className={inputClass}
                       placeholder="Co-applicant name"
                       value={applicant.name || ""}
-                      onChange={(event) => updateAt(index, { name: event.target.value })}
+                      onChange={(event) =>
+                        updateAt(index, { name: event.target.value })
+                      }
                     />
                   </label>
                   <label className="grid gap-1.5">
-                    <span className="text-xs font-black uppercase tracking-wide text-slate-500">
+                    <span className="text-xs font-extrabold uppercase tracking-wide text-slate-500">
                       Email
                     </span>
                     <input
                       className={inputClass}
                       placeholder="name@email.com"
                       value={applicant.email || ""}
-                      onChange={(event) => updateAt(index, { email: event.target.value })}
+                      onChange={(event) =>
+                        updateAt(index, { email: event.target.value })
+                      }
                     />
                   </label>
                   <label className="grid gap-1.5">
-                    <span className="text-xs font-black uppercase tracking-wide text-slate-500">
+                    <span className="text-xs font-extrabold uppercase tracking-wide text-slate-500">
                       Mobile
                     </span>
                     <input
@@ -421,13 +450,15 @@ export function CoApplicantsSection({
                       maxLength={10}
                       onChange={(event) =>
                         updateAt(index, {
-                          mobile: event.target.value.replace(/\D/g, "").slice(0, 10),
+                          mobile: event.target.value
+                            .replace(/\D/g, "")
+                            .slice(0, 10),
                         })
                       }
                     />
                   </label>
                   <label className="grid gap-1.5">
-                    <span className="text-xs font-black uppercase tracking-wide text-slate-500">
+                    <span className="text-xs font-extrabold uppercase tracking-wide text-slate-500">
                       PAN
                     </span>
                     <input
@@ -437,19 +468,23 @@ export function CoApplicantsSection({
                       maxLength={10}
                       onChange={(event) =>
                         updateAt(index, {
-                          pan: event.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ""),
+                          pan: event.target.value
+                            .toUpperCase()
+                            .replace(/[^A-Z0-9]/g, ""),
                         })
                       }
                     />
                   </label>
                   <label className="grid gap-1.5">
-                    <span className="text-xs font-black uppercase tracking-wide text-slate-500">
+                    <span className="text-xs font-extrabold uppercase tracking-wide text-slate-500">
                       Gender
                     </span>
                     <select
                       className={inputClass}
                       value={applicant.gender || "male"}
-                      onChange={(event) => updateAt(index, { gender: event.target.value })}
+                      onChange={(event) =>
+                        updateAt(index, { gender: event.target.value })
+                      }
                     >
                       <option value="male">Male</option>
                       <option value="female">Female</option>
@@ -460,7 +495,7 @@ export function CoApplicantsSection({
                 <div className="mt-4 rounded-2xl border border-[#e2e8f0] p-4">
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div>
-                      <p className="text-[13px] font-black text-[#0f172a]">
+                      <p className="text-[13px] font-extrabold text-[#0f172a]">
                         Select documents
                       </p>
                       <p className="mt-1 text-[11px] font-medium text-[#64748b]">
@@ -475,7 +510,7 @@ export function CoApplicantsSection({
                             current === index ? null : index,
                           )
                         }
-                        className="inline-flex h-9 items-center gap-2 rounded-full border border-slate-300 bg-white px-4 text-[11px] font-black text-slate-700 transition hover:border-[#0b4c7a] hover:text-[#0b4c7a]"
+                        className="inline-flex h-9 items-center gap-2 rounded-full border border-slate-300 bg-white px-4 text-[11px] font-extrabold text-slate-700 transition hover:border-[#0b4c7a] hover:text-[#0b4c7a]"
                       >
                         <Plus className="h-3.5 w-3.5" />
                         Select
@@ -495,10 +530,10 @@ export function CoApplicantsSection({
                           />
                           <div className="absolute right-0 top-full z-20 mt-2 w-72 rounded-2xl border border-slate-200 bg-white p-4 shadow-xl">
                             <div className="mb-3 flex items-center justify-between gap-3">
-                              <div className="text-sm font-black text-slate-800">
+                              <div className="text-sm font-extrabold text-slate-800">
                                 Co-Applicant Documents
                               </div>
-                              <div className="flex gap-2 text-xs font-black">
+                              <div className="flex gap-2 text-xs font-extrabold">
                                 <button
                                   type="button"
                                   onClick={() => selectAllExtraDocuments(index)}
@@ -523,16 +558,17 @@ export function CoApplicantsSection({
                                   Loading documents...
                                 </div>
                               ) : null}
-                              {!catalogLoading && documentCatalog.length === 0 ? (
+                              {!catalogLoading &&
+                              documentCatalog.length === 0 ? (
                                 <div className="rounded-xl bg-slate-50 p-3 text-xs font-bold text-slate-500">
                                   No document options found.
                                 </div>
                               ) : null}
                               {!catalogLoading &&
                                 documentCatalog.map((doc) => {
-                                  const selected = (applicant.documents || []).some(
-                                    (item) => item.key === doc.key,
-                                  );
+                                  const selected = (
+                                    applicant.documents || []
+                                  ).some((item) => item.key === doc.key);
                                   return (
                                     <label
                                       key={`${index}-${doc.key}`}
@@ -541,7 +577,9 @@ export function CoApplicantsSection({
                                       <input
                                         type="checkbox"
                                         checked={selected}
-                                        onChange={() => toggleExtraDocument(index, doc)}
+                                        onChange={() =>
+                                          toggleExtraDocument(index, doc)
+                                        }
                                         className="h-4 w-4 rounded border-slate-300 accent-[#0b4c7a]"
                                       />
                                       <span className="text-sm font-semibold text-slate-700">
@@ -565,7 +603,8 @@ export function CoApplicantsSection({
                   {(applicant.documents || []).length > 0 ? (
                     <p className="mt-2 text-[12px] font-bold text-[#64748b]">
                       {(applicant.documents || []).length} extra document
-                      {(applicant.documents || []).length === 1 ? "" : "s"} selected
+                      {(applicant.documents || []).length === 1 ? "" : "s"}{" "}
+                      selected
                     </p>
                   ) : null}
 
@@ -588,11 +627,11 @@ export function CoApplicantsSection({
                             </div>
                             <div className="min-w-0 flex-1">
                               <div className="flex flex-wrap items-center gap-2">
-                                <p className="text-[12px] font-black text-[#0f172a]">
+                                <p className="text-[12px] font-extrabold text-[#0f172a]">
                                   {doc.label}
                                 </p>
                                 {hasFile ? (
-                                  <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-black text-emerald-700">
+                                  <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-extrabold text-emerald-700">
                                     Uploaded
                                   </span>
                                 ) : null}
@@ -606,7 +645,7 @@ export function CoApplicantsSection({
                             </div>
                           </div>
                           <div className="mt-3 flex flex-wrap gap-2">
-                            <label className="inline-flex h-9 cursor-pointer items-center rounded-full bg-[#0b4c7a] px-3 text-[11px] font-black text-white">
+                            <label className="inline-flex h-9 cursor-pointer items-center rounded-full bg-[#0b4c7a] px-3 text-[11px] font-extrabold text-white">
                               {hasFile ? "Replace" : "Upload"}
                               <input
                                 type="file"
@@ -615,7 +654,9 @@ export function CoApplicantsSection({
                                 multiple
                                 onChange={(event) =>
                                   updateAt(index, {
-                                    [doc.key]: Array.from(event.target.files || []),
+                                    [doc.key]: Array.from(
+                                      event.target.files || [],
+                                    ),
                                   })
                                 }
                               />
@@ -624,7 +665,7 @@ export function CoApplicantsSection({
                               <button
                                 type="button"
                                 onClick={() => openLocalFile(files?.[0])}
-                                className="inline-flex h-9 items-center gap-1 rounded-full border border-slate-300 bg-white px-3 text-[11px] font-black text-slate-700"
+                                className="inline-flex h-9 items-center gap-1 rounded-full border border-slate-300 bg-white px-3 text-[11px] font-extrabold text-slate-700"
                               >
                                 <Eye className="h-3.5 w-3.5" />
                                 View
@@ -633,8 +674,10 @@ export function CoApplicantsSection({
                             {hasFile ? (
                               <button
                                 type="button"
-                                onClick={() => updateAt(index, { [doc.key]: null })}
-                                className="h-9 rounded-full bg-red-50 px-3 text-[11px] font-black text-red-700"
+                                onClick={() =>
+                                  updateAt(index, { [doc.key]: null })
+                                }
+                                className="h-9 rounded-full bg-red-50 px-3 text-[11px] font-extrabold text-red-700"
                               >
                                 Clear
                               </button>
@@ -659,12 +702,13 @@ export function CoApplicantsSection({
                           </div>
                           <div className="min-w-0 flex-1">
                             <div className="flex flex-wrap items-center gap-2">
-                              <p className="text-[12px] font-black text-[#0f172a]">
+                              <p className="text-[12px] font-extrabold text-[#0f172a]">
                                 {doc.label}
                               </p>
                               {doc.files?.length ? (
-                                <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-black text-emerald-700">
-                                  {doc.files.length} file{doc.files.length === 1 ? "" : "s"}
+                                <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-extrabold text-emerald-700">
+                                  {doc.files.length} file
+                                  {doc.files.length === 1 ? "" : "s"}
                                 </span>
                               ) : null}
                             </div>
@@ -682,16 +726,19 @@ export function CoApplicantsSection({
                               <button
                                 key={`${file.name}-${fileIndex}`}
                                 type="button"
-                                onClick={() => removeExtraFile(index, doc.key, fileIndex)}
-                                className="rounded-full bg-[#f1f5f9] px-2.5 py-1 text-[10px] font-black text-[#334155]"
+                                onClick={() =>
+                                  removeExtraFile(index, doc.key, fileIndex)
+                                }
+                                className="rounded-full bg-[#f1f5f9] px-2.5 py-1 text-[10px] font-extrabold text-[#334155]"
                               >
-                                {file.name} <X className="ml-1 inline h-3 w-3" />
+                                {file.name}{" "}
+                                <X className="ml-1 inline h-3 w-3" />
                               </button>
                             ))}
                           </div>
                         ) : null}
                         <div className="mt-3 flex flex-wrap gap-2">
-                          <label className="inline-flex h-9 cursor-pointer items-center rounded-full bg-[#0b4c7a] px-3 text-[11px] font-black text-white">
+                          <label className="inline-flex h-9 cursor-pointer items-center rounded-full bg-[#0b4c7a] px-3 text-[11px] font-extrabold text-white">
                             {doc.files?.length ? "Add More" : "Upload"}
                             <input
                               type="file"
@@ -711,7 +758,7 @@ export function CoApplicantsSection({
                             <button
                               type="button"
                               onClick={() => openLocalFile(doc.files?.[0])}
-                              className="inline-flex h-9 items-center gap-1 rounded-full border border-slate-300 bg-white px-3 text-[11px] font-black text-slate-700"
+                              className="inline-flex h-9 items-center gap-1 rounded-full border border-slate-300 bg-white px-3 text-[11px] font-extrabold text-slate-700"
                             >
                               <Eye className="h-3.5 w-3.5" />
                               View
@@ -719,8 +766,10 @@ export function CoApplicantsSection({
                           ) : null}
                           <button
                             type="button"
-                            onClick={() => toggleExtraDocument(index, doc as any)}
-                            className="h-9 rounded-full bg-red-50 px-3 text-[11px] font-black text-red-700"
+                            onClick={() =>
+                              toggleExtraDocument(index, doc as any)
+                            }
+                            className="h-9 rounded-full bg-red-50 px-3 text-[11px] font-extrabold text-red-700"
                           >
                             Remove
                           </button>
@@ -736,7 +785,7 @@ export function CoApplicantsSection({
           <button
             type="button"
             onClick={addApplicant}
-            className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-[#bfdbfe] bg-white px-4 text-[12px] font-black text-[#0b4c7a]"
+            className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-[#bfdbfe] bg-white px-4 text-[12px] font-extrabold text-[#0b4c7a]"
           >
             <Plus className="h-4 w-4" />
             Add co-applicant
@@ -750,7 +799,6 @@ export function CoApplicantsSection({
       {error ? (
         <p className="mt-3 text-[12px] font-bold text-red-600">{error}</p>
       ) : null}
-
     </div>
   );
 }

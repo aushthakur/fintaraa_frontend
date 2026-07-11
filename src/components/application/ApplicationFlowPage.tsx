@@ -596,14 +596,14 @@ function FieldInput({
         />
       ) : field.type === "file" ? (
         <div className="rounded-xl border border-dashed border-[#c9ddf2] bg-[#fbfdff] p-3">
-          <div className="flex items-center gap-2 text-[12px] font-black text-[#111827]">
+          <div className="flex items-center gap-2 text-[12px] font-extrabold text-[#111827]">
             <UploadCloud className="h-4 w-4 text-[#005ca8]" />
             {field.placeholder || "Upload PDF or image"}
           </div>
           <input
             type="file"
             multiple
-            className="mt-3 block w-full text-[12px] font-semibold text-[#667085] file:mr-3 file:rounded-full file:border-0 file:bg-[#eaf3ff] file:px-4 file:py-2 file:text-[12px] file:font-black file:text-[#005ca8]"
+            className="mt-3 block w-full text-[12px] font-semibold text-[#667085] file:mr-3 file:rounded-full file:border-0 file:bg-[#eaf3ff] file:px-4 file:py-2 file:text-[12px] file:font-extrabold file:text-[#005ca8]"
             onChange={(event) =>
               onChange(field.key, Array.from(event.target.files || []))
             }
@@ -630,7 +630,7 @@ function FieldInput({
             type="button"
             disabled={rcLookupLoading}
             onClick={onRcLookup}
-            className="inline-flex h-11 w-full shrink-0 items-center justify-center gap-2 rounded-xl bg-[#005ca8] px-4 text-[12px] font-black text-white disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
+            className="inline-flex h-11 w-full shrink-0 items-center justify-center gap-2 rounded-xl bg-[#005ca8] px-4 text-[12px] font-extrabold text-white disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
           >
             {rcLookupLoading ? (
               <Loader2 className="h-4 w-4 animate-spin" />
@@ -664,14 +664,14 @@ function FieldInput({
                     className="flex w-full items-center justify-between gap-3 border-b border-[#eef4fb] px-3 py-2 text-left last:border-b-0 hover:bg-[#f7fbff]"
                   >
                     <span>
-                      <span className="block text-[12px] font-black text-[#111827]">
+                      <span className="block text-[12px] font-extrabold text-[#111827]">
                         {match.companyName}
                       </span>
                       <span className="text-[11px] font-semibold text-[#667085]">
                         {match.bankName}
                       </span>
                     </span>
-                    <span className="shrink-0 rounded-full bg-[#eaf3ff] px-2.5 py-1 text-[10px] font-black text-[#005ca8]">
+                    <span className="shrink-0 rounded-full bg-[#eaf3ff] px-2.5 py-1 text-[10px] font-extrabold text-[#005ca8]">
                       {(match.categories || []).join(", ")}
                     </span>
                   </button>
@@ -1071,7 +1071,9 @@ export function ApplicationFlowPage({
     if (!validateStep()) return;
     if (!whatsappConsent) {
       setWhatsappConsentError("Please accept WhatsApp communication consent.");
-      setSubmitError("Please accept the communication consent before submitting.");
+      setSubmitError(
+        "Please accept the communication consent before submitting.",
+      );
       return;
     }
     if (getAuthType() !== "user" || !getAuthToken()) {
@@ -1131,7 +1133,7 @@ export function ApplicationFlowPage({
   if (!authReady) {
     return (
       <main className="flex min-h-[60vh] items-center justify-center bg-white px-4 py-12">
-        <div className="flex items-center gap-3 rounded-2xl border border-[#dce9f7] bg-[#f7fbff] px-5 py-4 text-[13px] font-black text-[#005ca8]">
+        <div className="flex items-center gap-3 rounded-2xl border border-[#dce9f7] bg-[#f7fbff] px-5 py-4 text-[13px] font-extrabold text-[#005ca8]">
           <Loader2 className="h-4 w-4 animate-spin" />
           Redirecting to login...
         </div>
@@ -1156,14 +1158,14 @@ export function ApplicationFlowPage({
             <div className="mb-8 rounded-2xl border border-[#dce9f7] bg-[linear-gradient(180deg,#ffffff_0%,#f6fbff_100%)] p-4 shadow-[0_16px_40px_rgba(0,92,168,0.06)]">
               <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
                 <div>
-                  <p className="text-[11px] font-black uppercase tracking-[0.16em] text-[#005ca8]">
+                  <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#005ca8]">
                     Application progress
                   </p>
                   <p className="mt-1 text-[13px] font-semibold text-[#667085]">
                     Step {stepIndex + 1} of {flow.steps.length}: {step.title}
                   </p>
                 </div>
-                <span className="rounded-full border border-[#cfe6ff] bg-white px-3 py-1 text-[11px] font-black text-[#005ca8]">
+                <span className="rounded-full border border-[#cfe6ff] bg-white px-3 py-1 text-[11px] font-extrabold text-[#005ca8]">
                   {Math.round(progress)}% complete
                 </span>
               </div>
@@ -1194,7 +1196,7 @@ export function ApplicationFlowPage({
                       >
                         <motion.span
                           animate={{ scale: active ? 1.08 : 1 }}
-                          className={`relative z-10 flex h-10 w-10 items-center justify-center rounded-full border text-[12px] font-black shadow-sm transition ${
+                          className={`relative z-10 flex h-10 w-10 items-center justify-center rounded-full border text-[12px] font-extrabold shadow-sm transition ${
                             completed
                               ? "border-[#13a653] bg-[#13a653] text-white"
                               : active
@@ -1209,7 +1211,7 @@ export function ApplicationFlowPage({
                           )}
                         </motion.span>
                         <span
-                          className={`hidden max-w-28 truncate text-[11px] font-black md:block ${active ? "text-[#005ca8]" : "text-[#8a94a6]"}`}
+                          className={`hidden max-w-28 truncate text-[11px] font-extrabold md:block ${active ? "text-[#005ca8]" : "text-[#8a94a6]"}`}
                         >
                           {item.title}
                         </span>
@@ -1221,12 +1223,12 @@ export function ApplicationFlowPage({
             </div>
 
             <div className="mb-5">
-              <p className="text-[12px] font-black uppercase tracking-wide text-[#005ca8]">
+              <p className="text-[12px] font-extrabold uppercase tracking-wide text-[#005ca8]">
                 {category === "insurance"
                   ? "Insurance application"
                   : "Loan application"}
               </p>
-              <h1 className="mt-1 text-[28px] font-black tracking-tight text-[#005ca8] md:text-[34px]">
+              <h1 className="mt-1 text-[28px] font-extrabold tracking-tight text-[#005ca8] md:text-[34px]">
                 Apply for {flow.title || humanizeProduct(productSlug)}
               </h1>
               <p className="mt-1 text-[13px] font-medium text-[#7a869a]">
@@ -1235,17 +1237,17 @@ export function ApplicationFlowPage({
                   "Complete the details step by step."}
               </p>
               {bank ? (
-                <p className="mt-2 inline-flex rounded-full bg-[#eef6ff] px-3 py-1 text-[11px] font-black text-[#005ca8]">
+                <p className="mt-2 inline-flex rounded-full bg-[#eef6ff] px-3 py-1 text-[11px] font-extrabold text-[#005ca8]">
                   Partner context: {humanizeProduct(bank)}
                 </p>
               ) : null}
               {autofillMessage ? (
-                <p className="mt-2 inline-flex rounded-full border border-[#dce9f7] bg-white px-3 py-1 text-[11px] font-black text-[#005ca8]">
+                <p className="mt-2 inline-flex rounded-full border border-[#dce9f7] bg-white px-3 py-1 text-[11px] font-extrabold text-[#005ca8]">
                   {autofillMessage}
                 </p>
               ) : null}
               {rcLookupMessage ? (
-                <p className="mt-2 inline-flex rounded-full border border-emerald-100 bg-emerald-50 px-3 py-1 text-[11px] font-black text-emerald-700">
+                <p className="mt-2 inline-flex rounded-full border border-emerald-100 bg-emerald-50 px-3 py-1 text-[11px] font-extrabold text-emerald-700">
                   {rcLookupMessage}
                 </p>
               ) : null}
@@ -1258,7 +1260,7 @@ export function ApplicationFlowPage({
                     key={tab.key}
                     type="button"
                     onClick={() => updateValue(flow.tabFieldKey!, tab.key)}
-                    className={`rounded-full border px-4 py-2 text-[12px] font-black transition ${
+                    className={`rounded-full border px-4 py-2 text-[12px] font-extrabold transition ${
                       activeTab === tab.key
                         ? "border-[#005ca8] bg-[#005ca8] text-white"
                         : "border-[#dce9f7] bg-white text-[#005ca8]"
@@ -1323,7 +1325,7 @@ export function ApplicationFlowPage({
                 <button
                   type="button"
                   onClick={goBack}
-                  className="h-11 w-full rounded-full border border-[#13a653] bg-white px-6 text-[13px] font-black text-[#13a653] sm:w-auto sm:min-w-40"
+                  className="h-11 w-full rounded-full border border-[#13a653] bg-white px-6 text-[13px] font-extrabold text-[#13a653] sm:w-auto sm:min-w-40"
                 >
                   Save & Back
                 </button>
@@ -1332,7 +1334,7 @@ export function ApplicationFlowPage({
                 <button
                   type="button"
                   onClick={goNext}
-                  className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-[#13a653] px-6 text-[13px] font-black text-white sm:w-auto sm:min-w-40"
+                  className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-[#13a653] px-6 text-[13px] font-extrabold text-white sm:w-auto sm:min-w-40"
                 >
                   Continue
                   <ChevronRight className="h-4 w-4" />
@@ -1341,7 +1343,7 @@ export function ApplicationFlowPage({
                 <button
                   type="submit"
                   disabled={loading}
-                  className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-[#13a653] px-6 text-[13px] font-black text-white disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto sm:min-w-44"
+                  className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-[#13a653] px-6 text-[13px] font-extrabold text-white disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto sm:min-w-44"
                 >
                   {loading ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
@@ -1392,7 +1394,7 @@ export function ApplicationFlowPage({
                 className="object-contain"
               />
             </div>
-            <h2 className="text-[15px] font-black text-[#111827]">
+            <h2 className="text-[15px] font-extrabold text-[#111827]">
               Why apply online?
             </h2>
             <div className="mt-4 space-y-4">
@@ -1404,7 +1406,7 @@ export function ApplicationFlowPage({
                   <div key={title} className="flex gap-3">
                     <Icon className="mt-0.5 h-4 w-4 shrink-0 text-[#005ca8]" />
                     <div>
-                      <p className="text-[12px] font-black text-[#111827]">
+                      <p className="text-[12px] font-extrabold text-[#111827]">
                         {title}
                       </p>
                       <p className="mt-0.5 text-[11px] font-medium leading-4 text-[#667085]">
@@ -1417,10 +1419,10 @@ export function ApplicationFlowPage({
             </div>
             {premium ? (
               <div className="mt-5 rounded-xl border border-[#cfe6ff] bg-white p-4">
-                <p className="text-[11px] font-black uppercase tracking-wide text-[#005ca8]">
+                <p className="text-[11px] font-extrabold uppercase tracking-wide text-[#005ca8]">
                   Premium placeholder
                 </p>
-                <p className="mt-1 text-[20px] font-black text-[#111827]">
+                <p className="mt-1 text-[20px] font-extrabold text-[#111827]">
                   {premium}
                 </p>
                 <p className="mt-1 text-[11px] font-medium text-[#667085]">
@@ -1429,7 +1431,7 @@ export function ApplicationFlowPage({
               </div>
             ) : null}
             <div className="mt-5 rounded-xl border border-[#dce9f7] bg-white p-4">
-              <p className="text-[11px] font-black uppercase tracking-wide text-[#005ca8]">
+              <p className="text-[11px] font-extrabold uppercase tracking-wide text-[#005ca8]">
                 Notes
               </p>
               <ul className="mt-2 space-y-1.5 text-[11px] font-medium leading-5 text-[#667085]">

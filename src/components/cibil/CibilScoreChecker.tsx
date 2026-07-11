@@ -99,7 +99,7 @@ function PoweredByBureaus() {
 
       <div className="mt-3 flex items-center gap-5 select-none">
         <div className="flex flex-col items-start leading-none">
-          <span className="text-[18px] font-black tracking-tight text-[#008ccf]">
+          <span className="text-[18px] font-extrabold tracking-tight text-[#008ccf]">
             CIBIL
           </span>
           <span className="-mt-0.5 text-[7px] font-bold uppercase tracking-tighter text-gray-400">
@@ -366,7 +366,7 @@ export function CibilScoreChecker() {
             ) : null}
           </div>
           {hasUserSession ? (
-            <span className="inline-flex whitespace-nowrap items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-black text-emerald-700">
+            <span className="inline-flex whitespace-nowrap items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-extrabold text-emerald-700">
               <CheckCircle2 className="h-3 w-3" />
               Logged in
             </span>
@@ -376,7 +376,7 @@ export function CibilScoreChecker() {
         {step === "phone" ? (
           <form onSubmit={handleSendOtp} className="mt-4 grid gap-3">
             <label className="grid gap-1">
-              <span className="text-[11px] font-black text-[#344054]">
+              <span className="text-[11px] font-extrabold text-[#344054]">
                 Mobile Number
               </span>
               <div className="relative">
@@ -409,7 +409,7 @@ export function CibilScoreChecker() {
         {step === "otp" ? (
           <form onSubmit={handleVerifyOtp} className="mt-4 grid gap-3">
             <label className="grid gap-1">
-              <span className="text-[11px] font-black text-[#344054]">
+              <span className="text-[11px] font-extrabold text-[#344054]">
                 OTP Code
               </span>
               <input
@@ -430,14 +430,14 @@ export function CibilScoreChecker() {
               <button
                 type="button"
                 onClick={() => setStep("phone")}
-                className="text-[12px] font-black text-[#00529c]"
+                className="text-[12px] font-extrabold text-[#00529c]"
               >
                 Change mobile
               </button>
               <button
                 type="button"
                 onClick={() => void sendOtp(normalizePhone(form.mobile))}
-                className="text-[12px] font-black text-[#00529c]"
+                className="text-[12px] font-extrabold text-[#00529c]"
               >
                 Resend OTP
               </button>
@@ -459,7 +459,7 @@ export function CibilScoreChecker() {
               <div className="rounded-2xl border border-[#e2e8f0] bg-[#f8fbff] px-4 py-3">
                 <div className="flex items-center justify-between gap-4">
                   <div className="min-w-0">
-                    <p className="text-[11px] font-black uppercase tracking-[0.16em] text-[#00529c]">
+                    <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#00529c]">
                       CIBIL Score
                     </p>
                     <p className="mt-1 text-[11px] font-bold leading-snug text-[#667085]">
@@ -471,7 +471,7 @@ export function CibilScoreChecker() {
                       </p>
                     ) : null}
                   </div>
-                  <p className="shrink-0 text-[48px] font-black leading-none text-[#111827]">
+                  <p className="shrink-0 text-[48px] font-extrabold leading-none text-[#111827]">
                     {score || "—"}
                   </p>
                 </div>
@@ -480,7 +480,7 @@ export function CibilScoreChecker() {
 
             <div className="grid gap-2.5 sm:grid-cols-2">
               <label className="grid gap-1">
-                <span className="text-[11px] font-black text-[#344054]">
+                <span className="text-[11px] font-extrabold text-[#344054]">
                   Full Name as per PAN
                 </span>
                 <input
@@ -491,13 +491,13 @@ export function CibilScoreChecker() {
                 />
               </label>
               <label className="grid gap-1">
-                <span className="text-[11px] font-black text-[#344054]">
+                <span className="text-[11px] font-extrabold text-[#344054]">
                   Mobile
                 </span>
                 <input className={inputClass} value={form.mobile} disabled />
               </label>
               <label className="grid gap-1">
-                <span className="text-[11px] font-black text-[#344054]">
+                <span className="text-[11px] font-extrabold text-[#344054]">
                   PAN Number
                 </span>
                 <input
@@ -509,7 +509,7 @@ export function CibilScoreChecker() {
                 />
               </label>
               <label className="grid gap-1">
-                <span className="text-[11px] font-black text-[#344054]">
+                <span className="text-[11px] font-extrabold text-[#344054]">
                   Gender
                 </span>
                 <select

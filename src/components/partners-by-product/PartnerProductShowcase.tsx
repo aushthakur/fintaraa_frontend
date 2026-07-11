@@ -80,7 +80,7 @@ function LogoTile({
         className="h-auto max-h-10 w-auto object-contain"
       />
       {count ? (
-        <span className="rounded-full bg-[#eef7ff] px-2.5 py-1 text-[11px] font-black text-[#005ca8]">
+        <span className="rounded-full bg-[#eef7ff] px-2.5 py-1 text-[11px] font-extrabold text-[#005ca8]">
           {count} cards
         </span>
       ) : null}

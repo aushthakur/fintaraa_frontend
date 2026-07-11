@@ -135,12 +135,12 @@ export function ItrHero() {
         />
       </div>
 
-      <div className="mx-auto grid max-w-9xl gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+      <div className="mobile-safe-container grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
         <div>
           <h1 className="text-[28px] font-bold leading-tight tracking-[-0.02em] text-[#1a6bc6] sm:text-[34px] md:text-[40px] lg:text-[48px] xl:text-[54px]">
-            ITR Filling
+            ITR Filing
           </h1>
-          <p className="mt-3 text-[15px] font-medium text-[#1f2937] sm:text-base md:text-[17px] lg:text-[19px]">
+          <p className="mt-3 max-w-sm text-[15px] font-medium leading-6 text-[#1f2937] sm:text-base md:max-w-xl md:text-[17px] lg:text-[19px]">
             File your Income Tax Return easily and stay 100% compliant
           </p>
           <div className="relative mt-6 min-h-50 sm:min-h-65 md:min-h-75 lg:min-h-85 xl:min-h-95">
@@ -158,7 +158,7 @@ export function ItrHero() {
           <div className="absolute -right-7 -top-7 h-full w-85 rounded-2xl bg-[#005ca8] sm:w-95 md:w-105 lg:w-115" />
           <div className="relative rounded-2xl bg-white p-5 shadow-[0_18px_45px_rgba(16,24,40,0.14)] sm:p-6 md:p-8">
             <h2 className="text-lg font-bold text-[#1f2937] sm:text-xl md:text-[22px] lg:text-[24px]">
-              Get Started with ITR Filling
+              Get Started with ITR Filing
             </h2>
             <p className="mt-2 text-[13px] font-medium leading-6 text-[#8b95a3] sm:text-sm md:text-[15px]">
               Fill in your details and our expert will get in touch with you.
@@ -244,7 +244,7 @@ export function ItrHero() {
       </div>
 
       {request ? (
-        <div className="mx-auto mt-8 grid max-w-9xl gap-5">
+        <div className="mobile-safe-container mt-8 grid gap-5">
           <ServiceRequestSuccess
             request={request}
             title="Thank you! Your ITR filing request has been submitted."
@@ -254,7 +254,7 @@ export function ItrHero() {
         </div>
       ) : null}
 
-      <div className="mx-auto mt-10 grid max-w-9xl gap-6 sm:gap-8 md:grid-cols-3">
+      <div className="mobile-safe-container mt-10 grid gap-6 sm:gap-8 md:grid-cols-3">
         {features.map(({ title, text, icon: Icon }) => (
           <div key={title} className="flex items-center gap-3 sm:gap-4">
             <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#d8ecff] text-[#1a6bc6] sm:h-14 sm:w-14 md:h-16 md:w-16">

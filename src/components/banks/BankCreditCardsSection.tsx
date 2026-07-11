@@ -65,7 +65,8 @@ const formatCurrency = (value?: number | string) => {
 };
 
 const firstText = (...values: Array<string | undefined>) =>
-  values.find((value) => value && value.trim()) || "Available as per bank policy.";
+  values.find((value) => value && value.trim()) ||
+  "Available as per bank policy.";
 
 type BankCreditCardsSectionProps = {
   bankName: string;
@@ -172,7 +173,7 @@ export function BankCreditCardsSection({
               <p className="text-[12px] font-extrabold uppercase tracking-[0.16em] text-[#005ca8]">
                 Bank credit cards
               </p>
-              <h2 className="mt-1 text-[24px] font-black tracking-tight text-[#07162d] md:text-[30px]">
+              <h2 className="mt-1 text-[24px] font-extrabold tracking-tight text-[#07162d] md:text-[30px]">
                 {bankName} Credit Cards
               </h2>
               <p className="mt-2 max-w-3xl text-[14px] font-semibold leading-7 text-[#667085] md:text-[15px]">
@@ -218,7 +219,7 @@ export function BankCreditCardsSection({
             <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#eef6ff] text-[#005ca8]">
               <CreditCard className="h-6 w-6" />
             </div>
-            <h3 className="mt-4 text-[18px] font-black text-[#07162d]">
+            <h3 className="mt-4 text-[18px] font-extrabold text-[#07162d]">
               No active {bankName} cards found
             </h3>
             <p className="mx-auto mt-2 max-w-2xl text-[14px] font-semibold leading-6 text-[#667085]">
@@ -250,16 +251,16 @@ export function BankCreditCardsSection({
                         )}
                       </div>
                       <div className="min-w-0">
-                        <p className="truncate text-[12px] font-black text-[#005ca8]">
+                        <p className="truncate text-[12px] font-extrabold text-[#005ca8]">
                           {card.bankName}
                         </p>
-                        <h3 className="mt-1 line-clamp-2 text-[17px] font-black leading-6 text-[#07162d]">
+                        <h3 className="mt-1 line-clamp-2 text-[17px] font-extrabold leading-6 text-[#07162d]">
                           {card.name}
                         </h3>
                       </div>
                     </div>
                     {card.featured ? (
-                      <span className="shrink-0 rounded-full bg-[#ecfdf3] px-3 py-1 text-[10px] font-black uppercase tracking-wide text-[#027a48]">
+                      <span className="shrink-0 rounded-full bg-[#ecfdf3] px-3 py-1 text-[10px] font-extrabold uppercase tracking-wide text-[#027a48]">
                         Featured
                       </span>
                     ) : null}
@@ -303,7 +304,7 @@ export function BankCreditCardsSection({
                           className="rounded-xl border border-[#eef3f8] bg-[#fafcff] p-3"
                         >
                           <Icon className="h-4 w-4 text-[#005ca8]" />
-                          <p className="mt-2 text-[10px] font-black uppercase tracking-wide text-[#98a2b3]">
+                          <p className="mt-2 text-[10px] font-extrabold uppercase tracking-wide text-[#98a2b3]">
                             {item.label}
                           </p>
                           <p className="mt-1 line-clamp-1 text-[12px] font-extrabold text-[#07162d]">

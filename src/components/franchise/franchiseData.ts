@@ -1,6 +1,5 @@
 import {
   Banknote,
-  BadgeCheck,
   BadgeIndianRupee,
   Building2,
   ChartNoAxesColumnIncreasing,
@@ -11,7 +10,6 @@ import {
   Headphones,
   Landmark,
   Megaphone,
-  Scale,
   ShieldCheck,
   Store,
   UserCheck,
@@ -107,16 +105,36 @@ export const franchiseBenefits = [
 ];
 
 export const whyChooseItems = [
-  { title: "Expert Legal Expert", icon: Scale },
-  { title: "Transparent Process", icon: FileSignature },
-  { title: "100% Compliances Assured", icon: ShieldCheck },
-  { title: "End to End Support", icon: Headphones },
-  { title: "Affordable Pricing", icon: BadgeCheck },
-  { title: "Expert Legal Expert", icon: Scale },
-  { title: "Transparent Process", icon: FileSignature },
-  { title: "100% Compliances Assured", icon: ShieldCheck },
-  { title: "End to End Support", icon: Headphones },
-  { title: "Affordable Pricing", icon: BadgeCheck },
+  {
+    title: "Bank & NBFC Network",
+    text: "Access lending and card products from leading financial partners.",
+    icon: Landmark,
+  },
+  {
+    title: "Simple Onboarding",
+    text: "Guided documentation, agreement support and quick setup flow.",
+    icon: FileSignature,
+  },
+  {
+    title: "Compliance Support",
+    text: "Process guidance so applications move with fewer manual gaps.",
+    icon: ShieldCheck,
+  },
+  {
+    title: "Training & RM Help",
+    text: "Product training and a dedicated team for day-to-day assistance.",
+    icon: Headphones,
+  },
+  {
+    title: "Lead & Marketing Support",
+    text: "Campaign assets and lead support to help you grow faster.",
+    icon: Megaphone,
+  },
+  {
+    title: "High Earning Potential",
+    text: "Earn commissions on successful approvals across multiple products.",
+    icon: BadgeIndianRupee,
+  },
 ];
 
 export const franchiseFaqs = [

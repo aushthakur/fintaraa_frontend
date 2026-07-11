@@ -20,11 +20,7 @@ const productIcons = [BadgeIndianRupee, Banknote, Building2, CreditCard];
 type BankInterestRatesSectionMode = "all" | "products" | "rates";
 
 const getProductSlug = (title: string, href?: string) => {
-  const hrefProduct = href
-    ?.split("?")[0]
-    .split("/")
-    .filter(Boolean)
-    .at(-1);
+  const hrefProduct = href?.split("?")[0].split("/").filter(Boolean).at(-1);
   return slugifyProduct(hrefProduct || title);
 };
 
@@ -64,7 +60,7 @@ export function BankInterestRatesSection({
       {mode !== "rates" ? (
         <section id="bank-products" className="px-4 md:px-8 mt-10">
           <div className="mx-auto max-w-9xl">
-            <h2 className="text-[22px] font-black text-[#000000] tracking-tight mb-6">
+            <h2 className="text-[22px] font-extrabold text-[#000000] tracking-tight mb-6">
               Loans & Products Offered by {page.bankName || "HDFC Bank"}
             </h2>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -93,10 +89,7 @@ export function BankInterestRatesSection({
                   ]
               ).map((product, index) => {
                 const Icon = productIcons[index % productIcons.length];
-                const productSlug = getProductSlug(
-                  product.title,
-                  product.href,
-                );
+                const productSlug = getProductSlug(product.title, product.href);
                 const isCreditCardProduct = productSlug.includes("credit-card");
                 const detailsHref =
                   product.href || `/banks/${page.bankSlug}/${productSlug}`;

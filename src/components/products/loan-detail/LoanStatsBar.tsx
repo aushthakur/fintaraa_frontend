@@ -37,32 +37,32 @@ const displayStats = [
 
 export function LoanStatsBar() {
   return (
-    <section className="bg-[#004B93] px-6 py-6 text-white antialiased md:px-12 lg:px-16">
-      <div className="mx-auto max-w-9xl grid grid-cols-2 gap-y-6 md:grid-cols-4 md:gap-y-0">
+    <section className="bg-[#004B93] px-2 py-2 text-white antialiased sm:px-3 md:px-8 md:py-5 lg:px-16">
+      <div className="mx-auto grid max-w-9xl grid-cols-2 gap-y-0.5 md:grid-cols-4 md:gap-y-0">
         {displayStats.map((stat, index) => {
           const IconComponent = stat.icon;
           return (
             <div
               key={stat.label}
-              className="relative flex items-center justify-start gap-4 px-2 md:justify-center"
+              className="relative flex min-h-14 items-center justify-start gap-2 px-1.5 py-1.5 sm:px-2 md:min-h-0 md:justify-center md:gap-4 md:px-4 md:py-0"
             >
               {/* Dynamic Icon with explicit matching background tints */}
               <div
-                className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-full ${stat.bgClass}`}
+                className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full sm:h-10 sm:w-10 md:h-14 md:w-14 ${stat.bgClass}`}
               >
                 <IconComponent
-                  className={`h-6 w-6 ${stat.iconColor}`}
+                  className={`h-4 w-4 sm:h-4.5 sm:w-4.5 md:h-6 md:w-6 ${stat.iconColor}`}
                   strokeWidth={2.2}
                 />
               </div>
 
               {/* Typography block stack */}
-              <div className="space-y-0.5">
+              <div className="min-w-0 space-y-0.5">
                 <AnimatedCounter
                   value={stat.value}
-                  className="block text-xl font-bold tracking-tight text-white md:text-2xl"
+                  className="block text-[15px] font-bold leading-tight tracking-tight text-white sm:text-[17px] md:text-2xl"
                 />
-                <span className="block text-[11px] font-semibold text-blue-100/80 tracking-wide whitespace-nowrap">
+                <span className="block text-[9.5px] font-semibold leading-3 tracking-wide text-blue-100/85 sm:text-[10.5px] md:text-[11px] md:leading-3.5 md:whitespace-nowrap">
                   {stat.label}
                 </span>
               </div>

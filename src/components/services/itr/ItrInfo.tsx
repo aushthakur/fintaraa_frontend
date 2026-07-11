@@ -18,7 +18,7 @@ const benefits = [
 export function ItrInfo() {
   return (
     <section className="px-4 py-8 md:px-6 lg:px-8">
-      <div className="mx-auto max-w-9xl rounded-xl border border-[#d7dfe8] bg-white p-5 sm:p-6 md:p-8">
+      <div className="mobile-safe-container rounded-xl border border-[#d7dfe8] bg-white p-5 sm:p-6 md:p-8">
         <h2 className="text-center text-xl font-bold text-[#1a6bc6] sm:text-2xl md:text-[26px] lg:text-[28px]">
           What is ITR?
         </h2>

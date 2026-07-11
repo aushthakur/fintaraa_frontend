@@ -1,39 +1,38 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import {
   ArrowLeft,
-  BadgeIndianRupee,
-  CheckCircle2,
   CreditCard,
+  CheckCircle2,
+  BadgeIndianRupee,
   Gift,
-  Loader2,
   Plane,
-  ShieldCheck,
-  Sparkles,
+  Loader2,
   XCircle,
+  Sparkles,
+  ShieldCheck,
 } from "lucide-react";
-import { BankLogoImage } from "@/components/common/BankLogoImage";
-import { getAuthToken, getAuthType } from "@/hooks/authStorage";
 import { buildLoginRedirectHref } from "@/lib/loginRedirect";
+import { getAuthToken, getAuthType } from "@/hooks/authStorage";
+import { BankLogoImage } from "@/components/common/BankLogoImage";
 import {
-  buildCreditCardDetailPath,
-  buildCreditCardBankPath,
-  buildCreditCardEligibilityPath,
   buildCreditCardTypePath,
-  CreditCardProduct,
-  EligibilityBreakdown,
-  fetchCreditCardById,
-  fetchCreditCardEligibility,
+  buildCreditCardDetailPath,
+  buildCreditCardEligibilityPath,
   fetchCreditCards,
-  getCreditCardApplyUrl,
-  isSameCreditCardBank,
+  CreditCardProduct,
+  fetchCreditCardById,
   isSameCreditCardType,
-  parseCreditCardIdFromSlug,
-  slugifyCreditCardValue,
+  EligibilityBreakdown,
+  isSameCreditCardBank,
+  getCreditCardApplyUrl,
   trackBankProductClick,
+  slugifyCreditCardValue,
+  parseCreditCardIdFromSlug,
+  fetchCreditCardEligibility,
 } from "@/services/bankProducts";
 
 type Props = {
@@ -58,8 +57,10 @@ const formatCurrency = (value?: number | string) => {
   }).format(amount);
 };
 
-const fallbackText = (value: unknown, fallback = "Available as per bank policy.") =>
-  String(value || "").trim() || fallback;
+const fallbackText = (
+  value: unknown,
+  fallback = "Available as per bank policy.",
+) => String(value || "").trim() || fallback;
 
 const cardBenefits = (card: CreditCardProduct) =>
   [
@@ -162,7 +163,9 @@ export function CreditCardDetailScreen({
     const loadEligibility = async () => {
       setEligibilityLoading(true);
       try {
-        const result = await fetchCreditCardEligibility(card._id || card.id || "");
+        const result = await fetchCreditCardEligibility(
+          card._id || card.id || "",
+        );
         if (active) setEligibility(result);
       } catch (err) {
         if (!active) return;
@@ -170,7 +173,8 @@ export function CreditCardDetailScreen({
           eligible: false,
           score: 0,
           message:
-            (err as Error).message || "Unable to calculate eligibility right now.",
+            (err as Error).message ||
+            "Unable to calculate eligibility right now.",
           checks: [],
         });
       } finally {
@@ -227,7 +231,7 @@ export function CreditCardDetailScreen({
   if (loading) {
     return (
       <main className="bg-[#f8faff] px-4 py-14">
-        <div className="mx-auto flex min-h-80 max-w-6xl items-center justify-center rounded-2xl bg-white text-sm font-black text-[#005ca8]">
+        <div className="mx-auto flex min-h-80 max-w-6xl items-center justify-center rounded-2xl bg-white text-sm font-extrabold text-[#005ca8]">
           <Loader2 className="mr-2 h-5 w-5 animate-spin" />
           Loading credit card details...
         </div>
@@ -239,12 +243,12 @@ export function CreditCardDetailScreen({
     return (
       <main className="bg-[#f8faff] px-4 py-14">
         <div className="mx-auto max-w-4xl rounded-2xl border border-red-100 bg-white p-8 text-center">
-          <p className="text-lg font-black text-[#07162d]">
+          <p className="text-lg font-extrabold text-[#07162d]">
             {error || "Credit card not found."}
           </p>
           <Link
             href="/credit-cards"
-            className="mt-5 inline-flex h-11 items-center justify-center rounded-full bg-[#005ca8] px-5 text-sm font-black text-white no-underline"
+            className="mt-5 inline-flex h-11 items-center justify-center rounded-full bg-[#005ca8] px-5 text-sm font-extrabold text-white no-underline"
           >
             Back to Credit Cards
           </Link>
@@ -253,63 +257,68 @@ export function CreditCardDetailScreen({
     );
   }
 
+  const availableBenefits = cardBenefits(card).filter(([, value]) =>
+    String(value || "").trim(),
+  );
+  const benefitsToRender = availableBenefits.length
+    ? availableBenefits
+    : ([
+        ["Card Benefits", "Benefits are available as per bank policy.", Gift],
+        [
+          "Rewards",
+          fallbackText(
+            card.rewardsType,
+            "Rewards details are available as per bank policy.",
+          ),
+          Sparkles,
+        ],
+      ] as const);
+
   return (
     <main className="bg-[#f8faff] px-4 py-8 text-[#1a1d25] md:px-6 lg:px-8">
       <div className="mx-auto max-w-9xl">
-        <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+        <div className="mb-5">
           <Link
             href={buildCreditCardTypePath(card.bankName, card.cardType)}
-            className="inline-flex h-10 items-center gap-2 rounded-full border border-[#d8e3ef] bg-white px-4 text-sm font-black text-[#005ca8] no-underline"
+            className="inline-flex h-10 items-center gap-2 rounded-full border border-[#d8e3ef] bg-white px-4 text-sm font-extrabold text-[#005ca8] no-underline"
           >
             <ArrowLeft className="h-4 w-4" />
             Back to cards
           </Link>
-          <div className="flex flex-wrap gap-2 text-xs font-black">
-            <Link
-              href={buildCreditCardBankPath(card.bankName)}
-              className="rounded-full bg-white px-3 py-2 text-[#005ca8] no-underline"
-            >
-              {card.bankName}
-            </Link>
-            <Link
-              href={buildCreditCardTypePath(card.bankName, card.cardType)}
-              className="rounded-full bg-white px-3 py-2 text-[#005ca8] no-underline"
-            >
-              {card.cardType || "Credit Card"}
-            </Link>
-          </div>
         </div>
 
         <section className="overflow-hidden rounded-3xl border border-[#dce9f7] bg-white shadow-[0_18px_55px_rgba(16,24,40,0.07)]">
           <div className="grid gap-0 lg:grid-cols-[minmax(0,1fr)_420px]">
             <div className="p-5 md:p-8">
-              <div className="flex flex-wrap items-center gap-3">
+              <div className="flex min-w-0 items-center gap-3">
                 {card.image ? (
                   <BankLogoImage
                     src={card.image}
                     alt={card.bankName}
-                    className="h-10 w-auto max-w-32 object-contain"
+                    className="h-10 w-auto max-w-30 object-contain"
                   />
                 ) : (
                   <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#eef6ff] text-[#005ca8]">
                     <CreditCard className="h-5 w-5" />
                   </div>
                 )}
-                <span className="rounded-full bg-[#e8f4ff] px-3 py-1 text-xs font-black uppercase tracking-wide text-[#005ca8]">
-                  {mode === "eligibility" ? "Eligibility" : "Card Details"}
-                </span>
-                {card.featured ? (
-                  <span className="rounded-full bg-[#ecfdf3] px-3 py-1 text-xs font-black uppercase tracking-wide text-[#027a48]">
-                    Featured
-                  </span>
-                ) : null}
+                <div className="min-w-0">
+                  <p className="truncate text-[13px] font-extrabold text-[#005ca8]">
+                    {card.bankName}
+                  </p>
+                  <p className="mt-0.5 truncate text-[12px] font-semibold text-[#667085]">
+                    {card.cardType || "Credit Card"}
+                  </p>
+                </div>
               </div>
-              <h1 className="mt-5 max-w-4xl text-3xl font-black tracking-tight text-[#07162d] md:text-5xl">
+              <h1 className="mt-5 max-w-4xl text-3xl font-extrabold tracking-tight text-[#07162d] md:text-5xl">
                 {card.name}
               </h1>
               <p className="mt-4 max-w-3xl text-sm font-semibold leading-7 text-[#667085] md:text-base">
                 {fallbackText(
-                  card.shortDescription || card.subtitle || card.welcomeBenefits,
+                  card.shortDescription ||
+                    card.subtitle ||
+                    card.welcomeBenefits,
                   `Compare fees, rewards, eligibility and benefits for ${card.name}.`,
                 )}
               </p>
@@ -318,28 +327,32 @@ export function CreditCardDetailScreen({
                 {stats.map(([label, value, Icon]) => (
                   <div
                     key={label}
-                    className="rounded-2xl border border-[#eef3f8] bg-[#fafcff] p-4"
+                    className="flex min-w-0 items-start gap-3 rounded-2xl border border-[#eef3f8] bg-[#fafcff] p-3.5"
                   >
-                    <Icon className="h-5 w-5 text-[#005ca8]" />
-                    <p className="mt-3 text-xs font-black uppercase tracking-wide text-[#98a2b3]">
-                      {label}
-                    </p>
-                    <p className="mt-1 text-sm font-black text-[#07162d]">
-                      {value}
-                    </p>
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#eef7ff] text-[#005ca8]">
+                      <Icon className="h-5 w-5" />
+                    </span>
+                    <span className="min-w-0">
+                      <p className="text-[11px] font-extrabold uppercase tracking-wide text-[#98a2b3]">
+                        {label}
+                      </p>
+                      <p className="mt-1 break-words text-[13px] font-extrabold leading-5 text-[#07162d]">
+                        {value}
+                      </p>
+                    </span>
                   </div>
                 ))}
               </div>
             </div>
 
             <div className="bg-[#07162d] p-5 text-white md:p-8">
-              <div className="flex min-h-56 flex-col justify-between rounded-3xl bg-gradient-to-br from-[#005ca8] via-[#0b76ca] to-[#102b52] p-6 shadow-[0_25px_60px_rgba(0,92,168,0.25)]">
+              <div className="flex min-h-56 flex-col justify-between rounded-3xl bg-linear-to-br from-[#005ca8] via-[#0b76ca] to-[#102b52] p-6 shadow-[0_25px_60px_rgba(0,92,168,0.25)]">
                 <div className="flex items-start justify-between gap-4">
                   <div>
-                    <p className="text-xs font-black uppercase tracking-[0.18em] text-white/70">
+                    <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-white/70">
                       {card.bankName}
                     </p>
-                    <p className="mt-2 max-w-64 text-xl font-black leading-7">
+                    <p className="mt-2 max-w-64 text-xl font-extrabold leading-7">
                       {card.name}
                     </p>
                   </div>
@@ -350,10 +363,10 @@ export function CreditCardDetailScreen({
                     **** **** **** 8832
                   </p>
                   <div className="mt-5 flex items-end justify-between">
-                    <span className="text-xs font-black uppercase text-white/60">
+                    <span className="text-xs font-extrabold uppercase text-white/60">
                       {card.cardType || "Credit"}
                     </span>
-                    <span className="text-lg font-black italic">
+                    <span className="text-lg font-extrabold italic">
                       {card.cardNetwork || "CARD"}
                     </span>
                   </div>
@@ -362,14 +375,14 @@ export function CreditCardDetailScreen({
               <button
                 type="button"
                 onClick={handleApply}
-                className="mt-6 h-12 w-full rounded-full bg-[#08a045] text-sm font-black text-white shadow-[0_18px_34px_rgba(8,160,69,0.28)] transition hover:bg-[#067e36]"
+                className="mt-6 h-12 w-full rounded-full bg-[#08a045] text-sm font-extrabold text-white shadow-[0_18px_34px_rgba(8,160,69,0.28)] transition hover:bg-[#067e36]"
               >
                 Apply Now
               </button>
               {mode !== "eligibility" ? (
                 <Link
                   href={buildCreditCardEligibilityPath(card)}
-                  className="mt-3 inline-flex h-12 w-full items-center justify-center rounded-full border border-white/20 text-sm font-black text-white no-underline transition hover:bg-white/10"
+                  className="mt-3 inline-flex h-12 w-full items-center justify-center rounded-full border border-white/20 text-sm font-extrabold text-white no-underline transition hover:bg-white/10"
                 >
                   View Eligibility
                 </Link>
@@ -382,20 +395,21 @@ export function CreditCardDetailScreen({
           <section className="mt-6 rounded-3xl border border-[#dce9f7] bg-white p-5 shadow-[0_18px_55px_rgba(16,24,40,0.06)] md:p-7">
             <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
               <div>
-                <p className="text-xs font-black uppercase tracking-[0.16em] text-[#005ca8]">
+                <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-[#005ca8]">
                   Eligibility Result
                 </p>
-                <h2 className="mt-2 text-2xl font-black text-[#07162d]">
+                <h2 className="mt-2 text-2xl font-extrabold text-[#07162d]">
                   {card.name} eligibility check
                 </h2>
               </div>
               {!isLoggedIn() ? (
                 <Link
                   href={buildLoginRedirectHref({
-                    redirectTo: pathname || buildCreditCardEligibilityPath(card),
+                    redirectTo:
+                      pathname || buildCreditCardEligibilityPath(card),
                     product: slugifyCreditCardValue(card.name),
                   })}
-                  className="inline-flex h-11 items-center justify-center rounded-full bg-[#005ca8] px-5 text-sm font-black text-white no-underline"
+                  className="inline-flex h-11 items-center justify-center rounded-full bg-[#005ca8] px-5 text-sm font-extrabold text-white no-underline"
                 >
                   Login to Check Eligibility
                 </Link>
@@ -408,7 +422,7 @@ export function CreditCardDetailScreen({
                 credit profile. You can still review the bank criteria below.
               </p>
             ) : eligibilityLoading ? (
-              <div className="mt-6 flex items-center gap-2 text-sm font-black text-[#005ca8]">
+              <div className="mt-6 flex items-center gap-2 text-sm font-extrabold text-[#005ca8]">
                 <Loader2 className="h-5 w-5 animate-spin" />
                 Calculating eligibility...
               </div>
@@ -416,14 +430,14 @@ export function CreditCardDetailScreen({
               <div className="mt-6">
                 <div className="flex flex-wrap items-center gap-3">
                   <span
-                    className={`rounded-full px-4 py-2 text-sm font-black ${
+                    className={`rounded-full px-4 py-2 text-sm font-extrabold ${
                       eligibility.eligible
                         ? "bg-[#e8f8ef] text-[#12904b]"
                         : "bg-[#fff4e6] text-[#a15c00]"
                     }`}
                   >
-                    {eligibility.eligible ? "Eligible" : "Needs Review"} -
-                    Match Score {eligibility.score}%
+                    {eligibility.eligible ? "Eligible" : "Needs Review"} - Match
+                    Score {eligibility.score}%
                   </span>
                   <span className="text-sm font-semibold text-[#667085]">
                     {eligibility.message}
@@ -442,7 +456,7 @@ export function CreditCardDetailScreen({
                           <XCircle className="mt-0.5 h-5 w-5 shrink-0 text-[#f97316]" />
                         )}
                         <div>
-                          <p className="text-sm font-black text-[#07162d]">
+                          <p className="text-sm font-extrabold text-[#07162d]">
                             {check.label}
                           </p>
                           <p className="mt-1 text-xs font-semibold text-[#667085]">
@@ -460,33 +474,42 @@ export function CreditCardDetailScreen({
         ) : null}
 
         <section className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)]">
-          <div className="rounded-3xl border border-[#dce9f7] bg-white p-5 md:p-7">
-            <h2 className="text-xl font-black text-[#07162d]">
+          <div className="rounded-2xl border border-[#dce9f7] bg-white p-4 md:p-5">
+            <h2 className="text-[18px] font-extrabold text-[#07162d] md:text-xl">
               Benefits and rewards
             </h2>
-            <div className="mt-5 grid gap-4 sm:grid-cols-2">
-              {cardBenefits(card).map(([label, value, Icon]) => (
-                <div key={label} className="rounded-2xl bg-[#f8fbff] p-4">
-                  <Icon className="h-5 w-5 text-[#005ca8]" />
-                  <p className="mt-3 text-sm font-black text-[#07162d]">
-                    {label}
-                  </p>
-                  <p className="mt-2 text-sm font-semibold leading-6 text-[#667085]">
-                    {fallbackText(value)}
-                  </p>
+            <div className="mt-4 grid gap-2.5 sm:grid-cols-2">
+              {benefitsToRender.map(([label, value, Icon]) => (
+                <div
+                  key={label}
+                  className="flex min-w-0 items-start gap-3 rounded-xl border border-[#e8f1f8] bg-[#f8fbff] p-3"
+                >
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white text-[#005ca8] shadow-[0_4px_12px_rgba(0,92,168,0.08)]">
+                    <Icon className="h-4.5 w-4.5" />
+                  </span>
+                  <span className="min-w-0">
+                    <p className="text-[12px] font-extrabold leading-4 text-[#07162d]">
+                      {label}
+                    </p>
+                    <p className="mt-1 line-clamp-3 text-[11.5px] font-semibold leading-5 text-[#667085] md:text-[12px]">
+                      {fallbackText(value)}
+                    </p>
+                  </span>
                 </div>
               ))}
             </div>
           </div>
 
           <div className="rounded-3xl border border-[#dce9f7] bg-white p-5 md:p-7">
-            <h2 className="text-xl font-black text-[#07162d]">
+            <h2 className="text-xl font-extrabold text-[#07162d]">
               Eligibility criteria
             </h2>
             <ul className="mt-5 space-y-3">
-              {(card.eligibilityCriteria || [
-                "Minimum income and credit score are checked as per bank policy.",
-              ]).map((item) => (
+              {(
+                card.eligibilityCriteria || [
+                  "Minimum income and credit score are checked as per bank policy.",
+                ]
+              ).map((item) => (
                 <li
                   key={item}
                   className="flex gap-2 text-sm font-semibold leading-6 text-[#536273]"
@@ -497,7 +520,10 @@ export function CreditCardDetailScreen({
               ))}
             </ul>
             <div className="mt-6 grid gap-3 border-t border-[#eef3f8] pt-5 text-sm font-semibold text-[#667085]">
-              <p>Processing Time: {fallbackText(card.processingTime, "3-7 working days")}</p>
+              <p>
+                Processing Time:{" "}
+                {fallbackText(card.processingTime, "3-7 working days")}
+              </p>
               <p>Network: {fallbackText(card.cardNetwork, "Bank issued")}</p>
               <p>Reward Type: {fallbackText(card.rewardsType, "Rewards")}</p>
             </div>
@@ -506,14 +532,19 @@ export function CreditCardDetailScreen({
 
         <section className="mt-6 grid gap-6 lg:grid-cols-2">
           <div className="rounded-3xl border border-[#dce9f7] bg-white p-5 md:p-7">
-            <h2 className="text-xl font-black text-[#07162d]">
+            <h2 className="text-xl font-extrabold text-[#07162d]">
               Terms and conditions
             </h2>
             <ul className="mt-5 space-y-3">
-              {(card.termsAndConditions || [
-                "Final approval, fees and limits are subject to bank policy.",
-              ]).map((item) => (
-                <li key={item} className="flex gap-2 text-sm font-semibold leading-6 text-[#667085]">
+              {(
+                card.termsAndConditions || [
+                  "Final approval, fees and limits are subject to bank policy.",
+                ]
+              ).map((item) => (
+                <li
+                  key={item}
+                  className="flex gap-2 text-sm font-semibold leading-6 text-[#667085]"
+                >
                   <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#005ca8]" />
                   <span>{item}</span>
                 </li>
@@ -522,12 +553,15 @@ export function CreditCardDetailScreen({
           </div>
 
           <div className="rounded-3xl border border-[#dce9f7] bg-white p-5 md:p-7">
-            <h2 className="text-xl font-black text-[#07162d]">FAQs</h2>
+            <h2 className="text-xl font-extrabold text-[#07162d]">FAQs</h2>
             <div className="mt-5 space-y-3">
               {(card.faqs || []).length ? (
                 card.faqs?.map((faq) => (
-                  <div key={faq.question} className="rounded-2xl bg-[#f8fbff] p-4">
-                    <p className="text-sm font-black text-[#07162d]">
+                  <div
+                    key={faq.question}
+                    className="rounded-2xl bg-[#f8fbff] p-4"
+                  >
+                    <p className="text-sm font-extrabold text-[#07162d]">
                       {faq.question}
                     </p>
                     <p className="mt-2 text-sm font-semibold leading-6 text-[#667085]">
@@ -547,7 +581,7 @@ export function CreditCardDetailScreen({
 
         {relatedCards.length ? (
           <section className="mt-6 rounded-3xl border border-[#dce9f7] bg-white p-5 md:p-7">
-            <h2 className="text-xl font-black text-[#07162d]">
+            <h2 className="text-xl font-extrabold text-[#07162d]">
               More {card.bankName} cards
             </h2>
             <div className="mt-5 grid gap-4 md:grid-cols-3">
@@ -557,10 +591,10 @@ export function CreditCardDetailScreen({
                   href={buildCreditCardDetailPath(item)}
                   className="rounded-2xl border border-[#eef3f8] bg-[#fafcff] p-4 text-[#07162d] no-underline transition hover:border-[#005ca8]"
                 >
-                  <p className="text-xs font-black text-[#005ca8]">
+                  <p className="text-xs font-extrabold text-[#005ca8]">
                     {item.bankName}
                   </p>
-                  <p className="mt-2 text-sm font-black">{item.name}</p>
+                  <p className="mt-2 text-sm font-extrabold">{item.name}</p>
                   <p className="mt-2 text-xs font-semibold text-[#667085]">
                     {item.cardType || "Credit Card"} |{" "}
                     {formatCurrency(item.annualFee)}

@@ -114,11 +114,13 @@ export function ServiceRequestTracker({
   title,
   idLabel,
   serviceType,
+  sectionId,
   requireLogin = false,
 }: {
   title: string;
   idLabel: string;
   serviceType: ServiceRequestType;
+  sectionId?: string;
   requireLogin?: boolean;
 }) {
   const [mobile, setMobile] = useState("");
@@ -189,7 +191,9 @@ export function ServiceRequestTracker({
         setSelectedId(next[0]?._id || "");
       } catch (err) {
         if (!active) return;
-        setError((err as Error).message || "Unable to fetch linked request history.");
+        setError(
+          (err as Error).message || "Unable to fetch linked request history.",
+        );
       } finally {
         if (active) setLoading(false);
       }
@@ -246,13 +250,13 @@ export function ServiceRequestTracker({
 
   if (requireLogin && !loggedIn) {
     return (
-      <section className="px-4 py-8 md:px-6 lg:px-8">
-        <div className="mx-auto max-w-9xl">
+      <section id={sectionId} className="px-4 py-8 md:px-6 lg:px-8">
+        <div className="mobile-safe-container">
           <div className="max-w-2xl">
-            <p className="text-[12px] font-black uppercase tracking-wide text-[#13a653]">
+            <p className="text-[12px] font-extrabold uppercase tracking-wide text-[#13a653]">
               Track Status
             </p>
-            <h2 className="mt-1 text-[24px] font-black tracking-[-0.01em] text-[#005ca8] md:text-[28px]">
+            <h2 className="mt-1 text-[24px] font-extrabold tracking-[-0.01em] text-[#005ca8] md:text-[28px]">
               {title}
             </h2>
             <p className="mt-2 text-[14px] font-semibold leading-6 text-[#667085] md:text-[15px]">
@@ -260,7 +264,7 @@ export function ServiceRequestTracker({
             </p>
             <Link
               href="/login"
-              className="mt-4 inline-flex h-10 items-center justify-center rounded-full bg-[#075cde] px-5 text-[13px] font-black text-white no-underline transition hover:bg-[#064cb8]"
+              className="mt-4 inline-flex h-10 items-center justify-center rounded-full bg-[#075cde] px-5 text-[13px] font-extrabold text-white no-underline transition hover:bg-[#064cb8]"
             >
               Login
             </Link>
@@ -271,18 +275,21 @@ export function ServiceRequestTracker({
   }
 
   return (
-    <section className="px-4 py-8 md:px-6 lg:px-8">
-      <div className="mx-auto grid max-w-9xl gap-5">
-        <div className="rounded-2xl border border-[#d7e5f3] bg-white p-5 shadow-[0_14px_38px_rgba(16,24,40,0.05)] md:p-7">
+    <section
+      id={sectionId}
+      className="scroll-mt-24 px-4 py-7 md:px-6 md:py-8 lg:px-8"
+    >
+      <div className="mobile-safe-container grid gap-5">
+        <div className="w-full max-w-full overflow-hidden rounded-2xl border border-[#d7e5f3] bg-white p-4 shadow-[0_14px_38px_rgba(16,24,40,0.05)] sm:p-5 md:p-7">
           <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
             <div>
-              <p className="text-[12px] font-black uppercase tracking-wide text-[#13a653]">
+              <p className="text-[12px] font-extrabold uppercase tracking-wide text-[#13a653]">
                 Track Status
               </p>
-              <h2 className="mt-1 text-[24px] font-black tracking-[-0.01em] text-[#005ca8] md:text-[28px]">
+              <h2 className="mt-1 text-[21px] font-extrabold leading-tight tracking-[-0.01em] text-[#005ca8] sm:text-[24px] md:text-[28px]">
                 {title}
               </h2>
-              <p className="mt-2 max-w-2xl text-[14px] font-semibold leading-6 text-[#667085] md:text-[15px]">
+              <p className="mt-2 max-w-full text-[13px] font-semibold leading-6 text-[#667085] sm:max-w-2xl sm:text-[14px] md:text-[15px]">
                 Logged-in users can see linked requests automatically. You can
                 also track any submitted request using a mobile number or Query
                 ID.
@@ -293,7 +300,7 @@ export function ServiceRequestTracker({
               className="grid gap-3 md:grid-cols-[1fr_1fr_auto] md:items-end lg:min-w-155"
             >
               <label className="grid gap-1.5">
-                <span className="text-[13px] font-black text-[#2a2f36]">
+                <span className="text-[13px] font-extrabold text-[#2a2f36]">
                   Mobile Number
                 </span>
                 <input
@@ -304,7 +311,7 @@ export function ServiceRequestTracker({
                 />
               </label>
               <label className="grid gap-1.5">
-                <span className="text-[13px] font-black text-[#2a2f36]">
+                <span className="text-[13px] font-extrabold text-[#2a2f36]">
                   {idLabel}
                 </span>
                 <input
@@ -317,7 +324,7 @@ export function ServiceRequestTracker({
               <button
                 type="submit"
                 disabled={loading}
-                className="inline-flex h-11 items-center justify-center gap-2 rounded-full border-2 border-[#13a653] px-7 text-[13px] font-black text-[#13a653] transition hover:bg-[#13a653] hover:text-white disabled:cursor-not-allowed disabled:opacity-70"
+                className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full border-2 border-[#075cde] px-7 text-[13px] font-extrabold text-[#075cde] transition hover:bg-[#075cde] hover:text-white disabled:cursor-not-allowed disabled:opacity-70 md:w-auto"
               >
                 {loading ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
@@ -336,12 +343,12 @@ export function ServiceRequestTracker({
           ) : null}
         </div>
 
-        <div className="rounded-2xl border border-[#d7dfe8] bg-white p-5 shadow-[0_14px_38px_rgba(16,24,40,0.04)] md:p-8">
-          <h3 className="text-[20px] font-black text-[#005ca8] md:text-[24px]">
+        <div className="w-full max-w-full overflow-hidden rounded-2xl border border-[#d7dfe8] bg-white p-4 shadow-[0_14px_38px_rgba(16,24,40,0.04)] sm:p-5 md:p-8">
+          <h3 className="text-[19px] font-extrabold leading-tight text-[#005ca8] md:text-[24px]">
             {title}
           </h3>
-          <div className="mt-8 overflow-x-auto pb-2">
-            <div className="grid min-w-[560px] grid-cols-5 items-start">
+          <div className="mt-6 overflow-x-auto pb-2 md:mt-8">
+            <div className="grid grid-cols-5 items-start md:min-w-140">
               {steps.map(({ label, icon: Icon }, index) => {
                 const done = index < activeStep;
                 const active = index === activeStep;
@@ -349,28 +356,28 @@ export function ServiceRequestTracker({
                   <div key={label} className="relative text-center">
                     {index < steps.length - 1 && (
                       <div
-                        className={`absolute left-1/2 top-5.5 h-0.75 w-full ${
+                        className={`absolute left-1/2 top-4 h-0.75 w-full sm:top-5 md:top-5.5 ${
                           index < activeStep ? "bg-[#005ca8]" : "bg-[#daeeff]"
                         }`}
                       />
                     )}
                     <span
-                      className={`relative z-10 mx-auto flex h-11 w-11 items-center justify-center rounded-full text-[15px] font-black shadow-sm ${
+                      className={`relative z-10 mx-auto flex h-8 w-8 items-center justify-center rounded-full text-[12px] font-extrabold shadow-sm sm:h-10 sm:w-10 sm:text-sm md:h-11 md:w-11 md:text-[15px] ${
                         done || active
                           ? "bg-[#005ca8] text-white"
                           : "bg-[#daeeff] text-[#005ca8]"
                       }`}
                     >
                       {done ? (
-                        <CheckCircle2 className="h-5 w-5" />
+                        <CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5" />
                       ) : active ? (
-                        <Icon className="h-5 w-5" />
+                        <Icon className="h-4 w-4 sm:h-5 sm:w-5" />
                       ) : (
                         index + 1
                       )}
                     </span>
                     <p
-                      className={`mt-4 text-[12px] font-bold leading-[1.45] md:text-[13px] ${
+                      className={`mt-3 px-0.5 text-[10px] font-bold leading-[1.35] sm:text-[12px] md:mt-4 md:text-[13px] ${
                         done || active ? "text-[#005ca8]" : "text-[#374151]"
                       }`}
                     >
@@ -383,43 +390,43 @@ export function ServiceRequestTracker({
           </div>
         </div>
 
-        <div className="rounded-2xl border border-[#d7e5f3] bg-white p-5 shadow-[0_14px_38px_rgba(16,24,40,0.04)] md:p-6">
+        <div className="w-full max-w-full overflow-hidden rounded-2xl border border-[#d7e5f3] bg-white p-4 shadow-[0_14px_38px_rgba(16,24,40,0.04)] sm:p-5 md:p-6">
           <div className="flex flex-col justify-between gap-3 md:flex-row md:items-center">
             <div>
-              <h3 className="text-[18px] font-black text-[#1f2937]">
+              <h3 className="text-[18px] font-extrabold text-[#1f2937]">
                 Submitted Request History
               </h3>
-              <p className="mt-1 max-w-2xl text-[14px] font-semibold leading-6 text-[#667085]">
+              <p className="mt-1 max-w-full text-[14px] font-semibold leading-6 text-[#667085] sm:max-w-2xl">
                 Select any row to view the complete progress timeline and
                 remarks below.
               </p>
             </div>
-            <span className="rounded-full bg-[#eef7ff] px-4 py-2 text-[13px] font-black text-[#005ca8]">
+            <span className="rounded-full bg-[#eef7ff] px-4 py-2 text-[13px] font-extrabold text-[#005ca8]">
               {requests.length} {requests.length === 1 ? "Request" : "Requests"}
             </span>
           </div>
 
-          <div className="mt-4 overflow-x-auto">
-            <table className="w-full min-w-190 border-collapse text-left">
-              <thead>
-                <tr className="border-b border-[#e3e8ef] text-[13px] text-[#1f2937]">
-                  {[
-                    "Query ID",
-                    "Name / Business",
-                    "Mobile",
-                    "Current Stage",
-                    "Status",
-                    "Last Updated",
-                  ].map((head) => (
-                    <th key={head} className="px-3 py-3 font-black">
-                      {head}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {requests.length ? (
-                  requests.map((request) => {
+          {requests.length ? (
+            <div className="mt-4 overflow-x-auto">
+              <table className="w-full min-w-190 border-collapse text-left">
+                <thead>
+                  <tr className="border-b border-[#e3e8ef] text-[13px] text-[#1f2937]">
+                    {[
+                      "Query ID",
+                      "Name / Business",
+                      "Mobile",
+                      "Current Stage",
+                      "Status",
+                      "Last Updated",
+                    ].map((head) => (
+                      <th key={head} className="px-3 py-3 font-extrabold">
+                        {head}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {requests.map((request) => {
                     const selected = selectedRequest?._id === request._id;
                     return (
                       <tr
@@ -431,7 +438,7 @@ export function ServiceRequestTracker({
                             : "text-[#667085] hover:bg-[#f8fbff]"
                         }`}
                       >
-                        <td className="px-3 py-3.5 font-black">
+                        <td className="px-3 py-3.5 font-extrabold">
                           {request.queryId}
                         </td>
                         <td className="px-3 py-3.5">
@@ -440,7 +447,7 @@ export function ServiceRequestTracker({
                         <td className="px-3 py-3.5">{request.mobile || "-"}</td>
                         <td className="px-3 py-3.5">{request.currentStage}</td>
                         <td className="px-3 py-3.5">
-                          <span className="rounded-full bg-[#e8f8ef] px-2.5 py-1 text-[12px] font-black text-[#13a653]">
+                          <span className="rounded-full bg-[#e8f8ef] px-2.5 py-1 text-[12px] font-extrabold text-[#13a653]">
                             {request.status}
                           </span>
                         </td>
@@ -449,29 +456,27 @@ export function ServiceRequestTracker({
                         </td>
                       </tr>
                     );
-                  })
-                ) : (
-                  <tr>
-                    <td colSpan={6} className="px-3 py-10 text-center">
-                      <div className="mx-auto flex max-w-lg flex-col items-center">
-                        <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#e8f4ff] text-[#005ca8]">
-                          <FileSearch className="h-5 w-5" />
-                        </span>
-                        <p className="mt-4 text-[15px] font-black text-[#1f2937]">
-                          No submitted request history yet.
-                        </p>
-                        <p className="mt-2 text-[14px] font-semibold leading-6 text-[#667085]">
-                          Submit a request while logged in, or track an
-                          existing request with your mobile number or Query ID.
-                          The latest status updates will appear here.
-                        </p>
-                      </div>
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
+                  })}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div className="mt-4 rounded-xl bg-[#f8fbff] px-4 py-8 text-center">
+              <div className="mx-auto flex max-w-sm flex-col items-center">
+                <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#e8f4ff] text-[#005ca8]">
+                  <FileSearch className="h-5 w-5" />
+                </span>
+                <p className="mt-4 text-[15px] font-extrabold text-[#1f2937]">
+                  No submitted request history yet.
+                </p>
+                <p className="mt-2 text-[14px] font-semibold leading-6 text-[#667085]">
+                  Submit a request while logged in, or track an existing request
+                  with your mobile number or Query ID. The latest status updates
+                  will appear here.
+                </p>
+              </div>
+            </div>
+          )}
         </div>
 
         {selectedRequest ? (

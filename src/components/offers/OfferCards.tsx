@@ -8,7 +8,6 @@ export function OfferCards() {
   return (
     <section className="px-4 py-10 md:px-8 lg:px-12">
       <div className="mx-auto max-w-9xl">
-
         {/* Category filter pills */}
         <div className="flex gap-3 overflow-x-auto pb-1">
           {offerCategories.map((category, index) => (
@@ -28,7 +27,7 @@ export function OfferCards() {
 
         {/* Section heading */}
         <div className="mt-10 flex items-center justify-between">
-          <h2 className="text-[20px] font-black text-[#111827]">
+          <h2 className="text-[20px] font-extrabold text-[#111827]">
             Exclusive Bank Offers
           </h2>
           <Link
@@ -58,13 +57,13 @@ export function OfferCards() {
                     className="object-contain object-left"
                   />
                 </div>
-                <span className="shrink-0 rounded-[4px] bg-[#d6f8e0] px-3 py-1 text-[11px] font-bold text-[#13a653]">
+                <span className="shrink-0 rounded-sm bg-[#d6f8e0] px-3 py-1 text-[11px] font-bold text-[#13a653]">
                   Exclusive
                 </span>
               </div>
 
               {/* Cashback amount */}
-              <h3 className="mt-6 text-[22px] font-black leading-tight text-[#111827]">
+              <h3 className="mt-6 text-[22px] font-extrabold leading-tight text-[#111827]">
                 ₹3,000 Cashback
               </h3>
               <p className="mt-0.5 text-[14px] font-bold text-[#111827]">
@@ -86,7 +85,7 @@ export function OfferCards() {
               <AuthRedirectLink
                 href="/offers"
                 productSlug="offer"
-                className="mt-6 flex h-11.5 items-center justify-center rounded-full bg-[#13a653] text-[14px] font-black text-white no-underline hover:bg-[#0f9446] transition-colors"
+                className="mt-6 flex h-11.5 items-center justify-center rounded-full bg-[#13a653] text-[14px] font-extrabold text-white no-underline hover:bg-[#0f9446] transition-colors"
               >
                 Apply Now
               </AuthRedirectLink>

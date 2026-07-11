@@ -11,6 +11,7 @@ export function ItrPage() {
       <ItrInfo />
       <ItrDeadline />
       <ServiceRequestTracker
+        sectionId="itr-filing-status"
         title="Track Your ITR Filing Status"
         idLabel="ITR Query ID"
         serviceType="itr_filing"

@@ -38,7 +38,7 @@ export function CibilReportCompare({
                   </span>
                 </th>
                 <th className="pb-3 text-center">
-                  <span className="text-xs font-serif font-black italic tracking-tight text-[#de1f26]">
+                  <span className="text-xs font-serif font-extrabold italic tracking-tight text-[#de1f26]">
                     EQUIFAX
                   </span>
                   <span className="mt-0.5 block text-[11px] font-medium text-gray-400">

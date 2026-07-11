@@ -167,45 +167,49 @@ export function CompanyHero() {
         />
       </div>
 
-      <div className="relative mx-auto grid max-w-9xl gap-10 lg:grid-cols-[1fr_0.9fr]">
+      <div className="mobile-safe-container relative grid gap-8 lg:grid-cols-[1fr_0.9fr] lg:gap-10">
         <div>
-          <h1 className="max-w-4xl text-[36px] font-bold leading-tight tracking-[-0.02em] text-[#1a5fa8] md:text-[50px]">
-            Company Formation &amp; Trademark Registration
+          <h1 className="max-w-full wrap-break-word text-wrap text-[36px] font-bold leading-tight tracking-[-0.02em] text-[#1a5fa8] md:max-w-4xl md:text-[50px]">
+            <span className="block sm:inline">Company Formation</span>{" "}
+            <span className="block sm:inline">&amp; Trademark</span>{" "}
+            <span className="block sm:inline">Registration</span>
           </h1>
-          <p className="mt-5 max-w-2xl text-[17px] font-medium leading-7 text-[#1f2937] md:text-[19px]">
+          <p className="mt-4 max-w-full text-[16px] font-medium leading-7 text-[#1f2937] md:mt-5 md:max-w-2xl md:text-[19px]">
             Start your business journey with guided registration, documentation,
             and filing support.
           </p>
-          <div className="mt-8 grid gap-5 sm:grid-cols-2">
+          <div className="mt-6 grid gap-3 sm:mt-8 sm:grid-cols-2 sm:gap-5">
             {services.map(({ title, text, image }) => (
               <div
                 key={title}
-                className="rounded-xl border border-[#e3e8ef] bg-white p-7 text-center shadow-[0_4px_18px_rgba(16,24,40,0.05)]"
+                className="flex min-h-22 max-w-full items-center gap-3 overflow-hidden rounded-xl border border-[#e3e8ef] bg-white p-3 text-left shadow-[0_4px_18px_rgba(16,24,40,0.05)] sm:block sm:min-h-0 sm:p-5 sm:text-center md:p-7"
               >
-                <span className="relative mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-[#d8ecff]">
+                <span className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#d8ecff] sm:mx-auto sm:h-18 sm:w-18 md:h-24 md:w-24">
                   <Image
                     src={image}
                     alt={title}
                     width={56}
                     height={56}
                     unoptimized
-                    className="h-14 w-14 object-contain"
+                    className="h-7 w-7 object-contain sm:h-10 sm:w-10 md:h-14 md:w-14"
                   />
                 </span>
-                <h3 className="mt-6 text-[20px] font-bold leading-7 text-[#111827]">
-                  {title}
-                </h3>
-                <p className="mt-3 text-[13px] font-medium leading-5 text-[#667085]">
-                  {text}
-                </p>
+                <div className="min-w-0">
+                  <h3 className="text-[13px] font-bold leading-4 text-[#111827] sm:mt-5 sm:text-[16px] sm:leading-6 md:mt-6 md:text-[20px] md:leading-7">
+                    {title}
+                  </h3>
+                  <p className="mt-1 line-clamp-2 text-[12px] font-medium leading-5 text-[#667085] sm:mt-3 sm:text-[13px]">
+                    {text}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
         </div>
 
         <div className="relative mx-auto w-full max-w-md self-start">
-          <div className="absolute -right-7 -top-7 h-full w-full rounded-2xl bg-[#005ca8]" />
-          <div className="relative rounded-2xl bg-white p-8 shadow-[0_18px_45px_rgba(16,24,40,0.14)]">
+          <div className="absolute -right-2 -top-2 h-full w-full rounded-2xl bg-[#005ca8] sm:-right-7 sm:-top-7" />
+          <div className="relative overflow-hidden rounded-2xl bg-white p-4 shadow-[0_18px_45px_rgba(16,24,40,0.14)] sm:p-6 md:p-8">
             <h2 className="text-[22px] font-bold text-[#1f2937]">
               Tell Us Your Requirements
             </h2>
@@ -213,7 +217,7 @@ export function CompanyHero() {
               We will create a query ID and assign an expert for your request.
             </p>
             <form
-              className="mt-6 grid gap-5"
+              className="mt-5 grid gap-4 sm:mt-6 sm:gap-5"
               onSubmit={(event) => {
                 event.preventDefault();
                 void submit();
@@ -328,9 +332,11 @@ export function CompanyHero() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="mx-auto mt-2 inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[#13a653] text-[14px] font-bold text-white disabled:cursor-not-allowed disabled:opacity-70"
+                className="mx-auto mt-2 inline-flex h-12 w-full max-w-full items-center justify-center gap-2 rounded-full bg-[#13a653] text-[14px] font-bold text-white disabled:cursor-not-allowed disabled:opacity-70"
               >
-                {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
+                {submitting ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : null}
                 Submit Inquiry
               </button>
               <p className="flex items-center justify-center gap-1.5 text-center text-[12px] font-medium text-[#a0a7b2]">
@@ -343,7 +349,7 @@ export function CompanyHero() {
       </div>
 
       {request ? (
-        <div className="mx-auto mt-8 grid max-w-9xl gap-5">
+        <div className="mobile-safe-container mt-8 grid gap-5">
           <ServiceRequestSuccess
             request={request}
             title="Thank you! Your company service request has been submitted."
@@ -353,7 +359,7 @@ export function CompanyHero() {
         </div>
       ) : null}
 
-      <div className="mx-auto mt-8 grid max-w-9xl gap-3 sm:grid-cols-3">
+      <div className="mobile-safe-container mt-8 grid gap-3 sm:grid-cols-3">
         {["Expert review", "Query ID generated", "Trackable progress"].map(
           (item) => (
             <div
@@ -361,7 +367,7 @@ export function CompanyHero() {
               className="flex items-center gap-3 rounded-2xl border border-[#dce9f7] bg-white px-4 py-3 shadow-[0_12px_28px_rgba(16,24,40,0.04)]"
             >
               <CheckCircle2 className="h-5 w-5 text-[#13a653]" />
-              <span className="text-[14px] font-black text-[#111827]">
+              <span className="text-[14px] font-extrabold text-[#111827]">
                 {item}
               </span>
             </div>

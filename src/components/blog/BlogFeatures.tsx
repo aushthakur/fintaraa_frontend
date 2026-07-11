@@ -57,6 +57,7 @@ export function FeaturedArticleSection({ article }: FeaturedArticleProps) {
               src={data.thumbnail}
               alt={data.title}
               fill
+              sizes="(max-width: 768px) 100vw, 46vw"
               className="object-cover"
               priority
             />
@@ -92,6 +93,7 @@ export function FeaturedArticleSection({ article }: FeaturedArticleProps) {
                     src={data.author.avatar}
                     alt={data.author.name}
                     fill
+                    sizes="40px"
                     className="object-cover"
                   />
                 </div>

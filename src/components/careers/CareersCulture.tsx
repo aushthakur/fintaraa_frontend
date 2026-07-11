@@ -11,7 +11,7 @@ export function CareersCulture() {
           {cultureValues.map(({ title, text, icon: Icon }) => (
             <article
               key={title}
-              className="rounded-[12px] border border-[#d9e1ea] bg-white px-4 py-5 text-center shadow-[0_4px_14px_rgba(16,24,40,0.03)]"
+              className="rounded-xl border border-[#d9e1ea] bg-white px-4 py-5 text-center shadow-[0_4px_14px_rgba(16,24,40,0.03)]"
             >
               <span className="mx-auto flex h-11 w-11 items-center justify-center rounded-xl bg-[#edf5ff] text-[#0d64bf]">
                 <Icon className="h-6 w-6" />

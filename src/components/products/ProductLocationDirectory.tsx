@@ -2,17 +2,8 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import {
-  Building2,
-  LocateFixed,
-  Map,
-  MapPin,
-  Navigation,
-} from "lucide-react";
-import {
-  slugifyProduct,
-  type ParsedLoanLocation,
-} from "@/lib/productRouting";
+import { Building2, LocateFixed, Map, MapPin, Navigation } from "lucide-react";
+import { slugifyProduct, type ParsedLoanLocation } from "@/lib/productRouting";
 
 type LocationDirectoryPage = {
   title?: string;
@@ -39,8 +30,12 @@ const normalizeLocation = (
 });
 
 const sameText = (first?: string, second?: string) =>
-  String(first || "").trim().toLowerCase() ===
-  String(second || "").trim().toLowerCase();
+  String(first || "")
+    .trim()
+    .toLowerCase() ===
+  String(second || "")
+    .trim()
+    .toLowerCase();
 
 const uniqueItems = (items: DirectoryItem[]) => {
   const seen = new Set<string>();
@@ -113,7 +108,7 @@ function LinkRow({
             {item.label}
           </Link>
           {index < visible.length - 1 ? (
-            <span className="px-3 text-[18px] font-black text-[#00529b]/45">
+            <span className="px-3 text-[18px] font-extrabold text-[#00529b]/45">
               |
             </span>
           ) : null}
@@ -122,7 +117,7 @@ function LinkRow({
       {hasMore ? (
         <>
           {visible.length ? (
-            <span className="px-3 text-[18px] font-black text-[#00529b]/45">
+            <span className="px-3 text-[18px] font-extrabold text-[#00529b]/45">
               |
             </span>
           ) : null}
@@ -133,7 +128,7 @@ function LinkRow({
                 Math.min(current + step, cappedItems.length),
               )
             }
-            className="text-[15px] font-black text-[#00529b] underline-offset-4 transition hover:underline"
+            className="text-[15px] font-extrabold text-[#00529b] underline-offset-4 transition hover:underline"
           >
             Show more ({cappedItems.length - visible.length})
           </button>
@@ -160,7 +155,7 @@ function DirectorySection({
     <div className="py-8">
       <div className="flex items-center justify-center gap-2">
         <Icon className="h-4 w-4 text-[#00529b]" />
-        <h2 className="text-center text-[18px] font-black uppercase tracking-[0.08em] text-[#3f4650] md:text-[20px]">
+        <h2 className="text-center text-[18px] font-extrabold uppercase tracking-[0.08em] text-[#3f4650] md:text-[20px]">
           {title}
         </h2>
       </div>
@@ -203,7 +198,9 @@ export function ProductLocationDirectory({
     ? locations.filter((page) => sameText(page.location.state, current.state))
     : locations;
   const currentCityPages = current.city
-    ? currentStatePages.filter((page) => sameText(page.location.city, current.city))
+    ? currentStatePages.filter((page) =>
+        sameText(page.location.city, current.city),
+      )
     : currentStatePages;
   const currentPincodePages = current.pincode
     ? currentCityPages.filter((page) =>

@@ -28,8 +28,12 @@ const normalizeLocation = (
 });
 
 const sameText = (first?: string, second?: string) =>
-  String(first || "").trim().toLowerCase() ===
-  String(second || "").trim().toLowerCase();
+  String(first || "")
+    .trim()
+    .toLowerCase() ===
+  String(second || "")
+    .trim()
+    .toLowerCase();
 
 const uniqueItems = (items: DirectoryItem[]) => {
   const seen = new Set<string>();
@@ -132,7 +136,7 @@ function DirectorySection({
     <div className="py-8">
       <div className="flex items-center justify-center gap-2">
         <Icon className="h-4 w-4 text-[#00529b]" />
-        <h2 className="text-center text-[18px] font-black uppercase tracking-[0.08em] text-[#3f4650] md:text-[20px]">
+        <h2 className="text-center text-[18px] font-extrabold uppercase tracking-[0.08em] text-[#3f4650] md:text-[20px]">
           {title}
         </h2>
       </div>
@@ -182,7 +186,9 @@ export function BankLocationDirectory({
     ? locations.filter((page) => sameText(page.location.state, current.state))
     : locations;
   const currentCityPages = current.city
-    ? currentStatePages.filter((page) => sameText(page.location.city, current.city))
+    ? currentStatePages.filter((page) =>
+        sameText(page.location.city, current.city),
+      )
     : currentStatePages;
   const currentPincodePages = current.pincode
     ? currentCityPages.filter((page) =>

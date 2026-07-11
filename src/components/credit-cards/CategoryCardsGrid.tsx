@@ -1,13 +1,13 @@
 import Link from "next/link";
-import { 
-  Banknote, 
-  Plane, 
-  Fuel, 
-  Star, 
-  ShoppingBag, 
-  User, 
-  Briefcase, 
-  Gem 
+import {
+  Banknote,
+  Plane,
+  Fuel,
+  Star,
+  ShoppingBag,
+  User,
+  Briefcase,
+  Gem,
 } from "lucide-react";
 
 const categories = [
@@ -63,52 +63,53 @@ const categories = [
 
 export function ExploreCategories() {
   return (
-    <section className="px-4 py-12 md:px-8 lg:px-16 bg-white font-sans">
+    <section className="bg-white px-4 py-8 font-sans md:px-8 md:py-12 lg:px-16">
       <div className="mx-auto max-w-9xl">
-        
         {/* Header Section */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+        <div className="mb-5 flex flex-row items-center justify-between gap-3 md:mb-8 md:items-end">
           <div>
-            <h2 className="text-[26px] font-black text-[#22252a] tracking-tight">
+            <h2 className="text-[20px] font-extrabold leading-tight tracking-tight text-[#22252a] md:text-[26px]">
               Explore Credit Cards by Category
             </h2>
-            <p className="mt-1 text-[14px] text-[#8a94a6] max-w-xl leading-relaxed">
-              Find the perfect credit card for your lifestyle and spending needs.
+            <p className="mt-1 hidden max-w-xl text-[14px] leading-relaxed text-[#8a94a6] sm:block">
+              Find the perfect credit card for your lifestyle and spending
+              needs.
             </p>
           </div>
-          <Link 
-            href="/credit-cards/categories" 
-            className="text-[13px] font-bold text-[#005ca8] hover:underline whitespace-nowrap inline-flex items-center gap-1 self-start sm:self-end"
+          <Link
+            href="/credit-cards/categories"
+            className="inline-flex shrink-0 items-center gap-1 whitespace-nowrap text-[12px] font-bold text-[#005ca8] hover:underline md:text-[13px]"
           >
             View All Categories <span className="text-[14px]">→</span>
           </Link>
         </div>
 
         {/* Categories Grid */}
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-8">
+        <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 md:grid-cols-4 md:gap-4 xl:grid-cols-8">
           {categories.map(({ title, icon: Icon, iconBg, iconColor }) => (
-            <div 
-              key={title} 
-              className="rounded-xl border border-[#e3ebf3] bg-white p-5 text-center flex flex-col items-center justify-center min-h-36.25 shadow-[0_4px_12px_rgba(22,34,50,0.02)] hover:shadow-md transition-shadow duration-200 cursor-pointer"
+            <div
+              key={title}
+              className="flex min-h-22 cursor-pointer items-center gap-2.5 rounded-xl border border-[#e3ebf3] bg-white p-3 text-left shadow-[0_4px_12px_rgba(22,34,50,0.02)] transition-shadow duration-200 hover:shadow-md md:min-h-36.25 md:flex-col md:justify-center md:p-5 md:text-center"
             >
               {/* Colored Circular Icon Container */}
-              <div className={`flex h-14 w-14 items-center justify-center rounded-full ${iconBg} ${iconColor}`}>
-                <Icon className="h-6 w-6" />
+              <div
+                className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full md:h-14 md:w-14 ${iconBg} ${iconColor}`}
+              >
+                <Icon className="h-4.5 w-4.5 md:h-6 md:w-6" />
               </div>
-              
+
               {/* Stacked Labels */}
-              <div className="mt-4">
-                <p className="text-[14px] font-bold text-[#1a1d24] leading-tight">
+              <div className="min-w-0 md:mt-4">
+                <p className="wrap-break-word text-[12px] font-bold leading-tight text-[#1a1d24] md:text-[14px]">
                   {title}
                 </p>
-                <p className="text-[11px] font-medium text-[#8a94a6] mt-0.5">
+                <p className="mt-0.5 text-[10px] font-medium text-[#8a94a6] md:text-[11px]">
                   Cards
                 </p>
               </div>
             </div>
           ))}
         </div>
-
       </div>
     </section>
   );

@@ -81,7 +81,9 @@ export function KnowledgeListingPage({
 
   const categories = useMemo(
     () =>
-      Array.from(new Set(items.map((item) => item.category).filter(Boolean))) as string[],
+      Array.from(
+        new Set(items.map((item) => item.category).filter(Boolean)),
+      ) as string[],
     [items],
   );
 
@@ -105,10 +107,10 @@ export function KnowledgeListingPage({
       <section className="border-b border-[#edf2f7] bg-[#f8fbff] px-4 py-12 md:px-6 lg:px-8">
         <div className="mx-auto grid max-w-9xl gap-8 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-end">
           <div>
-            <p className="text-[12px] font-black uppercase tracking-[0.18em] text-[#005ca8]">
+            <p className="text-[12px] font-extrabold uppercase tracking-[0.18em] text-[#005ca8]">
               {config.eyebrow}
             </p>
-            <h1 className="mt-3 max-w-4xl text-[34px] font-black tracking-tight text-[#07162d] md:text-[52px]">
+            <h1 className="mt-3 max-w-4xl text-[34px] font-extrabold tracking-tight text-[#07162d] md:text-[52px]">
               {config.title}
             </h1>
             <p className="mt-4 max-w-3xl text-[15px] font-semibold leading-7 text-[#667085] md:text-[17px]">
@@ -121,7 +123,7 @@ export function KnowledgeListingPage({
                 <Filter className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-[13px] font-black text-[#07162d]">
+                <p className="text-[13px] font-extrabold text-[#07162d]">
                   {items.length || 50} premium entries
                 </p>
                 <p className="text-[12px] font-semibold text-[#667085]">
@@ -146,7 +148,7 @@ export function KnowledgeListingPage({
         <div className="mx-auto max-w-9xl">
           <div className="mb-7 flex flex-col gap-4 border-b border-[#edf2f7] pb-5 md:flex-row md:items-end md:justify-between">
             <div>
-              <h2 className="text-[24px] font-black text-[#07162d] md:text-[30px]">
+              <h2 className="text-[24px] font-extrabold text-[#07162d] md:text-[30px]">
                 {config.listingTitle}
               </h2>
               <p className="mt-2 text-[13px] font-semibold text-[#667085]">
@@ -157,7 +159,7 @@ export function KnowledgeListingPage({
               <button
                 type="button"
                 onClick={() => setCategory("all")}
-                className={`shrink-0 rounded-full border px-4 py-2 text-[12px] font-black ${
+                className={`shrink-0 rounded-full border px-4 py-2 text-[12px] font-extrabold ${
                   category === "all"
                     ? "border-[#005ca8] bg-[#005ca8] text-white"
                     : "border-[#dce9f7] bg-white text-[#536273]"
@@ -170,7 +172,7 @@ export function KnowledgeListingPage({
                   key={item}
                   type="button"
                   onClick={() => setCategory(item)}
-                  className={`shrink-0 rounded-full border px-4 py-2 text-[12px] font-black ${
+                  className={`shrink-0 rounded-full border px-4 py-2 text-[12px] font-extrabold ${
                     category === item
                       ? "border-[#005ca8] bg-[#005ca8] text-white"
                       : "border-[#dce9f7] bg-white text-[#536273]"
@@ -201,7 +203,10 @@ export function KnowledgeListingPage({
                     key={item.slug}
                     className="flex min-h-96 flex-col overflow-hidden rounded-2xl border border-[#e2edf6] bg-white shadow-[0_10px_32px_rgba(16,24,40,0.04)] transition hover:-translate-y-0.5 hover:shadow-[0_16px_42px_rgba(16,24,40,0.07)]"
                   >
-                    <Link href={`${config.hrefRoot}/${item.slug}`} className="block no-underline">
+                    <Link
+                      href={`${config.hrefRoot}/${item.slug}`}
+                      className="block no-underline"
+                    >
                       <div className="relative h-52 overflow-hidden bg-[#eef6ff]">
                         <Image
                           src={
@@ -222,7 +227,7 @@ export function KnowledgeListingPage({
                             </span>
                           </div>
                         ) : null}
-                        <span className="absolute left-4 top-4 rounded-full bg-white px-3 py-1 text-[11px] font-black text-[#005ca8]">
+                        <span className="absolute left-4 top-4 rounded-full bg-white px-3 py-1 text-[11px] font-extrabold text-[#005ca8]">
                           {item.category || config.detailLabel}
                         </span>
                       </div>
@@ -238,18 +243,18 @@ export function KnowledgeListingPage({
                           {item.location ? <span>{item.location}</span> : null}
                           {isTestimonial || isVideo ? (
                             <span className="inline-flex items-center gap-0.5 text-[#f97316]">
-                              {Array.from({ length: Number(item.rating || 5) }).map(
-                                (_, ratingIndex) => (
-                                  <Star
-                                    key={`${item.slug}-${ratingIndex}`}
-                                    className="h-3 w-3 fill-current"
-                                  />
-                                ),
-                              )}
+                              {Array.from({
+                                length: Number(item.rating || 5),
+                              }).map((_, ratingIndex) => (
+                                <Star
+                                  key={`${item.slug}-${ratingIndex}`}
+                                  className="h-3 w-3 fill-current"
+                                />
+                              ))}
                             </span>
                           ) : null}
                         </div>
-                        <h3 className="mt-3 line-clamp-2 text-[19px] font-black leading-7 text-[#07162d]">
+                        <h3 className="mt-3 line-clamp-2 text-[19px] font-extrabold leading-7 text-[#07162d]">
                           {item.title}
                         </h3>
                         <p className="mt-3 line-clamp-3 text-[13px] font-semibold leading-6 text-[#667085]">
@@ -260,7 +265,7 @@ export function KnowledgeListingPage({
                             {item.tags.slice(0, 3).map((tag) => (
                               <span
                                 key={`${item.slug}-${tag}`}
-                                className="rounded-full bg-[#eef6ff] px-3 py-1 text-[11px] font-black text-[#005ca8]"
+                                className="rounded-full bg-[#eef6ff] px-3 py-1 text-[11px] font-extrabold text-[#005ca8]"
                               >
                                 {tag}
                               </span>
@@ -271,7 +276,7 @@ export function KnowledgeListingPage({
 
                       <Link
                         href={`${config.hrefRoot}/${item.slug}`}
-                        className="mt-5 inline-flex h-10 w-fit items-center justify-center gap-2 rounded-full bg-[#005ca8] px-5 text-[12px] font-black text-white no-underline transition hover:bg-[#004b87]"
+                        className="mt-5 inline-flex h-10 w-fit items-center justify-center gap-2 rounded-full bg-[#005ca8] px-5 text-[12px] font-extrabold text-white no-underline transition hover:bg-[#004b87]"
                       >
                         {item.buttonLabel || config.primaryAction}
                         <ArrowRight className="h-4 w-4" />
@@ -285,7 +290,7 @@ export function KnowledgeListingPage({
 
           {!loading && !error && !filteredItems.length ? (
             <div className="rounded-2xl border border-[#e2edf6] bg-[#f8fbff] p-8 text-center">
-              <p className="text-[16px] font-black text-[#07162d]">
+              <p className="text-[16px] font-extrabold text-[#07162d]">
                 No matching content found.
               </p>
               <p className="mt-2 text-[13px] font-semibold text-[#667085]">

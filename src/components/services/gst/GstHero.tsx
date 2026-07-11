@@ -108,7 +108,9 @@ export function GstHero() {
     setSubmitting(true);
     setError("");
     try {
-      const consentPayload = buildWebsiteConsentPayload("website_gst_registration");
+      const consentPayload = buildWebsiteConsentPayload(
+        "website_gst_registration",
+      );
       const result = await createServiceRequest({
         serviceType: "gst_registration",
         businessName: form.businessName.trim(),
@@ -160,7 +162,7 @@ export function GstHero() {
         </div>
 
         <div className="flex flex-col z-10 lg:pl-10">
-          <h1 className="max-w-xl text-[28px] font-black leading-[1.15] tracking-[-0.02em] text-[#005ca8] sm:text-[34px] md:text-[38px] lg:text-[46px] xl:text-[52px]">
+          <h1 className="max-w-xl text-[28px] font-extrabold leading-[1.15] tracking-[-0.02em] text-[#005ca8] sm:text-[34px] md:text-[38px] lg:text-[46px] xl:text-[52px]">
             GST Registration & <span className="block">GST Filing</span>
           </h1>
           <p className="mt-4 text-[15px] font-medium text-[#111827] sm:text-base md:text-[17px] lg:text-[19px]">
@@ -182,7 +184,7 @@ export function GstHero() {
         <div className="relative mx-auto w-full max-w-140">
           <div className="absolute -right-4 -top-4 h-full w-85 rounded-xl bg-[#005ca8] sm:w-95 md:w-105 lg:w-115" />
           <div className="relative rounded-xl bg-white p-5 shadow-[0_18px_45px_rgba(16,24,40,0.12)] sm:p-6 md:p-7">
-            <h2 className="text-base font-black text-[#2a2f36] sm:text-lg md:text-[20px] lg:text-[22px]">
+            <h2 className="text-base font-extrabold text-[#2a2f36] sm:text-lg md:text-[20px] lg:text-[22px]">
               Get Started with GST Services
             </h2>
             <p className="mt-1.5 text-[13px] font-semibold leading-6 text-[#8b95a3] sm:text-sm md:text-[15px]">
@@ -192,7 +194,7 @@ export function GstHero() {
 
             <div className="mt-4 grid gap-3 sm:mt-5 sm:gap-4">
               <label className="grid gap-1 sm:gap-1.5">
-                <span className="text-[13px] font-black text-[#2a2f36] sm:text-sm">
+                <span className="text-[13px] font-extrabold text-[#2a2f36] sm:text-sm">
                   Business Name
                 </span>
                 <input
@@ -205,7 +207,7 @@ export function GstHero() {
                 />
               </label>
               <label className="grid gap-1 sm:gap-1.5">
-                <span className="text-[13px] font-black text-[#2a2f36] sm:text-sm">
+                <span className="text-[13px] font-extrabold text-[#2a2f36] sm:text-sm">
                   Mobile Number
                 </span>
                 <input
@@ -234,7 +236,7 @@ export function GstHero() {
                 ["state", "State", "Select State", states],
               ].map(([key, label, placeholder, options]) => (
                 <label key={String(key)} className="grid gap-1 sm:gap-1.5">
-                  <span className="text-[13px] font-black text-[#2a2f36] sm:text-sm">
+                  <span className="text-[13px] font-extrabold text-[#2a2f36] sm:text-sm">
                     {String(label)}
                   </span>
                   <select
@@ -272,7 +274,7 @@ export function GstHero() {
                 type="button"
                 onClick={submit}
                 disabled={submitting}
-                className="mx-auto mt-1 inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-[#13a653] text-sm font-black text-white transition hover:bg-[#0f8f45] disabled:cursor-not-allowed disabled:opacity-70"
+                className="mx-auto mt-1 inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-[#13a653] text-sm font-extrabold text-white transition hover:bg-[#0f8f45] disabled:cursor-not-allowed disabled:opacity-70"
               >
                 {submitting ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
@@ -316,7 +318,7 @@ export function GstHero() {
                   </span>
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
-                      <h3 className="text-[16px] font-black text-[#1f2937] md:text-[17px]">
+                      <h3 className="text-[16px] font-extrabold text-[#1f2937] md:text-[17px]">
                         {label}
                       </h3>
                       <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#f3f8ff] text-[#005ca8]">

@@ -363,7 +363,11 @@ const serviceSearchEntries: StaticSearchEntry[] = [
   { label: "Credit Score", href: "/cibil-score", category: "Services" },
   { label: "Credit Report", href: "/cibil-score/report", category: "Services" },
   { label: "ITR Filing", href: "/itr-filing", category: "Services" },
-  { label: "GST Registration", href: "/gst-registration", category: "Services" },
+  {
+    label: "GST Registration",
+    href: "/gst-registration",
+    category: "Services",
+  },
   {
     label: "Company Registration",
     href: "/company-registration",
@@ -373,7 +377,11 @@ const serviceSearchEntries: StaticSearchEntry[] = [
   { label: "Financial Planning", href: "/products", category: "Services" },
   { label: "Document Help", href: "/support", category: "Support" },
   { label: "Mobile App Support", href: "/support", category: "Support" },
-  { label: "Application Status", href: "/application-status", category: "Account" },
+  {
+    label: "Application Status",
+    href: "/application-status",
+    category: "Account",
+  },
   { label: "Products", href: "/products", category: "Explore" },
   { label: "Offers", href: "/offers", category: "Explore" },
   { label: "Knowledge Hub", href: "/knowledge-hub", category: "Explore" },
@@ -389,7 +397,11 @@ const serviceSearchEntries: StaticSearchEntry[] = [
   { label: "Become DSA", href: "/become-dsa", category: "Partner" },
   { label: "Refer And Earn", href: "/refer-and-earn", category: "Partner" },
   { label: "Privacy Policy", href: "/privacy-policy", category: "Legal" },
-  { label: "Terms And Conditions", href: "/terms-and-conditions", category: "Legal" },
+  {
+    label: "Terms And Conditions",
+    href: "/terms-and-conditions",
+    category: "Legal",
+  },
   { label: "Loan Disclosure", href: "/loan-disclosure", category: "Legal" },
   { label: "Delete Account", href: "/delete-account", category: "Account" },
 ];
@@ -440,7 +452,10 @@ const popularSearchEntries = [
   .filter(Boolean) as StaticSearchEntry[];
 
 const normalizeSearchText = (value: string) =>
-  value.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+  value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
 
 const searchNavEntries = (query: string) => {
   const normalized = normalizeSearchText(query);
@@ -450,9 +465,12 @@ const searchNavEntries = (query: string) => {
   return navSearchEntries
     .map((entry) => {
       const haystack = normalizeSearchText(
-        [entry.label, entry.category, entry.href, ...(entry.keywords || [])].join(
-          " ",
-        ),
+        [
+          entry.label,
+          entry.category,
+          entry.href,
+          ...(entry.keywords || []),
+        ].join(" "),
       );
       const label = normalizeSearchText(entry.label);
       const allWordsMatch = words.every((word) => haystack.includes(word));
@@ -620,7 +638,7 @@ export default function Navbar() {
       className="sticky top-0 z-50 overflow-x-clip border-b border-[#e5eef8] bg-white/95 backdrop-blur"
     >
       <div className="bg-[#002B4D] px-4 text-white md:px-6 lg:pl-8 lg:pr-10">
-        <div className="mx-auto flex min-h-8 max-w-9xl items-center justify-center gap-4 py-1.5 text-center text-[11px] font-semibold sm:justify-between sm:py-2 sm:text-left">
+        <div className="mx-auto flex min-h-7 max-w-9xl items-center justify-center gap-4 py-1 text-center text-[11px] font-semibold sm:min-h-8 sm:justify-between sm:py-2 sm:text-left">
           <p className="flex items-center justify-center gap-2 leading-4">
             <ShieldCheck className="h-4 w-4 shrink-0 text-[#8fc7ff]" />
             <span className="sm:hidden">Secure finance marketplace.</span>
@@ -648,14 +666,14 @@ export default function Navbar() {
         </div>
       </div>
 
-      <nav className="mobile-site-nav mx-auto flex h-20 w-full max-w-9xl items-center justify-between gap-4 px-4 md:px-6 xl:px-6 2xl:px-8">
+      <nav className="mobile-site-nav mx-auto flex h-16 w-full max-w-9xl items-center justify-between gap-4 px-4 md:h-18 md:px-6 xl:px-6 2xl:px-8">
         <Link href="/" aria-label="Fintaraa home" className="shrink-0">
           <Image
             priority
             width={134}
             height={41}
             alt="Fintaraa"
-            className="h-auto w-24 sm:w-28"
+            className="h-auto w-16"
             src="/assets/logo/logo.png"
           />
         </Link>
@@ -705,7 +723,7 @@ export default function Navbar() {
       </nav>
 
       {menuOpen && (
-        <div className="max-h-[calc(100dvh-7.25rem)] overflow-y-auto border-t border-[#e5eef8] bg-white px-4 pb-5 md:px-6 xl:hidden">
+        <div className="max-h-[calc(100dvh-6.25rem)] overflow-y-auto border-t border-[#e5eef8] bg-white px-4 pb-5 md:max-h-[calc(100dvh-6.75rem)] md:px-6 xl:hidden">
           <div className="mx-auto grid max-w-9xl gap-1">
             <NavbarSearch mobile onNavigate={() => setMenuOpen(false)} />
             {navItems.map((item) => {
@@ -859,7 +877,7 @@ function NavbarSearch({
           className={
             mobile
               ? "mt-2 overflow-hidden rounded-xl border border-[#d9e9f6] bg-white shadow-[0_16px_40px_rgba(16,24,40,0.10)]"
-              : "absolute right-0 top-[calc(100%+0.65rem)] z-50 w-[21rem] overflow-hidden rounded-xl border border-[#d9e9f6] bg-white shadow-[0_22px_60px_rgba(16,24,40,0.14)]"
+              : "absolute right-0 top-[calc(100%+0.65rem)] z-50 w-84 overflow-hidden rounded-xl border border-[#d9e9f6] bg-white shadow-[0_22px_60px_rgba(16,24,40,0.14)]"
           }
         >
           <div className="border-b border-[#edf3f8] bg-[#f7fbff] px-3 py-2">

@@ -13,10 +13,10 @@ export function LoanDocumentsRequired({ page }: { page: LoanSeoPageData }) {
   return (
     <section className="border border-[#e2edf8] bg-white p-5 sm:p-6">
       <div className="max-w-3xl">
-        <p className="text-[12px] font-black uppercase tracking-[0.14em] text-[#00529b]">
+        <p className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#00529b]">
           Document checklist
         </p>
-        <h2 className="mt-2 text-[24px] font-black text-[#111827]">
+        <h2 className="mt-2 text-[24px] font-extrabold text-[#111827]">
           Documents required to apply for{" "}
           <span className="text-[#13a653]">{page.loanType}</span>
         </h2>

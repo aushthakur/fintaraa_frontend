@@ -39,15 +39,15 @@ export function StatusHero({
     <section className="border-b border-[#e7eef6] bg-[#f8fbff] px-4 py-7 md:px-6 lg:px-8">
       <div className="mx-auto flex max-w-9xl flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
         <div>
-          <p className="text-[12px] font-black uppercase tracking-[0.16em] text-[#667085]">
+          <p className="text-[12px] font-extrabold uppercase tracking-[0.16em] text-[#667085]">
             Application tracker
           </p>
-          <h1 className="mt-2 text-[34px] font-black leading-tight tracking-[-0.02em] text-[#07162d] md:text-[46px]">
+          <h1 className="mt-2 text-[34px] font-extrabold leading-tight tracking-[-0.02em] text-[#07162d] md:text-[46px]">
             Application Status
           </h1>
         </div>
 
-        <div className="grid gap-3 sm:grid-cols-3 lg:min-w-[34rem]">
+        <div className="grid gap-3 sm:grid-cols-3 lg:min-w-136">
           {stats.map(({ title, value, icon: Icon, tone }) => (
             <article
               key={title}
@@ -59,10 +59,10 @@ export function StatusHero({
                 <Icon className="h-5 w-5" />
               </span>
               <div>
-                <p className="text-[11px] font-black uppercase tracking-[0.12em] text-[#667085]">
+                <p className="text-[11px] font-extrabold uppercase tracking-[0.12em] text-[#667085]">
                   {title}
                 </p>
-                <p className="mt-1 text-[24px] font-black leading-none text-[#07162d]">
+                <p className="mt-1 text-[24px] font-extrabold leading-none text-[#07162d]">
                   {value}
                 </p>
               </div>

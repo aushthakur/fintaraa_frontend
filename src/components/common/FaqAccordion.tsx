@@ -113,11 +113,11 @@ export function FaqAccordion({
       ) : null}
       <section className="mx-auto w-full max-w-5xl px-4 py-14 text-[#111827] antialiased md:px-6 md:py-16">
         <div className="mx-auto max-w-3xl text-center">
-          <span className="inline-flex items-center gap-2 rounded-full bg-[#eef7ff] px-4 py-2 text-[12px] font-black uppercase tracking-[0.16em] text-[#005ca8]">
+          <span className="inline-flex items-center gap-2 rounded-full bg-[#eef7ff] px-4 py-2 text-[12px] font-extrabold uppercase tracking-[0.16em] text-[#005ca8]">
             <BadgeHelp className="h-4 w-4" strokeWidth={2.4} />
             Help Center
           </span>
-          <h2 className="mt-5 text-[28px] font-black tracking-[-0.02em] text-[#111827] md:text-[36px]">
+          <h2 className="mt-5 text-[28px] font-extrabold tracking-[-0.02em] text-[#111827] md:text-[36px]">
             {pageFaq?.title || title}
           </h2>
           <p className="mx-auto mt-3 max-w-2xl text-[15px] font-semibold leading-7 text-[#667085] md:text-base">
@@ -150,11 +150,8 @@ export function FaqAccordion({
                       )}
                     </span>
                     <span className="min-w-0">
-                      <span className="block text-[15px] font-black leading-6 text-[#172033] transition-colors group-hover:text-[#005ca8] md:text-[16px]">
+                      <span className="block text-[15px] font-extrabold leading-6 text-[#172033] transition-colors group-hover:text-[#005ca8] md:text-[16px]">
                         {faq.question}
-                      </span>
-                      <span className="mt-1 block text-[12px] font-bold uppercase tracking-[0.14em] text-[#98a2b3]">
-                        Question {String(index + 1).padStart(2, "0")}
                       </span>
                     </span>
                   </span>

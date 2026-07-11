@@ -581,7 +581,7 @@ function ProductVisualCard({
             {title}
           </h3>
           {isManaged ? (
-            <span className="shrink-0 rounded-full bg-[#e9f2ff] px-2 py-1 text-[9px] font-black uppercase tracking-[0.08em] text-[#075cde]">
+            <span className="shrink-0 rounded-full bg-[#e9f2ff] px-2 py-1 text-[9px] font-extrabold uppercase tracking-[0.08em] text-[#075cde]">
               Managed
             </span>
           ) : null}
@@ -671,7 +671,7 @@ export function ProductsPage() {
         <div className="relative mx-auto max-w-9xl">
           <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
             <div className="min-w-0 shrink-0">
-              <h1 className="text-[24px] font-black leading-tight tracking-tight text-[#07162d] md:text-[30px]">
+              <h1 className="text-[24px] font-extrabold leading-tight tracking-tight text-[#07162d] md:text-[30px]">
                 Fintaraa Products & Services
               </h1>
               <p className="mt-1 text-[13px] font-bold text-[#667085]">
@@ -697,14 +697,14 @@ export function ProductsPage() {
                   <span className="text-[13px] font-semibold text-[#667085]">
                     {label}
                   </span>
-                  <span className="text-[18px] font-black text-[#07162d]">
+                  <span className="text-[18px] font-extrabold text-[#07162d]">
                     {value}
                   </span>
                 </div>
               ))}
             </div> */}
             <div className="flex min-w-0 flex-col gap-3 xl:flex-1 xl:flex-row xl:items-center xl:justify-end">
-              <label className="relative block w-full xl:max-w-[440px]">
+              <label className="relative block w-full xl:max-w-110">
                 <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#98a2b3]" />
                 <input
                   value={query}
@@ -757,7 +757,7 @@ export function ProductsPage() {
               <div key={section.title}>
                 <div className="mb-5 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
                   <div>
-                    <h2 className="text-[22px] font-black leading-tight tracking-tight text-[#07162d] md:text-[26px]">
+                    <h2 className="text-[22px] font-extrabold leading-tight tracking-tight text-[#07162d] md:text-[26px]">
                       {section.title}
                     </h2>
                     {/* <p className="mt-2 max-w-2xl text-[15px] font-semibold leading-7 text-[#667085]">
@@ -791,7 +791,7 @@ export function ProductsPage() {
           ) : (
             <div className="bg-[#f8fcff] p-10 text-center ring-1 ring-[#e4edf5]">
               <Search className="mx-auto h-8 w-8 text-[#195585]" />
-              <h2 className="mt-4 text-[24px] font-black text-[#07162d]">
+              <h2 className="mt-4 text-[24px] font-extrabold text-[#07162d]">
                 No products found
               </h2>
               <p className="mt-2 text-[14px] font-semibold text-[#667085]">

@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
+  ArrowRight,
   BadgeCheck,
   CalendarDays,
   CheckCircle2,
@@ -16,9 +17,9 @@ import {
 } from "lucide-react";
 import { AppDownloadBanner } from "@/components/common/layout/Footer";
 import { WhatsAppConsent } from "@/components/common/WhatsAppConsent";
-import { getAuthToken, getAuthType } from "@/hooks/authStorage";
 import { buildLoginRedirectHref } from "@/lib/loginRedirect";
 import { buildWebsiteConsentPayload } from "@/lib/formConsent";
+import { getAuthToken, getAuthType } from "@/hooks/authStorage";
 import {
   applyForOffer,
   fetchEligibleOffers,
@@ -34,10 +35,37 @@ const categories = [
   { label: "Insurance", value: "insurance" },
 ];
 
-const categoryMeta: Record<string, { icon: typeof WalletCards; tone: string }> = {
-  loan: { icon: WalletCards, tone: "bg-[#eef6ff] text-[#005ca8]" },
-  card: { icon: CreditCard, tone: "bg-[#f2efff] text-[#5b43d6]" },
-  insurance: { icon: ShieldCheck, tone: "bg-[#eef6ff] text-[#005ca8]" },
+const categoryMeta: Record<
+  string,
+  {
+    icon: typeof WalletCards;
+    label: string;
+    tone: string;
+    chip: string;
+    surface: string;
+  }
+> = {
+  loan: {
+    icon: WalletCards,
+    label: "Loan Offer",
+    tone: "bg-[#e8f4ff] text-[#005ca8]",
+    chip: "bg-[#e8f4ff] text-[#005ca8]",
+    surface: "from-[#e8f4ff] to-white",
+  },
+  card: {
+    icon: CreditCard,
+    label: "Card Offer",
+    tone: "bg-[#f2efff] text-[#5b43d6]",
+    chip: "bg-[#f2efff] text-[#5b43d6]",
+    surface: "from-[#f2efff] to-white",
+  },
+  insurance: {
+    icon: ShieldCheck,
+    label: "Insurance Offer",
+    tone: "bg-[#eafaf1] text-[#10884a]",
+    chip: "bg-[#eafaf1] text-[#10884a]",
+    surface: "from-[#eafaf1] to-white",
+  },
 };
 
 type OfferDisplayRecord = OfferRecord & {
@@ -107,17 +135,25 @@ const formatDate = (value?: string) => {
 
 function OfferSkeleton() {
   return (
-    <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 lg:gap-5">
       {Array.from({ length: 6 }).map((_, index) => (
         <div
           key={index}
-          className="h-76 animate-pulse rounded-2xl border border-[#e5edf6] bg-white p-5"
+          className="overflow-hidden rounded-2xl border border-[#e5edf6] bg-white shadow-[0_16px_40px_rgba(16,24,40,0.05)]"
         >
-          <div className="h-9 w-28 rounded-full bg-[#edf3f8]" />
-          <div className="mt-6 h-7 w-3/4 rounded bg-[#edf3f8]" />
-          <div className="mt-4 h-4 w-full rounded bg-[#edf3f8]" />
-          <div className="mt-2 h-4 w-2/3 rounded bg-[#edf3f8]" />
-          <div className="mt-8 h-11 rounded-full bg-[#edf3f8]" />
+          <div className="aspect-video bg-[#edf3f8]" />
+          <div className="p-4 md:p-5">
+            <div className="h-5 w-24 rounded-full bg-[#edf3f8]" />
+            <div className="mt-4 h-6 w-4/5 rounded bg-[#edf3f8]" />
+            <div className="mt-3 h-4 w-full rounded bg-[#edf3f8]" />
+            <div className="mt-2 h-4 w-2/3 rounded bg-[#edf3f8]" />
+            <div className="mt-5 grid grid-cols-3 gap-2">
+              <div className="h-14 rounded-xl bg-[#edf3f8]" />
+              <div className="h-14 rounded-xl bg-[#edf3f8]" />
+              <div className="h-14 rounded-xl bg-[#edf3f8]" />
+            </div>
+            <div className="mt-5 h-10 rounded-xl bg-[#edf3f8]" />
+          </div>
         </div>
       ))}
     </div>
@@ -137,7 +173,7 @@ function EmptyOffers({ onReset }: { onReset: () => void }) {
           className="h-full w-full object-contain"
         />
       </div>
-      <h3 className="mt-5 text-[22px] font-black text-[#111827]">
+      <h3 className="mt-5 text-[22px] font-extrabold text-[#111827]">
         Offers are being refreshed
       </h3>
       <p className="mt-2 text-[15px] font-semibold leading-7 text-[#667085]">
@@ -147,7 +183,7 @@ function EmptyOffers({ onReset }: { onReset: () => void }) {
       <button
         type="button"
         onClick={onReset}
-        className="mt-6 inline-flex h-11 items-center justify-center rounded-full bg-[#005ca8] px-5 text-[13px] font-black text-white"
+        className="mt-6 inline-flex h-11 items-center justify-center rounded-full bg-[#005ca8] px-5 text-[13px] font-extrabold text-white"
       >
         View all offers
       </button>
@@ -175,7 +211,9 @@ export function OffersPage() {
           ? (await fetchEligibleOffers()).offers
           : await fetchPublicOffers({ limit: 60 });
         if (active) {
-          setOffers(result.length || isLoggedIn() ? result : publicFallbackOffers);
+          setOffers(
+            result.length || isLoggedIn() ? result : publicFallbackOffers,
+          );
         }
       } catch (err) {
         if (active) {
@@ -227,7 +265,9 @@ export function OffersPage() {
           productType: offer.productType,
         },
       });
-      setMessage("Offer application recorded. Our team will contact you shortly.");
+      setMessage(
+        "Offer application recorded. Our team will contact you shortly.",
+      );
     } catch (err) {
       setError((err as Error).message || "Could not apply for this offer.");
     } finally {
@@ -242,11 +282,11 @@ export function OffersPage() {
         <div className="mx-auto max-w-9xl">
           <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
             <div>
-              <p className="inline-flex items-center gap-2 rounded-full bg-[#eef6ff] px-4 py-2 text-[12px] font-black uppercase tracking-[0.14em] text-[#005ca8]">
+              <p className="inline-flex items-center gap-2 rounded-full bg-[#eef6ff] px-4 py-2 text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#005ca8]">
                 <Sparkles className="h-4 w-4" />
                 Live partner offers
               </p>
-              <h2 className="mt-4 text-[28px] font-black tracking-[-0.02em] text-[#111827] md:text-[36px]">
+              <h2 className="mt-4 text-[28px] font-extrabold tracking-[-0.02em] text-[#111827] md:text-[36px]">
                 Exclusive offers matched to your profile
               </h2>
               <p className="mt-2 max-w-2xl text-[15px] font-semibold leading-7 text-[#667085]">
@@ -260,7 +300,7 @@ export function OffersPage() {
                   key={item.value}
                   type="button"
                   onClick={() => setCategory(item.value)}
-                  className={`h-11 rounded-full px-5 text-[13px] font-black transition ${
+                  className={`h-11 rounded-full px-5 text-[13px] font-extrabold transition ${
                     category === item.value
                       ? "bg-[#005ca8] text-white shadow-[0_12px_26px_rgba(0,92,168,0.18)]"
                       : "bg-[#f3f7fb] text-[#475467] hover:bg-[#e8f1fb]"
@@ -273,13 +313,13 @@ export function OffersPage() {
           </div>
 
           {message ? (
-            <div className="mt-6 flex items-center gap-2 rounded-2xl bg-[#ecfdf3] px-4 py-3 text-[13px] font-black text-[#027a48]">
+            <div className="mt-6 flex items-center gap-2 rounded-2xl bg-[#ecfdf3] px-4 py-3 text-[13px] font-extrabold text-[#027a48]">
               <CheckCircle2 className="h-4 w-4" />
               {message}
             </div>
           ) : null}
           {error ? (
-            <div className="mt-6 rounded-2xl bg-red-50 px-4 py-3 text-[13px] font-black text-red-700">
+            <div className="mt-6 rounded-2xl bg-red-50 px-4 py-3 text-[13px] font-extrabold text-red-700">
               {error}
             </div>
           ) : null}
@@ -297,79 +337,117 @@ export function OffersPage() {
             {loading ? (
               <OfferSkeleton />
             ) : filteredOffers.length ? (
-              <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+              <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 lg:gap-5">
                 {filteredOffers.map((offer) => {
                   const meta =
                     categoryMeta[offer.productCategory || "loan"] ||
                     categoryMeta.loan;
                   const Icon = meta.icon;
                   const visual = (offer as OfferDisplayRecord).visual;
-                  return (
-                    <article
-                      key={offer._id}
-                      className="flex min-h-76 flex-col overflow-hidden rounded-xl border border-[#e4edf6] bg-white shadow-[0_18px_48px_rgba(16,24,40,0.06)] transition hover:-translate-y-0.5 hover:shadow-[0_22px_60px_rgba(16,24,40,0.09)]"
-                    >
-                      {visual ? (
-                        <div className="relative h-36 bg-[#f6fbff]">
-                          <Image
-                            src={visual}
-                            alt={offer.title}
-                            fill
-                            unoptimized
-                            className="object-cover"
-                          />
-                          <div className="absolute inset-0 bg-linear-to-t from-[#07162d]/35 to-transparent" />
-                        </div>
-                      ) : null}
+                  const highlights = [
+                    {
+                      label: "Rate",
+                      value: offer.rateLabel || "Best rate",
+                      icon: Percent,
+                    },
+                    {
+                      label: "Value",
+                      value: offer.amountLabel || "Flexible limit",
+                      icon: WalletCards,
+                    },
+                    {
+                      label: "Valid",
+                      value: formatDate(offer.validTo),
+                      icon: CalendarDays,
+                    },
+                  ];
 
-                      <div className="flex items-start justify-between gap-3 p-5 pb-0">
-                        <span
-                          className={`inline-flex h-11 w-11 items-center justify-center rounded-2xl ${meta.tone}`}
-                        >
-                          <Icon className="h-5 w-5" />
-                        </span>
-                        <span className="rounded-full bg-[#eef6ff] px-3 py-1 text-[11px] font-black uppercase tracking-wide text-[#005ca8]">
-                          {offer.badge || "Active"}
-                        </span>
+                  return (
+                    <div
+                      key={offer._id}
+                      className="group flex min-w-0 flex-col overflow-hidden rounded-2xl border border-[#dfeaf5] bg-white shadow-[0_16px_42px_rgba(16,24,40,0.06)] transition hover:-translate-y-0.5 hover:border-[#bdd8ef] hover:shadow-[0_22px_60px_rgba(16,24,40,0.1)]"
+                    >
+                      <div
+                        className={`relative overflow-hidden bg-linear-to-br ${meta.surface}`}
+                      >
+                        <div className="relative aspect-16/8 min-h-30 sm:aspect-video">
+                          {visual ? (
+                            <Image
+                              src={visual}
+                              alt={offer.title}
+                              fill
+                              unoptimized
+                              className="object-cover transition duration-500 group-hover:scale-[1.03]"
+                            />
+                          ) : (
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <span
+                                className={`inline-flex h-16 w-16 items-center justify-center rounded-2xl ${meta.tone}`}
+                              >
+                                <Icon className="h-7 w-7" />
+                              </span>
+                            </div>
+                          )}
+                          <div className="absolute inset-0 bg-linear-to-t from-[#061528]/70 via-[#061528]/10 to-transparent" />
+                          <div className="absolute left-3 top-3 flex max-w-[calc(100%-1.5rem)] items-center gap-2">
+                            <span
+                              className={`inline-flex h-7 max-w-38 items-center gap-1.5 rounded-full px-2.5 text-[10px] font-extrabold ${meta.chip}`}
+                            >
+                              <Icon className="h-3.5 w-3.5 shrink-0" />
+                              <span className="truncate">{meta.label}</span>
+                            </span>
+                            <span className="inline-flex h-7 max-w-28 items-center rounded-full bg-white/90 px-2.5 text-[10px] font-extrabold uppercase tracking-wide text-[#005ca8] backdrop-blur">
+                              <span className="truncate">
+                                {offer.badge || "Active"}
+                              </span>
+                            </span>
+                          </div>
+                        </div>
                       </div>
-                      <div className="flex flex-1 flex-col p-5 pt-0">
-                        <h3 className="mt-5 text-[20px] font-black leading-7 text-[#111827]">
+
+                      <div className="flex flex-1 flex-col p-4 md:p-5">
+                        <div className="flex items-center justify-between gap-3">
+                          <p className="min-w-0 truncate text-[12px] font-extrabold text-[#005ca8] md:text-[13px]">
+                            {offer.lenderName}
+                          </p>
+                          <span className="shrink-0 rounded-full bg-[#ecfdf3] px-2.5 py-1 text-[10px] font-extrabold text-[#027a48]">
+                            Live
+                          </span>
+                        </div>
+
+                        <h3 className="mt-3 wrap-break-word text-[18px] font-extrabold leading-6 text-[#111827] md:text-[20px] md:leading-7">
                           {offer.title}
                         </h3>
-                        <p className="mt-1 text-[13px] font-bold text-[#005ca8]">
-                          {offer.lenderName}
-                        </p>
-                        <p className="mt-3 line-clamp-2 text-[13px] font-semibold leading-6 text-[#667085]">
+                        <p className="mt-2 line-clamp-3 text-[12px] font-semibold leading-5 text-[#667085] md:text-[13px] md:leading-6">
                           {offer.description ||
                             "Apply through Fintaraa and our team will help you with the next steps."}
                         </p>
 
-                        <div className="mt-5 grid gap-2 sm:grid-cols-3">
-                          {[
-                            [Percent, offer.rateLabel || "Best rate"],
-                            [WalletCards, offer.amountLabel || "Flexible limit"],
-                            [CalendarDays, formatDate(offer.validTo)],
-                          ].map(([MetricIcon, value]) => {
-                            const Metric = MetricIcon as typeof Percent;
+                        <div className="my-4 grid grid-cols-3 gap-1.5 rounded-2xl border border-[#edf3f8] bg-[#fbfdff] p-1.5">
+                          {highlights.map((item) => {
+                            const Metric = item.icon;
                             return (
                               <div
-                                key={String(value)}
-                                className="rounded-xl bg-[#f8fbff] px-3 py-2"
+                                key={item.label}
+                                className="min-w-0 rounded-xl bg-white px-2 py-2 shadow-[0_4px_14px_rgba(16,24,40,0.03)]"
                               >
-                                <Metric className="h-4 w-4 text-[#005ca8]" />
-                                <p className="mt-1 text-[11px] font-black leading-4 text-[#344054]">
-                                  {String(value)}
+                                <div className="flex items-center gap-1 text-[9px] font-extrabold uppercase tracking-wide text-[#7a869a]">
+                                  <Metric className="h-3.5 w-3.5 shrink-0 text-[#005ca8]" />
+                                  <span className="truncate">{item.label}</span>
+                                </div>
+                                <p className="mt-1 line-clamp-1 text-[10.5px] font-extrabold leading-4 text-[#1f2937] md:text-[11px]">
+                                  {item.value}
                                 </p>
                               </div>
                             );
                           })}
                         </div>
 
-                        <div className="mt-5 flex flex-wrap gap-2">
+                        <div className="mb-4 flex flex-wrap gap-1.5 md:gap-2">
                           {(offer.tags || []).slice(0, 3).map((tag) => (
                             <span
                               key={tag}
-                              className="rounded-full bg-[#f3f7fb] px-3 py-1 text-[11px] font-bold text-[#667085]"
+                              className="max-w-full truncate rounded-full bg-[#f3f7fb] px-2.5 py-1 text-[10.5px] font-bold text-[#667085] md:px-3 md:text-[11px]"
                             >
                               {tag}
                             </span>
@@ -380,17 +458,18 @@ export function OffersPage() {
                           type="button"
                           onClick={() => handleApply(offer)}
                           disabled={applyingId === offer._id}
-                          className="mt-auto inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#005ca8] px-5 text-[13px] font-black text-white transition hover:bg-[#004b93] disabled:cursor-not-allowed disabled:opacity-70"
+                          className="mt-4 inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#005ca8] px-4 text-[13px] font-extrabold text-white transition hover:bg-[#004b93] disabled:cursor-not-allowed disabled:opacity-70 md:mt-auto"
                         >
                           {applyingId === offer._id ? (
                             <Loader2 className="h-4 w-4 animate-spin" />
                           ) : (
                             <BadgeCheck className="h-4 w-4" />
                           )}
-                          {offer.ctaText || "Apply Now"}
+                          <span>{offer.ctaText || "Apply Now"}</span>
+                          <ArrowRight className="h-4 w-4" />
                         </button>
                       </div>
-                    </article>
+                    </div>
                   );
                 })}
               </div>

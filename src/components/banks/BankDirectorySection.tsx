@@ -1,5 +1,10 @@
 import Link from "next/link";
-import { ArrowRight, BadgeIndianRupee, CreditCard, Landmark } from "lucide-react";
+import {
+  ArrowRight,
+  BadgeIndianRupee,
+  CreditCard,
+  Landmark,
+} from "lucide-react";
 import { BankLogoImage } from "@/components/common/BankLogoImage";
 import {
   bankDirectory,
@@ -15,14 +20,14 @@ export function BankDirectorySection({
   const featuredProducts = loanProductDirectory.slice(0, 8);
 
   return (
-    <section className="bg-white px-4 py-14 md:px-6 lg:px-8">
+    <section className="bg-white px-4 pb-14 pt-7 md:px-6 lg:px-8">
       <div className="mx-auto max-w-9xl">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="text-[12px] font-extrabold uppercase tracking-[0.18em] text-[#005ca8]">
               Bank directory
             </p>
-            <h2 className="mt-2 text-[30px] font-black tracking-tight text-[#07162d] md:text-[42px]">
+            <h2 className="mt-2 text-[30px] font-extrabold tracking-tight text-[#07162d] md:text-[42px]">
               Banks, rates and available products
             </h2>
           </div>
@@ -35,7 +40,7 @@ export function BankDirectorySection({
           </Link>
         </div>
 
-        <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {bankDirectory.map((bank) => (
             <article
               key={bank.slug}
@@ -49,7 +54,7 @@ export function BankDirectorySection({
                     className="h-10 w-28"
                     imageClassName="object-left"
                   />
-                  <h3 className="mt-4 text-[20px] font-black text-[#07162d]">
+                  <h3 className="mt-4 text-[20px] font-extrabold text-[#07162d]">
                     {bank.name}
                   </h3>
                 </div>
@@ -60,18 +65,18 @@ export function BankDirectorySection({
 
               <div className="mt-5 grid grid-cols-2 gap-3">
                 <div className="rounded-xl bg-[#f8fbff] p-3">
-                  <p className="text-[10px] font-black uppercase tracking-wide text-[#98a2b3]">
+                  <p className="text-[10px] font-extrabold uppercase tracking-wide text-[#98a2b3]">
                     Min interest
                   </p>
-                  <p className="mt-1 text-[18px] font-black text-[#0b7a3b]">
+                  <p className="mt-1 text-[18px] font-extrabold text-[#0b7a3b]">
                     {formatRate(bank.minRate)}
                   </p>
                 </div>
                 <div className="rounded-xl bg-[#f8fbff] p-3 text-right">
-                  <p className="text-[10px] font-black uppercase tracking-wide text-[#98a2b3]">
+                  <p className="text-[10px] font-extrabold uppercase tracking-wide text-[#98a2b3]">
                     Max interest
                   </p>
-                  <p className="mt-1 text-[18px] font-black text-[#07162d]">
+                  <p className="mt-1 text-[18px] font-extrabold text-[#07162d]">
                     {formatRate(bank.maxRate)}
                   </p>
                 </div>
@@ -110,7 +115,7 @@ export function BankDirectorySection({
 
         {!compact ? (
           <div className="mt-10 border-t border-[#edf1f4] pt-8">
-            <h3 className="text-center text-[18px] font-black uppercase tracking-[0.08em] text-[#3f4650]">
+            <h3 className="text-center text-[18px] font-extrabold uppercase tracking-[0.08em] text-[#3f4650]">
               Popular loan types by bank
             </h3>
             <p className="mx-auto mt-4 max-w-8xl text-center text-[15px] font-medium leading-8 text-[#8b95a3] md:text-[17px] md:leading-9">

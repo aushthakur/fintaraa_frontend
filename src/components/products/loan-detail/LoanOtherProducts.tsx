@@ -74,7 +74,7 @@ export function LoanOtherProducts() {
     <section className="px-4 pb-10 md:px-6 lg:px-8">
       <div className="mx-auto max-w-9xl">
         <div className="flex items-center justify-between">
-          <h2 className="text-[18px] font-black text-[#111827]">
+          <h2 className="text-[18px] font-extrabold text-[#111827]">
             Explore Other Products
           </h2>
           <Link
