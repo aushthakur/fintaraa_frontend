@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useAnimationFrame, useMotionValue } from "framer-motion";
-import { Search } from "lucide-react";
+import { ArrowRight, Search } from "lucide-react";
 import { slugifyProduct } from "@/lib/productRouting";
+import { AutoCarousel } from "@/components/common/AutoCarousel";
 import {
   bankDirectory,
   formatRate,
@@ -40,55 +40,53 @@ function LoanRateOfferCard({
       href={`/banks/${offer.bankSlug}/${slugifyProduct(activeTab)}`}
       aria-hidden={repeated ? true : undefined}
       tabIndex={repeated ? -1 : undefined}
-      className="w-[min(82vw,20rem)] shrink-0 snap-start rounded-xl border border-gray-200 bg-white p-4 no-underline shadow-[0_2px_12px_rgba(0,0,0,0.01)] transition-shadow hover:shadow-[0_4px_20px_rgba(0,0,0,0.03)] sm:w-[19rem] lg:w-auto lg:p-5"
+      className="group block h-full w-full rounded-xl border border-gray-200 bg-white p-2.5 no-underline transition-colors duration-300 hover:border-[#bcd8f4] sm:p-3"
     >
       <div className="flex flex-col items-start gap-1">
-        <div className="relative h-9 w-24 overflow-hidden">
+        <div className="relative h-9 w-full overflow-hidden">
           <Image
             src={offer.logoSrc}
             alt={offer.bankName}
             fill
-            sizes="96px"
+            sizes="(max-width: 1279px) 25vw, 14vw"
             unoptimized
-            className="object-contain object-left"
+            className="object-contain object-center"
           />
         </div>
-        <h4 className="text-[15px] font-bold tracking-tight text-[#00529c]">
+        <h4 className="line-clamp-1 mt-1 text-center w-full min-h-8 text-[12px] font-bold leading-4 tracking-tight text-[#00529c] sm:text-[13px]">
           {offer.bankName}
         </h4>
       </div>
 
-      <div className="mt-5 grid grid-cols-2 gap-4 border-t border-gray-50 pt-3">
+      <div className="grid grid-cols-2 gap-2 border-t border-gray-100 pt-2.5">
         <div className="flex flex-col">
-          <span className="text-[11px] font-semibold uppercase tracking-wider text-gray-400">
+          <span className="text-[9px] font-semibold uppercase tracking-wider text-gray-400 sm:text-[10px]">
             Min
           </span>
-          <span className="mt-0.5 text-[16px] font-extrabold text-gray-900">
+          <span className="mt-0.5 text-[13px] font-extrabold text-gray-900 sm:text-[14px]">
             {offer.minRate}
           </span>
         </div>
         <div className="flex flex-col text-right">
-          <span className="text-[11px] font-semibold uppercase tracking-wider text-gray-400">
+          <span className="text-[9px] font-semibold uppercase tracking-wider text-gray-400 sm:text-[10px]">
             Max
           </span>
-          <span className="mt-0.5 text-[16px] font-extrabold text-gray-900">
+          <span className="mt-0.5 text-[13px] font-extrabold text-gray-900 sm:text-[14px]">
             {offer.maxRate}
           </span>
         </div>
       </div>
+      <span className="card-action-button mt-2.5 inline-flex h-8 w-full items-center justify-center gap-1.5 rounded-lg px-2 text-[10px] font-bold sm:text-[11px]">
+        Apply Now
+        <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+      </span>
     </Link>
   );
 }
 
 export function HomeLoanOffers() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
   const [activeTab, setActiveTab] = useState<string>("Home Loan");
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [isPaused, setIsPaused] = useState(false);
-  const [trackWidth, setTrackWidth] = useState(0);
-  const x = useMotionValue(0);
-  const baseSpeed = 0.58;
 
   const filteredOffers = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
@@ -115,27 +113,10 @@ export function HomeLoanOffers() {
         .includes(query),
     );
   }, [activeTab, searchQuery]);
-  const duplicatedOffers = useMemo(
-    () => [...filteredOffers, ...filteredOffers, ...filteredOffers],
-    [filteredOffers],
-  );
-
-  useEffect(() => {
-    x.set(0);
-    if (trackRef.current) setTrackWidth(trackRef.current.scrollWidth);
-  }, [activeTab, filteredOffers, x]);
-
-  useAnimationFrame((_, delta) => {
-    if (isPaused || !trackWidth || !filteredOffers.length) return;
-    const nextX = x.get() - baseSpeed * (delta / 16);
-    const loopThreshold = trackWidth / 3;
-    x.set(Math.abs(nextX) >= loopThreshold ? nextX + loopThreshold : nextX);
-  });
-
   return (
     <section className="bg-white px-4 py-12 md:px-6 lg:px-8">
       {/* Container Box featuring the signature clean borders visible in image_a1c8bd.png */}
-      <div className="mx-auto max-w-9xl rounded-3xl border border-gray-200 p-6 md:p-10 shadow-[0_4px_30px_rgba(0,0,0,0.015)]">
+      <div className="mx-auto max-w-9xl rounded-3xl">
         {/* Main Centered Styled Section Title */}
         <div className="w-full text-center mb-8">
           <h2 className="text-[24px] font-bold leading-tight text-gray-900 sm:text-[30px] md:text-[34px]">
@@ -193,50 +174,25 @@ export function HomeLoanOffers() {
           })}
         </div>
 
-        {/* Dynamic Partner Offers Layout */}
+        {/* Two-row, auto-playing partner offers */}
         {filteredOffers.length ? (
-          <div
-            ref={containerRef}
-            className="relative -mx-4 mt-6 overflow-hidden px-4 pb-2 sm:-mx-6 sm:px-6 lg:hidden"
-            onMouseEnter={() => setIsPaused(true)}
-            onMouseLeave={() => setIsPaused(false)}
+          <AutoCarousel
+            ariaLabel={`${activeTab} offers`}
+            mobileSlides={2}
+            tabletSlides={2}
+            desktopSlides={4}
+            wideSlides={7}
+            className="mt-6"
           >
-            <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-10 bg-linear-to-r from-white to-transparent" />
-            <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-linear-to-l from-white to-transparent" />
-            <motion.div
-              ref={trackRef}
-              style={{ x, touchAction: "pan-y" }}
-              drag="x"
-              dragConstraints={{
-                left: -((trackWidth || 2400) * (2 / 3)),
-                right: 0,
-              }}
-              dragElastic={0.05}
-              onDragStart={() => setIsPaused(true)}
-              onDragEnd={() => setIsPaused(false)}
-              className="flex w-max cursor-grab gap-3 active:cursor-grabbing"
-            >
-              {duplicatedOffers.map((offer, idx) => (
-                <LoanRateOfferCard
-                  key={`${offer.id}-${idx}`}
-                  offer={offer}
-                  activeTab={activeTab}
-                  repeated={idx >= filteredOffers.length}
-                />
-              ))}
-            </motion.div>
-          </div>
+            {filteredOffers.map((offer) => (
+              <LoanRateOfferCard
+                key={offer.id}
+                offer={offer}
+                activeTab={activeTab}
+              />
+            ))}
+          </AutoCarousel>
         ) : null}
-
-        <div className="mt-6 hidden grid-cols-4 gap-4 lg:grid">
-          {filteredOffers.map((offer) => (
-            <LoanRateOfferCard
-              key={offer.id}
-              offer={offer}
-              activeTab={activeTab}
-            />
-          ))}
-          </div>
 
         {!filteredOffers.length ? (
           <div className="mt-6 rounded-2xl border border-gray-200 bg-[#f8fbff] p-6 text-center text-[13px] font-semibold text-gray-500">

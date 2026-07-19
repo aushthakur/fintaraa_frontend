@@ -32,59 +32,84 @@ export function LegalPolicyPage({
   content,
   eyebrow,
   canonicalPath,
+  simpleHeader = false,
 }: {
   content: LegalPageContent;
   eyebrow: string;
   canonicalPath: string;
+  simpleHeader?: boolean;
 }) {
   return (
     <main className="bg-white">
-      <section className="relative overflow-hidden border-b border-[#d9e8f4] bg-[#f5fbff] px-4 py-16 md:px-6 lg:px-8">
-        <div className="absolute inset-x-0 top-0 h-1 bg-linear-to-r from-[#195585] via-[#12b76a] to-[#1375de]" />
-        <div className="pointer-events-none absolute right-0 top-0 h-80 w-80 rounded-full bg-[#12b76a]/10 blur-3xl" />
-        <div className="pointer-events-none absolute bottom-0 left-0 h-96 w-96 rounded-full bg-[#195585]/12 blur-3xl" />
-
-        <div className="relative mx-auto max-w-9xl">
-          <div className="grid gap-10 lg:grid-cols-[1fr_26rem] lg:items-end">
-            <div>
-              <div className="inline-flex items-center gap-2 rounded-full bg-[#195585] px-4 py-2 text-[12px] font-extrabold uppercase tracking-[0.16em] text-white">
-                <ShieldCheck className="h-4 w-4" />
-                {eyebrow}
+      {simpleHeader ? (
+        <section className="border-b border-[#e3ebf2] px-4 py-10 md:px-6 md:py-12 lg:px-8">
+          <div className="mx-auto max-w-9xl">
+            <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#195585]">
+              {eyebrow}
+            </p>
+            <div className="mt-3 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+              <div>
+                <h1 className="text-[34px] font-extrabold leading-tight tracking-[-0.025em] text-[#07162d] sm:text-[42px] md:text-[48px]">
+                  {content.title}
+                </h1>
+                <p className="mt-3 max-w-4xl text-[15px] font-medium leading-7 text-[#5f7182] md:text-[16px]">
+                  {content.subtitle}
+                </p>
               </div>
-              <h1 className="mt-7 max-w-5xl text-[44px] font-semibold leading-[1.02] tracking-[-0.02em] text-[#07162d] md:text-[72px]">
-                {content.title}
-              </h1>
-              <p className="mt-7 max-w-4xl text-[19px] font-semibold leading-9 text-[#344054]">
-                {content.subtitle}
-              </p>
-            </div>
-
-            <div className="border-l-4 border-[#195585] pl-6">
-              <p className="text-[12px] font-extrabold uppercase tracking-[0.18em] text-[#667085]">
-                Effective status
-              </p>
-              <p className="mt-2 text-[24px] font-extrabold text-[#07162d]">
+              <p className="shrink-0 text-[12px] font-bold text-[#718397]">
                 {content.updatedOn}
               </p>
-              <p className="mt-4 text-[15px] font-semibold leading-7 text-[#475467]">
-                Maintained for customers, applicants, borrowers, insured
-                members, partners, and support teams working through Fintaraa.
-              </p>
             </div>
           </div>
+        </section>
+      ) : (
+        <section className="relative overflow-hidden border-b border-[#d9e8f4] bg-[#f5fbff] px-4 py-16 md:px-6 lg:px-8">
+          <div className="absolute inset-x-0 top-0 h-1 bg-linear-to-r from-[#195585] via-[#12b76a] to-[#1375de]" />
+          <div className="pointer-events-none absolute right-0 top-0 h-80 w-80 rounded-full bg-[#12b76a]/10 blur-3xl" />
+          <div className="pointer-events-none absolute bottom-0 left-0 h-96 w-96 rounded-full bg-[#195585]/12 blur-3xl" />
 
-          <div className="mt-10 flex flex-wrap gap-3">
-            {content.badges.map((badge) => (
-              <span
-                key={badge}
-                className="rounded-full bg-white px-4 py-2 text-[13px] font-extrabold text-[#195585] shadow-[0_8px_24px_rgba(25,85,133,0.08)]"
-              >
-                {badge}
-              </span>
-            ))}
+          <div className="relative mx-auto max-w-9xl">
+            <div className="grid gap-10 lg:grid-cols-[1fr_26rem] lg:items-end">
+              <div>
+                <div className="inline-flex items-center gap-2 rounded-full bg-[#195585] px-4 py-2 text-[12px] font-extrabold uppercase tracking-[0.16em] text-white">
+                  <ShieldCheck className="h-4 w-4" />
+                  {eyebrow}
+                </div>
+                <h1 className="mt-7 max-w-5xl text-[44px] font-semibold leading-[1.02] tracking-[-0.02em] text-[#07162d] md:text-[72px]">
+                  {content.title}
+                </h1>
+                <p className="mt-7 max-w-4xl text-[19px] font-semibold leading-9 text-[#344054]">
+                  {content.subtitle}
+                </p>
+              </div>
+
+              <div className="border-l-4 border-[#195585] pl-6">
+                <p className="text-[12px] font-extrabold uppercase tracking-[0.18em] text-[#667085]">
+                  Effective status
+                </p>
+                <p className="mt-2 text-[24px] font-extrabold text-[#07162d]">
+                  {content.updatedOn}
+                </p>
+                <p className="mt-4 text-[15px] font-semibold leading-7 text-[#475467]">
+                  Maintained for customers, applicants, borrowers, insured
+                  members, partners, and support teams working through Fintaraa.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-10 flex flex-wrap gap-3">
+              {content.badges.map((badge) => (
+                <span
+                  key={badge}
+                  className="rounded-full bg-white px-4 py-2 text-[13px] font-extrabold text-[#195585] shadow-[0_8px_24px_rgba(25,85,133,0.08)]"
+                >
+                  {badge}
+                </span>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       <section className="px-4 py-12 md:px-6 lg:px-8">
         <div className="mx-auto grid max-w-9xl gap-12 lg:grid-cols-[18rem_1fr]">
@@ -111,10 +136,12 @@ export function LegalPolicyPage({
                 );
               })}
             </nav>
-            <button className="mt-8 inline-flex h-11 items-center gap-2 rounded-full bg-[#195585] px-5 text-[13px] font-extrabold text-white">
-              <Download className="h-4 w-4" />
-              Download PDF
-            </button>
+            {!simpleHeader ? (
+              <button className="mt-8 inline-flex h-11 items-center gap-2 rounded-full bg-[#195585] px-5 text-[13px] font-extrabold text-white">
+                <Download className="h-4 w-4" />
+                Download PDF
+              </button>
+            ) : null}
           </aside>
 
           <div>

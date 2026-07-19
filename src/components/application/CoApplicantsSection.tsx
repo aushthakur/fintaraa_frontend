@@ -13,6 +13,7 @@ import {
   UploadCloud,
   UserPlus,
   X,
+  Camera,
 } from "lucide-react";
 import {
   fetchDocumentCatalog,
@@ -645,8 +646,25 @@ export function CoApplicantsSection({
                             </div>
                           </div>
                           <div className="mt-3 flex flex-wrap gap-2">
+                            <label className="inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-full bg-[#075cde] px-3 text-[11px] font-extrabold text-white">
+                              <Camera className="h-3.5 w-3.5" aria-hidden="true" />
+                              Take photo
+                              <input
+                                type="file"
+                                accept="image/*"
+                                capture="environment"
+                                className="hidden"
+                                onChange={(event) =>
+                                  updateAt(index, {
+                                    [doc.key]: Array.from(
+                                      event.target.files || [],
+                                    ),
+                                  })
+                                }
+                              />
+                            </label>
                             <label className="inline-flex h-9 cursor-pointer items-center rounded-full bg-[#0b4c7a] px-3 text-[11px] font-extrabold text-white">
-                              {hasFile ? "Replace" : "Upload"}
+                              {hasFile ? "Replace file" : "Browse files"}
                               <input
                                 type="file"
                                 accept="image/*,.pdf"
@@ -738,8 +756,25 @@ export function CoApplicantsSection({
                           </div>
                         ) : null}
                         <div className="mt-3 flex flex-wrap gap-2">
+                          <label className="inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-full bg-[#075cde] px-3 text-[11px] font-extrabold text-white">
+                            <Camera className="h-3.5 w-3.5" aria-hidden="true" />
+                            Take photo
+                            <input
+                              type="file"
+                              accept="image/*"
+                              capture="environment"
+                              className="hidden"
+                              onChange={(event) =>
+                                updateExtraFiles(
+                                  index,
+                                  doc.key,
+                                  Array.from(event.target.files || []),
+                                )
+                              }
+                            />
+                          </label>
                           <label className="inline-flex h-9 cursor-pointer items-center rounded-full bg-[#0b4c7a] px-3 text-[11px] font-extrabold text-white">
-                            {doc.files?.length ? "Add More" : "Upload"}
+                            {doc.files?.length ? "Add more files" : "Browse files"}
                             <input
                               type="file"
                               accept="image/*,.pdf"

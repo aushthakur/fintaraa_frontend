@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, ShieldCheck, Star, Zap } from "lucide-react";
+import { ArrowRight, ShieldCheck, Star } from "lucide-react";
 
 const bureauLogos = [
   { label: "Experian", className: "text-purple-700" },
@@ -18,11 +18,7 @@ export function CreditScoreBanner() {
         <div className="relative overflow-hidden rounded-2xl bg-[#eef6ff]">
           <div className="grid items-stretch lg:grid-cols-[1.05fr_0.95fr]">
             <div className="relative z-10 px-5 py-8 sm:px-8 lg:px-10 lg:py-12">
-              <span className="inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-wide text-[#075cde]">
-                <Zap className="h-4 w-4" />
-                100% free - instant results
-              </span>
-              <h2 className="mt-4 max-w-2xl text-[28px] font-bold leading-tight text-[#07162d] sm:text-[36px]">
+              <h2 className="max-w-2xl text-[28px] font-bold leading-tight text-[#07162d] sm:text-[36px]">
                 Check Your Credit Score in Minutes with{" "}
                 <span className="text-[#075cde]">Fintaraa</span>
               </h2>
@@ -39,14 +35,14 @@ export function CreditScoreBanner() {
                 ))}
               </div>
 
-              <div className="mt-6 grid max-w-xl grid-cols-2 gap-3 sm:grid-cols-4">
+              <div className="mt-6 grid grid-cols-4 gap-2">
                 {bureauLogos.map((logo) => (
                   <div
                     key={logo.label}
                     className="flex h-12 items-center justify-center rounded-xl bg-white px-3 text-center"
                   >
                     <span
-                      className={`text-[13px] font-bold leading-tight ${logo.className}`}
+                      className={`text-[10px] lg:text-[13px] font-bold leading-tight ${logo.className}`}
                     >
                       {logo.label}
                     </span>
@@ -69,7 +65,7 @@ export function CreditScoreBanner() {
               </div>
             </div>
 
-            <div className="relative min-h-[360px] overflow-hidden bg-white sm:min-h-[420px]">
+            <div className="relative hidden lg:block min-h-90 overflow-hidden bg-white sm:min-h-105">
               <Image
                 src="/assets/images/hero1.png"
                 alt="Customer checking financial health with Fintaraa"
@@ -77,7 +73,7 @@ export function CreditScoreBanner() {
                 className="object-cover"
                 unoptimized
               />
-              <div className="absolute inset-0 bg-linear-to-t from-white via-white/10 to-transparent" />
+              {/* <div className="absolute inset-0 bg-linear-to-t from-white via-white/10 to-transparent" /> */}
 
               <div className="absolute left-4 top-5 rounded-2xl bg-white/90 p-4 backdrop-blur sm:left-5 sm:top-7">
                 <div className="flex items-center gap-3">

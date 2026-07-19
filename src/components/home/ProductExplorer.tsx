@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { productSections } from "@/data/homePage";
 import { productHref } from "@/lib/productRouting";
+import { AutoCarousel } from "@/components/common/AutoCarousel";
 
 type ProductExplorerProps = {
   sectionTitles?: string[];
@@ -91,135 +92,136 @@ const productMeta: Record<
     hint: "Salaried & self-employed",
     detail: "Instant approval guidance",
     badge: "Quick funds",
+    image: "/assets/product-cards/loans/personal-loan.webp",
   },
   "Home Loan": {
     rate: "From 8.5% p.a.",
     hint: "Up to ₹5 Cr",
     detail: "Long tenure, lower EMI",
     badge: "Low EMI",
-    image: "/assets/contact/contact-hero.png",
+    image: "/assets/product-cards/loans/home-loan.webp",
   },
   "Business Loan": {
     rate: "From 12% p.a.",
     hint: "No collateral options",
     detail: "Working capital support",
     badge: "Growth capital",
-    image: "/assets/dsa/handshake.png",
+    image: "/assets/product-cards/loans/business-loan.webp",
   },
   "Vehicle Loan": {
     rate: "From 7.9% p.a.",
     hint: "Used & new cars",
     detail: "Fast dealer coordination",
     badge: "Fast sanction",
-    image: "/assets/refer/header-credit-cards.png",
+    image: "/assets/product-cards/loans/vehicle-loan.webp",
   },
   "Education Loan": {
     rate: "Study funding",
     hint: "Domestic & overseas",
     detail: "Course-based eligibility",
     badge: "Career ready",
-    image: "/assets/blogs/blog4.png",
+    image: "/assets/product-cards/loans/education-loan.webp",
   },
   "Gold Loan": {
     rate: "Instant value",
     hint: "Against pledged gold",
     detail: "Quick valuation process",
     badge: "Quick cash",
-    image: "/assets/images/coin-bag.png",
+    image: "/assets/product-cards/loans/gold-loan.webp",
   },
   "Loan Against Property": {
     rate: "High-ticket funding",
     hint: "Residential/commercial",
     detail: "Secured large funding",
     badge: "Secured loan",
-    image: "/assets/images/hero.png",
+    image: "/assets/product-cards/loans/loan-against-property.webp",
   },
   "Health Insurance": {
-    image: "/assets/images/testimonials/client-1.jpg",
+    image: "/assets/product-cards/insurance/health-insurance.webp",
     hint: "Cashless care, family floater and hospital-network options.",
     detail: "Compare premiums, waiting periods and room-rent limits.",
     badge: "Medical cover",
   },
   "Life Insurance": {
-    image: "/assets/images/testimonials/client-2.jpg",
+    image: "/assets/product-cards/insurance/life-insurance.webp",
     hint: "Long-term financial protection for the people who depend on you.",
     detail: "Review cover amount, payout terms and premium flexibility.",
     badge: "Family security",
   },
   "Shop Insurance": {
-    image: "/assets/services/gst-hero.png",
+    image: "/assets/product-cards/insurance/shop-insurance.webp",
     hint: "Protect your shop from fire, theft, liability and business risk.",
     detail: "Useful for retail stores, offices and small business owners.",
     badge: "Business cover",
   },
   "Stock Insurance": {
-    image: "/assets/blogs/blog3.png",
+    image: "/assets/product-cards/insurance/stock-insurance.webp",
     hint: "Cover inventory and stock against unexpected damage or loss.",
     detail: "Designed for traders, retailers and warehouse-led businesses.",
     badge: "Asset cover",
   },
   "Term Insurance": {
-    image: "/assets/images/testimonials/client-3.jpg",
+    image: "/assets/product-cards/insurance/term-insurance.webp",
     hint: "High life cover at a disciplined, affordable premium.",
     detail: "Compare claim ratio, riders and payout preferences.",
     badge: "Pure protection",
   },
   "Property Insurance": {
-    image: "/assets/images/hero.png",
+    image: "/assets/product-cards/insurance/property-insurance.webp",
     hint: "Secure your home, building and valuable assets from risk.",
     detail: "Compare structure, contents and natural calamity coverage.",
     badge: "Property safety",
   },
   "Travel Insurance": {
-    image: "/assets/careers/life-5.jpg",
+    image: "/assets/product-cards/insurance/travel-insurance.webp",
     hint: "Travel with cover for medical, baggage and trip disruptions.",
     detail: "Useful for domestic, international and frequent travellers.",
     badge: "Trip cover",
   },
   "Travel Cards": {
-    image: "/assets/careers/life-5.jpg",
+    image: "/assets/product-cards/credit-cards/travel-cards.webp",
     hint: "Airport lounge access, miles and low forex markups.",
     detail: "Best for frequent flyers and international spends.",
     badge: "Travel rewards",
   },
   "Fuel Cards": {
-    image: "/assets/images/hero1.png",
+    image: "/assets/product-cards/credit-cards/fuel-cards.webp",
     hint: "Fuel surcharge waivers and savings on everyday refuels.",
     detail: "Built for commuters, road trips and monthly fuel budgets.",
     badge: "Fuel savings",
   },
   "Cashback Cards": {
-    image: "/assets/banks/visa-card.png",
+    image: "/assets/product-cards/credit-cards/cashback-cards.webp",
     hint: "Earn direct value back on groceries, bills and online spends.",
     detail: "Simple rewards for users who prefer cash value over points.",
     badge: "Cashback",
   },
   "Shopping Cards": {
-    image: "/assets/blogs/blog2.png",
+    image: "/assets/product-cards/credit-cards/shopping-cards.webp",
     hint: "Marketplace offers, brand deals and accelerated rewards.",
     detail: "Good for online shoppers and seasonal sale purchases.",
     badge: "Shopping perks",
   },
   "Rewards Cards": {
-    image: "/assets/offers/offer.png",
+    image: "/assets/product-cards/credit-cards/rewards-cards.webp",
     hint: "Convert regular spends into points, vouchers and upgrades.",
     detail: "Compare redemption value, caps and partner benefits.",
     badge: "Premium rewards",
   },
   "Balance Transfer": {
-    image: "/assets/images/coin-bag.png",
+    image: "/assets/product-cards/credit-cards/balance-transfer.webp",
     hint: "Move outstanding dues into easier repayment options.",
     detail: "Useful for reducing interest pressure and planning EMIs.",
     badge: "Save interest",
   },
   "Dining Cards": {
-    image: "/assets/careers/life-4.jpg",
+    image: "/assets/product-cards/credit-cards/dining-cards.webp",
     hint: "Dining discounts, table offers and partner restaurant deals.",
     detail: "Best for food lovers and frequent weekend plans.",
     badge: "Dining offers",
   },
   "CIBIL Score Check": {
-    image: "/assets/images/cibil-score-quality.png",
+    image: "/assets/services/cibil-score-service.png",
     hint: "Check score instantly and stay financially healthy.",
     cta: "Start score check",
   },
@@ -234,36 +236,30 @@ const productMeta: Record<
     cta: "Start GST flow",
   },
   "MSME Registration": {
-    image: "/assets/dsa/hero.png",
+    image: "/assets/services/msme-registration-service.png",
     hint: "Register MSME and unlock business benefits.",
     cta: "Register MSME",
   },
   "Annual Compliance": {
-    image: "/assets/services/statusicon.png",
+    image: "/assets/services/annual-compliance-service.png",
     hint: "Stay compliant with annual filings and reminders.",
     cta: "Check compliance",
   },
   "Project Report": {
-    image: "/assets/images/blog-feature.png",
+    image: "/assets/services/project-report-service.png",
     hint: "Get project reports for funding, tenders and planning.",
     cta: "Request report",
   },
   "Tax Compliances": {
-    image: "/assets/services/itr-deadline-1.png",
+    image: "/assets/services/tax-compliance-service.png",
     hint: "Manage notices, filings and compliance deadlines with experts.",
     cta: "Request support",
   },
   "Company Registration": {
-    image: "/assets/contact/contact-hero.png",
+    image: "/assets/services/company-registration-service.png",
     hint: "Register your company online and move forward.",
     cta: "Start registration",
   },
-};
-
-const sectionEyebrow: Record<string, string> = {
-  "Explore Insurance Plans": "Secure today, protected tomorrow",
-  "Explore Credit Card Options": "Smart choices, bigger rewards",
-  "Other financial services": "More services, more convenience",
 };
 
 const isBankSection = (title: string) => title.includes("Get Instant Loan");
@@ -308,12 +304,6 @@ function SectionTop({
     <div className={hero ? "mb-0 rounded-xl bg-white p-4 sm:p-5" : "mb-4"}>
       <div className="flex items-center justify-between gap-3">
         <div className="min-w-0 flex-1">
-          {sectionEyebrow[title] ? (
-            <p className="mb-2 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wide text-[#075cde] md:text-[12px]">
-              <Sparkles className="h-3.5 w-3.5" />
-              {sectionEyebrow[title]}
-            </p>
-          ) : null}
           <h2
             className={
               hero
@@ -355,41 +345,51 @@ function SectionTop({
   );
 }
 
-function ResponsiveSevenRow({ children }: { children: ReactNode }) {
-  const items = Children.toArray(children);
-
+function ResponsiveSevenRow({
+  children,
+  ariaLabel,
+}: {
+  children: ReactNode;
+  ariaLabel: string;
+}) {
   return (
-    <div className="-mx-4 overflow-x-auto px-4 pb-2 scrollbar-none md:-mx-6 md:px-6 xl:mx-0 xl:overflow-visible xl:px-0 xl:pb-0">
-      <div className="flex snap-x snap-mandatory gap-3 md:gap-4 xl:grid xl:grid-cols-7">
-        {items.map((child, index) => (
-          <div
-            key={index}
-            className="w-[min(76vw,20rem)] shrink-0 snap-start sm:w-[18rem] md:w-[17.5rem] xl:w-auto"
-          >
-            {child}
-          </div>
-        ))}
-      </div>
-    </div>
+    <AutoCarousel ariaLabel={ariaLabel} mobileSlides={2} wideSlides={6}>
+      {children}
+    </AutoCarousel>
   );
 }
 
-function ResponsiveServicesRow({ children }: { children: ReactNode }) {
+function ResponsiveServicesRow({
+  children,
+  ariaLabel,
+}: {
+  children: ReactNode;
+  ariaLabel: string;
+}) {
   const items = Children.toArray(children);
+  const pairs = Array.from(
+    { length: Math.ceil(items.length / 2) },
+    (_, index) => items.slice(index * 2, index * 2 + 2),
+  );
 
   return (
-    <div className="-mx-4 overflow-x-auto px-4 pb-2 scrollbar-none md:-mx-6 md:px-6 xl:mx-0 xl:overflow-visible xl:px-0 xl:pb-0">
-      <div className="flex snap-x snap-mandatory gap-3 md:gap-4 xl:grid xl:grid-cols-4">
-        {items.map((child, index) => (
-          <div
-            key={index}
-            className="w-[min(82vw,22rem)] shrink-0 snap-start sm:w-[22rem] md:w-[24rem] xl:w-auto"
-          >
-            {child}
-          </div>
-        ))}
-      </div>
-    </div>
+    <AutoCarousel
+      ariaLabel={ariaLabel}
+      mobileSlides={2}
+      tabletSlides={2}
+      desktopSlides={3}
+      wideSlides={4}
+    >
+      {pairs.map((pair, index) => (
+        <div key={index} className="grid h-full grid-rows-2 gap-3 md:gap-4">
+          {pair.map((child, childIndex) => (
+            <div key={childIndex} className="min-h-0">
+              {child}
+            </div>
+          ))}
+        </div>
+      ))}
+    </AutoCarousel>
   );
 }
 
@@ -399,7 +399,7 @@ function BankOfferCard({ product }: { product: ProductItem }) {
   return (
     <Link
       href={product.href || productHref(product.title)}
-      className="group flex h-full min-h-60 flex-col justify-between rounded-xl border border-[#e2edf8] bg-white px-3 py-4 no-underline transition-colors hover:border-[#bcd8f4]"
+      className="group flex h-full min-h-60 flex-col justify-between rounded-xl border border-[#e2edf8] bg-white px-3 py-4 no-underline transition-colors duration-300 hover:border-[#bcd8f4]"
     >
       <div>
         <div className="flex h-16 items-center justify-center">
@@ -436,8 +436,8 @@ function BankOfferCard({ product }: { product: ProductItem }) {
           </div>
         </div>
       </div>
-      <span className="mt-2 inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-[#e9f2ff] text-[13px] font-bold text-[#075cde] transition group-hover:bg-[#075cde] group-hover:text-white">
-        Claim offer
+      <span className="card-action-button mt-2 inline-flex h-10 items-center justify-center gap-2 rounded-xl px-3 text-[13px] font-bold">
+        Apply Now
         <ArrowRight className="h-4 w-4" />
       </span>
     </Link>
@@ -450,7 +450,7 @@ function InformativeCard({ product }: { product: ProductItem }) {
   return (
     <Link
       href={product.href || productHref(product.title)}
-      className="group flex h-full min-h-48 flex-col justify-between rounded-xl border border-[#dceaf7] bg-white p-4 no-underline transition-colors hover:border-[#bcd8f4]"
+      className="group flex h-full min-h-48 flex-col justify-between rounded-xl border border-[#dceaf7] bg-white p-4 no-underline transition-colors duration-300 hover:border-[#bcd8f4]"
     >
       <div className="flex min-h-0 flex-1 flex-col">
         <div className="flex items-start gap-3">
@@ -462,10 +462,7 @@ function InformativeCard({ product }: { product: ProductItem }) {
             )}
           </div>
           <div className="min-w-0">
-            <p className="text-[10px] font-bold uppercase tracking-wide text-[#075cde]">
-              {meta.badge || "Matched"}
-            </p>
-            <h3 className="mt-1 line-clamp-2 text-[15px] font-bold leading-snug text-[#07162d]">
+            <h3 className="line-clamp-2 text-[15px] font-bold leading-snug text-[#07162d]">
               {product.title}
             </h3>
           </div>
@@ -482,9 +479,7 @@ function InformativeCard({ product }: { product: ProductItem }) {
 
         <p className="mt-2 flex items-start gap-1.5 text-[13px] leading-5 text-[#344054]">
           <CheckCircle2 className="h-4 w-4" />
-          <span>
-            {meta.hint || "Eligibility guidance before applying"}
-          </span>
+          <span>{meta.hint || "Eligibility guidance before applying"}</span>
         </p>
         <p className="mt-2 flex items-start gap-1.5 text-[13px] leading-5 text-[#61748f]">
           <CheckCircle2 className="h-4 w-4 shrink-0 text-[#075cde]" />
@@ -493,8 +488,8 @@ function InformativeCard({ product }: { product: ProductItem }) {
           </span>
         </p>
       </div>
-      <span className="mt-4 inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-[#e9f2ff] text-[13px] font-bold text-[#075cde] transition group-hover:bg-[#075cde] group-hover:text-white">
-        Check options
+      <span className="card-action-button mt-4 inline-flex h-10 items-center justify-center gap-2 rounded-xl px-3 text-[13px] font-bold">
+        Apply Now
         <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
       </span>
     </Link>
@@ -515,7 +510,7 @@ function ImageProductCard({
   return (
     <Link
       href={product.href || productHref(product.title)}
-      className="group flex h-full flex-col overflow-hidden rounded-xl border border-[#e2edf8] bg-white no-underline transition-colors hover:border-[#bcd8f4]"
+      className="group flex h-full flex-col overflow-hidden rounded-xl border border-[#e2edf8] bg-white no-underline transition-colors duration-300 hover:border-[#bcd8f4]"
     >
       <div className="relative aspect-[1.45/1] bg-white">
         {meta.image ? (
@@ -545,18 +540,18 @@ function ImageProductCard({
             {meta.badge || "Featured"}
           </p>
         ) : null}
-        <h3 className="line-clamp-2 text-[16px] font-bold leading-snug text-[#07162d]">
+        <h3 className="line-clamp-1 text-sm lg:text-[16px] font-bold leading-snug text-[#07162d]">
           {product.title}
         </h3>
-        <p className="mt-2 line-clamp-2 text-[13px] leading-5 text-[#52657d]">
+        <p className="mt-2 line-clamp-1 text-[11px] lg:text-[13px] leading-5 text-[#52657d]">
           {meta.hint || product.text}
         </p>
         {/* <p className="mt-2 min-h-10 flex-1 text-[11px] font-semibold leading-5 text-[#8090a4]">
           {meta.detail ||
             "Compare benefits, eligibility and next steps before applying."}
         </p> */}
-        <span className="mt-3 inline-flex items-center gap-2 text-[12px] font-bold text-[#075cde]">
-          Compare options
+        <span className="card-action-button mt-3 inline-flex h-10 w-full items-center justify-center gap-2 rounded-xl px-3 text-[12px] font-bold">
+          Apply Now
           <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
         </span>
       </div>
@@ -569,7 +564,7 @@ function ServiceWorkflowCard({ product }: { product: ProductItem }) {
   return (
     <Link
       href={product.href || productHref(product.title)}
-      className="group grid min-h-32 overflow-hidden rounded-xl border border-[#e2edf8] bg-white no-underline transition-colors hover:border-[#bcd8f4] sm:grid-cols-[112px_minmax(0,1fr)]"
+      className="group grid h-full min-h-32 overflow-hidden rounded-xl border border-[#e2edf8] bg-white no-underline transition-colors duration-300 hover:border-[#bcd8f4] xl:grid-cols-[96px_minmax(0,1fr)]"
     >
       <div className="relative h-28 bg-white sm:h-auto">
         {meta.image ? (
@@ -591,8 +586,8 @@ function ServiceWorkflowCard({ product }: { product: ProductItem }) {
             {meta.hint || product.text}
           </p>
         </div>
-        <span className="mt-2 inline-flex items-center gap-2 text-[14px] font-bold text-[#075cde]">
-          {meta.cta || "Start workflow"}
+        <span className="card-action-button mt-2 inline-flex h-10 w-full items-center justify-center gap-2 rounded-xl px-3 text-[12px] font-bold">
+          {meta.cta || "Get Started"}
           <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
         </span>
       </div>
@@ -643,18 +638,15 @@ export function ProductExplorer({
 
                 {bankSection ? (
                   <div className="mt-4">
-                    <ResponsiveSevenRow>
+                    <ResponsiveSevenRow ariaLabel={`${title} offers`}>
                       {products.map((product) => (
-                        <BankOfferCard
-                          key={product.title}
-                          product={product}
-                        />
+                        <BankOfferCard key={product.title} product={product} />
                       ))}
                     </ResponsiveSevenRow>
                   </div>
                 ) : otherServices ? (
                   <div className="mt-4">
-                    <ResponsiveServicesRow>
+                    <ResponsiveServicesRow ariaLabel={title}>
                       {products.map((product) => (
                         <ServiceWorkflowCard
                           key={product.title}
@@ -665,17 +657,13 @@ export function ProductExplorer({
                   </div>
                 ) : imageCategory ? (
                   <>
-                    <ResponsiveSevenRow>
+                    <ResponsiveSevenRow ariaLabel={title}>
                       {products.map((product) => {
-                        const compactImageHeader =
-                          title === "Explore Loan Options" ||
-                          title === "Explore Credit Card Options";
-
                         return (
                           <ImageProductCard
                             key={product.title}
                             product={product}
-                            hideContentBadge={compactImageHeader}
+                            hideContentBadge
                             hideIcon={title === "Explore Loan Options"}
                           />
                         );
@@ -684,7 +672,7 @@ export function ProductExplorer({
                   </>
                 ) : (
                   <>
-                    <ResponsiveSevenRow>
+                    <ResponsiveSevenRow ariaLabel={title}>
                       {products.map((product) => (
                         <InformativeCard
                           key={product.title}

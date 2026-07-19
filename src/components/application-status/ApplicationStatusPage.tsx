@@ -107,6 +107,34 @@ const serviceTypes: ServiceOption[] = [
     icon: Building2,
   },
   {
+    label: "MSME Registration",
+    shortLabel: "MSME",
+    value: "msme_registration",
+    example: "FIN202607110001",
+    icon: Landmark,
+  },
+  {
+    label: "Annual Compliance",
+    shortLabel: "Annual",
+    value: "annual_compliance",
+    example: "FIN202607110001",
+    icon: FileCheck2,
+  },
+  {
+    label: "Tax Compliance",
+    shortLabel: "Tax",
+    value: "tax_compliance",
+    example: "FIN202607110001",
+    icon: ShieldCheck,
+  },
+  {
+    label: "Project Report",
+    shortLabel: "Project",
+    value: "project_report",
+    example: "FIN202607110001",
+    icon: ClipboardList,
+  },
+  {
     label: "Franchise Partner",
     shortLabel: "Franchise",
     value: "franchise_partner",
@@ -623,21 +651,46 @@ export function ApplicationStatusPage() {
           return;
         }
 
-        const [loans, insurance, gst, itr, company, franchise, dsa] =
-          await Promise.all([
-            fetchAccountLoanApplications(),
-            fetchAccountInsuranceApplications(),
-            fetchServiceRequestHistory({ serviceType: "gst_registration" }),
-            fetchServiceRequestHistory({ serviceType: "itr_filing" }),
-            fetchServiceRequestHistory({ serviceType: "company_registration" }),
-            fetchServiceRequestHistory({ serviceType: "franchise_partner" }),
-            fetchServiceRequestHistory({ serviceType: "dsa_partner" }),
-          ]);
+        const [
+          loans,
+          insurance,
+          gst,
+          itr,
+          company,
+          msme,
+          annual,
+          tax,
+          project,
+          franchise,
+          dsa,
+        ] = await Promise.all([
+          fetchAccountLoanApplications(),
+          fetchAccountInsuranceApplications(),
+          fetchServiceRequestHistory({ serviceType: "gst_registration" }),
+          fetchServiceRequestHistory({ serviceType: "itr_filing" }),
+          fetchServiceRequestHistory({ serviceType: "company_registration" }),
+          fetchServiceRequestHistory({ serviceType: "msme_registration" }),
+          fetchServiceRequestHistory({ serviceType: "annual_compliance" }),
+          fetchServiceRequestHistory({ serviceType: "tax_compliance" }),
+          fetchServiceRequestHistory({ serviceType: "project_report" }),
+          fetchServiceRequestHistory({ serviceType: "franchise_partner" }),
+          fetchServiceRequestHistory({ serviceType: "dsa_partner" }),
+        ]);
         if (!active) return;
         const next = [
           ...loans.map(mapLoan),
           ...insurance.map(mapInsurance),
-          ...[...gst, ...itr, ...company, ...franchise, ...dsa].map(mapService),
+          ...[
+            ...gst,
+            ...itr,
+            ...company,
+            ...msme,
+            ...annual,
+            ...tax,
+            ...project,
+            ...franchise,
+            ...dsa,
+          ].map(mapService),
         ].sort(
           (a, b) =>
             new Date(b.updatedAt || 0).getTime() -
@@ -772,9 +825,10 @@ export function ApplicationStatusPage() {
                       : "Track a submitted service request"}
                 </h2>
                 <p className="mt-3 max-w-3xl text-[14px] font-medium leading-7 text-[#5f6f82] md:text-[15px]">
-                  Public lookup is available for GST, ITR, company registration,
-                  franchise, and DSA requests. Sign in to view loan and
-                  insurance applications linked to your account.
+                  Public lookup is available for GST, ITR, company, MSME,
+                  annual compliance, tax compliance, project report, franchise,
+                  and DSA requests. Sign in to view loan and insurance
+                  applications linked to your account.
                 </p>
               </div>
 

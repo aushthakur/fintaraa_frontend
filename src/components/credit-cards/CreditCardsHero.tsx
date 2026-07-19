@@ -1,9 +1,12 @@
 "use client";
 
+import { FormEvent, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import {
+  AlertCircle,
   BriefcaseBusiness,
+  CheckCircle2,
   Gift,
   IndianRupee,
   Phone,
@@ -18,7 +21,74 @@ const inputClass =
 const selectClass =
   "h-11 w-full rounded-xl border border-[#d8e4f0] bg-[#f8fbff] px-3 text-[13px] font-bold text-[#1f2937] outline-none transition focus:border-[#005ca8] focus:bg-white focus:ring-2 focus:ring-[#e4f1ff]";
 
-export function CreditCardsHero() {
+export type CreditCardRecommendation = {
+  fullName: string;
+  mobile: string;
+  monthlyIncome: number;
+  employmentType: string;
+  creditScore?: number;
+  preferredCategory?: string;
+};
+
+const emptyForm = {
+  fullName: "",
+  mobile: "",
+  monthlyIncome: "",
+  employmentType: "",
+};
+
+const formatIncome = (value: string) => {
+  const digits = value.replace(/\D/g, "").slice(0, 9);
+  return digits ? Number(digits).toLocaleString("en-IN") : "";
+};
+
+export function CreditCardsHero({
+  onOffersRequested,
+}: {
+  onOffersRequested: (value: CreditCardRecommendation) => void;
+}) {
+  const [form, setForm] = useState(emptyForm);
+  const [error, setError] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
+  const updateField = (key: keyof typeof emptyForm, value: string) => {
+    setForm((current) => ({ ...current, [key]: value }));
+    setError("");
+    setSubmitted(false);
+  };
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const fullName = form.fullName.trim().replace(/\s+/g, " ");
+    const mobile = form.mobile.replace(/\D/g, "");
+    const monthlyIncome = Number(form.monthlyIncome.replace(/\D/g, ""));
+
+    if (fullName.length < 3) {
+      setError("Please enter your full name.");
+      return;
+    }
+    if (!/^[6-9]\d{9}$/.test(mobile)) {
+      setError("Please enter a valid 10-digit Indian mobile number.");
+      return;
+    }
+    if (!Number.isFinite(monthlyIncome) || monthlyIncome < 10000) {
+      setError("Please enter a monthly income of ₹10,000 or more.");
+      return;
+    }
+    if (!form.employmentType) {
+      setError("Please select your employment type.");
+      return;
+    }
+
+    onOffersRequested({
+      fullName,
+      mobile,
+      monthlyIncome,
+      employmentType: form.employmentType,
+    });
+    setSubmitted(true);
+  };
+
   return (
     <section className="relative overflow-hidden bg-[#fbfdff] px-4 pb-8 pt-8 md:px-6 lg:px-8">
       <div className="absolute inset-0 overflow-visible pointer-events-none z-0">
@@ -114,7 +184,7 @@ export function CreditCardsHero() {
               </span>
             </div>
 
-            <form className="mt-5 grid gap-3">
+            <form className="mt-5 grid gap-3" onSubmit={handleSubmit} noValidate>
               <label className="grid gap-1.5">
                 <span className="text-[11px] font-extrabold uppercase tracking-[0.08em] text-[#475467]">
                   Full Name
@@ -123,6 +193,10 @@ export function CreditCardsHero() {
                   <UserRound className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#667085]" />
                   <input
                     type="text"
+                    name="fullName"
+                    value={form.fullName}
+                    onChange={(event) => updateField("fullName", event.target.value)}
+                    autoComplete="name"
                     placeholder="Enter name as per PAN"
                     className={`${inputClass} pl-10`}
                   />
@@ -141,6 +215,15 @@ export function CreditCardsHero() {
                     <Phone className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#667085]" />
                     <input
                       type="tel"
+                      name="mobile"
+                      value={form.mobile}
+                      onChange={(event) =>
+                        updateField(
+                          "mobile",
+                          event.target.value.replace(/\D/g, "").slice(0, 10),
+                        )
+                      }
+                      autoComplete="tel"
                       inputMode="numeric"
                       maxLength={10}
                       placeholder="10-digit mobile number"
@@ -159,6 +242,12 @@ export function CreditCardsHero() {
                     <IndianRupee className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#667085]" />
                     <input
                       type="text"
+                      name="monthlyIncome"
+                      value={form.monthlyIncome}
+                      onChange={(event) =>
+                        updateField("monthlyIncome", formatIncome(event.target.value))
+                      }
+                      autoComplete="off"
                       inputMode="numeric"
                       placeholder="e.g. 75,000"
                       className={`${inputClass} pl-10`}
@@ -172,7 +261,14 @@ export function CreditCardsHero() {
                   </span>
                   <div className="relative">
                     <BriefcaseBusiness className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#667085]" />
-                    <select className={`${selectClass} pl-10`}>
+                    <select
+                      name="employmentType"
+                      value={form.employmentType}
+                      onChange={(event) =>
+                        updateField("employmentType", event.target.value)
+                      }
+                      className={`${selectClass} pl-10`}
+                    >
                       <option value="">Select employment</option>
                       <option value="salaried">Salaried</option>
                       <option value="self-employed">Self-employed</option>
@@ -183,8 +279,30 @@ export function CreditCardsHero() {
                 </label>
               </div>
 
+              {error ? (
+                <p
+                  role="alert"
+                  className="flex items-center gap-1.5 rounded-lg bg-red-50 px-3 py-2 text-[11px] font-bold text-red-700"
+                >
+                  <AlertCircle className="h-3.5 w-3.5 shrink-0" />
+                  {error}
+                </p>
+              ) : null}
+
+              {submitted ? (
+                <motion.p
+                  initial={{ opacity: 0, y: 5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  role="status"
+                  className="flex items-center gap-1.5 rounded-lg bg-emerald-50 px-3 py-2 text-[11px] font-bold text-emerald-700"
+                >
+                  <CheckCircle2 className="h-3.5 w-3.5 shrink-0" />
+                  Personalised card matches are ready below.
+                </motion.p>
+              ) : null}
+
               <button
-                type="button"
+                type="submit"
                 className="mt-1 inline-flex h-11 w-full items-center justify-center rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-4 text-[13px] font-extrabold text-white shadow-[0_10px_20px_rgba(18,183,106,0.18)] transition hover:brightness-105"
               >
                 Unlock Card Offers

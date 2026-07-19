@@ -14,6 +14,7 @@ import {
   ShieldCheck,
   Trash2,
   UploadCloud,
+  Camera,
 } from "lucide-react";
 import {
   deleteDocument,
@@ -328,14 +329,35 @@ export function UploadedDocumentsPanel() {
                 </span>
               </div>
 
-              <label className="mt-4 block cursor-pointer bg-white/85 p-3 ring-1 ring-[#e4edf5] transition hover:-translate-y-0.5 hover:ring-[#195585]/30">
-                <input
-                  type="file"
-                  className="sr-only"
-                  onChange={(event) =>
-                    handleUpload(item, event.target.files?.[0])
-                  }
-                />
+              <div className="mt-4 grid grid-cols-2 gap-2">
+                <label className="inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#195585] px-3 text-[12px] font-bold text-white">
+                  <Camera className="h-4 w-4" aria-hidden="true" />
+                  Take photo
+                  <input
+                    type="file"
+                    accept="image/*"
+                    capture="environment"
+                    className="sr-only"
+                    onChange={(event) =>
+                      handleUpload(item, event.target.files?.[0])
+                    }
+                  />
+                </label>
+                <label className="inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-xl border border-[#c7d7e8] bg-white px-3 text-[12px] font-bold text-[#195585]">
+                  <UploadCloud className="h-4 w-4" aria-hidden="true" />
+                  Browse files
+                  <input
+                    type="file"
+                    accept="image/*,.pdf"
+                    className="sr-only"
+                    onChange={(event) =>
+                      handleUpload(item, event.target.files?.[0])
+                    }
+                  />
+                </label>
+              </div>
+
+              <div className="mt-3 bg-white/85 p-3 ring-1 ring-[#e4edf5]">
                 {state.fileUrl ? (
                   <div className="mb-3 flex items-center gap-3">
                     <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden bg-[#eef8ff] text-[#195585]">
@@ -375,7 +397,7 @@ export function UploadedDocumentsPanel() {
                   </div>
                   <UploadCloud className="h-6 w-6 text-[#195585]" />
                 </div>
-              </label>
+              </div>
 
               <div className="mt-4 grid gap-4 md:grid-cols-2">
                 <BottomInput

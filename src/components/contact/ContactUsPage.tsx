@@ -2,12 +2,13 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   Mail,
+  MapPin,
   Clock3,
-  Building2,
   MessageCircle,
   Users,
   Phone,
   ShieldCheck,
+  ArrowUpRight,
 } from "lucide-react";
 import { Testimonials } from "@/components/home/Testimonials";
 import { FaqAccordion } from "@/components/common/FaqAccordion";
@@ -24,27 +25,37 @@ const heroStats = [
 const contactCards = [
   {
     title: "Call Us",
-    value: "30 May, 2026",
-    lines: ["Mon - Sat 9AM - 7PM"],
+    value: "+91 84482 82679",
+    lines: ["Mon - Sat, 9:30 AM - 6:30 PM"],
     icon: Phone,
+    href: "tel:+918448282679",
+    actionLabel: "Call now",
   },
   {
     title: "Email Us",
-    value: "supportfintaraa@gmail.com",
+    value: "customercare@fintaraa.com",
     lines: ["We Reply within 24hrs"],
     icon: Mail,
+    href: "mailto:customercare@fintaraa.com",
+    actionLabel: "Send email",
   },
   {
     title: "WhatsApp",
-    value: "+91 8858765437",
+    value: "+91 84482 82679",
     lines: ["Chat With Our Expert"],
     icon: MessageCircle,
+    href: "https://wa.me/918448282679",
+    actionLabel: "Open WhatsApp",
+    external: true,
   },
   {
     title: "Visit Our Office",
-    value: "Fintaraa Finance Pvt. Ltd.",
-    lines: ["Delhi, India"],
-    icon: Building2,
+    value: "Spaze I-Tech Park, Sector 49",
+    lines: ["Unit 402, Tower A, Gurugram, Haryana - 122018"],
+    icon: MapPin,
+    href: "https://www.google.com/maps/search/?api=1&query=Fintaraa+Financial+Services+Unit+402+Tower+A+Spaze+I-Tech+Park+Sector+49+Gurugram+Haryana+122018",
+    actionLabel: "View directions",
+    external: true,
   },
 ];
 
@@ -80,27 +91,45 @@ function ContactCard({
   value,
   lines,
   icon: Icon,
+  href,
+  actionLabel,
+  external = false,
 }: {
   title: string;
   value: string;
   lines: string[];
   icon: typeof Phone;
+  href: string;
+  actionLabel: string;
+  external?: boolean;
 }) {
   return (
-    <div className="flex items-start gap-4 rounded-2xl border border-[#e5eaf0] bg-white px-4 py-4 shadow-[0_10px_26px_rgba(16,24,40,0.05)]">
+    <a
+      href={href}
+      target={external ? "_blank" : undefined}
+      rel={external ? "noopener noreferrer" : undefined}
+      aria-label={`${actionLabel}: ${value}`}
+      className="group flex items-start gap-4 rounded-2xl border border-[#e5eaf0] bg-white px-4 py-4 text-inherit no-underline shadow-[0_10px_26px_rgba(16,24,40,0.05)] transition hover:border-[#b9d7ee] hover:bg-[#fbfdff] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1d5fbf] focus-visible:ring-offset-2"
+    >
       <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#eef6ff] text-[#1d5fbf]">
         <Icon className="h-5 w-5" />
       </div>
-      <div className="min-w-0">
+      <div className="min-w-0 flex-1">
         <p className="text-[14px] font-extrabold text-[#111827]">{title}</p>
-        <p className="mt-1 text-[13px] font-semibold text-[#344054]">{value}</p>
+        <p className="mt-1 wrap-break-word text-[13px] font-semibold text-[#344054]">
+          {value}
+        </p>
         {lines.map((line) => (
           <p key={line} className="text-[12px] leading-5 text-[#667085]">
             {line}
           </p>
         ))}
+        <span className="mt-2 inline-flex items-center gap-1 text-[10px] font-extrabold text-[#1d5fbf]">
+          {actionLabel}
+          <ArrowUpRight className="h-3 w-3 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+        </span>
       </div>
-    </div>
+    </a>
   );
 }
 
@@ -211,7 +240,7 @@ export function ContactUsPage() {
             </div>
 
             <a
-              href="/contact-us"
+              href="tel:+918448282679"
               className="inline-flex h-14 w-full items-center justify-center gap-3 rounded-full bg-[#16b654] px-7 text-[16px] font-semibold text-white no-underline shadow-[0_16px_30px_rgba(22,182,84,0.24)] transition hover:-translate-y-0.5 hover:bg-[#119b48] sm:w-auto"
             >
               <Phone className="h-5 w-5" />

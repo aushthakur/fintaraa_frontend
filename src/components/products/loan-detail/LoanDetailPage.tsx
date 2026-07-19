@@ -1,6 +1,6 @@
 "use client";
 
-import { LoanTabs } from "./LoanTabs";
+import { LoanGuidePanel, LoanTabs } from "./LoanTabs";
 import { useMemo, useState } from "react";
 import { LoanStatsBar } from "./LoanStatsBar";
 import { LoanFAQSection } from "./LoanFAQSection";
@@ -8,7 +8,6 @@ import { LoanHeroSection } from "./LoanHeroSection";
 import { LoanOtherProducts } from "./LoanOtherProducts";
 import { LoanEMICalculator } from "./LoanEMICalculator";
 import { LoanBankComparison } from "./LoanBankComparison";
-import { LoanFeaturesSection } from "./LoanFeaturesSection";
 import { Testimonials } from "@/components/home/Testimonials";
 import { CreditScoreBanner } from "@/components/home/CreditScoreBanner";
 import { LoanFeaturesBenefits } from "./LoanFeaturesBenefits";
@@ -80,13 +79,6 @@ export function LoanDetailPage({
   );
   const active = tabs.find((tab) => tab.key === activeTab) || tabs[0];
   const isOverviewTab = active?.key === "overview";
-  const featureItems = (
-    isOverviewTab
-      ? tabs.flatMap((tab) => tab.bullets || [])
-      : active?.bullets?.length
-      ? active.bullets
-      : tabs.flatMap((tab) => tab.bullets || [])
-  ).slice(0, 6);
 
   const tabIdentity = [
     active?.key,
@@ -99,20 +91,10 @@ export function LoanDetailPage({
 
   const sections = (() => {
     if (isOverviewTab) {
-      return [
-        "features",
-        "benefits",
-        "eligibility",
-        "documents",
-        "emi_calculator",
-        "bank_comparison",
-        "verification",
-        "testimonials",
-        "faq",
-      ];
+      return ["benefits"];
     }
-    if (tabIdentity.includes("feature")) return ["features", "benefits"];
-    if (tabIdentity.includes("eligib")) return ["benefits", "eligibility"];
+    if (tabIdentity.includes("feature")) return ["benefits"];
+    if (tabIdentity.includes("eligib")) return ["eligibility"];
     if (tabIdentity.includes("document")) return ["documents"];
     if (tabIdentity.includes("review")) return ["testimonials"];
     if (
@@ -143,6 +125,13 @@ export function LoanDetailPage({
   })();
 
   const showSection = (section: string) => sections.includes(section);
+  const showGuidePanel = [
+    "benefits",
+    "eligibility",
+    "documents",
+    "verification",
+    "faq",
+  ].some(showSection);
   const faqItems =
     active?.faqs?.length ? active.faqs : tabs.flatMap((tab) => tab.faqs || []);
   const faqTitle =
@@ -153,6 +142,10 @@ export function LoanDetailPage({
     productSlug: page.loanTypeSlug,
     referrer: page.canonicalPath || `/products/${page.loanTypeSlug}`,
   });
+  const handleTabChange = (key: string) => {
+    setActiveTab(key);
+    window.history.replaceState(null, "", `#${key}`);
+  };
 
   return (
     <main className="overflow-visible bg-white text-[#1f2329]">
@@ -164,43 +157,55 @@ export function LoanDetailPage({
       />
       <LoanHeroSection page={page} />
       <LoanStatsBar />
-      <LoanTabs tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
+      <LoanTabs
+        tabs={tabs}
+        activeTab={activeTab}
+        onTabChange={handleTabChange}
+      />
 
-      {showSection("features") && (
-        <LoanFeaturesSection
-          loanType={page.loanType}
-          featureItems={featureItems}
-        />
+      {showGuidePanel ? (
+        <LoanGuidePanel
+          tabs={tabs}
+          activeTab={activeTab}
+          onTabChange={handleTabChange}
+          productName={page.loanType}
+          productSlug={page.loanTypeSlug}
+          applyHref={applyHref}
+        >
+          {showSection("benefits") && (
+            <LoanFeaturesBenefits page={page} active={active} embedded />
+          )}
+          {showSection("eligibility") && (
+            <LoanEligibilityCriteria embedded />
+          )}
+          {showSection("documents") && (
+            <LoanDocumentsRequired page={page} embedded />
+          )}
+          {showSection("verification") && (
+            <LoanVerificationSteps page={page} embedded />
+          )}
+          {showSection("faq") && (
+            <LoanFAQSection
+              faqs={faqItems}
+              title={faqTitle}
+              embedded
+            />
+          )}
+        </LoanGuidePanel>
+      ) : null}
+
+      {!showGuidePanel && showSection("emi_calculator") && (
+        <LoanEMICalculator page={page} />
       )}
-
-      {(showSection("benefits") ||
-        showSection("eligibility") ||
-        showSection("documents")) && (
-        <section className="px-4 pb-8 md:px-6 lg:px-8">
-          <div className="mx-auto max-w-9xl">
-            <div className="mt-6 grid gap-7">
-              {showSection("benefits") && (
-                <LoanFeaturesBenefits page={page} active={active} />
-              )}
-              {showSection("eligibility") && <LoanEligibilityCriteria />}
-              {showSection("documents") && (
-                <LoanDocumentsRequired page={page} />
-              )}
-            </div>
-          </div>
-        </section>
+      {!showGuidePanel && showSection("bank_comparison") && (
+        <LoanBankComparison page={page} />
       )}
-
-      {showSection("emi_calculator") && <LoanEMICalculator page={page} />}
-      {showSection("bank_comparison") && <LoanBankComparison page={page} />}
-      {showSection("verification") && <LoanVerificationSteps page={page} />}
       <CreditScoreBanner />
 
-      {showSection("other_products") && <LoanOtherProducts />}
-      {showSection("faq") && (
-        <LoanFAQSection faqs={faqItems} title={faqTitle} />
+      {!showGuidePanel && showSection("other_products") && (
+        <LoanOtherProducts />
       )}
-      {showSection("testimonials") && <Testimonials />}
+      {!showGuidePanel && showSection("testimonials") && <Testimonials />}
       <ProductRelatedBlogs category="Loans" productName={page.loanType} />
       <ProductLocationDirectory
         productName={page.loanType}

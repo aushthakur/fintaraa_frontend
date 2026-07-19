@@ -77,64 +77,31 @@ function getExcerpt(post: BlogCardPost) {
   );
 }
 
-export function BlogCardSection({ posts }: { posts: BlogPost[] }) {
-  const placeholderPosts: BlogCardPost[] = Array.from({ length: 6 }).map(
-    (_, i) => {
-      const categories = [
-        "Loans",
-        "Credit Score",
-        "Insurance",
-        "Credit Cards",
-        "Financial Planning",
-        "Loans",
-      ] as const;
-
-      return {
-        slug: `sample-post-${i}`,
-        title: "10 Smart Ways to Manage Your Monthly Budget",
-        excerpt:
-          "Build a practical spending plan, track cash flow, and keep room for savings before the month gets tight.",
-        category: categories[i],
-        readTime: "5 min read",
-        publishedAt: "2026-01-15",
-        author: {
-          name:
-            i % 3 === 0
-              ? "Rahul Sharma"
-              : i % 3 === 1
-                ? "Shivani Sharma"
-                : "Shivkumar",
-          role: "Financial Analyst",
-          avatar: "/assets/images/user1.png",
-        },
-        tags: ["Budgeting", "Planning"],
-        accent: "#005ca8",
-        body: [],
-        coverImageUrl: `/assets/blogs/blog${(i % 6) + 1}.png`,
-      };
-    },
-  );
-
-  const displayPosts: BlogCardPost[] =
-    posts && posts.length > 0 ? (posts as BlogCardPost[]) : placeholderPosts;
+export function BlogCardSection({
+  posts,
+  emptyMessage = "No articles are available yet.",
+  showViewAll = true,
+}: {
+  posts: BlogPost[];
+  emptyMessage?: string;
+  showViewAll?: boolean;
+}) {
+  const displayPosts = posts as BlogCardPost[];
 
   return (
-    <section className="bg-[#f8fbff] px-4 py-10 font-sans antialiased sm:px-6 sm:py-12 md:px-8 lg:px-16">
+    <section className="px-4 font-sans antialiased sm:px-6 md:px-8 lg:px-16">
       <div className="mx-auto max-w-9xl">
         <div className="mb-7 border-b border-[#dfeaf5] pb-5 text-center sm:mb-8">
           <div>
-            <p className="inline-flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-[0.12em] text-[#195585]">
-              <BookOpenText className="h-3.5 w-3.5 text-[#075cde]" />
-              Knowledge hub
-            </p>
             <h2 className="mt-3 text-[24px] font-extrabold leading-tight tracking-tight text-[#111625] sm:text-[28px]">
               Latest Articles
             </h2>
           </div>
         </div>
 
-        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {displayPosts.map((post, index) => {
+        {displayPosts.length ? (
+          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+            {displayPosts.map((post, index) => {
             const authorInfo = normalizeAuthor(post.author);
             const publishedDate = formatKnowledgeDate(post.publishedAt);
             const excerpt = getExcerpt(post);
@@ -142,12 +109,12 @@ export function BlogCardSection({ posts }: { posts: BlogPost[] }) {
             const meta = getCategoryMeta(cardCategory);
             const CategoryIcon = meta.icon;
 
-            return (
-              <Link
-                key={post.slug || index}
-                href={`/blog/${post.slug}`}
-                className="group block h-full no-underline"
-              >
+              return (
+                <Link
+                  key={post.slug || index}
+                  href={`/blog/${post.slug}`}
+                  className="group block h-full no-underline"
+                >
                 <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-[#dfeaf5] bg-white transition duration-300 group-hover:-translate-y-1 group-hover:border-[#bcd3e8]">
                   <div className="relative h-56 w-full overflow-hidden bg-[#eaf2f9]">
                     <Image
@@ -219,20 +186,30 @@ export function BlogCardSection({ posts }: { posts: BlogPost[] }) {
                     </div>
                   </div>
                 </article>
-              </Link>
-            );
-          })}
-        </div>
+                </Link>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="rounded-2xl border border-dashed border-[#bfd3e5] bg-[#f7fbff] px-5 py-12 text-center">
+            <BookOpenText className="mx-auto h-7 w-7 text-[#075cde]" />
+            <p className="mt-3 text-[14px] font-bold text-[#526b80]">
+              {emptyMessage}
+            </p>
+          </div>
+        )}
 
-        <div className="mt-8 flex justify-center">
-          <Link
-            href="/blog/all"
-            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#075cde] px-6 text-[14px] font-bold text-white no-underline transition hover:bg-[#064cb8]"
-          >
-            View all
-            <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
+        {showViewAll && displayPosts.length ? (
+          <div className="mt-8 flex justify-center">
+            <Link
+              href="/blog/all"
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#075cde] px-6 text-[14px] font-bold text-white no-underline transition hover:bg-[#064cb8]"
+            >
+              View all
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        ) : null}
       </div>
     </section>
   );

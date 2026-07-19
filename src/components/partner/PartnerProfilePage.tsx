@@ -7,6 +7,7 @@ import {
   ArrowRight,
   BadgeCheck,
   Banknote,
+  Bell,
   BriefcaseBusiness,
   Building2,
   ClipboardList,
@@ -445,6 +446,13 @@ export function PartnerProfilePage() {
                   Logout
                 </button>
               </div>
+              <Link
+                href="/partner/profile/notifications"
+                className="mt-2 inline-flex h-10 w-full items-center justify-center gap-2 rounded-full border border-[#cfe0ed] bg-[#f6fbff] px-4 text-[12px] font-extrabold text-[#195585] no-underline transition hover:bg-[#eaf5ff]"
+              >
+                <Bell className="h-4 w-4" />
+                View notifications
+              </Link>
             </section>
 
             <section className="bg-white p-5">

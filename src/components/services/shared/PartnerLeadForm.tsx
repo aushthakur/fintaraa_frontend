@@ -216,7 +216,7 @@ export function PartnerLeadForm({
         <button
           type="submit"
           disabled={submitting}
-          className="mt-1 inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[#1cb45c] text-[14px] font-extrabold text-white shadow-[0_14px_30px_rgba(28,180,92,0.2)] transition hover:bg-[#16954d] disabled:cursor-not-allowed disabled:opacity-70 sm:col-span-2"
+          className="mt-1 inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[#1cb45c] px-8 text-[14px] font-extrabold text-white shadow-[0_14px_30px_rgba(28,180,92,0.2)] transition hover:bg-[#16954d] disabled:cursor-not-allowed disabled:opacity-70 sm:col-span-2 sm:mx-auto sm:w-auto sm:min-w-64"
         >
           {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
           {submitLabel}
@@ -261,6 +261,7 @@ function Field({
       </span>
       <input
         type={type}
+        inputMode={type === "tel" ? "numeric" : type === "email" ? "email" : "text"}
         value={value}
         placeholder={placeholder}
         onChange={(event) => onChange(event.target.value)}

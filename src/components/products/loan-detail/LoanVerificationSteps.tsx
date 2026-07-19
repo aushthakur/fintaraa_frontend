@@ -30,12 +30,56 @@ const sequentialSteps = [
   },
 ];
 
-export function LoanVerificationSteps({ page }: { page: LoanSeoPageData }) {
+export function LoanVerificationSteps({
+  page,
+  embedded = false,
+}: {
+  page: LoanSeoPageData;
+  embedded?: boolean;
+}) {
   const applyHref = getApplyHref({
     category: "loan",
     productSlug: page.loanTypeSlug,
     referrer: page.canonicalPath || `/products/${page.loanTypeSlug}`,
   });
+
+  if (embedded) {
+    return (
+      <div>
+        <div className="grid gap-3 sm:grid-cols-2">
+          {sequentialSteps.map((item, index) => (
+            <article
+              key={item.stepNumber}
+              className="flex items-start gap-3 rounded-2xl border border-[#dfe8ef] bg-white p-4"
+            >
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#075cde] text-[11px] font-extrabold text-white">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <div>
+                <p className="text-[10px] font-extrabold uppercase tracking-[0.1em] text-[#8295a5]">
+                  Step {index + 1}
+                </p>
+                <h3 className="mt-1 text-[14px] font-extrabold text-[#17354d]">
+                  {item.title}
+                </h3>
+                <p className="mt-1 text-[12px] font-medium leading-5 text-[#687f92]">
+                  {item.description}
+                </p>
+              </div>
+            </article>
+          ))}
+        </div>
+        <AuthRedirectLink
+          href={applyHref}
+          productSlug={page.loanTypeSlug}
+          className="mt-5 inline-flex h-10 items-center justify-center gap-2 rounded-full bg-[#13a653] px-5 text-[12px] font-extrabold text-white no-underline transition hover:bg-[#0f8f45]"
+        >
+          Start {page.loanType} Application
+          <ArrowRight className="h-3.5 w-3.5" />
+        </AuthRedirectLink>
+      </div>
+    );
+  }
 
   return (
     <section className="w-full max-w-9xl mx-auto bg-white px-6 py-12 antialiased text-[#111827] sm:px-8 md:px-12 lg:px-16">

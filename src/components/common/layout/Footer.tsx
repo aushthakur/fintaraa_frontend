@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import {
   Clock,
@@ -5,7 +7,6 @@ import {
   CreditCard,
   BadgeCheck,
   LockKeyhole,
-  BriefcaseBusiness,
   Mail,
   MapPin,
   Newspaper,
@@ -13,62 +14,36 @@ import {
   ShieldCheck,
   MessageCircle,
   Wrench,
+  ChevronDown,
   ChevronRight,
 } from "lucide-react";
 import { FaApple, FaGooglePlay } from "react-icons/fa6";
 import Image from "next/image";
 import { productHref } from "@/lib/productRouting";
-import { buildLoginRedirectHref } from "@/lib/loginRedirect";
+import { useProductCatalog } from "@/hooks/useProductCatalog";
 
 /* ─── DATA ─────────────────────────────────────────────────── */
 
 const financialServiceLinks = [
-  "GST Registration",
-  "ITR Filing",
-  "ROC Filing",
-  "Company Registration",
-  "Project Report",
-  "Tax Compliances",
-  "Credit Cards",
+  { label: "CIBIL Score Check", href: "/cibil-score" },
+  { label: "ITR Filing", href: "/itr-filing" },
+  { label: "GST Registration", href: "/gst-registration" },
+  { label: "MSME Registration", href: "/msme-registration" },
+  { label: "Annual Compliance", href: "/annual-compliance" },
+  { label: "Tax Compliances", href: "/tax-compliance" },
+  { label: "Project Report", href: "/project-report" },
+  { label: "Company Registration", href: "/company-registration" },
 ];
 
 const aboutCompanyLinks = [
-  "Site Map",
-  "About Us",
-  "Awards & Recognitions",
-  "Blogs",
-  "Articles",
-  "FAQ's",
-  "Media & Press Release",
-  "Press Release",
-  "Feedback",
-  "Subscribe",
-];
-
-const loanLinks = [
-  "Personal Loan",
-  "Home Loan",
-  "Business Loan",
-  "Loan Against Property",
-  "Car Loan",
-  "Two Wheeler Loan",
-  "Education Loan",
-  "Gold Loan",
-  "Instant Loan",
-  "Credit Score Loan",
-];
-
-const insuranceLinks = [
-  "Term Insurance",
-  "Health Insurance",
-  "Car Insurance",
-  "Bike Insurance",
-  "Life Insurance",
-  "Travel Insurance",
-  "Home Insurance",
-  "Personal Accident Insurance",
-  "Critical Illness Insurance",
-  "Group Insurance",
+  { label: "About Us", href: "/about-us" },
+  { label: "Careers", href: "/careers" },
+  { label: "Partners", href: "/partners" },
+  { label: "Franchise", href: "/franchise" },
+  { label: "Become DSA", href: "/become-dsa" },
+  { label: "Press Releases", href: "/press-release" },
+  { label: "FAQs", href: "/faqs" },
+  { label: "Feedback", href: "/feedback" },
 ];
 
 const quickLinks = [
@@ -76,22 +51,16 @@ const quickLinks = [
   { label: "Tools", href: "/tools", icon: Wrench },
   {
     label: "CIBIL Score",
-    href: buildLoginRedirectHref({
-      redirectTo: "/cibil-score",
-      product: "cibil-score",
-    }),
+    href: "/cibil-score",
     icon: BadgeCheck,
   },
   { label: "Blog", href: "/blog", icon: Newspaper },
   { label: "Application Status", href: "/application-status", icon: Wrench },
-  { label: "Careers", href: "/careers", icon: BriefcaseBusiness },
   {
     label: "Partner Login",
     href: "/partner/login",
     icon: Landmark,
   },
-  { label: "Franchise", href: "/franchise", icon: Landmark },
-  { label: "Become DSA", href: "/become-dsa", icon: BadgeCheck },
   { label: "Contact Us", href: "/contact-us", icon: PhoneCall },
 ];
 
@@ -111,21 +80,74 @@ const trustItems = [
 const hoverUnderline =
   "relative w-fit after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-white after:transition-transform after:duration-300 after:ease-out hover:after:scale-x-100";
 
-function FooterLinkList({ links }: { links: string[] }) {
+type FooterLinkItem = string | { label: string; href: string };
+
+function FooterLinkList({
+  links,
+  productGrid = false,
+}: {
+  links: FooterLinkItem[];
+  productGrid?: boolean;
+}) {
+  return (
+    <ul
+      className={`mt-4 gap-x-4 gap-y-3 ${productGrid ? "space-y-3 xl:grid xl:grid-cols-2 xl:space-y-0" : "space-y-3"}`}
+    >
+      {links.map((item) => {
+        const label = typeof item === "string" ? item : item.label;
+        const href = typeof item === "string" ? productHref(item) : item.href;
+
+        return (
+          <li key={`${label}-${href}`}>
+            <Link
+              href={href}
+              className={`${hoverUnderline} flex items-center gap-1.5 text-[14px] font-normal leading-[1.55] text-white/90 no-underline transition-colors hover:text-white`}
+            >
+              <ChevronRight className="h-3 w-3 shrink-0 text-white/50" />
+              {label}
+            </Link>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
+function QuickLinkList() {
   return (
     <ul className="mt-4 space-y-3">
-      {links.map((link) => (
-        <li key={link}>
+      {quickLinks.map(({ label, href, icon: Icon }) => (
+        <li key={label}>
           <Link
-            href={productHref(link)}
-            className={`${hoverUnderline} flex items-center gap-1.5 text-[14px] font-normal leading-[1.55] text-white/90 no-underline transition-colors hover:text-white`}
+            href={href}
+            className={`${hoverUnderline} flex items-center gap-2 text-[14px] font-normal leading-[1.55] text-white/90 no-underline transition-colors hover:text-white`}
           >
-            <ChevronRight className="h-3 w-3 shrink-0 text-white/50" />
-            {link}
+            <span className="flex h-4.5 w-4.5 shrink-0 items-center justify-center">
+              <Icon className="h-3.5 w-3.5 text-white/60" />
+            </span>
+            {label}
           </Link>
         </li>
       ))}
     </ul>
+  );
+}
+
+function MobileFooterSection({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <details className="group border-b border-white/12 last:border-b-0">
+      <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-4 text-[15px] font-bold text-white marker:content-none">
+        {title}
+        <ChevronDown className="h-4 w-4 shrink-0 text-white/70 transition-transform duration-200 group-open:rotate-180" />
+      </summary>
+      <div className="pb-5 [&>ul]:mt-0">{children}</div>
+    </details>
   );
 }
 
@@ -218,12 +240,40 @@ export const AppDownloadBanner = () => {
 /* ─── MAIN FOOTER ───────────────────────────────────────────── */
 
 export default function Footer() {
+  const { loans, insurance } = useProductCatalog();
+  const loanLinks = loans.map((product) => ({
+    label: product.name,
+    href: `/products/${product.slug}`,
+  }));
+  const insuranceLinks = insurance.map((product) => ({
+    label: product.name,
+    href: `/products/${product.slug}`,
+  }));
+
   return (
     <>
-      <footer className="bg-[#002B4D] text-white">
+      <footer id="site-footer" className="scroll-mt-28 bg-[#002B4D] text-white">
         {/* ── 5-column link grid ── */}
         <div className="mx-auto max-w-9xl px-4 pb-0 pt-9 md:px-6 md:pt-10 lg:px-8">
-          <div className="grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+          <div className="md:hidden">
+            <MobileFooterSection title="Financial Services">
+              <FooterLinkList links={financialServiceLinks} />
+            </MobileFooterSection>
+            <MobileFooterSection title="Loans">
+              <FooterLinkList links={loanLinks} />
+            </MobileFooterSection>
+            <MobileFooterSection title="Insurance">
+              <FooterLinkList links={insuranceLinks} />
+            </MobileFooterSection>
+            <MobileFooterSection title="Quick Links">
+              <QuickLinkList />
+            </MobileFooterSection>
+            <MobileFooterSection title="About Company">
+              <FooterLinkList links={aboutCompanyLinks} />
+            </MobileFooterSection>
+          </div>
+
+          <div className="hidden gap-x-6 gap-y-8 md:grid md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-[0.8fr_1.7fr_1.4fr_0.9fr_1fr]">
             {/* Col 1 – Financial Services */}
             <div>
               <ColHeading>Financial Services</ColHeading>
@@ -233,33 +283,19 @@ export default function Footer() {
             {/* Col 2 – Loans */}
             <div>
               <ColHeading>Loans</ColHeading>
-              <FooterLinkList links={loanLinks} />
+              <FooterLinkList links={loanLinks} productGrid />
             </div>
 
             {/* Col 3 – Insurance */}
             <div>
               <ColHeading>Insurance</ColHeading>
-              <FooterLinkList links={insuranceLinks} />
+              <FooterLinkList links={insuranceLinks} productGrid />
             </div>
 
             {/* Col 4 – Quick Links */}
             <div>
               <ColHeading>Quick Links</ColHeading>
-              <ul className="mt-4 space-y-3">
-                {quickLinks.map(({ label, href, icon: Icon }) => (
-                  <li key={label}>
-                    <Link
-                      href={href}
-                      className={`${hoverUnderline} flex items-center gap-2 text-[14px] font-normal leading-[1.55] text-white/90 no-underline transition-colors hover:text-white`}
-                    >
-                      <span className="flex h-4.5 w-4.5 shrink-0 items-center justify-center">
-                        <Icon className="h-3.5 w-3.5 text-white/60" />
-                      </span>
-                      {label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+              <QuickLinkList />
             </div>
 
             {/* Col 5 – About Company */}
@@ -285,20 +321,20 @@ export default function Footer() {
 
             {/* Phone */}
             <a
-              href="tel:+918448282680"
+              href="tel:+918448282679"
               className="flex items-center gap-3 text-white no-underline transition-colors hover:text-white/80"
             >
               <PhoneCall className="h-4 w-4 shrink-0 text-white/70" />
-              +91 84482 82680
+              +91 84482 82679
             </a>
 
             {/* WhatsApp */}
             <a
-              href="https://wa.me/918448282680"
+              href="https://wa.me/918448282679"
               className="flex items-center gap-3 text-white no-underline transition-colors hover:text-white/80"
             >
               <MessageCircle className="h-4 w-4 shrink-0 text-white/70" />
-              +91 84482 82680
+              +91 84482 82679
             </a>
 
             {/* Email */}
@@ -320,16 +356,20 @@ export default function Footer() {
 
         {/* ── Trust bar ── */}
         <div className="mx-auto max-w-9xl px-4 pb-8 md:px-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-white/20 bg-white/15 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-white/20 bg-white/15 lg:grid-cols-4">
             {trustItems.map(({ title, text, icon: Icon }) => (
               <div
                 key={title}
-                className="flex items-center gap-4 bg-[#002B4D] px-5 py-5"
+                className="flex min-w-0 items-center gap-2 bg-[#002B4D] px-3 py-4 sm:gap-4 sm:px-5 sm:py-5"
               >
-                <Icon className="h-9 w-9 shrink-0 text-white/80" />
-                <div>
-                  <p className="text-[14px] font-bold text-white">{title}</p>
-                  <p className="text-[12px] text-white/70">{text}</p>
+                <Icon className="h-6 w-6 shrink-0 text-white/80 sm:h-9 sm:w-9" />
+                <div className="min-w-0">
+                  <p className="text-[11px] font-bold leading-tight text-white sm:text-[14px]">
+                    {title}
+                  </p>
+                  <p className="mt-1 line-clamp-2 text-[9px] leading-tight text-white/70 sm:text-[12px]">
+                    {text}
+                  </p>
                 </div>
               </div>
             ))}
@@ -351,7 +391,7 @@ export default function Footer() {
                 { label: "Terms & Conditions", href: "/terms-and-conditions" },
                 { label: "Grievance Redressal", href: "/grievance" },
                 { label: "Delete Account", href: "/delete-account" },
-                { label: "Sitemap", href: "/sitemap" },
+                { label: "Sitemap", href: "/sitemap.xml" },
               ].map(({ label, href }, i, arr) => (
                 <span key={href} className="flex items-center gap-3">
                   <Link

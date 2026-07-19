@@ -3,14 +3,12 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import {
-  CheckCircle2,
-  ClipboardList,
   FileSearch,
   Loader2,
   Search,
-  UserCheck,
 } from "lucide-react";
 import { ServiceRequestProgress } from "./ServiceRequestProgress";
+import { PremiumServiceTimeline } from "./PremiumServiceTimeline";
 import {
   fetchServiceRequestHistory,
   ServiceRequestRecord,
@@ -18,14 +16,6 @@ import {
 } from "@/services/serviceRequests";
 import { isUserLoggedIn } from "@/hooks/authStorage";
 import { AUTH_CHANGED_EVENT } from "@/lib/authEvents";
-
-const steps = [
-  { label: "Inquiry Submitted", icon: ClipboardList },
-  { label: "Expert Assigned", icon: UserCheck },
-  { label: "Document Review", icon: FileSearch },
-  { label: "Processing", icon: Loader2 },
-  { label: "Completed", icon: CheckCircle2 },
-];
 
 const storageKey = (serviceType: ServiceRequestType) =>
   `fintaraa_service_requests_${serviceType}`;
@@ -57,14 +47,25 @@ const compactStepIndex = (request?: ServiceRequestRecord | null) => {
     stage.includes("issued") ||
     stage.includes("return prepared") ||
     stage.includes("client approval") ||
-    stage.includes("acknowledgement")
+    stage.includes("acknowledgement") ||
+    stage.includes("application submitted") ||
+    stage.includes("filings submitted") ||
+    stage.includes("submission completed") ||
+    stage.includes("certificate assistance") ||
+    stage.includes("financial analysis") ||
+    stage.includes("draft report") ||
+    stage.includes("final report")
   ) {
     return 3;
   }
   if (
     stage.includes("document") ||
     stage.includes("verification") ||
-    stage.includes("tax review")
+    stage.includes("tax review") ||
+    stage.includes("information pending") ||
+    stage.includes("eligibility reviewed") ||
+    stage.includes("scope reviewed") ||
+    stage.includes("requirement reviewed")
   ) {
     return 2;
   }
@@ -343,52 +344,7 @@ export function ServiceRequestTracker({
           ) : null}
         </div>
 
-        <div className="w-full max-w-full overflow-hidden rounded-2xl border border-[#d7dfe8] bg-white p-4 shadow-[0_14px_38px_rgba(16,24,40,0.04)] sm:p-5 md:p-8">
-          <h3 className="text-[19px] font-extrabold leading-tight text-[#005ca8] md:text-[24px]">
-            {title}
-          </h3>
-          <div className="mt-6 overflow-x-auto pb-2 md:mt-8">
-            <div className="grid grid-cols-5 items-start md:min-w-140">
-              {steps.map(({ label, icon: Icon }, index) => {
-                const done = index < activeStep;
-                const active = index === activeStep;
-                return (
-                  <div key={label} className="relative text-center">
-                    {index < steps.length - 1 && (
-                      <div
-                        className={`absolute left-1/2 top-4 h-0.75 w-full sm:top-5 md:top-5.5 ${
-                          index < activeStep ? "bg-[#005ca8]" : "bg-[#daeeff]"
-                        }`}
-                      />
-                    )}
-                    <span
-                      className={`relative z-10 mx-auto flex h-8 w-8 items-center justify-center rounded-full text-[12px] font-extrabold shadow-sm sm:h-10 sm:w-10 sm:text-sm md:h-11 md:w-11 md:text-[15px] ${
-                        done || active
-                          ? "bg-[#005ca8] text-white"
-                          : "bg-[#daeeff] text-[#005ca8]"
-                      }`}
-                    >
-                      {done ? (
-                        <CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5" />
-                      ) : active ? (
-                        <Icon className="h-4 w-4 sm:h-5 sm:w-5" />
-                      ) : (
-                        index + 1
-                      )}
-                    </span>
-                    <p
-                      className={`mt-3 px-0.5 text-[10px] font-bold leading-[1.35] sm:text-[12px] md:mt-4 md:text-[13px] ${
-                        done || active ? "text-[#005ca8]" : "text-[#374151]"
-                      }`}
-                    >
-                      {label}
-                    </p>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
+        <PremiumServiceTimeline title={title} activeStep={activeStep} />
 
         <div className="w-full max-w-full overflow-hidden rounded-2xl border border-[#d7e5f3] bg-white p-4 shadow-[0_14px_38px_rgba(16,24,40,0.04)] sm:p-5 md:p-6">
           <div className="flex flex-col justify-between gap-3 md:flex-row md:items-center">

@@ -3,6 +3,8 @@ import { ServiceRequestTracker } from "@/components/services/shared/ServiceReque
 import { ItrHero } from "./ItrHero";
 import { ItrInfo } from "./ItrInfo";
 import { ItrDeadline } from "./ItrDeadline";
+import { ServiceInformationGuide } from "@/components/services/shared/ServiceInformationGuide";
+import { itrFilingGuide } from "@/components/services/shared/serviceGuideData";
 
 export function ItrPage() {
   return (
@@ -10,6 +12,10 @@ export function ItrPage() {
       <ItrHero />
       <ItrInfo />
       <ItrDeadline />
+      <ServiceInformationGuide
+        config={itrFilingGuide}
+        formAnchor="itr-filing-service-form"
+      />
       <ServiceRequestTracker
         sectionId="itr-filing-status"
         title="Track Your ITR Filing Status"

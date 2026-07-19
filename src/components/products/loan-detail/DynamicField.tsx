@@ -20,7 +20,16 @@ export function DynamicField({ field }: { field: LoanSeoFormField }) {
   return (
     <input
       required={field.required}
-      type={field.type || "text"}
+      type={field.type === "phone" ? "tel" : field.type || "text"}
+      inputMode={
+        field.type === "email"
+          ? "email"
+          : field.type === "phone"
+            ? "tel"
+            : field.type === "number"
+              ? "numeric"
+              : "text"
+      }
       placeholder={field.placeholder || field.label}
       className={fieldClass}
     />

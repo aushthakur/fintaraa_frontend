@@ -19,6 +19,7 @@ export default function TermsAndConditionsPage() {
       content={legalPages.terms}
       eyebrow="Terms of Service"
       canonicalPath="/terms-and-conditions"
+      simpleHeader
     />
   );
 }

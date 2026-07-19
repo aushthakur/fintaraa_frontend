@@ -60,6 +60,15 @@ type BenefitItem = {
   icon: LucideIcon;
 };
 
+const cardDetailTabs = [
+  { id: "highlights", label: "Highlights", shortLabel: "Highlights" },
+  { id: "eligibility", label: "Eligibility", shortLabel: "Eligibility" },
+  { id: "fees", label: "Fees and terms", shortLabel: "Fees" },
+  { id: "faqs", label: "FAQs", shortLabel: "FAQs" },
+] as const;
+
+type CardDetailSectionId = (typeof cardDetailTabs)[number]["id"];
+
 const isLoggedIn = () => getAuthType() === "user" && Boolean(getAuthToken());
 
 const formatCurrency = (
@@ -219,7 +228,6 @@ function ProductCardArtwork({
 }
 
 function SectionHeading({
-  eyebrow,
   title,
   description,
 }: {
@@ -229,8 +237,7 @@ function SectionHeading({
 }) {
   return (
     <div className="max-w-2xl">
-      <p className="text-xs font-bold uppercase text-[#0878c9]">{eyebrow}</p>
-      <h2 className="mt-2 text-2xl font-bold leading-tight text-[#082b4c] md:text-[30px]">
+      <h2 className="text-2xl font-bold leading-tight text-[#082b4c] md:text-[30px]">
         {title}
       </h2>
       {description ? (
@@ -261,6 +268,8 @@ export function CreditCardDetailScreen({
   const [viewerLoggedIn, setViewerLoggedIn] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
   const [error, setError] = useState("");
+  const [activeDetailSection, setActiveDetailSection] =
+    useState<CardDetailSectionId>("highlights");
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
@@ -375,6 +384,64 @@ export function CreditCardDetailScreen({
       active = false;
     };
   }, [authResolved, card, mode, viewerLoggedIn]);
+
+  useEffect(() => {
+    if (!card) return;
+
+    let frame = 0;
+    const updateActiveSection = () => {
+      window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(() => {
+        const headerHeight =
+          Number.parseFloat(
+            window
+              .getComputedStyle(document.documentElement)
+              .getPropertyValue("--site-header-height"),
+          ) || 132;
+        const activationLine = headerHeight + 88;
+        let current: CardDetailSectionId = cardDetailTabs[0].id;
+
+        cardDetailTabs.forEach((tab) => {
+          const section = document.getElementById(tab.id);
+          if (section && section.getBoundingClientRect().top <= activationLine) {
+            current = tab.id;
+          }
+        });
+
+        setActiveDetailSection((previous) =>
+          previous === current ? previous : current,
+        );
+      });
+    };
+
+    const hashSection = window.location.hash.slice(1) as CardDetailSectionId;
+    const validHash = cardDetailTabs.some((tab) => tab.id === hashSection);
+    const hashTimer = window.setTimeout(() => {
+      if (validHash) {
+        setActiveDetailSection(hashSection);
+        document.getElementById(hashSection)?.scrollIntoView({ block: "start" });
+      }
+      updateActiveSection();
+    }, 100);
+
+    window.addEventListener("scroll", updateActiveSection, { passive: true });
+    window.addEventListener("resize", updateActiveSection);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.clearTimeout(hashTimer);
+      window.removeEventListener("scroll", updateActiveSection);
+      window.removeEventListener("resize", updateActiveSection);
+    };
+  }, [card]);
+
+  const selectDetailSection = (id: CardDetailSectionId) => {
+    setActiveDetailSection(id);
+    window.history.replaceState(null, "", `#${id}`);
+    document
+      .getElementById(id)
+      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   const stats = useMemo(() => {
     if (!card) return [];
@@ -665,14 +732,14 @@ export function CreditCardDetailScreen({
             {stats.map(({ label, value, icon: Icon }, index) => (
               <div
                 key={label}
-                className={`flex min-w-0 items-start gap-3 px-2 py-5 sm:px-5 lg:py-6 ${
+                className={`flex min-w-0 items-center gap-3 px-2 py-5 sm:px-5 lg:py-6 ${
                   index % 2 === 1 ? "border-l border-[#e0ebf2]" : ""
                 } ${index >= 2 ? "border-t border-[#e0ebf2] lg:border-t-0" : ""} ${
                   index > 0 ? "lg:border-l lg:border-[#e0ebf2]" : ""
                 }`}
               >
                 <Icon
-                  className="mt-0.5 h-5 w-5 shrink-0 text-[#0878c9]"
+                  className="h-5 w-5 shrink-0 text-[#0878c9]"
                   aria-hidden="true"
                 />
                 <div className="min-w-0">
@@ -690,29 +757,42 @@ export function CreditCardDetailScreen({
 
         <nav
           aria-label="Card detail sections"
-          className="border-b border-[#dceaf4] bg-white"
+          className="sticky z-[49] w-full border-y border-[#d8e6f0] bg-[#eaf4ff]/95 px-4 py-3 backdrop-blur sm:px-6 lg:px-8"
+          style={{ top: "var(--site-header-height, 8.25rem)" }}
         >
-          <div className="mx-auto flex max-w-9xl gap-7 overflow-x-auto px-4 py-4 md:px-6">
-            {[
-              ["Highlights", "#highlights"],
-              ["Eligibility", "#eligibility"],
-              ["Fees and terms", "#fees"],
-              ["FAQs", "#faqs"],
-            ].map(([label, href]) => (
-              <a
-                key={href}
-                href={href}
-                className="shrink-0 text-sm font-semibold text-[#557086] no-underline transition-colors hover:text-[#0878c9]"
-              >
-                {label}
-              </a>
-            ))}
+          <div className="mx-auto flex max-w-9xl items-center gap-2 overflow-x-auto py-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            {cardDetailTabs.map((tab) => {
+              const selected = activeDetailSection === tab.id;
+              return (
+                <a
+                  key={tab.id}
+                  href={`#${tab.id}`}
+                  aria-current={selected ? "location" : undefined}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    selectDetailSection(tab.id);
+                  }}
+                  className={`flex h-10 shrink-0 items-center justify-center rounded-full px-4 text-[11px] font-extrabold no-underline transition sm:px-5 sm:text-[12px] ${
+                    selected
+                      ? "bg-[#075cde] text-white"
+                      : "border border-[#d6e3ec] bg-white text-[#36546b] hover:border-[#8db9d6] hover:text-[#075cde]"
+                  }`}
+                >
+                  <span className="sm:hidden">{tab.shortLabel}</span>
+                  <span className="hidden sm:inline">{tab.label}</span>
+                </a>
+              );
+            })}
           </div>
         </nav>
 
         <section
           id="highlights"
           className="scroll-mt-24 bg-white px-4 py-14 md:px-6 md:py-20"
+          style={{
+            scrollMarginTop:
+              "calc(var(--site-header-height, 8.25rem) + 5rem)",
+          }}
         >
           <div className="mx-auto max-w-9xl">
             <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
@@ -784,6 +864,10 @@ export function CreditCardDetailScreen({
         <section
           id="eligibility"
           className="scroll-mt-24 bg-[#f2f9fd] px-4 py-14 md:px-6 md:py-20"
+          style={{
+            scrollMarginTop:
+              "calc(var(--site-header-height, 8.25rem) + 5rem)",
+          }}
         >
           <div className="mx-auto max-w-9xl">
             {mode === "eligibility" ? (
@@ -1004,6 +1088,10 @@ export function CreditCardDetailScreen({
         <section
           id="fees"
           className="scroll-mt-24 bg-white px-4 py-14 md:px-6 md:py-20"
+          style={{
+            scrollMarginTop:
+              "calc(var(--site-header-height, 8.25rem) + 5rem)",
+          }}
         >
           <div className="mx-auto grid max-w-9xl gap-12 lg:grid-cols-[340px_minmax(0,1fr)] lg:gap-20">
             <div>
@@ -1065,6 +1153,10 @@ export function CreditCardDetailScreen({
         <section
           id="faqs"
           className="scroll-mt-24 bg-[#f2f9fd] px-4 py-14 md:px-6 md:py-20"
+          style={{
+            scrollMarginTop:
+              "calc(var(--site-header-height, 8.25rem) + 5rem)",
+          }}
         >
           <div className="mx-auto grid max-w-9xl gap-10 lg:grid-cols-[330px_minmax(0,1fr)] lg:gap-20">
             <SectionHeading

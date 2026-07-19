@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 import { getPageSeoMetadata } from "@/services/seoMetadata";
-import { AccountProfilePage } from "@/components/account/AccountProfilePage";
 import { noIndexRobots } from "@/services/seoConfig";
 
 const fallbackMetadata: Metadata = {
@@ -15,5 +15,5 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function ProfilePage() {
-  return <AccountProfilePage />;
+  redirect("/account/profile/edit-profile");
 }

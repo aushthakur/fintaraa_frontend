@@ -50,7 +50,7 @@ export function DsaHero() {
               Join Fintaraa Today!
             </Link>
             <a
-              href="tel:+918001234567"
+              href="tel:+918448282679"
               className="inline-flex h-12 items-center justify-center rounded-full border border-[#7edc9e] bg-white px-8 text-[14px] font-bold text-[#1cb45c] no-underline transition hover:-translate-y-0.5 hover:border-[#46c86f] hover:text-[#16a34a]"
             >
               Talk to Partnership Team

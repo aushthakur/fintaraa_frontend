@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Eye, Link2 } from "lucide-react";
+import { ArrowRight, Eye, Link2, Search } from "lucide-react";
 import { NewsletterSubscription } from "@/components/blog/NewsletterSubscription";
-import { WhyChooseFintaraa } from "@/components/blog/WhyChooseFintaraa";
+import { WhyChoose } from "@/components/home/WhyChoose";
 import { FaqAccordion } from "@/components/common/FaqAccordion";
 import {
   fetchKnowledgeBySlug,
@@ -48,7 +48,11 @@ export function BlogDetailClient({ slug }: { slug: string }) {
 
     Promise.all([
       fetchKnowledgeBySlug(slug),
-      fetchWebsiteKnowledge({ type: "blog", sectionKey: "recent_blogs", limit: 5 }),
+      fetchWebsiteKnowledge({
+        type: "blog",
+        sectionKey: "recent_blogs",
+        limit: 12,
+      }),
     ])
       .then(([item, items]) => {
         if (!mounted) return;
@@ -57,7 +61,7 @@ export function BlogDetailClient({ slug }: { slug: string }) {
           return;
         }
         setPost(item);
-        setRelated(items.filter((entry) => entry.slug !== item.slug).slice(0, 3));
+        setRelated(items.filter((entry) => entry.slug !== item.slug));
       })
       .catch(() => mounted && setMissing(true))
       .finally(() => mounted && setLoading(false));
@@ -74,27 +78,20 @@ export function BlogDetailClient({ slug }: { slug: string }) {
   const authorRole = post.authorRole || "Financial Research Desk";
   const authorAvatar = post.authorAvatarUrl || "/assets/images/user1.png";
   const description = post.excerpt || post.summary || stripHtml(post.content || "");
+  const categories = Array.from(
+    new Set(
+      [post, ...related]
+        .map((item) => item.category || "Financial Planning")
+        .filter(Boolean),
+    ),
+  );
 
   return (
     <main className="bg-white font-sans antialiased text-[#1a1d25]">
       <div className="absolute left-0 top-0 -z-10 h-44 w-44 rounded-br-full bg-[#edf5fd] opacity-70" />
 
-      <div className="mx-auto max-w-7xl px-4 pt-6 md:px-8 lg:px-16">
-        <div className="relative h-60 w-full overflow-hidden rounded-3xl border border-gray-100 shadow-xs md:h-95">
-          <Image
-            src={post.coverImageUrl || "/assets/blogs/blog1.png"}
-            alt={post.title}
-            fill
-            unoptimized
-            sizes="(max-width: 768px) 100vw, 896px"
-            className="object-cover"
-            priority
-          />
-        </div>
-      </div>
-
-      <section className="mx-auto max-w-7xl px-4 py-10 md:px-8 lg:px-16">
-        <div className="grid items-start gap-8 lg:grid-cols-[1fr_300px]">
+      <section className="mx-auto max-w-9xl px-4 py-8 sm:px-6 md:py-10 lg:px-8">
+        <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-10">
           <div className="space-y-8">
             <div className="space-y-4">
               <span className="block text-[13px] font-bold tracking-wide text-[#005ca8]">
@@ -147,6 +144,18 @@ export function BlogDetailClient({ slug }: { slug: string }) {
               </div>
             </div>
 
+            <div className="relative h-60 w-full overflow-hidden rounded-2xl bg-[#eef4f8] sm:h-80 lg:h-105">
+              <Image
+                src={post.coverImageUrl || "/assets/blogs/blog1.png"}
+                alt={post.title}
+                fill
+                unoptimized
+                sizes="(max-width: 1023px) 100vw, 900px"
+                className="object-cover"
+                priority
+              />
+            </div>
+
             <article
               className="prose prose-slate max-w-none prose-headings:font-extrabold prose-headings:text-black prose-p:text-[15px] prose-p:font-medium prose-p:leading-8 prose-p:text-[#4a5568] prose-li:text-[#4a5568]"
               dangerouslySetInnerHTML={{
@@ -155,21 +164,13 @@ export function BlogDetailClient({ slug }: { slug: string }) {
             />
           </div>
 
-          <aside className="space-y-5 rounded-2xl border border-[#dce9f7] bg-[#eef6ff] p-5 lg:sticky lg:top-24">
-            <div>
-              <h3 className="text-[15px] font-bold tracking-tight text-black">
-                Expert Insight
-              </h3>
-              <p className="mt-2 text-[12.5px] font-medium leading-relaxed text-[#7a869a]">
-                Use the article as a guide, then compare actual offers and terms before applying.
-              </p>
-            </div>
-            <div className="border-t border-[#dce9f7] pt-4">
-              <h4 className="text-[14px] font-bold text-[#7a869a]">
+          <aside className="space-y-5 lg:sticky lg:top-24">
+            <section className="rounded-2xl border border-[#dce9f7] bg-[#eef6ff] p-5">
+              <h2 className="text-[16px] font-extrabold tracking-tight text-[#111625]">
                 Related Articles
-              </h4>
-              <div className="mt-3 space-y-3">
-                {related.map((article) => (
+              </h2>
+              <div className="mt-4 space-y-3">
+                {related.slice(0, 4).map((article) => (
                   <Link
                     key={article.slug}
                     href={`/blog/${article.slug}`}
@@ -196,12 +197,49 @@ export function BlogDetailClient({ slug }: { slug: string }) {
                   </Link>
                 ))}
               </div>
-            </div>
+            </section>
+
+            <section className="rounded-2xl border border-[#dce9f7] bg-white p-5">
+              <h2 className="text-[15px] font-extrabold text-[#111625]">
+                Search articles
+              </h2>
+              <form action="/blog" className="relative mt-3">
+                <Search
+                  className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[#718397]"
+                  aria-hidden="true"
+                />
+                <input
+                  type="search"
+                  name="q"
+                  aria-label="Search blog articles"
+                  placeholder="Search guides and insights"
+                  className="h-11 w-full rounded-xl border border-[#dce7ef] bg-[#f8fbfd] pl-10 pr-3 text-[12px] font-semibold text-[#17354d] outline-none transition placeholder:text-[#98a6b3] focus:border-[#075cde] focus:bg-white"
+                />
+              </form>
+            </section>
+
+            <section className="rounded-2xl border border-[#dce9f7] bg-white p-5">
+              <h2 className="text-[15px] font-extrabold text-[#111625]">
+                Categories
+              </h2>
+              <nav aria-label="Blog categories" className="mt-3 grid gap-1.5">
+                {categories.map((category) => (
+                  <Link
+                    key={category}
+                    href={`/blog?category=${encodeURIComponent(category)}`}
+                    className="group flex items-center justify-between gap-3 rounded-xl px-3 py-2.5 text-[12px] font-bold text-[#526b80] no-underline transition hover:bg-[#eef6ff] hover:text-[#075cde]"
+                  >
+                    <span>{category}</span>
+                    <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-0.5" />
+                  </Link>
+                ))}
+              </nav>
+            </section>
           </aside>
         </div>
       </section>
       <NewsletterSubscription />
-      <WhyChooseFintaraa />
+      <WhyChoose />
       <FaqAccordion />
     </main>
   );

@@ -45,14 +45,14 @@ const cityRegex = /^[A-Za-z][A-Za-z\s.'-]{1,79}$/;
 const contactLinks = [
   {
     label: "Call",
-    value: "+91 84482 82680",
-    href: "tel:+918448282680",
+    value: "+91 84482 82679",
+    href: "tel:+918448282679",
     icon: Phone,
   },
   {
     label: "WhatsApp",
-    value: "+91 84482 82680",
-    href: "https://wa.me/918448282680",
+    value: "+91 84482 82679",
+    href: "https://wa.me/918448282679",
     icon: MessageCircle,
     external: true,
   },
@@ -104,7 +104,8 @@ export function ContactConsultationForm() {
       nextErrors.message = "Message must be under 1000 characters.";
     }
     if (!whatsappConsent) {
-      nextErrors.whatsappConsent = "Please accept WhatsApp communication consent.";
+      nextErrors.whatsappConsent =
+        "Please accept WhatsApp communication consent.";
     }
 
     setErrors(nextErrors);

@@ -107,10 +107,7 @@ export function KnowledgeListingPage({
       <section className="border-b border-[#edf2f7] bg-[#f8fbff] px-4 py-12 md:px-6 lg:px-8">
         <div className="mx-auto grid max-w-9xl gap-8 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-end">
           <div>
-            <p className="text-[12px] font-extrabold uppercase tracking-[0.18em] text-[#005ca8]">
-              {config.eyebrow}
-            </p>
-            <h1 className="mt-3 max-w-4xl text-[34px] font-extrabold tracking-tight text-[#07162d] md:text-[52px]">
+            <h1 className="max-w-4xl text-[34px] font-extrabold tracking-tight text-[#07162d] md:text-[52px]">
               {config.title}
             </h1>
             <p className="mt-4 max-w-3xl text-[15px] font-semibold leading-7 text-[#667085] md:text-[17px]">

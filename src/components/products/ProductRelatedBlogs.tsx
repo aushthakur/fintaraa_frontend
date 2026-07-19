@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, BookOpenText } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { RecentBlogCard } from "@/components/home/Blogs";
 import {
   fetchWebsiteKnowledge,
@@ -16,15 +16,13 @@ const BLOG_LIMIT = 3;
 
 const sectionCopy: Record<
   ProductBlogCategory,
-  { eyebrow: string; description: string }
+  { description: string }
 > = {
   Loans: {
-    eyebrow: "Loan insights",
     description:
       "Category-wise articles on eligibility, documents, EMI planning, fees, and responsible borrowing.",
   },
   Insurance: {
-    eyebrow: "Insurance insights",
     description:
       "Category-wise articles on coverage, documents, premium checks, claims, and policy selection.",
   },
@@ -115,11 +113,7 @@ export function ProductRelatedBlogs({
       <div className="mx-auto max-w-9xl">
         <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-3xl">
-            <p className="inline-flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-[0.12em] text-[#195585]">
-              <BookOpenText className="h-3.5 w-3.5 text-[#075cde]" />
-              {copy.eyebrow}
-            </p>
-            <h2 className="mt-2 text-[24px] font-extrabold leading-tight tracking-tight text-[#111625] md:text-[28px]">
+            <h2 className="text-[24px] font-extrabold leading-tight tracking-tight text-[#111625] md:text-[28px]">
               {productName} Blogs & Guides
             </h2>
             <p className="mt-2 text-[14px] font-medium leading-6 text-[#667085]">

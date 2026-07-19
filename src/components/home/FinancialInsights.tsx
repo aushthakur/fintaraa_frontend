@@ -25,7 +25,7 @@ function formatDate(value: string) {
 
 function InsightCard({ post }: { post: BlogPost }) {
   return (
-    <article className="group h-full overflow-hidden border border-[#e8f0f7] bg-white transition duration-300 hover:-translate-y-1">
+    <article className="group h-full overflow-hidden border border-[#e8f0f7] bg-white">
       <Link href={`/blog/${post.slug}`} className="block h-full no-underline">
         <BlogVisual
           title={post.title}

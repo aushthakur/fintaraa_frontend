@@ -1,8 +1,9 @@
 "use client";
 
-import Image from "next/image";
+import { getImageProps } from "next/image";
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { A11y, Autoplay, EffectFade } from "swiper/modules";
+import { A11y, Autoplay, EffectFade, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { AuthRedirectLink } from "@/components/auth/AuthRedirectLink";
 import type { HomeBanner } from "@/services/homeBanners";
@@ -14,6 +15,46 @@ import {
 
 const safeDuration = (value?: number) =>
   Math.min(Math.max(Number(value || 5000), 1500), 30000);
+
+function ResponsiveBannerImage({
+  banner,
+  eager,
+}: {
+  banner: HomeBanner;
+  eager: boolean;
+}) {
+  const alt = banner.imageAlt || banner.title;
+  const { props: desktopImage } = getImageProps({
+    src: banner.image,
+    alt,
+    width: 1600,
+    height: 640,
+    unoptimized: true,
+  });
+  const { props: mobileImage } = getImageProps({
+    src: banner.mobileImage || banner.image,
+    alt,
+    width: 900,
+    height: 1050,
+    unoptimized: true,
+  });
+
+  return (
+    <picture className="absolute inset-0 block h-full w-full">
+      <source
+        media="(max-width: 767px)"
+        srcSet={mobileImage.srcSet || mobileImage.src}
+      />
+      <img
+        {...desktopImage}
+        alt={alt}
+        loading={eager ? "eager" : "lazy"}
+        fetchPriority={eager ? "high" : "auto"}
+        className="absolute inset-0 h-full w-full object-cover"
+      />
+    </picture>
+  );
+}
 
 export function ProductHeroBannerSlider({
   category,
@@ -59,9 +100,9 @@ export function ProductHeroBannerSlider({
 
   return (
     <div className="relative w-full overflow-hidden bg-[#07162d]">
-      <div className="relative h-[220px] w-full overflow-hidden sm:h-[320px] lg:h-[420px] xl:h-[460px]">
+      <div className="relative aspect-[6/7] w-full overflow-hidden md:aspect-[5/2]">
         <Swiper
-          modules={[Autoplay, EffectFade, A11y]}
+          modules={[Autoplay, EffectFade, Pagination, A11y]}
           effect="fade"
           fadeEffect={{ crossFade: true }}
           loop={hasMultiple}
@@ -75,29 +116,54 @@ export function ProductHeroBannerSlider({
                 }
               : false
           }
-          className="h-full"
+          pagination={hasMultiple ? { clickable: true } : false}
+          className="product-hero-swiper h-full"
         >
           {banners.map((banner, index) => (
             <SwiperSlide
               key={banner._id || `${banner.image}-${index}`}
               className="h-full"
             >
-              <AuthRedirectLink
-                href={applyHref}
-                productSlug={productSlug}
-                aria-label={`Apply for ${productName}`}
-                className="relative block h-full w-full overflow-hidden no-underline"
-              >
-                <Image
-                  src={banner.image}
-                  alt={banner.imageAlt || banner.title}
-                  fill
-                  priority={index === 0}
-                  unoptimized
-                  sizes="100vw"
-                  className="object-cover object-center transition-transform duration-[1800ms] ease-out"
-                />
-              </AuthRedirectLink>
+              <div className="relative h-full w-full overflow-hidden">
+                <ResponsiveBannerImage banner={banner} eager={index === 0} />
+
+                {category === "loan" ? (
+                  <>
+                    <AuthRedirectLink
+                      href={applyHref}
+                      productSlug={productSlug}
+                      aria-label={`${banner.buttonText || "Apply now"} for ${productName}`}
+                      className="absolute left-[7.1%] top-[48.5%] z-10 h-[7.3%] w-[38.8%] rounded-xl no-underline md:left-[5.75%] md:top-[77%] md:h-[10.5%] md:w-[13.2%]"
+                    >
+                      <span className="sr-only">
+                        {banner.buttonText || "Apply now"}
+                      </span>
+                    </AuthRedirectLink>
+                    <Link
+                      href={
+                        banner.secondaryLinkUrl || "#loan-emi-calculator"
+                      }
+                      aria-label={
+                        banner.secondaryButtonText || "Calculate loan EMI"
+                      }
+                      className="absolute left-[48%] top-[48.5%] z-10 h-[7.3%] w-[37.8%] rounded-xl no-underline md:left-[20%] md:top-[77%] md:h-[10.5%] md:w-[14.9%]"
+                    >
+                      <span className="sr-only">
+                        {banner.secondaryButtonText || "Calculate EMI"}
+                      </span>
+                    </Link>
+                  </>
+                ) : (
+                  <AuthRedirectLink
+                    href={applyHref}
+                    productSlug={productSlug}
+                    aria-label={`Apply for ${productName}`}
+                    className="absolute inset-0 z-10 no-underline"
+                  >
+                    <span className="sr-only">Apply for {productName}</span>
+                  </AuthRedirectLink>
+                )}
+              </div>
             </SwiperSlide>
           ))}
         </Swiper>

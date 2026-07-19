@@ -16,6 +16,7 @@ import {
   AlertCircle,
   CheckCircle2,
   ChevronRight,
+  Camera,
 } from "lucide-react";
 import { submitApplication } from "./payload";
 import { WhatsAppConsent } from "@/components/common/WhatsAppConsent";
@@ -48,6 +49,31 @@ const patterns: Record<string, RegExp> = {
   pan: /^[A-Z]{5}[0-9]{4}[A-Z]$/,
   aadhaar: /^\d{12}$/,
   pincode: /^\d{6}$/,
+};
+
+const browserInputType = (field: FormField) =>
+  field.type === "phone"
+    ? "tel"
+    : field.type === "number"
+      ? "text"
+      : field.type;
+
+const browserInputMode = (field: FormField) => {
+  if (field.keyboardType === "email-address" || field.type === "email") {
+    return "email" as const;
+  }
+  if (field.keyboardType === "phone-pad" || field.type === "phone") {
+    return "tel" as const;
+  }
+  if (field.keyboardType === "decimal-pad") return "decimal" as const;
+  if (
+    field.keyboardType === "numeric" ||
+    field.keyboardType === "number-pad" ||
+    field.type === "number"
+  ) {
+    return "numeric" as const;
+  }
+  return "text" as const;
 };
 
 const benefitItems = [
@@ -600,14 +626,37 @@ function FieldInput({
             <UploadCloud className="h-4 w-4 text-[#005ca8]" />
             {field.placeholder || "Upload PDF or image"}
           </div>
-          <input
-            type="file"
-            multiple
-            className="mt-3 block w-full text-[12px] font-semibold text-[#667085] file:mr-3 file:rounded-full file:border-0 file:bg-[#eaf3ff] file:px-4 file:py-2 file:text-[12px] file:font-extrabold file:text-[#005ca8]"
-            onChange={(event) =>
-              onChange(field.key, Array.from(event.target.files || []))
-            }
-          />
+          <div className="mt-3 grid grid-cols-2 gap-2">
+            <label className="inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#075cde] px-3 text-[12px] font-extrabold text-white">
+              <Camera className="h-4 w-4" aria-hidden="true" />
+              Take photo
+              <input
+                type="file"
+                accept="image/*"
+                capture="environment"
+                className="sr-only"
+                onChange={(event) =>
+                  onChange(field.key, [
+                    ...(Array.isArray(value) ? value : []),
+                    ...Array.from(event.target.files || []),
+                  ])
+                }
+              />
+            </label>
+            <label className="inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-xl border border-[#c9ddf2] bg-white px-3 text-[12px] font-extrabold text-[#005ca8]">
+              <UploadCloud className="h-4 w-4" aria-hidden="true" />
+              Browse files
+              <input
+                type="file"
+                accept="image/*,.pdf"
+                multiple
+                className="sr-only"
+                onChange={(event) =>
+                  onChange(field.key, Array.from(event.target.files || []))
+                }
+              />
+            </label>
+          </div>
           {Array.isArray(value) && value.length ? (
             <p className="mt-2 text-[11px] font-bold text-[#13a653]">
               {value.length} file{value.length === 1 ? "" : "s"} selected
@@ -618,7 +667,8 @@ function FieldInput({
         <div className="flex flex-col gap-2 sm:flex-row">
           <input
             className={fieldClass}
-            type={field.type === "number" ? "text" : field.type}
+            type={browserInputType(field)}
+            inputMode={browserInputMode(field)}
             value={value || ""}
             maxLength={field.maxLength}
             placeholder={field.placeholder || field.label}
@@ -642,7 +692,8 @@ function FieldInput({
         <div className="relative">
           <input
             className={fieldClass}
-            type={field.type === "number" ? "text" : field.type}
+            type={browserInputType(field)}
+            inputMode={browserInputMode(field)}
             value={value || ""}
             maxLength={field.maxLength}
             placeholder={field.placeholder || field.label}
@@ -691,7 +742,9 @@ function FieldInput({
       ) : (
         <input
           className={fieldClass}
-          type={field.type === "number" ? "text" : field.type}
+          type={browserInputType(field)}
+          inputMode={browserInputMode(field)}
+          autoCapitalize={field.autoCapitalize}
           value={value || ""}
           maxLength={field.maxLength}
           placeholder={field.placeholder || field.label}

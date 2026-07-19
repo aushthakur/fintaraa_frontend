@@ -1,6 +1,6 @@
 export const getSafeRedirectTarget = (
   value?: string | null,
-  fallback = "/account/profile",
+  fallback = "/account/profile/edit-profile",
 ) => {
   const target = String(value || "").trim();
   if (!target) return fallback;
@@ -13,7 +13,7 @@ export const buildLoginRedirectHref = ({
   redirectTo,
   referrer,
   product,
-  fallback = "/account/profile",
+  fallback = "/account/profile/edit-profile",
 }: {
   redirectTo?: string | null;
   referrer?: string | null;

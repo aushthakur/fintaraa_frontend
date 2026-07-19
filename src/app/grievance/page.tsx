@@ -19,6 +19,7 @@ export default function GrievancePage() {
       content={legalPages.grievance}
       eyebrow="Complaint Resolution"
       canonicalPath="/grievance"
+      simpleHeader
     />
   );
 }

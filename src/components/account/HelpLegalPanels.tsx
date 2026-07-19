@@ -851,7 +851,7 @@ export function LogoutPanel() {
             Logout
           </button>
           <Link
-            href="/account/profile"
+            href="/account/profile/edit-profile"
             className="inline-flex h-10 items-center rounded-full bg-[#eef8ff] px-5 text-[13px] font-semibold text-[#195585] no-underline"
           >
             Back to profile

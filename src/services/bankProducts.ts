@@ -21,6 +21,7 @@ export type CreditCardProduct = {
   annualFee?: number | string;
   joiningFee?: number | string;
   cardType?: string;
+  categories?: string[];
   rewardsType?: string;
   annualFeeBucket?: string;
   incomeRequirementBucket?: string;
@@ -48,6 +49,7 @@ export type CreditCardProduct = {
 
 export type CreditCardFilters = {
   banks: string[];
+  categories: string[];
   cardTypes: string[];
   rewardsTypes: string[];
   networks: string[];
@@ -203,6 +205,7 @@ export const fetchCreditCardFilters = async () => {
   return (
     unwrap(response) || {
       banks: [],
+      categories: [],
       cardTypes: [],
       rewardsTypes: [],
       networks: [],

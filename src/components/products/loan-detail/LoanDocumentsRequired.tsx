@@ -9,10 +9,22 @@ const documentItems = [
   "Employment or business proof where applicable.",
 ];
 
-export function LoanDocumentsRequired({ page }: { page: LoanSeoPageData }) {
+export function LoanDocumentsRequired({
+  page,
+  embedded = false,
+}: {
+  page: LoanSeoPageData;
+  embedded?: boolean;
+}) {
   return (
-    <section className="border border-[#e2edf8] bg-white p-5 sm:p-6">
-      <div className="max-w-3xl">
+    <section
+      id="loan-documents"
+      className={`scroll-mt-24 ${
+        embedded ? "" : "border border-[#e2edf8] bg-white p-5 sm:p-6"
+      }`}
+    >
+      {!embedded ? (
+        <div className="max-w-3xl">
         <p className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#00529b]">
           Document checklist
         </p>
@@ -20,15 +32,18 @@ export function LoanDocumentsRequired({ page }: { page: LoanSeoPageData }) {
           Documents required to apply for{" "}
           <span className="text-[#13a653]">{page.loanType}</span>
         </h2>
-      </div>
+        </div>
+      ) : null}
 
-      <div className="mt-5 grid gap-2">
+      <div
+        className={`${embedded ? "grid gap-3 sm:grid-cols-2" : "mt-5 grid gap-2"}`}
+      >
         {documentItems.map((item) => (
           <div
             key={item}
-            className="flex items-start gap-3 border border-[#e9eff6] bg-[#fbfdff] px-4 py-3"
+            className="flex items-start gap-3 rounded-2xl border border-[#e1eaf1] bg-[#fbfdff] px-4 py-3.5"
           >
-            <span className="flex h-8 w-8 shrink-0 items-center justify-center bg-[#e9f6ff] text-[#00529b]">
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#e9f6ff] text-[#00529b]">
               <FileCheck2 className="h-4 w-4" />
             </span>
             <div className="min-w-0">

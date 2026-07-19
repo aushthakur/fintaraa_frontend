@@ -67,7 +67,7 @@ export function HowItWorks() {
               return (
                 <article
                   key={step.title}
-                  className="relative rounded-2xl border border-[#e4edf5] bg-white p-5 shadow-[0_12px_30px_rgba(25,85,133,0.06)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_20px_44px_rgba(25,85,133,0.1)]"
+                  className="relative rounded-2xl border border-[#e4edf5] bg-white p-5 shadow-[0_12px_30px_rgba(25,85,133,0.06)]"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <span

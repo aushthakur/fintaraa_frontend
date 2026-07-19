@@ -222,10 +222,6 @@ export function Testimonials() {
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
-          {/* Edge Blur Overlays */}
-          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-linear-to-r from-white to-transparent" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-linear-to-l from-white to-transparent" />
-
           {/* Fully Synchronized Drag & Auto-Scroll Canvas Track */}
           <motion.div
             ref={trackRef}
@@ -243,7 +239,7 @@ export function Testimonials() {
             {duplicatedTestimonials.map((item, index) => (
               <article
                 key={`testimonial-card-${item.slug}-${index}`}
-                className="w-80 shrink-0 rounded-xl border border-[#e2edf8] bg-white p-6 flex flex-col justify-start select-none sm:w-[380px] md:w-[420px]"
+                className="w-80 shrink-0 rounded-xl border border-[#e2edf8] bg-white p-6 flex flex-col justify-start select-none sm:w-95 md:w-105"
               >
                 {/* Meta Layout Row */}
                 <div className="flex items-start justify-between gap-4 pointer-events-none">

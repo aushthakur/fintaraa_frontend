@@ -9,7 +9,13 @@ import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { accountMenuSections } from "@/data/accountProfile";
 import { LogoutConfirmationModal } from "@/components/account/LogoutConfirmationModal";
 
-export function AccountMenu({ activeSlug }: { activeSlug?: string }) {
+export function AccountMenu({
+  activeSlug,
+  onNavigate,
+}: {
+  activeSlug?: string;
+  onNavigate?: () => void;
+}) {
   const router = useRouter();
   const { profile } = useCurrentUser();
   const [confirmLogoutOpen, setConfirmLogoutOpen] = useState(false);
@@ -87,6 +93,7 @@ export function AccountMenu({ activeSlug }: { activeSlug?: string }) {
                 <Link
                   key={item.slug}
                   href={`/account/profile/${item.slug}`}
+                  onClick={onNavigate}
                   className="block no-underline"
                 >
                   {content}

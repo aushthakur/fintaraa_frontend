@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   CheckCircle2,
   ChevronDown,
@@ -26,6 +26,7 @@ import {
   isSameCreditCardType,
   trackBankProductClick,
 } from "@/services/bankProducts";
+import type { CreditCardRecommendation } from "./CreditCardsHero";
 
 const whyChooseItems = [
   {
@@ -57,6 +58,7 @@ const whyChooseItems = [
 
 const fallbackFilters: CreditCardFilters = {
   banks: [],
+  categories: [],
   cardTypes: [],
   rewardsTypes: [],
   networks: [],
@@ -93,6 +95,81 @@ const getCardTags = (card: CreditCardProduct) =>
 
 const textOrFallback = (value: unknown, fallback = "Not specified") =>
   String(value || "").trim() || fallback;
+
+const creditScoreOptions = ["Up to 700", "701 - 749", "750+"];
+const categoryOptions = [
+  "Cashback",
+  "Travel",
+  "Fuel",
+  "Rewards",
+  "Lifetime Free",
+  "Beginners",
+  "Self-Employed",
+  "Super-Premium",
+];
+
+const getDerivedCategories = (card: CreditCardProduct) => {
+  if (card.categories?.length) return card.categories;
+
+  const searchable = [
+    card.name,
+    card.cardType,
+    card.rewardsType,
+    card.shortDescription,
+    card.cashbackDetails,
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+  const fee = Number(card.annualFee || 0);
+  const income = Number(card.minimumIncome || 0);
+  const derived: string[] = [];
+
+  if (searchable.includes("cashback")) derived.push("Cashback");
+  if (
+    card.cardType === "Travel" ||
+    /travel|mile|airline|hotel|airport|lounge|atlas|diners/.test(searchable)
+  ) {
+    derived.push("Travel");
+  }
+  if (
+    card.cardType === "Fuel" ||
+    /fuel|petrol|indianoil|power\+/.test(
+      [card.name, card.cardType, card.rewardsType]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase(),
+    )
+  ) {
+    derived.push("Fuel");
+  }
+  if (
+    /reward|point|mile|neucoin/.test(String(card.rewardsType).toLowerCase()) ||
+    card.cardType === "Rewards"
+  ) {
+    derived.push("Rewards");
+  }
+  if (fee === 0) derived.push("Lifetime Free");
+  if (card.cardType === "Entry-level" || (income <= 25000 && fee <= 500)) {
+    derived.push("Beginners");
+  }
+  if (
+    income <= 50000 &&
+    ["Cashback", "Shopping", "Everyday", "Rewards", "Fuel", "Lifestyle"].includes(
+      card.cardType || "",
+    )
+  ) {
+    derived.push("Self-Employed");
+  }
+  if (
+    card.cardType === "Premium" &&
+    (fee >= 2500 || income >= 75000)
+  ) {
+    derived.push("Super-Premium");
+  }
+
+  return Array.from(new Set(derived));
+};
 
 function FilterGroup({
   title,
@@ -154,9 +231,17 @@ function CardsSkeleton() {
 export function CreditCardsExplorer({
   initialBankSlug = "",
   initialCardTypeSlug = "",
+  selectedCategories = [],
+  onCategoriesChange,
+  recommendation = null,
+  onClearRecommendation,
 }: {
   initialBankSlug?: string;
   initialCardTypeSlug?: string;
+  selectedCategories?: string[];
+  onCategoriesChange?: (categories: string[]) => void;
+  recommendation?: CreditCardRecommendation | null;
+  onClearRecommendation?: () => void;
 }) {
   const router = useRouter();
   const [cards, setCards] = useState<CreditCardProduct[]>([]);
@@ -165,16 +250,25 @@ export function CreditCardsExplorer({
   const [error, setError] = useState("");
   const [bankSearch, setBankSearch] = useState("");
   const [selectedBanks, setSelectedBanks] = useState<string[]>([]);
+  const [activeCategories, setActiveCategories] =
+    useState<string[]>(selectedCategories);
   const [selectedCardTypes, setSelectedCardTypes] = useState<string[]>([]);
   const [selectedFees, setSelectedFees] = useState<string[]>([]);
   const [selectedIncome, setSelectedIncome] = useState<string[]>([]);
   const [selectedRewards, setSelectedRewards] = useState<string[]>([]);
   const [selectedNetworks, setSelectedNetworks] = useState<string[]>([]);
+  const [selectedCreditScores, setSelectedCreditScores] = useState<string[]>([]);
   const [loungeOnly, setLoungeOnly] = useState(false);
   const [featuredOnly, setFeaturedOnly] = useState(false);
+  const [welcomeBenefitsOnly, setWelcomeBenefitsOnly] = useState(false);
+  const [sortBy, setSortBy] = useState("priority");
   const [compareIds, setCompareIds] = useState<string[]>([]);
   const [compareOpen, setCompareOpen] = useState(false);
   const [filtersOpen, setFiltersOpen] = useState(false);
+
+  useEffect(() => {
+    setActiveCategories(selectedCategories);
+  }, [selectedCategories]);
 
   useEffect(() => {
     let active = true;
@@ -252,6 +346,14 @@ export function CreditCardsExplorer({
   const filteredCards = useMemo(
     () =>
       cards.filter((card) => {
+        if (
+          activeCategories.length &&
+          !activeCategories.some((category) =>
+            getDerivedCategories(card).includes(category),
+          )
+        ) {
+          return false;
+        }
         if (selectedBanks.length && !selectedBanks.includes(card.bankName)) {
           return false;
         }
@@ -287,40 +389,111 @@ export function CreditCardsExplorer({
         }
         if (loungeOnly && !card.loungeAccessAvailable) return false;
         if (featuredOnly && !card.featured) return false;
+        if (welcomeBenefitsOnly && !String(card.welcomeBenefits || "").trim()) {
+          return false;
+        }
+        if (selectedCreditScores.length) {
+          const requirement = Number(card.creditScoreRequirement || 700);
+          const scoreMatches = selectedCreditScores.some((bucket) => {
+            if (bucket === "Up to 700") return requirement <= 700;
+            if (bucket === "701 - 749") {
+              return requirement >= 701 && requirement <= 749;
+            }
+            return requirement >= 750;
+          });
+          if (!scoreMatches) return false;
+        }
+        if (
+          recommendation?.monthlyIncome &&
+          Number(card.minimumIncome || 0) > recommendation.monthlyIncome
+        ) {
+          return false;
+        }
+        if (
+          recommendation?.creditScore &&
+          Number(card.creditScoreRequirement || 700) > recommendation.creditScore
+        ) {
+          return false;
+        }
+        if (
+          recommendation &&
+          ["self-employed", "business-owner"].includes(
+            recommendation.employmentType,
+          ) &&
+          !getDerivedCategories(card).includes("Self-Employed")
+        ) {
+          return false;
+        }
+        if (
+          recommendation?.employmentType === "student" &&
+          !getDerivedCategories(card).includes("Beginners")
+        ) {
+          return false;
+        }
         return true;
       }),
     [
+      activeCategories,
       cards,
       featuredOnly,
       loungeOnly,
+      recommendation,
       selectedBanks,
       selectedCardTypes,
+      selectedCreditScores,
       selectedFees,
       selectedIncome,
       selectedNetworks,
       selectedRewards,
+      welcomeBenefitsOnly,
     ],
   );
+
+  const sortedCards = useMemo(() => {
+    const next = [...filteredCards];
+    if (sortBy === "fee-low") {
+      return next.sort((a, b) => Number(a.annualFee || 0) - Number(b.annualFee || 0));
+    }
+    if (sortBy === "fee-high") {
+      return next.sort((a, b) => Number(b.annualFee || 0) - Number(a.annualFee || 0));
+    }
+    if (sortBy === "income-low") {
+      return next.sort(
+        (a, b) => Number(a.minimumIncome || 0) - Number(b.minimumIncome || 0),
+      );
+    }
+    return next.sort(
+      (a, b) =>
+        Number(b.featured || false) - Number(a.featured || false) ||
+        Number(a.priorityOrder || 9999) - Number(b.priorityOrder || 9999),
+    );
+  }, [filteredCards, sortBy]);
 
   const activeFilterCount = useMemo(
     () =>
       selectedBanks.length +
+      activeCategories.length +
       selectedCardTypes.length +
       selectedFees.length +
       selectedIncome.length +
       selectedRewards.length +
       selectedNetworks.length +
+      selectedCreditScores.length +
       (loungeOnly ? 1 : 0) +
-      (featuredOnly ? 1 : 0),
+      (featuredOnly ? 1 : 0) +
+      (welcomeBenefitsOnly ? 1 : 0),
     [
+      activeCategories,
       featuredOnly,
       loungeOnly,
       selectedBanks,
       selectedCardTypes,
+      selectedCreditScores,
       selectedFees,
       selectedIncome,
       selectedNetworks,
       selectedRewards,
+      welcomeBenefitsOnly,
     ],
   );
 
@@ -344,16 +517,29 @@ export function CreditCardsExplorer({
     );
   };
 
+  const toggleCategory = (value: string) => {
+    const next = activeCategories.includes(value)
+      ? activeCategories.filter((item) => item !== value)
+      : [...activeCategories, value];
+    setActiveCategories(next);
+    onCategoriesChange?.(next);
+  };
+
   const clearFilters = () => {
     setSelectedBanks([]);
+    setActiveCategories([]);
+    onCategoriesChange?.([]);
     setSelectedCardTypes([]);
     setSelectedFees([]);
     setSelectedIncome([]);
     setSelectedRewards([]);
     setSelectedNetworks([]);
+    setSelectedCreditScores([]);
     setLoungeOnly(false);
     setFeaturedOnly(false);
+    setWelcomeBenefitsOnly(false);
     setBankSearch("");
+    onClearRecommendation?.();
   };
 
   const handleDetails = async (card: CreditCardProduct) => {
@@ -536,6 +722,14 @@ export function CreditCardsExplorer({
       </div>
 
       <FilterGroup
+        title="Category"
+        options={Array.from(
+          new Set([...categoryOptions, ...(filters.categories || [])]),
+        )}
+        selected={activeCategories}
+        onToggle={toggleCategory}
+      />
+      <FilterGroup
         title="Card Type"
         options={filters.cardTypes}
         selected={selectedCardTypes}
@@ -575,6 +769,18 @@ export function CreditCardsExplorer({
           toggleSelected(value, selectedNetworks, setSelectedNetworks)
         }
       />
+      <FilterGroup
+        title="Credit Score Needed"
+        options={creditScoreOptions}
+        selected={selectedCreditScores}
+        onToggle={(value) =>
+          toggleSelected(
+            value,
+            selectedCreditScores,
+            setSelectedCreditScores,
+          )
+        }
+      />
 
       <label className="flex cursor-pointer items-center gap-2.5 border-t border-[#f0f4f8] pt-4 text-[12px] font-medium text-[#4a5568]">
         <input
@@ -594,16 +800,15 @@ export function CreditCardsExplorer({
         />
         <span>Featured Cards</span>
       </label>
-
-      {["Credit Score", "Welcome Benefits"].map((header) => (
-        <div
-          key={header}
-          className="flex cursor-pointer items-center justify-between border-t border-[#f0f4f8] pt-4 text-[13px] font-bold text-[#1a1d25]"
-        >
-          <span>{header}</span>
-          <ChevronDown className="h-4 w-4 text-[#7a869a]" />
-        </div>
-      ))}
+      <label className="flex cursor-pointer items-center gap-2.5 text-[12px] font-medium text-[#4a5568]">
+        <input
+          type="checkbox"
+          checked={welcomeBenefitsOnly}
+          onChange={(event) => setWelcomeBenefitsOnly(event.target.checked)}
+          className="rounded border-[#cbd5e1] text-[#005ca8] focus:ring-0"
+        />
+        <span>Welcome Benefits</span>
+      </label>
     </div>
   );
 
@@ -644,7 +849,7 @@ export function CreditCardsExplorer({
                 onClick={() => setFiltersOpen(false)}
                 className="h-11 w-full rounded-xl bg-[#005ca8] text-[13px] font-extrabold text-white shadow-[0_10px_24px_rgba(0,92,168,0.22)]"
               >
-                Show {filteredCards.length} Cards
+                Show {sortedCards.length} Cards
               </button>
             </div>
           </aside>
@@ -656,12 +861,47 @@ export function CreditCardsExplorer({
           </aside>
 
           <div className="min-w-0 space-y-4">
+            {recommendation || activeCategories.length ? (
+              <motion.div
+                initial={{ opacity: 0, y: -6 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="flex flex-wrap items-center gap-2 rounded-xl border border-[#cfe5f7] bg-[#eff8ff] px-4 py-3"
+              >
+                <span className="text-[11px] font-extrabold uppercase tracking-[0.08em] text-[#526b80]">
+                  Showing
+                </span>
+                {recommendation ? (
+                  <button
+                    type="button"
+                    onClick={onClearRecommendation}
+                    className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[11px] font-extrabold text-[#005ca8] ring-1 ring-[#cfe5f7]"
+                  >
+                    ₹{recommendation.monthlyIncome.toLocaleString("en-IN")} income
+                    {recommendation.creditScore
+                      ? ` · ${recommendation.creditScore}+ score`
+                      : ""}
+                    <X className="h-3 w-3" />
+                  </button>
+                ) : null}
+                {activeCategories.map((category) => (
+                  <button
+                    key={category}
+                    type="button"
+                    onClick={() => toggleCategory(category)}
+                    className="inline-flex items-center gap-1.5 rounded-full bg-[#005ca8] px-3 py-1.5 text-[11px] font-extrabold text-white"
+                  >
+                    {category}
+                    <X className="h-3 w-3" />
+                  </button>
+                ))}
+              </motion.div>
+            ) : null}
             <div className="flex flex-col justify-between gap-3 rounded-xl border border-[#e2edf6] bg-white px-5 py-3 sm:flex-row sm:items-center">
               <div className="flex min-w-0 items-center justify-between gap-3 sm:flex-1">
                 <span className="text-[14px] font-bold text-[#1a1d25]">
                   {loading
                     ? "Loading cards..."
-                    : `${filteredCards.length} Cards Found`}
+                    : `${sortedCards.length} Cards Found`}
                 </span>
                 <button
                   type="button"
@@ -679,10 +919,20 @@ export function CreditCardsExplorer({
               </div>
               <div className="flex flex-wrap items-center gap-2 text-[12px]">
                 <span className="font-medium text-[#7a869a]">Sort By:</span>
-                <div className="flex cursor-pointer items-center gap-2 rounded-lg border border-[#cbd5e1] bg-white px-3 py-1.5 font-bold">
-                  <span>Priority</span>
-                  <ChevronDown className="h-3.5 w-3.5 text-[#4a5568]" />
-                </div>
+                <label className="relative">
+                  <span className="sr-only">Sort credit cards</span>
+                  <select
+                    value={sortBy}
+                    onChange={(event) => setSortBy(event.target.value)}
+                    className="h-9 appearance-none rounded-lg border border-[#cbd5e1] bg-white py-1.5 pl-3 pr-8 text-[12px] font-bold outline-none focus:border-[#005ca8]"
+                  >
+                    <option value="priority">Priority</option>
+                    <option value="fee-low">Annual fee: Low to high</option>
+                    <option value="fee-high">Annual fee: High to low</option>
+                    <option value="income-low">Income required: Low to high</option>
+                  </select>
+                  <ChevronDown className="pointer-events-none absolute right-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[#4a5568]" />
+                </label>
               </div>
             </div>
 
@@ -694,25 +944,26 @@ export function CreditCardsExplorer({
 
             {loading ? (
               <CardsSkeleton />
-            ) : filteredCards.length ? (
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                {filteredCards.map((card, cardIndex) => {
+            ) : sortedCards.length ? (
+              <motion.div layout className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                <AnimatePresence mode="popLayout">
+                {sortedCards.map((card, cardIndex) => {
                   const cardId = getCardId(card);
                   const benefits = getCardBenefits(card);
                   const tags = getCardTags(card);
                   return (
                     <motion.article
                       key={cardId || card.name}
-                      initial={{ opacity: 0.96, y: 14 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      whileHover={{ y: -4 }}
-                      viewport={{ once: true, amount: 0.12 }}
+                      layout
+                      initial={{ opacity: 0, scale: 0.975 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.97 }}
                       transition={{
                         duration: 0.45,
                         delay: Math.min(cardIndex * 0.035, 0.18),
                         ease: [0.22, 1, 0.36, 1],
                       }}
-                      className="flex flex-col justify-between rounded-2xl border border-[#e2edf6] bg-white p-4 shadow-xs transition-shadow hover:shadow-sm"
+                      className="flex flex-col justify-between rounded-2xl border border-[#e2edf6] bg-white p-4 shadow-xs"
                     >
                       <div>
                         <div className="flex h-7 items-center justify-between gap-2">
@@ -853,7 +1104,8 @@ export function CreditCardsExplorer({
                     </motion.article>
                   );
                 })}
-              </div>
+                </AnimatePresence>
+              </motion.div>
             ) : (
               <div className="rounded-xl border border-[#e2edf6] bg-white p-8 text-center">
                 <p className="text-[15px] font-extrabold text-[#1a1d25]">

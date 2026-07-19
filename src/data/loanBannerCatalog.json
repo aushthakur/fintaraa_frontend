@@ -1,0 +1,227 @@
+[
+  {
+    "slug": "personal-loan",
+    "name": "Personal Loan",
+    "family": "personal-digital",
+    "eyebrow": "FAST, FLEXIBLE FINANCE",
+    "title": "Personal Loan, Built Around Your Plans",
+    "description": "Handle milestones, expenses or urgent needs with partner-backed offers matched to your profile.",
+    "benefits": ["Quick eligibility", "Flexible tenure", "Secure journey"]
+  },
+  {
+    "slug": "education-loan",
+    "name": "Education Loan",
+    "family": "education-future",
+    "eyebrow": "INVEST IN YOUR FUTURE",
+    "title": "Fund the Future You're Working For",
+    "description": "Compare education finance for tuition, living costs and study essentials in India or abroad.",
+    "benefits": ["Course-based funding", "Flexible repayment", "Document support"]
+  },
+  {
+    "slug": "vehicle-loan",
+    "name": "Vehicle Loan",
+    "family": "vehicle-mobility",
+    "eyebrow": "FINANCE YOUR MOBILITY",
+    "title": "Drive Forward with the Right Finance",
+    "description": "Explore vehicle finance aligned with your profile, budget and purchase value.",
+    "benefits": ["New or used vehicles", "Flexible tenure", "Partner options"]
+  },
+  {
+    "slug": "gold-loan",
+    "name": "Gold Loan",
+    "family": "secured-assets",
+    "eyebrow": "VALUE WITHIN REACH",
+    "title": "Unlock Value from Your Gold",
+    "description": "Access funds against eligible gold through a secure, transparent and guided process.",
+    "benefits": ["Value-based offers", "Secure process", "Simple documents"]
+  },
+  {
+    "slug": "loan-against-car",
+    "name": "Loan Against Car",
+    "family": "vehicle-mobility",
+    "eyebrow": "USE YOUR CAR'S VALUE",
+    "title": "Put Your Car's Value to Work",
+    "description": "Explore funding against your eligible car while keeping your financial plans moving.",
+    "benefits": ["Car-value based", "Flexible usage", "Guided valuation"]
+  },
+  {
+    "slug": "car-loan",
+    "name": "Car Loan",
+    "family": "vehicle-mobility",
+    "eyebrow": "YOUR NEXT DRIVE STARTS HERE",
+    "title": "Bring Home Your Next Car",
+    "description": "Compare car finance across trusted partners with repayment options suited to your budget.",
+    "benefits": ["On-road funding", "Flexible tenure", "Quick comparison"]
+  },
+  {
+    "slug": "loan-against-car-value",
+    "name": "Loan Against Car Value",
+    "family": "vehicle-mobility",
+    "eyebrow": "MAKE YOUR CAR WORK HARDER",
+    "title": "Turn Car Equity into Ready Funds",
+    "description": "Use the assessed value of your eligible vehicle to access funds for important goals.",
+    "benefits": ["Profile-based limit", "Simple valuation", "Secure support"]
+  },
+  {
+    "slug": "instant-loan",
+    "name": "Instant Loan",
+    "family": "personal-digital",
+    "eyebrow": "WHEN TIME MATTERS",
+    "title": "Instant Loan Options, Without the Wait",
+    "description": "Check profile-matched options through a quick digital journey designed for urgent needs.",
+    "benefits": ["Fast eligibility", "Digital journey", "Clear next steps"]
+  },
+  {
+    "slug": "credit-score-loan",
+    "name": "Credit Score Loan",
+    "family": "personal-digital",
+    "eyebrow": "PROFILE-MATCHED OPTIONS",
+    "title": "Loan Offers Matched to Your Credit Profile",
+    "description": "Understand eligibility and compare lending options aligned with your credit profile.",
+    "benefits": ["Profile matching", "Partner comparison", "Guided support"]
+  },
+  {
+    "slug": "loan-against-property",
+    "name": "Loan Against Property",
+    "family": "home-property",
+    "eyebrow": "PROPERTY-BACKED FINANCE",
+    "title": "Make Your Property Power Bigger Plans",
+    "description": "Unlock eligible property value for business, education or major personal requirements.",
+    "benefits": ["Property-based limit", "Longer tenure", "Expert guidance"]
+  },
+  {
+    "slug": "renovation-loan",
+    "name": "Renovation Loan",
+    "family": "home-property",
+    "eyebrow": "UPGRADE YOUR SPACE",
+    "title": "Refresh Your Home, Finance the Upgrade",
+    "description": "Plan repairs, interiors and improvements with finance aligned to your project estimate.",
+    "benefits": ["Project-based funding", "Flexible tenure", "Simple planning"]
+  },
+  {
+    "slug": "working-capital-loan",
+    "name": "Working Capital Loan",
+    "family": "business-cashflow",
+    "eyebrow": "SMOOTHER BUSINESS CASH FLOW",
+    "title": "Keep Your Business Moving Every Day",
+    "description": "Support inventory, payroll and daily operations with working-capital options built for business.",
+    "benefits": ["Turnover-based options", "Flexible usage", "Quick comparison"]
+  },
+  {
+    "slug": "loan-against-security",
+    "name": "Loan Against Security",
+    "family": "secured-assets",
+    "eyebrow": "LIQUIDITY WITHOUT EXITING",
+    "title": "Stay Invested, Access Funds",
+    "description": "Explore funding against eligible investments and securities while retaining long-term potential.",
+    "benefits": ["Security-based limit", "Portfolio continuity", "Secure process"]
+  },
+  {
+    "slug": "machinery-loan",
+    "name": "Machinery Loan",
+    "family": "industrial-machinery",
+    "eyebrow": "EQUIP YOUR NEXT STAGE",
+    "title": "Power Growth with the Right Machinery",
+    "description": "Finance eligible equipment and production assets with options aligned to your invoice and plan.",
+    "benefits": ["Invoice-based funding", "Business-friendly tenure", "Guided process"]
+  },
+  {
+    "slug": "home-loan",
+    "name": "Home Loan",
+    "family": "home-property",
+    "eyebrow": "YOUR HOME, YOUR MILESTONE",
+    "title": "A Better Route to Your Dream Home",
+    "description": "Compare home-loan options from trusted partners with guidance from eligibility to disbursal.",
+    "benefits": ["Competitive options", "Longer tenure", "End-to-end support"]
+  },
+  {
+    "slug": "business-loan",
+    "name": "Business Loan",
+    "family": "business-cashflow",
+    "eyebrow": "CAPITAL FOR YOUR NEXT MOVE",
+    "title": "Move Your Business Forward",
+    "description": "Explore finance for expansion, inventory, marketing and the opportunities ahead.",
+    "benefits": ["Growth-focused funding", "Flexible tenure", "Partner comparison"]
+  },
+  {
+    "slug": "dod-loan",
+    "name": "DOD Loan",
+    "family": "business-cashflow",
+    "eyebrow": "DRAW FUNDS AS NEEDED",
+    "title": "Flexible Credit for Business Priorities",
+    "description": "Explore a draw-on-demand limit designed to support changing business requirements.",
+    "benefits": ["Need-based drawdown", "Limit assessment", "Cash-flow support"]
+  },
+  {
+    "slug": "od-loan",
+    "name": "OD Loan",
+    "family": "business-cashflow",
+    "eyebrow": "READY CREDIT FOR CASH FLOW",
+    "title": "Stay Ready for Changing Business Needs",
+    "description": "Compare overdraft options that help manage short-term gaps and daily operating cycles.",
+    "benefits": ["Flexible withdrawals", "Working limit", "Business continuity"]
+  },
+  {
+    "slug": "industrial-loan",
+    "name": "Industrial Loan",
+    "family": "industrial-machinery",
+    "eyebrow": "BUILD. PRODUCE. EXPAND.",
+    "title": "Finance Your Next Industrial Milestone",
+    "description": "Support capacity, infrastructure and production growth with project-aligned finance.",
+    "benefits": ["Project-based options", "Asset expansion", "Expert assistance"]
+  },
+  {
+    "slug": "commercial-purchases-loan",
+    "name": "Commercial Purchases Loan",
+    "family": "industrial-machinery",
+    "eyebrow": "ASSETS THAT ENABLE GROWTH",
+    "title": "Finance What Your Business Needs Next",
+    "description": "Explore funding for eligible commercial assets, equipment and strategic purchases.",
+    "benefits": ["Asset-based funding", "Flexible structure", "Partner options"]
+  },
+  {
+    "slug": "balance-transfer-loan",
+    "name": "Balance Transfer Loan",
+    "family": "home-property",
+    "eyebrow": "RETHINK YOUR REPAYMENT",
+    "title": "Switch Your Loan with More Clarity",
+    "description": "Compare transfer options that may improve rates, tenure or monthly repayment comfort.",
+    "benefits": ["Rate comparison", "Tenure review", "Transfer guidance"]
+  },
+  {
+    "slug": "top-up-loan",
+    "name": "Top Up Loan",
+    "family": "home-property",
+    "eyebrow": "MORE FROM YOUR EXISTING LOAN",
+    "title": "Top Up Funds for Your Next Priority",
+    "description": "Check additional funding options linked to an eligible existing loan and repayment profile.",
+    "benefits": ["Existing-loan based", "Flexible use", "Simple assessment"]
+  },
+  {
+    "slug": "two-wheeler-loan",
+    "name": "Two Wheeler Loan",
+    "family": "vehicle-mobility",
+    "eyebrow": "EVERYDAY MOBILITY MADE EASIER",
+    "title": "Put Your Next Ride Within Reach",
+    "description": "Compare two-wheeler finance for daily travel, convenience and new possibilities.",
+    "benefits": ["Vehicle-value based", "Flexible EMI", "Quick process"]
+  },
+  {
+    "slug": "used-car-loan",
+    "name": "Used Car Loan",
+    "family": "vehicle-mobility",
+    "eyebrow": "SMART FINANCE FOR A SMART BUY",
+    "title": "Choose the Car. Compare the Finance.",
+    "description": "Explore funding for an eligible pre-owned car based on valuation, profile and budget.",
+    "benefits": ["Used-car valuation", "Flexible tenure", "Partner comparison"]
+  },
+  {
+    "slug": "agriculture-loan",
+    "name": "Agriculture Loan",
+    "family": "agriculture-growth",
+    "eyebrow": "FROM SEED TO HARVEST",
+    "title": "Finance Growth Across the Farm Cycle",
+    "description": "Explore agriculture finance for inputs, equipment and seasonal working needs.",
+    "benefits": ["Farm-profile based", "Seasonal support", "Guided application"]
+  }
+]

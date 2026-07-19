@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { AppDownloadBanner } from "@/components/common/layout/Footer";
 import { FaqAccordion } from "@/components/common/FaqAccordion";
+import { PremiumServiceTimeline } from "./PremiumServiceTimeline";
 
 export function ServiceStatusCard({
   title,
@@ -68,52 +69,11 @@ export function ServiceStatusCard({
   );
 }
 
-const timelineSteps = [
-  "Inquiry Submitted",
-  "Expert Assigned",
-  "Document Review",
-  "Processing",
-  "Completed",
-];
-
 export function ServiceTimeline({ title }: { title: string }) {
   return (
     <section className="px-4 pb-8 md:px-6 lg:px-8">
-      <div className="mx-auto max-w-9xl rounded-xl border border-[#d7dfe8] bg-white p-9">
-        <h2 className="text-[28px] font-extrabold tracking-[-0.01em] text-[#005ca8]">
-          {title}
-        </h2>
-
-        <div className="mt-10 overflow-x-auto pb-2">
-          <div className="grid min-w-140 grid-cols-5 items-start">
-            {timelineSteps.map((label, index) => (
-              <div key={label} className="relative text-center">
-                {/* Connector line */}
-                {index < timelineSteps.length - 1 && (
-                  <div
-                    className={`absolute left-1/2 top-5.5 h-0.75 w-full ${
-                      index < 2 ? "bg-[#005ca8]" : "bg-[#daeeff]"
-                    }`}
-                  />
-                )}
-                {/* Step circle */}
-                <span
-                  className={`relative z-10 mx-auto flex h-11 w-11 items-center justify-center rounded-full text-[15px] font-extrabold ${
-                    index < 2
-                      ? "bg-[#005ca8] text-white"
-                      : "bg-[#daeeff] text-[#005ca8]"
-                  }`}
-                >
-                  {index + 1}
-                </span>
-                {/* Step label */}
-                <p className="mt-4 text-[13px] font-bold leading-[1.45] text-[#374151]">
-                  {label}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
+      <div className="mx-auto max-w-9xl">
+        <PremiumServiceTimeline title={title} activeStep={2} />
       </div>
     </section>
   );

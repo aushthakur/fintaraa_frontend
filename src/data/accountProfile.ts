@@ -1,6 +1,7 @@
 import {
   Archive,
   BarChart2,
+  Bell,
   FileText,
   Folder,
   Gift,
@@ -63,6 +64,12 @@ export const accountMenuSections: AccountMenuSection[] = [
   {
     title: "Preferences",
     items: [
+      {
+        label: "Notifications",
+        slug: "notifications",
+        icon: Bell,
+        description: "Review application, document, and account alerts.",
+      },
       {
         label: "Notification preferences",
         slug: "notification-preferences",

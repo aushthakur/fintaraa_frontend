@@ -213,9 +213,9 @@ export function CibilBandsSteps() {
             </div>
           </div>
 
-          <div className="relative mt-10">
-            <div className="absolute left-[16.5%] right-[16.5%] top-7 hidden h-px bg-[#bfd9e8] md:block" />
-            <div className="relative grid gap-5 md:grid-cols-3">
+          <div className="relative mt-7">
+            <div className="absolute left-[16.5%] right-[16.5%] top-5 hidden h-px bg-[#bfd9e8] md:block" />
+            <div className="relative grid gap-3 md:grid-cols-3">
               {steps.map((item, index) => {
                 const Icon = item.icon;
                 return (
@@ -223,30 +223,32 @@ export function CibilBandsSteps() {
                     key={item.number}
                     initial={{ opacity: 0.95, y: 16 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    whileHover={{ y: -4 }}
+                    whileHover={{ y: -2 }}
                     viewport={{ once: true, amount: 0.35 }}
                     transition={{
                       duration: 0.5,
                       delay: index * 0.08,
                       ease: [0.22, 1, 0.36, 1],
                     }}
-                    className="relative rounded-lg border border-[#d9e7f0] bg-white p-5 md:p-6"
+                    className="relative rounded-lg border border-[#d9e7f0] bg-white p-4"
                   >
-                    <div className="flex items-center justify-between gap-4">
-                      <span className="flex h-14 w-14 items-center justify-center rounded-lg border border-[#d6e6f0] bg-white text-[16px] font-bold text-[#075cde]">
+                    <div className="flex items-center gap-3">
+                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-[#d6e6f0] bg-white text-[13px] font-bold text-[#075cde]">
                         {item.number}
                       </span>
-                      <span className={`flex h-11 w-11 items-center justify-center rounded-lg ${item.surface} ${item.color}`}>
-                        <Icon className="h-5 w-5" aria-hidden="true" />
+                      <div className="min-w-0 flex-1">
+                        <p className={`text-[9px] font-bold uppercase ${item.color}`}>
+                          {item.eyebrow}
+                        </p>
+                        <h3 className="mt-1 text-[15px] font-bold leading-snug text-[#102f49]">
+                          {item.title}
+                        </h3>
+                      </div>
+                      <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${item.surface} ${item.color}`}>
+                        <Icon className="h-4.5 w-4.5" aria-hidden="true" />
                       </span>
                     </div>
-                    <p className={`mt-6 text-[10px] font-bold uppercase ${item.color}`}>
-                      {item.eyebrow}
-                    </p>
-                    <h3 className="mt-2 text-[17px] font-bold leading-snug text-[#102f49]">
-                      {item.title}
-                    </h3>
-                    <p className="mt-2 text-[13px] font-medium leading-6 text-[#60788b]">
+                    <p className="mt-3 text-[12px] font-medium leading-5 text-[#60788b]">
                       {item.text}
                     </p>
                   </motion.article>

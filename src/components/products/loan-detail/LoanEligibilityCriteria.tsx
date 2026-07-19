@@ -35,10 +35,21 @@ const eligibilityItems = [
   },
 ];
 
-export function LoanEligibilityCriteria() {
+export function LoanEligibilityCriteria({
+  embedded = false,
+}: {
+  embedded?: boolean;
+}) {
   return (
-    <section className="border border-[#e2edf8] bg-[#fbfdff] p-5 sm:p-6">
-      <div className="max-w-3xl">
+    <section
+      className={
+        embedded
+          ? ""
+          : "border border-[#e2edf8] bg-[#fbfdff] p-5 sm:p-6"
+      }
+    >
+      {!embedded ? (
+        <div className="max-w-3xl">
         <p className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#00529b]">
           Applicant fit
         </p>
@@ -49,15 +60,16 @@ export function LoanEligibilityCriteria() {
           Eligibility depends on profile quality, income, documents, credit
           history, and partner policy.
         </p>
-      </div>
+        </div>
+      ) : null}
 
-      <div className="mt-5 grid gap-3 md:grid-cols-2">
+      <div className={`${embedded ? "" : "mt-5"} grid gap-3 md:grid-cols-2`}>
         {eligibilityItems.map(({ title, description, icon: Icon }) => (
           <div
             key={title}
-            className="flex gap-3 border border-[#e5edf5] bg-white p-4"
+            className="flex gap-3 rounded-2xl border border-[#dfe8ef] bg-white p-4"
           >
-            <span className="flex h-10 w-10 shrink-0 items-center justify-center bg-[#e9f6ff] text-[#00529b]">
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#e9f6ff] text-[#00529b]">
               <Icon className="h-4.5 w-4.5" />
             </span>
             <div>

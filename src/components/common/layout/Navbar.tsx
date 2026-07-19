@@ -19,7 +19,6 @@ import {
   Bell,
   Mail,
   Menu,
-  Phone,
   Search,
   Sparkles,
   UserRound,
@@ -28,23 +27,38 @@ import {
   ShieldCheck,
   Clock3,
   CreditCard,
+  BriefcaseBusiness,
   FileText,
   Landmark,
+  LayoutDashboard,
+  LogOut,
+  PencilLine,
 } from "lucide-react";
-import { getAuthToken, getAuthType } from "@/hooks/authStorage";
+import {
+  clearAuthSession,
+  getAuthToken,
+  getAuthType,
+} from "@/hooks/authStorage";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { useProductCatalog } from "@/hooks/useProductCatalog";
 import { AUTH_CHANGED_EVENT } from "@/lib/authEvents";
 import {
-  productHref as resolveProductHref,
   isLoanProduct,
   isInsuranceProduct,
 } from "@/lib/productRouting";
 import { buildLoginRedirectHref } from "@/lib/loginRedirect";
 import {
+  insuranceProductCatalog,
+  loanProductCatalog,
+  type ProductCatalogItem,
+} from "@/data/productCatalog";
+import {
   fetchPartnerProfile,
   getCachedPartnerProfile,
   type PartnerProfile,
 } from "@/services/partner";
+import { LogoutConfirmationModal } from "@/components/account/LogoutConfirmationModal";
+import { fetchNotificationStats } from "@/services/notifications";
 
 type NavLink = {
   label: string;
@@ -62,106 +76,88 @@ type NavItem = NavLink & {
   sections?: NavSection[];
 };
 
-const loanSections: NavSection[] = [
-  {
-    title: "Popular Loans",
-    subtitle: "High intent products for quick applications.",
-    links: [
-      {
-        label: "Personal Loan",
-        href: resolveProductHref("Personal Loan"),
-        description: "Quick funds for planned or urgent needs.",
-      },
-      {
-        label: "Home Loan",
-        href: resolveProductHref("Home Loan"),
-        description: "Finance your home with assisted support.",
-      },
-      {
-        label: "Business Loan",
-        href: resolveProductHref("Business Loan"),
-        description: "Working capital and growth funding.",
-      },
-      {
-        label: "Vehicle Loan",
-        href: resolveProductHref("Vehicle Loan"),
-        description: "Loans for new or used vehicles.",
-      },
-    ],
-  },
-  {
-    title: "Secured Loans",
-    subtitle: "Asset-backed loan options.",
-    links: [
-      "Loan Against Property",
-      "Gold Loan",
-      "Loan Against Security",
-      "Car Loan",
-    ].map((label) => ({
-      label,
-      href: resolveProductHref(label),
-      description: "Compare secured options and rates.",
-    })),
-  },
-  {
-    title: "More Loans",
-    subtitle: "Specific needs and assisted loan journeys.",
-    links: [
-      "Two Wheeler Loan",
-      "Education Loan",
-      "Instant Loan",
-      "Credit Score Loan",
-    ].map((label) => ({
-      label,
-      href: resolveProductHref(label),
-      description: "Apply with eligibility and document help.",
-    })),
-  },
+const productLinks = (products: ProductCatalogItem[]): NavLink[] =>
+  products.map((product) => ({
+    label: product.name,
+    href: `/products/${product.slug}`,
+  }));
+
+const groupedSection = (
+  products: ProductCatalogItem[],
+  group: string,
+  title: string,
+  subtitle: string,
+): NavSection => ({
+  title,
+  subtitle,
+  links: productLinks(products.filter((product) => product.group === group)),
+});
+
+const buildLoanSections = (products: ProductCatalogItem[]): NavSection[] => [
+  groupedSection(
+    products,
+    "personal",
+    "Personal & Purpose",
+    "Flexible finance for personal milestones.",
+  ),
+  groupedSection(
+    products,
+    "secured",
+    "Home & Secured",
+    "Property and asset-backed loan options.",
+  ),
+  groupedSection(
+    products,
+    "business",
+    "Business & Industry",
+    "Capital for operations, assets and expansion.",
+  ),
+  groupedSection(
+    products,
+    "vehicle",
+    "Vehicle Finance",
+    "New, used and vehicle-backed options.",
+  ),
 ];
 
-const insuranceSections: NavSection[] = [
-  {
-    title: "Life & Health",
-    subtitle: "Protect family, health, and income.",
-    links: ["Health Insurance", "Term Insurance", "Life Insurance"].map(
-      (label) => ({
-        label,
-        href: resolveProductHref(label),
-        description: "Compare plans and coverage details.",
-      }),
-    ),
-  },
-  {
-    title: "Vehicle & Travel",
-    subtitle: "Cover movement and mobility risks.",
-    links: ["Car Insurance", "Bike Insurance", "Travel Insurance"].map(
-      (label) => ({
-        label,
-        href: resolveProductHref(label),
-        description: "Protect journeys, vehicles, and trips.",
-      }),
-    ),
-  },
-  {
-    title: "Property & Business",
-    subtitle: "Cover assets and business continuity.",
-    links: [
-      "Home Insurance",
-      "Property Insurance",
-      "Shop Insurance",
-      "Stock Insurance",
-    ].map((label) => ({
-      label,
-      href: resolveProductHref(label),
-      description: "Coverage for assets and business risks.",
-    })),
-  },
+const buildInsuranceSections = (
+  products: ProductCatalogItem[],
+): NavSection[] => [
+  groupedSection(
+    products,
+    "life-health",
+    "Life, Health & Future",
+    "Protection for health, income and long-term goals.",
+  ),
+  groupedSection(
+    products,
+    "motor",
+    "Motor & Travel",
+    "Cover vehicles, journeys and travel risks.",
+  ),
+  groupedSection(
+    products,
+    "property",
+    "Property & Business",
+    "Protection for premises, stock and machinery.",
+  ),
 ];
 
-const navItems = [
+const createNavItems = (
+  loans: ProductCatalogItem[],
+  insurance: ProductCatalogItem[],
+) => [
   { label: "CIBIL Score", href: "/cibil-score" },
-  { label: "Loans", href: "/products", sections: loanSections },
-  { label: "Insurance", href: "/products", sections: insuranceSections },
+  {
+    label: "Loans",
+    href: "/products?category=Loans",
+    sections: buildLoanSections(loans),
+  },
+  {
+    label: "Insurance",
+    href: "/products?category=Insurance",
+    sections: buildInsuranceSections(insurance),
+  },
   {
     label: "Credit Cards",
     href: "/credit-cards",
@@ -276,6 +272,11 @@ const navItems = [
   },
 ] satisfies NavItem[];
 
+const defaultNavItems = createNavItems(
+  loanProductCatalog,
+  insuranceProductCatalog,
+);
+
 type StaticSearchEntry = {
   label: string;
   href: string;
@@ -283,51 +284,22 @@ type StaticSearchEntry = {
   keywords?: string[];
 };
 
-const productSearchEntries: StaticSearchEntry[] = [
-  "Personal Loan",
-  "Education Loan",
-  "Vehicle Loan",
-  "Gold Loan",
-  "Loan Against Car",
-  "Instant Loan",
-  "Loan Against Property",
-  "Renovation Loan",
-  "Working Capital Loan",
-  "Loan Against Security",
-  "Machinery Loan",
-  "Home Loan",
-  "Business Loan",
-  "DOD Loan",
-  "OD Loan",
-  "Industrial Loan",
-  "Commercial Purchases Loan",
-].map((label) => ({
-  label,
-  href: resolveProductHref(label),
-  category: "Loans",
-  keywords: ["loan", "finance", "eligibility", label],
-}));
+const productSearchEntries: StaticSearchEntry[] = loanProductCatalog.map(
+  (product) => ({
+    label: product.name,
+    href: `/products/${product.slug}`,
+    category: "Loans",
+    keywords: ["loan", "finance", "eligibility", product.name],
+  }),
+);
 
-const insuranceSearchEntries: StaticSearchEntry[] = [
-  "Life Insurance",
-  "Health Insurance",
-  "Vehicle Insurance",
-  "Car Insurance",
-  "Bike Insurance",
-  "Property Insurance",
-  "Home Insurance",
-  "Stock Insurance",
-  "Machinery Insurance",
-  "Term Insurance",
-  "Travel Insurance",
-  "Retirement Plan",
-  "Shop Insurance",
-].map((label) => ({
-  label,
-  href: resolveProductHref(label),
-  category: "Insurance",
-  keywords: ["insurance", "cover", "policy", label],
-}));
+const insuranceSearchEntries: StaticSearchEntry[] =
+  insuranceProductCatalog.map((product) => ({
+    label: product.name,
+    href: `/products/${product.slug}`,
+    category: "Insurance",
+    keywords: ["insurance", "cover", "policy", product.name],
+  }));
 
 const creditCardSearchEntries: StaticSearchEntry[] = [
   "Credit Cards",
@@ -357,6 +329,26 @@ const serviceSearchEntries: StaticSearchEntry[] = [
   {
     label: "Company Registration",
     href: "/company-registration",
+    category: "Services",
+  },
+  {
+    label: "MSME Registration",
+    href: "/msme-registration",
+    category: "Services",
+  },
+  {
+    label: "Annual Compliance",
+    href: "/annual-compliance",
+    category: "Services",
+  },
+  {
+    label: "Tax Compliances",
+    href: "/tax-compliance",
+    category: "Services",
+  },
+  {
+    label: "Project Report",
+    href: "/project-report",
     category: "Services",
   },
   { label: "Digital Payments", href: "/products", category: "Services" },
@@ -393,7 +385,7 @@ const serviceSearchEntries: StaticSearchEntry[] = [
 ];
 
 const navSearchEntries: StaticSearchEntry[] = (() => {
-  const fromNav = navItems.flatMap((item) => [
+  const fromNav = defaultNavItems.flatMap((item) => [
     {
       label: item.label,
       href: item.href,
@@ -437,18 +429,62 @@ const popularSearchEntries = [
   .map((label) => navSearchEntries.find((entry) => entry.label === label))
   .filter(Boolean) as StaticSearchEntry[];
 
-const searchShortcuts: StaticSearchEntry[] = [
-  { label: "Loans", href: "/products", category: "Explore" },
-  { label: "Credit Cards", href: "/credit-cards", category: "Explore" },
-  { label: "Insurance", href: "/products", category: "Explore" },
-  { label: "CIBIL Score", href: "/cibil-score", category: "Services" },
-  { label: "Offers", href: "/offers", category: "Explore" },
-  {
-    label: "Track Application",
-    href: "/application-status",
-    category: "Account",
-  },
-];
+const searchImageByLabel: Record<string, string> = {
+  "Personal Loan": "/assets/product-cards/loans/personal-loan.webp",
+  "Home Loan": "/assets/product-cards/loans/home-loan.webp",
+  "Business Loan": "/assets/product-cards/loans/business-loan.webp",
+  "Education Loan": "/assets/product-cards/loans/education-loan.webp",
+  "Gold Loan": "/assets/product-cards/loans/gold-loan.webp",
+  "Vehicle Loan": "/assets/product-cards/loans/vehicle-loan.webp",
+  "Car Loan": "/assets/product-cards/loans/vehicle-loan.webp",
+  "Loan Against Property":
+    "/assets/product-cards/loans/loan-against-property.webp",
+  "Health Insurance":
+    "/assets/product-cards/insurance/health-insurance.webp",
+  "Life Insurance": "/assets/product-cards/insurance/life-insurance.webp",
+  "Term Insurance": "/assets/product-cards/insurance/term-insurance.webp",
+  "Travel Insurance":
+    "/assets/product-cards/insurance/travel-insurance.webp",
+  "Property Insurance":
+    "/assets/product-cards/insurance/property-insurance.webp",
+  "Shop Insurance": "/assets/product-cards/insurance/shop-insurance.webp",
+  "Credit Cards": "/assets/product-cards/credit-cards/rewards-cards.webp",
+  "Travel Cards": "/assets/product-cards/credit-cards/travel-cards.webp",
+  "Fuel Cards": "/assets/product-cards/credit-cards/fuel-cards.webp",
+  "Cashback Cards": "/assets/product-cards/credit-cards/cashback-cards.webp",
+  "Shopping Cards": "/assets/product-cards/credit-cards/shopping-cards.webp",
+  "Rewards Cards": "/assets/product-cards/credit-cards/rewards-cards.webp",
+  "Balance Transfer":
+    "/assets/product-cards/credit-cards/balance-transfer.webp",
+  "Credit Score": "/assets/services/cibil-score-service.png",
+  "Credit Report": "/assets/services/cibil-score-service.png",
+  "Application Status": "/assets/images/application-status.png",
+  "Track Application": "/assets/images/application-status.png",
+  "ITR Filing": "/assets/services/itr-hero.png",
+  "GST Registration": "/assets/services/gst-hero.png",
+  "Company Registration":
+    "/assets/services/company-registration-service.png",
+  "MSME Registration": "/assets/services/msme-registration-service.png",
+  "Annual Compliance": "/assets/services/annual-compliance-service.png",
+  "Tax Compliances": "/assets/services/tax-compliance-service.png",
+  "Project Report": "/assets/services/project-report-service.png",
+};
+
+const topSearchProducts = [
+  "Personal Loan",
+  "Credit Cards",
+  "Health Insurance",
+]
+  .map((label) => navSearchEntries.find((entry) => entry.label === label))
+  .filter(Boolean) as StaticSearchEntry[];
+
+const accountAndServiceSearchEntries = [
+  "Credit Score",
+  "Application Status",
+  "ITR Filing",
+]
+  .map((label) => navSearchEntries.find((entry) => entry.label === label))
+  .filter(Boolean) as StaticSearchEntry[];
 
 const getSearchIcon = (entry: StaticSearchEntry): LucideIcon => {
   const value = `${entry.label} ${entry.category}`.toLowerCase();
@@ -552,7 +588,13 @@ const normalizePartnerNavProfile = (
 
 export default function Navbar() {
   const pathname = usePathname();
+  const { loans, insurance } = useProductCatalog();
+  const navItems = useMemo(
+    () => createNavItems(loans, insurance),
+    [insurance, loans],
+  );
   const [menuOpen, setMenuOpen] = useState(false);
+  const [mobileOpenLabel, setMobileOpenLabel] = useState<string | null>(null);
   const [partnerProfile, setPartnerProfile] =
     useState<NavbarAuthProfile | null>(null);
   const headerRef = useRef<HTMLElement | null>(null);
@@ -562,12 +604,40 @@ export default function Navbar() {
         raw: profile.raw,
         name: profile.name,
         avatar: profile.avatar,
-        href: "/account/profile",
+        href: "/account/profile/edit-profile",
       }
     : null;
   const activeProfile = partnerProfile || customerProfile;
   const loggedIn = Boolean(activeProfile?.raw);
-  const profileHref = activeProfile?.href || "/account/profile";
+  const profileHref = activeProfile?.href || "/account/profile/edit-profile";
+  const accountType = partnerProfile ? "partner" : "user";
+  const notificationsHref = partnerProfile
+    ? "/partner/profile/notifications"
+    : "/account/profile/notifications";
+  const [unreadNotifications, setUnreadNotifications] = useState(0);
+
+  useEffect(() => {
+    let active = true;
+    const loadUnreadCount = async () => {
+      if (!loggedIn) {
+        if (active) setUnreadNotifications(0);
+        return;
+      }
+      try {
+        const stats = await fetchNotificationStats(accountType);
+        if (active) setUnreadNotifications(Number(stats.unread || 0));
+      } catch {
+        if (active) setUnreadNotifications(0);
+      }
+    };
+
+    void loadUnreadCount();
+    window.addEventListener("notifications:changed", loadUnreadCount);
+    return () => {
+      active = false;
+      window.removeEventListener("notifications:changed", loadUnreadCount);
+    };
+  }, [accountType, loggedIn]);
 
   useEffect(() => {
     let active = true;
@@ -653,30 +723,29 @@ export default function Navbar() {
       className="sticky top-0 z-50 overflow-x-clip border-b border-[#e5eef8] bg-white/95 backdrop-blur"
     >
       <div className="bg-[#002B4D] px-4 text-white md:px-6 lg:pl-8 lg:pr-10">
-        <div className="mx-auto flex min-h-7 max-w-9xl items-center justify-center gap-4 py-1 text-center text-[11px] font-semibold sm:min-h-8 sm:justify-between sm:py-2 sm:text-left">
-          <p className="flex items-center justify-center gap-2 leading-4">
-            <ShieldCheck className="h-4 w-4 shrink-0 text-[#8fc7ff]" />
-            <span className="sm:hidden">Secure finance marketplace.</span>
+        <div className="mx-auto flex min-h-8 max-w-9xl items-center justify-between gap-3 py-1.5 text-[9.5px] font-semibold sm:py-2 sm:text-[11px]">
+          <p className="flex min-w-0 items-center gap-1.5 leading-4 sm:gap-2">
+            <ShieldCheck className="h-3.5 w-3.5 shrink-0 text-[#8fc7ff] sm:h-4 sm:w-4" />
+            <span className="whitespace-nowrap sm:hidden">
+              30+ trusted institutions
+            </span>
             <span className="hidden sm:inline">
               Compare offers from regulated banks, NBFCs and insurers with
               secure assisted applications.
             </span>
           </p>
-          <div className="hidden items-center gap-5 lg:flex">
-            <a
-              href="tel:+918448282680"
-              className="flex items-center gap-1.5 text-white/90 no-underline transition hover:text-white"
-            >
-              <Phone className="h-3.5 w-3.5" />
-              +91 84482 82680
-            </a>
+          <div className="flex shrink-0 items-center gap-4">
             <a
               href="mailto:customercare@fintaraa.com"
-              className="flex items-center gap-1.5 text-white/90 no-underline transition hover:text-white"
+              className="flex items-center gap-1 text-white/90 no-underline transition hover:text-white sm:gap-1.5"
             >
-              <Mail className="h-3.5 w-3.5" />
+              <Mail className="h-3 w-3 shrink-0 sm:h-3.5 sm:w-3.5" />
               customercare@fintaraa.com
             </a>
+            <span className="hidden items-center gap-1.5 text-white/80 lg:flex">
+              <Clock3 className="h-3.5 w-3.5" />
+              Mon–Sat, 9:30 AM–6:30 PM
+            </span>
           </div>
         </div>
       </div>
@@ -710,14 +779,20 @@ export default function Navbar() {
           <Link
             href={
               loggedIn
-                ? profileHref
-                : buildLoginRedirectHref({ redirectTo: "/account/profile" })
+                ? notificationsHref
+                : buildLoginRedirectHref({
+                    redirectTo: "/account/profile/notifications",
+                  })
             }
             aria-label="Notifications"
-            className="relative inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#d7e5f3] text-[#344054] no-underline transition hover:border-[#075cde] hover:text-[#075cde] 2xl:h-11 2xl:w-11"
+            className="relative inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#f4f7fb] text-[#344054] no-underline transition hover:bg-[#eaf2fb] hover:text-[#075cde] 2xl:h-11 2xl:w-11"
           >
             <Bell className="h-4.5 w-4.5" />
-            <span className="absolute right-2.5 top-2.5 h-2 w-2 rounded-full bg-[#f04438]" />
+            {unreadNotifications ? (
+              <span className="absolute -right-0.5 -top-0.5 inline-flex h-4.5 min-w-4.5 items-center justify-center rounded-full bg-[#f04438] px-1 text-[9px] font-extrabold leading-none text-white ring-2 ring-white">
+                {unreadNotifications > 9 ? "9+" : unreadNotifications}
+              </span>
+            ) : null}
           </Link>
 
           <AuthButton
@@ -725,19 +800,53 @@ export default function Navbar() {
             name={activeProfile?.name || "User"}
             avatar={activeProfile?.avatar}
             href={profileHref}
+            accountType={accountType}
           />
         </div>
 
-        <div className="ml-auto flex items-center gap-2 xl:hidden">
+        <div className="ml-auto flex items-center gap-1.5 xl:hidden">
           <NavbarSearch compact onOpen={() => setMenuOpen(false)} />
+          <Link
+            href={
+              loggedIn
+                ? notificationsHref
+                : buildLoginRedirectHref({
+                    redirectTo: "/account/profile/notifications",
+                  })
+            }
+            aria-label="Notifications"
+            className="relative inline-flex h-10 w-10 shrink-0 items-center justify-center text-[#344054] no-underline transition active:bg-[#eaf2fb] active:text-[#075cde]"
+          >
+            <Bell className="h-4 w-4" aria-hidden="true" />
+            {unreadNotifications ? (
+              <span className="absolute right-0.5 top-0.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-[#f04438] px-1 text-[8px] font-extrabold leading-none text-white ring-2 ring-white">
+                {unreadNotifications > 9 ? "9+" : unreadNotifications}
+              </span>
+            ) : null}
+          </Link>
+          <Link
+            href={loggedIn ? profileHref : "/login"}
+            aria-label={loggedIn ? "Open account" : "Login"}
+            className="inline-flex h-10 shrink-0 items-center justify-center gap-1 rounded-md border border-[#075cde] px-2 text-[11px] font-bold text-[#075cde] no-underline transition active:bg-[#eef5ff]"
+          >
+            <UserRound className="h-4 w-4 shrink-0" aria-hidden="true" />
+            <span>{loggedIn ? "Account" : "Login"}</span>
+          </Link>
           <button
             type="button"
             aria-label="Toggle menu"
             aria-expanded={menuOpen}
-            className="flex h-10 w-10 items-center justify-center rounded-md border border-[#d0d5dd] text-[#101828]"
-            onClick={() => setMenuOpen((open) => !open)}
+            className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#f4f7fb] text-[#101828] transition active:bg-[#eaf2fb]"
+            onClick={() => {
+              if (menuOpen) setMobileOpenLabel(null);
+              setMenuOpen((open) => !open);
+            }}
           >
-            {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {menuOpen ? (
+              <X className="h-5 w-5" />
+            ) : (
+              <Menu className="h-5 w-5" />
+            )}
           </button>
         </div>
       </nav>
@@ -748,24 +857,52 @@ export default function Navbar() {
             {navItems.map((item) => {
               const hideDescriptions =
                 item.label === "Loans" || item.label === "Insurance";
+              const sectionOpen = mobileOpenLabel === item.label;
 
               return (
                 <div
                   key={item.label}
                   className="border-b border-[#edf3f8] py-2"
                 >
-                  <Link
-                    href={item.href}
-                    onClick={() => setMenuOpen(false)}
-                    className={`${underlineClass} flex items-center justify-between rounded-md px-3 py-2 text-[14px] font-semibold text-[#101828] no-underline hover:text-[#195585]`}
-                  >
-                    {item.label}
-                    {item.sections?.length ? (
-                      <ChevronDown className="h-4 w-4" />
-                    ) : null}
-                  </Link>
                   {item.sections?.length ? (
-                    <div className="grid gap-3 px-3 pb-2">
+                    <button
+                      type="button"
+                      aria-expanded={sectionOpen}
+                      aria-controls={`mobile-nav-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
+                      onClick={() =>
+                        setMobileOpenLabel((current) =>
+                          current === item.label ? null : item.label,
+                        )
+                      }
+                      className="flex w-full items-center justify-between rounded-md px-3 py-2 text-left text-[14px] font-semibold text-[#101828] transition active:bg-[#f4f8fc] active:text-[#195585]"
+                    >
+                      {item.label}
+                      <ChevronDown
+                        className={`h-4 w-4 transition-transform ${sectionOpen ? "rotate-180" : ""}`}
+                      />
+                    </button>
+                  ) : (
+                    <Link
+                      href={item.href}
+                      onClick={() => setMenuOpen(false)}
+                      className={`${underlineClass} flex items-center justify-between rounded-md px-3 py-2 text-[14px] font-semibold text-[#101828] no-underline hover:text-[#195585]`}
+                    >
+                      {item.label}
+                    </Link>
+                  )}
+                  {item.sections?.length && sectionOpen ? (
+                    <div
+                      id={`mobile-nav-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
+                      className="grid gap-3 px-3 pb-2"
+                    >
+                      <Link
+                        href={item.href}
+                        onClick={() => setMenuOpen(false)}
+                        className="mx-3 mt-1 inline-flex items-center gap-2 text-[12px] font-bold text-[#075cde] no-underline"
+                      >
+                        Explore all {item.label}
+                        <ArrowRight className="h-3.5 w-3.5" />
+                      </Link>
                       {item.sections.map((section) => (
                         <div key={section.title}>
                           <p className="px-3 pt-2 text-[11px] font-bold uppercase tracking-[0.12em] text-[#195585]">
@@ -803,6 +940,7 @@ export default function Navbar() {
                 name={activeProfile?.name || "User"}
                 avatar={activeProfile?.avatar}
                 href={profileHref}
+                accountType={accountType}
                 mobile
                 onClick={() => setMenuOpen(false)}
               />
@@ -910,7 +1048,7 @@ function NavbarSearch({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={closeSearch}
-              className="fixed inset-x-0 bottom-0 z-[70] bg-[#082b4c]/20 backdrop-blur-[2px]"
+              className="fixed inset-x-0 bottom-0 z-70 bg-[#082b4c]/20 backdrop-blur-[2px]"
               style={{ top: "var(--site-header-height, 6rem)" }}
             />
             <motion.section
@@ -922,33 +1060,22 @@ function NavbarSearch({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-              className="fixed inset-x-0 z-[80] overflow-y-auto border-y border-[#cfe1ed] bg-white"
+              className="pointer-events-none fixed inset-x-0 z-80 px-2 sm:px-4"
               style={{
                 top: "var(--site-header-height, 6rem)",
                 maxHeight: "calc(100dvh - var(--site-header-height, 6rem))",
               }}
             >
-              <div className="mx-auto max-w-9xl px-4 py-5 md:px-6 md:py-6 2xl:px-8">
-                <div className="flex items-center gap-3">
-                  <div className="hidden w-44 shrink-0 items-center gap-3 lg:flex">
-                    <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#e8f3fb] text-[#075cde]">
-                      <Search className="h-5 w-5" aria-hidden="true" />
-                    </span>
-                    <div>
-                      <p className="text-[13px] font-bold text-[#102f49]">
-                        Search Fintaraa
-                      </p>
-                      <p className="mt-0.5 text-[10px] font-semibold text-[#7890a2]">
-                        Products and services
-                      </p>
-                    </div>
-                  </div>
-
+              <div className="pointer-events-auto mx-auto mt-2 max-h-[calc(100dvh-var(--site-header-height,6rem)-1rem)] w-full max-w-5xl overflow-y-auto rounded-2xl border border-[#d9e5ee] bg-white p-4 shadow-[0_24px_70px_rgba(15,47,73,0.22)] sm:p-5 lg:w-3/5 lg:min-w-[760px]">
+                <div className="flex items-center gap-2.5">
                   <form
                     onSubmit={handleSubmit}
-                    className="flex h-12 min-w-0 flex-1 items-center gap-3 rounded-lg border border-[#bcd7e7] bg-[#f7fbfe] px-3 transition-colors focus-within:border-[#075cde] focus-within:bg-white sm:h-13 sm:px-4"
+                    className="flex h-12 min-w-0 flex-1 items-center gap-3 rounded-xl border border-[#a9c5d8] bg-[#f8fbfd] px-3 transition focus-within:border-[#075cde] focus-within:bg-white focus-within:ring-3 focus-within:ring-[#075cde]/10 sm:px-4"
                   >
-                    <Search className="h-4.5 w-4.5 shrink-0 text-[#527189]" aria-hidden="true" />
+                    <Search
+                      className="h-4.5 w-4.5 shrink-0 text-[#315c79]"
+                      aria-hidden="true"
+                    />
                     <input
                       ref={inputRef}
                       value={query}
@@ -957,7 +1084,7 @@ function NavbarSearch({
                       aria-label="Search loans, cards, insurance and services"
                       placeholder="Search loans, cards, insurance or services"
                       onChange={(event) => setQuery(event.target.value)}
-                      className="min-w-0 flex-1 bg-transparent text-[14px] font-semibold text-[#102f49] outline-none placeholder:text-[#8da0af] sm:text-[15px]"
+                      className="min-w-0 flex-1 bg-transparent text-[13px] font-semibold text-[#102f49] outline-none placeholder:font-medium placeholder:text-[#8da0af] sm:text-[14px]"
                     />
                     {trimmedQuery ? (
                       <button
@@ -965,7 +1092,7 @@ function NavbarSearch({
                         aria-label="Clear search"
                         title="Clear search"
                         onClick={() => setQuery("")}
-                        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-[#7890a2] transition-colors hover:bg-[#e9f3fa] hover:text-[#075cde]"
+                        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-[#7890a2] transition hover:bg-[#e9f3fa] hover:text-[#075cde]"
                       >
                         <X className="h-4 w-4" aria-hidden="true" />
                       </button>
@@ -974,7 +1101,7 @@ function NavbarSearch({
                       type="submit"
                       aria-label="Open first search result"
                       title="Search"
-                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-[#075cde] text-white transition-colors hover:bg-[#064cb8]"
+                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#075cde] text-white transition hover:bg-[#064cb8]"
                     >
                       <ArrowRight className="h-4 w-4" aria-hidden="true" />
                     </button>
@@ -985,102 +1112,229 @@ function NavbarSearch({
                     onClick={closeSearch}
                     aria-label="Close search"
                     title="Close search"
-                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-[#cfe1ed] text-[#527189] transition-colors hover:border-[#8ebbd3] hover:text-[#075cde]"
+                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[#d4e2eb] text-[#527189] transition hover:border-[#8ebbd3] hover:bg-[#f4f9fc] hover:text-[#075cde]"
                   >
                     <X className="h-5 w-5" aria-hidden="true" />
                   </button>
                 </div>
 
-                <div className="mt-5">
-                  <div>
-                    <div className="flex items-center justify-between gap-3">
-                      <p className="text-[10px] font-bold uppercase text-[#7890a2]">
-                        Explore quickly
-                      </p>
-                      <p className="hidden text-[10px] font-semibold text-[#8ca0af] sm:block">
-                        Direct routes to popular journeys
-                      </p>
-                    </div>
-                    <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3 xl:grid-cols-6">
-                      {searchShortcuts.map((item) => {
-                        const Icon = getSearchIcon(item);
-                        return (
-                          <button
-                            key={item.label}
-                            type="button"
-                            onClick={() => navigateTo(item.href)}
-                            className="flex min-w-0 items-center gap-2.5 rounded-lg border border-[#d9e7f0] bg-white px-3 py-2.5 text-left text-[12px] font-bold text-[#294d67] transition-colors hover:border-[#8ebbd3] hover:bg-[#f2f8fc] hover:text-[#075cde]"
+                <div className="mt-5 grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1.55fr)_minmax(220px,0.8fr)]">
+                  <div className="min-w-0">
+                    {!trimmedQuery ? (
+                      <>
+                        <section aria-labelledby="most-searched-title">
+                          <h2
+                            id="most-searched-title"
+                            className="text-[11px] font-extrabold uppercase tracking-[0.08em] text-[#193a54]"
                           >
-                            <Icon className="h-4 w-4 shrink-0 text-[#075cde]" aria-hidden="true" />
-                            <span className="truncate">{item.label}</span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
+                            Most searched
+                          </h2>
+                          <div className="mt-2.5 flex flex-wrap gap-2">
+                            {popularSearchEntries.map((item) => (
+                              <button
+                                key={`${item.label}-${item.href}`}
+                                type="button"
+                                onClick={() => navigateTo(item.href)}
+                                className="rounded-full bg-[#f0f4f7] px-3 py-1.5 text-[11px] font-semibold text-[#52697b] transition hover:bg-[#e4f0fa] hover:text-[#075cde]"
+                              >
+                                {item.label}
+                              </button>
+                            ))}
+                          </div>
+                        </section>
 
-                  <div className="mt-5 min-w-0 border-t border-[#d9e7f0] pt-4">
-                    <div className="flex items-center justify-between gap-4">
-                      <div>
-                        <p className="text-[10px] font-bold uppercase text-[#7890a2]">
-                          {trimmedQuery ? "Search results" : "Popular destinations"}
-                        </p>
-                        <p className="mt-1 text-[13px] font-semibold text-[#526e82]">
-                          {trimmedQuery
-                            ? `${results.length} matching destinations`
-                            : "Frequently visited financial journeys"}
-                        </p>
-                      </div>
-                      {trimmedQuery ? (
-                        <span className="shrink-0 text-[11px] font-bold text-[#075cde]">
-                          {results.length} found
-                        </span>
-                      ) : null}
-                    </div>
+                        <section
+                          aria-labelledby="top-products-title"
+                          className="mt-5"
+                        >
+                          <h2
+                            id="top-products-title"
+                            className="text-[11px] font-extrabold uppercase tracking-[0.08em] text-[#193a54]"
+                          >
+                            Top products
+                          </h2>
+                          <div className="mt-2.5 grid gap-2.5 sm:grid-cols-3">
+                            {topSearchProducts.map((item) => (
+                              <button
+                                key={`${item.label}-${item.href}`}
+                                type="button"
+                                onClick={() => navigateTo(item.href)}
+                                className="group flex min-w-0 items-center gap-2.5 rounded-xl border border-[#e4ebf0] bg-[#fbfcfd] p-2.5 text-left transition hover:border-[#a9cce2] hover:bg-[#f5faff]"
+                              >
+                                <Image
+                                  src={searchImageByLabel[item.label]}
+                                  alt=""
+                                  width={48}
+                                  height={48}
+                                  className="h-11 w-11 shrink-0 rounded-lg object-cover"
+                                />
+                                <span className="min-w-0">
+                                  <span className="block text-[11px] font-bold leading-4 text-[#17334a] group-hover:text-[#075cde]">
+                                    {item.label}
+                                  </span>
+                                  <span className="mt-0.5 block text-[10px] font-bold text-[#e04747]">
+                                    Apply Now
+                                  </span>
+                                </span>
+                              </button>
+                            ))}
+                          </div>
+                        </section>
 
-                    {results.length ? (
-                      <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
-                        {results.map((item) => {
-                          const Icon = getSearchIcon(item);
-                          return (
-                            <button
-                              key={`${item.label}-${item.href}`}
-                              type="button"
-                              onClick={() => navigateTo(item.href)}
-                              className="group flex min-w-0 items-center gap-3 rounded-lg border border-[#d9e7f0] bg-white p-3 text-left transition-colors hover:border-[#8ebbd3] hover:bg-[#f4f9fc]"
-                            >
-                              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#e9f3fa] text-[#075cde]">
-                                <Icon className="h-4 w-4" aria-hidden="true" />
-                              </span>
-                              <span className="min-w-0 flex-1">
-                                <span className="block truncate text-[12px] font-bold text-[#102f49] group-hover:text-[#075cde]">
-                                  {item.label}
+                        <section
+                          aria-labelledby="services-search-title"
+                          className="mt-5"
+                        >
+                          <h2
+                            id="services-search-title"
+                            className="text-[11px] font-extrabold uppercase tracking-[0.08em] text-[#193a54]"
+                          >
+                            Accounts &amp; services
+                          </h2>
+                          <div className="mt-2.5 grid gap-2.5 sm:grid-cols-3">
+                            {accountAndServiceSearchEntries.map((item) => (
+                              <button
+                                key={`${item.label}-${item.href}`}
+                                type="button"
+                                onClick={() => navigateTo(item.href)}
+                                className="group flex min-w-0 items-center gap-2.5 rounded-xl border border-[#e4ebf0] bg-[#fbfcfd] p-2.5 text-left transition hover:border-[#a9cce2] hover:bg-[#f5faff]"
+                              >
+                                <Image
+                                  src={searchImageByLabel[item.label]}
+                                  alt=""
+                                  width={48}
+                                  height={48}
+                                  className="h-11 w-11 shrink-0 rounded-lg object-cover"
+                                />
+                                <span className="min-w-0">
+                                  <span className="block text-[11px] font-bold leading-4 text-[#17334a] group-hover:text-[#075cde]">
+                                    {item.label}
+                                  </span>
+                                  <span className="mt-0.5 block text-[10px] font-bold text-[#e04747]">
+                                    Explore
+                                  </span>
                                 </span>
-                                <span className="mt-0.5 block truncate text-[10px] font-semibold text-[#7890a2]">
-                                  {item.category}
-                                </span>
-                              </span>
-                              <ArrowRight className="h-3.5 w-3.5 shrink-0 text-[#9aaeba] transition-transform group-hover:translate-x-0.5 group-hover:text-[#075cde]" aria-hidden="true" />
-                            </button>
-                          );
-                        })}
-                      </div>
+                              </button>
+                            ))}
+                          </div>
+                        </section>
+                      </>
                     ) : (
-                      <div className="mt-3 flex min-h-24 items-center gap-3 border-y border-[#d9e7f0] py-5">
-                        <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#eef5fa] text-[#7890a2]">
-                          <Search className="h-5 w-5" aria-hidden="true" />
-                        </span>
-                        <div>
-                          <p className="text-[13px] font-bold text-[#102f49]">
-                            No matching destination
-                          </p>
-                          <p className="mt-1 text-[11px] font-semibold text-[#7890a2]">
-                            Try a product, service, bank or account journey.
-                          </p>
+                      <section aria-labelledby="search-results-title">
+                        <div className="flex items-end justify-between gap-3">
+                          <div>
+                            <h2
+                              id="search-results-title"
+                              className="text-[11px] font-extrabold uppercase tracking-[0.08em] text-[#193a54]"
+                            >
+                              Search results
+                            </h2>
+                            <p className="mt-1 text-[11px] font-medium text-[#7890a2]">
+                              Best matches for “{trimmedQuery}”
+                            </p>
+                          </div>
+                          <span className="shrink-0 rounded-full bg-[#e8f3fb] px-2.5 py-1 text-[10px] font-bold text-[#075cde]">
+                            {results.length} found
+                          </span>
                         </div>
-                      </div>
+
+                        {results.length ? (
+                          <div className="mt-3 grid gap-2.5 sm:grid-cols-2">
+                            {results.map((item) => {
+                              const Icon = getSearchIcon(item);
+                              const itemImage = searchImageByLabel[item.label];
+                              return (
+                                <button
+                                  key={`${item.label}-${item.href}`}
+                                  type="button"
+                                  onClick={() => navigateTo(item.href)}
+                                  className="group flex min-w-0 items-center gap-3 rounded-xl border border-[#e1eaf0] bg-[#fbfcfd] p-2.5 text-left transition hover:border-[#9ec5dd] hover:bg-[#f4f9fc]"
+                                >
+                                  {itemImage ? (
+                                    <Image
+                                      src={itemImage}
+                                      alt=""
+                                      width={48}
+                                      height={48}
+                                      className="h-11 w-11 shrink-0 rounded-lg object-cover"
+                                    />
+                                  ) : (
+                                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-[#e9f3fa] text-[#075cde]">
+                                      <Icon
+                                        className="h-4.5 w-4.5"
+                                        aria-hidden="true"
+                                      />
+                                    </span>
+                                  )}
+                                  <span className="min-w-0 flex-1">
+                                    <span className="block truncate text-[11px] font-bold text-[#17334a] group-hover:text-[#075cde]">
+                                      {item.label}
+                                    </span>
+                                    <span className="mt-0.5 block truncate text-[10px] font-semibold text-[#7890a2]">
+                                      {item.category}
+                                    </span>
+                                  </span>
+                                  <ArrowRight
+                                    className="h-3.5 w-3.5 shrink-0 text-[#9aaeba] transition-transform group-hover:translate-x-0.5 group-hover:text-[#075cde]"
+                                    aria-hidden="true"
+                                  />
+                                </button>
+                              );
+                            })}
+                          </div>
+                        ) : (
+                          <div className="mt-3 flex min-h-32 items-center gap-3 rounded-xl border border-dashed border-[#ccdce7] bg-[#f8fbfd] p-4">
+                            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#e9f3fa] text-[#7890a2]">
+                              <Search className="h-5 w-5" aria-hidden="true" />
+                            </span>
+                            <div>
+                              <p className="text-[12px] font-bold text-[#102f49]">
+                                No matching destination
+                              </p>
+                              <p className="mt-1 text-[10px] font-medium text-[#7890a2]">
+                                Try a loan, card, insurance or service name.
+                              </p>
+                            </div>
+                          </div>
+                        )}
+                      </section>
                     )}
                   </div>
+
+                  <aside aria-labelledby="discover-title" className="min-w-0">
+                    <h2
+                      id="discover-title"
+                      className="text-[11px] font-extrabold uppercase tracking-[0.08em] text-[#193a54]"
+                    >
+                      Discover
+                    </h2>
+                    <div className="mt-2.5 overflow-hidden rounded-2xl border border-[#dfe8ee] bg-white shadow-[0_10px_30px_rgba(15,47,73,0.08)]">
+                      <Image
+                        src="/assets/home/hero-banners/financial-advisor-family.png"
+                        alt="A family planning its finances"
+                        width={500}
+                        height={280}
+                        className="h-32 w-full object-cover sm:h-40 lg:h-36"
+                      />
+                      <div className="p-4">
+                        <p className="text-[14px] font-extrabold leading-5 text-[#17334a]">
+                          Find the right financial product for every goal
+                        </p>
+                        <p className="mt-1.5 text-[10px] font-medium leading-4 text-[#6f8798]">
+                          Compare trusted options with clear guidance from
+                          Fintaraa.
+                        </p>
+                        <button
+                          type="button"
+                          onClick={() => navigateTo("/products")}
+                          className="mt-3 inline-flex items-center gap-2 rounded-full border border-[#075cde] px-3.5 py-2 text-[10px] font-bold text-[#075cde] transition hover:bg-[#075cde] hover:text-white"
+                        >
+                          Explore Products
+                          <ArrowRight className="h-3.5 w-3.5" />
+                        </button>
+                      </div>
+                    </div>
+                  </aside>
                 </div>
               </div>
             </motion.section>
@@ -1098,12 +1352,12 @@ function NavbarSearch({
         aria-expanded={open}
         aria-haspopup="dialog"
         aria-label={compact ? "Open site search" : undefined}
-        className={`flex items-center border border-[#d7e5f3] bg-white text-[#344054] transition-colors hover:border-[#8ebbd3] hover:bg-[#f7fbfe] hover:text-[#075cde] ${
+        className={`flex items-center text-[#344054] transition-colors hover:bg-[#eaf2fb] hover:text-[#075cde] ${
           compact
             ? "h-10 w-10 justify-center rounded-md"
             : mobile
               ? "h-11 w-full gap-2 rounded-lg px-3 text-[13px] font-semibold"
-              : "h-10 w-48 gap-2 rounded-lg px-3 text-[13px] font-semibold 2xl:h-11 2xl:w-64"
+              : "h-10 w-60 gap-2 rounded-lg px-3 text-[13px] font-semibold 2xl:h-11"
         }`}
       >
         <Search className="h-4 w-4 shrink-0" aria-hidden="true" />
@@ -1127,7 +1381,7 @@ function DesktopNavItem({
 }) {
   const active = (() => {
     // Loans and Insurance both use href="/products" — differentiate by product type
-    if (item.href === "/products") {
+    if (hrefPath(item.href) === "/products") {
       if (pathname === "/products") return true;
       const slug = pathname.split("/")[2];
       if (slug) {
@@ -1197,8 +1451,16 @@ function MegaDropdown({
 
   const hideDescriptions = item.label === "Loans" || item.label === "Insurance";
   const dropdownAlignClass = align === "right" ? "right-0" : "left-0";
+  const dropdownWidthClass =
+    sections.length >= 4
+      ? "w-[min(92vw,68rem)]"
+      : sections.length === 3
+        ? "w-[min(92vw,58rem)]"
+        : "w-[min(92vw,52rem)]";
   const columnCount =
-    sections.length >= 3
+    sections.length >= 4
+      ? "xl:grid-cols-5"
+      : sections.length === 3
       ? "xl:grid-cols-[0.8fr_1fr_1fr_1fr]"
       : sections.length === 2
         ? "xl:grid-cols-[0.8fr_1fr_1fr]"
@@ -1206,7 +1468,7 @@ function MegaDropdown({
 
   return (
     <div
-      className={`pointer-events-none absolute ${dropdownAlignClass} top-full z-50 w-[min(92vw,52rem)] pt-5 opacity-0 transition duration-200 group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:opacity-100`}
+      className={`pointer-events-none absolute ${dropdownAlignClass} ${dropdownWidthClass} top-full z-50 pt-5 opacity-0 transition duration-200 group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:opacity-100`}
     >
       <div className="overflow-hidden border border-[#d9e9f6] bg-white">
         <div className={`grid gap-0 ${columnCount}`}>
@@ -1323,6 +1585,7 @@ function AuthButton({
   name,
   avatar,
   href,
+  accountType,
   mobile = false,
   onClick,
 }: {
@@ -1330,25 +1593,80 @@ function AuthButton({
   name: string;
   avatar?: string;
   href: string;
+  accountType: "user" | "partner";
   mobile?: boolean;
   onClick?: () => void;
 }) {
-  if (!loggedIn) {
+  const router = useRouter();
+  const [confirmLogoutOpen, setConfirmLogoutOpen] = useState(false);
+  const partnerSession = accountType === "partner";
+  const dashboardHref = partnerSession
+    ? "/partner/profile"
+    : "/account/profile/my-applications";
+  const editProfileHref = partnerSession
+    ? "/partner/profile/complete"
+    : href;
+  const notificationsHref = partnerSession
+    ? "/partner/profile/notifications"
+    : "/account/profile/notifications";
+
+  const handleLogout = () => {
+    setConfirmLogoutOpen(true);
+  };
+
+  const confirmLogout = () => {
+    clearAuthSession();
+    setConfirmLogoutOpen(false);
+    onClick?.();
+    router.replace("/");
+    router.refresh();
+  };
+
+  if (!loggedIn && mobile) {
     return (
-      <Link
-        href="/login"
-        onClick={onClick}
-        className={
-          mobile
-            ? "rounded-full border border-[#075cde] px-4 py-3 text-center text-[13px] font-semibold text-[#075cde] no-underline"
-            : "inline-flex h-10 items-center gap-2 rounded-full border border-[#075cde] px-4 text-sm font-medium text-[#075cde] no-underline 2xl:h-11"
-        }
-      >
-        <span className="inline-flex items-center justify-center gap-2">
-          <UserRound className="h-4 w-4" />
-          Login
-        </span>
-      </Link>
+      <div className="rounded-2xl border border-[#d9e8f4] bg-[#f8fbff] p-3">
+        <p className="px-1 pb-2 text-[11px] font-extrabold uppercase tracking-[0.12em] text-[#718397]">
+          Choose login type
+        </p>
+        <div className="grid gap-2">
+          <Link
+            href="/login"
+            onClick={onClick}
+            className="flex items-center gap-3 rounded-xl border border-[#d8e5ef] bg-white p-3 text-[#17354d] no-underline transition active:bg-[#edf6ff]"
+          >
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#e9f3ff] text-[#075cde]">
+              <UserRound className="h-5 w-5" />
+            </span>
+            <span className="min-w-0 text-left">
+              <span className="block text-[13px] font-extrabold">
+                Login as User
+              </span>
+              <span className="mt-0.5 block text-[11px] font-medium text-[#718397]">
+                Applications, offers and profile
+              </span>
+            </span>
+            <ArrowRight className="ml-auto h-4 w-4 shrink-0 text-[#075cde]" />
+          </Link>
+          <Link
+            href="/partner/login"
+            onClick={onClick}
+            className="flex items-center gap-3 rounded-xl border border-[#d8e5ef] bg-white p-3 text-[#17354d] no-underline transition active:bg-[#f0fbf5]"
+          >
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#eaf8f0] text-[#13a653]">
+              <BriefcaseBusiness className="h-5 w-5" />
+            </span>
+            <span className="min-w-0 text-left">
+              <span className="block text-[13px] font-extrabold">
+                Login as Partner
+              </span>
+              <span className="mt-0.5 block text-[11px] font-medium text-[#718397]">
+                Leads, earnings and partner tools
+              </span>
+            </span>
+            <ArrowRight className="ml-auto h-4 w-4 shrink-0 text-[#13a653]" />
+          </Link>
+        </div>
+      </div>
     );
   }
 
@@ -1361,26 +1679,262 @@ function AuthButton({
     .slice(0, 2)
     .toUpperCase();
 
+  if (loggedIn && mobile) {
+    return (
+      <>
+        <div className="overflow-hidden rounded-2xl border border-[#d9e8f4] bg-white">
+          <div className="flex items-center gap-3 border-b border-[#e5edf3] bg-[#f4f9fd] p-3">
+            <span className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-linear-to-br from-[#195585] to-[#075cde] text-[11px] font-extrabold text-white">
+              {avatar ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={avatar} alt={name} className="h-full w-full object-cover" />
+              ) : (
+                initials
+              )}
+            </span>
+            <span className="min-w-0">
+              <span className="block truncate text-[13px] font-extrabold text-[#17354d]">
+                {name}
+              </span>
+              <span className="text-[11px] font-semibold text-[#718397]">
+                {partnerSession ? "Partner account" : "Customer account"}
+              </span>
+            </span>
+          </div>
+          <div className="grid p-2">
+            <Link
+              href={dashboardHref}
+              onClick={onClick}
+              className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-[13px] font-bold text-[#31516b] no-underline active:bg-[#edf6ff]"
+            >
+              <LayoutDashboard className="h-4.5 w-4.5 text-[#075cde]" />
+              {partnerSession ? "Partner Dashboard" : "Account Dashboard"}
+            </Link>
+            <Link
+              href={editProfileHref}
+              onClick={onClick}
+              className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-[13px] font-bold text-[#31516b] no-underline active:bg-[#edf6ff]"
+            >
+              <PencilLine className="h-4.5 w-4.5 text-[#075cde]" />
+              Edit Profile
+            </Link>
+            <Link
+              href={notificationsHref}
+              onClick={onClick}
+              className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-[13px] font-bold text-[#31516b] no-underline active:bg-[#edf6ff]"
+            >
+              <Bell className="h-4.5 w-4.5 text-[#075cde]" />
+              Notifications
+            </Link>
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-left text-[13px] font-bold text-[#c43232] active:bg-red-50"
+            >
+              <LogOut className="h-4.5 w-4.5" />
+              Logout
+            </button>
+          </div>
+        </div>
+        <LogoutConfirmationModal
+          open={confirmLogoutOpen}
+          onClose={() => setConfirmLogoutOpen(false)}
+          onConfirm={confirmLogout}
+        />
+      </>
+    );
+  }
+
   return (
-    <Link
-      href={href}
-      onClick={onClick}
-      className={
-        mobile
-          ? "flex items-center justify-center gap-3 rounded-full bg-[#eef8ff] px-4 py-3 text-center text-[13px] font-semibold text-[#195585] no-underline"
-          : "inline-flex h-10 items-center gap-2 rounded-full bg-[#eef8ff] pl-1.5 pr-4 text-sm font-semibold text-[#195585] no-underline ring-1 ring-[#d5ebfb] 2xl:h-11"
-      }
-      aria-label={`Open profile for ${name}`}
-    >
-      <span className="relative flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-linear-to-br from-[#195585] to-[#075cde] text-[11px] font-semibold text-white 2xl:h-9 2xl:w-9 2xl:text-[12px]">
-        {avatar ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={avatar} alt={name} className="h-full w-full object-cover" />
+    <>
+      <div className="group/auth relative">
+      <button
+        type="button"
+        aria-haspopup="menu"
+        className={`inline-flex h-10 items-center rounded-full text-sm transition 2xl:h-11 ${
+          loggedIn
+            ? "gap-2 bg-[#eef8ff] pl-1.5 pr-3 font-semibold text-[#195585] ring-1 ring-[#d5ebfb] hover:bg-[#e5f4ff]"
+            : "gap-2 border border-[#075cde] px-4 font-medium text-[#075cde] hover:bg-[#eef5ff]"
+        }`}
+      >
+        {loggedIn ? (
+          <>
+            <span className="relative flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-linear-to-br from-[#195585] to-[#075cde] text-[11px] font-extrabold text-white 2xl:h-9 2xl:w-9 2xl:text-[12px]">
+              {avatar ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={avatar}
+                  alt={name}
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                initials
+              )}
+            </span>
+            <span className="max-w-28 truncate 2xl:max-w-36">
+              Hi, {firstName}
+            </span>
+          </>
         ) : (
-          initials
+          <>
+            <UserRound className="h-4 w-4" />
+            Login
+          </>
         )}
-      </span>
-      <span className="max-w-28 truncate 2xl:max-w-36">Hi, {firstName}</span>
-    </Link>
+        <ChevronDown className="h-3.5 w-3.5 transition-transform group-hover/auth:rotate-180 group-focus-within/auth:rotate-180" />
+      </button>
+
+      <div className="pointer-events-none absolute right-0 top-full z-60 w-82 translate-y-1 pt-3 opacity-0 transition duration-180 group-hover/auth:pointer-events-auto group-hover/auth:translate-y-0 group-hover/auth:opacity-100 group-focus-within/auth:pointer-events-auto group-focus-within/auth:translate-y-0 group-focus-within/auth:opacity-100">
+        <div
+          role="menu"
+          className="overflow-hidden rounded-2xl border border-[#d8e5ef] bg-white p-2 shadow-[0_20px_55px_rgba(16,44,69,0.17)]"
+        >
+          {loggedIn ? (
+            <>
+              <div className="mx-1 mb-1 flex items-center gap-3 rounded-xl bg-[#f3f8fc] px-3 py-3">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#e5f1fb] text-[#075cde]">
+                  {partnerSession ? (
+                    <BriefcaseBusiness className="h-4.5 w-4.5" />
+                  ) : (
+                    <UserRound className="h-4.5 w-4.5" />
+                  )}
+                </span>
+                <span className="min-w-0">
+                  <span className="block truncate text-[13px] font-extrabold text-[#17354d]">
+                    {name}
+                  </span>
+                  <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-[#718397]">
+                    {partnerSession ? "Partner account" : "Customer account"}
+                  </span>
+                </span>
+              </div>
+              <Link
+                href={dashboardHref}
+                role="menuitem"
+                className="group/item flex items-center gap-3 rounded-xl px-3 py-3 text-[#31516b] no-underline transition hover:bg-[#f3f8fc] hover:text-[#075cde]"
+              >
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#e9f3ff] text-[#075cde]">
+                  <LayoutDashboard className="h-4.5 w-4.5" />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block text-[13px] font-extrabold">
+                    {partnerSession ? "Partner Dashboard" : "Account Dashboard"}
+                  </span>
+                  <span className="mt-0.5 block text-[10.5px] font-medium text-[#7b8ea0]">
+                    {partnerSession
+                      ? "Leads, earnings and activity"
+                      : "Applications, offers and activity"}
+                  </span>
+                </span>
+                <ArrowRight className="h-4 w-4 opacity-50 transition group-hover/item:translate-x-0.5 group-hover/item:opacity-100" />
+              </Link>
+              <Link
+                href={editProfileHref}
+                role="menuitem"
+                className="group/item flex items-center gap-3 rounded-xl px-3 py-3 text-[#31516b] no-underline transition hover:bg-[#f3f8fc] hover:text-[#075cde]"
+              >
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#eaf8f0] text-[#13a653]">
+                  <PencilLine className="h-4.5 w-4.5" />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block text-[13px] font-extrabold">
+                    Edit Profile
+                  </span>
+                  <span className="mt-0.5 block text-[10.5px] font-medium text-[#7b8ea0]">
+                    Update personal and account details
+                  </span>
+                </span>
+                <ArrowRight className="h-4 w-4 opacity-50 transition group-hover/item:translate-x-0.5 group-hover/item:opacity-100" />
+              </Link>
+              <Link
+                href={notificationsHref}
+                role="menuitem"
+                className="group/item flex items-center gap-3 rounded-xl px-3 py-3 text-[#31516b] no-underline transition hover:bg-[#f3f8fc] hover:text-[#075cde]"
+              >
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#fff4e8] text-[#e37712]">
+                  <Bell className="h-4.5 w-4.5" />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block text-[13px] font-extrabold">
+                    Notifications
+                  </span>
+                  <span className="mt-0.5 block text-[10.5px] font-medium text-[#7b8ea0]">
+                    Updates, requests and account alerts
+                  </span>
+                </span>
+                <ArrowRight className="h-4 w-4 opacity-50 transition group-hover/item:translate-x-0.5 group-hover/item:opacity-100" />
+              </Link>
+              <div className="mx-2 my-1 h-px bg-[#e5edf3]" />
+              <button
+                type="button"
+                role="menuitem"
+                onClick={handleLogout}
+                className="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-[13px] font-extrabold text-[#c43232] transition hover:bg-red-50"
+              >
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-red-50 text-[#c43232]">
+                  <LogOut className="h-4.5 w-4.5" />
+                </span>
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <div className="px-3 pb-2 pt-1">
+                <p className="text-[10px] font-extrabold uppercase tracking-[0.13em] text-[#7b8ea0]">
+                  Continue to Fintaraa
+                </p>
+                <p className="mt-1 text-[13px] font-extrabold text-[#17354d]">
+                  Choose how you want to login
+                </p>
+              </div>
+              <Link
+                href="/login"
+                role="menuitem"
+                className="group/item flex items-center gap-3 rounded-xl px-3 py-3 text-[#31516b] no-underline transition hover:bg-[#f3f8fc] hover:text-[#075cde]"
+              >
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#e9f3ff] text-[#075cde]">
+                  <UserRound className="h-5 w-5" />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block text-[13px] font-extrabold">
+                    Login as User
+                  </span>
+                  <span className="mt-0.5 block text-[10.5px] font-medium text-[#7b8ea0]">
+                    Applications, offers and profile
+                  </span>
+                </span>
+                <ArrowRight className="h-4 w-4 opacity-50 transition group-hover/item:translate-x-0.5 group-hover/item:opacity-100" />
+              </Link>
+              <Link
+                href="/partner/login"
+                role="menuitem"
+                className="group/item flex items-center gap-3 rounded-xl px-3 py-3 text-[#31516b] no-underline transition hover:bg-[#f0faf4] hover:text-[#108b46]"
+              >
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#eaf8f0] text-[#13a653]">
+                  <BriefcaseBusiness className="h-5 w-5" />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block text-[13px] font-extrabold">
+                    Login as Partner
+                  </span>
+                  <span className="mt-0.5 block text-[10.5px] font-medium text-[#7b8ea0]">
+                    Leads, earnings and partner tools
+                  </span>
+                </span>
+                <ArrowRight className="h-4 w-4 opacity-50 transition group-hover/item:translate-x-0.5 group-hover/item:opacity-100" />
+              </Link>
+            </>
+          )}
+        </div>
+      </div>
+      </div>
+      {loggedIn ? (
+        <LogoutConfirmationModal
+          open={confirmLogoutOpen}
+          onClose={() => setConfirmLogoutOpen(false)}
+          onConfirm={confirmLogout}
+        />
+      ) : null}
+    </>
   );
 }

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, ShieldCheck } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 type PageShellProps = {
   eyebrow: string;
@@ -9,7 +9,6 @@ type PageShellProps = {
 };
 
 export function PageShell({
-  eyebrow,
   title,
   description,
   children,
@@ -19,10 +18,6 @@ export function PageShell({
       <section className="border-b border-[#d9e8f4] bg-[#f5fbff] px-4 py-10 md:px-6 md:py-12 lg:px-8 lg:py-14">
         <div className="mx-auto max-w-9xl">
           <div className="max-w-3xl">
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#b9d8f3] bg-[#e9f2ff] px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.14em] text-[#075cde] md:text-[11px]">
-              <ShieldCheck className="h-4 w-4" />
-              {eyebrow}
-            </div>
             <h1 className="text-[30px] font-extrabold leading-[1.12] tracking-tight text-[#07162d] md:text-[46px] lg:text-[54px]">
               {title}
             </h1>

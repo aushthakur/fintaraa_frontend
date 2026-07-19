@@ -3,9 +3,10 @@ import { getPageSeoMetadata } from "@/services/seoMetadata";
 import { CompanyPage } from "@/components/services/company/CompanyPage";
 
 const fallbackMetadata: Metadata = {
-  title: "Company Formation & Trademark Registration",
+  title: "Company Formation & Trademark Registration | Fintaraa",
   description:
     "Register your company, LLP, OPC, or trademark with assisted legal support from Fintaraa.",
+  alternates: { canonical: "/company-registration" },
 };
 
 export async function generateMetadata(): Promise<Metadata> {

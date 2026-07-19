@@ -173,12 +173,7 @@ const ease = [0.22, 1, 0.36, 1] as const;
 
 function SectionLabel({ children }: { children: ReactNode }) {
   return (
-    <div className="flex items-center gap-3">
-      <span className="h-0.75 w-7 bg-[#16a3e0]" />
-      <p className="text-[11px] font-extrabold uppercase leading-5 text-[#075cde] md:text-[12px]">
-        {children}
-      </p>
-    </div>
+    <span className="sr-only">{children}</span>
   );
 }
 
@@ -192,7 +187,7 @@ function SectionHeading({
   return (
     <h2
       className={[
-        "mt-4 text-[30px] font-extrabold leading-[1.2] text-[#0b1f3a] md:text-[35px] lg:text-[38px]",
+        "text-[30px] font-extrabold leading-[1.2] text-[#0b1f3a] md:text-[35px] lg:text-[38px]",
         className,
       ].join(" ")}
     >

@@ -7,6 +7,7 @@ export type HomeBanner = {
   highlightText?: string;
   description?: string;
   image: string;
+  mobileImage?: string;
   imageAlt?: string;
   linkUrl?: string;
   buttonText?: string;
@@ -97,6 +98,7 @@ const normalise = (item: any): HomeBanner => ({
   highlightText: item?.highlightText || "",
   description: item?.description || "",
   image: localBannerImage(item?.image),
+  mobileImage: localBannerImage(item?.mobileImage || item?.image),
   imageAlt: item?.imageAlt || item?.title || fallbackHomeBanners[0].imageAlt,
   linkUrl: item?.linkUrl || "",
   buttonText: item?.buttonText || "",

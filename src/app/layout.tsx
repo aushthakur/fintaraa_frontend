@@ -130,7 +130,7 @@ export default function RootLayout({
       contactPoint: [
         {
           "@type": "ContactPoint",
-          telephone: "+91-99991-75156",
+          telephone: "+91-84482-82679",
           contactType: "customer support",
           areaServed: "IN",
           availableLanguage: ["en", "hi"],

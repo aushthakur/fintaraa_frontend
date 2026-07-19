@@ -181,7 +181,10 @@ export function GstHero() {
           </div>
         </div>
 
-        <div className="relative mx-auto w-full max-w-140">
+        <div
+          id="gst-service-form"
+          className="relative mx-auto w-full max-w-140 scroll-mt-48"
+        >
           <div className="absolute -right-4 -top-4 h-full w-85 rounded-xl bg-[#005ca8] sm:w-95 md:w-105 lg:w-115" />
           <div className="relative rounded-xl bg-white p-5 shadow-[0_18px_45px_rgba(16,24,40,0.12)] sm:p-6 md:p-7">
             <h2 className="text-base font-extrabold text-[#2a2f36] sm:text-lg md:text-[20px] lg:text-[22px]">

@@ -1,6 +1,7 @@
 import { AccountMenu } from "./AccountMenu";
 import { ProfileSummary } from "./ProfileSummary";
 import { AccountDetailPanel } from "./AccountDetailPanel";
+import { AccountMobileMenu } from "./AccountMobileMenu";
 
 export function AccountProfilePage({ activeSlug }: { activeSlug?: string }) {
   return (
@@ -21,8 +22,10 @@ export function AccountProfilePage({ activeSlug }: { activeSlug?: string }) {
           </p>
         </div> */}
 
-        <div className="grid min-h-0 gap-3 xl:h-full xl:grid-cols-[minmax(20rem,24rem)_minmax(0,1fr)] xl:gap-0">
-          <div className="grid gap-4 border-r-gray-200 bg-white xl:h-full xl:overflow-y-auto xl:border-r xl:pr-3 scrollbar-thin">
+        <AccountMobileMenu activeSlug={activeSlug} />
+
+        <div className="grid min-h-0 xl:h-full xl:grid-cols-[minmax(20rem,24rem)_minmax(0,1fr)]">
+          <div className="hidden gap-4 border-r-gray-200 bg-white xl:grid xl:h-full xl:overflow-y-auto xl:border-r xl:pr-3 scrollbar-thin">
             <ProfileSummary />
             <AccountMenu activeSlug={activeSlug} />
             <div className="bg-white/90 p-4 text-center">

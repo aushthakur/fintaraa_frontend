@@ -7,7 +7,6 @@ import {
   ArrowRight,
   BadgeCheck,
   CalendarDays,
-  Calculator,
   Download,
   Landmark,
   LockKeyhole,
@@ -77,6 +76,7 @@ type EmiCalculatorProps = {
 interface CalculatorCardProps extends Omit<CalculatorField, "key"> {
   value: number;
   onChange: (val: number) => void;
+  compactMobile?: boolean;
 }
 
 const formatCurrencyIndian = (num: number) =>
@@ -513,9 +513,6 @@ const downloadPdf = (fileName: string, pdf: string) => {
   anchor.remove();
   URL.revokeObjectURL(url);
 };
-
-const clamp = (value: number, min: number, max: number) =>
-  Math.min(Math.max(Number.isFinite(value) ? value : min, min), max);
 
 const calculateReducingEmi = (
   principal: number,
@@ -1155,72 +1152,92 @@ function SliderCard({
   title,
   subtitle,
   value,
-  min,
-  max,
-  step,
   prefix,
   suffix,
-  minLabel,
-  maxLabel,
   onChange,
+  compactMobile = false,
 }: CalculatorCardProps) {
-  const percentageTrack = ((value - min) / (max - min)) * 100;
+  const [draftValue, setDraftValue] = useState(String(value));
+
+  const updateDraft = (nextValue: string) => {
+    const normalized = nextValue.replace(/,/g, "").trim();
+    if (!/^\d*(\.\d*)?$/.test(normalized)) return;
+
+    setDraftValue(normalized);
+    if (!normalized || normalized === ".") return;
+
+    const parsedValue = Number(normalized);
+    if (Number.isFinite(parsedValue)) onChange(Math.max(0, parsedValue));
+  };
+
+  const commitDraft = () => {
+    const parsedValue = Number(draftValue);
+    const nextValue = Number.isFinite(parsedValue) ? Math.max(0, parsedValue) : 0;
+    setDraftValue(String(nextValue));
+    onChange(nextValue);
+  };
 
   return (
-    <div className="rounded-xl border border-[#e2edf8] bg-white p-4 sm:p-5">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+    <div
+      className={`min-w-0 overflow-hidden border border-[#e2edf8] bg-white ${
+        compactMobile
+          ? "rounded-lg p-2 sm:rounded-xl sm:p-3"
+          : "rounded-xl p-3 sm:p-4"
+      }`}
+    >
+      <div
+        className={`flex flex-col sm:flex-row sm:items-center sm:justify-between sm:gap-4 ${
+          compactMobile ? "gap-1.5" : "gap-3"
+        }`}
+      >
         <div className="min-w-0">
-          <h4 className="text-[12px] font-bold uppercase tracking-wider text-[#344054]">
+          <h4
+            className={`font-bold uppercase tracking-wider text-[#344054] ${
+              compactMobile ? "text-[9px] sm:text-[12px]" : "text-[12px]"
+            }`}
+          >
             {title}
           </h4>
           {subtitle ? (
-            <p className="mt-0.5 text-[12px] font-semibold text-[#8090a4]">
+            <p
+              className={`mt-0.5 text-[12px] font-semibold text-[#8090a4] ${
+                compactMobile ? "hidden" : ""
+              }`}
+            >
               {subtitle}
             </p>
           ) : null}
         </div>
 
-        <div className="flex h-12 w-full min-w-0 items-center justify-between rounded-xl border border-[#d7e5f3] bg-[#fbfdff] px-3 sm:w-44">
+        <div
+          className={`flex w-full min-w-0 max-w-full items-center justify-between overflow-hidden border border-[#d7e5f3] bg-[#fbfdff] px-2.5 sm:px-3 ${
+            compactMobile
+              ? "h-8 rounded-lg sm:h-10 sm:w-36 sm:rounded-xl"
+              : "h-11 rounded-xl sm:w-44"
+          }`}
+        >
           {prefix ? (
             <span className="text-[14px] font-bold text-[#07162d]">
               {prefix}
             </span>
           ) : null}
           <input
-            type="number"
-            value={value}
-            min={min}
-            max={max}
-            step={step}
-            onChange={(event) =>
-              onChange(clamp(Number(event.target.value), min, max))
-            }
-            className="w-full min-w-0 border-0 bg-transparent text-right text-[15px] font-bold text-[#07162d] outline-none focus:ring-0 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+            type="text"
+            inputMode="decimal"
+            value={draftValue}
+            aria-label={title}
+            onFocus={(event) => event.currentTarget.select()}
+            onChange={(event) => updateDraft(event.target.value)}
+            onBlur={commitDraft}
+            className={`w-full min-w-0 border-0 bg-transparent text-right font-bold text-[#07162d] outline-none focus:ring-0 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none ${
+              compactMobile ? "text-[12px] sm:text-[15px]" : "text-[15px]"
+            }`}
           />
           {suffix ? (
             <span className="ml-1 shrink-0 text-[13px] font-bold text-[#075cde]">
               {suffix}
             </span>
           ) : null}
-        </div>
-      </div>
-
-      <div className="mt-6">
-        <input
-          type="range"
-          min={min}
-          max={max}
-          step={step}
-          value={value}
-          onChange={(event) => onChange(Number(event.target.value))}
-          className="h-2 w-full cursor-pointer appearance-none rounded-full accent-[#075cde]"
-          style={{
-            background: `linear-gradient(to right, #075cde 0%, #075cde ${percentageTrack}%, #e5e7eb ${percentageTrack}%, #e5e7eb 100%)`,
-          }}
-        />
-        <div className="mt-3 flex justify-between gap-3 text-[12px] font-bold text-[#8090a4]">
-          <span>{minLabel}</span>
-          <span className="text-right">{maxLabel}</span>
         </div>
       </div>
     </div>
@@ -1237,7 +1254,10 @@ export function EmiCalculator({
   const fallbackActiveKey: CalculatorKey = defaultLoanType
     ? "personal-loan"
     : "home-loan";
-  const defaultActiveKey = resolveCalculatorKey(defaultLoanType, fallbackActiveKey);
+  const defaultActiveKey = resolveCalculatorKey(
+    defaultLoanType,
+    fallbackActiveKey,
+  );
   const [activeKey, setActiveKey] = useState<CalculatorKey>(defaultActiveKey);
   const [valuesByCalculator, setValuesByCalculator] =
     useState<Record<CalculatorKey, CalculatorValues>>(initialValues);
@@ -1256,6 +1276,7 @@ export function EmiCalculator({
   );
   const activeLoanLabel = displayLoanLabel || activeConfig.label;
   const applyHref = applyHrefOverride || activeConfig.applyHref;
+  const compactHomeMobile = !lockedLoanType && !defaultLoanType;
 
   const totalPayable = Math.max(computedMetrics.totalPayable, 1);
   const principalPercent = Math.min(
@@ -1365,35 +1386,54 @@ export function EmiCalculator({
     downloadPdf(fileName, pdf);
   };
 
-  const applyButtonClasses =
-    "mt-6 flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#075cde] text-[15px] font-semibold text-white no-underline transition hover:bg-[#064cb8]";
+  const applyButtonClasses = compactHomeMobile
+    ? "mt-2 flex h-9 w-full items-center justify-center gap-2 rounded-lg bg-[#075cde] text-[12px] font-semibold text-white no-underline transition hover:bg-[#064cb8] sm:mt-3 sm:h-10 sm:rounded-xl sm:text-[13px]"
+    : "mt-6 flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#075cde] text-[15px] font-semibold text-white no-underline transition hover:bg-[#064cb8]";
 
   return (
-    <section className="bg-white px-4 py-12 md:px-6 lg:px-8">
-      <div className="mx-auto max-w-9xl overflow-hidden rounded-2xl bg-[#f7fbff] p-4 sm:p-6 lg:p-8">
-        <div className="flex flex-col gap-5 border-b border-[#dce9f4] pb-6 lg:flex-row lg:items-end lg:justify-between">
+    <section
+      className={`overflow-x-hidden bg-white px-4 md:px-6 lg:px-8 ${
+        compactHomeMobile ? "py-4 sm:py-8" : "py-12"
+      }`}
+    >
+      <div
+        className={`mx-auto w-full max-w-9xl overflow-hidden rounded-2xl bg-[#f7fbff] ${
+          compactHomeMobile ? "p-3 sm:p-5 lg:p-6" : "p-4 sm:p-6 lg:p-8"
+        }`}
+      >
+        <div
+          className={`flex flex-col border-b border-[#dce9f4] lg:flex-row lg:items-end lg:justify-between ${
+            compactHomeMobile ? "gap-2 pb-2 sm:gap-4 sm:pb-4" : "gap-5 pb-6"
+          }`}
+        >
           <div className="max-w-3xl">
-            <p className="flex items-center gap-2 text-[11px] font-bold uppercase text-[#075cde]">
-              <Calculator className="h-4 w-4" aria-hidden="true" />
-              EMI planning
-            </p>
-            <h2 className="mt-2 text-[28px] font-bold leading-[1.16] text-[#07162d] sm:text-[34px]">
+            <h2
+              className={`break-words font-bold leading-[1.16] text-[#07162d] sm:text-[34px] ${
+                compactHomeMobile ? "text-[21px]" : "text-[28px]"
+              }`}
+            >
               Calculate Your{" "}
               <span className="text-[#075cde]">{activeLoanLabel}</span> EMI
             </h2>
-            <p className="mt-3 max-w-2xl text-[14px] font-medium leading-6 text-[#61748f] sm:text-[15px]">
-              {activeConfig.description} Review the projected monthly payment,
-              total interest and repayment schedule before applying.
-            </p>
           </div>
-          <span className="inline-flex w-fit shrink-0 items-center gap-2 rounded-lg bg-white px-3 py-2 text-[12px] font-semibold text-[#075cde]">
+          <span
+            className={`w-fit shrink-0 items-center gap-2 rounded-lg bg-white px-3 py-2 text-[12px] font-semibold text-[#075cde] ${
+              compactHomeMobile ? "hidden sm:inline-flex" : "inline-flex"
+            }`}
+          >
             <CalendarDays className="h-4 w-4" aria-hidden="true" />
             {computedMetrics.months}-month projection
           </span>
         </div>
 
         {!lockedLoanType ? (
-          <div className="-mx-4 mt-5 flex gap-2 overflow-x-auto px-4 pb-2 scrollbar-none sm:mx-0 sm:px-0">
+          <div
+            className={`flex gap-2 overflow-x-auto scrollbar-none sm:mx-0 sm:px-0 ${
+              compactHomeMobile
+                ? "-mx-3 mt-2 px-3 pb-1 sm:mx-0 sm:mt-4 sm:pb-1"
+                : "-mx-4 mt-5 px-4 pb-2"
+            }`}
+          >
             {calculatorConfigs.map((config) => {
               const isSelected = activeKey === config.key;
               return (
@@ -1403,7 +1443,11 @@ export function EmiCalculator({
                   onClick={() => setActiveKey(config.key)}
                   whileHover={{ y: -1 }}
                   whileTap={{ scale: 0.98 }}
-                  className={`shrink-0 rounded-lg border px-5 py-2.5 text-[13px] font-semibold transition-all ${
+                  className={`shrink-0 rounded-lg border font-semibold transition-all ${
+                    compactHomeMobile
+                      ? "px-3 py-2 text-[11px] sm:px-5 sm:py-2.5 sm:text-[13px]"
+                      : "px-5 py-2.5 text-[13px]"
+                  } ${
                     isSelected
                       ? "border-[#075cde] bg-white text-[#075cde]"
                       : "border-[#dceaf7] bg-white text-[#52657d] hover:border-[#075cde]"
@@ -1425,34 +1469,24 @@ export function EmiCalculator({
           </p>
         </div> */}
 
-        <div className="mt-6 grid gap-6 lg:grid-cols-[1.3fr_1fr]">
+        <div
+          className={`grid lg:grid-cols-[1.3fr_1fr] ${
+            compactHomeMobile ? "mt-2 gap-2 sm:mt-4 sm:gap-4" : "mt-6 gap-6"
+          }`}
+        >
           <motion.div
             key={activeConfig.key}
             initial={{ opacity: 0.96, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
-            className="min-w-0"
+            className="flex min-w-0 flex-col"
           >
-            <div className="mb-5">
-              <div className="flex items-start gap-3">
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#e7f1ff] text-[#075cde]">
-                  <Landmark className="h-5 w-5" aria-hidden="true" />
-                </span>
-                <div>
-                  <p className="text-[11px] font-bold uppercase text-[#075cde]">
-                    Repayment assumptions
-                  </p>
-                  <h3 className="mt-1 text-[18px] font-bold leading-tight text-[#07162d]">
-                    Structure your {activeLoanLabel}
-                  </h3>
-                  <p className="mt-1 text-[12px] font-medium leading-5 text-[#71839a]">
-                    Reducing-balance estimate based on the selected amount, rate
-                    and repayment period.
-                  </p>
-                </div>
-              </div>
-
-              <dl className="mt-5 grid grid-cols-3 border-y border-[#dce9f4] bg-white">
+            <div
+              className={
+                compactHomeMobile ? "hidden sm:mb-5 sm:block" : "mb-5"
+              }
+            >
+              <dl className="grid grid-cols-3 border-y border-[#dce9f4] bg-white">
                 {[
                   {
                     label: computedMetrics.principalLabel,
@@ -1477,10 +1511,13 @@ export function EmiCalculator({
                     }`}
                   >
                     <dt className="flex items-center gap-1.5 text-[9px] font-bold uppercase leading-4 text-[#8090a4] sm:text-[10px]">
-                      <Icon className="h-3.5 w-3.5 shrink-0 text-[#075cde]" aria-hidden="true" />
+                      <Icon
+                        className="h-3.5 w-3.5 shrink-0 text-[#075cde]"
+                        aria-hidden="true"
+                      />
                       <span className="line-clamp-2">{label}</span>
                     </dt>
-                    <dd className="mt-1.5 break-words text-[12px] font-bold leading-4 text-[#07162d] sm:text-[13px]">
+                    <dd className="mt-1.5 wrap-break-word text-[12px] font-bold leading-4 text-[#07162d] sm:text-[13px]">
                       {value}
                     </dd>
                   </div>
@@ -1488,25 +1525,36 @@ export function EmiCalculator({
               </dl>
             </div>
 
-            <div className="grid gap-4">
-            {activeConfig.fields.map(({ key: fieldKey, ...field }) => (
-              <SliderCard
-                key={fieldKey}
-                {...field}
-                value={activeValues[fieldKey]}
-                onChange={(value) => updateField(fieldKey, value)}
-              />
-            ))}
+            <div
+              className={`grid min-w-0 ${
+                compactHomeMobile
+                  ? "grid-cols-2 gap-2 sm:gap-3"
+                  : "gap-4"
+              }`}
+            >
+              {activeConfig.fields.map(({ key: fieldKey, ...field }) => (
+                <SliderCard
+                  key={fieldKey}
+                  {...field}
+                  value={activeValues[fieldKey]}
+                  onChange={(value) => updateField(fieldKey, value)}
+                  compactMobile={compactHomeMobile}
+                />
+              ))}
+            </div>
 
             <button
               type="button"
               onClick={handleDownloadBreakup}
-              className="mt-2 flex h-12 w-full items-center justify-center gap-2 rounded-xl border border-[#dceaf7] bg-white text-[13px] font-semibold text-[#07162d] transition-colors hover:border-[#075cde] hover:bg-[#f2f7ff] sm:text-[14px]"
+              className={`mt-auto w-full items-center justify-center gap-2 border border-[#dceaf7] bg-white font-semibold text-[#07162d] transition-colors hover:border-[#075cde] hover:bg-[#f2f7ff] ${
+                compactHomeMobile
+                  ? "flex h-10 rounded-lg text-[12px] sm:mb-[13px] sm:h-10 sm:rounded-xl sm:text-[13px]"
+                  : "flex h-12 rounded-xl text-[13px] sm:text-[14px]"
+              }`}
             >
               Download {activeLoanLabel} Breakup PDF
               <Download className="ml-1 h-4 w-4 text-[#075cde]" />
             </button>
-            </div>
           </motion.div>
 
           <motion.aside
@@ -1514,19 +1562,45 @@ export function EmiCalculator({
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-            className="flex flex-col overflow-hidden rounded-xl border border-[#e2edf8] bg-white"
+            className={`flex min-w-0 flex-col overflow-hidden border border-[#e2edf8] bg-white ${
+              compactHomeMobile ? "rounded-lg sm:rounded-xl" : "rounded-xl"
+            }`}
           >
-            <div className="flex items-center justify-between gap-4 border-b border-[#eef4fb] bg-white px-6 py-4">
-              <span className="text-[15px] font-bold text-[#07162d]">
+            <div
+              className={`flex items-center justify-between gap-4 border-b border-[#eef4fb] bg-white ${
+                compactHomeMobile
+                  ? "hidden sm:flex sm:px-4 sm:py-3"
+                  : "px-6 py-4"
+              }`}
+            >
+              <span
+                className={`font-bold text-[#07162d] ${
+                  compactHomeMobile ? "text-[12px] sm:text-[15px]" : "text-[15px]"
+                }`}
+              >
                 Your Loan Summary
               </span>
-              <span className="text-[11px] font-semibold text-[#087443]">
+              <span
+                className={`text-[11px] font-semibold text-[#087443] ${
+                  compactHomeMobile ? "hidden sm:inline" : ""
+                }`}
+              >
                 Save up to ₹6.2 Lakh
               </span>
             </div>
 
-            <div className="flex flex-1 flex-col justify-between p-5 sm:p-6">
-              <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-3">
+            <div
+              className={`flex flex-1 flex-col ${
+                compactHomeMobile
+                  ? "justify-start p-2 sm:p-3"
+                  : "justify-between p-5 sm:p-6"
+              }`}
+            >
+              <div
+                className={`grid sm:grid-cols-3 ${
+                  compactHomeMobile ? "grid-cols-3 gap-1.5 sm:gap-2.5" : "grid-cols-1 gap-2.5"
+                }`}
+              >
                 {[
                   {
                     id: "emi",
@@ -1549,70 +1623,138 @@ export function EmiCalculator({
                 ].map((badge) => (
                   <div
                     key={badge.id}
-                    className={`rounded-lg p-3 text-center ${badge.bg}`}
+                    className={`min-w-0 overflow-hidden rounded-lg text-center ${badge.bg} ${
+                      compactHomeMobile ? "p-1.5 sm:p-2.5" : "p-3"
+                    }`}
                   >
-                    <p className="text-[9px] font-bold uppercase tracking-wider text-[#8090a4]">
+                    <p
+                      className={`font-bold uppercase tracking-wider text-[#8090a4] ${
+                        compactHomeMobile ? "text-[7px] sm:text-[9px]" : "text-[9px]"
+                      }`}
+                    >
                       {badge.label}
                     </p>
-                    <p className="mt-1 whitespace-nowrap text-[14px] font-bold tracking-tight text-[#07162d]">
+                    <p
+                      className={`mt-1 block truncate font-bold tracking-tight text-[#07162d] ${
+                        compactHomeMobile ? "text-[10px] sm:text-[14px]" : "text-[14px]"
+                      }`}
+                    >
                       {formatCurrencyIndian(badge.val)}
                     </p>
                   </div>
                 ))}
               </div>
 
-              <div className="my-8 flex justify-center">
+              <div
+                className={
+                  compactHomeMobile
+                    ? "hidden sm:mt-3 sm:grid sm:grid-cols-[1fr_7rem_1fr] sm:items-center sm:gap-4"
+                    : "contents"
+                }
+              >
                 <div
-                  className="relative flex h-48 w-48 items-center justify-center rounded-full sm:h-52 sm:w-52"
-                  style={{
-                    background: `conic-gradient(#075cde 0% ${principalPercent}%, #12b76a ${principalPercent}% 100%)`,
-                  }}
+                  className={`justify-center ${
+                    compactHomeMobile
+                      ? "flex sm:col-start-2 sm:row-start-1"
+                      : "my-8 flex"
+                  }`}
                 >
-                  <div className="flex h-36 w-36 flex-col items-center justify-center rounded-full bg-white text-center sm:h-38 sm:w-38">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#8090a4]">
-                      Total Amount
-                    </span>
-                    <p className="mt-0.5 text-[18px] font-bold tracking-tight text-[#07162d]">
-                      {formatCurrencyIndian(computedMetrics.totalPayable)}
-                    </p>
+                  <div
+                    className={`relative flex items-center justify-center rounded-full ${
+                      compactHomeMobile
+                        ? "h-28 w-28"
+                        : "h-48 w-48 sm:h-52 sm:w-52"
+                    }`}
+                    style={{
+                      background: `conic-gradient(#075cde 0% ${principalPercent}%, #12b76a ${principalPercent}% 100%)`,
+                    }}
+                  >
+                    <div
+                      className={`flex flex-col items-center justify-center rounded-full bg-white text-center ${
+                        compactHomeMobile
+                          ? "h-20 w-20"
+                          : "h-36 w-36 sm:h-38 sm:w-38"
+                      }`}
+                    >
+                      <span
+                        className={`font-bold uppercase tracking-wider text-[#8090a4] ${
+                          compactHomeMobile ? "text-[8px]" : "text-[10px]"
+                        }`}
+                      >
+                        {compactHomeMobile ? "Loan breakup" : "Total Amount"}
+                      </span>
+                      <p
+                        className={`mt-0.5 font-bold tracking-tight text-[#07162d] ${
+                          compactHomeMobile ? "text-[12px]" : "text-[18px]"
+                        }`}
+                      >
+                        {compactHomeMobile
+                          ? `${principalPercent.toFixed(0)}% loan`
+                          : formatCurrencyIndian(computedMetrics.totalPayable)}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="grid grid-cols-2 gap-x-6 gap-y-4 border-t border-gray-50 pt-5">
-                <div className="flex items-start gap-2.5">
-                  <span className="mt-1 h-3 w-3 shrink-0 rounded-full bg-[#075cde]" />
-                  <div>
-                    <p className="text-[12px] font-bold text-[#8090a4]">
-                      {computedMetrics.principalLabel}
-                    </p>
-                    <p className="text-[15px] font-bold text-[#07162d]">
-                      {formatCurrencyIndian(computedMetrics.principal)}
-                    </p>
-                    <span className="text-[11px] font-bold text-[#075cde]">
-                      ({principalPercent.toFixed(1)}%)
-                    </span>
+                <div
+                  className={`grid-cols-2 gap-x-6 gap-y-4 border-t border-gray-50 pt-5 ${
+                    compactHomeMobile
+                      ? "contents"
+                      : "grid"
+                  }`}
+                >
+                  <div
+                    className={`flex items-start gap-2.5 ${
+                      compactHomeMobile
+                        ? "justify-self-end text-right sm:col-start-1 sm:row-start-1 sm:flex-row-reverse"
+                        : ""
+                    }`}
+                  >
+                    <span className="mt-1 h-3 w-3 shrink-0 rounded-full bg-[#075cde]" />
+                    <div>
+                      <p className="text-[12px] font-bold text-[#8090a4]">
+                        {computedMetrics.principalLabel}
+                      </p>
+                      <p className="text-[15px] font-bold text-[#07162d]">
+                        {formatCurrencyIndian(computedMetrics.principal)}
+                      </p>
+                      <span className="text-[11px] font-bold text-[#075cde]">
+                        ({principalPercent.toFixed(1)}%)
+                      </span>
+                    </div>
                   </div>
-                </div>
 
-                <div className="flex items-start gap-2.5">
-                  <span className="mt-1 h-3 w-3 shrink-0 rounded-full bg-lime-500" />
-                  <div>
-                    <p className="text-[12px] font-bold text-[#8090a4]">
-                      Total Interest
-                    </p>
-                    <p className="text-[15px] font-bold text-[#07162d]">
-                      {formatCurrencyIndian(computedMetrics.totalInterest)}
-                    </p>
-                    <span className="text-[11px] font-bold text-[#0f7a4d]">
-                      ({interestPercent.toFixed(1)}%)
-                    </span>
+                  <div
+                    className={`flex items-start gap-2.5 ${
+                      compactHomeMobile
+                        ? "justify-self-start sm:col-start-3 sm:row-start-1"
+                        : ""
+                    }`}
+                  >
+                    <span className="mt-1 h-3 w-3 shrink-0 rounded-full bg-lime-500" />
+                    <div>
+                      <p className="text-[12px] font-bold text-[#8090a4]">
+                        Total Interest
+                      </p>
+                      <p className="text-[15px] font-bold text-[#07162d]">
+                        {formatCurrencyIndian(computedMetrics.totalInterest)}
+                      </p>
+                      <span className="text-[11px] font-bold text-[#0f7a4d]">
+                        ({interestPercent.toFixed(1)}%)
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
 
               {computedMetrics.extraMetrics?.length ? (
-                <div className="mt-5 grid gap-2 rounded-xl bg-[#f8fbff] p-4">
+                <div
+                  className={`mt-5 gap-2 rounded-xl bg-[#f8fbff] p-4 ${
+                    compactHomeMobile
+                      ? "hidden"
+                      : "grid"
+                  }`}
+                >
                   {computedMetrics.extraMetrics.map((metric) => (
                     <div
                       key={metric.label}
@@ -1629,24 +1771,44 @@ export function EmiCalculator({
                 </div>
               ) : null}
 
-              {applyProductSlug ? (
-                <AuthRedirectLink
-                  href={applyHref}
-                  productSlug={applyProductSlug}
-                  className={applyButtonClasses}
-                >
-                  Apply For This Loan
-                  <ArrowRight className="h-4 w-4" />
-                </AuthRedirectLink>
-              ) : (
-                <Link href={applyHref} className={applyButtonClasses}>
-                  Apply For This Loan
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              )}
-              <LoanExpertButton className="mt-3 h-12 w-full" />
+              <div
+                className={
+                  compactHomeMobile
+                    ? "mt-auto sm:grid sm:grid-cols-2 sm:items-end sm:gap-2"
+                    : ""
+                }
+              >
+                {applyProductSlug ? (
+                  <AuthRedirectLink
+                    href={applyHref}
+                    productSlug={applyProductSlug}
+                    className={applyButtonClasses}
+                  >
+                    Apply For This Loan
+                    <ArrowRight className="h-4 w-4" />
+                  </AuthRedirectLink>
+                ) : (
+                  <Link href={applyHref} className={applyButtonClasses}>
+                    Apply For This Loan
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                )}
+                <div className={compactHomeMobile ? "hidden sm:block" : ""}>
+                  <LoanExpertButton
+                    className={
+                      compactHomeMobile
+                        ? "mt-3 !h-10 w-full"
+                        : "mt-3 h-12 w-full"
+                    }
+                  />
+                </div>
+              </div>
 
-              <div className="mt-4 grid gap-2 text-[11px] font-bold text-[#61748f] sm:grid-cols-3">
+              <div
+                className={`mt-4 gap-2 text-[11px] font-bold text-[#61748f] sm:grid-cols-3 ${
+                  compactHomeMobile ? "hidden" : "grid"
+                }`}
+              >
                 {[
                   ["Safe & Secure", ShieldCheck],
                   ["No Hidden Charges", LockKeyhole],
@@ -1665,7 +1827,11 @@ export function EmiCalculator({
                 })}
               </div>
 
-              <p className="mt-3 text-center text-[10px] font-semibold italic leading-normal text-[#98a2b3]">
+              <p
+                className={`mt-3 text-center text-[10px] font-semibold italic leading-normal text-[#98a2b3] ${
+                  compactHomeMobile ? "hidden" : ""
+                }`}
+              >
                 *EMI shown is indicative. Final rates may vary based on credit
                 assessment and lender policy.
               </p>

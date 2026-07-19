@@ -1,5 +1,26 @@
 @import "tailwindcss";
 @import "swiper/css";
+@import "swiper/css/navigation";
+@import "swiper/css/pagination";
+
+.product-hero-swiper .swiper-pagination {
+  bottom: 0.8rem !important;
+}
+
+.product-hero-swiper .swiper-pagination-bullet {
+  width: 0.55rem;
+  height: 0.55rem;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  background: rgba(255, 255, 255, 0.42);
+  opacity: 1;
+  transition: width 180ms ease, background-color 180ms ease;
+}
+
+.product-hero-swiper .swiper-pagination-bullet-active {
+  width: 1.7rem;
+  border-radius: 999px;
+  background: #ffffff;
+}
 
 @theme inline {
   --font-sans: var(--font-inter);
@@ -22,6 +43,91 @@
   :root {
     --site-page-x: 1.5rem;
     --site-section-y: 2.75rem;
+  }
+}
+
+@media (max-width: 767px) {
+  main .responsive-card-table {
+    display: block;
+    min-width: 0 !important;
+    width: 100%;
+    border-collapse: separate;
+  }
+
+  main .responsive-card-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  main .responsive-card-table tbody {
+    display: grid;
+    width: 100%;
+    gap: 0.75rem;
+  }
+
+  main .responsive-card-table tbody tr {
+    display: grid;
+    width: 100%;
+    gap: 0;
+    overflow: hidden;
+    border: 1px solid #dce8f1;
+    border-radius: 1rem;
+    background: #fff;
+    padding: 0.65rem 0.8rem;
+    box-shadow: 0 6px 18px rgba(7, 22, 45, 0.05);
+  }
+
+  main .responsive-card-table tbody td,
+  main .responsive-card-table tbody th {
+    display: flex;
+    width: 100%;
+    min-width: 0;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+    border: 0;
+    border-bottom: 1px solid #edf2f6;
+    padding: 0.6rem 0.1rem !important;
+    text-align: right;
+    white-space: normal;
+  }
+
+  main .responsive-card-table tbody td:last-child,
+  main .responsive-card-table tbody th:last-child {
+    border-bottom: 0;
+  }
+
+  main .responsive-card-table tbody td::before {
+    content: attr(data-label);
+    max-width: 42%;
+    flex: 0 0 42%;
+    text-align: left;
+    color: #667085;
+    font-size: 0.7rem;
+    font-weight: 800;
+    line-height: 1.25rem;
+  }
+
+  main .responsive-card-table tbody td[colspan]::before,
+  main .responsive-card-table tbody td[data-label=""]::before {
+    display: none;
+  }
+
+  main .responsive-card-table tbody td[colspan] {
+    justify-content: center;
+    text-align: center;
+  }
+
+  main .responsive-card-table tbody th {
+    justify-content: flex-start;
+    text-align: left;
+    color: #075cde;
+    font-size: 0.75rem;
+    font-weight: 800;
   }
 }
 
@@ -372,6 +478,103 @@ select:disabled {
   }
 }
 
+.site-carousel .swiper-wrapper {
+  align-items: stretch;
+}
+
+.site-carousel .swiper-slide {
+  height: auto;
+}
+
+.site-carousel .swiper-button-prev,
+.site-carousel .swiper-button-next {
+  width: 2.25rem;
+  height: 2.25rem;
+  margin-top: -1.125rem;
+  border: 1px solid rgba(207, 224, 238, 0.92);
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.94);
+  color: #075cde;
+  box-shadow:
+    0 10px 28px rgba(7, 22, 45, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.site-carousel .swiper-button-prev {
+  left: 0.35rem;
+}
+
+.site-carousel .swiper-button-next {
+  right: 0.35rem;
+}
+
+.site-carousel .swiper-button-prev::after,
+.site-carousel .swiper-button-next::after {
+  display: none;
+}
+
+.site-carousel .swiper-navigation-icon {
+  width: 0.65rem;
+  height: 1rem;
+}
+
+.site-carousel .swiper-button-prev:hover,
+.site-carousel .swiper-button-next:hover {
+  border-color: #075cde;
+  background: #075cde;
+  color: #fff;
+  box-shadow: 0 12px 30px rgba(7, 92, 222, 0.28);
+}
+
+.site-carousel .swiper-button-disabled {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .site-carousel .swiper-button-prev,
+  .site-carousel .swiper-button-next {
+    width: 2.625rem;
+    height: 2.625rem;
+    margin-top: -1.3125rem;
+  }
+}
+
+.card-action-button {
+  border: 1px solid #075cde;
+  background: transparent;
+  color: #075cde;
+  opacity: 1;
+  transform: none;
+  box-shadow: none;
+  transition:
+    background-color 220ms ease,
+    border-color 220ms ease,
+    color 220ms ease,
+    box-shadow 220ms ease,
+    transform 220ms ease;
+}
+
+.group:hover .card-action-button,
+.card-action-button:hover,
+.card-action-button:focus-visible {
+  border-color: #075cde;
+  background: #075cde;
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(7, 92, 222, 0.2);
+}
+
+.card-action-button:focus-visible {
+  outline: 2px solid rgba(7, 92, 222, 0.28);
+  outline-offset: 2px;
+}
+
 @keyframes marquee {
   0% {
     transform: translateX(0);
@@ -476,8 +679,105 @@ select:disabled {
   animation: heroCopyIn 520ms ease both;
 }
 
+@keyframes serviceTrackerLineFill {
+  0% {
+    transform: scaleX(0);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes serviceTrackerLineShine {
+  0% {
+    transform: translateX(-160%);
+  }
+  100% {
+    transform: translateX(420%);
+  }
+}
+
+@keyframes serviceTrackerNodeComplete {
+  0% {
+    opacity: 0;
+    transform: scale(0.68);
+  }
+  66% {
+    opacity: 1;
+    transform: scale(1.12);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes serviceTrackerNodeGlow {
+  0%,
+  100% {
+    box-shadow:
+      0 8px 26px rgba(7, 92, 222, 0.34),
+      0 0 0 0 rgba(7, 125, 225, 0.22);
+  }
+  50% {
+    box-shadow:
+      0 10px 32px rgba(7, 92, 222, 0.48),
+      0 0 0 9px rgba(7, 125, 225, 0.08);
+  }
+}
+
+@keyframes serviceTrackerRingPulse {
+  0%,
+  100% {
+    opacity: 0.28;
+    transform: scale(0.88);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.08);
+  }
+}
+
+.service-tracker-line-fill {
+  transform-origin: left center;
+  animation: serviceTrackerLineFill 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.service-tracker-line-fill::after {
+  position: absolute;
+  inset: 0;
+  width: 32%;
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.78),
+    transparent
+  );
+  content: "";
+  animation: serviceTrackerLineShine 2.4s ease-in-out 900ms infinite;
+}
+
+.service-tracker-node-complete {
+  animation: serviceTrackerNodeComplete 520ms cubic-bezier(0.2, 0.9, 0.32, 1.28)
+    both;
+}
+
+.service-tracker-node-active {
+  animation: serviceTrackerNodeGlow 2.1s ease-in-out infinite;
+}
+
+.service-tracker-active-ring {
+  animation: serviceTrackerRingPulse 2.1s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .hero-copy-transition {
+  .hero-copy-transition,
+  .service-tracker-line-fill,
+  .service-tracker-line-fill::after,
+  .service-tracker-node-complete,
+  .service-tracker-node-active,
+  .service-tracker-active-ring {
     animation: none;
   }
 }

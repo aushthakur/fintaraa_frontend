@@ -7,12 +7,9 @@ import {
   FileCheck2,
   Mail,
   ShieldCheck,
-  Trash2,
 } from "lucide-react";
 import { getPageSeoMetadata } from "@/services/seoMetadata";
-import { absoluteUrl } from "@/services/seoConfig";
 
-const deletionUrl = absoluteUrl("/delete-account");
 const supportEmail = "customercare@fintaraa.com";
 const requestMailHref =
   "mailto:customercare@fintaraa.com?subject=Fintaraa%20Account%20Deletion%20Request";
@@ -54,41 +51,29 @@ export async function generateMetadata(): Promise<Metadata> {
 export default function DeleteAccountPage() {
   return (
     <main className="bg-white">
-      <section className="relative overflow-hidden border-b border-[#d9e8f4] bg-[#f5fbff] px-4 py-16 md:px-6 lg:px-8">
-        <div className="absolute inset-x-0 top-0 h-1 bg-linear-to-r from-[#195585] via-[#12b76a] to-[#1375de]" />
-        <div className="relative mx-auto max-w-9xl">
-          <div className="grid gap-10 lg:grid-cols-[1fr_25rem] lg:items-end">
+      <section className="border-b border-[#e3ebf2] px-4 py-10 md:px-6 md:py-12 lg:px-8">
+        <div className="mx-auto max-w-9xl">
+          <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#195585]">
+            Account Deletion
+          </p>
+          <div className="mt-3 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
             <div>
-              <div className="inline-flex items-center gap-2 rounded-full bg-[#195585] px-4 py-2 text-[12px] font-extrabold uppercase tracking-[0.16em] text-white">
-                <Trash2 className="h-4 w-4" />
-                Account Deletion
-              </div>
-              <h1 className="mt-7 max-w-5xl text-[42px] font-extrabold leading-[1.03] tracking-[-0.02em] text-[#07162d] md:text-[64px]">
+              <h1 className="max-w-4xl text-[34px] font-extrabold leading-tight tracking-[-0.025em] text-[#07162d] sm:text-[42px] md:text-[48px]">
                 Delete your Fintaraa account and data
               </h1>
-              <p className="mt-6 max-w-4xl text-[18px] font-semibold leading-8 text-[#344054]">
-                Use this public page to request deletion of your Fintaraa
-                account and eligible personal data. This is the account
-                deletion URL for app store and Google Play data safety review.
+              <p className="mt-3 max-w-4xl text-[15px] font-medium leading-7 text-[#5f7182] md:text-[16px]">
+                Request deletion of your Fintaraa account and eligible personal
+                data, subject to identity verification and applicable retention
+                requirements.
               </p>
             </div>
-
-            <div className="border-l-4 border-[#195585] bg-white p-6 shadow-[0_18px_48px_rgba(16,24,40,0.06)]">
-              <ShieldCheck className="h-8 w-8 text-[#12b76a]" />
-              <p className="mt-4 text-[13px] font-extrabold uppercase tracking-[0.16em] text-[#667085]">
-                Public deletion URL
-              </p>
-              <p className="mt-2 break-all text-[18px] font-extrabold text-[#07162d]">
-                {deletionUrl}
-              </p>
-              <a
-                href={requestMailHref}
-                className="mt-5 inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[#195585] px-5 text-[13px] font-extrabold text-white no-underline"
-              >
-                <Mail className="h-4 w-4" />
-                Email deletion request
-              </a>
-            </div>
+            <a
+              href={requestMailHref}
+              className="inline-flex h-11 w-fit shrink-0 items-center justify-center gap-2 rounded-full bg-[#195585] px-5 text-[13px] font-extrabold text-white no-underline transition hover:bg-[#0f4771]"
+            >
+              <Mail className="h-4 w-4" />
+              Email deletion request
+            </a>
           </div>
         </div>
       </section>

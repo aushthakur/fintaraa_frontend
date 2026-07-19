@@ -10,6 +10,10 @@ export type ServiceRequestType =
   | "gst_registration"
   | "itr_filing"
   | "company_registration"
+  | "annual_compliance"
+  | "tax_compliance"
+  | "msme_registration"
+  | "project_report"
   | "franchise_partner"
   | "dsa_partner";
 

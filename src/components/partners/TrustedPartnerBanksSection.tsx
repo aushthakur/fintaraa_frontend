@@ -47,14 +47,22 @@ const splitRows = (partners: TrustedPartner[]) => {
   return [partners.slice(0, midpoint), partners.slice(midpoint)];
 };
 
+const splitMobileRows = (partners: TrustedPartner[]) =>
+  Array.from({ length: 3 }, (_, rowIndex) => {
+    const row = partners.filter((_, index) => index % 3 === rowIndex);
+    return row.length ? row : partners;
+  });
+
 function PartnerLogoTile({
   partner,
   href,
   compact = false,
+  fluid = false,
 }: {
   partner: TrustedPartner;
   href: string;
   compact?: boolean;
+  fluid?: boolean;
 }) {
   return (
     <Link
@@ -62,7 +70,9 @@ function PartnerLogoTile({
       aria-label={`Open ${partner.name}`}
       className={`group flex shrink-0 items-center justify-center bg-white no-underline transition ${
         compact
-          ? "h-18 w-32 rounded-xl border border-[#eef2f6] px-3 py-3 hover:border-[#cfe4f7] sm:h-22 sm:w-40 sm:px-4 sm:py-4"
+          ? `h-18 rounded-xl border border-[#eef2f6] px-3 py-3 hover:border-[#cfe4f7] sm:h-22 sm:px-4 sm:py-4 ${
+              fluid ? "w-full" : "w-32 sm:w-40"
+            }`
           : "min-h-24 rounded-xl border border-[#e4edf5] px-4 py-4 hover:border-[#bddcf3]"
       }`}
     >
@@ -94,7 +104,7 @@ function PartnerMarquee({
   activeCategory: TrustedPartnerCategoryKey;
   reverse?: boolean;
 }) {
-  const marqueePartners = [...partners, ...partners, ...partners];
+  const marqueePartners = [...partners, ...partners];
 
   return (
     <div className="relative overflow-hidden">
@@ -126,22 +136,29 @@ function PartnerGrid({
   mobileScroller?: boolean;
 }) {
   if (mobileScroller) {
+    const mobileRows = splitMobileRows(partners);
+
     return (
       <>
-        <div className="-mx-4 overflow-x-auto px-4 pb-2 scrollbar-none md:-mx-6 md:px-6 lg:hidden">
-          <div className="flex snap-x snap-mandatory gap-3">
-            {partners.map((partner) => (
-              <div key={partner.slug} className="shrink-0 snap-start">
-                <PartnerLogoTile
-                  partner={partner}
-                  href={getTrustedPartnerHref(partner, activeCategory)}
-                  compact
-                />
-              </div>
+        <div
+          className="relative -mx-4 overflow-hidden py-1 md:hidden"
+          aria-label="Trusted financial institutions"
+        >
+          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-8 bg-linear-to-r from-white to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-8 bg-linear-to-l from-white to-transparent" />
+          <div className="grid gap-1.5">
+            {mobileRows.map((row, index) => (
+              <PartnerMarquee
+                key={`mobile-partner-row-${index}`}
+                partners={row}
+                activeCategory={activeCategory}
+                reverse={index === 1}
+              />
             ))}
           </div>
         </div>
-        <div className="hidden grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid xl:grid-cols-6">
+
+        <div className="hidden grid-cols-3 gap-4 md:grid md:grid-cols-4 xl:grid-cols-6">
           {partners.map((partner) => (
             <PartnerLogoTile
               key={partner.slug}
@@ -213,14 +230,14 @@ export function TrustedPartnerBanksSection({
         <div className="flex flex-col gap-4 border-b border-[#dceaf7] pb-4 md:gap-5 md:pb-6 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex items-center justify-between gap-3">
             <div className="min-w-0 flex-1">
-            {/* <span className="mb-3 inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-wide text-[#075cde]">
+              {/* <span className="mb-3 inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-wide text-[#075cde]">
               <ShieldCheck className="h-4 w-4" />
               Our trusted network
             </span> */}
-              <h2 className="max-w-3xl text-[22px] font-bold leading-tight tracking-tight text-[#07162d] md:text-[34px]">
+              <h2 className="text-lg font-bold leading-tight tracking-tight text-[#07162d] md:text-[34px]">
                 {title}
               </h2>
-            {/* <p className="mt-3 max-w-2xl text-[14px] font-semibold leading-6 text-[#61748f]">
+              {/* <p className="mt-3 max-w-2xl text-[14px] font-semibold leading-6 text-[#61748f]">
               {description ||
                 `${activeCount} partners available across selected product category.`}
             </p> */}

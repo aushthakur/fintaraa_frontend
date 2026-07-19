@@ -131,7 +131,7 @@ export function VideoTestimonials() {
       <div className="mx-auto max-w-9xl">
         <div className="mb-2 flex items-center justify-between gap-4">
           <div className="max-w-2xl">
-            <h2 className="text-[26px] font-extrabold tracking-tight text-[#111625] md:text-[32px]">
+            <h2 className="text-[24px] font-bold tracking-tight text-[#111625] md:text-[28px]">
               Video Testimonials
             </h2>
             {/* <p className="mt-2 max-w-2xl text-[14px] font-semibold leading-6 text-[#667085]">
@@ -155,9 +155,6 @@ export function VideoTestimonials() {
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => !selectedVideoUrl && setIsPaused(false)}
         >
-          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-linear-to-r from-white to-transparent" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-linear-to-l from-white to-transparent" />
-
           {loading ? (
             <div className="flex gap-6">
               {Array.from({ length: 3 }).map((_, index) => (
@@ -196,7 +193,7 @@ export function VideoTestimonials() {
                     setIsPaused(true);
                     setSelectedVideoUrl(item.videoUrl || null);
                   }}
-                  className="group flex h-90 w-76 shrink-0 flex-col overflow-hidden rounded-2xl border border-[#dfeaf5] bg-white text-left no-underline outline-none transition duration-300 hover:-translate-y-1 hover:border-[#bcd3e8] sm:w-[20.5rem] md:w-[23rem]"
+                  className="group flex h-90 w-76 shrink-0 flex-col overflow-hidden rounded-2xl border border-[#dfeaf5] bg-white text-left no-underline outline-none transition-colors duration-300 hover:border-[#bcd3e8] sm:w-[20.5rem] md:w-[23rem]"
                 >
                   <div className="pointer-events-none relative h-56 w-full overflow-hidden bg-slate-950">
                     <Image

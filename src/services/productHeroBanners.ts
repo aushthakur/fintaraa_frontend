@@ -1,6 +1,7 @@
 import { buildApiUrl } from "@/services/apiUrl";
 import type { HomeBanner } from "@/services/homeBanners";
 import { fallbackHomeBanners } from "@/services/homeBanners";
+import loanBannerCatalogData from "@/data/loanBannerCatalog.json";
 
 export type ProductHeroCategory = "loan" | "insurance";
 
@@ -23,6 +24,10 @@ const normalise = (item: any, fallback: HomeBanner): HomeBanner => ({
   highlightText: item?.highlightText || "",
   description: item?.description || "",
   image: localBannerImage(item?.image, fallback.image),
+  mobileImage: localBannerImage(
+    item?.mobileImage || item?.image,
+    fallback.mobileImage || fallback.image,
+  ),
   imageAlt: item?.imageAlt || item?.title || fallback.imageAlt,
   linkUrl: item?.linkUrl || "",
   buttonText: item?.buttonText || "",
@@ -35,6 +40,7 @@ const normalise = (item: any, fallback: HomeBanner): HomeBanner => ({
 export const getFallbackProductHeroBanners = ({
   category,
   productName,
+  productSlug,
 }: {
   category: ProductHeroCategory;
   productName: string;
@@ -71,30 +77,47 @@ export const getFallbackProductHeroBanners = ({
     ];
   }
 
+  const profile = (
+    loanBannerCatalogData as Array<{
+      slug: string;
+      name: string;
+      eyebrow: string;
+      title: string;
+      description: string;
+    }>
+  ).find((item) => item.slug === productSlug);
+  const resolvedName = profile?.name || productName;
+  const renderedBase = `/assets/loan-banners/rendered/${productSlug}`;
+
   return [
     {
-      _id: "fallback-product-loan-approval",
-      eyebrow: "Fast digital loan journey",
-      title: `${productName} Made Simple`,
-      highlightText: "Apply Online",
+      _id: `fallback-${productSlug}-01`,
+      eyebrow: profile?.eyebrow || "SMART LOAN OPTIONS",
+      title: profile?.title || `${resolvedName} Made Simple`,
       description:
-        "Compare eligibility, documents, EMI comfort, and partner-backed support in one flow.",
-      image: "/assets/home/hero-banners/instant-digital-loan.png",
-      imageAlt: `${productName} online application`,
-      buttonText: `Apply ${productName}`,
+        profile?.description ||
+        `Compare ${resolvedName.toLowerCase()} eligibility, documents and partner-backed options in one secure flow.`,
+      image: `${renderedBase}-01-desktop.webp`,
+      mobileImage: `${renderedBase}-01-mobile.webp`,
+      imageAlt: `${profile?.title || resolvedName}. Apply now or calculate EMI.`,
+      buttonText: "Apply Now",
+      secondaryLinkUrl: "#loan-emi-calculator",
+      secondaryButtonText: "Calculate EMI",
       displayDurationMs: 5000,
       priority: 1,
     },
     {
-      _id: "fallback-product-loan-support",
-      eyebrow: "Guided application support",
-      title: "Quick Documentation",
-      highlightText: "Clear Next Steps",
+      _id: `fallback-${productSlug}-02`,
+      eyebrow: `Assisted ${resolvedName} journey`,
+      title: `Your ${resolvedName} Journey, Made Simpler`,
       description:
-        "Prepare KYC, income, and bank details with a secure assisted application journey.",
-      image: "/assets/home/hero-banners/financial-advisor-family.png",
-      imageAlt: "Advisor helping with loan documentation",
-      buttonText: "Check eligibility",
+        "Check eligibility, prepare documents and compare partner options through one secure guided journey.",
+      image: `${renderedBase}-02-desktop.webp`,
+      mobileImage: `${renderedBase}-02-mobile.webp`,
+      imageAlt: `Assisted ${resolvedName} eligibility and document journey.`,
+      buttonText: "Check Eligibility",
+      secondaryLinkUrl: "#loan-documents",
+      secondaryButtonText: "View Documents",
       displayDurationMs: 5200,
       priority: 2,
     },
@@ -131,11 +154,22 @@ export async function fetchProductHeroBanners({
 
     const payload = await response.json();
     const data = payload?.data?.result || payload?.data || payload;
-    const banners = Array.isArray(data)
-      ? data.map((item, index) => normalise(item, fallback[index] || fallback[0]))
+    const scopedData = Array.isArray(data)
+      ? category === "loan"
+        ? data.filter(
+            (item) =>
+              String(item?.productSlug || "").toLowerCase() === productSlug,
+          )
+        : data
       : [];
+    const banners = scopedData
+      .slice(0, 2)
+      .map((item, index) => normalise(item, fallback[index] || fallback[0]));
 
-    return banners.length ? banners : fallback;
+    if (category !== "loan") return banners.length ? banners : fallback;
+    if (!banners.length) return fallback;
+    if (banners.length === 1) return [banners[0], fallback[1]];
+    return banners;
   } catch {
     return fallback;
   }

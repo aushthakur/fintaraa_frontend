@@ -51,3 +51,14 @@ export const fetchCurrentUser = async (): Promise<CurrentUser | null> => {
 
 export const updateKycProfile = (payload: Record<string, unknown>) =>
   Put<unknown>("user/kyc-profile", payload, 15000);
+
+export const updateUserProfilePhoto = async (
+  payload: FormData,
+): Promise<CurrentUser | null> => {
+  const response = await Put<unknown>("user", payload, 20000, true);
+  const result = response as Record<string, unknown>;
+  const data = result?.data as Record<string, unknown> | undefined;
+  const user = result?.user as Record<string, unknown> | undefined;
+  const updated = data || user || result;
+  return updated ? (updated as CurrentUser) : null;
+};

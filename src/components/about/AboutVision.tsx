@@ -141,12 +141,7 @@ const ease = [0.22, 1, 0.36, 1] as const;
 
 function SectionLabel({ children }: { children: ReactNode }) {
   return (
-    <div className="flex items-center gap-3">
-      <span className="h-0.75 w-7 bg-[#16a3e0]" />
-      <p className="text-[11px] font-extrabold uppercase leading-5 text-[#075cde] md:text-[12px]">
-        {children}
-      </p>
-    </div>
+    <span className="sr-only">{children}</span>
   );
 }
 
@@ -160,7 +155,7 @@ function SectionHeading({
   return (
     <h2
       className={[
-        "mt-4 text-[30px] font-extrabold leading-[1.2] text-[#0b1f3a] md:text-[35px] lg:text-[38px]",
+        "text-[30px] font-extrabold leading-[1.2] text-[#0b1f3a] md:text-[35px] lg:text-[38px]",
         className,
       ].join(" ")}
     >
@@ -566,7 +561,7 @@ export function AboutVision() {
               </motion.div>
               <motion.div whileHover={{ x: 2 }} whileTap={{ scale: 0.98 }}>
                 <a
-                  href="tel:+918448282680"
+                  href="tel:+918448282679"
                   className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-md bg-white px-6 text-[14px] font-extrabold text-[#075cde] no-underline transition-colors hover:bg-[#f8fcff] sm:w-auto"
                 >
                   <PhoneCall className="h-4 w-4" />
@@ -586,12 +581,12 @@ export function AboutVision() {
                 </span>
               </a>
               <a
-                href="tel:+918448282680"
+                href="tel:+918448282679"
                 className="flex items-start gap-3 text-[#213750] no-underline"
               >
                 <PhoneCall className="mt-1 h-4.5 w-4.5 shrink-0 text-[#075cde]" />
                 <span className="text-[13px] font-bold leading-6">
-                  +91 84482 82680
+                  +91 84482 82679
                 </span>
               </a>
               <div className="flex items-start gap-3">

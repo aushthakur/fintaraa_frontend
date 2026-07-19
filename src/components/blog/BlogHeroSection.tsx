@@ -33,7 +33,7 @@ export function BlogHeroSection() {
           }}
         />
       </div>
-     
+
       {/* Decorative Accent Background Panels from image_ee0a25.png */}
       <div className="absolute left-0 top-0 -z-10 h-36 w-36 rounded-br-full bg-[#edf5fd] opacity-80" />
       <div className="absolute left-0 top-12 -z-10 h-16 w-16 rounded-br-full bg-[#deebf9] opacity-50" />
@@ -49,7 +49,9 @@ export function BlogHeroSection() {
           </h1>
 
           <p className="max-w-lg text-[14px] font-medium leading-[1.6] text-[#939ca3] md:text-[15px]">
-            Stay updated with expert analysis, investment strategies, A complete guide to Systematic Investment Plans, their benefits, fintech innovations, and personal finance guides.
+            Stay updated with expert analysis, investment strategies, A complete
+            guide to Systematic Investment Plans, their benefits, fintech
+            innovations, and personal finance guides.
           </p>
 
           {/* Precision Match Mock Search Component */}
@@ -91,7 +93,10 @@ export function BlogHeroSection() {
 
           {/* Standby UI fallback nodes for 3D coin/pie graph structure rendering mockup layers */}
           <div className="pointer-events-none absolute inset-0 -z-10 hidden items-center justify-center">
-            <div className="h-48 w-48 animate-spin rounded-full border-4 border-dashed border-sky-100" style={{ animationDuration: '40s' }} />
+            <div
+              className="h-48 w-48 animate-spin rounded-full border-4 border-dashed border-sky-100"
+              style={{ animationDuration: "40s" }}
+            />
           </div>
         </div>
       </div>

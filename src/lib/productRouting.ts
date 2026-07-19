@@ -5,55 +5,16 @@ export const slugifyProduct = (value: string) =>
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "");
 
-export const loanProductSlugs = new Set([
-  "personal-loan",
-  "education-loan",
-  "vehicle-loan",
-  "gold-loan",
-  "loan-against-car",
-  "car-loan",
-  "loan-against-car-value",
-  "instant-loan",
-  "credit-score-loan",
-  "loan-against-property",
-  "renovation-loan",
-  "working-capital-loan",
-  "loan-against-security",
-  "machinery-loan",
-  "home-loan",
-  "business-loan",
-  "dod-loan",
-  "od-loan",
-  "industrial-loan",
-  "commercial-purchases-loan",
-  "balance-transfer-loan",
-  "top-up-loan",
-  "two-wheeler-loan",
-  "used-car-loan",
-  "agriculture-loan",
-]);
+export const loanProductSlugs = new Set(
+  loanProductCatalog.map((product) => product.slug),
+);
 
 export const isLoanProduct = (titleOrSlug: string) =>
   loanProductSlugs.has(slugifyProduct(titleOrSlug));
 
-export const insuranceProductSlugs = new Set([
-  "life-insurance",
-  "health-insurance",
-  "car-insurance",
-  "bike-insurance",
-  "home-insurance",
-  "group-insurance",
-  "personal-accident-insurance",
-  "critical-illness-insurance",
-  "vehicle-insurance",
-  "property-insurance",
-  "stock-insurance",
-  "machinery-insurance",
-  "term-insurance",
-  "travel-insurance",
-  "retirement-plan",
-  "shop-insurance",
-]);
+export const insuranceProductSlugs = new Set(
+  insuranceProductCatalog.map((product) => product.slug),
+);
 
 export const isInsuranceProduct = (titleOrSlug: string) =>
   insuranceProductSlugs.has(slugifyProduct(titleOrSlug));
@@ -61,11 +22,18 @@ export const isInsuranceProduct = (titleOrSlug: string) =>
 export const productHref = (title: string) => {
   const slug = slugifyProduct(title);
   if (slug === "itr-filing") return "/itr-filing";
-  if (slug === "gst-registration") return "/gst-registration";
+  if (
+    slug === "gst-registration" ||
+    slug === "gst-registration-and-return-filing"
+  )
+    return "/gst-registration";
   if (slug === "company-registration") return "/company-registration";
   if (slug === "roc-filing") return "/company-registration";
-  if (slug === "project-report" || slug === "tax-compliances")
-    return "/contact-us";
+  if (slug === "msme-registration") return "/msme-registration";
+  if (slug === "annual-compliance") return "/annual-compliance";
+  if (slug === "project-report") return "/project-report";
+  if (slug === "tax-compliance" || slug === "tax-compliances")
+    return "/tax-compliance";
   if (slug === "refer-and-earn" || slug === "refer-earn")
     return "/refer-and-earn";
   if (slug === "offers" || slug === "offers-and-rewards") return "/offers";
@@ -90,12 +58,18 @@ export const productHref = (title: string) => {
     slug === "press"
   )
     return "/press-release";
-  if (slug === "site-map" || slug === "sitemap") return "/sitemap";
-  if (slug === "feedback" || slug === "subscribe") return "/contact-us";
+  if (slug === "site-map" || slug === "sitemap") return "/sitemap.xml";
+  if (slug === "feedback") return "/feedback";
+  if (slug === "subscribe") return "/contact-us";
   if (slug === "awards-and-recognitions") return "/about-us";
   if (slug === "faq" || slug === "faqs" || slug === "faq-s")
-    return "/support";
-  if (slug === "cibil-score" || slug === "credit-score") return "/cibil-score";
+    return "/faqs";
+  if (
+    slug === "cibil-score" ||
+    slug === "cibil-score-check" ||
+    slug === "credit-score"
+  )
+    return "/cibil-score";
   if (slug === "credit-card" || slug === "credit-cards") return "/credit-cards";
   if (slug === "all-others-credit-cards") return "/credit-cards";
   if (slug === "view-all-cards") return "/credit-cards";
@@ -155,3 +129,7 @@ export const buildLoanPath = (
   ].filter(Boolean);
   return parts.join("/");
 };
+import {
+  insuranceProductCatalog,
+  loanProductCatalog,
+} from "@/data/productCatalog";

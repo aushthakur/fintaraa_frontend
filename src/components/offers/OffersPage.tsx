@@ -329,11 +329,7 @@ export function OffersPage() {
               className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between"
             >
               <div>
-                <p className="inline-flex items-center gap-2 text-[12px] font-extrabold text-[#075cde]">
-                  <Sparkles className="h-4 w-4" aria-hidden="true" />
-                  Live partner offers
-                </p>
-                <h2 className="mt-3 max-w-2xl text-[27px] font-extrabold leading-tight text-[#102f49] sm:text-[31px] lg:text-[34px]">
+                <h2 className="max-w-2xl text-[27px] font-extrabold leading-tight text-[#102f49] sm:text-[31px] lg:text-[34px]">
                   Benefits selected for real financial needs
                 </h2>
                 <p className="mt-3 max-w-2xl text-[14px] font-medium leading-7 text-[#667f91] sm:text-[15px]">

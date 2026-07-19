@@ -52,7 +52,11 @@ const productTabs = [
 //   { label: "Rs. 30L", value: 3000000 },
 // ];
 
-const loanTypeOptions = loanProductDirectory.map((loan) => loan.name);
+const quickLoanOption = "Loan in 5 Minutes";
+const loanTypeOptions = [
+  quickLoanOption,
+  ...loanProductDirectory.map((loan) => loan.name),
+];
 const tenureOptions = ["5 Years", "3 Years", "7 Years", "10 Years"];
 const salaryOptions = [
   "Salaried",
@@ -80,9 +84,12 @@ const cardTypeOptions = [
   "Shopping Cards",
   "Rewards Cards",
 ];
-const loanPurposeSlugs = Object.fromEntries(
-  loanProductDirectory.map((loan) => [loan.name, loan.slug]),
-);
+const loanPurposeSlugs: Record<string, string> = {
+  [quickLoanOption]: "instant-loan",
+  ...Object.fromEntries(
+    loanProductDirectory.map((loan) => [loan.name, loan.slug]),
+  ),
+};
 
 const safeDuration = (value?: number) =>
   Math.min(Math.max(Number(value || 5000), 1500), 30000);
@@ -228,7 +235,7 @@ export function HeroSection() {
         : "Explore Cards";
 
   return (
-    <section className="relative overflow-hidden bg-[#061a3d] px-4 py-6 text-white md:px-6 md:py-8 lg:min-h-[540px] lg:px-8 lg:py-5">
+    <section className="relative min-h-[460px] overflow-hidden bg-[#061a3d] px-4 py-8 text-white sm:min-h-[500px] md:px-6 md:py-8 lg:min-h-[540px] lg:px-8 lg:py-5">
       <div className="absolute inset-0">
         {banners.map((banner, index) => (
           <Image
@@ -248,7 +255,7 @@ export function HeroSection() {
         <div className="absolute inset-x-0 bottom-0 h-28 bg-linear-to-t from-[#061a3d]/80 to-transparent" />
       </div>
 
-      <div className="relative z-10 mx-auto flex w-full max-w-9xl items-center py-0 lg:min-h-[520px]">
+      <div className="relative z-10 mx-auto flex min-h-[400px] w-full max-w-9xl items-center py-0 sm:min-h-[440px] lg:min-h-[520px]">
         <div className="grid w-full min-w-0 max-w-full items-center gap-5 md:gap-7 lg:grid-cols-[minmax(0,1fr)_minmax(340px,400px)] xl:grid-cols-[minmax(0,1fr)_minmax(360px,420px)]">
           <div className="mobile-hero-copy min-w-0 max-w-[calc(100vw-2rem)] lg:max-w-3xl">
             {/* <div className="hidden flex-wrap gap-4 sm:flex">
@@ -301,7 +308,7 @@ export function HeroSection() {
               )}
             </div> */}
 
-            <div className="mt-5 hidden flex-col gap-3 sm:flex sm:flex-row sm:items-center">
+            <div className="mt-5 grid grid-cols-2 gap-2.5 sm:flex sm:flex-row sm:items-center sm:gap-3">
               {/* <Link
                 href={primaryHref}
                 className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#075cde] px-5 text-[14px] font-semibold text-white no-underline transition hover:bg-[#064cb8]"
@@ -311,26 +318,29 @@ export function HeroSection() {
               </Link> */}
               <Link
                 href={secondaryHref}
-                className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#075cde] px-5 text-[14px] font-semibold text-white no-underline transition hover:bg-[#064cb8]"
+                className="inline-flex h-11 items-center justify-center gap-1.5 rounded-xl bg-[#075cde] px-3 text-center text-[12px] font-semibold text-white no-underline transition hover:bg-[#064cb8] sm:gap-2 sm:px-5 sm:text-[14px]"
               >
                 View all products
-                <ArrowRight className="h-4 w-4" />
+                <ArrowRight className="h-4 w-4 shrink-0" />
               </Link>
-              <LoanExpertButton className="bg-white/12 px-4 text-white hover:bg-white/18" />
+              <LoanExpertButton
+                label="Loan Expert"
+                className="w-full bg-white/12 px-3 text-[12px] text-white hover:bg-white/18 sm:w-auto sm:px-4 sm:text-[14px]"
+              />
             </div>
 
-            <div className="mt-5 hidden max-w-2xl gap-2 sm:grid sm:grid-cols-3">
+            <div className="mt-5 grid max-w-2xl grid-cols-3 gap-1 sm:gap-2">
               {trustStats.map(({ value, label, icon: Icon }) => (
-                <div key={label} className="flex items-center gap-3">
-                  <span className="flex h-9 w-9 items-center justify-center text-[#8fc7ff]">
+                <div key={label} className="flex min-w-0 items-center gap-1.5 sm:gap-3">
+                  <span className="hidden h-9 w-9 shrink-0 items-center justify-center text-[#8fc7ff] sm:flex">
                     <Icon className="h-4.5 w-4.5" />
                   </span>
-                  <span>
+                  <span className="min-w-0">
                     <AnimatedCounter
                       value={value}
-                      className="block text-[18px] font-bold leading-none text-white"
+                      className="block text-[16px] font-bold leading-none text-white sm:text-[18px]"
                     />
-                    <span className="mt-1 block text-[11px] font-bold text-white/70">
+                    <span className="mt-1 block truncate text-[9px] font-bold text-white/70 sm:text-[11px]">
                       {label}
                     </span>
                   </span>
@@ -339,7 +349,7 @@ export function HeroSection() {
             </div>
           </div>
 
-          <div className="mobile-hero-card w-full min-w-0 max-w-[calc(100vw-2rem)] overflow-hidden rounded-xl border border-white/18 bg-white/94 p-4 text-[#07162d] shadow-[0_22px_64px_rgba(0,0,0,0.2)] backdrop-blur-xl sm:p-5 lg:max-w-none lg:justify-self-end">
+          <div className="mobile-hero-card hidden w-full min-w-0 max-w-[calc(100vw-2rem)] overflow-hidden rounded-xl border border-white/18 bg-white/94 p-4 text-[#07162d] shadow-[0_22px_64px_rgba(0,0,0,0.2)] backdrop-blur-xl sm:p-5 lg:block lg:max-w-none lg:justify-self-end">
             <div className="flex items-center justify-between gap-3">
               <div>
                 <p className="text-[18px] font-bold tracking-tight">

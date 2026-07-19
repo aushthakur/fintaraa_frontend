@@ -11,6 +11,7 @@ import {
   UserCheck,
   UsersRound,
 } from "lucide-react";
+import { AutoCarousel } from "@/components/common/AutoCarousel";
 
 const reasons = [
   {
@@ -123,11 +124,18 @@ export function WhyChoose() {
           </div> */}
         </div>
 
-        <div className="mt-7 grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+        <AutoCarousel
+          ariaLabel="Why choose Fintaraa"
+          mobileSlides={1.15}
+          tabletSlides={2}
+          desktopSlides={3}
+          wideSlides={5}
+          className="mt-7"
+        >
           {reasons.map(({ number, title, text, points, icon: Icon }) => (
             <article
               key={title}
-              className="rounded-xl border border-[#e2edf8] bg-white p-4"
+              className="h-full rounded-xl border border-[#e2edf8] bg-white p-4"
             >
               <div className="flex items-start justify-between gap-4">
                 <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#e9f2ff] text-[#075cde]">
@@ -156,16 +164,16 @@ export function WhyChoose() {
               </div>
             </article>
           ))}
-        </div>
+        </AutoCarousel>
 
-        <div className="mt-6 grid gap-3 rounded-xl bg-white p-3 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="mt-6 grid gap-3 rounded-xl bg-white p-3 grid-cols-3 lg:grid-cols-5">
           {stats.map(({ value, label, icon: Icon }) => (
-            <div key={label} className="rounded-xl bg-white p-4">
-              <Icon className="h-5 w-5 text-[#075cde]" />
-              <p className="mt-3 text-[20px] font-bold leading-none text-[#075cde]">
+            <div key={label} className="rounded-xl bg-white text-center lg:p-4">
+              <Icon className="h-5 w-5 mx-auto text-[#075cde]" />
+              <p className="mt-3 text-sm lg:text-[20px] font-bold leading-none text-[#075cde]">
                 {value}
               </p>
-              <p className="mt-1 text-[12px] font-semibold text-[#61748f]">
+              <p className="mt-1 text-[10px] line-clamp-1 lg:text-[12px] font-semibold text-[#61748f]">
                 {label}
               </p>
             </div>

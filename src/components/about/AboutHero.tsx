@@ -56,16 +56,9 @@ export function AboutHero() {
             className="max-w-3xl"
             variants={copyVariants}
           >
-            <motion.div variants={copyItem} className="flex items-center gap-3">
-              <span className="h-0.75 w-8 bg-[#075cde]" />
-              <p className="text-[11px] font-extrabold uppercase leading-5 text-[#075cde] md:text-[12px]">
-                A Unit of Xpertserve Services Pvt. Ltd.
-              </p>
-            </motion.div>
-
             <motion.h1
               variants={copyItem}
-              className="mt-5 max-w-172.5 text-[34px] font-extrabold leading-[1.1] text-[#0b1f3a] sm:text-[40px] md:text-[45px] lg:text-[48px]"
+              className="max-w-172.5 text-[34px] font-extrabold leading-[1.1] text-[#0b1f3a] sm:text-[40px] md:text-[45px] lg:text-[48px]"
             >
               Your trusted financial partner for loans that{" "}
               <span className="text-[#075cde]">move life forward.</span>
@@ -119,11 +112,11 @@ export function AboutHero() {
               </motion.div>
               <motion.div whileHover={{ x: 2 }} whileTap={{ scale: 0.98 }}>
                 <a
-                  href="tel:+918448282680"
+                  href="tel:+918448282679"
                   className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-md bg-[#eaf6ff] px-6 text-[14px] font-extrabold text-[#075cde] no-underline transition-colors hover:bg-[#dcedff] sm:w-auto"
                 >
                   <PhoneCall className="h-4 w-4" />
-                  Call 84482 82680
+                  Call 84482 82679
                 </a>
               </motion.div>
             </motion.div>

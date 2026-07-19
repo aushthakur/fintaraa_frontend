@@ -1,7 +1,10 @@
 import { buildApiUrl } from "@/services/apiUrl";
 import type { HomeBanner } from "@/services/homeBanners";
 import { fallbackHomeBanners } from "@/services/homeBanners";
-import type { ProductHeroCategory } from "@/services/productHeroBanners";
+import {
+  getFallbackProductHeroBanners,
+  type ProductHeroCategory,
+} from "@/services/productHeroBanners";
 
 export type ProductPopupDevice = "web" | "mobile";
 
@@ -50,6 +53,10 @@ const normalise = (item: any, fallback: HomeBanner): HomeBanner => ({
   highlightText: item?.highlightText || "",
   description: item?.description || "",
   image: localBannerImage(item?.image, fallback.image),
+  mobileImage: localBannerImage(
+    item?.mobileImage || item?.image,
+    fallback.mobileImage || fallback.image,
+  ),
   imageAlt: item?.imageAlt || item?.title || fallback.imageAlt,
   linkUrl: item?.linkUrl || "",
   buttonText: item?.buttonText || "",
@@ -62,13 +69,22 @@ const normalise = (item: any, fallback: HomeBanner): HomeBanner => ({
 export async function fetchProductPopupBanner({
   category,
   device,
+  productName,
   productSlug,
 }: {
   category: ProductHeroCategory;
   device: ProductPopupDevice;
+  productName: string;
   productSlug: string;
 }): Promise<HomeBanner | null> {
-  const fallback = fallbackByCategory[category];
+  const fallback =
+    category === "loan"
+      ? getFallbackProductHeroBanners({
+          category,
+          productName,
+          productSlug,
+        })[0]
+      : fallbackByCategory[category];
   const params = new URLSearchParams({
     limit: "1",
     productSlug,
@@ -85,9 +101,17 @@ export async function fetchProductPopupBanner({
 
     const payload = await response.json();
     const data = payload?.data?.result || payload?.data || payload;
-    if (!Array.isArray(data) || !data.length) return fallback;
+    const scopedData = Array.isArray(data)
+      ? category === "loan"
+        ? data.filter(
+            (item) =>
+              String(item?.productSlug || "").toLowerCase() === productSlug,
+          )
+        : data
+      : [];
+    if (!scopedData.length) return fallback;
 
-    return normalise(data[0], fallback);
+    return normalise(scopedData[0], fallback);
   } catch {
     return fallback;
   }

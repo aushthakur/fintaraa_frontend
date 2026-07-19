@@ -97,7 +97,7 @@ export function MediaPressRelease() {
       <div className="mx-auto max-w-9xl">
         <div className="mb-2 flex items-center justify-between gap-4">
           <div className="max-w-2xl">
-            <h2 className="mt-3 text-[26px] font-extrabold tracking-tight text-[#111625] md:text-[32px]">
+            <h2 className="text-[24px] font-bold tracking-tight text-[#111625] md:text-[28px]">
               Media & Press Release
             </h2>
           </div>
@@ -116,9 +116,6 @@ export function MediaPressRelease() {
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
-          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-linear-to-r from-white to-transparent" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-linear-to-l from-white to-transparent" />
-
           {loading ? (
             <PressSkeleton />
           ) : (
@@ -143,7 +140,7 @@ export function MediaPressRelease() {
                       ? post.linkUrl
                       : `/press-release/${post.slug}`
                   }
-                  className="group flex h-108 w-76 shrink-0 flex-col overflow-hidden rounded-2xl border border-[#dfeaf5] bg-white no-underline transition duration-300 hover:-translate-y-1 hover:border-[#bcd3e8] sm:w-82 md:w-88"
+                  className="group flex h-108 w-76 shrink-0 flex-col overflow-hidden rounded-2xl border border-[#dfeaf5] bg-white no-underline transition-colors duration-300 hover:border-[#bcd3e8] sm:w-82 md:w-88"
                 >
                   <div className="pointer-events-none relative h-56 w-full overflow-hidden bg-[#eaf2f9]">
                     <Image

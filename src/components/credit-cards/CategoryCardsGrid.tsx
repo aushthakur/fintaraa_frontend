@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { motion } from "framer-motion";
 import {
   Banknote,
@@ -64,7 +63,15 @@ const categories = [
   },
 ];
 
-export function ExploreCategories() {
+export function ExploreCategories({
+  selectedCategories = [],
+  onSelect,
+  onViewAll,
+}: {
+  selectedCategories?: string[];
+  onSelect: (category: string) => void;
+  onViewAll: () => void;
+}) {
   return (
     <section className="bg-white px-4 py-8 font-sans md:px-8 md:py-12 lg:px-16">
       <div className="mx-auto max-w-9xl">
@@ -79,29 +86,38 @@ export function ExploreCategories() {
               needs.
             </p>
           </div>
-          <Link
-            href="/credit-cards/categories"
+          <button
+            type="button"
+            onClick={onViewAll}
             className="inline-flex shrink-0 items-center gap-1 whitespace-nowrap text-[12px] font-bold text-[#005ca8] hover:underline md:text-[13px]"
           >
-            View All Categories <span className="text-[14px]">→</span>
-          </Link>
+            View All Cards <span className="text-[14px]">→</span>
+          </button>
         </div>
 
         {/* Categories Grid */}
         <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 md:grid-cols-4 md:gap-4 xl:grid-cols-8">
           {categories.map(({ title, icon: Icon, iconBg, iconColor }, index) => (
-            <motion.div
+            <motion.button
+              type="button"
               key={title}
+              onClick={() => onSelect(title)}
+              aria-pressed={selectedCategories.includes(title)}
               initial={{ opacity: 0.95, y: 14 }}
               whileInView={{ opacity: 1, y: 0 }}
-              whileHover={{ y: -4 }}
+              whileHover={{ scale: 1.025 }}
+              whileTap={{ scale: 0.98 }}
               viewport={{ once: true, amount: 0.45 }}
               transition={{
                 duration: 0.45,
                 delay: Math.min(index * 0.04, 0.2),
                 ease: [0.22, 1, 0.36, 1],
               }}
-              className="flex min-h-22 cursor-pointer items-center gap-2.5 rounded-xl border border-[#e3ebf3] bg-white p-3 text-left shadow-[0_4px_12px_rgba(22,34,50,0.02)] transition-shadow duration-200 hover:shadow-md md:min-h-36.25 md:flex-col md:justify-center md:p-5 md:text-center"
+              className={`flex min-h-22 cursor-pointer items-center gap-2.5 rounded-xl border p-3 text-left transition-[border-color,background-color,box-shadow] duration-200 md:min-h-36.25 md:flex-col md:justify-center md:p-5 md:text-center ${
+                selectedCategories.includes(title)
+                  ? "border-[#005ca8] bg-[#f3f9ff] shadow-[0_8px_24px_rgba(0,92,168,0.12)]"
+                  : "border-[#e3ebf3] bg-white shadow-[0_4px_12px_rgba(22,34,50,0.02)] hover:border-[#b9d7f0] hover:shadow-md"
+              }`}
             >
               {/* Colored Circular Icon Container */}
               <div
@@ -119,7 +135,7 @@ export function ExploreCategories() {
                   Cards
                 </p>
               </div>
-            </motion.div>
+            </motion.button>
           ))}
         </div>
       </div>

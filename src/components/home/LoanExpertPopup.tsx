@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Headphones, PhoneCall } from "lucide-react";
+import { PhoneCall } from "lucide-react";
 import Modal from "@/components/common/Modal";
 import { ContactConsultationForm } from "@/components/contact/ContactConsultationForm";
 
@@ -22,7 +22,7 @@ export function LoanExpertButton({
     <button
       type="button"
       onClick={openLoanExpertPopup}
-      className={`inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#13a653] px-5 text-[14px] font-semibold text-white transition hover:bg-[#108e46] ${className}`}
+      className={`inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-[#13a653] px-5 text-[14px] font-semibold text-white transition hover:bg-[#108e46] ${className}`}
     >
       <PhoneCall className="h-4 w-4" />
       {label}
@@ -41,18 +41,9 @@ export function LoanExpertPopupHost() {
 
   return (
     <>
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        className="fixed bottom-5 right-5 z-40 hidden h-12 items-center gap-2 rounded-full bg-[#13a653] px-5 text-[13px] font-bold text-white shadow-[0_12px_32px_rgba(19,166,83,0.28)] transition hover:bg-[#108e46] lg:inline-flex"
-      >
-        <Headphones className="h-4 w-4" />
-        Loan Expert
-      </button>
-
       <Modal
         isVisible={open}
-        width="w-[90%] lg:w-[35%]"
+        width="w-[90%] lg:w-[40%]"
         onClose={() => setOpen(false)}
       >
         <ContactConsultationForm />

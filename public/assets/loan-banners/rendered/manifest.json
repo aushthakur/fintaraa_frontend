@@ -1,0 +1,302 @@
+[
+  {
+    "productSlug": "personal-loan",
+    "priority": 1,
+    "desktopImage": "/assets/loan-banners/rendered/personal-loan-01-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/personal-loan-01-mobile.webp"
+  },
+  {
+    "productSlug": "personal-loan",
+    "priority": 2,
+    "desktopImage": "/assets/loan-banners/rendered/personal-loan-02-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/personal-loan-02-mobile.webp"
+  },
+  {
+    "productSlug": "education-loan",
+    "priority": 1,
+    "desktopImage": "/assets/loan-banners/rendered/education-loan-01-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/education-loan-01-mobile.webp"
+  },
+  {
+    "productSlug": "education-loan",
+    "priority": 2,
+    "desktopImage": "/assets/loan-banners/rendered/education-loan-02-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/education-loan-02-mobile.webp"
+  },
+  {
+    "productSlug": "vehicle-loan",
+    "priority": 1,
+    "desktopImage": "/assets/loan-banners/rendered/vehicle-loan-01-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/vehicle-loan-01-mobile.webp"
+  },
+  {
+    "productSlug": "vehicle-loan",
+    "priority": 2,
+    "desktopImage": "/assets/loan-banners/rendered/vehicle-loan-02-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/vehicle-loan-02-mobile.webp"
+  },
+  {
+    "productSlug": "gold-loan",
+    "priority": 1,
+    "desktopImage": "/assets/loan-banners/rendered/gold-loan-01-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/gold-loan-01-mobile.webp"
+  },
+  {
+    "productSlug": "gold-loan",
+    "priority": 2,
+    "desktopImage": "/assets/loan-banners/rendered/gold-loan-02-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/gold-loan-02-mobile.webp"
+  },
+  {
+    "productSlug": "loan-against-car",
+    "priority": 1,
+    "desktopImage": "/assets/loan-banners/rendered/loan-against-car-01-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/loan-against-car-01-mobile.webp"
+  },
+  {
+    "productSlug": "loan-against-car",
+    "priority": 2,
+    "desktopImage": "/assets/loan-banners/rendered/loan-against-car-02-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/loan-against-car-02-mobile.webp"
+  },
+  {
+    "productSlug": "car-loan",
+    "priority": 1,
+    "desktopImage": "/assets/loan-banners/rendered/car-loan-01-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/car-loan-01-mobile.webp"
+  },
+  {
+    "productSlug": "car-loan",
+    "priority": 2,
+    "desktopImage": "/assets/loan-banners/rendered/car-loan-02-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/car-loan-02-mobile.webp"
+  },
+  {
+    "productSlug": "loan-against-car-value",
+    "priority": 1,
+    "desktopImage": "/assets/loan-banners/rendered/loan-against-car-value-01-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/loan-against-car-value-01-mobile.webp"
+  },
+  {
+    "productSlug": "loan-against-car-value",
+    "priority": 2,
+    "desktopImage": "/assets/loan-banners/rendered/loan-against-car-value-02-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/loan-against-car-value-02-mobile.webp"
+  },
+  {
+    "productSlug": "instant-loan",
+    "priority": 1,
+    "desktopImage": "/assets/loan-banners/rendered/instant-loan-01-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/instant-loan-01-mobile.webp"
+  },
+  {
+    "productSlug": "instant-loan",
+    "priority": 2,
+    "desktopImage": "/assets/loan-banners/rendered/instant-loan-02-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/instant-loan-02-mobile.webp"
+  },
+  {
+    "productSlug": "credit-score-loan",
+    "priority": 1,
+    "desktopImage": "/assets/loan-banners/rendered/credit-score-loan-01-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/credit-score-loan-01-mobile.webp"
+  },
+  {
+    "productSlug": "credit-score-loan",
+    "priority": 2,
+    "desktopImage": "/assets/loan-banners/rendered/credit-score-loan-02-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/credit-score-loan-02-mobile.webp"
+  },
+  {
+    "productSlug": "loan-against-property",
+    "priority": 1,
+    "desktopImage": "/assets/loan-banners/rendered/loan-against-property-01-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/loan-against-property-01-mobile.webp"
+  },
+  {
+    "productSlug": "loan-against-property",
+    "priority": 2,
+    "desktopImage": "/assets/loan-banners/rendered/loan-against-property-02-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/loan-against-property-02-mobile.webp"
+  },
+  {
+    "productSlug": "renovation-loan",
+    "priority": 1,
+    "desktopImage": "/assets/loan-banners/rendered/renovation-loan-01-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/renovation-loan-01-mobile.webp"
+  },
+  {
+    "productSlug": "renovation-loan",
+    "priority": 2,
+    "desktopImage": "/assets/loan-banners/rendered/renovation-loan-02-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/renovation-loan-02-mobile.webp"
+  },
+  {
+    "productSlug": "working-capital-loan",
+    "priority": 1,
+    "desktopImage": "/assets/loan-banners/rendered/working-capital-loan-01-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/working-capital-loan-01-mobile.webp"
+  },
+  {
+    "productSlug": "working-capital-loan",
+    "priority": 2,
+    "desktopImage": "/assets/loan-banners/rendered/working-capital-loan-02-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/working-capital-loan-02-mobile.webp"
+  },
+  {
+    "productSlug": "loan-against-security",
+    "priority": 1,
+    "desktopImage": "/assets/loan-banners/rendered/loan-against-security-01-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/loan-against-security-01-mobile.webp"
+  },
+  {
+    "productSlug": "loan-against-security",
+    "priority": 2,
+    "desktopImage": "/assets/loan-banners/rendered/loan-against-security-02-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/loan-against-security-02-mobile.webp"
+  },
+  {
+    "productSlug": "machinery-loan",
+    "priority": 1,
+    "desktopImage": "/assets/loan-banners/rendered/machinery-loan-01-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/machinery-loan-01-mobile.webp"
+  },
+  {
+    "productSlug": "machinery-loan",
+    "priority": 2,
+    "desktopImage": "/assets/loan-banners/rendered/machinery-loan-02-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/machinery-loan-02-mobile.webp"
+  },
+  {
+    "productSlug": "home-loan",
+    "priority": 1,
+    "desktopImage": "/assets/loan-banners/rendered/home-loan-01-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/home-loan-01-mobile.webp"
+  },
+  {
+    "productSlug": "home-loan",
+    "priority": 2,
+    "desktopImage": "/assets/loan-banners/rendered/home-loan-02-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/home-loan-02-mobile.webp"
+  },
+  {
+    "productSlug": "business-loan",
+    "priority": 1,
+    "desktopImage": "/assets/loan-banners/rendered/business-loan-01-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/business-loan-01-mobile.webp"
+  },
+  {
+    "productSlug": "business-loan",
+    "priority": 2,
+    "desktopImage": "/assets/loan-banners/rendered/business-loan-02-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/business-loan-02-mobile.webp"
+  },
+  {
+    "productSlug": "dod-loan",
+    "priority": 1,
+    "desktopImage": "/assets/loan-banners/rendered/dod-loan-01-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/dod-loan-01-mobile.webp"
+  },
+  {
+    "productSlug": "dod-loan",
+    "priority": 2,
+    "desktopImage": "/assets/loan-banners/rendered/dod-loan-02-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/dod-loan-02-mobile.webp"
+  },
+  {
+    "productSlug": "od-loan",
+    "priority": 1,
+    "desktopImage": "/assets/loan-banners/rendered/od-loan-01-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/od-loan-01-mobile.webp"
+  },
+  {
+    "productSlug": "od-loan",
+    "priority": 2,
+    "desktopImage": "/assets/loan-banners/rendered/od-loan-02-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/od-loan-02-mobile.webp"
+  },
+  {
+    "productSlug": "industrial-loan",
+    "priority": 1,
+    "desktopImage": "/assets/loan-banners/rendered/industrial-loan-01-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/industrial-loan-01-mobile.webp"
+  },
+  {
+    "productSlug": "industrial-loan",
+    "priority": 2,
+    "desktopImage": "/assets/loan-banners/rendered/industrial-loan-02-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/industrial-loan-02-mobile.webp"
+  },
+  {
+    "productSlug": "commercial-purchases-loan",
+    "priority": 1,
+    "desktopImage": "/assets/loan-banners/rendered/commercial-purchases-loan-01-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/commercial-purchases-loan-01-mobile.webp"
+  },
+  {
+    "productSlug": "commercial-purchases-loan",
+    "priority": 2,
+    "desktopImage": "/assets/loan-banners/rendered/commercial-purchases-loan-02-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/commercial-purchases-loan-02-mobile.webp"
+  },
+  {
+    "productSlug": "balance-transfer-loan",
+    "priority": 1,
+    "desktopImage": "/assets/loan-banners/rendered/balance-transfer-loan-01-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/balance-transfer-loan-01-mobile.webp"
+  },
+  {
+    "productSlug": "balance-transfer-loan",
+    "priority": 2,
+    "desktopImage": "/assets/loan-banners/rendered/balance-transfer-loan-02-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/balance-transfer-loan-02-mobile.webp"
+  },
+  {
+    "productSlug": "top-up-loan",
+    "priority": 1,
+    "desktopImage": "/assets/loan-banners/rendered/top-up-loan-01-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/top-up-loan-01-mobile.webp"
+  },
+  {
+    "productSlug": "top-up-loan",
+    "priority": 2,
+    "desktopImage": "/assets/loan-banners/rendered/top-up-loan-02-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/top-up-loan-02-mobile.webp"
+  },
+  {
+    "productSlug": "two-wheeler-loan",
+    "priority": 1,
+    "desktopImage": "/assets/loan-banners/rendered/two-wheeler-loan-01-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/two-wheeler-loan-01-mobile.webp"
+  },
+  {
+    "productSlug": "two-wheeler-loan",
+    "priority": 2,
+    "desktopImage": "/assets/loan-banners/rendered/two-wheeler-loan-02-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/two-wheeler-loan-02-mobile.webp"
+  },
+  {
+    "productSlug": "used-car-loan",
+    "priority": 1,
+    "desktopImage": "/assets/loan-banners/rendered/used-car-loan-01-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/used-car-loan-01-mobile.webp"
+  },
+  {
+    "productSlug": "used-car-loan",
+    "priority": 2,
+    "desktopImage": "/assets/loan-banners/rendered/used-car-loan-02-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/used-car-loan-02-mobile.webp"
+  },
+  {
+    "productSlug": "agriculture-loan",
+    "priority": 1,
+    "desktopImage": "/assets/loan-banners/rendered/agriculture-loan-01-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/agriculture-loan-01-mobile.webp"
+  },
+  {
+    "productSlug": "agriculture-loan",
+    "priority": 2,
+    "desktopImage": "/assets/loan-banners/rendered/agriculture-loan-02-desktop.webp",
+    "mobileImage": "/assets/loan-banners/rendered/agriculture-loan-02-mobile.webp"
+  }
+]

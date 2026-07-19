@@ -3,17 +3,10 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
-import {
-  ArrowRight,
-  Gift,
-  // Heart,
-  Loader2,
-  Sparkles,
-  Star,
-  Tags,
-} from "lucide-react";
+import { ArrowRight, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { BankLogoImage } from "@/components/common/BankLogoImage";
+import { AutoCarousel } from "@/components/common/AutoCarousel";
 import {
   buildCreditCardEligibilityPath,
   CreditCardProduct,
@@ -57,6 +50,21 @@ const fallbackCreditCards: CreditCardProduct[] = [
     annualFee: 999,
     joiningFee: 999,
     priorityOrder: 1,
+  },
+  {
+    _id: "fallback-sbi-prime-card",
+    name: "SBI PRIME Credit Card",
+    bankName: "SBI Card",
+    image: "/assets/banks/sbi-logo.png",
+    shortDescription:
+      "Premium SBI Card with milestone rewards, lounge access and partner privileges.",
+    cardType: "Premium",
+    rewardsType: "Milestone Rewards",
+    welcomeBenefits: "Premium welcome voucher",
+    rewardStructure: "Accelerated points on eligible spends",
+    annualFee: 2999,
+    joiningFee: 2999,
+    priorityOrder: 2,
   },
   {
     _id: "fallback-hdfc-card",
@@ -131,13 +139,6 @@ const fallbackCreditCards: CreditCardProduct[] = [
   },
 ];
 
-const cardBadges = [
-  { label: "Popular", className: "text-[#b54708]", icon: Sparkles },
-  { label: "Best for cashback", className: "text-[#087443]", icon: Star },
-  { label: "Premium", className: "text-[#6941c6]", icon: Gift },
-  { label: "Best for shopping", className: "text-[#c01048]", icon: Tags },
-];
-
 const normalizeBankKey = (bankName?: string) => {
   const value = (bankName || "").toLowerCase();
   if (value.includes("sbi") || value.includes("state bank")) return "sbi";
@@ -150,19 +151,26 @@ const normalizeBankKey = (bankName?: string) => {
 };
 
 const mergeWithFallbackCards = (cards: CreditCardProduct[]) => {
-  const existingKeys = new Set(
-    cards.map((card) => `${card.bankName}-${card.name}`.toLowerCase()),
-  );
-  const existingBanks = new Set(
-    cards.map((card) => normalizeBankKey(card.bankName)),
-  );
-  const missingFallbacks = fallbackCreditCards.filter(
-    (card) =>
-      !existingBanks.has(normalizeBankKey(card.bankName)) &&
-      !existingKeys.has(`${card.bankName}-${card.name}`.toLowerCase()),
-  );
+  const merged = [...cards];
 
-  return [...cards, ...missingFallbacks];
+  fallbackCreditCards.forEach((fallback) => {
+    const bankKey = normalizeBankKey(fallback.bankName);
+    const requiredCount = bankKey === "sbi" ? 2 : 1;
+    const bankCards = merged.filter(
+      (card) => normalizeBankKey(card.bankName) === bankKey,
+    );
+    const alreadyIncluded = merged.some(
+      (card) =>
+        `${card.bankName}-${card.name}`.toLowerCase() ===
+        `${fallback.bankName}-${fallback.name}`.toLowerCase(),
+    );
+
+    if (!alreadyIncluded && bankCards.length < requiredCount) {
+      merged.push(fallback);
+    }
+  });
+
+  return merged;
 };
 
 const formatFee = (value?: string | number) => {
@@ -181,11 +189,15 @@ const formatFee = (value?: string | number) => {
 
 const getBankLogoSrc = (bankName: string, cards: CreditCardProduct[]) => {
   const bankKey = normalizeBankKey(bankName);
+  const knownBankLogo = bankLogoFallbacks[bankKey];
+
+  if (knownBankLogo) return knownBankLogo;
+
   const matchingCard = cards.find(
     (card) => normalizeBankKey(card.bankName) === bankKey && card.image,
   );
 
-  return matchingCard?.image || bankLogoFallbacks[bankKey];
+  return matchingCard?.image || "";
 };
 
 export function MajorBankCreditCards() {
@@ -278,7 +290,7 @@ export function MajorBankCreditCards() {
       <div className="mx-auto max-w-9xl overflow-hidden rounded-2xl">
         <div className="pb-6">
           <div className="flex items-center justify-between gap-3">
-            <h2 className="min-w-0 max-w-3xl flex-1 text-[22px] font-bold leading-tight text-gray-900 sm:text-[30px] md:text-[34px]">
+            <h2 className="min-w-0 max-w-3xl flex-1 whitespace-nowrap text-[16px] font-bold leading-tight tracking-tight text-gray-900 sm:text-[30px] md:text-[34px]">
               Find the Right Credit Card
               {/* <span className="text-[#075cde]">Top Banks</span> */}
             </h2>
@@ -294,7 +306,7 @@ export function MajorBankCreditCards() {
         </div>
 
         <div className="bg-white">
-          <div className="flex min-w-0 items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
+          <div className="flex min-w-0 items-center gap-1.5 overflow-x-auto pb-1 scrollbar-hide sm:gap-2">
             {loading ? (
               <span className="inline-flex items-center gap-2 text-[13px] font-semibold text-[#667085]">
                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -309,7 +321,7 @@ export function MajorBankCreditCards() {
                     key={tab}
                     type="button"
                     onClick={() => setActiveBank(tab)}
-                    className={`inline-flex h-11 shrink-0 items-center gap-2 rounded-xl border px-4 text-[13px] font-bold transition-all ${
+                    className={`inline-flex h-9 shrink-0 items-center gap-1.5 rounded-lg border px-3 text-[12px] font-bold transition-all sm:h-11 sm:gap-2 sm:rounded-xl sm:px-4 sm:text-[13px] ${
                       isActive
                         ? "border-[#075cde] bg-[#e9f2ff] text-[#075cde]"
                         : "border-[#dceaf7] bg-white text-[#52657d] hover:border-[#075cde]"
@@ -319,7 +331,7 @@ export function MajorBankCreditCards() {
                       <BankLogoImage
                         src={logoSrc}
                         alt={tab}
-                        className="h-5 w-7 object-contain"
+                        className="h-4 w-6 sm:h-5 sm:w-7"
                         unoptimized
                       />
                     ) : null}
@@ -341,12 +353,12 @@ export function MajorBankCreditCards() {
           {activeBank ? (
             <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex min-w-0 items-start gap-4 sm:items-center">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#e9f2ff] text-xl font-bold text-[#075cde]">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[#d7e8fb] bg-[#e9f2ff] text-xl font-bold text-[#075cde] sm:h-12 sm:w-12 sm:rounded-2xl">
                   {activeBankLogoSrc ? (
                     <BankLogoImage
                       src={activeBankLogoSrc}
                       alt={activeBank}
-                      className="h-9 w-auto max-w-10 object-contain"
+                      className="h-8 w-8 sm:h-9 sm:w-10"
                       unoptimized
                     />
                   ) : (
@@ -367,7 +379,7 @@ export function MajorBankCreditCards() {
           ) : null}
 
           {loading ? (
-            <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+            <div className="grid grid-cols-2 gap-3 sm:gap-5 xl:grid-cols-4">
               {Array.from({ length: 4 }).map((_, index) => (
                 <div
                   key={index}
@@ -376,33 +388,21 @@ export function MajorBankCreditCards() {
               ))}
             </div>
           ) : activeCards.length ? (
-            <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
-              {activeCards.map((card, index) => {
-                const badge = cardBadges[index % cardBadges.length];
-                const BadgeIcon = badge.icon;
+            <AutoCarousel
+              ariaLabel={`${activeBank} credit cards`}
+              mobileSlides={2}
+              tabletSlides={2}
+              desktopSlides={3}
+              wideSlides={4}
+            >
+              {activeCards.map((card) => {
                 return (
                   <article
                     key={getCardId(card) || card.name}
-                    className="flex flex-col justify-between rounded-xl border border-[#e2edf8] bg-white p-4 transition-colors hover:border-[#bcd8f4]"
+                    className="group flex h-full flex-col justify-between rounded-xl border border-[#e2edf8] bg-white p-3 transition-colors duration-300 hover:border-[#bcd8f4] sm:p-4"
                   >
                     <div>
-                      <div className="flex items-center justify-between gap-3">
-                        <span
-                          className={`inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wide ${badge.className}`}
-                        >
-                          <BadgeIcon className="h-3.5 w-3.5" />
-                          {badge.label}
-                        </span>
-                        {/* <button
-                          type="button"
-                          aria-label={`Save ${card.name}`}
-                          className="flex h-8 w-8 items-center justify-center rounded-full border border-[#dceaf7] text-[#98a2b3] transition hover:border-[#075cde] hover:text-[#075cde]"
-                        >
-                          <Heart className="h-4 w-4" />
-                        </button> */}
-                      </div>
-
-                      <div className="relative mt-4 aspect-[1.58/1] overflow-hidden rounded-2xl bg-[#0b315f]">
+                      <div className="relative aspect-[1.58/1] overflow-hidden rounded-2xl bg-[#0b315f]">
                         <Image
                           width={360}
                           height={228}
@@ -457,7 +457,7 @@ export function MajorBankCreditCards() {
                     <button
                       type="button"
                       onClick={() => handleEligibility(card)}
-                      className="mt-5 inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#075cde] px-4 text-[13px] font-semibold text-white transition hover:bg-[#064cb8]"
+                      className="card-action-button mt-5 inline-flex h-10 items-center justify-center gap-1.5 rounded-xl px-2 text-[11px] font-semibold sm:h-11 sm:gap-2 sm:px-4 sm:text-[13px]"
                     >
                       Check eligibility
                       <ArrowRight className="h-4 w-4" />
@@ -465,7 +465,7 @@ export function MajorBankCreditCards() {
                   </article>
                 );
               })}
-            </div>
+            </AutoCarousel>
           ) : (
             <div className="rounded-xl border border-[#dceaf7] bg-white p-6 text-center text-[13px] font-semibold text-[#667085]">
               Credit cards will appear here once active products are available.

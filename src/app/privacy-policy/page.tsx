@@ -19,6 +19,7 @@ export default function PrivacyPolicyPage() {
       content={legalPages.privacy}
       eyebrow="Privacy & Data Protection"
       canonicalPath="/privacy-policy"
+      simpleHeader
     />
   );
 }

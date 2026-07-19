@@ -12,13 +12,15 @@ export function LoanEMICalculator({ page }: { page: LoanSeoPageData }) {
   });
 
   return (
-    <EmiCalculator
-      key={page.loanTypeSlug}
-      defaultLoanType={page.loanTypeSlug}
-      displayLoanLabel={page.loanType}
-      lockedLoanType
-      applyHrefOverride={applyHref}
-      applyProductSlug={page.loanTypeSlug}
-    />
+    <div id="loan-emi-calculator" className="scroll-mt-24">
+      <EmiCalculator
+        key={page.loanTypeSlug}
+        defaultLoanType={page.loanTypeSlug}
+        displayLoanLabel={page.loanType}
+        lockedLoanType
+        applyHrefOverride={applyHref}
+        applyProductSlug={page.loanTypeSlug}
+      />
+    </div>
   );
 }
