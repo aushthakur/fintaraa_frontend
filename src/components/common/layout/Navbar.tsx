@@ -722,8 +722,8 @@ export default function Navbar() {
       ref={headerRef}
       className="sticky top-0 z-50 overflow-x-clip border-b border-[#e5eef8] bg-white/95 backdrop-blur"
     >
-      <div className="bg-[#002B4D] px-4 text-white md:px-6 lg:pl-8 lg:pr-10">
-        <div className="mx-auto flex min-h-8 max-w-9xl items-center justify-between gap-3 py-1.5 text-[9.5px] font-semibold sm:py-2 sm:text-[11px]">
+      <div className="bg-[#002B4D] px-3 text-white min-[380px]:px-4 md:px-6 lg:pl-8 lg:pr-10">
+        <div className="mx-auto flex min-h-8 max-w-9xl items-center justify-between gap-2 py-1.5 text-[8.5px] font-semibold min-[360px]:text-[9.5px] sm:gap-3 sm:py-2 sm:text-[11px]">
           <p className="flex min-w-0 items-center gap-1.5 leading-4 sm:gap-2">
             <ShieldCheck className="h-3.5 w-3.5 shrink-0 text-[#8fc7ff] sm:h-4 sm:w-4" />
             <span className="whitespace-nowrap sm:hidden">
@@ -740,7 +740,10 @@ export default function Navbar() {
               className="flex items-center gap-1 text-white/90 no-underline transition hover:text-white sm:gap-1.5"
             >
               <Mail className="h-3 w-3 shrink-0 sm:h-3.5 sm:w-3.5" />
-              customercare@fintaraa.com
+              <span className="min-[380px]:hidden">Support</span>
+              <span className="hidden min-[380px]:inline">
+                customercare@fintaraa.com
+              </span>
             </a>
             <span className="hidden items-center gap-1.5 text-white/80 lg:flex">
               <Clock3 className="h-3.5 w-3.5" />
@@ -750,19 +753,19 @@ export default function Navbar() {
         </div>
       </div>
 
-      <nav className="mobile-site-nav mx-auto flex h-16 w-full max-w-9xl items-center justify-between gap-4 px-4 md:h-18 md:px-6 xl:px-6 2xl:px-8">
+      <nav className="mobile-site-nav mx-auto flex h-15 w-full max-w-9xl items-center justify-between gap-1 px-3 min-[360px]:h-16 min-[360px]:gap-2 min-[360px]:px-4 md:h-18 md:px-6 xl:px-6 2xl:px-8">
         <Link href="/" aria-label="Fintaraa home" className="shrink-0">
           <Image
             priority
             width={134}
             height={41}
             alt="Fintaraa"
-            className="h-auto w-16"
+            className="h-auto w-14 min-[360px]:w-16"
             src="/assets/logo/logo.png"
           />
         </Link>
 
-        <div className="hidden min-w-0 flex-1 items-center justify-center gap-4 xl:flex 2xl:gap-6">
+        <div className="hidden min-w-0 flex-1 items-center justify-center gap-2 xl:flex min-[1380px]:gap-4 2xl:gap-6">
           {navItems.map((item, index) => (
             <DesktopNavItem
               key={item.label}
@@ -773,7 +776,7 @@ export default function Navbar() {
           ))}
         </div>
 
-        <div className="hidden shrink-0 items-center gap-2 xl:flex 2xl:gap-3">
+        <div className="hidden shrink-0 items-center gap-1.5 xl:flex min-[1380px]:gap-2 2xl:gap-3">
           <NavbarSearch />
 
           <Link
@@ -804,7 +807,7 @@ export default function Navbar() {
           />
         </div>
 
-        <div className="ml-auto flex items-center gap-1.5 xl:hidden">
+        <div className="ml-auto flex items-center gap-0.5 min-[360px]:gap-1 xl:hidden">
           <NavbarSearch compact onOpen={() => setMenuOpen(false)} />
           <Link
             href={
@@ -815,7 +818,7 @@ export default function Navbar() {
                   })
             }
             aria-label="Notifications"
-            className="relative inline-flex h-10 w-10 shrink-0 items-center justify-center text-[#344054] no-underline transition active:bg-[#eaf2fb] active:text-[#075cde]"
+            className="relative inline-flex h-9 w-9 shrink-0 items-center justify-center text-[#344054] no-underline transition active:bg-[#eaf2fb] active:text-[#075cde] min-[360px]:h-10 min-[360px]:w-10"
           >
             <Bell className="h-4 w-4" aria-hidden="true" />
             {unreadNotifications ? (
@@ -827,7 +830,7 @@ export default function Navbar() {
           <Link
             href={loggedIn ? profileHref : "/login"}
             aria-label={loggedIn ? "Open account" : "Login"}
-            className="inline-flex h-10 shrink-0 items-center justify-center gap-1 rounded-md border border-[#075cde] px-2 text-[11px] font-bold text-[#075cde] no-underline transition active:bg-[#eef5ff]"
+            className="inline-flex h-9 shrink-0 items-center justify-center gap-1 rounded-md border border-[#075cde] px-1.5 text-[10px] font-bold text-[#075cde] no-underline transition active:bg-[#eef5ff] min-[360px]:h-10 min-[360px]:px-2 min-[360px]:text-[11px]"
           >
             <UserRound className="h-4 w-4 shrink-0" aria-hidden="true" />
             <span>{loggedIn ? "Account" : "Login"}</span>
@@ -836,7 +839,7 @@ export default function Navbar() {
             type="button"
             aria-label="Toggle menu"
             aria-expanded={menuOpen}
-            className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#f4f7fb] text-[#101828] transition active:bg-[#eaf2fb]"
+            className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#f4f7fb] text-[#101828] transition active:bg-[#eaf2fb] min-[360px]:h-10 min-[360px]:w-10"
             onClick={() => {
               if (menuOpen) setMobileOpenLabel(null);
               setMenuOpen((open) => !open);
@@ -852,8 +855,16 @@ export default function Navbar() {
       </nav>
 
       {menuOpen && (
-        <div className="max-h-[calc(100dvh-6.25rem)] overflow-y-auto border-t border-[#e5eef8] bg-white px-4 pb-5 md:max-h-[calc(100dvh-6.75rem)] md:px-6 xl:hidden">
-          <div className="mx-auto grid max-w-9xl gap-1">
+        <div className="absolute inset-x-0 top-full z-50 max-h-[calc(100dvh-var(--site-header-height,6rem))] overflow-y-auto overscroll-contain border-t border-[#dce8f2] bg-[#f4f8fc] px-3 py-3 shadow-[0_24px_45px_rgba(7,22,45,0.18)] min-[380px]:px-4 md:px-6 xl:hidden">
+          <div className="mx-auto grid max-w-9xl gap-2">
+            <div className="flex items-center justify-between px-1 pb-1">
+              <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-[#718397]">
+                Explore Fintaraa
+              </p>
+              <p className="text-[10px] font-semibold text-[#8a99a8]">
+                Tap a section to expand
+              </p>
+            </div>
             {navItems.map((item) => {
               const hideDescriptions =
                 item.label === "Loans" || item.label === "Insurance";
@@ -862,7 +873,11 @@ export default function Navbar() {
               return (
                 <div
                   key={item.label}
-                  className="border-b border-[#edf3f8] py-2"
+                  className={`overflow-hidden rounded-xl border bg-white transition-shadow ${
+                    sectionOpen
+                      ? "border-[#bdd8ee] shadow-[0_10px_28px_rgba(25,85,133,0.1)]"
+                      : "border-[#e0eaf2]"
+                  }`}
                 >
                   {item.sections?.length ? (
                     <button
@@ -874,67 +889,77 @@ export default function Navbar() {
                           current === item.label ? null : item.label,
                         )
                       }
-                      className="flex w-full items-center justify-between rounded-md px-3 py-2 text-left text-[14px] font-semibold text-[#101828] transition active:bg-[#f4f8fc] active:text-[#195585]"
+                      className={`flex min-h-11 w-full items-center justify-between gap-3 px-3 py-2.5 text-left text-[13px] font-bold transition min-[380px]:px-3.5 ${
+                        sectionOpen
+                          ? "bg-[#eef7ff] text-[#075cde]"
+                          : "text-[#17354d] active:bg-[#f4f8fc]"
+                      }`}
                     >
                       {item.label}
-                      <ChevronDown
-                        className={`h-4 w-4 transition-transform ${sectionOpen ? "rotate-180" : ""}`}
-                      />
+                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#edf4fa] text-[#526b80]">
+                        <ChevronDown
+                          className={`h-3.5 w-3.5 transition-transform ${sectionOpen ? "rotate-180" : ""}`}
+                        />
+                      </span>
                     </button>
                   ) : (
                     <Link
                       href={item.href}
                       onClick={() => setMenuOpen(false)}
-                      className={`${underlineClass} flex items-center justify-between rounded-md px-3 py-2 text-[14px] font-semibold text-[#101828] no-underline hover:text-[#195585]`}
+                      className="flex min-h-11 items-center justify-between px-3 py-2.5 text-[13px] font-bold text-[#17354d] no-underline transition active:bg-[#f4f8fc] active:text-[#075cde] min-[380px]:px-3.5"
                     >
                       {item.label}
+                      <ArrowRight className="h-3.5 w-3.5 shrink-0 text-[#9aabba]" />
                     </Link>
                   )}
                   {item.sections?.length && sectionOpen ? (
                     <div
                       id={`mobile-nav-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
-                      className="grid gap-3 px-3 pb-2"
+                      className="border-t border-[#dce8f2] bg-[#f8fbfe] p-2.5 min-[380px]:p-3"
                     >
                       <Link
                         href={item.href}
                         onClick={() => setMenuOpen(false)}
-                        className="mx-3 mt-1 inline-flex items-center gap-2 text-[12px] font-bold text-[#075cde] no-underline"
+                        className="flex min-h-10 w-full items-center justify-between rounded-lg bg-[linear-gradient(135deg,#195585,#0878c9)] px-3 text-[12px] font-bold text-white no-underline shadow-[0_8px_20px_rgba(25,85,133,0.16)]"
                       >
                         Explore all {item.label}
                         <ArrowRight className="h-3.5 w-3.5" />
                       </Link>
-                      {item.sections.map((section) => (
-                        <div key={section.title}>
-                          <p className="px-3 pt-2 text-[11px] font-bold uppercase tracking-[0.12em] text-[#195585]">
-                            {section.title}
-                          </p>
-                          <div className="mt-1 grid gap-1">
-                            {section.links.map((link) => (
-                              <Link
-                                key={`${item.label}-${link.href}-${link.label}`}
-                                href={link.href}
-                                onClick={() => setMenuOpen(false)}
-                                className={`relative rounded-md px-2 text-[13px] font-semibold text-[#667085] no-underline transition after:absolute after:bottom-0 after:left-2 after:right-2 after:h-0.5 after:origin-left after:scale-x-0 after:bg-[#195585] after:transition-transform after:duration-300 hover:text-[#195585] hover:after:scale-x-100 ${
-                                  hideDescriptions ? "py-1.5" : "py-2"
-                                }`}
-                              >
-                                {link.label}
-                                {!hideDescriptions && link.description ? (
-                                  <span className="mt-0.5 line-clamp-1 block text-[11px] font-medium text-[#8b95a3]">
-                                    {link.description}
-                                  </span>
-                                ) : null}
-                              </Link>
-                            ))}
+                      <div className="mt-2.5 grid gap-2 min-[680px]:grid-cols-2">
+                        {item.sections.map((section) => (
+                          <div
+                            key={section.title}
+                            className="rounded-xl border border-[#e0eaf2] bg-white p-2.5"
+                          >
+                            <p className="px-1 text-[10px] font-extrabold uppercase tracking-[0.11em] text-[#195585]">
+                              {section.title}
+                            </p>
+                            <div className="mt-1.5 grid gap-0.5 min-[380px]:grid-cols-2 min-[680px]:grid-cols-1">
+                              {section.links.map((link) => (
+                                <Link
+                                  key={`${item.label}-${link.href}-${link.label}`}
+                                  href={link.href}
+                                  onClick={() => setMenuOpen(false)}
+                                  className="flex min-h-9 min-w-0 flex-col justify-center rounded-lg px-2.5 py-1.5 text-[12px] font-semibold leading-4 text-[#526b80] no-underline transition active:bg-[#edf6ff] active:text-[#075cde]"
+                                >
+                                  <span>{link.label}</span>
+                                  {!hideDescriptions && link.description ? (
+                                    <span className="mt-0.5 hidden line-clamp-1 text-[10px] font-medium leading-4 text-[#8b99a8] min-[380px]:block">
+                                      {link.description}
+                                    </span>
+                                  ) : null}
+                                </Link>
+                              ))}
+                            </div>
                           </div>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
                     </div>
                   ) : null}
                 </div>
               );
             })}
-            <div className="mt-4 grid gap-3">
+            <div className="mt-1 grid gap-3 pb-2">
               <AuthButton
                 loggedIn={loggedIn}
                 name={activeProfile?.name || "User"}
@@ -1354,10 +1379,10 @@ function NavbarSearch({
         aria-label={compact ? "Open site search" : undefined}
         className={`flex items-center text-[#344054] transition-colors hover:bg-[#eaf2fb] hover:text-[#075cde] ${
           compact
-            ? "h-10 w-10 justify-center rounded-md"
+            ? "h-9 w-9 justify-center rounded-md min-[360px]:h-10 min-[360px]:w-10"
             : mobile
               ? "h-11 w-full gap-2 rounded-lg px-3 text-[13px] font-semibold"
-              : "h-10 w-60 gap-2 rounded-lg px-3 text-[13px] font-semibold 2xl:h-11"
+              : "h-10 w-44 gap-2 rounded-lg px-3 text-[12px] font-semibold min-[1380px]:w-52 min-[1380px]:text-[13px] 2xl:h-11 2xl:w-60"
         }`}
       >
         <Search className="h-4 w-4 shrink-0" aria-hidden="true" />
@@ -1406,7 +1431,7 @@ function DesktopNavItem({
       <div className="group relative">
         <Link
           href={item.href}
-          className={`${underlineClass} flex items-center gap-1 whitespace-nowrap text-[14px] font-semibold no-underline transition 2xl:text-[15px] ${
+          className={`${underlineClass} flex items-center gap-1 whitespace-nowrap text-[12px] font-semibold no-underline transition min-[1380px]:text-[14px] 2xl:text-[15px] ${
             active
               ? "text-[#195585] after:scale-x-100"
               : "text-[#101828] hover:text-[#195585]"
@@ -1423,7 +1448,7 @@ function DesktopNavItem({
   return (
     <Link
       href={item.href}
-      className={`${underlineClass} flex items-center gap-1 whitespace-nowrap text-[14px] font-semibold no-underline transition 2xl:text-[15px] ${
+      className={`${underlineClass} flex items-center gap-1 whitespace-nowrap text-[12px] font-semibold no-underline transition min-[1380px]:text-[14px] 2xl:text-[15px] ${
         active
           ? "text-[#195585] after:scale-x-100"
           : "text-[#101828] hover:text-[#195585]"
@@ -1450,13 +1475,12 @@ function MegaDropdown({
   if (compact) return <CompactDropdown align={align} item={item} />;
 
   const hideDescriptions = item.label === "Loans" || item.label === "Insurance";
-  const dropdownAlignClass = align === "right" ? "right-0" : "left-0";
-  const dropdownWidthClass =
+  const dropdownMaxWidthClass =
     sections.length >= 4
-      ? "w-[min(92vw,68rem)]"
+      ? "max-w-[68rem]"
       : sections.length === 3
-        ? "w-[min(92vw,58rem)]"
-        : "w-[min(92vw,52rem)]";
+        ? "max-w-[58rem]"
+        : "max-w-[52rem]";
   const columnCount =
     sections.length >= 4
       ? "xl:grid-cols-5"
@@ -1468,9 +1492,9 @@ function MegaDropdown({
 
   return (
     <div
-      className={`pointer-events-none absolute ${dropdownAlignClass} ${dropdownWidthClass} top-full z-50 pt-5 opacity-0 transition duration-200 group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:opacity-100`}
+      className={`pointer-events-none fixed left-1/2 top-[calc(var(--site-header-height,6.5rem)-2.5rem)] z-50 w-[calc(100vw-2rem)] -translate-x-1/2 translate-y-1 pt-10 opacity-0 transition duration-200 ${dropdownMaxWidthClass} group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:translate-y-0 group-focus-within:opacity-100`}
     >
-      <div className="overflow-hidden border border-[#d9e9f6] bg-white">
+      <div className="overflow-hidden rounded-xl border border-[#d9e9f6] bg-white shadow-[0_24px_60px_rgba(7,22,45,0.18)]">
         <div className={`grid gap-0 ${columnCount}`}>
           <div className="bg-[linear-gradient(145deg,#195585,#0f6fba)] p-4 text-white">
             <div className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-white/12">
@@ -1536,23 +1560,21 @@ function MegaDropdown({
 }
 
 function CompactDropdown({
-  align,
   item,
 }: {
   align: "left" | "right";
   item: NavItem;
 }) {
   const section = item.sections?.[0];
-  const dropdownAlignClass = align === "right" ? "right-0" : "left-0";
   const hideDescriptions = item.label === "Loans" || item.label === "Insurance";
 
   if (!section) return null;
 
   return (
     <div
-      className={`pointer-events-none absolute ${dropdownAlignClass} top-full z-50 w-86 pt-5 opacity-0 transition duration-200 group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:opacity-100`}
+      className="pointer-events-none fixed left-1/2 top-[calc(var(--site-header-height,6.5rem)-2.5rem)] z-50 w-[calc(100vw-2rem)] max-w-96 -translate-x-1/2 translate-y-1 pt-10 opacity-0 transition duration-200 group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:translate-y-0 group-focus-within:opacity-100"
     >
-      <div className="rounded-xl border border-[#d9e9f6] bg-white p-3">
+      <div className="rounded-xl border border-[#d9e9f6] bg-white p-3 shadow-[0_24px_60px_rgba(7,22,45,0.18)]">
         <div className="grid gap-1">
           {section.links.map((link) => (
             <Link

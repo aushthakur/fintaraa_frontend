@@ -25,7 +25,7 @@ const normalise = (item: any, fallback: HomeBanner): HomeBanner => ({
   description: item?.description || "",
   image: localBannerImage(item?.image, fallback.image),
   mobileImage: localBannerImage(
-    item?.mobileImage || item?.image,
+    item?.mobileImage,
     fallback.mobileImage || fallback.image,
   ),
   imageAlt: item?.imageAlt || item?.title || fallback.imageAlt,

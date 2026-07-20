@@ -537,6 +537,24 @@ select:disabled {
   display: none;
 }
 
+@media (max-width: 639px) {
+  .credit-card-carousel .swiper-button-prev,
+  .credit-card-carousel .swiper-button-next {
+    top: 26%;
+    width: 2rem;
+    height: 2rem;
+    margin-top: -1rem;
+  }
+
+  .credit-card-carousel .swiper-button-prev {
+    left: 0.25rem;
+  }
+
+  .credit-card-carousel .swiper-button-next {
+    right: 0.25rem;
+  }
+}
+
 @media (min-width: 768px) {
   .site-carousel .swiper-button-prev,
   .site-carousel .swiper-button-next {

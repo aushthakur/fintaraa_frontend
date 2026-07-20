@@ -35,7 +35,7 @@ function ResponsiveBannerImage({
     src: banner.mobileImage || banner.image,
     alt,
     width: 900,
-    height: 1050,
+    height: 1200,
     unoptimized: true,
   });
 
@@ -100,7 +100,11 @@ export function ProductHeroBannerSlider({
 
   return (
     <div className="relative w-full overflow-hidden bg-[#07162d]">
-      <div className="relative aspect-[6/7] w-full overflow-hidden md:aspect-[5/2]">
+      <div
+        className={`relative w-full overflow-hidden md:aspect-[5/2] ${
+          category === "loan" ? "aspect-[3/4]" : "aspect-[6/7]"
+        }`}
+      >
         <Swiper
           modules={[Autoplay, EffectFade, Pagination, A11y]}
           effect="fade"
@@ -132,8 +136,16 @@ export function ProductHeroBannerSlider({
                     <AuthRedirectLink
                       href={applyHref}
                       productSlug={productSlug}
+                      aria-label={`Apply for ${productName}`}
+                      className="absolute inset-0 z-10 no-underline md:hidden"
+                    >
+                      <span className="sr-only">Apply for {productName}</span>
+                    </AuthRedirectLink>
+                    <AuthRedirectLink
+                      href={applyHref}
+                      productSlug={productSlug}
                       aria-label={`${banner.buttonText || "Apply now"} for ${productName}`}
-                      className="absolute left-[7.1%] top-[48.5%] z-10 h-[7.3%] w-[38.8%] rounded-xl no-underline md:left-[5.75%] md:top-[77%] md:h-[10.5%] md:w-[13.2%]"
+                      className="absolute left-[5.75%] top-[77%] z-10 hidden h-[10.5%] w-[13.2%] rounded-xl no-underline md:block"
                     >
                       <span className="sr-only">
                         {banner.buttonText || "Apply now"}
@@ -146,7 +158,7 @@ export function ProductHeroBannerSlider({
                       aria-label={
                         banner.secondaryButtonText || "Calculate loan EMI"
                       }
-                      className="absolute left-[48%] top-[48.5%] z-10 h-[7.3%] w-[37.8%] rounded-xl no-underline md:left-[20%] md:top-[77%] md:h-[10.5%] md:w-[14.9%]"
+                      className="absolute left-[20%] top-[77%] z-10 hidden h-[10.5%] w-[14.9%] rounded-xl no-underline md:block"
                     >
                       <span className="sr-only">
                         {banner.secondaryButtonText || "Calculate EMI"}

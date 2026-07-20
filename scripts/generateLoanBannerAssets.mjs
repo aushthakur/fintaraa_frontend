@@ -13,6 +13,10 @@ const outputDirectory = path.join(
   projectRoot,
   "public/assets/loan-banners/rendered",
 );
+const mobileArtworkDirectory = path.join(
+  projectRoot,
+  "public/assets/loan-banners/mobile-v2",
+);
 
 const catalog = JSON.parse(await readFile(catalogPath, "utf8"));
 
@@ -25,6 +29,7 @@ const accents = {
   "business-cashflow": "#45d6a7",
   "industrial-machinery": "#65b8ff",
   "agriculture-growth": "#80d177",
+  "assisted-digital": "#4fe0d4",
 };
 
 const familyImage = (family) =>
@@ -32,6 +37,9 @@ const familyImage = (family) =>
     projectRoot,
     `public/assets/loan-banners/${family}.jpg`,
   );
+
+const mobileFamilyImage = (family) =>
+  path.join(mobileArtworkDirectory, `${family}.png`);
 
 const escapeXml = (value) =>
   String(value)
@@ -148,77 +156,6 @@ const desktopOverlay = (profile, slide) => {
   </svg>`);
 };
 
-const mobileOverlay = (profile, slide) => {
-  const accent = accents[profile.family] || "#2cc5ff";
-  const isAssisted = slide === 2;
-  const eyebrow = isAssisted
-    ? `ASSISTED ${profile.name.toUpperCase()} JOURNEY`
-    : profile.eyebrow;
-  const title = isAssisted
-    ? `Your ${profile.name} Journey, Made Simpler`
-    : profile.title;
-  const description = isAssisted
-    ? "Check eligibility, prepare documents and compare trusted partner options in one secure journey."
-    : profile.description;
-  const benefits = isAssisted
-    ? ["30+ lending partners", "Human assistance"]
-    : profile.benefits.slice(0, 2);
-  const primaryButton = isAssisted ? "Check Eligibility" : "Apply Now";
-  const secondaryButton = isAssisted ? "Documents" : "Calculate EMI";
-  const titleLines = wrapText(title, 27).slice(0, 3);
-  const titleY = 135;
-  const descriptionY = titleY + (titleLines.length - 1) * 58 + 69;
-  const descriptionLines = wrapText(description, 51).slice(0, 3);
-  const benefitsY = descriptionY + (descriptionLines.length - 1) * 34 + 60;
-  const buttonY = Math.max(510, benefitsY + 56);
-  let pillX = 64;
-
-  const benefitPills = benefits
-    .map((benefit) => {
-      const width = Math.max(245, Math.min(345, benefit.length * 13 + 76));
-      const markup = `<g>
-        <rect x="${pillX}" y="${benefitsY - 31}" width="${width}" height="48" rx="24" fill="#ffffff" fill-opacity="0.11" stroke="#ffffff" stroke-opacity="0.22"/>
-        <circle cx="${pillX + 27}" cy="${benefitsY - 7}" r="11" fill="${accent}"/>
-        <path d="M ${pillX + 21} ${benefitsY - 7} l 4 4 l 7 -8" fill="none" stroke="#07162d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
-        <text x="${pillX + 48}" y="${benefitsY + 2}" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700">${escapeXml(benefit)}</text>
-      </g>`;
-      pillX += width + 16;
-      return markup;
-    })
-    .join("");
-
-  return Buffer.from(`<svg width="900" height="1050" viewBox="0 0 900 1050" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <linearGradient id="topShade" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#06152d" stop-opacity="1"/>
-        <stop offset="0.56" stop-color="#06152d" stop-opacity="1"/>
-        <stop offset="0.75" stop-color="#06152d" stop-opacity="0.66"/>
-        <stop offset="0.9" stop-color="#06152d" stop-opacity="0"/>
-      </linearGradient>
-      <linearGradient id="buttonFill" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0" stop-color="${accent}"/>
-        <stop offset="1" stop-color="#1686f0"/>
-      </linearGradient>
-      <filter id="buttonShadow" x="-20%" y="-20%" width="140%" height="160%">
-        <feDropShadow dx="0" dy="10" stdDeviation="13" flood-color="#000000" flood-opacity="0.26"/>
-      </filter>
-    </defs>
-    <rect x="0" y="0" width="900" height="700" fill="url(#topShade)"/>
-    <rect x="64" y="65" width="42" height="5" rx="2.5" fill="${accent}"/>
-    ${textLines({ lines: [eyebrow], x: 123, y: 78, fontSize: 21, weight: 700, fill: accent, letterSpacing: 1.5 })}
-    ${textLines({ lines: titleLines, x: 64, y: titleY, fontSize: 49, lineHeight: 58, weight: 800 })}
-    ${textLines({ lines: descriptionLines, x: 64, y: descriptionY, fontSize: 25, lineHeight: 34, weight: 400, opacity: 0.9 })}
-    ${benefitPills}
-    <g filter="url(#buttonShadow)">
-      <rect x="64" y="${buttonY}" width="350" height="76" rx="16" fill="url(#buttonFill)"/>
-      <text x="239" y="${buttonY + 48}" text-anchor="middle" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="800">${escapeXml(primaryButton)}</text>
-    </g>
-    <rect x="432" y="${buttonY}" width="340" height="76" rx="16" fill="#ffffff" fill-opacity="0.08" stroke="#ffffff" stroke-opacity="0.76" stroke-width="2"/>
-    <text x="602" y="${buttonY + 48}" text-anchor="middle" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="800">${escapeXml(secondaryButton)}</text>
-    <text x="64" y="1018" fill="#ffffff" fill-opacity="0.78" font-family="Arial, Helvetica, sans-serif" font-size="17">Eligibility, rates and terms depend on the lending partner and applicant profile.</text>
-  </svg>`);
-};
-
 const createDesktopBanner = async (profile, slide) => {
   const backgroundPath = familyImage(
     slide === 1 ? profile.family : "assisted-digital",
@@ -238,29 +175,15 @@ const createDesktopBanner = async (profile, slide) => {
 };
 
 const createMobileBanner = async (profile, slide) => {
-  const backgroundPath = familyImage(
+  const backgroundPath = mobileFamilyImage(
     slide === 1 ? profile.family : "assisted-digital",
   );
   const outputPath = path.join(
     outputDirectory,
     `${profile.slug}-${String(slide).padStart(2, "0")}-mobile.webp`,
   );
-  const imagePanel = await sharp(backgroundPath)
-    .resize(900, 470, { fit: "cover", position: "east" })
-    .toBuffer();
-
-  await sharp({
-    create: {
-      width: 900,
-      height: 1050,
-      channels: 3,
-      background: "#06152d",
-    },
-  })
-    .composite([
-      { input: imagePanel, left: 0, top: 580 },
-      { input: mobileOverlay(profile, slide), left: 0, top: 0 },
-    ])
+  await sharp(backgroundPath)
+    .resize(900, 1200, { fit: "cover", position: "centre" })
     .webp({ quality: 86, smartSubsample: true })
     .toFile(outputPath);
 

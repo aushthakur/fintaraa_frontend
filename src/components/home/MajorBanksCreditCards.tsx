@@ -286,11 +286,11 @@ export function MajorBankCreditCards() {
   };
 
   return (
-    <section className="bg-white px-4 py-10 md:px-6 lg:px-8">
+    <section className="bg-white px-3 py-8 min-[360px]:px-4 min-[360px]:py-10 md:px-6 lg:px-8">
       <div className="mx-auto max-w-9xl overflow-hidden rounded-2xl">
         <div className="pb-6">
           <div className="flex items-center justify-between gap-3">
-            <h2 className="min-w-0 max-w-3xl flex-1 whitespace-nowrap text-[16px] font-bold leading-tight tracking-tight text-gray-900 sm:text-[30px] md:text-[34px]">
+            <h2 className="min-w-0 max-w-3xl flex-1 whitespace-nowrap text-[15px] font-bold leading-tight tracking-tight text-gray-900 min-[360px]:text-[16px] sm:text-[30px] md:text-[34px]">
               Find the Right Credit Card
               {/* <span className="text-[#075cde]">Top Banks</span> */}
             </h2>
@@ -351,14 +351,14 @@ export function MajorBankCreditCards() {
           ) : null}
 
           {activeBank ? (
-            <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex min-w-0 items-start gap-4 sm:items-center">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[#d7e8fb] bg-[#e9f2ff] text-xl font-bold text-[#075cde] sm:h-12 sm:w-12 sm:rounded-2xl">
+            <div className="mb-5 flex flex-col gap-3 sm:mb-6 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+              <div className="flex min-w-0 items-center gap-3 sm:gap-4">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[#d7e8fb] bg-[#e9f2ff] text-lg font-bold text-[#075cde] min-[360px]:h-11 min-[360px]:w-11 sm:h-12 sm:w-12 sm:rounded-2xl">
                   {activeBankLogoSrc ? (
                     <BankLogoImage
                       src={activeBankLogoSrc}
                       alt={activeBank}
-                      className="h-8 w-8 sm:h-9 sm:w-10"
+                      className="h-7 w-7 min-[360px]:h-8 min-[360px]:w-8 sm:h-9 sm:w-10"
                       unoptimized
                     />
                   ) : (
@@ -366,7 +366,7 @@ export function MajorBankCreditCards() {
                   )}
                 </div>
                 <div className="min-w-0">
-                  <h3 className="text-[22px] font-bold text-[#07162d]">
+                  <h3 className="text-[17px] font-bold leading-5 text-[#07162d] min-[360px]:text-[18px] sm:text-[22px] sm:leading-7">
                     {activeBank} Credit Cards
                   </h3>
                   {/* <p className="mt-1 max-w-xl text-[13px] font-semibold leading-6 text-[#61748f]">
@@ -390,16 +390,17 @@ export function MajorBankCreditCards() {
           ) : activeCards.length ? (
             <AutoCarousel
               ariaLabel={`${activeBank} credit cards`}
-              mobileSlides={2}
+              mobileSlides={1}
               tabletSlides={2}
               desktopSlides={3}
               wideSlides={4}
+              className="credit-card-carousel"
             >
               {activeCards.map((card) => {
                 return (
                   <article
                     key={getCardId(card) || card.name}
-                    className="group flex h-full flex-col justify-between rounded-xl border border-[#e2edf8] bg-white p-3 transition-colors duration-300 hover:border-[#bcd8f4] sm:p-4"
+                    className="group flex h-full flex-col justify-between rounded-xl border border-[#e2edf8] bg-white p-3.5 transition-colors duration-300 hover:border-[#bcd8f4] min-[360px]:p-4"
                   >
                     <div>
                       <div className="relative aspect-[1.58/1] overflow-hidden rounded-2xl bg-[#0b315f]">
@@ -423,10 +424,10 @@ export function MajorBankCreditCards() {
                         ) : null}
                       </div>
 
-                      <h4 className="mt-4 text-[15px] font-bold leading-snug text-[#07162d]">
+                      <h4 className="mt-4 text-[14px] font-semibold leading-5 text-[#07162d] min-[360px]:text-[15px] min-[360px]:font-bold min-[360px]:leading-snug">
                         {card.name}
                       </h4>
-                      <p className="mt-1 line-clamp-2 min-h-10 text-[12px] font-semibold leading-5 text-[#61748f]">
+                      <p className="mt-1 line-clamp-2 min-h-10 text-[11px] font-medium leading-5 text-[#61748f] min-[360px]:text-[12px] min-[360px]:font-semibold">
                         {card.shortDescription ||
                           card.subtitle ||
                           card.welcomeBenefits}
@@ -443,10 +444,10 @@ export function MajorBankCreditCards() {
                           // ["Approval", card.processingTime || "Instant check"],
                         ].map(([label, value]) => (
                           <div key={label} className="rounded-xl bg-white">
-                            <p className="text-[10px] font-bold uppercase tracking-wide text-[#8090a4]">
+                            <p className="text-[9px] font-semibold uppercase tracking-wide text-[#8090a4] min-[360px]:text-[10px] min-[360px]:font-bold">
                               {label}
                             </p>
-                            <p className="mt-1 line-clamp-2 text-[12px] font-bold text-[#07162d]">
+                            <p className="mt-1 line-clamp-2 text-[12px] font-semibold text-[#07162d] min-[360px]:font-bold">
                               {value}
                             </p>
                           </div>
@@ -457,7 +458,7 @@ export function MajorBankCreditCards() {
                     <button
                       type="button"
                       onClick={() => handleEligibility(card)}
-                      className="card-action-button mt-5 inline-flex h-10 items-center justify-center gap-1.5 rounded-xl px-2 text-[11px] font-semibold sm:h-11 sm:gap-2 sm:px-4 sm:text-[13px]"
+                      className="card-action-button mt-5 inline-flex h-10 items-center justify-center gap-1.5 rounded-xl px-2 text-[12px] font-semibold sm:h-11 sm:gap-2 sm:px-4 sm:text-[13px]"
                     >
                       Check eligibility
                       <ArrowRight className="h-4 w-4" />

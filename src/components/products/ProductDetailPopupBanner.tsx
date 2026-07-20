@@ -68,7 +68,7 @@ export function ProductDetailPopupBanner({
     src: banner.mobileImage || banner.image,
     alt,
     width: 900,
-    height: 1050,
+    height: category === "loan" ? 1200 : 1050,
     unoptimized: true,
   });
 
@@ -83,7 +83,9 @@ export function ProductDetailPopupBanner({
         href={applyHref}
         productSlug={productSlug}
         aria-label={`Apply for ${productName}`}
-        className="relative block aspect-[6/7] w-full overflow-hidden bg-[#07162d] no-underline md:aspect-[5/2]"
+        className={`relative block w-full overflow-hidden bg-[#07162d] no-underline md:aspect-[5/2] ${
+          category === "loan" ? "aspect-[3/4]" : "aspect-[6/7]"
+        }`}
       >
         <picture className="absolute inset-0 block h-full w-full">
           <source
