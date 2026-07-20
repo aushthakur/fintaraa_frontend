@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
+import { getPageSeoMetadata } from "@/services/seoMetadata";
 import { KnowledgeListingPage } from "@/components/knowledge/KnowledgeListingPage";
 import { clientTestimonialsConfig } from "@/components/knowledge/knowledgePageConfig";
-import { getPageSeoMetadata } from "@/services/seoMetadata";
 
 const fallbackMetadata: Metadata = {
   title: "Client Testimonials",

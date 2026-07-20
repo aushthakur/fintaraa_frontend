@@ -11,6 +11,7 @@ export type KnowledgePageConfig = {
   detailLabel: string;
   primaryAction: string;
   fallbackImage: string;
+  hideListingIntro?: boolean;
 };
 
 export const pressReleaseConfig: KnowledgePageConfig = {
@@ -25,6 +26,7 @@ export const pressReleaseConfig: KnowledgePageConfig = {
   detailLabel: "Press Release",
   primaryAction: "Read Release",
   fallbackImage: "/assets/images/media1.png",
+  hideListingIntro: true,
 };
 
 export const videoTestimonialsConfig: KnowledgePageConfig = {
@@ -39,6 +41,7 @@ export const videoTestimonialsConfig: KnowledgePageConfig = {
   detailLabel: "Video Story",
   primaryAction: "Watch Story",
   fallbackImage: "/assets/images/testimonials/video-1.jpg",
+  hideListingIntro: true,
 };
 
 export const clientTestimonialsConfig: KnowledgePageConfig = {
@@ -53,6 +56,7 @@ export const clientTestimonialsConfig: KnowledgePageConfig = {
   detailLabel: "Customer Story",
   primaryAction: "Read Story",
   fallbackImage: "/assets/images/testimonials/client-1.jpg",
+  hideListingIntro: true,
 };
 
 export const knowledgePageConfigs = [

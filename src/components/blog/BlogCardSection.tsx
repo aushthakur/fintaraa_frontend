@@ -89,7 +89,7 @@ export function BlogCardSection({
   const displayPosts = posts as BlogCardPost[];
 
   return (
-    <section className="px-4 font-sans antialiased sm:px-6 md:px-8 lg:px-16">
+    <section className="px-4 pt-4 font-sans antialiased sm:px-6 md:px-8 md:pt-6 lg:px-16">
       <div className="mx-auto max-w-9xl">
         <div className="mb-7 border-b border-[#dfeaf5] pb-5 text-center sm:mb-8">
           <div>

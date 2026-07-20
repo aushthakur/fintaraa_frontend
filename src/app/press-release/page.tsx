@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { KnowledgeListingPage } from "@/components/knowledge/KnowledgeListingPage";
-import { pressReleaseConfig } from "@/components/knowledge/knowledgePageConfig";
 import { getPageSeoMetadata } from "@/services/seoMetadata";
+import { pressReleaseConfig } from "@/components/knowledge/knowledgePageConfig";
+import { KnowledgeListingPage } from "@/components/knowledge/KnowledgeListingPage";
 
 const fallbackMetadata: Metadata = {
   title: "Press Releases and Media Updates",

@@ -5,11 +5,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
-  ArrowLeft,
+  ArrowRight,
   CalendarDays,
   MapPin,
   Play,
   Quote,
+  Search,
   Star,
 } from "lucide-react";
 import type { KnowledgePageConfig } from "@/components/knowledge/knowledgePageConfig";
@@ -24,13 +25,15 @@ import {
 
 function DetailSkeleton() {
   return (
-    <main className="bg-white px-4 py-10 md:px-6 lg:px-8">
-      <div className="mx-auto max-w-7xl animate-pulse">
-        <div className="h-96 rounded-3xl bg-[#edf4fb]" />
-        <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
-          <div className="h-120 rounded-3xl bg-[#edf4fb]" />
-          <div className="h-80 rounded-3xl bg-[#edf4fb]" />
+    <main className="bg-white px-4 py-8 sm:px-6 lg:px-8">
+      <div className="mx-auto grid max-w-9xl animate-pulse gap-8 lg:grid-cols-[minmax(0,1fr)_320px]">
+        <div>
+          <div className="h-4 w-28 rounded bg-[#edf4fb]" />
+          <div className="mt-4 h-12 max-w-3xl rounded bg-[#edf4fb]" />
+          <div className="mt-4 h-16 max-w-2xl rounded bg-[#edf4fb]" />
+          <div className="mt-8 h-105 rounded-2xl bg-[#edf4fb]" />
         </div>
+        <div className="h-96 rounded-2xl bg-[#edf4fb]" />
       </div>
     </main>
   );
@@ -56,7 +59,7 @@ export function KnowledgeDetailClient({
       fetchWebsiteKnowledge({
         type: config.type,
         sectionKey: config.sectionKey,
-        limit: 6,
+        limit: 12,
       }),
     ])
       .then(([record, list]) => {
@@ -66,9 +69,7 @@ export function KnowledgeDetailClient({
           return;
         }
         setItem(record);
-        setRelated(
-          list.filter((entry) => entry.slug !== record.slug).slice(0, 4),
-        );
+        setRelated(list.filter((entry) => entry.slug !== record.slug));
       })
       .catch(() => mounted && setMissing(true))
       .finally(() => mounted && setLoading(false));
@@ -84,95 +85,92 @@ export function KnowledgeDetailClient({
   const summary = item.summary || item.excerpt || stripHtml(item.content || "");
   const isVideo = config.type === "video";
   const isTestimonial = config.type === "testimonial";
+  const authorName = item.authorName || "Fintaraa Editorial";
+  const authorRole = item.authorRole || "Fintaraa Editorial Desk";
+  const categories = Array.from(
+    new Set(
+      [item, ...related]
+        .map((entry) => entry.category || config.detailLabel)
+        .filter(Boolean),
+    ),
+  );
+  const relatedTitle =
+    config.type === "press_release"
+      ? "Related press releases"
+      : config.type === "video"
+        ? "Related video stories"
+        : "Related stories";
 
   return (
-    <main className="bg-white text-[#111625]">
-      <section className="bg-[#f8fbff] px-4 py-8 md:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <Link
-            href={config.hrefRoot}
-            className="inline-flex h-10 items-center gap-2 rounded-full border border-[#dce9f7] bg-white px-4 text-[13px] font-extrabold text-[#005ca8] no-underline"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Back to {config.title}
-          </Link>
-
-          <div className="mt-6 grid gap-8 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-end">
-            <div>
-              <p className="text-[12px] font-extrabold uppercase tracking-[0.18em] text-[#005ca8]">
+    <main className="bg-white font-sans antialiased text-[#1a1d25]">
+      <section className="mx-auto max-w-9xl px-4 py-8 sm:px-6 md:py-10 lg:px-8">
+        <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-10">
+          <div className="min-w-0 space-y-8">
+            <header className="space-y-4">
+              <span className="block text-[13px] font-bold tracking-wide text-[#005ca8]">
                 {item.category || config.detailLabel}
-              </p>
-              <h1 className="mt-3 max-w-4xl text-[32px] font-extrabold tracking-tight text-[#07162d] md:text-[48px]">
+              </span>
+              <h1 className="max-w-4xl text-[32px] font-extrabold leading-[1.15] tracking-tight text-black md:text-[42px]">
                 {item.title}
               </h1>
-              <p className="mt-4 max-w-3xl text-[15px] font-semibold leading-7 text-[#667085]">
+              <p className="max-w-3xl text-[15px] font-medium leading-relaxed text-[#7a869a]">
                 {summary}
               </p>
-              <div className="mt-5 flex flex-wrap gap-4 text-[12px] font-bold text-[#667085]">
-                <span className="inline-flex items-center gap-2">
-                  <CalendarDays className="h-4 w-4 text-[#005ca8]" />
+
+              <div className="flex flex-wrap items-center gap-x-5 gap-y-3 border-b border-[#f0f4f8] pb-5 pt-3 text-[12px] font-medium text-[#94a2b3]">
+                <div className="flex items-center gap-2.5 text-black">
+                  <div className="relative h-8 w-8 overflow-hidden rounded-full bg-[#eef6ff]">
+                    <Image
+                      src={item.authorAvatarUrl || "/assets/images/user1.png"}
+                      alt={authorName}
+                      fill
+                      unoptimized
+                      sizes="32px"
+                      className="object-cover"
+                    />
+                  </div>
+                  <div>
+                    <p className="font-bold">{authorName}</p>
+                    <p className="text-[10px] font-medium text-[#94a2b3]">
+                      {authorRole}
+                    </p>
+                  </div>
+                </div>
+                <span className="hidden sm:inline">|</span>
+                {item.readTime ? <span>{item.readTime}</span> : null}
+                <span className="inline-flex items-center gap-1.5">
+                  <CalendarDays className="h-3.5 w-3.5" />
                   {formatKnowledgeDate(item.publishedAt)}
                 </span>
                 {item.location ? (
-                  <span className="inline-flex items-center gap-2">
-                    <MapPin className="h-4 w-4 text-[#005ca8]" />
+                  <span className="inline-flex items-center gap-1.5">
+                    <MapPin className="h-3.5 w-3.5" />
                     {item.location}
                   </span>
                 ) : null}
-                {item.readTime ? <span>{item.readTime}</span> : null}
+                {isVideo || isTestimonial ? (
+                  <span className="inline-flex gap-0.5 text-[#f97316]">
+                    {Array.from({ length: Number(item.rating || 5) }).map(
+                      (_, index) => (
+                        <Star key={index} className="h-3.5 w-3.5 fill-current" />
+                      ),
+                    )}
+                  </span>
+                ) : null}
               </div>
-            </div>
+            </header>
 
-            <div className="rounded-3xl border border-[#dce9f7] bg-white p-5 shadow-[0_14px_38px_rgba(16,24,40,0.05)]">
-              <p className="text-[12px] font-extrabold uppercase tracking-[0.16em] text-[#98a2b3]">
-                Published by
-              </p>
-              <div className="mt-4 flex items-center gap-3">
-                <div className="relative h-13 w-13 overflow-hidden rounded-full bg-[#eef6ff]">
-                  <Image
-                    src={item.authorAvatarUrl || config.fallbackImage}
-                    alt={item.authorName || item.title}
-                    fill
-                    unoptimized
-                    className="object-cover"
-                  />
-                </div>
-                <div>
-                  <p className="text-[14px] font-extrabold text-[#07162d]">
-                    {item.authorName || "Fintaraa Editorial"}
-                  </p>
-                  <p className="text-[12px] font-semibold text-[#667085]">
-                    {item.authorRole || "Fintaraa Desk"}
-                  </p>
-                </div>
-              </div>
-              {isVideo || isTestimonial ? (
-                <div className="mt-5 flex gap-1 text-[#f97316]">
-                  {Array.from({ length: Number(item.rating || 5) }).map(
-                    (_, index) => (
-                      <Star key={index} className="h-4 w-4 fill-current" />
-                    ),
-                  )}
-                </div>
-              ) : null}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="px-4 py-8 md:px-6 lg:px-8">
-        <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[minmax(0,1fr)_320px]">
-          <div className="min-w-0">
-            <div className="relative overflow-hidden rounded-3xl border border-[#e2edf6] bg-[#07162d]">
+            <div className="relative overflow-hidden rounded-2xl bg-[#eef4f8]">
               {isVideo && item.videoUrl ? (
                 <video
                   src={item.videoUrl}
                   controls
+                  playsInline
                   poster={item.coverImageUrl || config.fallbackImage}
                   className="aspect-video w-full bg-black object-contain"
                 />
               ) : (
-                <div className="relative h-78 md:h-110">
+                <div className="relative h-60 sm:h-80 lg:h-105">
                   <Image
                     src={
                       item.coverImageUrl ||
@@ -182,44 +180,47 @@ export function KnowledgeDetailClient({
                     alt={item.title}
                     fill
                     unoptimized
+                    sizes="(max-width: 1023px) 100vw, 900px"
                     className="object-cover"
                     priority
                   />
+                  {isVideo && !item.videoUrl ? (
+                    <div className="absolute inset-0 flex items-center justify-center bg-[#07162d]/28 text-white">
+                      <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white/22 ring-1 ring-white/55 backdrop-blur-sm">
+                        <Play className="ml-0.5 h-6 w-6 fill-current" />
+                      </span>
+                    </div>
+                  ) : null}
                   {isTestimonial ? (
-                    <div className="absolute inset-0 flex items-center justify-center bg-[#07162d]/35">
-                      <Quote className="h-16 w-16 text-white/80" />
+                    <div className="absolute inset-0 flex items-center justify-center bg-[#07162d]/25">
+                      <Quote className="h-14 w-14 text-white/85" />
                     </div>
                   ) : null}
                 </div>
               )}
-              {isVideo && !item.videoUrl ? (
-                <div className="absolute inset-0 flex items-center justify-center text-white">
-                  <Play className="h-12 w-12" />
-                </div>
-              ) : null}
             </div>
 
             <article
-              className="prose prose-slate mt-8 max-w-none prose-headings:font-extrabold prose-headings:text-[#07162d] prose-p:text-[15px] prose-p:font-semibold prose-p:leading-8 prose-p:text-[#536273] prose-li:text-[#536273]"
+              className="prose prose-slate max-w-none prose-headings:font-extrabold prose-headings:text-black prose-p:text-[15px] prose-p:font-medium prose-p:leading-8 prose-p:text-[#4a5568] prose-li:text-[#4a5568]"
               dangerouslySetInnerHTML={{
                 __html: sanitizeRichText(item.content || `<p>${summary}</p>`),
               }}
             />
           </div>
 
-          <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
-            <div className="rounded-3xl border border-[#dce9f7] bg-[#f8fbff] p-5">
-              <h2 className="text-[17px] font-extrabold text-[#07162d]">
-                More {config.listingTitle}
+          <aside className="space-y-5 lg:sticky lg:top-24 lg:self-start">
+            <section className="rounded-2xl border border-[#dce9f7] bg-[#eef6ff] p-5">
+              <h2 className="text-[16px] font-extrabold tracking-tight text-[#111625]">
+                {relatedTitle}
               </h2>
               <div className="mt-4 space-y-3">
-                {related.map((entry) => (
+                {related.slice(0, 4).map((entry) => (
                   <Link
                     key={entry.slug}
                     href={`${config.hrefRoot}/${entry.slug}`}
-                    className="flex gap-3 rounded-2xl border border-[#e2edf6] bg-white p-3 text-[#07162d] no-underline transition hover:border-[#005ca8]"
+                    className="flex items-center gap-3 rounded-xl border border-[#dce9f7] bg-white p-2 text-[#111625] no-underline transition hover:border-[#b7cbe0]"
                   >
-                    <div className="relative h-16 w-20 shrink-0 overflow-hidden rounded-xl bg-[#eef6ff]">
+                    <div className="relative h-14 w-20 shrink-0 overflow-hidden rounded-lg bg-gray-50">
                       <Image
                         src={
                           entry.coverImageUrl ||
@@ -229,21 +230,62 @@ export function KnowledgeDetailClient({
                         alt={entry.title}
                         fill
                         unoptimized
+                        sizes="80px"
                         className="object-cover"
                       />
                     </div>
                     <div className="min-w-0">
-                      <p className="line-clamp-2 text-[12px] font-extrabold leading-5">
+                      <h3 className="line-clamp-2 text-[12px] font-bold leading-4">
                         {entry.title}
-                      </p>
-                      <p className="mt-1 text-[10px] font-bold text-[#98a2b3]">
+                      </h3>
+                      <span className="mt-1 block text-[10px] font-medium text-[#94a2b3]">
                         {formatKnowledgeDate(entry.publishedAt)}
-                      </p>
+                      </span>
                     </div>
                   </Link>
                 ))}
               </div>
-            </div>
+            </section>
+
+            <section className="rounded-2xl border border-[#dce9f7] bg-white p-5">
+              <h2 className="text-[15px] font-extrabold text-[#111625]">
+                Search
+              </h2>
+              <form action={config.hrefRoot} className="relative mt-3">
+                <Search
+                  className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[#718397]"
+                  aria-hidden="true"
+                />
+                <input
+                  type="search"
+                  name="q"
+                  aria-label={`Search ${config.listingTitle}`}
+                  placeholder="Search stories"
+                  className="h-11 w-full rounded-xl border border-[#dce7ef] bg-[#f8fbfd] pl-10 pr-3 text-[12px] font-semibold text-[#17354d] outline-none transition placeholder:text-[#98a6b3] focus:border-[#075cde] focus:bg-white"
+                />
+              </form>
+            </section>
+
+            <section className="rounded-2xl border border-[#dce9f7] bg-white p-5">
+              <h2 className="text-[15px] font-extrabold text-[#111625]">
+                Categories
+              </h2>
+              <nav
+                aria-label={`${config.detailLabel} categories`}
+                className="mt-3 grid gap-1.5"
+              >
+                {categories.map((category) => (
+                  <Link
+                    key={category}
+                    href={`${config.hrefRoot}?category=${encodeURIComponent(category)}`}
+                    className="group flex items-center justify-between gap-3 rounded-xl px-3 py-2.5 text-[12px] font-bold text-[#526b80] no-underline transition hover:bg-[#eef6ff] hover:text-[#075cde]"
+                  >
+                    <span>{category}</span>
+                    <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-0.5" />
+                  </Link>
+                ))}
+              </nav>
+            </section>
           </aside>
         </div>
       </section>
