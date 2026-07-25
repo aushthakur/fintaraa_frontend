@@ -56,34 +56,43 @@ const notCoveredItems = [
   },
 ];
 
-export function InsuranceCoverageExplanation({ tab }: { tab?: InsuranceSeoTab }) {
+export function InsuranceCoverageExplanation({
+  tab,
+  embedded = false,
+}: {
+  tab?: InsuranceSeoTab;
+  embedded?: boolean;
+}) {
   const covered = tab?.covered?.length
-    ? tab.covered.map((item) => ({ title: item, description: tab.description || "" }))
+    ? tab.covered.map((item) => ({ title: item, description: "" }))
     : coveredItems;
   const notCovered = tab?.notCovered?.length
-    ? tab.notCovered.map((item) => ({ title: item, description: tab.description || "" }))
+    ? tab.notCovered.map((item) => ({ title: item, description: "" }))
     : notCoveredItems;
 
   return (
-    <section className="w-full max-w-9xl mx-auto bg-white px-4 py-12 antialiased text-[#111827] md:px-6">
-      
-      {/* SECTION TITLE */}
-      <div className="text-center mb-10">
-        <h2 className="text-[32px] font-bold tracking-tight text-[#212529]">
-          {tab?.title || "Understanding your coverage"}
-        </h2>
-        {tab?.description ? (
-          <p className="mx-auto mt-3 max-w-3xl text-[14px] font-semibold leading-7 text-[#667085]">
-            {tab.description}
-          </p>
-        ) : null}
-      </div>
+    <section
+      className={
+        embedded
+          ? "antialiased text-[#111827]"
+          : "mx-auto w-full max-w-9xl bg-white px-4 py-12 antialiased text-[#111827] md:px-6"
+      }
+    >
+      {!embedded ? (
+        <div className="mb-10 text-center">
+          <h2 className="text-[32px] font-bold tracking-tight text-[#212529]">
+            {tab?.title || "Understanding your coverage"}
+          </h2>
+          {tab?.description ? (
+            <p className="mx-auto mt-3 max-w-3xl text-[14px] font-semibold leading-7 text-[#667085]">
+              {tab.description}
+            </p>
+          ) : null}
+        </div>
+      ) : null}
 
-      {/* TWO COLUMN GRID SIDE-BY-SIDE PANELS */}
-      <div className="grid gap-8 md:grid-cols-2 items-stretch">
-        
-        {/* LEFT CARD: WHAT'S COVERED */}
-        <div className="bg-white rounded-xl border border-gray-100 p-8 shadow-xs space-y-6">
+      <div className="grid items-stretch gap-4 md:grid-cols-2">
+        <div className="space-y-6 rounded-2xl border border-[#dfe8ef] bg-white p-5 sm:p-6">
           <h3 className="text-lg font-bold text-gray-900 tracking-tight border-b border-gray-50 pb-2">
             What&apos;s Covered
           </h3>
@@ -94,16 +103,17 @@ export function InsuranceCoverageExplanation({ tab }: { tab?: InsuranceSeoTab })
                 <h4 className="text-[15px] font-bold text-gray-800 tracking-tight">
                   {item.title}
                 </h4>
-                <p className="text-xs font-medium text-gray-400 leading-relaxed">
-                  {item.description}
-                </p>
+                {item.description ? (
+                  <p className="text-xs font-medium leading-relaxed text-gray-400">
+                    {item.description}
+                  </p>
+                ) : null}
               </div>
             ))}
           </div>
         </div>
 
-        {/* RIGHT CARD: WHAT'S NOT COVERED */}
-        <div className="bg-[#fcfcfc] rounded-xl border border-gray-100/70 p-8 shadow-xs space-y-6">
+        <div className="space-y-6 rounded-2xl border border-[#dfe8ef] bg-[#fbfdff] p-5 sm:p-6">
           <h3 className="text-lg font-bold text-gray-900 tracking-tight border-b border-gray-50 pb-2">
             What&apos;s Not Covered
           </h3>
@@ -114,14 +124,15 @@ export function InsuranceCoverageExplanation({ tab }: { tab?: InsuranceSeoTab })
                 <h4 className="text-[15px] font-bold text-gray-800 tracking-tight">
                   {item.title}
                 </h4>
-                <p className="text-xs font-medium text-gray-400 leading-relaxed">
-                  {item.description}
-                </p>
+                {item.description ? (
+                  <p className="text-xs font-medium leading-relaxed text-gray-400">
+                    {item.description}
+                  </p>
+                ) : null}
               </div>
             ))}
           </div>
         </div>
-
       </div>
     </section>
   );

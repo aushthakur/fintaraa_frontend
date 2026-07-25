@@ -588,6 +588,11 @@ const normalizePartnerNavProfile = (
 
 export default function Navbar() {
   const pathname = usePathname();
+  const hydrated = useSyncExternalStore(
+    subscribeToClient,
+    getClientSnapshot,
+    getServerSnapshot,
+  );
   const { loans, insurance } = useProductCatalog();
   const navItems = useMemo(
     () => createNavItems(loans, insurance),
@@ -595,6 +600,10 @@ export default function Navbar() {
   );
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileOpenLabel, setMobileOpenLabel] = useState<string | null>(null);
+  const closeMobileNavigation = () => {
+    setMenuOpen(false);
+    setMobileOpenLabel(null);
+  };
   const [partnerProfile, setPartnerProfile] =
     useState<NavbarAuthProfile | null>(null);
   const headerRef = useRef<HTMLElement | null>(null);
@@ -753,8 +762,19 @@ export default function Navbar() {
         </div>
       </div>
 
-      <nav className="mobile-site-nav mx-auto flex h-15 w-full max-w-9xl items-center justify-between gap-1 px-3 min-[360px]:h-16 min-[360px]:gap-2 min-[360px]:px-4 md:h-18 md:px-6 xl:px-6 2xl:px-8">
-        <Link href="/" aria-label="Fintaraa home" className="shrink-0">
+      <nav
+        aria-busy={!hydrated}
+        data-hydrated={hydrated ? "true" : "false"}
+        className={`mobile-site-nav mx-auto flex h-15 w-full max-w-9xl items-center justify-between gap-1 px-3 min-[360px]:h-16 min-[360px]:gap-2 min-[360px]:px-4 md:h-18 md:px-6 xl:px-6 2xl:px-8 ${
+          hydrated ? "" : "pointer-events-none"
+        }`}
+      >
+        <Link
+          href="/"
+          aria-label="Fintaraa home"
+          onClick={closeMobileNavigation}
+          className="shrink-0"
+        >
           <Image
             priority
             width={134}
@@ -768,7 +788,7 @@ export default function Navbar() {
         <div className="hidden min-w-0 flex-1 items-center justify-center gap-2 xl:flex min-[1380px]:gap-4 2xl:gap-6">
           {navItems.map((item, index) => (
             <DesktopNavItem
-              key={item.label}
+              key={`${item.label}:${pathname}`}
               align={index >= navItems.length - 2 ? "right" : "left"}
               item={item}
               pathname={pathname}
@@ -808,7 +828,7 @@ export default function Navbar() {
         </div>
 
         <div className="ml-auto flex items-center gap-0.5 min-[360px]:gap-1 xl:hidden">
-          <NavbarSearch compact onOpen={() => setMenuOpen(false)} />
+          <NavbarSearch compact onOpen={closeMobileNavigation} />
           <Link
             href={
               loggedIn
@@ -818,6 +838,7 @@ export default function Navbar() {
                   })
             }
             aria-label="Notifications"
+            onClick={closeMobileNavigation}
             className="relative inline-flex h-9 w-9 shrink-0 items-center justify-center text-[#344054] no-underline transition active:bg-[#eaf2fb] active:text-[#075cde] min-[360px]:h-10 min-[360px]:w-10"
           >
             <Bell className="h-4 w-4" aria-hidden="true" />
@@ -830,6 +851,7 @@ export default function Navbar() {
           <Link
             href={loggedIn ? profileHref : "/login"}
             aria-label={loggedIn ? "Open account" : "Login"}
+            onClick={closeMobileNavigation}
             className="inline-flex h-9 shrink-0 items-center justify-center gap-1 rounded-md border border-[#075cde] px-1.5 text-[10px] font-bold text-[#075cde] no-underline transition active:bg-[#eef5ff] min-[360px]:h-10 min-[360px]:px-2 min-[360px]:text-[11px]"
           >
             <UserRound className="h-4 w-4 shrink-0" aria-hidden="true" />
@@ -841,8 +863,11 @@ export default function Navbar() {
             aria-expanded={menuOpen}
             className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#f4f7fb] text-[#101828] transition active:bg-[#eaf2fb] min-[360px]:h-10 min-[360px]:w-10"
             onClick={() => {
-              if (menuOpen) setMobileOpenLabel(null);
-              setMenuOpen((open) => !open);
+              if (menuOpen) {
+                closeMobileNavigation();
+              } else {
+                setMenuOpen(true);
+              }
             }}
           >
             {menuOpen ? (
@@ -905,7 +930,7 @@ export default function Navbar() {
                   ) : (
                     <Link
                       href={item.href}
-                      onClick={() => setMenuOpen(false)}
+                      onClick={closeMobileNavigation}
                       className="flex min-h-11 items-center justify-between px-3 py-2.5 text-[13px] font-bold text-[#17354d] no-underline transition active:bg-[#f4f8fc] active:text-[#075cde] min-[380px]:px-3.5"
                     >
                       {item.label}
@@ -919,7 +944,7 @@ export default function Navbar() {
                     >
                       <Link
                         href={item.href}
-                        onClick={() => setMenuOpen(false)}
+                        onClick={closeMobileNavigation}
                         className="flex min-h-10 w-full items-center justify-between rounded-lg bg-[linear-gradient(135deg,#195585,#0878c9)] px-3 text-[12px] font-bold text-white no-underline shadow-[0_8px_20px_rgba(25,85,133,0.16)]"
                       >
                         Explore all {item.label}
@@ -939,7 +964,7 @@ export default function Navbar() {
                                 <Link
                                   key={`${item.label}-${link.href}-${link.label}`}
                                   href={link.href}
-                                  onClick={() => setMenuOpen(false)}
+                                  onClick={closeMobileNavigation}
                                   className="flex min-h-9 min-w-0 flex-col justify-center rounded-lg px-2.5 py-1.5 text-[12px] font-semibold leading-4 text-[#526b80] no-underline transition active:bg-[#edf6ff] active:text-[#075cde]"
                                 >
                                   <span>{link.label}</span>
@@ -967,7 +992,7 @@ export default function Navbar() {
                 href={profileHref}
                 accountType={accountType}
                 mobile
-                onClick={() => setMenuOpen(false)}
+                onClick={closeMobileNavigation}
               />
             </div>
           </div>
@@ -1404,6 +1429,8 @@ function DesktopNavItem({
   item: NavItem;
   pathname: string;
 }) {
+  const [open, setOpen] = useState(false);
+  const closeDropdown = () => setOpen(false);
   const active = (() => {
     // Loans and Insurance both use href="/products" — differentiate by product type
     if (hrefPath(item.href) === "/products") {
@@ -1428,9 +1455,33 @@ function DesktopNavItem({
 
   if (item.sections?.length) {
     return (
-      <div className="group relative">
+      <div
+        className="relative"
+        onMouseEnter={() => setOpen(true)}
+        onMouseLeave={closeDropdown}
+        onFocusCapture={() => setOpen(true)}
+        onBlurCapture={(event) => {
+          if (
+            !event.currentTarget.contains(event.relatedTarget as Node | null)
+          ) {
+            closeDropdown();
+          }
+        }}
+        onKeyDown={(event) => {
+          if (event.key === "Escape") {
+            closeDropdown();
+            event.currentTarget
+              .querySelector<HTMLElement>("[data-nav-trigger]")
+              ?.focus();
+          }
+        }}
+      >
         <Link
           href={item.href}
+          data-nav-trigger
+          aria-haspopup="menu"
+          aria-expanded={open}
+          onClick={closeDropdown}
           className={`${underlineClass} flex items-center gap-1 whitespace-nowrap text-[12px] font-semibold no-underline transition min-[1380px]:text-[14px] 2xl:text-[15px] ${
             active
               ? "text-[#195585] after:scale-x-100"
@@ -1438,9 +1489,18 @@ function DesktopNavItem({
           }`}
         >
           {item.label}
-          <ChevronDown className="h-3.5 w-3.5 transition group-hover:rotate-180" />
+          <ChevronDown
+            className={`h-3.5 w-3.5 transition ${
+              open ? "rotate-180" : ""
+            }`}
+          />
         </Link>
-        <MegaDropdown align={align} item={item} />
+        <MegaDropdown
+          align={align}
+          item={item}
+          open={open}
+          onNavigate={closeDropdown}
+        />
       </div>
     );
   }
@@ -1462,9 +1522,13 @@ function DesktopNavItem({
 function MegaDropdown({
   align,
   item,
+  open,
+  onNavigate,
 }: {
   align: "left" | "right";
   item: NavItem;
+  open: boolean;
+  onNavigate: () => void;
 }) {
   const sections = item.sections || [];
   const totalLinks = sections.reduce(
@@ -1472,7 +1536,16 @@ function MegaDropdown({
     0,
   );
   const compact = sections.length <= 1 && totalLinks <= 4;
-  if (compact) return <CompactDropdown align={align} item={item} />;
+  if (compact) {
+    return (
+      <CompactDropdown
+        align={align}
+        item={item}
+        open={open}
+        onNavigate={onNavigate}
+      />
+    );
+  }
 
   const hideDescriptions = item.label === "Loans" || item.label === "Insurance";
   const dropdownMaxWidthClass =
@@ -1492,7 +1565,14 @@ function MegaDropdown({
 
   return (
     <div
-      className={`pointer-events-none fixed left-1/2 top-[calc(var(--site-header-height,6.5rem)-2.5rem)] z-50 w-[calc(100vw-2rem)] -translate-x-1/2 translate-y-1 pt-10 opacity-0 transition duration-200 ${dropdownMaxWidthClass} group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:translate-y-0 group-focus-within:opacity-100`}
+      data-nav-dropdown={item.label}
+      data-state={open ? "open" : "closed"}
+      aria-hidden={!open}
+      className={`fixed left-1/2 top-[calc(var(--site-header-height,6.5rem)-2.5rem)] z-50 w-[calc(100vw-2rem)] -translate-x-1/2 pt-10 transition duration-200 ${dropdownMaxWidthClass} ${
+        open
+          ? "pointer-events-auto translate-y-0 opacity-100"
+          : "pointer-events-none translate-y-1 opacity-0"
+      }`}
     >
       <div className="overflow-hidden rounded-xl border border-[#d9e9f6] bg-white shadow-[0_24px_60px_rgba(7,22,45,0.18)]">
         <div className={`grid gap-0 ${columnCount}`}>
@@ -1509,6 +1589,7 @@ function MegaDropdown({
             </p>
             <Link
               href={item.href}
+              onClick={onNavigate}
               className="mt-6 inline-flex h-10 whitespace-nowrap items-center gap-2 rounded-full bg-white px-4 text-[13px] font-semibold text-[#195585] no-underline"
             >
               Explore
@@ -1534,6 +1615,7 @@ function MegaDropdown({
                   <Link
                     key={`${section.title}-${link.href}-${link.label}`}
                     href={link.href}
+                    onClick={onNavigate}
                     className={`group/item relative block rounded-lg px-2 text-[#07162d] no-underline transition after:absolute after:bottom-0 after:left-2 after:right-2 after:h-0.5 after:origin-left after:scale-x-0 after:bg-[#195585] after:transition-transform after:duration-300 after:ease-out hover:after:scale-x-100 ${
                       hideDescriptions ? "py-1.5" : "py-2"
                     }`}
@@ -1561,9 +1643,13 @@ function MegaDropdown({
 
 function CompactDropdown({
   item,
+  open,
+  onNavigate,
 }: {
   align: "left" | "right";
   item: NavItem;
+  open: boolean;
+  onNavigate: () => void;
 }) {
   const section = item.sections?.[0];
   const hideDescriptions = item.label === "Loans" || item.label === "Insurance";
@@ -1572,7 +1658,14 @@ function CompactDropdown({
 
   return (
     <div
-      className="pointer-events-none fixed left-1/2 top-[calc(var(--site-header-height,6.5rem)-2.5rem)] z-50 w-[calc(100vw-2rem)] max-w-96 -translate-x-1/2 translate-y-1 pt-10 opacity-0 transition duration-200 group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:translate-y-0 group-focus-within:opacity-100"
+      data-nav-dropdown={item.label}
+      data-state={open ? "open" : "closed"}
+      aria-hidden={!open}
+      className={`fixed left-1/2 top-[calc(var(--site-header-height,6.5rem)-2.5rem)] z-50 w-[calc(100vw-2rem)] max-w-96 -translate-x-1/2 pt-10 transition duration-200 ${
+        open
+          ? "pointer-events-auto translate-y-0 opacity-100"
+          : "pointer-events-none translate-y-1 opacity-0"
+      }`}
     >
       <div className="rounded-xl border border-[#d9e9f6] bg-white p-3 shadow-[0_24px_60px_rgba(7,22,45,0.18)]">
         <div className="grid gap-1">
@@ -1580,6 +1673,7 @@ function CompactDropdown({
             <Link
               key={`${section.title}-${link.href}-${link.label}`}
               href={link.href}
+              onClick={onNavigate}
               className={`group/item relative block rounded-lg px-2 text-[#07162d] no-underline transition after:absolute after:bottom-0 after:left-2 after:right-2 after:h-0.5 after:origin-left after:scale-x-0 after:bg-[#195585] after:transition-transform after:duration-300 after:ease-out hover:after:scale-x-100 ${
                 hideDescriptions ? "py-1.5" : "py-2"
               }`}

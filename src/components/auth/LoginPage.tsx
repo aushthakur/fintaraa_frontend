@@ -33,6 +33,8 @@ export function LoginPage({ redirectParam }: { redirectParam?: string } = {}) {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState<AuthStep>("phone");
+  const [otpExpiresIn, setOtpExpiresIn] = useState(0);
+  const [resendIn, setResendIn] = useState(0);
   const [consentCibil, setConsentCibil] = useState(false);
   const [acceptPolicies, setAcceptPolicies] = useState(false);
   const [accountExisted, setAccountExisted] = useState<boolean | null>(null);
@@ -58,6 +60,15 @@ export function LoginPage({ redirectParam }: { redirectParam?: string } = {}) {
     }
   }, [postLoginTarget, router]);
 
+  useEffect(() => {
+    if (step !== "otp" || (otpExpiresIn <= 0 && resendIn <= 0)) return;
+    const timer = window.setInterval(() => {
+      setOtpExpiresIn((value) => Math.max(value - 1, 0));
+      setResendIn((value) => Math.max(value - 1, 0));
+    }, 1000);
+    return () => window.clearInterval(timer);
+  }, [otpExpiresIn, resendIn, step]);
+
   const requestOtp = async (event: FormEvent) => {
     event.preventDefault();
     setMessage("");
@@ -73,6 +84,8 @@ export function LoginPage({ redirectParam }: { redirectParam?: string } = {}) {
         typeof response?.existed === "boolean" ? response.existed : null,
       );
       setStep("otp");
+      setOtpExpiresIn(5 * 60);
+      setResendIn(30);
       setMessage("OTP sent to your mobile number.");
     } catch (error) {
       setMessage((error as Error).message || "Unable to send OTP.");
@@ -278,6 +291,18 @@ export function LoginPage({ redirectParam }: { redirectParam?: string } = {}) {
                   inputMode="numeric"
                   onChange={(value) => update("otp", value)}
                 />
+                <div className="flex items-center justify-between rounded-xl bg-[#f4f8fc] px-4 py-3 text-[13px] font-bold">
+                  <span className="text-[#667085]">OTP validity</span>
+                  <span
+                    className={
+                      otpExpiresIn > 0 ? "text-[#087443]" : "text-[#b42318]"
+                    }
+                  >
+                    {otpExpiresIn > 0
+                      ? `${String(Math.floor(otpExpiresIn / 60)).padStart(2, "0")}:${String(otpExpiresIn % 60).padStart(2, "0")}`
+                      : "Expired"}
+                  </span>
+                </div>
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <button
                     type="button"
@@ -289,17 +314,25 @@ export function LoginPage({ redirectParam }: { redirectParam?: string } = {}) {
                   <button
                     type="button"
                     onClick={async () => {
+                      if (resendIn > 0) return;
                       setLoading(true);
                       try {
                         await sendOtp(digits);
+                        setOtpExpiresIn(5 * 60);
+                        setResendIn(30);
                         setMessage("OTP resent successfully.");
+                      } catch (error) {
+                        setMessage(
+                          (error as Error).message || "Unable to resend OTP.",
+                        );
                       } finally {
                         setLoading(false);
                       }
                     }}
-                    className="text-[13px] font-extrabold text-[#195585]"
+                    disabled={resendIn > 0 || loading}
+                    className="text-[13px] font-extrabold text-[#195585] disabled:cursor-not-allowed disabled:text-[#98a2b3]"
                   >
-                    Resend OTP
+                    {resendIn > 0 ? `Resend in ${resendIn}s` : "Resend OTP"}
                   </button>
                 </div>
                 <SubmitBlock

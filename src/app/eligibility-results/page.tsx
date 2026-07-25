@@ -9,6 +9,7 @@ import {
   Building2,
   ShieldCheck,
   CheckCircle2,
+  ChevronDown,
   SlidersHorizontal,
 } from "lucide-react";
 import { slugifyProduct } from "@/lib/productRouting";
@@ -57,14 +58,20 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Eligibility Results | Fintaraa",
   description:
-    "Search eligible banks by loan type, amount, CIBIL score, tenure, and salary profile.",
+    "Review indicative matches from active Fintaraa lending partners by loan type, amount, CIBIL score, tenure, and income profile.",
 };
 
 const firstValue = (value: string | string[] | undefined) =>
   Array.isArray(value) ? value[0] || "" : value || "";
 
 const formatCurrency = (value?: number | null) => {
-  if (!value) return "-";
+  if (
+    value === null ||
+    value === undefined ||
+    !Number.isFinite(Number(value))
+  ) {
+    return "-";
+  }
   return `Rs ${new Intl.NumberFormat("en-IN", {
     maximumFractionDigits: 0,
   }).format(value)}`;
@@ -75,6 +82,30 @@ const formatPercent = (value?: number | null) => {
     return "-";
   }
   return `${Number(value).toFixed(Number(value) % 1 === 0 ? 0 : 2)}%`;
+};
+
+const formatFee = (result: EligibilityCriteriaResult) => {
+  if (
+    result.processingFees === null ||
+    result.processingFees === undefined
+  ) {
+    return "-";
+  }
+  return result.processingFeesType === "fixed"
+    ? formatCurrency(result.processingFees)
+    : formatPercent(result.processingFees);
+};
+
+const estimateMonthlyEmi = (
+  principal: number,
+  annualRate?: number | null,
+  tenureYears?: number | null,
+) => {
+  if (!principal || !annualRate || !tenureYears) return null;
+  const months = Math.max(1, Math.round(tenureYears * 12));
+  const monthlyRate = annualRate / 1200;
+  const growth = Math.pow(1 + monthlyRate, months);
+  return Math.round((principal * monthlyRate * growth) / (growth - 1));
 };
 
 const resolveBank = (bankName: string) => {
@@ -107,18 +138,39 @@ const ResultStatus = ({ result }: { result: EligibilityCriteriaResult }) =>
   result.eligible ? (
     <span className="inline-flex items-center gap-1.5 rounded-full bg-[#eafaf1] px-3 py-1 text-[12px] font-extrabold text-[#168447]">
       <CheckCircle2 className="h-3.5 w-3.5" />
-      Eligible
+      Indicative match
     </span>
   ) : (
     <span className="inline-flex items-center gap-1.5 rounded-full bg-[#fff7ed] px-3 py-1 text-[12px] font-extrabold text-[#b45309]">
       <AlertTriangle className="h-3.5 w-3.5" />
-      Review terms
+      Needs lender review
     </span>
   );
 
-const ResultCard = ({ result }: { result: EligibilityCriteriaResult }) => {
+const ResultCard = ({
+  result,
+  requestedAmount,
+  requestedTenureYears,
+}: {
+  result: EligibilityCriteriaResult;
+  requestedAmount: number;
+  requestedTenureYears: number;
+}) => {
   const bankInfo = resolveBank(result.bankName);
   const loanSlug = loanTypeToSlug(result.loanType);
+  const indicativeAmount = Math.min(
+    requestedAmount,
+    result.maximumLoanAmount || requestedAmount,
+  );
+  const indicativeTenure = Math.min(
+    requestedTenureYears,
+    result.maxTenureYears || requestedTenureYears,
+  );
+  const estimatedEmi = estimateMonthlyEmi(
+    indicativeAmount,
+    result.roi,
+    indicativeTenure,
+  );
 
   return (
     <article className="overflow-hidden rounded-2xl bg-[#f8fbff] p-4">
@@ -147,17 +199,29 @@ const ResultCard = ({ result }: { result: EligibilityCriteriaResult }) => {
           <ResultStatus result={result} />
         </span>
       </div>
-      <dl className="mt-4 grid grid-cols-2 gap-3 text-[13px]">
+      <dl className="mt-4 grid grid-cols-2 gap-x-3 gap-y-3 text-[13px]">
         <div>
-          <dt className="font-bold text-[#7a8699]">ROI</dt>
+          <dt className="font-bold text-[#7a8699]">Interest rate</dt>
           <dd className="mt-1 font-extrabold text-[#07162d]">
             {formatPercent(result.roi)} p.a.
           </dd>
         </div>
         <div>
-          <dt className="font-bold text-[#7a8699]">Max loan</dt>
+          <dt className="font-bold text-[#7a8699]">Indicative amount</dt>
           <dd className="mt-1 font-extrabold text-[#07162d]">
-            {formatCurrency(result.maximumLoanAmount)}
+            {formatCurrency(indicativeAmount)}
+          </dd>
+        </div>
+        <div>
+          <dt className="font-bold text-[#7a8699]">Estimated EMI</dt>
+          <dd className="mt-1 font-extrabold text-[#07162d]">
+            {estimatedEmi ? `${formatCurrency(estimatedEmi)}/mo` : "-"}
+          </dd>
+        </div>
+        <div>
+          <dt className="font-bold text-[#7a8699]">Tenure & fee</dt>
+          <dd className="mt-1 font-extrabold text-[#07162d]">
+            {indicativeTenure || "-"} years · {formatFee(result)}
           </dd>
         </div>
       </dl>
@@ -176,10 +240,14 @@ const ResultCardsSection = ({
   title,
   results,
   sectionKey,
+  requestedAmount,
+  requestedTenureYears,
 }: {
   title: string;
   results: EligibilityCriteriaResult[];
   sectionKey: string;
+  requestedAmount: number;
+  requestedTenureYears: number;
 }) =>
   results.length > 0 ? (
     <section className="px-4 pt-3 pb-4 md:px-6 lg:px-8">
@@ -193,6 +261,8 @@ const ResultCardsSection = ({
             <ResultCard
               key={`${sectionKey}-${result._id}-${index}`}
               result={result}
+              requestedAmount={requestedAmount}
+              requestedTenureYears={requestedTenureYears}
             />
           ))}
         </div>
@@ -247,15 +317,17 @@ export default async function EligibilityResultsPage({
   const resolvedLoanType = data.filters.loanType || loanType;
   const loanLabel = loanTypeToLabel(resolvedLoanType);
   const visibleLoanTypeOptions = getLoanTypeOptions(resolvedLoanType);
+  const numericAmount = Number(amount) || 0;
+  const numericTenureYears = Number(tenureYears) || 0;
   const summaryItems = [
     {
       icon: Building2,
-      label: "Banks found",
+      label: "Partner options",
       value: String(data.total || 0),
     },
     {
       icon: ShieldCheck,
-      label: "Eligible now",
+      label: "Indicative matches",
       value: String(data.eligibleCount || 0),
     },
     {
@@ -283,13 +355,14 @@ export default async function EligibilityResultsPage({
               Back to eligibility check
             </Link>
             <h1 className="mt-3 max-w-3xl text-[26px] font-extrabold leading-tight tracking-tight text-[#07162d] sm:text-[30px] md:text-[42px]">
-              Eligible banks for {loanLabel}
+              Your {loanLabel} partner matches
             </h1>
-            {/* <p className="mt-2 max-w-2xl text-[14px] font-medium leading-6 text-[#5f6b7a]">
-              Results are ranked from the eligibility criteria configured in the
-              admin panel. Final approval depends on KYC, documents, income
-              verification, and lender policy.
-            </p> */}
+            <p className="mt-2 max-w-3xl text-[13px] font-medium leading-5 text-[#5f6b7a] md:text-[14px]">
+              These are indicative matches from active Fintaraa partner
+              criteria—not loan approvals. Final rate, amount and approval
+              depend on KYC, documents, income verification and lender
+              underwriting.
+            </p>
           </div>
 
           <form
@@ -377,7 +450,7 @@ export default async function EligibilityResultsPage({
               className="col-span-2 inline-flex h-10 items-center justify-center gap-2 self-end rounded-full bg-[#00529b] px-5 text-[13px] font-extrabold text-white md:col-span-2 md:h-12 md:px-6 md:text-[14px] xl:col-span-2"
             >
               <Search className="h-4 w-4" />
-              Search Banks
+              Update Matches
             </button>
           </form>
 
@@ -411,18 +484,27 @@ export default async function EligibilityResultsPage({
         title="Best matches"
         results={bestResults}
         sectionKey="best"
+        requestedAmount={numericAmount}
+        requestedTenureYears={numericTenureYears}
       />
 
       <ResultCardsSection
         title="Instant loan options"
         results={instantLoanResults}
         sectionKey="instant"
+        requestedAmount={numericAmount}
+        requestedTenureYears={numericTenureYears}
       />
 
-      <section className="px-4 py-8 md:px-6 lg:px-8">
+      <details className="group mx-4 mb-10 mt-4 rounded-2xl border border-[#dbe8f4] bg-white md:mx-6 lg:mx-8">
+        <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-4 py-4 text-[15px] font-extrabold text-[#07162d] marker:content-none md:px-6 md:text-[17px]">
+          <span>View full partner criteria ({results.length})</span>
+          <ChevronDown className="h-5 w-5 shrink-0 text-[#00529b] transition-transform group-open:rotate-180" />
+        </summary>
+      <section className="border-t border-[#e4edf5] px-4 py-6 md:px-6 lg:px-8">
         <div className="mx-auto max-w-9xl">
           <h2 className="text-[24px] font-extrabold tracking-tight">
-            Bank eligibility comparison
+            Partner eligibility comparison
           </h2>
           <div className="mt-5 overflow-x-auto rounded-3xl border border-[#e4edf5]">
             <table className="w-full min-w-260 border-collapse bg-white text-left text-[13px]">
@@ -515,7 +597,7 @@ export default async function EligibilityResultsPage({
                         </div>
                       </td>
                       <td className="px-5 py-5 font-bold text-[#334155]">
-                        <p>Processing {formatPercent(result.processingFees)}</p>
+                        <p>Processing {formatFee(result)}</p>
                         <p className="mt-1">Login {result.loginFees || "-"}</p>
                         <p className="mt-1">
                           Insurance {result.insurance || "-"}
@@ -554,7 +636,7 @@ export default async function EligibilityResultsPage({
         <section className="px-4 pb-16 md:px-6 lg:px-8">
           <div className="mobile-safe-container">
             <h2 className="text-[24px] font-extrabold tracking-tight">
-              All lender terms
+              Detailed partner terms
             </h2>
             <div className="mt-4 grid gap-3">
               {results.map((result) => {
@@ -606,6 +688,7 @@ export default async function EligibilityResultsPage({
           </div>
         </section>
       ) : null}
+      </details>
     </main>
   );
 }

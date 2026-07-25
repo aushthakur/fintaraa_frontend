@@ -45,6 +45,8 @@ export function PartnerLoginPage({
   const [step, setStep] = useState<PartnerAuthStep>("details");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [otpExpiresIn, setOtpExpiresIn] = useState(0);
+  const [resendIn, setResendIn] = useState(0);
   const [acceptPolicies, setAcceptPolicies] = useState(false);
   const [whatsappConsent, setWhatsappConsent] = useState(false);
   const [form, setForm] = useState({
@@ -91,6 +93,15 @@ export function PartnerLoginPage({
     };
   }, [redirectTarget, router]);
 
+  useEffect(() => {
+    if (step !== "otp" || (otpExpiresIn <= 0 && resendIn <= 0)) return;
+    const timer = window.setInterval(() => {
+      setOtpExpiresIn((value) => Math.max(value - 1, 0));
+      setResendIn((value) => Math.max(value - 1, 0));
+    }, 1000);
+    return () => window.clearInterval(timer);
+  }, [otpExpiresIn, resendIn, step]);
+
   const update = (key: keyof typeof form, value: string) => {
     setForm((prev) => ({
       ...prev,
@@ -133,6 +144,8 @@ export function PartnerLoginPage({
         await sendPartnerOtp(digits);
       }
       setStep("otp");
+      setOtpExpiresIn(5 * 60);
+      setResendIn(30);
       setMessage("OTP sent to your registered mobile number.");
     } catch (error) {
       setMessage((error as Error).message || "Unable to send OTP.");
@@ -174,6 +187,7 @@ export function PartnerLoginPage({
   };
 
   const resendOtp = async () => {
+    if (resendIn > 0) return;
     setLoading(true);
     setMessage("");
     try {
@@ -186,6 +200,8 @@ export function PartnerLoginPage({
       } else {
         await sendPartnerOtp(digits);
       }
+      setOtpExpiresIn(5 * 60);
+      setResendIn(30);
       setMessage("OTP resent successfully.");
     } catch (error) {
       setMessage((error as Error).message || "Unable to resend OTP.");
@@ -311,6 +327,18 @@ export function PartnerLoginPage({
                   inputMode="numeric"
                   onChange={(value) => update("otp", value)}
                 />
+                <div className="flex items-center justify-between rounded-xl bg-[#f4f8fc] px-4 py-3 text-[13px] font-bold">
+                  <span className="text-[#667085]">OTP validity</span>
+                  <span
+                    className={
+                      otpExpiresIn > 0 ? "text-[#087443]" : "text-[#b42318]"
+                    }
+                  >
+                    {otpExpiresIn > 0
+                      ? `${String(Math.floor(otpExpiresIn / 60)).padStart(2, "0")}:${String(otpExpiresIn % 60).padStart(2, "0")}`
+                      : "Expired"}
+                  </span>
+                </div>
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <button
                     type="button"
@@ -325,10 +353,10 @@ export function PartnerLoginPage({
                   <button
                     type="button"
                     onClick={resendOtp}
-                    disabled={loading}
+                    disabled={loading || resendIn > 0}
                     className="text-[13px] font-extrabold text-[#195585] disabled:opacity-60"
                   >
-                    Resend OTP
+                    {resendIn > 0 ? `Resend in ${resendIn}s` : "Resend OTP"}
                   </button>
                 </div>
                 <PartnerSubmitBlock

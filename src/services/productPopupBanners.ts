@@ -22,23 +22,6 @@ const popupTypeByCategory: Record<
   },
 };
 
-const fallbackByCategory: Record<ProductHeroCategory, HomeBanner> = {
-  loan: {
-    ...fallbackHomeBanners[1],
-    _id: "fallback-loan-popup",
-    title: "Loan offer popup",
-    image: "/assets/home/hero-banners/instant-digital-loan.png",
-    imageAlt: "Loan application banner",
-  },
-  insurance: {
-    ...fallbackHomeBanners[2],
-    _id: "fallback-insurance-popup",
-    title: "Insurance offer popup",
-    image: "/assets/home/hero-banners/insurance-family-protection.png",
-    imageAlt: "Insurance plan banner",
-  },
-};
-
 const localBannerImage = (image?: string, fallback?: string) => {
   if (!image) return fallback || fallbackHomeBanners[0].image;
   return image.includes("/assets/refer/header.png")
@@ -77,14 +60,11 @@ export async function fetchProductPopupBanner({
   productName: string;
   productSlug: string;
 }): Promise<HomeBanner | null> {
-  const fallback =
-    category === "loan"
-      ? getFallbackProductHeroBanners({
-          category,
-          productName,
-          productSlug,
-        })[0]
-      : fallbackByCategory[category];
+  const fallback = getFallbackProductHeroBanners({
+    category,
+    productName,
+    productSlug,
+  })[0];
   const params = new URLSearchParams({
     limit: "1",
     productSlug,
@@ -102,12 +82,11 @@ export async function fetchProductPopupBanner({
     const payload = await response.json();
     const data = payload?.data?.result || payload?.data || payload;
     const scopedData = Array.isArray(data)
-      ? category === "loan"
-        ? data.filter(
-            (item) =>
-              String(item?.productSlug || "").toLowerCase() === productSlug,
-          )
-        : data
+      ? data.filter(
+          (item) =>
+            String(item?.productSlug || "").trim().toLowerCase() ===
+            productSlug,
+        )
       : [];
     if (!scopedData.length) return fallback;
 

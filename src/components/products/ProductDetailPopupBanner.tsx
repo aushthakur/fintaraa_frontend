@@ -1,7 +1,7 @@
 "use client";
 
 import { getImageProps } from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Modal from "@/components/common/Modal";
 import { AuthRedirectLink } from "@/components/auth/AuthRedirectLink";
 import type { HomeBanner } from "@/services/homeBanners";
@@ -9,7 +9,10 @@ import {
   fetchProductPopupBanner,
   type ProductPopupDevice,
 } from "@/services/productPopupBanners";
-import type { ProductHeroCategory } from "@/services/productHeroBanners";
+import {
+  getFallbackProductHeroBanners,
+  type ProductHeroCategory,
+} from "@/services/productHeroBanners";
 
 const getDevice = (): ProductPopupDevice =>
   window.matchMedia("(max-width: 767px)").matches ? "mobile" : "web";
@@ -25,8 +28,23 @@ export function ProductDetailPopupBanner({
   productSlug: string;
   applyHref: string;
 }) {
-  const [banner, setBanner] = useState<HomeBanner | null>(null);
+  const popupKey = `${category}:${productSlug}`;
+  const fallbackBanner = useMemo(
+    () =>
+      getFallbackProductHeroBanners({
+        category,
+        productName,
+        productSlug,
+      })[0],
+    [category, productName, productSlug],
+  );
+  const [loadedBanner, setLoadedBanner] = useState<{
+    key: string;
+    banner: HomeBanner;
+  } | null>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const banner =
+    loadedBanner?.key === popupKey ? loadedBanner.banner : fallbackBanner;
 
   useEffect(() => {
     let active = true;
@@ -45,16 +63,14 @@ export function ProductDetailPopupBanner({
       });
 
       if (!active || !result) return;
-      setBanner(result);
+      setLoadedBanner({ key: popupKey, banner: result });
     });
 
     return () => {
       active = false;
       window.clearTimeout(timer);
     };
-  }, [category, productName, productSlug]);
-
-  if (!banner) return null;
+  }, [category, popupKey, productName, productSlug]);
 
   const alt = banner.imageAlt || banner.title;
   const { props: desktopImage } = getImageProps({
@@ -68,7 +84,7 @@ export function ProductDetailPopupBanner({
     src: banner.mobileImage || banner.image,
     alt,
     width: 900,
-    height: category === "loan" ? 1200 : 1050,
+    height: 1200,
     unoptimized: true,
   });
 
@@ -83,9 +99,7 @@ export function ProductDetailPopupBanner({
         href={applyHref}
         productSlug={productSlug}
         aria-label={`Apply for ${productName}`}
-        className={`relative block w-full overflow-hidden bg-[#07162d] no-underline md:aspect-[5/2] ${
-          category === "loan" ? "aspect-[3/4]" : "aspect-[6/7]"
-        }`}
+        className="relative block aspect-[3/4] w-full overflow-hidden bg-[#07162d] no-underline md:aspect-[5/2]"
       >
         <picture className="absolute inset-0 block h-full w-full">
           <source

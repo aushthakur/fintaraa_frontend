@@ -1,7 +1,7 @@
 "use client";
 
 import { LoanGuidePanel, LoanTabs } from "./LoanTabs";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { LoanStatsBar } from "./LoanStatsBar";
 import { LoanFAQSection } from "./LoanFAQSection";
 import { LoanHeroSection } from "./LoanHeroSection";
@@ -77,6 +77,16 @@ export function LoanDetailPage({
       tabs[0]?.key ||
       "overview",
   );
+
+  useEffect(() => {
+    const selectHashTab = () => {
+      const hashKey = window.location.hash.replace(/^#/, "");
+      if (tabs.some((tab) => tab.key === hashKey)) setActiveTab(hashKey);
+    };
+    selectHashTab();
+    window.addEventListener("hashchange", selectHashTab);
+    return () => window.removeEventListener("hashchange", selectHashTab);
+  }, [tabs]);
   const active = tabs.find((tab) => tab.key === activeTab) || tabs[0];
   const isOverviewTab = active?.key === "overview";
 

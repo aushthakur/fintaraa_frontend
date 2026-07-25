@@ -144,7 +144,7 @@ export function CreditCardsHero({
             </h1>
             <p className="mt-3 max-w-lg text-[14px] md:text-[15px] font-medium leading-relaxed text-gray-500/90">
               Find the perfect card for cashback, travel, fuel savings, rewards
-              and more from top banks.
+              and more from participating partner banks.
             </p>
             <AuthRedirectLink
               href="/credit-cards"
@@ -176,7 +176,7 @@ export function CreditCardsHero({
                   Check your card offers
                 </h2>
                 <p className="mt-1 text-[12px] font-semibold leading-5 text-[#667085]">
-                  Get personalised suggestions from top banks.
+                  Get personalised suggestions from participating partners.
                 </p>
               </div>
               <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#eef8ff] text-[#005ca8]">

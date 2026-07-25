@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "generate:insurance-banners": "node scripts/generateInsuranceBannerAssets.mjs",
+    "test:e2e:insurance-banners": "playwright test tests/insurance-banners.spec.ts"
   },
   "dependencies": {
     "axios": "^1.16.1",
@@ -21,6 +23,7 @@
     "swiper": "^12.1.4"
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

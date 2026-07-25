@@ -22,10 +22,10 @@ export function LoanBankComparison({ page }: { page: LoanSeoPageData }) {
       {/* SECTION TITLE & DESCRIPTION BLOCK */}
       <div className="mb-6">
         <h2 className="text-[28px] font-bold tracking-tight text-gray-900 leading-none">
-          Compare Top Banks & NBFCs
+          Compare Fintaraa Partner Lenders
         </h2>
         <p className="mt-2 text-sm font-medium text-gray-400">
-          Compare interest rates, fees and offers from top lenders
+          Review indicative rates, fees and terms from participating partners
         </p>
       </div>
 
@@ -119,7 +119,7 @@ export function LoanBankComparison({ page }: { page: LoanSeoPageData }) {
             onClick={() => setIsExpanded(!isExpanded)}
             className="flex items-center gap-1.5 text-sm font-bold text-[#00529b] hover:text-[#00407a] transition-colors group select-none"
           >
-            <span>{isExpanded ? "View Less Lenders" : "View more Lenders"}</span>
+            <span>{isExpanded ? "View fewer partners" : "View more partners"}</span>
             <ChevronDown 
               className={`h-4 w-4 text-[#00529b] transition-transform duration-200 ${
                 isExpanded ? "rotate-180" : ""

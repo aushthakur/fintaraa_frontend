@@ -186,7 +186,7 @@ export function BankCreditCardsSection({
             href="/credit-cards"
             className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-[#cfe0ef] bg-white px-5 text-[13px] font-extrabold text-[#005ca8] no-underline transition hover:border-[#005ca8]"
           >
-            View all banks
+            View partner banks
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>

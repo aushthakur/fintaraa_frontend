@@ -42,7 +42,7 @@ const whyChooseItems = [
   {
     id: 3,
     title: "Trusted Banking Partners",
-    text: "Partnered with top banks in India",
+    text: "Offers from participating Fintaraa partner banks",
   },
   {
     id: 4,

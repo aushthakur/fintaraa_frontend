@@ -2,6 +2,7 @@ import { buildApiUrl } from "@/services/apiUrl";
 import type { HomeBanner } from "@/services/homeBanners";
 import { fallbackHomeBanners } from "@/services/homeBanners";
 import loanBannerCatalogData from "@/data/loanBannerCatalog.json";
+import insuranceBannerCatalogData from "@/data/insuranceBannerCatalog.json";
 
 export type ProductHeroCategory = "loan" | "insurance";
 
@@ -47,30 +48,46 @@ export const getFallbackProductHeroBanners = ({
   productSlug: string;
 }): HomeBanner[] => {
   if (category === "insurance") {
+    const profile = (
+      insuranceBannerCatalogData as Array<{
+        slug: string;
+        name: string;
+        eyebrow: string;
+        title: string;
+        description: string;
+      }>
+    ).find((item) => item.slug === productSlug);
+    const resolvedName = profile?.name || productName;
+    const renderedBase = `/assets/insurance-banners/rendered/${productSlug}`;
     return [
       {
-        _id: "fallback-product-insurance-cover",
-        eyebrow: "Smart protection",
-        title: `${productName} Plans`,
-        highlightText: "Compare & Apply",
+        _id: `fallback-${productSlug}-01`,
+        eyebrow: profile?.eyebrow || "SMART PROTECTION",
+        title: profile?.title || `${resolvedName} Made Clearer`,
         description:
-          "Compare cover, premiums, documents, and guided claim support before you apply.",
-        image: "/assets/home/hero-banners/insurance-family-protection.png",
-        imageAlt: `${productName} plan comparison`,
-        buttonText: `Apply ${productName}`,
+          profile?.description ||
+          `Compare ${resolvedName.toLowerCase()} coverage, exclusions, documents and supported options in one secure flow.`,
+        image: `${renderedBase}-01-desktop.webp`,
+        mobileImage: `${renderedBase}-01-mobile.webp`,
+        imageAlt: `${profile?.title || resolvedName}. Compare coverage and apply.`,
+        buttonText: "Apply Now",
+        secondaryLinkUrl: "#insurance-compare-plans",
+        secondaryButtonText: "Compare Plans",
         displayDurationMs: 5200,
         priority: 1,
       },
       {
-        _id: "fallback-product-insurance-guidance",
-        eyebrow: "Assisted insurance journey",
-        title: "Choose Better Cover",
-        highlightText: "with Expert Help",
+        _id: `fallback-${productSlug}-02`,
+        eyebrow: `Assisted ${resolvedName} journey`,
+        title: `Choose ${resolvedName} with Expert Guidance`,
         description:
-          "Get support across plan comparison, declarations, documentation, and next steps.",
-        image: "/assets/home/hero-banners/financial-advisor-family.png",
-        imageAlt: "Advisor helping compare insurance options",
-        buttonText: "Start application",
+          "Compare coverage, exclusions, documents and next steps through one secure guided journey.",
+        image: `${renderedBase}-02-desktop.webp`,
+        mobileImage: `${renderedBase}-02-mobile.webp`,
+        imageAlt: `Advisor helping compare ${resolvedName.toLowerCase()} options.`,
+        buttonText: "Get Expert Help",
+        secondaryLinkUrl: "#insurance-documents",
+        secondaryButtonText: "View Documents",
         displayDurationMs: 5200,
         priority: 2,
       },
@@ -154,19 +171,24 @@ export async function fetchProductHeroBanners({
 
     const payload = await response.json();
     const data = payload?.data?.result || payload?.data || payload;
-    const scopedData = Array.isArray(data)
-      ? category === "loan"
-        ? data.filter(
-            (item) =>
-              String(item?.productSlug || "").toLowerCase() === productSlug,
-          )
-        : data
-      : [];
+    const rows = Array.isArray(data) ? data : [];
+    const exactProductRows = rows.filter(
+      (item) =>
+        String(item?.productSlug || "").trim().toLowerCase() === productSlug,
+    );
+    const genericRows = rows.filter(
+      (item) => !String(item?.productSlug || "").trim(),
+    );
+    // A generic insurance banner must not replace the product-specific artwork.
+    const scopedData = exactProductRows.length
+      ? exactProductRows
+      : category === "insurance"
+        ? []
+        : genericRows;
     const banners = scopedData
       .slice(0, 2)
       .map((item, index) => normalise(item, fallback[index] || fallback[0]));
 
-    if (category !== "loan") return banners.length ? banners : fallback;
     if (!banners.length) return fallback;
     if (banners.length === 1) return [banners[0], fallback[1]];
     return banners;

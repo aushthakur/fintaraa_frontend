@@ -1,0 +1,146 @@
+[
+  {
+    "slug": "life-insurance",
+    "name": "Life Insurance",
+    "family": "life-protection",
+    "eyebrow": "PROTECT EVERY LIFE MILESTONE",
+    "title": "Life Cover Built Around Your Family",
+    "description": "Compare life-insurance plans designed to protect long-term goals, income continuity and the people who matter.",
+    "benefits": ["Family protection", "Flexible cover", "Guided comparison"]
+  },
+  {
+    "slug": "health-insurance",
+    "name": "Health Insurance",
+    "family": "health-protection",
+    "eyebrow": "CARE WITH GREATER CONFIDENCE",
+    "title": "Health Cover for Life's Real Moments",
+    "description": "Compare health plans, waiting periods, hospital networks and coverage details with expert guidance.",
+    "benefits": ["Plan comparison", "Cashless network", "Claim guidance"]
+  },
+  {
+    "slug": "term-insurance",
+    "name": "Term Insurance",
+    "family": "life-protection",
+    "eyebrow": "HIGH PROTECTION, CLEAR CHOICES",
+    "title": "Secure Their Future with Term Cover",
+    "description": "Explore term plans aligned with your income, responsibilities and preferred protection horizon.",
+    "benefits": ["High life cover", "Flexible tenure", "Rider options"]
+  },
+  {
+    "slug": "group-insurance",
+    "name": "Group Insurance",
+    "family": "health-protection",
+    "eyebrow": "PROTECTION FOR YOUR PEOPLE",
+    "title": "Stronger Benefits for Every Team",
+    "description": "Compare group protection for employees or members with practical onboarding and servicing support.",
+    "benefits": ["Group coverage", "Easy onboarding", "Service support"]
+  },
+  {
+    "slug": "personal-accident-insurance",
+    "name": "Personal Accident Insurance",
+    "family": "health-protection",
+    "eyebrow": "READY FOR THE UNEXPECTED",
+    "title": "Everyday Protection Beyond Health Cover",
+    "description": "Compare accident plans for eligible medical costs, disability benefits and income protection.",
+    "benefits": ["Accident cover", "Income support", "Simple comparison"]
+  },
+  {
+    "slug": "critical-illness-insurance",
+    "name": "Critical Illness Insurance",
+    "family": "health-protection",
+    "eyebrow": "FOCUS ON RECOVERY",
+    "title": "Financial Support for Critical Moments",
+    "description": "Explore critical-illness plans, covered conditions, waiting periods and benefit structures clearly.",
+    "benefits": ["Lump-sum benefit", "Condition clarity", "Expert guidance"]
+  },
+  {
+    "slug": "retirement-plan",
+    "name": "Retirement Plan",
+    "family": "retirement-planning",
+    "eyebrow": "PLAN TODAY, LIVE CONFIDENTLY",
+    "title": "Build a More Confident Retirement",
+    "description": "Compare long-term retirement options aligned with your future income needs and financial goals.",
+    "benefits": ["Goal-based plans", "Income options", "Long-term support"]
+  },
+  {
+    "slug": "vehicle-insurance",
+    "name": "Vehicle Insurance",
+    "family": "motor-protection",
+    "eyebrow": "PROTECTION FOR EVERY DRIVE",
+    "title": "Cover Your Vehicle with More Clarity",
+    "description": "Compare motor cover, add-ons, deductibles and claim support before choosing your plan.",
+    "benefits": ["Cover comparison", "Useful add-ons", "Claim support"]
+  },
+  {
+    "slug": "car-insurance",
+    "name": "Car Insurance",
+    "family": "motor-protection",
+    "eyebrow": "SMART COVER FOR YOUR CAR",
+    "title": "Drive with the Right Protection",
+    "description": "Compare comprehensive and third-party car-insurance options with transparent plan details.",
+    "benefits": ["Plan comparison", "Add-on choices", "Renewal support"]
+  },
+  {
+    "slug": "bike-insurance",
+    "name": "Bike Insurance",
+    "family": "motor-protection",
+    "eyebrow": "COVER FOR EVERY RIDE",
+    "title": "Protect Your Bike and Every Journey",
+    "description": "Explore bike-insurance plans, useful add-ons and guided claims support in one simple journey.",
+    "benefits": ["Own-damage cover", "Third-party cover", "Claim guidance"]
+  },
+  {
+    "slug": "travel-insurance",
+    "name": "Travel Insurance",
+    "family": "travel-protection",
+    "eyebrow": "TRAVEL WITH CONFIDENCE",
+    "title": "Protection That Travels with You",
+    "description": "Compare travel cover for eligible medical needs, delays, baggage and trip interruptions.",
+    "benefits": ["Medical cover", "Trip protection", "Global assistance"]
+  },
+  {
+    "slug": "home-insurance",
+    "name": "Home Insurance",
+    "family": "property-protection",
+    "eyebrow": "PROTECT THE PLACE YOU CALL HOME",
+    "title": "Thoughtful Cover for Your Home",
+    "description": "Compare protection for eligible home structure, contents and selected risks with clear guidance.",
+    "benefits": ["Structure cover", "Contents cover", "Risk clarity"]
+  },
+  {
+    "slug": "property-insurance",
+    "name": "Property Insurance",
+    "family": "property-protection",
+    "eyebrow": "PROTECT YOUR VALUABLE PROPERTY",
+    "title": "Property Cover with Clearer Choices",
+    "description": "Explore protection for eligible residential or commercial property and selected contents.",
+    "benefits": ["Property protection", "Flexible scope", "Guided assessment"]
+  },
+  {
+    "slug": "shop-insurance",
+    "name": "Shop Insurance",
+    "family": "business-protection",
+    "eyebrow": "PROTECT DAILY BUSINESS",
+    "title": "Resilient Cover for Your Shop",
+    "description": "Compare shop protection for eligible premises, contents, liability and business risks.",
+    "benefits": ["Premises cover", "Contents cover", "Business support"]
+  },
+  {
+    "slug": "stock-insurance",
+    "name": "Stock Insurance",
+    "family": "business-protection",
+    "eyebrow": "PROTECT THE STOCK THAT POWERS SALES",
+    "title": "Inventory Protection for Business Continuity",
+    "description": "Explore stock cover aligned with eligible inventory value, storage conditions and selected risks.",
+    "benefits": ["Stock-value based", "Risk assessment", "Continuity support"]
+  },
+  {
+    "slug": "machinery-insurance",
+    "name": "Machinery Insurance",
+    "family": "machinery-protection",
+    "eyebrow": "KEEP PRODUCTION PROTECTED",
+    "title": "Cover for the Machinery Behind Growth",
+    "description": "Compare machinery protection for eligible breakdown, damage and operational risks.",
+    "benefits": ["Asset protection", "Breakdown cover", "Expert assistance"]
+  }
+]

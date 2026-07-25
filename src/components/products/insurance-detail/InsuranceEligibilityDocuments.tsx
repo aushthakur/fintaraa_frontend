@@ -34,9 +34,11 @@ const requiredDocumentsFaq = [
 export function InsuranceEligibilityDocuments({
   tab,
   mode = "all",
+  embedded = false,
 }: {
   tab?: InsuranceSeoTab;
   mode?: "all" | "eligibility" | "documents";
+  embedded?: boolean;
 }) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const criteria = tab?.bullets?.length
@@ -57,24 +59,37 @@ export function InsuranceEligibilityDocuments({
   const showDocuments = mode === "all" || mode === "documents";
 
   return (
-    <section className="bg-[#d2e7fa] px-6 py-14 antialiased text-[#111827] md:px-12 lg:px-16">
+    <section
+      id={mode === "documents" ? "insurance-documents" : undefined}
+      className={`scroll-mt-40 antialiased text-[#111827] ${
+        embedded
+          ? ""
+          : "bg-[#d2e7fa] px-6 py-14 md:px-12 lg:px-16"
+      }`}
+    >
       <div className={`mx-auto grid max-w-9xl gap-8 items-stretch ${mode === "all" ? "md:grid-cols-2" : ""}`}>
         
         {/* LEFT CARD: ELIGIBILITY CRITERIA */}
         {showEligibility ? (
-        <div className="bg-white rounded-lg p-8 border border-gray-100 shadow-sm flex flex-col justify-between">
+        <div className="flex flex-col justify-between rounded-2xl border border-[#dfe8ef] bg-white p-5 sm:p-6">
           <div>
-            <h2 className="text-2xl font-bold tracking-tight text-gray-900 leading-none">
-              {mode === "eligibility" && tab?.title ? tab.title : "Eligibility Criteria"}
-            </h2>
-            {mode === "eligibility" && tab?.description ? (
-              <p className="mt-3 text-[13px] font-semibold leading-6 text-gray-500">
-                {tab.description}
-              </p>
+            {!embedded ? (
+              <>
+                <h2 className="text-2xl font-bold leading-none tracking-tight text-gray-900">
+                  {mode === "eligibility" && tab?.title
+                    ? tab.title
+                    : "Eligibility Criteria"}
+                </h2>
+                {mode === "eligibility" && tab?.description ? (
+                  <p className="mt-3 text-[13px] font-semibold leading-6 text-gray-500">
+                    {tab.description}
+                  </p>
+                ) : null}
+              </>
             ) : null}
             
             {/* Structured row layout mimicking the split key-value alignment */}
-            <div className="mt-8 space-y-3">
+            <div className={`${embedded ? "" : "mt-8"} space-y-3`}>
               {criteria.map((item) => (
                 <div
                   key={item.label}
@@ -95,15 +110,21 @@ export function InsuranceEligibilityDocuments({
 
         {/* RIGHT CARD: REQUIRED DOCUMENTS ACCORDION MATRIX */}
         {showDocuments ? (
-        <div className="bg-white rounded-lg p-8 border border-gray-100 shadow-sm flex flex-col justify-between">
+        <div className="flex flex-col justify-between rounded-2xl border border-[#dfe8ef] bg-white p-5 sm:p-6">
           <div>
-            <h2 className="text-2xl font-bold tracking-tight text-gray-900 leading-none mb-4">
-              {mode === "documents" && tab?.title ? tab.title : "Required Documents"}
-            </h2>
-            {mode === "documents" && tab?.description ? (
-              <p className="mb-4 text-[13px] font-semibold leading-6 text-gray-500">
-                {tab.description}
-              </p>
+            {!embedded ? (
+              <>
+                <h2 className="mb-4 text-2xl font-bold leading-none tracking-tight text-gray-900">
+                  {mode === "documents" && tab?.title
+                    ? tab.title
+                    : "Required Documents"}
+                </h2>
+                {mode === "documents" && tab?.description ? (
+                  <p className="mb-4 text-[13px] font-semibold leading-6 text-gray-500">
+                    {tab.description}
+                  </p>
+                ) : null}
+              </>
             ) : null}
             
             <div className="divide-y divide-gray-100 mt-4">

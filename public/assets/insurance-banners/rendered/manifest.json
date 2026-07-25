@@ -1,0 +1,194 @@
+[
+  {
+    "productSlug": "life-insurance",
+    "priority": 1,
+    "desktopImage": "/assets/insurance-banners/rendered/life-insurance-01-desktop.webp",
+    "mobileImage": "/assets/insurance-banners/rendered/life-insurance-01-mobile.webp"
+  },
+  {
+    "productSlug": "life-insurance",
+    "priority": 2,
+    "desktopImage": "/assets/insurance-banners/rendered/life-insurance-02-desktop.webp",
+    "mobileImage": "/assets/insurance-banners/rendered/life-insurance-02-mobile.webp"
+  },
+  {
+    "productSlug": "health-insurance",
+    "priority": 1,
+    "desktopImage": "/assets/insurance-banners/rendered/health-insurance-01-desktop.webp",
+    "mobileImage": "/assets/insurance-banners/rendered/health-insurance-01-mobile.webp"
+  },
+  {
+    "productSlug": "health-insurance",
+    "priority": 2,
+    "desktopImage": "/assets/insurance-banners/rendered/health-insurance-02-desktop.webp",
+    "mobileImage": "/assets/insurance-banners/rendered/health-insurance-02-mobile.webp"
+  },
+  {
+    "productSlug": "term-insurance",
+    "priority": 1,
+    "desktopImage": "/assets/insurance-banners/rendered/term-insurance-01-desktop.webp",
+    "mobileImage": "/assets/insurance-banners/rendered/term-insurance-01-mobile.webp"
+  },
+  {
+    "productSlug": "term-insurance",
+    "priority": 2,
+    "desktopImage": "/assets/insurance-banners/rendered/term-insurance-02-desktop.webp",
+    "mobileImage": "/assets/insurance-banners/rendered/term-insurance-02-mobile.webp"
+  },
+  {
+    "productSlug": "group-insurance",
+    "priority": 1,
+    "desktopImage": "/assets/insurance-banners/rendered/group-insurance-01-desktop.webp",
+    "mobileImage": "/assets/insurance-banners/rendered/group-insurance-01-mobile.webp"
+  },
+  {
+    "productSlug": "group-insurance",
+    "priority": 2,
+    "desktopImage": "/assets/insurance-banners/rendered/group-insurance-02-desktop.webp",
+    "mobileImage": "/assets/insurance-banners/rendered/group-insurance-02-mobile.webp"
+  },
+  {
+    "productSlug": "personal-accident-insurance",
+    "priority": 1,
+    "desktopImage": "/assets/insurance-banners/rendered/personal-accident-insurance-01-desktop.webp",
+    "mobileImage": "/assets/insurance-banners/rendered/personal-accident-insurance-01-mobile.webp"
+  },
+  {
+    "productSlug": "personal-accident-insurance",
+    "priority": 2,
+    "desktopImage": "/assets/insurance-banners/rendered/personal-accident-insurance-02-desktop.webp",
+    "mobileImage": "/assets/insurance-banners/rendered/personal-accident-insurance-02-mobile.webp"
+  },
+  {
+    "productSlug": "critical-illness-insurance",
+    "priority": 1,
+    "desktopImage": "/assets/insurance-banners/rendered/critical-illness-insurance-01-desktop.webp",
+    "mobileImage": "/assets/insurance-banners/rendered/critical-illness-insurance-01-mobile.webp"
+  },
+  {
+    "productSlug": "critical-illness-insurance",
+    "priority": 2,
+    "desktopImage": "/assets/insurance-banners/rendered/critical-illness-insurance-02-desktop.webp",
+    "mobileImage": "/assets/insurance-banners/rendered/critical-illness-insurance-02-mobile.webp"
+  },
+  {
+    "productSlug": "retirement-plan",
+    "priority": 1,
+    "desktopImage": "/assets/insurance-banners/rendered/retirement-plan-01-desktop.webp",
+    "mobileImage": "/assets/insurance-banners/rendered/retirement-plan-01-mobile.webp"
+  },
+  {
+    "productSlug": "retirement-plan",
+    "priority": 2,
+    "desktopImage": "/assets/insurance-banners/rendered/retirement-plan-02-desktop.webp",
+    "mobileImage": "/assets/insurance-banners/rendered/retirement-plan-02-mobile.webp"
+  },
+  {
+    "productSlug": "vehicle-insurance",
+    "priority": 1,
+    "desktopImage": "/assets/insurance-banners/rendered/vehicle-insurance-01-desktop.webp",
+    "mobileImage": "/assets/insurance-banners/rendered/vehicle-insurance-01-mobile.webp"
+  },
+  {
+    "productSlug": "vehicle-insurance",
+    "priority": 2,
+    "desktopImage": "/assets/insurance-banners/rendered/vehicle-insurance-02-desktop.webp",
+    "mobileImage": "/assets/insurance-banners/rendered/vehicle-insurance-02-mobile.webp"
+  },
+  {
+    "productSlug": "car-insurance",
+    "priority": 1,
+    "desktopImage": "/assets/insurance-banners/rendered/car-insurance-01-desktop.webp",
+    "mobileImage": "/assets/insurance-banners/rendered/car-insurance-01-mobile.webp"
+  },
+  {
+    "productSlug": "car-insurance",
+    "priority": 2,
+    "desktopImage": "/assets/insurance-banners/rendered/car-insurance-02-desktop.webp",
+    "mobileImage": "/assets/insurance-banners/rendered/car-insurance-02-mobile.webp"
+  },
+  {
+    "productSlug": "bike-insurance",
+    "priority": 1,
+    "desktopImage": "/assets/insurance-banners/rendered/bike-insurance-01-desktop.webp",
+    "mobileImage": "/assets/insurance-banners/rendered/bike-insurance-01-mobile.webp"
+  },
+  {
+    "productSlug": "bike-insurance",
+    "priority": 2,
+    "desktopImage": "/assets/insurance-banners/rendered/bike-insurance-02-desktop.webp",
+    "mobileImage": "/assets/insurance-banners/rendered/bike-insurance-02-mobile.webp"
+  },
+  {
+    "productSlug": "travel-insurance",
+    "priority": 1,
+    "desktopImage": "/assets/insurance-banners/rendered/travel-insurance-01-desktop.webp",
+    "mobileImage": "/assets/insurance-banners/rendered/travel-insurance-01-mobile.webp"
+  },
+  {
+    "productSlug": "travel-insurance",
+    "priority": 2,
+    "desktopImage": "/assets/insurance-banners/rendered/travel-insurance-02-desktop.webp",
+    "mobileImage": "/assets/insurance-banners/rendered/travel-insurance-02-mobile.webp"
+  },
+  {
+    "productSlug": "home-insurance",
+    "priority": 1,
+    "desktopImage": "/assets/insurance-banners/rendered/home-insurance-01-desktop.webp",
+    "mobileImage": "/assets/insurance-banners/rendered/home-insurance-01-mobile.webp"
+  },
+  {
+    "productSlug": "home-insurance",
+    "priority": 2,
+    "desktopImage": "/assets/insurance-banners/rendered/home-insurance-02-desktop.webp",
+    "mobileImage": "/assets/insurance-banners/rendered/home-insurance-02-mobile.webp"
+  },
+  {
+    "productSlug": "property-insurance",
+    "priority": 1,
+    "desktopImage": "/assets/insurance-banners/rendered/property-insurance-01-desktop.webp",
+    "mobileImage": "/assets/insurance-banners/rendered/property-insurance-01-mobile.webp"
+  },
+  {
+    "productSlug": "property-insurance",
+    "priority": 2,
+    "desktopImage": "/assets/insurance-banners/rendered/property-insurance-02-desktop.webp",
+    "mobileImage": "/assets/insurance-banners/rendered/property-insurance-02-mobile.webp"
+  },
+  {
+    "productSlug": "shop-insurance",
+    "priority": 1,
+    "desktopImage": "/assets/insurance-banners/rendered/shop-insurance-01-desktop.webp",
+    "mobileImage": "/assets/insurance-banners/rendered/shop-insurance-01-mobile.webp"
+  },
+  {
+    "productSlug": "shop-insurance",
+    "priority": 2,
+    "desktopImage": "/assets/insurance-banners/rendered/shop-insurance-02-desktop.webp",
+    "mobileImage": "/assets/insurance-banners/rendered/shop-insurance-02-mobile.webp"
+  },
+  {
+    "productSlug": "stock-insurance",
+    "priority": 1,
+    "desktopImage": "/assets/insurance-banners/rendered/stock-insurance-01-desktop.webp",
+    "mobileImage": "/assets/insurance-banners/rendered/stock-insurance-01-mobile.webp"
+  },
+  {
+    "productSlug": "stock-insurance",
+    "priority": 2,
+    "desktopImage": "/assets/insurance-banners/rendered/stock-insurance-02-desktop.webp",
+    "mobileImage": "/assets/insurance-banners/rendered/stock-insurance-02-mobile.webp"
+  },
+  {
+    "productSlug": "machinery-insurance",
+    "priority": 1,
+    "desktopImage": "/assets/insurance-banners/rendered/machinery-insurance-01-desktop.webp",
+    "mobileImage": "/assets/insurance-banners/rendered/machinery-insurance-01-mobile.webp"
+  },
+  {
+    "productSlug": "machinery-insurance",
+    "priority": 2,
+    "desktopImage": "/assets/insurance-banners/rendered/machinery-insurance-02-desktop.webp",
+    "mobileImage": "/assets/insurance-banners/rendered/machinery-insurance-02-mobile.webp"
+  }
+]

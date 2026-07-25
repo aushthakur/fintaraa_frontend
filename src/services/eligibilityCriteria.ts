@@ -22,6 +22,7 @@ export type EligibilityCriteriaResult = {
   cibilScore?: number;
   roi?: number;
   processingFees?: number;
+  processingFeesType?: "percentage" | "fixed";
   loginFees?: string;
   insurance?: string;
   minAge?: number;

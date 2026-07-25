@@ -101,9 +101,7 @@ export function ProductHeroBannerSlider({
   return (
     <div className="relative w-full overflow-hidden bg-[#07162d]">
       <div
-        className={`relative w-full overflow-hidden md:aspect-[5/2] ${
-          category === "loan" ? "aspect-[3/4]" : "aspect-[6/7]"
-        }`}
+        className="relative aspect-[3/4] w-full overflow-hidden md:aspect-[5/2]"
       >
         <Swiper
           modules={[Autoplay, EffectFade, Pagination, A11y]}

@@ -31,7 +31,13 @@ const claimSteps = [
   },
 ];
 
-export function InsuranceClaimsProcess({ tab }: { tab?: InsuranceSeoTab }) {
+export function InsuranceClaimsProcess({
+  tab,
+  embedded = false,
+}: {
+  tab?: InsuranceSeoTab;
+  embedded?: boolean;
+}) {
   const steps = tab?.bullets?.length
     ? tab.bullets.map((item, index) => ({
         number: String(index + 1).padStart(2, "0"),
@@ -42,23 +48,31 @@ export function InsuranceClaimsProcess({ tab }: { tab?: InsuranceSeoTab }) {
     : claimSteps;
 
   return (
-    <section className="px-4 py-14 md:px-6 lg:px-16 bg-white antialiased text-[#111827]">
+    <section
+      className={
+        embedded
+          ? "bg-white antialiased text-[#111827]"
+          : "bg-white px-4 py-14 text-[#111827] antialiased md:px-6 lg:px-16"
+      }
+    >
       <div className="mx-auto max-w-9xl text-center">
-        
-        {/* HEADER BLOCK */}
-        <h2 className="text-[24px] font-bold tracking-tight text-gray-900 md:text-[26px]">
-          {tab?.title || "Hassle-Free Claims Process"}
-        </h2>
-        <p className="mt-2 text-[13px] font-medium text-gray-400 max-w-2xl mx-auto">
-          {tab?.description ||
-            "We understand that emergencies are stressful. Our digital claim process is built for speed."}
-        </p>
+        {!embedded ? (
+          <>
+            <h2 className="text-[24px] font-bold tracking-tight text-gray-900 md:text-[26px]">
+              {tab?.title || "Hassle-Free Claims Process"}
+            </h2>
+            <p className="mx-auto mt-2 max-w-2xl text-[13px] font-medium text-gray-400">
+              {tab?.description ||
+                "We understand that emergencies are stressful. Our digital claim process is built for speed."}
+            </p>
+          </>
+        ) : null}
 
-        {/* BULLETPROOF MATRIX LAYOUT
-          Uses a 7-column grid on desktop screens to interleave step cards with arrow tracks natively.
-          Falls back to a clean stacking structure on mobile.
-        */}
-        <div className="mt-12 grid grid-cols-1 items-start gap-y-10 sm:grid-cols-2 sm:gap-x-6 lg:mt-16 lg:grid-cols-7 lg:gap-x-0 lg:gap-y-0">
+        <div
+          className={`grid grid-cols-1 items-start gap-y-10 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-7 lg:gap-x-0 lg:gap-y-0 ${
+            embedded ? "" : "mt-12 lg:mt-16"
+          }`}
+        >
           {steps.map((step, index) => {
             const IconComponent = step.icon;
             return (

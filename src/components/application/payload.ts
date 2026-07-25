@@ -206,7 +206,7 @@ const buildLoanPayload = (flowKey: string, values: Payload, referrer?: string) =
   });
 
   return removeEmpty({
-    status: "draft",
+    status: "submitted",
     dataSource: source.source,
     loanType,
     loanAmount:
@@ -261,7 +261,7 @@ const buildInsurancePayload = (
 
   return removeEmpty({
     typeOfInsurance: insuranceTypeMap[flowKey] || "health",
-    status: "draft",
+    status: "submitted",
     firstName: values.firstName || firstName,
     lastName: values.lastName || lastName,
     dateOfBirth: values.dob || values.dateOfBirth,
