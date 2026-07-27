@@ -53,10 +53,22 @@ export const verifyOtp = async (
   otp: string,
   email?: string,
   name?: string,
+  referral?: {
+    referralCode?: string;
+    referralVisitorId?: string;
+  },
 ) => {
   const response = await Post<ApiResponse<VerifyOtpResponse>>(
     "user/verify-otp",
-    { mobile, otp, email, name, accountSource: WEBSITE_ACCOUNT_SOURCE },
+    {
+      mobile,
+      otp,
+      email,
+      name,
+      referralCode: referral?.referralCode,
+      referralVisitorId: referral?.referralVisitorId,
+      accountSource: WEBSITE_ACCOUNT_SOURCE,
+    },
   );
   const payload =
     ((response as WrappedApiResponse<VerifyOtpResponse>)?.data as

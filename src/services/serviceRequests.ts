@@ -11,6 +11,7 @@ export type ServiceRequestType =
   | "itr_filing"
   | "company_registration"
   | "annual_compliance"
+  | "roc_filing"
   | "tax_compliance"
   | "msme_registration"
   | "project_report"

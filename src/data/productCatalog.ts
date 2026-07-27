@@ -7,11 +7,6 @@ export type ProductCatalogItem = {
 export const loanProductCatalog: ProductCatalogItem[] = [
   { name: "Personal Loan", slug: "personal-loan", group: "personal" },
   { name: "Instant Loan", slug: "instant-loan", group: "personal" },
-  {
-    name: "Credit Score Loan",
-    slug: "credit-score-loan",
-    group: "personal",
-  },
   { name: "Education Loan", slug: "education-loan", group: "personal" },
   { name: "Renovation Loan", slug: "renovation-loan", group: "personal" },
   { name: "Home Loan", slug: "home-loan", group: "secured" },

@@ -1,16 +1,12 @@
 "use client";
 
-import Link from "next/link";
-import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import {
-  ArrowRight,
   BadgeIndianRupee,
   BadgePercent,
   BriefcaseBusiness,
   Calculator,
   Car,
-  ChartPie,
   Coins,
   Construction,
   CreditCard,
@@ -25,205 +21,25 @@ import {
   Landmark,
   Plane,
   PackageCheck,
-  QrCode,
   ReceiptText,
   Repeat2,
   Search,
   ShieldCheck,
   SlidersHorizontal,
-  Smartphone,
   Store,
   Tractor,
   Umbrella,
   WalletCards,
   Wrench,
-  type LucideIcon,
 } from "lucide-react";
-import { productHref, slugifyProduct } from "@/lib/productRouting";
+import { AutoCarousel } from "@/components/common/AutoCarousel";
+import {
+  ImageProductCard,
+  ResponsiveServicesRow,
+  ServiceWorkflowCard,
+} from "@/components/home/ProductExplorer";
+import { slugifyProduct } from "@/lib/productRouting";
 import { fetchPublicProductPages } from "@/services/productCatalog";
-
-const toneClass: Record<string, string> = {
-  amber: "bg-[#fff3df] text-[#f79009]",
-  blue: "bg-[#e4f4ff] text-[#195585]",
-  brown: "bg-[#fff3e5] text-[#a36a19]",
-  gold: "bg-[#fff3c6] text-[#d4a42f]",
-  green: "bg-[#e9f2ff] text-[#075cde]",
-  olive: "bg-[#fbffd8] text-[#8a941a]",
-  orange: "bg-[#fff4eb] text-[#f28c28]",
-  pink: "bg-[#ffd5f1] text-[#f1129d]",
-  red: "bg-[#ffe1e4] text-[#ef1010]",
-  rose: "bg-[#ffd4e5] text-[#bd3b75]",
-  sky: "bg-[#dff0ff] text-[#1b76a6]",
-  violet: "bg-[#f3e2ff] text-[#c067f2]",
-  yellow: "bg-[#fff1bd] text-[#e8b23d]",
-};
-
-const productVisualMeta: Record<string, { image?: string; badge?: string }> = {
-  "Personal Loan": {
-    image: "/assets/home/hero-banners/instant-digital-loan.png",
-    badge: "Quick funds",
-  },
-  "Education Loan": {
-    image: "/assets/blogs/blog4.png",
-    badge: "Study funding",
-  },
-  "Vehicle Loan": {
-    image: "/assets/refer/header-credit-cards.png",
-    badge: "Vehicle finance",
-  },
-  "Gold Loan": {
-    image: "/assets/images/coin-bag.png",
-    badge: "Quick cash",
-  },
-  "Loan Against Car": {
-    image: "/assets/refer/header-credit-cards.png",
-    badge: "Car value",
-  },
-  "Instant Loan": {
-    image: "/assets/home/hero-banners/instant-digital-loan.png",
-    badge: "Fast approval",
-  },
-  "Loan Against Property": {
-    image: "/assets/images/hero.png",
-    badge: "Secured loan",
-  },
-  "Renovation Loan": {
-    image: "/assets/contact/contact-hero.png",
-    badge: "Home upgrade",
-  },
-  "Working Capital Loan": {
-    image: "/assets/dsa/handshake.png",
-    badge: "Cash flow",
-  },
-  "Loan Against Security": {
-    image: "/assets/images/security.png",
-    badge: "Asset backed",
-  },
-  "Machinery Loan": {
-    image: "/assets/services/gst-hero.png",
-    badge: "Equipment finance",
-  },
-  "Home Loan": {
-    image: "/assets/contact/contact-hero.png",
-    badge: "Low EMI",
-  },
-  "Business Loan": {
-    image: "/assets/dsa/handshake.png",
-    badge: "Growth capital",
-  },
-  "DOD Loan": {
-    image: "/assets/dsa/hero-quality.png",
-    badge: "Credit line",
-  },
-  "OD Loan": {
-    image: "/assets/dsa/hero-quality.png",
-    badge: "Flexible limit",
-  },
-  "Industrial Loan": {
-    image: "/assets/services/gst-hero.png",
-    badge: "Industrial growth",
-  },
-  "Commercial Purchases Loan": {
-    image: "/assets/images/handshake.png",
-    badge: "Commercial credit",
-  },
-  "Credit Card": {
-    image: "/assets/home/hero-banners/credit-card-rewards.png",
-    badge: "Card options",
-  },
-  "Life Insurance": {
-    image: "/assets/home/hero-banners/insurance-family-protection.png",
-    badge: "Family security",
-  },
-  "Health Insurance": {
-    image: "/assets/images/testimonials/client-1.jpg",
-    badge: "Medical cover",
-  },
-  "Vehicle Insurance": {
-    image: "/assets/refer/header-credit-cards.png",
-    badge: "Vehicle cover",
-  },
-  "Property Insurance": {
-    image: "/assets/images/hero.png",
-    badge: "Property safety",
-  },
-  "Stock Insurance": {
-    image: "/assets/blogs/blog3.png",
-    badge: "Asset cover",
-  },
-  "Machinery Insurance": {
-    image: "/assets/services/gst-hero.png",
-    badge: "Machine cover",
-  },
-  "Term Insurance": {
-    image: "/assets/images/testimonials/client-3.jpg",
-    badge: "Pure protection",
-  },
-  "Travel Insurance": {
-    image: "/assets/careers/life-5.jpg",
-    badge: "Trip cover",
-  },
-  "Retirement Plan": {
-    image: "/assets/images/coin-bag.png",
-    badge: "Future income",
-  },
-  "Shop Insurance": {
-    image: "/assets/services/gst-hero.png",
-    badge: "Business cover",
-  },
-  "Travel Cards": {
-    image: "/assets/careers/life-5.jpg",
-    badge: "Travel rewards",
-  },
-  "Fuel Cards": {
-    image: "/assets/images/hero1.png",
-    badge: "Fuel savings",
-  },
-  "Cashback Cards": {
-    image: "/assets/banks/visa-card.png",
-    badge: "Cashback",
-  },
-  "Shopping Cards": {
-    image: "/assets/blogs/blog2.png",
-    badge: "Shopping perks",
-  },
-  "Premium Cards": {
-    image: "/assets/offers/offer.png",
-    badge: "Premium rewards",
-  },
-  "Rewards Cards": {
-    image: "/assets/offers/offer.png",
-    badge: "Reward points",
-  },
-  "Balance Transfer": {
-    image: "/assets/images/coin-bag.png",
-    badge: "Save interest",
-  },
-  "Credit Score": {
-    image: "/assets/images/cibil-score-quality.png",
-    badge: "Score check",
-  },
-  "ITR Filing": {
-    image: "/assets/services/itr-hero.png",
-    badge: "Tax filing",
-  },
-  "Digital Payments": {
-    image: "/assets/offers/wallet.png",
-    badge: "Payments",
-  },
-  "Financial Planning": {
-    image: "/assets/images/blog-feature.png",
-    badge: "Planning",
-  },
-  "Document Help": {
-    image: "/assets/services/statusicon.png",
-    badge: "Documents",
-  },
-  "Mobile App Support": {
-    image: "/assets/refer/phone.png",
-    badge: "App support",
-  },
-};
 
 const productSections = [
   {
@@ -460,49 +276,70 @@ const productSections = [
   {
     title: "Explore Additional Services",
     subtitle:
-      "Useful financial tools and services for a smoother money journey.",
+      "Business, tax and compliance services available on the Fintaraa homepage.",
     products: [
       {
-        title: "Credit Score",
-        text: "Check your score and understand key factors.",
+        title: "CIBIL Score Check",
+        text: "Check your credit score instantly.",
+        href: "/cibil-score",
         icon: Calculator,
         tone: "orange",
       },
       {
         title: "ITR Filing",
-        text: "Get organised help for income tax filing.",
+        text: "Professional income tax return filing.",
+        href: "/itr-filing",
         icon: ReceiptText,
-        tone: "green",
+        tone: "orange",
       },
       {
-        title: "Balance Transfer",
-        text: "Move eligible balances to better terms.",
-        icon: Repeat2,
-        tone: "blue",
-      },
-      {
-        title: "Digital Payments",
-        text: "Manage payments with secure digital options.",
-        icon: QrCode,
-        tone: "red",
-      },
-      {
-        title: "Financial Planning",
-        text: "Plan goals, budgets, and credit decisions.",
-        icon: ChartPie,
-        tone: "violet",
-      },
-      {
-        title: "Document Help",
-        text: "Organise KYC, income, and bank documents.",
+        title: "GST Registration & Return Filing",
+        text: "Complete GST compliance solutions.",
+        href: "/gst-registration",
         icon: FileCheck2,
-        tone: "yellow",
+        tone: "orange",
       },
       {
-        title: "Mobile App Support",
-        text: "Get help managing your Fintaraa app account.",
-        icon: Smartphone,
-        tone: "sky",
+        title: "MSME Registration",
+        text: "Register your MSME business easily.",
+        href: "/msme-registration",
+        icon: BriefcaseBusiness,
+        tone: "orange",
+      },
+      {
+        title: "Annual Compliance",
+        text: "Stay compliant with annual requirements.",
+        href: "/annual-compliance",
+        icon: Calculator,
+        tone: "orange",
+      },
+      {
+        title: "ROC Filing",
+        text: "Get support for annual and event-based company filings.",
+        href: "/roc-filing",
+        icon: FileCheck2,
+        tone: "orange",
+      },
+      {
+        title: "Project Report",
+        text: "Get project reports for loan, funding and business planning.",
+        href: "/project-report",
+        icon: FileCheck2,
+        tone: "orange",
+      },
+      {
+        title: "Tax Compliances",
+        text: "Get support for tax notices, filings and compliance tracking.",
+        href: "/tax-compliance",
+        icon: ReceiptText,
+        tone: "orange",
+      },
+      {
+        title: "Company Registration",
+        text: "Register Pvt Ltd, LLP & OPC companies.",
+        href: "/company-registration",
+        icon: BriefcaseBusiness,
+        tone: "orange",
       },
     ],
   },
@@ -530,73 +367,6 @@ const categoryLabel = (value: string) => {
   if (value === "Explore Additional Services") return "Services";
   return value.replace("Explore ", "");
 };
-
-function ProductVisualCard({
-  title,
-  text,
-  icon: Icon,
-  tone,
-  isManaged,
-}: {
-  title: string;
-  text: string;
-  icon: LucideIcon;
-  tone: string;
-  isManaged: boolean;
-}) {
-  const meta = productVisualMeta[title] || {};
-
-  return (
-    <Link
-      href={productHref(title)}
-      className="group flex h-full flex-col overflow-hidden rounded-xl border border-[#e2edf8] bg-white no-underline transition-colors hover:border-[#bcd8f4]"
-    >
-      <div className="relative aspect-[1.45/1] bg-[#f7fbff]">
-        {meta.image ? (
-          <Image
-            src={meta.image}
-            alt={title}
-            fill
-            loading="eager"
-            sizes="(min-width: 1536px) 14vw, (min-width: 1280px) 20vw, (min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-            className="object-cover"
-            unoptimized
-          />
-        ) : (
-          <div className="flex h-full items-center justify-center">
-            <span
-              className={`flex h-14 w-14 items-center justify-center rounded-2xl ${
-                toneClass[tone] || toneClass.blue
-              }`}
-            >
-              <Icon className="h-7 w-7 stroke-2" />
-            </span>
-          </div>
-        )}
-        <div className="absolute inset-0 bg-linear-to-t from-[#07162d]/60 via-transparent to-transparent" />
-      </div>
-      <div className="flex flex-1 flex-col p-4">
-        <div className="flex items-start justify-between gap-2">
-          <h3 className="line-clamp-2 text-[16px] font-bold leading-snug text-[#07162d]">
-            {title}
-          </h3>
-          {isManaged ? (
-            <span className="shrink-0 rounded-full bg-[#e9f2ff] px-2 py-1 text-[9px] font-extrabold uppercase tracking-[0.08em] text-[#075cde]">
-              Managed
-            </span>
-          ) : null}
-        </div>
-        <p className="mt-2 line-clamp-2 text-[13px] leading-5 text-[#52657d]">
-          {text}
-        </p>
-        <span className="mt-3 inline-flex items-center gap-2 text-[12px] font-bold text-[#075cde]">
-          Compare options
-          <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
-        </span>
-      </div>
-    </Link>
-  );
-}
 
 export function ProductsPage() {
   const [query, setQuery] = useState("");
@@ -769,23 +539,42 @@ export function ProductsPage() {
                   </span>
                 </div>
 
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7">
-                  {section.products.map(({ title, text, icon: Icon, tone }) => {
-                    const slug = slugifyProduct(title);
-                    const isManaged = managedSlugs.has(slug);
-
-                    return (
-                      <ProductVisualCard
-                        key={title}
-                        title={title}
-                        text={text}
-                        icon={Icon}
-                        tone={tone}
-                        isManaged={isManaged}
+                {section.title === "Explore Additional Services" ? (
+                  <ResponsiveServicesRow ariaLabel={section.title}>
+                    {section.products.map((product) => (
+                      <ServiceWorkflowCard
+                        key={product.title}
+                        product={product}
                       />
-                    );
-                  })}
-                </div>
+                    ))}
+                  </ResponsiveServicesRow>
+                ) : (
+                  <AutoCarousel
+                    ariaLabel={`${section.title} products`}
+                    mobileSlides={2}
+                    tabletSlides={3}
+                    desktopSlides={4}
+                    wideSlides={6}
+                    delay={4600}
+                    className="product-card-carousel"
+                  >
+                    {section.products.map((product) => {
+                      const { title } = product;
+                      const slug = slugifyProduct(title);
+                      const isManaged = managedSlugs.has(slug);
+
+                      return (
+                        <ImageProductCard
+                          key={title}
+                          product={product}
+                          hideContentBadge
+                          hideIcon
+                          statusBadge={isManaged ? "Managed" : undefined}
+                        />
+                      );
+                    })}
+                  </AutoCarousel>
+                )}
               </div>
             ))
           ) : (

@@ -41,6 +41,7 @@ export type EligibilitySearchParams = {
   loanType?: string;
   amount?: string | number;
   salaryType?: string;
+  monthlyIncome?: string | number;
   cibilScore?: string | number;
   tenureYears?: string | number;
   bank?: string;
@@ -53,6 +54,7 @@ export type EligibilitySearchResponse = {
     loanType?: string;
     salaryType?: string;
     amount?: number | null;
+    monthlyIncome?: number | null;
     cibilScore?: number | null;
     tenureYears?: number | null;
     bank?: string;

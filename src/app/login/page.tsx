@@ -35,6 +35,12 @@ export default async function LoginRoute({
     firstParam(params.redirect) ||
     firstParam(params.referrer) ||
     firstParam(params.returnTo);
+  const referralCode = firstParam(params.ref);
 
-  return <LoginPage redirectParam={redirectParam} />;
+  return (
+    <LoginPage
+      redirectParam={redirectParam}
+      referralCode={referralCode}
+    />
+  );
 }

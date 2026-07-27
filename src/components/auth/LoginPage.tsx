@@ -13,6 +13,7 @@ import {
   mobileToPan,
   updateUserProfile,
 } from "@/services/auth";
+import { trackReferralVisit } from "@/services/referrals";
 
 const normalizePhone = (input: string) => input.replace(/\D/g, "");
 const normalizePAN = (input: string) =>
@@ -24,7 +25,13 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 type AuthStep = "phone" | "otp" | "mobile-pan" | "complete-profile";
 
-export function LoginPage({ redirectParam }: { redirectParam?: string } = {}) {
+export function LoginPage({
+  redirectParam,
+  referralCode,
+}: {
+  redirectParam?: string;
+  referralCode?: string;
+} = {}) {
   const router = useRouter();
   const postLoginTarget = useMemo(
     () => getSafeRedirectTarget(redirectParam),
@@ -53,6 +60,36 @@ export function LoginPage({ redirectParam }: { redirectParam?: string } = {}) {
   const validPan = /^([A-Z]{5}[0-9]{4}[A-Z])$/.test(pan);
   const validOtp = form.otp.replace(/\D/g, "").length === 6;
   const validPhone = digits.length >= 10 && digits.length <= 15;
+
+  useEffect(() => {
+    const code = String(referralCode || "")
+      .trim()
+      .toUpperCase();
+    if (!code) return;
+
+    const visitorKey = "fintaraa_referral_visitor_id";
+    const codeKey = "fintaraa_referral_code";
+    const trackedKey = `fintaraa_referral_tracked_${code}`;
+    const visitorId =
+      localStorage.getItem(visitorKey) ||
+      (typeof crypto !== "undefined" && "randomUUID" in crypto
+        ? crypto.randomUUID()
+        : `${Date.now()}-${Math.random().toString(36).slice(2)}`);
+
+    localStorage.setItem(visitorKey, visitorId);
+    localStorage.setItem(codeKey, code);
+    if (sessionStorage.getItem(trackedKey)) return;
+    sessionStorage.setItem(trackedKey, "1");
+
+    void trackReferralVisit({
+      referralCode: code,
+      visitorId,
+      landingPath: `${window.location.pathname}${window.location.search}`,
+      source: "website",
+    }).catch(() => {
+      sessionStorage.removeItem(trackedKey);
+    });
+  }, [referralCode]);
 
   useEffect(() => {
     if (getAuthType() === "user" && getAuthToken()) {
@@ -103,7 +140,21 @@ export function LoginPage({ redirectParam }: { redirectParam?: string } = {}) {
     }
     setLoading(true);
     try {
-      const response = await verifyOtp(digits, form.otp.replace(/\D/g, ""));
+      const storedReferralCode =
+        String(referralCode || localStorage.getItem("fintaraa_referral_code") || "")
+          .trim()
+          .toUpperCase() || undefined;
+      const response = await verifyOtp(
+        digits,
+        form.otp.replace(/\D/g, ""),
+        undefined,
+        undefined,
+        {
+          referralCode: storedReferralCode,
+          referralVisitorId:
+            localStorage.getItem("fintaraa_referral_visitor_id") || undefined,
+        },
+      );
       const user = response?.user;
       const existed =
         typeof response?.accountExisted === "boolean"

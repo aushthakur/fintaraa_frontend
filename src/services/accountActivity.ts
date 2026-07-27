@@ -91,6 +91,21 @@ export type AccountInsuranceQuery = {
   updatedAt?: string;
 };
 
+export type AccountCreditCardApplication = {
+  _id: string;
+  offerId: string;
+  applicationId: string;
+  title?: string;
+  lenderName?: string;
+  productType?: string;
+  productCategory?: "card";
+  status?: string;
+  appliedAt?: string;
+  metadata?: Record<string, unknown>;
+  createdAt?: string;
+  updatedAt?: string;
+};
+
 const unwrap = <T>(response: ApiEnvelope<T> | T): T => {
   if (response && typeof response === "object" && "data" in response) {
     return (response as ApiEnvelope<T>).data as T;
@@ -133,6 +148,19 @@ export const fetchAccountInsuranceApplications = async () => {
     false,
   );
   return normalizeList<AccountInsuranceQuery>(response);
+};
+
+export const fetchAccountCreditCardApplications = async () => {
+  const response = await Fetch<
+    ApiEnvelope<AccountCreditCardApplication[]>
+  >(
+    "offers/applications/me",
+    { productCategory: "card" },
+    15000,
+    true,
+    false,
+  );
+  return normalizeList<AccountCreditCardApplication>(response);
 };
 
 export const fetchAccountApplicationMessages = async (

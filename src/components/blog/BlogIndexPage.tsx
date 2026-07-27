@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
 import { Search, X } from "lucide-react";
-// import { BlogHeroSection } from "@/components/blog/BlogHeroSection";
+import { useEffect, useMemo, useState } from "react";
 import { FaqAccordion } from "../common/FaqAccordion";
 import { FeaturedArticleSection } from "./BlogFeatures";
 import { WhyChoose } from "@/components/home/WhyChoose";
@@ -149,13 +148,16 @@ export function BlogIndexPage() {
                 : undefined
             }
           />
-          <section className="px-4 pb-8 pt-2 font-sans sm:px-6 md:px-8 lg:px-16">
-            <div className="mx-auto max-w-9xl rounded-2xl border border-[#dce7ef] bg-[#f7fbff] p-4 sm:p-5">
+          <section className="bg-[linear-gradient(90deg,#f7fbff_0%,#eef8ff_50%,#f7fbff_100%)] px-4 py-7 font-sans sm:px-6 md:px-8 lg:px-16">
+            <div className="mx-auto max-w-9xl">
               <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                 <div>
-                  <h2 className="mt-1 text-[20px] font-extrabold text-[#111625]">
+                  <h2 className="mt-2 text-[22px] font-extrabold tracking-[-0.02em] text-[#111625]">
                     Browse by category
                   </h2>
+                  <p className="mt-1 text-[12px] font-medium text-[#6d8092]">
+                    Pick a topic or search across all financial guides.
+                  </p>
                 </div>
                 <label className="relative block w-full md:max-w-xs">
                   <span className="sr-only">Search blog articles</span>
@@ -168,7 +170,7 @@ export function BlogIndexPage() {
                     value={searchQuery}
                     onChange={(event) => updateSearch(event.target.value)}
                     placeholder="Search articles"
-                    className="h-11 w-full rounded-xl border border-[#d6e3ec] bg-white pl-10 pr-10 text-[13px] font-semibold text-[#17354d] outline-none transition placeholder:text-[#98a6b3] focus:border-[#075cde]"
+                    className="h-11 w-full rounded-full bg-white pl-10 pr-10 text-[13px] font-semibold text-[#17354d] outline-none transition placeholder:text-[#98a6b3] focus:bg-[#e8f3ff]"
                   />
                   {searchQuery ? (
                     <button
@@ -199,7 +201,7 @@ export function BlogIndexPage() {
                       className={`h-10 shrink-0 rounded-full px-4 text-[12px] font-extrabold transition ${
                         selected
                           ? "bg-[#075cde] text-white"
-                          : "border border-[#d6e3ec] bg-white text-[#526b80] hover:border-[#8db9d6] hover:text-[#075cde]"
+                          : "bg-white/85 text-[#526b80] hover:bg-[#dceeff] hover:text-[#075cde]"
                       }`}
                     >
                       {category}

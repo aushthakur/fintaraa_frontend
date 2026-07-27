@@ -4,6 +4,25 @@ import type { ApplicationCategory } from "./flowRegistry";
 
 type Payload = Record<string, any>;
 
+type ApiEnvelope<T> = {
+  data?: T;
+  success?: boolean;
+  message?: string;
+};
+
+type SubmittedApplicationRecord = {
+  _id?: string;
+  loanId?: string;
+  insuranceId?: string;
+  applicationId?: string;
+  referenceId?: string;
+};
+
+export type ApplicationSubmissionResult = {
+  referenceId: string;
+  record: SubmittedApplicationRecord;
+};
+
 const loanTypeMap: Record<string, string> = {
   personalLoan: "personal_loan",
   homeLoan: "home_loan",
@@ -46,6 +65,20 @@ const insuranceTypeMap: Record<string, string> = {
 };
 
 const loanFileMap: Record<string, string> = {
+  pan_card: "pan_card",
+  aadhaar_card: "aadhaar_card",
+  photo: "photo",
+  itr_form_16: "itr_form_16",
+  form_16ab: "form_16ab",
+  salary_slip: "salary_slip",
+  offer_letter: "offer_letter",
+  relieving_letter: "relieving_letter",
+  bank_statement: "bank_statement",
+  gst_certificate: "gst_certificate",
+  gst_returns: "gst_returns",
+  shop_act: "shop_act",
+  govt_license: "govt_license",
+  bankStatementUrl: "bankStatementUrl",
   loanStatement: "bankStatementUrl",
   latestStatement: "bankStatementUrl",
   bankStatements: "bankStatementUrl",
@@ -57,6 +90,7 @@ const loanFileMap: Record<string, string> = {
   rcCopyUrl: "rcCopyUrl",
   valuationSlip: "goldPhotosUrl",
   carInsuranceUrl: "carInsuranceUrl",
+  lastMonthBankStatementUrl: "lastMonthBankStatementUrl",
   ownershipDocs: "propertyDocumentsUrl",
   propertyDocumentsUrl: "propertyDocumentsUrl",
   propertyOwnershipProofUrl: "propertyOwnershipProofUrl",
@@ -67,6 +101,8 @@ const loanFileMap: Record<string, string> = {
   dpStatement: "dematStatementOrFdCopyUrl",
   proformaInvoiceOrQuotationUrl: "proformaInvoiceOrQuotationUrl",
   businessRegistrationCertificateUrl: "businessRegistrationCertificateUrl",
+  inspectionPhotosUrl: "inspectionPhotosUrl",
+  landDocumentsUrl: "landDocumentsUrl",
 };
 
 const insuranceFileMap: Record<string, string> = {
@@ -140,13 +176,26 @@ const serializeForPolicyDetails = (value: unknown): unknown => {
   return value;
 };
 
+const rootApplicationFields = new Set([
+  "whatsappConsent",
+  "communicationConsent",
+  "source",
+  "platform",
+  "sourcePlatform",
+  "formSource",
+]);
+
 const buildPolicyDetails = (values: Payload, extra: Payload = {}) =>
   removeEmpty(
     Object.fromEntries(
-      Object.entries({ ...values, ...extra }).map(([key, value]) => [
-        key,
-        serializeForPolicyDetails(value),
-      ]),
+      Object.entries({ ...values, ...extra })
+        .filter(
+          ([key, value]) =>
+            !rootApplicationFields.has(key) &&
+            !key.startsWith("__") &&
+            !isFileArray(value),
+        )
+        .map(([key, value]) => [key, serializeForPolicyDetails(value)]),
     ),
   );
 
@@ -172,6 +221,95 @@ const appendFiles = (
     if (!uploadKey) return;
     value.forEach((file) => formData.append(uploadKey, file));
   });
+};
+
+const humanizeDocumentKey = (value: string) =>
+  value
+    .replace(/^__catalogLoanDocument:/, "Document ")
+    .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+    .replace(/[_-]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .replace(/\b\w/g, (character) => character.toUpperCase());
+
+const appendInsuranceFiles = (formData: FormData, values: Payload) => {
+  const catalogMetadata =
+    values.__loanDocumentCatalogMeta &&
+    typeof values.__loanDocumentCatalogMeta === "object"
+      ? values.__loanDocumentCatalogMeta
+      : {};
+  const manifest: Array<{
+    key: string;
+    label: string;
+    catalogId?: string;
+    catalogKey?: string;
+    fileCount: number;
+  }> = [];
+  let remainingFiles = 50;
+
+  Object.entries(values).forEach(([key, value]) => {
+    if (!isFileArray(value) || key.startsWith("__") || remainingFiles <= 0) {
+      return;
+    }
+    const selectedFiles = value.slice(0, remainingFiles);
+    if (!selectedFiles.length) return;
+
+    selectedFiles.forEach((file) =>
+      formData.append("insuranceDocuments", file),
+    );
+    const rawMeta = catalogMetadata[key];
+    const meta =
+      rawMeta && typeof rawMeta === "object"
+        ? (rawMeta as Record<string, unknown>)
+        : {};
+    manifest.push({
+      key: meta.key ? String(meta.key) : key,
+      label: meta.label ? String(meta.label) : humanizeDocumentKey(key),
+      catalogId: meta.id ? String(meta.id) : undefined,
+      catalogKey: meta.key ? String(meta.key) : undefined,
+      fileCount: selectedFiles.length,
+    });
+    remainingFiles -= selectedFiles.length;
+  });
+
+  if (manifest.length) {
+    formData.append("insuranceDocumentManifest", JSON.stringify(manifest));
+  }
+};
+
+const appendCatalogFiles = (formData: FormData, values: Payload) => {
+  const metadata =
+    values.__loanDocumentCatalogMeta &&
+    typeof values.__loanDocumentCatalogMeta === "object"
+      ? values.__loanDocumentCatalogMeta
+      : {};
+  const manifest: Array<{
+    id?: string;
+    key?: string;
+    label?: string;
+    fileCount: number;
+  }> = [];
+
+  Object.entries(metadata).forEach(([valueKey, rawMeta]) => {
+    const files = values[valueKey];
+    if (!isFileArray(files) || files.length === 0) return;
+    const meta =
+      rawMeta && typeof rawMeta === "object"
+        ? (rawMeta as Record<string, unknown>)
+        : {};
+
+    files.forEach((file) => formData.append("catalogDocuments", file));
+    manifest.push({
+      id: meta.id ? String(meta.id) : undefined,
+      key: meta.key ? String(meta.key) : undefined,
+      label: meta.label ? String(meta.label) : undefined,
+      fileCount: files.length,
+    });
+  });
+
+  if (manifest.length) {
+    formData.append("catalogDocumentManifest", JSON.stringify(manifest));
+  }
 };
 
 const appendCoApplicantFiles = (formData: FormData, values: Payload) => {
@@ -208,6 +346,9 @@ const buildLoanPayload = (flowKey: string, values: Payload, referrer?: string) =
   return removeEmpty({
     status: "submitted",
     dataSource: source.source,
+    formSource: values.formSource || source.formSource,
+    whatsappConsent: Boolean(values.whatsappConsent),
+    communicationConsent: values.communicationConsent,
     loanType,
     loanAmount:
       toNumber(values.loanAmount) ||
@@ -262,6 +403,10 @@ const buildInsurancePayload = (
   return removeEmpty({
     typeOfInsurance: insuranceTypeMap[flowKey] || "health",
     status: "submitted",
+    dataSource: source.source,
+    formSource: values.formSource || source.formSource,
+    whatsappConsent: Boolean(values.whatsappConsent),
+    communicationConsent: values.communicationConsent,
     firstName: values.firstName || firstName,
     lastName: values.lastName || lastName,
     dateOfBirth: values.dob || values.dateOfBirth,
@@ -289,7 +434,7 @@ const buildInsurancePayload = (
   });
 };
 
-export const submitApplication = ({
+export const submitApplication = async ({
   category,
   flowKey,
   values,
@@ -308,8 +453,51 @@ export const submitApplication = ({
   Object.entries(payload).forEach(([key, value]) =>
     appendPayload(formData, key, value),
   );
-  appendFiles(formData, values, category);
-  if (category === "loan") appendCoApplicantFiles(formData, values);
+  if (category === "insurance") {
+    appendInsuranceFiles(formData, values);
+  } else {
+    appendFiles(formData, values, category);
+  }
+  appendPayload(
+    formData,
+    "profileDocumentSelections",
+    values.__loanProfileDocumentSelections,
+  );
+  if (category === "loan") {
+    appendCatalogFiles(formData, values);
+    appendCoApplicantFiles(formData, values);
+  }
 
-  return Post<any>(category === "insurance" ? "insurancequery" : "loanquery", formData, 25000);
+  const response = await Post<
+    ApiEnvelope<SubmittedApplicationRecord> | SubmittedApplicationRecord
+  >(
+    category === "insurance" ? "insurancequery" : "loanquery",
+    formData,
+    25000,
+  );
+  const record: SubmittedApplicationRecord =
+    response && typeof response === "object" && "data" in response
+      ? (response as ApiEnvelope<SubmittedApplicationRecord>).data || {}
+      : (response as SubmittedApplicationRecord);
+  const referenceId = String(
+    category === "insurance"
+      ? record.insuranceId ||
+          record.referenceId ||
+          record.applicationId ||
+          record._id ||
+          ""
+      : record.loanId ||
+          record.referenceId ||
+          record.applicationId ||
+          record._id ||
+          "",
+  ).trim();
+
+  if (!referenceId) {
+    throw new Error(
+      "Application was submitted, but its tracking ID was not returned. Please contact support.",
+    );
+  }
+
+  return { referenceId, record };
 };

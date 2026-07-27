@@ -226,7 +226,7 @@ const createNavItems = (
         subtitle: "Business and earning opportunities.",
         links: [
           {
-            label: "Partner Login",
+            label: "Channel Partner Login",
             href: "/partner/login",
             description: "Login to manage partner profile and leads.",
           },
@@ -342,6 +342,11 @@ const serviceSearchEntries: StaticSearchEntry[] = [
     category: "Services",
   },
   {
+    label: "ROC Filing",
+    href: "/roc-filing",
+    category: "Services",
+  },
+  {
     label: "Tax Compliances",
     href: "/tax-compliance",
     category: "Services",
@@ -351,8 +356,6 @@ const serviceSearchEntries: StaticSearchEntry[] = [
     href: "/project-report",
     category: "Services",
   },
-  { label: "Digital Payments", href: "/products", category: "Services" },
-  { label: "Financial Planning", href: "/products", category: "Services" },
   { label: "Document Help", href: "/support", category: "Support" },
   { label: "Mobile App Support", href: "/support", category: "Support" },
   {
@@ -367,9 +370,18 @@ const serviceSearchEntries: StaticSearchEntry[] = [
   { label: "Contact Us", href: "/contact-us", category: "Support" },
   { label: "Support", href: "/support", category: "Support" },
   { label: "About Us", href: "/about-us", category: "Company" },
+  {
+    label: "Awards & Recognitions",
+    href: "/awards-and-recognitions",
+    category: "Company",
+  },
   { label: "Careers", href: "/careers", category: "Company" },
   { label: "Press Release", href: "/press-release", category: "Company" },
-  { label: "Partner Login", href: "/partner/login", category: "Partner" },
+  {
+    label: "Channel Partner Login",
+    href: "/partner/login",
+    category: "Partner",
+  },
   { label: "Partner Profile", href: "/partner/profile", category: "Partner" },
   { label: "Become Partner", href: "/franchise", category: "Partner" },
   { label: "Become DSA", href: "/become-dsa", category: "Partner" },
@@ -424,7 +436,7 @@ const popularSearchEntries = [
   "Health Insurance",
   "Credit Score",
   "Application Status",
-  "Partner Login",
+  "Channel Partner Login",
 ]
   .map((label) => navSearchEntries.find((entry) => entry.label === label))
   .filter(Boolean) as StaticSearchEntry[];
@@ -466,6 +478,7 @@ const searchImageByLabel: Record<string, string> = {
     "/assets/services/company-registration-service.png",
   "MSME Registration": "/assets/services/msme-registration-service.png",
   "Annual Compliance": "/assets/services/annual-compliance-service.png",
+  "ROC Filing": "/assets/services/annual-compliance-service.png",
   "Tax Compliances": "/assets/services/tax-compliance-service.png",
   "Project Report": "/assets/services/project-report-service.png",
 };
@@ -756,7 +769,7 @@ export default function Navbar() {
             </a>
             <span className="hidden items-center gap-1.5 text-white/80 lg:flex">
               <Clock3 className="h-3.5 w-3.5" />
-              Mon–Sat, 9:30 AM–6:30 PM
+              Mon–Sat, 10:00 AM–7:00 PM
             </span>
           </div>
         </div>

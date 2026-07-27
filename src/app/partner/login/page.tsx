@@ -4,7 +4,7 @@ import { getPageSeoMetadata } from "@/services/seoMetadata";
 import { noIndexRobots } from "@/services/seoConfig";
 
 const fallbackMetadata: Metadata = {
-  title: "Partner Login",
+  title: "Channel Partner Login",
   description:
     "Login or register for the Fintaraa partner workspace with secure OTP verification.",
   alternates: { canonical: "/partner/login" },
@@ -31,4 +31,3 @@ export default async function PartnerLoginRoute({
 
   return <PartnerLoginPage redirectParam={redirectParam} />;
 }
-

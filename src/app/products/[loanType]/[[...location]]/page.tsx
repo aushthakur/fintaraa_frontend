@@ -20,6 +20,7 @@ import {
   getInsuranceSeoLocationPages,
   getInsuranceSeoPage,
 } from "@/services/insuranceSeoPages";
+import { getBankProductLenders } from "@/services/bankSeoPages";
 
 type PageProps = {
   params: Promise<{
@@ -126,9 +127,12 @@ export default async function ProductLoanPage({ params }: PageProps) {
     );
   }
 
-  const [page, locationPages] = await Promise.all([
+  const [page, locationPages, bankLenders] = await Promise.all([
     getLoanSeoPage(productSlug, location),
     getLoanSeoLocationPages(productSlug),
+    productSlug === "instant-loan"
+      ? getBankProductLenders(productSlug)
+      : Promise.resolve([]),
   ]);
   const canonical = page.canonicalPath || buildLoanPath(productSlug, location);
   return (
@@ -177,7 +181,11 @@ export default async function ProductLoanPage({ params }: PageProps) {
           },
         ]}
       />
-      <LoanDetailPage page={page} locationPages={locationPages} />
+      <LoanDetailPage
+        page={page}
+        locationPages={locationPages}
+        bankLenders={bankLenders}
+      />
     </>
   );
 }

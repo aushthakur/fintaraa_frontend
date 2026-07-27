@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { WhatsAppConsent } from "@/components/common/WhatsAppConsent";
 import { AppDownloadBanner } from "@/components/common/layout/Footer";
+import { indianStateOptions } from "@/data/indianStates";
 import { buildWebsiteConsentPayload } from "@/lib/formConsent";
 import {
   createServiceRequest,
@@ -25,32 +26,6 @@ import { ServiceRequestTracker } from "@/components/services/shared/ServiceReque
 import { ServiceInformationGuide } from "@/components/services/shared/ServiceInformationGuide";
 import { serviceGuidesBySlug } from "@/components/services/shared/serviceGuideData";
 import type { BusinessServiceConfig } from "./businessServiceData";
-
-const states = [
-  "Andhra Pradesh",
-  "Assam",
-  "Bihar",
-  "Chhattisgarh",
-  "Delhi",
-  "Goa",
-  "Gujarat",
-  "Haryana",
-  "Himachal Pradesh",
-  "Jharkhand",
-  "Karnataka",
-  "Kerala",
-  "Madhya Pradesh",
-  "Maharashtra",
-  "Odisha",
-  "Punjab",
-  "Rajasthan",
-  "Tamil Nadu",
-  "Telangana",
-  "Uttar Pradesh",
-  "Uttarakhand",
-  "West Bengal",
-  "Other",
-];
 
 const nameRegex = /^[A-Za-z][A-Za-z\s.'-]{1,79}$/;
 const mobileRegex = /^(?:\+91[\s-]?)?[6-9]\d{9}$/;
@@ -307,7 +282,7 @@ function BusinessServiceHero({ config }: { config: BusinessServiceConfig }) {
                 label="State"
                 value={form.state}
                 placeholder="Select state"
-                options={states}
+                options={indianStateOptions}
                 onChange={(value) => updateField("state", value)}
               />
               <label className="grid min-w-0 gap-1.5">

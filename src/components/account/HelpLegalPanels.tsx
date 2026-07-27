@@ -231,9 +231,9 @@ export function ContactSupportPanel() {
             {
               icon: Phone,
               title: "Call support",
-              value: "+91 84482 82679",
-              href: "tel:+918448282679",
-              note: "Mon - Sat, 9:30 AM - 6:30 PM",
+              value: "+91 84482 82680",
+              href: "tel:+918448282680",
+              note: "Mon - Sat, 10:00 AM - 7:00 PM",
             },
             {
               icon: Mail,

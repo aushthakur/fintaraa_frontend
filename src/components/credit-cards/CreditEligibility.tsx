@@ -402,7 +402,7 @@ export function CreditEligibility({
                           className="mt-4 flex items-center gap-2 rounded-xl bg-emerald-50 px-3 py-2.5 text-[11px] font-bold text-emerald-700"
                         >
                           <CheckCircle2 className="h-4 w-4 shrink-0" />
-                          Your matched cards are ready above.
+                          Your matched cards are ready below.
                         </motion.p>
                       ) : null}
                     </div>

@@ -229,7 +229,7 @@ export function PartnerLoginPage({
             <div className="relative min-h-72 overflow-hidden">
               <Image
                 src="/assets/refer/login.jpg"
-                alt="Fintaraa partner login"
+                alt="Fintaraa channel partner login"
                 fill
                 priority
                 className="w-full object-contain"
@@ -247,7 +247,7 @@ export function PartnerLoginPage({
                   ? "Verify OTP"
                   : mode === "register"
                     ? "Create partner account"
-                    : "Partner login"}
+                    : "Channel Partner login"}
               </h2>
               {step === "details" && mode === "login" ? (
                 <h3 className="mt-5 text-[20px] font-semibold text-[#07162d]">

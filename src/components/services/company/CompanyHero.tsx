@@ -101,11 +101,15 @@ export function CompanyHero() {
     setSubmitting(true);
     setError("");
     try {
+      const serviceType =
+        form.serviceRequired === "ROC Filing"
+          ? "roc_filing"
+          : "company_registration";
       const consentPayload = buildWebsiteConsentPayload(
-        "website_company_registration",
+        `website_${serviceType}`,
       );
       const result = await createServiceRequest({
-        serviceType: "company_registration",
+        serviceType,
         name: form.name.trim(),
         mobile: form.mobile.trim(),
         email: form.email.trim(),

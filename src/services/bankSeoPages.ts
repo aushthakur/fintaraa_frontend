@@ -3,6 +3,7 @@ import {
   slugifyProduct,
   type ParsedLoanLocation,
 } from "@/lib/productRouting";
+import { bankDirectory } from "@/data/bankDirectory";
 import { isServerApiReachable } from "./serverApiAvailability";
 
 export type BankSeoStat = {
@@ -80,6 +81,18 @@ export type BankSeoLocationPage = {
   location?: ParsedLoanLocation;
   priority?: number;
   isFeatured?: boolean;
+};
+
+export type BankProductLender = {
+  bankName: string;
+  bankSlug: string;
+  productSlug: string;
+  logoUrl?: string;
+  canonicalPath: string;
+  interestRate: string;
+  processingFee: string;
+  loanAmount: string;
+  tenure: string;
 };
 
 type ApiResponse<T> = {
@@ -468,7 +481,7 @@ export async function getBankSeoLocationPages(
   const params = new URLSearchParams({
     bankSlug: slugifyProduct(bankSlug),
     productSlug: slugifyProduct(productSlug),
-    limit: "5000",
+    limit: "500",
   });
 
   try {
@@ -480,5 +493,118 @@ export async function getBankSeoLocationPages(
     return Array.isArray(payload.data) ? payload.data : [];
   } catch {
     return [];
+  }
+}
+
+const fallbackProductLenders = (
+  productSlug: string,
+): BankProductLender[] =>
+  bankDirectory.map((bank) => ({
+    bankName: bank.name,
+    bankSlug: bank.slug,
+    productSlug,
+    logoUrl: bank.logo,
+    canonicalPath: buildBankPath(bank.slug, productSlug),
+    interestRate: "Check lender details",
+    processingFee: "As per lender policy",
+    loanAmount: "Profile based",
+    tenure: "Flexible tenure",
+  }));
+
+const isRootBankPage = (page: BankSeoLocationPage) => {
+  const location = page.location || ({} as ParsedLoanLocation);
+  return !location.state && !location.city && !location.pincode && !location.area;
+};
+
+export async function getBankProductLenders(
+  productSlug: string,
+): Promise<BankProductLender[]> {
+  const normalizedProductSlug = slugifyProduct(productSlug);
+  const fallback = fallbackProductLenders(normalizedProductSlug);
+  const baseUrl = getBaseUrl();
+
+  if (!baseUrl || !(await isServerApiReachable(baseUrl))) return fallback;
+
+  try {
+    const params = new URLSearchParams({
+      productSlug: normalizedProductSlug,
+      limit: "500",
+    });
+    const response = await fetch(`${baseUrl}/bank-pages/public?${params}`, {
+      next: { revalidate: 300 },
+    });
+    if (!response.ok) throw new Error("Bank product list request failed");
+
+    const payload = (await response.json()) as ApiResponse<
+      BankSeoLocationPage[]
+    >;
+    const pages = Array.isArray(payload.data) ? payload.data : [];
+    const roots = new Map<string, BankSeoLocationPage>();
+
+    pages.forEach((page) => {
+      if (!page.bankSlug || !isRootBankPage(page)) return;
+      roots.set(slugifyProduct(page.bankSlug), page);
+    });
+
+    if (!roots.size) return fallback;
+
+    const lenders = await Promise.all(
+      Array.from(roots.values()).map(async (summary) => {
+        const bankSlug = slugifyProduct(summary.bankSlug);
+        try {
+          const detailResponse = await fetch(
+            `${baseUrl}/bank-pages/public/${bankSlug}/${normalizedProductSlug}`,
+            { next: { revalidate: 300 } },
+          );
+          if (!detailResponse.ok) throw new Error("Bank product request failed");
+          const detailPayload =
+            (await detailResponse.json()) as ApiResponse<BankSeoPageData>;
+          const detail = detailPayload.data;
+          const firstRate = detail?.interestRates?.[0];
+          const stat = (label: string) =>
+            detail?.heroStats?.find((item) =>
+              item.label.toLowerCase().includes(label),
+            )?.value;
+
+          return {
+            bankName: detail?.bankName || summary.bankName,
+            bankSlug,
+            productSlug: normalizedProductSlug,
+            logoUrl: detail?.logoUrl || summary.logoUrl,
+            canonicalPath:
+              detail?.canonicalPath ||
+              summary.canonicalPath ||
+              buildBankPath(bankSlug, normalizedProductSlug),
+            interestRate:
+              firstRate?.interestRate ||
+              stat("interest") ||
+              "Check lender details",
+            processingFee:
+              firstRate?.processingFee || "As per lender policy",
+            loanAmount:
+              firstRate?.loanAmount || stat("amount") || "Profile based",
+            tenure: firstRate?.tenure || stat("tenure") || "Flexible tenure",
+          } satisfies BankProductLender;
+        } catch {
+          return {
+            bankName: summary.bankName,
+            bankSlug,
+            productSlug: normalizedProductSlug,
+            logoUrl: summary.logoUrl,
+            canonicalPath:
+              summary.canonicalPath ||
+              buildBankPath(bankSlug, normalizedProductSlug),
+            interestRate: "Check lender details",
+            processingFee: "As per lender policy",
+            loanAmount: "Profile based",
+            tenure: "Flexible tenure",
+          } satisfies BankProductLender;
+        }
+      }),
+    );
+
+    return lenders.sort((a, b) => a.bankName.localeCompare(b.bankName));
+  } catch {
+    return fallback;
   }
 }

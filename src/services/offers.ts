@@ -42,6 +42,13 @@ export type EligibleOffersResponse = {
   };
 };
 
+export type OfferApplicationResult = {
+  offerId: string;
+  applicationId: string;
+  referenceId?: string;
+  productCategory?: "loan" | "insurance" | "card";
+};
+
 const unwrap = <T>(response: ApiEnvelope<T> | T): T => {
   if (response && typeof response === "object" && "data" in response) {
     return (response as ApiEnvelope<T>).data as T;
@@ -99,7 +106,7 @@ export const applyForOffer = async (
   id: string,
   payload?: { notes?: string; metadata?: Record<string, unknown> },
 ) => {
-  const response = await Post<ApiEnvelope<{ offerId: string }>>(
+  const response = await Post<ApiEnvelope<OfferApplicationResult>>(
     `offers/${encodeURIComponent(id)}/apply`,
     {
       status: "applied",

@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { MessageCircle, PhoneCall } from "lucide-react";
 import { isUserLoggedIn } from "@/hooks/authStorage";
 import { AUTH_CHANGED_EVENT } from "@/lib/authEvents";
+import { CALL_PHONE, WHATSAPP_PHONE } from "@/data/company";
 
 const subscribeToAuth = (onStoreChange: () => void) => {
   window.addEventListener(AUTH_CHANGED_EVENT, onStoreChange);
@@ -40,7 +41,7 @@ export function MobileActionBar() {
       }`}
     >
       <a
-        href="tel:+918448282679"
+        href={CALL_PHONE.href}
         aria-label="Call Fintaraa"
         className="group pointer-events-auto relative flex h-14 w-14 items-center justify-center rounded-full border border-white/80 bg-[linear-gradient(135deg,#075cde_0%,#063e99_100%)] text-white no-underline shadow-[0_12px_34px_rgba(7,92,222,0.38)] transition hover:-translate-y-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#075cde] sm:h-auto sm:w-auto sm:gap-3 sm:px-5 sm:py-2.5"
       >
@@ -55,7 +56,7 @@ export function MobileActionBar() {
       </a>
 
       <a
-        href="https://wa.me/918448282679?text=Hi%20Fintaraa%20team!%20I%20need%20help%20choosing%20a%20financial%20product."
+        href={`${WHATSAPP_PHONE.href}?text=Hi%20Fintaraa%20team!%20I%20need%20help%20choosing%20a%20financial%20product.`}
         target="_blank"
         rel="noreferrer"
         aria-label="Chat with Fintaraa on WhatsApp"

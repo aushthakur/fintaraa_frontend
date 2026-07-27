@@ -1492,6 +1492,11 @@ const serviceApplicationMeta: Record<
     tag: "Compliance",
     href: "/annual-compliance",
   },
+  roc_filing: {
+    title: "ROC Filing",
+    tag: "ROC",
+    href: "/roc-filing",
+  },
   tax_compliance: {
     title: "Tax Compliance",
     tag: "Tax",
@@ -2192,6 +2197,7 @@ function AccountApplicationsPanel() {
         fetchServiceRequestHistory({ serviceType: "company_registration" }),
         fetchServiceRequestHistory({ serviceType: "msme_registration" }),
         fetchServiceRequestHistory({ serviceType: "annual_compliance" }),
+        fetchServiceRequestHistory({ serviceType: "roc_filing" }),
         fetchServiceRequestHistory({ serviceType: "tax_compliance" }),
         fetchServiceRequestHistory({ serviceType: "project_report" }),
       ]);

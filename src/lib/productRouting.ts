@@ -28,7 +28,7 @@ export const productHref = (title: string) => {
   )
     return "/gst-registration";
   if (slug === "company-registration") return "/company-registration";
-  if (slug === "roc-filing") return "/company-registration";
+  if (slug === "roc-filing") return "/roc-filing";
   if (slug === "msme-registration") return "/msme-registration";
   if (slug === "annual-compliance") return "/annual-compliance";
   if (slug === "project-report") return "/project-report";
@@ -61,7 +61,8 @@ export const productHref = (title: string) => {
   if (slug === "site-map" || slug === "sitemap") return "/sitemap.xml";
   if (slug === "feedback") return "/feedback";
   if (slug === "subscribe") return "/contact-us";
-  if (slug === "awards-and-recognitions") return "/about-us";
+  if (slug === "awards-and-recognitions")
+    return "/awards-and-recognitions";
   if (slug === "faq" || slug === "faqs" || slug === "faq-s")
     return "/faqs";
   if (

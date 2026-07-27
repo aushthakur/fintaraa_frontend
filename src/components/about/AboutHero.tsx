@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, Check, PhoneCall } from "lucide-react";
+import { CALL_PHONE } from "@/data/company";
 
 const heroStats = [
   { value: "2016", label: "Founded with a customer-first lending vision" },
@@ -112,11 +113,11 @@ export function AboutHero() {
               </motion.div>
               <motion.div whileHover={{ x: 2 }} whileTap={{ scale: 0.98 }}>
                 <a
-                  href="tel:+918448282679"
+                  href={CALL_PHONE.href}
                   className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-md bg-[#eaf6ff] px-6 text-[14px] font-extrabold text-[#075cde] no-underline transition-colors hover:bg-[#dcedff] sm:w-auto"
                 >
                   <PhoneCall className="h-4 w-4" />
-                  Call 84482 82679
+                  Call {CALL_PHONE.national}
                 </a>
               </motion.div>
             </motion.div>

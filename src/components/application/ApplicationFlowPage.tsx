@@ -18,25 +18,27 @@ import {
   ChevronRight,
   Camera,
 } from "lucide-react";
+import { Post } from "@/hooks/apiUtils";
 import { submitApplication } from "./payload";
-import { WhatsAppConsent } from "@/components/common/WhatsAppConsent";
 import { getCurrentUser } from "@/services/auth";
 import type { FormField, FormFlow } from "./flows";
 import { buildLoginRedirectHref } from "@/lib/loginRedirect";
 import { buildWebsiteConsentPayload } from "@/lib/formConsent";
 import { getAuthToken, getAuthType } from "@/hooks/authStorage";
-import { Post } from "@/hooks/apiUtils";
 import { fetchCarRcDetails } from "@/services/applicationLookups";
+import { WhatsAppConsent } from "@/components/common/WhatsAppConsent";
 import {
   searchCompanyBankCategories,
   type CompanyBankCategoryMatch,
 } from "@/services/companyBankCategories";
+import { LoanDocumentUploader } from "./LoanDocumentUploader";
 import { humanizeProduct, type ApplicationCategory } from "./flowRegistry";
 import { CoApplicantsSection, type CoApplicant } from "./CoApplicantsSection";
+import { SubmissionSuccessNotice } from "@/components/common/SubmissionSuccessNotice";
 
 type FormValues = Record<string, any>;
-type FormErrors = Record<string, string>;
 type CurrentUser = Record<string, any>;
+type FormErrors = Record<string, string>;
 
 const fieldClass =
   "h-11 w-full rounded-xl border border-[#dce9f7] bg-white px-3 text-[13px] font-semibold text-[#111827] outline-none transition placeholder:text-[#9aa8b8] focus:border-[#005ca8] focus:ring-2 focus:ring-[#e5f1ff]";
@@ -419,6 +421,9 @@ function visibleFields(
     if (field.showOnTabs?.length && activeTab) {
       return field.showOnTabs.includes(activeTab);
     }
+    if (field.showWhen) {
+      return values[field.showWhen.key] === field.showWhen.equals;
+    }
     return true;
   });
 }
@@ -447,6 +452,7 @@ function buildInitialValues(flow: FormFlow) {
   flow.steps.forEach((step) => {
     step.fields.forEach((field) => {
       if (field.type === "checkbox") values[field.key] = false;
+      if (field.type === "multiSelect") values[field.key] = [];
       if (field.type === "coApplicants")
         values[field.key] = [] as CoApplicant[];
     });
@@ -541,6 +547,72 @@ function FieldInput({
           onChange={(next) => onChange(field.key, next)}
         />
       </div>
+    );
+  }
+
+  if (field.type === "multiSelect") {
+    const selectedValues = Array.isArray(value)
+      ? value.map(String)
+      : value
+        ? [String(value)]
+        : [];
+
+    const toggleOption = (optionValue: string) => {
+      onChange(
+        field.key,
+        selectedValues.includes(optionValue)
+          ? selectedValues.filter((item) => item !== optionValue)
+          : [...selectedValues, optionValue],
+      );
+    };
+
+    return (
+      <fieldset
+        className="col-span-full grid gap-2"
+        data-application-field={field.key}
+      >
+        <legend className="text-[12px] font-bold text-[#1f2937]">
+          {field.label}
+          {field.required ? <span className="text-red-500">*</span> : null}
+        </legend>
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+          {(field.options || []).map((option) => {
+            const selected = selectedValues.includes(option.value);
+            return (
+              <button
+                key={option.value}
+                type="button"
+                aria-pressed={selected}
+                onClick={() => toggleOption(option.value)}
+                className={`inline-flex min-h-11 items-center gap-2 rounded-xl border px-3 text-left text-[13px] font-extrabold transition ${
+                  selected
+                    ? "border-[#13a653] bg-[#edfdf3] text-[#08783e] ring-2 ring-[#d7f8e4]"
+                    : "border-[#dce9f7] bg-white text-[#344054] hover:border-[#8cc4f1]"
+                }`}
+              >
+                <span
+                  className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-md border ${
+                    selected
+                      ? "border-[#13a653] bg-[#13a653] text-white"
+                      : "border-[#aab7c4] bg-white text-transparent"
+                  }`}
+                >
+                  <CheckCircle2 className="h-3.5 w-3.5" aria-hidden="true" />
+                </span>
+                {option.label}
+              </button>
+            );
+          })}
+        </div>
+        {field.helperText ? (
+          <span className="text-[11px] font-medium text-[#7a869a]">
+            {field.helperText}
+          </span>
+        ) : null}
+        {error ? (
+          <span className="text-[11px] font-bold text-red-600">{error}</span>
+        ) : null}
+      </fieldset>
     );
   }
 
@@ -806,7 +878,7 @@ export function ApplicationFlowPage({
   const [autofillMessage, setAutofillMessage] = useState(() =>
     getStoredUser() ? "Profile details synced from your saved profile." : "",
   );
-  const [submitMessage, setSubmitMessage] = useState("");
+  const [submittedReference, setSubmittedReference] = useState("");
   const [submitError, setSubmitError] = useState("");
   const [whatsappConsent, setWhatsappConsent] = useState(false);
   const [whatsappConsentError, setWhatsappConsentError] = useState("");
@@ -817,9 +889,13 @@ export function ApplicationFlowPage({
   const isLastStep = stepIndex === flow.steps.length - 1;
   const progress =
     flow.steps.length > 1 ? (stepIndex / (flow.steps.length - 1)) * 100 : 100;
+  const usesAdvancedApplicationDocuments = step.key === "documents";
   const fields = useMemo(
-    () => visibleFields(flow, values, stepIndex, activeTab),
-    [activeTab, flow, stepIndex, values],
+    () =>
+      usesAdvancedApplicationDocuments
+        ? []
+        : visibleFields(flow, values, stepIndex, activeTab),
+    [activeTab, flow, stepIndex, usesAdvancedApplicationDocuments, values],
   );
   const premium = estimatePremium(category, values);
   const currentApplyHref = useMemo(() => {
@@ -896,7 +972,7 @@ export function ApplicationFlowPage({
     setValues((current) => ({ ...current, [key]: nextValue }));
     setErrors((current) => ({ ...current, [key]: "" }));
     setSubmitError("");
-    setSubmitMessage("");
+    setSubmittedReference("");
     if (isRcFieldKey(key)) setRcLookupMessage("");
   };
 
@@ -1027,11 +1103,13 @@ export function ApplicationFlowPage({
         const missing =
           field.type === "checkbox"
             ? !value
-            : field.type === "coApplicants"
+            : field.type === "multiSelect"
               ? !Array.isArray(value) || value.length === 0
-              : value === undefined ||
-                value === null ||
-                String(value).trim() === "";
+              : field.type === "coApplicants"
+                ? !Array.isArray(value) || value.length === 0
+                : value === undefined ||
+                  value === null ||
+                  String(value).trim() === "";
         if (missing) nextErrors[field.key] = "This field is required.";
       }
 
@@ -1138,10 +1216,10 @@ export function ApplicationFlowPage({
 
     setLoading(true);
     setSubmitError("");
-    setSubmitMessage("");
+    setSubmittedReference("");
     setWhatsappConsentError("");
     try {
-      await submitApplication({
+      const submission = await submitApplication({
         category,
         flowKey,
         values: {
@@ -1169,9 +1247,7 @@ export function ApplicationFlowPage({
         10000,
         true,
       ).catch(() => undefined);
-      setSubmitMessage(
-        "Application saved successfully. Our team will contact you for the next step.",
-      );
+      setSubmittedReference(submission.referenceId);
     } catch (error) {
       setSubmitError(
         error instanceof Error
@@ -1196,7 +1272,6 @@ export function ApplicationFlowPage({
 
   return (
     <main className="relative overflow-hidden bg-white px-4 py-6 font-sans sm:py-8 md:px-8 lg:px-10 xl:px-16">
-      <div className="pointer-events-none absolute -left-10 top-10 h-32 w-20 rotate-140 rounded bg-[#e0effe]" />
       <div className="mx-auto max-w-7xl">
         <Link
           href={referrer || "/products"}
@@ -1209,21 +1284,21 @@ export function ApplicationFlowPage({
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(280px,330px)] lg:gap-8">
           <form onSubmit={handleSubmit} className="min-w-0">
             <div className="mb-8 rounded-2xl border border-[#dce9f7] bg-[linear-gradient(180deg,#ffffff_0%,#f6fbff_100%)] p-4 shadow-[0_16px_40px_rgba(0,92,168,0.06)]">
-              <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-                <div>
-                  <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#005ca8]">
+              <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
+                <div className="min-w-0 flex-1">
+                  <p className="wrap-break-word text-[11px] font-extrabold uppercase tracking-[0.14em] text-[#005ca8] sm:tracking-[0.16em]">
                     Application progress
                   </p>
-                  <p className="mt-1 text-[13px] font-semibold text-[#667085]">
+                  <p className="mt-1 wrap-break-words text-[13px] font-semibold leading-5 text-[#667085]">
                     Step {stepIndex + 1} of {flow.steps.length}: {step.title}
                   </p>
                 </div>
-                <span className="rounded-full border border-[#cfe6ff] bg-white px-3 py-1 text-[11px] font-extrabold text-[#005ca8]">
+                <span className="shrink-0 rounded-full border border-[#cfe6ff] bg-white px-3 py-1 text-[11px] font-extrabold text-[#005ca8]">
                   {Math.round(progress)}% complete
                 </span>
               </div>
 
-              <div className="relative overflow-x-auto pb-1">
+              <div className="relative pt-2 overflow-x-auto pb-1">
                 <div className="absolute left-5 right-5 top-5 h-1 rounded-full bg-[#d7eafd]" />
                 <motion.div
                   className="absolute left-5 top-5 h-1 rounded-full bg-[linear-gradient(90deg,#005ca8,#13a653)]"
@@ -1334,27 +1409,36 @@ export function ApplicationFlowPage({
                 transition={{ duration: 0.24, ease: "easeOut" }}
                 className="grid gap-4 sm:grid-cols-2"
               >
-                {fields.map((field) => (
-                  <FieldInput
-                    key={field.key}
-                    field={field}
-                    value={values[field.key]}
+                {usesAdvancedApplicationDocuments ? (
+                  <LoanDocumentUploader
+                    category={category}
+                    flowKey={flowKey}
                     values={values}
-                    error={errors[field.key]}
                     onChange={updateValue}
-                    onRcLookup={
-                      isRcFieldKey(field.key)
-                        ? () =>
-                            handleRcLookup(
-                              field.key as
-                                | "carRegistrationNumber"
-                                | "registrationNumber",
-                            )
-                        : undefined
-                    }
-                    rcLookupLoading={rcLookupLoadingKey === field.key}
                   />
-                ))}
+                ) : (
+                  fields.map((field) => (
+                    <FieldInput
+                      key={field.key}
+                      field={field}
+                      value={values[field.key]}
+                      values={values}
+                      error={errors[field.key]}
+                      onChange={updateValue}
+                      onRcLookup={
+                        isRcFieldKey(field.key)
+                          ? () =>
+                              handleRcLookup(
+                                field.key as
+                                  | "carRegistrationNumber"
+                                  | "registrationNumber",
+                              )
+                          : undefined
+                      }
+                      rcLookupLoading={rcLookupLoadingKey === field.key}
+                    />
+                  ))
+                )}
               </motion.section>
             </AnimatePresence>
 
@@ -1429,10 +1513,17 @@ export function ApplicationFlowPage({
                 </span>
               </div>
             ) : null}
-            {submitMessage ? (
-              <div className="mt-5 flex items-start gap-2 rounded-xl border border-emerald-100 bg-emerald-50 p-3 text-[13px] font-bold text-emerald-700">
-                <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" />
-                {submitMessage}
+            {submittedReference ? (
+              <div className="mt-5">
+                <SubmissionSuccessNotice
+                  message="Application saved successfully. Our team will contact you for the next step."
+                  referenceId={submittedReference}
+                  referenceLabel={
+                    category === "insurance"
+                      ? "Insurance Reference ID"
+                      : "Loan Application ID"
+                  }
+                />
               </div>
             ) : null}
           </form>

@@ -9,12 +9,36 @@ import { BankLogoImage } from "@/components/common/BankLogoImage";
 import { bankRows } from "./LoanDetailConstants";
 import { slugifyProduct } from "@/lib/productRouting";
 import type { LoanSeoPageData } from "@/services/loanSeoPages";
+import type { BankProductLender } from "@/services/bankSeoPages";
 
-export function LoanBankComparison({ page }: { page: LoanSeoPageData }) {
+export function LoanBankComparison({
+  page,
+  lenders,
+  showAll = false,
+  title = "Compare Fintaraa Partner Lenders",
+  description = "Review indicative rates, fees and terms from participating partners",
+}: {
+  page: LoanSeoPageData;
+  lenders?: BankProductLender[];
+  showAll?: boolean;
+  title?: string;
+  description?: string;
+}) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const rows = lenders?.length
+    ? lenders.map((lender) => ({
+        name: lender.bankName,
+        bankSlug: lender.bankSlug,
+        logo: lender.logoUrl,
+        rate: lender.interestRate,
+        fee: lender.processingFee,
+        amount: lender.loanAmount,
+        tenure: lender.tenure,
+        href: lender.canonicalPath,
+      }))
+    : bankRows;
 
-  // Safely displays a set number of initial rows or all rows based on state toggle
-  const visibleRows = isExpanded ? bankRows : bankRows.slice(0, 5);
+  const visibleRows = showAll || isExpanded ? rows : rows.slice(0, 5);
 
   return (
     <section className="w-full max-w-9xl mx-auto bg-white px-4 py-12 antialiased text-[#111827] md:px-6">
@@ -22,10 +46,10 @@ export function LoanBankComparison({ page }: { page: LoanSeoPageData }) {
       {/* SECTION TITLE & DESCRIPTION BLOCK */}
       <div className="mb-6">
         <h2 className="text-[28px] font-bold tracking-tight text-gray-900 leading-none">
-          Compare Fintaraa Partner Lenders
+          {title}
         </h2>
         <p className="mt-2 text-sm font-medium text-gray-400">
-          Review indicative rates, fees and terms from participating partners
+          {description}
         </p>
       </div>
 
@@ -45,8 +69,14 @@ export function LoanBankComparison({ page }: { page: LoanSeoPageData }) {
           
           <tbody className="divide-y divide-gray-100">
             {visibleRows.map((row) => {
-              const bankSlug = slugifyProduct(row.name);
-              const bankDetailHref = `/banks/${bankSlug}/${page.loanTypeSlug}`;
+              const bankSlug =
+                "bankSlug" in row && row.bankSlug
+                  ? row.bankSlug
+                  : slugifyProduct(row.name);
+              const bankDetailHref =
+                "href" in row && row.href
+                  ? row.href
+                  : `/banks/${bankSlug}/${page.loanTypeSlug}`;
               const applyHref = getApplyHref({
                 category: "loan",
                 productSlug: page.loanTypeSlug,
@@ -67,7 +97,7 @@ export function LoanBankComparison({ page }: { page: LoanSeoPageData }) {
                       className="block shrink-0 focus:outline-none"
                     >
                       <BankLogoImage
-                        src={row.logo}
+                        src={row.logo || "/assets/banks/indian.png"}
                         alt={row.name}
                         className="h-8 w-28"
                         imageClassName="object-left"
@@ -75,7 +105,11 @@ export function LoanBankComparison({ page }: { page: LoanSeoPageData }) {
                     </Link>
                     <div className="flex items-center gap-0.5 text-xs font-bold text-gray-400 select-none">
                       <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
-                      <span className="pt-0.5">{row.rating || "4.5"}</span>
+                      <span className="pt-0.5">
+                        {"rating" in row && row.rating
+                          ? row.rating
+                          : "4.5"}
+                      </span>
                     </div>
                   </div>
                 </td>
@@ -112,7 +146,7 @@ export function LoanBankComparison({ page }: { page: LoanSeoPageData }) {
       </div>
 
       {/* FOOTER: EXPAND MORE LENDERS TOGGLE ACTION */}
-      {bankRows.length > 5 && (
+      {!showAll && rows.length > 5 && (
         <div className="mt-6 flex justify-center">
           <button
             type="button"

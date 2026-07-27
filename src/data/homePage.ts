@@ -422,6 +422,13 @@ export const productSections = [
         tone: "orange",
       },
       {
+        title: "ROC Filing",
+        text: "Get support for annual and event-based company filings.",
+        href: "/roc-filing",
+        icon: FileCheck2,
+        tone: "orange",
+      },
+      {
         title: "Project Report",
         text: "Get project reports for loan, funding and business planning.",
         href: "/project-report",

@@ -72,15 +72,6 @@
     "benefits": ["Fast eligibility", "Digital journey", "Clear next steps"]
   },
   {
-    "slug": "credit-score-loan",
-    "name": "Credit Score Loan",
-    "family": "personal-digital",
-    "eyebrow": "PROFILE-MATCHED OPTIONS",
-    "title": "Loan Offers Matched to Your Credit Profile",
-    "description": "Understand eligibility and compare lending options aligned with your credit profile.",
-    "benefits": ["Profile matching", "Partner comparison", "Guided support"]
-  },
-  {
     "slug": "loan-against-property",
     "name": "Loan Against Property",
     "family": "home-property",

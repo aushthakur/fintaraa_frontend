@@ -63,7 +63,7 @@ export function FranchiseHero() {
               Apply For Franchise
             </Link>
             <a
-              href="tel:+918448282679"
+              href="tel:+918448282680"
               className="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-[#15B24A] px-8 text-[15px] font-semibold text-[#15B24A]"
             >
               Talk to Franchise Expert

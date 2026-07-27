@@ -23,13 +23,16 @@ import { LoanEligibilityCriteria } from "./LoanEligibilityCriteria";
 import { AppDownloadBanner } from "@/components/common/layout/Footer";
 import { getApplyHref } from "@/components/application/flowRegistry";
 import { ProductDetailPopupBanner } from "@/components/products/ProductDetailPopupBanner";
+import type { BankProductLender } from "@/services/bankSeoPages";
 
 export function LoanDetailPage({
   page,
   locationPages = [],
+  bankLenders = [],
 }: {
   page: LoanSeoPageData;
   locationPages?: LoanSeoLocationPage[];
+  bankLenders?: BankProductLender[];
 }) {
   const tabs = useMemo(
     () => {
@@ -207,8 +210,19 @@ export function LoanDetailPage({
       {!showGuidePanel && showSection("emi_calculator") && (
         <LoanEMICalculator page={page} />
       )}
-      {!showGuidePanel && showSection("bank_comparison") && (
+      {!showGuidePanel &&
+        showSection("bank_comparison") &&
+        page.loanTypeSlug !== "instant-loan" && (
         <LoanBankComparison page={page} />
+      )}
+      {page.loanTypeSlug === "instant-loan" && (
+        <LoanBankComparison
+          page={page}
+          lenders={bankLenders}
+          showAll
+          title="Instant Loan Offers From All Partner Banks"
+          description="Compare indicative lender terms, open the bank details, and apply through Fintaraa."
+        />
       )}
       <CreditScoreBanner />
 

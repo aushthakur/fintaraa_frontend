@@ -16,6 +16,7 @@ import {
   ServiceRequestRecord,
 } from "@/services/serviceRequests";
 import { WhatsAppConsent } from "@/components/common/WhatsAppConsent";
+import { indianStateOptions } from "@/data/indianStates";
 import { buildWebsiteConsentPayload } from "@/lib/formConsent";
 import { ServiceRequestSuccess } from "@/components/services/shared/ServiceRequestSuccess";
 
@@ -56,15 +57,6 @@ const gstRequirements = [
   "GST Filing",
   "GST Amendment",
   "GST Consultation",
-];
-
-const states = [
-  "Delhi",
-  "Haryana",
-  "Uttar Pradesh",
-  "Maharashtra",
-  "Karnataka",
-  "Other",
 ];
 
 const mobileRegex = /^(?:\+91[\s-]?)?[6-9]\d{9}$/;
@@ -236,7 +228,7 @@ export function GstHero() {
                   "Select GST Requirement",
                   gstRequirements,
                 ],
-                ["state", "State", "Select State", states],
+                ["state", "State", "Select State / Union Territory", indianStateOptions],
               ].map(([key, label, placeholder, options]) => (
                 <label key={String(key)} className="grid gap-1 sm:gap-1.5">
                   <span className="text-[13px] font-extrabold text-[#2a2f36] sm:text-sm">

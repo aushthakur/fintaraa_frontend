@@ -12,44 +12,34 @@ import {
   Check,
   Factory,
   HandCoins,
-  Headphones,
   Home,
   Landmark,
   RefreshCw,
-  ShieldCheck,
-  Smartphone,
-  UserCheck,
 } from "lucide-react";
 
 const standOut: Array<{
   title: string;
   text: string;
-  icon: LucideIcon;
 }> = [
   {
     title: "End-to-end digital process",
     text: "Apply, share details, submit documents, and stay informed through a guided digital journey.",
-    icon: Smartphone,
   },
   {
     title: "Pre-approved loan offers",
     text: "Eligible profiles can move faster through lender checks and documentation stages.",
-    icon: BadgeCheck,
   },
   {
     title: "No-collateral options",
     text: "Selected personal, business, and working-capital products are available without security.",
-    icon: ShieldCheck,
   },
   {
     title: "Personalised consultation",
     text: "Experts help assess eligibility, repayment comfort, and lender fit before an application is placed.",
-    icon: UserCheck,
   },
   {
     title: "Dedicated relationship managers",
     text: "One point of contact coordinates the application from requirement sharing to disbursal.",
-    icon: Headphones,
   },
 ];
 
@@ -317,21 +307,13 @@ export function AboutDetails() {
           </motion.div>
 
           <div className="grid gap-x-10 gap-y-9 md:grid-cols-2">
-            {standOut.map(({ title, text, icon: Icon }, index) => (
+            {standOut.map(({ title, text }, index) => (
               <motion.article
                 key={title}
                 {...reveal(index * 0.06, 18)}
                 whileHover={{ x: 4 }}
               >
-                <div className="flex items-start justify-between gap-4">
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#e2f2ff] text-[#075cde]">
-                    <Icon className="h-5 w-5" />
-                  </span>
-                  <span className="font-highlight text-[23px] font-bold italic text-[#9acff0]">
-                    0{index + 1}
-                  </span>
-                </div>
-                <h3 className="mt-4 text-[18px] font-extrabold leading-7 text-[#132842]">
+                <h3 className="text-[18px] font-extrabold leading-7 text-[#132842]">
                   {title}
                 </h3>
                 <p className="mt-2 text-[14px] font-medium leading-7 text-[#637186] md:text-[15px]">

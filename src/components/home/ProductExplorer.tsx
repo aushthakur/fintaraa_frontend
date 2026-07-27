@@ -18,7 +18,7 @@ type ProductExplorerProps = {
   compactSpacing?: boolean;
 };
 
-type ProductItem = {
+export type ProductItem = {
   tag?: string;
   title: string;
   text?: string;
@@ -76,7 +76,7 @@ const bankOfferDetails: Record<
   },
 };
 
-const productMeta: Record<
+export const productMeta: Record<
   string,
   {
     image?: string;
@@ -245,6 +245,11 @@ const productMeta: Record<
     hint: "Stay compliant with annual filings and reminders.",
     cta: "Check compliance",
   },
+  "ROC Filing": {
+    image: "/assets/services/annual-compliance-service.png",
+    hint: "Prepare annual and event-based ROC filings with expert support.",
+    cta: "Start ROC filing",
+  },
   "Project Report": {
     image: "/assets/services/project-report-service.png",
     hint: "Get project reports for funding, tenders and planning.",
@@ -259,6 +264,133 @@ const productMeta: Record<
     image: "/assets/services/company-registration-service.png",
     hint: "Register your company online and move forward.",
     cta: "Start registration",
+  },
+  "Loan Against Car": {
+    image:
+      "/assets/loan-banners/rendered/loan-against-car-01-mobile.webp",
+    hint: "Access secured funds against the value of your eligible car.",
+    detail: "Compare valuation, tenure and lender requirements.",
+    badge: "Car value",
+  },
+  "Instant Loan": {
+    image: "/assets/loan-banners/rendered/instant-loan-01-mobile.webp",
+    hint: "Quick digital assistance for urgent personal requirements.",
+    detail: "Check eligibility and next steps through a guided journey.",
+    badge: "Fast approval",
+  },
+  "Renovation Loan": {
+    image: "/assets/loan-banners/rendered/renovation-loan-01-mobile.webp",
+    hint: "Finance repairs, upgrades and improvements for your property.",
+    detail: "Plan project costs with structured repayment options.",
+    badge: "Home upgrade",
+  },
+  "Working Capital Loan": {
+    image:
+      "/assets/loan-banners/rendered/working-capital-loan-01-mobile.webp",
+    hint: "Support inventory, cash flow and day-to-day business cycles.",
+    detail: "Compare limits and repayment structures for your business.",
+    badge: "Cash flow",
+  },
+  "Loan Against Security": {
+    image:
+      "/assets/loan-banners/rendered/loan-against-security-01-mobile.webp",
+    hint: "Unlock liquidity against eligible financial securities.",
+    detail: "Retain investments while accessing secured credit.",
+    badge: "Asset backed",
+  },
+  "Machinery Loan": {
+    image: "/assets/loan-banners/rendered/machinery-loan-01-mobile.webp",
+    hint: "Finance machinery and equipment for business expansion.",
+    detail: "Compare funding for new and upgraded equipment.",
+    badge: "Equipment finance",
+  },
+  "DOD Loan": {
+    image: "/assets/loan-banners/rendered/dod-loan-01-mobile.webp",
+    hint: "Demand-overdraft support for eligible business requirements.",
+    detail: "Understand limits, utilisation and repayment terms.",
+    badge: "Credit line",
+  },
+  "OD Loan": {
+    image: "/assets/loan-banners/rendered/od-loan-01-mobile.webp",
+    hint: "Flexible overdraft support for short-term liquidity.",
+    detail: "Pay interest on utilised limits as per lender terms.",
+    badge: "Flexible limit",
+  },
+  "Industrial Loan": {
+    image: "/assets/loan-banners/rendered/industrial-loan-01-mobile.webp",
+    hint: "Funding for manufacturing and industrial growth needs.",
+    detail: "Compare options for capacity, assets and expansion.",
+    badge: "Industrial growth",
+  },
+  "Commercial Purchases Loan": {
+    image:
+      "/assets/loan-banners/rendered/commercial-purchases-loan-01-mobile.webp",
+    hint: "Credit support for eligible commercial assets and purchases.",
+    detail: "Plan business acquisitions with structured repayments.",
+    badge: "Commercial credit",
+  },
+  "Credit Card": {
+    image: "/assets/product-cards/credit-cards/rewards-cards.webp",
+    hint: "Explore credit cards matched to spending and reward needs.",
+    detail: "Compare fees, benefits and eligibility before applying.",
+    badge: "Card options",
+  },
+  "Vehicle Insurance": {
+    image:
+      "/assets/insurance-banners/rendered/vehicle-insurance-01-mobile.webp",
+    hint: "Protect eligible vehicles against covered damage and loss.",
+    detail: "Compare own-damage, third-party and add-on coverage.",
+    badge: "Vehicle cover",
+  },
+  "Machinery Insurance": {
+    image:
+      "/assets/insurance-banners/rendered/machinery-insurance-01-mobile.webp",
+    hint: "Protect business machinery from covered operational risks.",
+    detail: "Review asset value, exclusions and protection scope.",
+    badge: "Machine cover",
+  },
+  "Retirement Plan": {
+    image:
+      "/assets/insurance-banners/rendered/retirement-plan-01-mobile.webp",
+    hint: "Build a disciplined plan for long-term retirement income.",
+    detail: "Compare contribution, vesting and payout preferences.",
+    badge: "Future income",
+  },
+  "Premium Cards": {
+    image: "/assets/product-cards/credit-cards/rewards-cards.webp",
+    hint: "Premium rewards, travel privileges and lifestyle benefits.",
+    detail: "Compare fees, milestones and premium partner offers.",
+    badge: "Premium rewards",
+  },
+  "Credit Score": {
+    image: "/assets/services/cibil-score-service.png",
+    hint: "Check your score and understand the factors affecting it.",
+    detail: "Use guided insights before planning your next application.",
+    badge: "Score check",
+  },
+  "Digital Payments": {
+    image: "/assets/offers/wallet.png",
+    hint: "Manage everyday payments through secure digital options.",
+    detail: "Explore convenient payment tools and account support.",
+    badge: "Payments",
+  },
+  "Financial Planning": {
+    image: "/assets/images/blog-feature.png",
+    hint: "Plan goals, budgets and credit decisions with more clarity.",
+    detail: "Build a practical roadmap around your financial priorities.",
+    badge: "Planning",
+  },
+  "Document Help": {
+    image: "/assets/services/statusicon.png",
+    hint: "Organise KYC, income and bank documents for applications.",
+    detail: "Follow a clear checklist and reduce missing-document delays.",
+    badge: "Documents",
+  },
+  "Mobile App Support": {
+    image: "/assets/refer/phone.png",
+    hint: "Get help managing your Fintaraa account and application.",
+    detail: "Resolve access, profile and application-tracking questions.",
+    badge: "App support",
   },
 };
 
@@ -353,13 +485,18 @@ function ResponsiveSevenRow({
   ariaLabel: string;
 }) {
   return (
-    <AutoCarousel ariaLabel={ariaLabel} mobileSlides={2} wideSlides={6}>
+    <AutoCarousel
+      ariaLabel={ariaLabel}
+      mobileSlides={2}
+      wideSlides={6}
+      className="product-card-carousel"
+    >
       {children}
     </AutoCarousel>
   );
 }
 
-function ResponsiveServicesRow({
+export function ResponsiveServicesRow({
   children,
   ariaLabel,
 }: {
@@ -496,14 +633,16 @@ function InformativeCard({ product }: { product: ProductItem }) {
   );
 }
 
-function ImageProductCard({
+export function ImageProductCard({
   product,
   hideIcon = false,
   hideContentBadge = true,
+  statusBadge,
 }: {
   product: ProductItem;
   hideIcon?: boolean;
   hideContentBadge?: boolean;
+  statusBadge?: string;
 }) {
   const meta = productMeta[product.title] || {};
   const Icon = product.icon;
@@ -518,6 +657,7 @@ function ImageProductCard({
             src={meta.image}
             alt={product.title}
             fill
+            sizes="(min-width: 1280px) 16vw, (min-width: 1024px) 23vw, (min-width: 640px) 32vw, 48vw"
             className="object-cover"
             unoptimized
           />
@@ -533,24 +673,31 @@ function ImageProductCard({
           </span>
         ) : null}
       </div>
-      <div className="flex flex-1 flex-col p-4">
+      <div className="flex flex-1 flex-col p-3 sm:p-4">
         {!hideContentBadge ? (
           <p className="mb-2 inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wide text-[#075cde]">
             <CheckCircle2 className="h-3.5 w-3.5" />
             {meta.badge || "Featured"}
           </p>
         ) : null}
-        <h3 className="line-clamp-1 text-sm lg:text-[16px] font-bold leading-snug text-[#07162d]">
-          {product.title}
-        </h3>
-        <p className="mt-2 line-clamp-1 text-[11px] lg:text-[13px] leading-5 text-[#52657d]">
+        <div className="flex min-h-10 items-start justify-between gap-2">
+          <h3 className="line-clamp-2 text-[13px] font-bold leading-snug text-[#07162d] sm:text-[16px]">
+            {product.title}
+          </h3>
+          {statusBadge ? (
+            <span className="hidden shrink-0 rounded-full bg-[#e9f2ff] px-2 py-1 text-[9px] font-extrabold uppercase tracking-[0.08em] text-[#075cde] sm:inline-flex">
+              {statusBadge}
+            </span>
+          ) : null}
+        </div>
+        <p className="mt-1 line-clamp-2 min-h-10 text-[10px] leading-5 text-[#52657d] sm:mt-2 sm:text-[13px]">
           {meta.hint || product.text}
         </p>
         {/* <p className="mt-2 min-h-10 flex-1 text-[11px] font-semibold leading-5 text-[#8090a4]">
           {meta.detail ||
             "Compare benefits, eligibility and next steps before applying."}
         </p> */}
-        <span className="card-action-button mt-3 inline-flex h-10 w-full items-center justify-center gap-2 rounded-xl px-3 text-[12px] font-bold">
+        <span className="card-action-button mt-3 inline-flex h-9 w-full items-center justify-center gap-1.5 rounded-xl px-2 text-[11px] font-bold sm:h-10 sm:gap-2 sm:px-3 sm:text-[12px]">
           Apply Now
           <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
         </span>
@@ -559,7 +706,7 @@ function ImageProductCard({
   );
 }
 
-function ServiceWorkflowCard({ product }: { product: ProductItem }) {
+export function ServiceWorkflowCard({ product }: { product: ProductItem }) {
   const meta = productMeta[product.title] || {};
   return (
     <Link

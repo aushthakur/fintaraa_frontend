@@ -9,6 +9,7 @@ export type FieldType =
   | 'textarea'
   | 'file'
   | 'checkbox'
+  | 'multiSelect'
   | 'coApplicants';
 
 export type FormField = {
@@ -42,6 +43,10 @@ export type FormField = {
   optionsByParent?: Record<string, { label: string; value: string }[]>;
   parentKey?: string;
   resetOnChangeKeys?: string[];
+  showWhen?: {
+    key: string;
+    equals: string | number | boolean;
+  };
 };
 
 export type FormStep = {
@@ -283,7 +288,7 @@ export const formFlows: Record<string, FormFlow> = {
           {
             key: 'emiTrack',
             label: 'On-time EMI history',
-            placeholder: 'Yes / No',
+            placeholder: 'Select',
             type: 'select',
             options: [
               { label: 'Yes', value: 'yes' },
@@ -489,7 +494,7 @@ export const formFlows: Record<string, FormFlow> = {
           {
             key: 'riders',
             label: 'Add Disability Riders',
-            placeholder: 'Yes / No',
+            placeholder: 'Select',
             type: 'select',
             options: [
               { label: 'Yes', value: 'yes' },
@@ -497,6 +502,12 @@ export const formFlows: Record<string, FormFlow> = {
             ],
           },
         ],
+      },
+      {
+        key: 'documents',
+        title: 'Upload Documents',
+        description: 'Share KYC and supporting documents for policy review.',
+        fields: [],
       },
     ],
   },
@@ -525,7 +536,7 @@ export const formFlows: Record<string, FormFlow> = {
           {
             key: 'smoker',
             label: 'Are you a smoker?',
-            placeholder: 'Yes / No',
+            placeholder: 'Select',
             type: 'select',
             options: [
               { label: 'Yes', value: 'yes' },
@@ -533,6 +544,12 @@ export const formFlows: Record<string, FormFlow> = {
             ],
           },
         ],
+      },
+      {
+        key: 'documents',
+        title: 'Upload Documents',
+        description: 'Share KYC and medical documents for policy review.',
+        fields: [],
       },
     ],
   },
@@ -562,7 +579,7 @@ export const formFlows: Record<string, FormFlow> = {
           {
             key: 'pastIncidents',
             label: 'Any past cyber incidents?',
-            placeholder: 'Yes / No',
+            placeholder: 'Select',
             type: 'select',
             options: [
               { label: 'Yes', value: 'yes' },
@@ -570,6 +587,12 @@ export const formFlows: Record<string, FormFlow> = {
             ],
           },
         ],
+      },
+      {
+        key: 'documents',
+        title: 'Upload Documents',
+        description: 'Share KYC and supporting documents for policy review.',
+        fields: [],
       },
     ],
   },
@@ -609,6 +632,12 @@ export const formFlows: Record<string, FormFlow> = {
             type: 'checkbox',
           },
         ],
+      },
+      {
+        key: 'documents',
+        title: 'Upload Documents',
+        description: 'Share KYC, vaccination and veterinary records.',
+        fields: [],
       },
     ],
   },
@@ -713,12 +742,13 @@ export const formFlows: Record<string, FormFlow> = {
           {
             key: 'hasExistingLoans',
             label: 'Do you have existing loans?',
-            placeholder: 'Yes / No',
+            placeholder: 'Select',
             type: 'select',
             options: [
               { label: 'Yes', value: 'yes' },
               { label: 'No', value: 'no' },
             ],
+            resetOnChangeKeys: ['emiBurden'],
           },
           {
             key: 'emiBurden',
@@ -726,6 +756,10 @@ export const formFlows: Record<string, FormFlow> = {
             placeholder: 'e.g. 12,000',
             type: 'number',
             helperText: 'Include credit card EMIs if any.',
+            showWhen: {
+              key: 'hasExistingLoans',
+              equals: 'yes',
+            },
           },
         ],
       },
@@ -749,8 +783,13 @@ export const formFlows: Record<string, FormFlow> = {
           {
             key: 'preferredContactTime',
             label: 'Preferred Contact Time',
-            placeholder: 'Morning / Afternoon / Evening',
-            type: 'text',
+            type: 'multiSelect',
+            options: [
+              { label: 'Morning', value: 'morning' },
+              { label: 'Afternoon', value: 'afternoon' },
+              { label: 'Evening', value: 'evening' },
+            ],
+            helperText: 'Select one or more suitable contact times.',
           },
         ],
       },
@@ -1268,8 +1307,34 @@ export const formFlows: Record<string, FormFlow> = {
           {
             key: 'constitution',
             label: 'Entity Type',
-            placeholder: 'Proprietorship / Pvt Ltd / LLP',
-            type: 'text',
+            placeholder: 'Select entity type',
+            type: 'select',
+            options: [
+              { label: 'Proprietorship', value: 'proprietorship' },
+              { label: 'Partnership Firm', value: 'partnership' },
+              {
+                label: 'Limited Liability Partnership (LLP)',
+                value: 'llp',
+              },
+              {
+                label: 'Private Limited Company',
+                value: 'private_limited',
+              },
+              {
+                label: 'Public Limited Company',
+                value: 'public_limited',
+              },
+              {
+                label: 'One Person Company (OPC)',
+                value: 'opc',
+              },
+              {
+                label: 'Hindu Undivided Family (HUF)',
+                value: 'huf',
+              },
+              { label: 'Trust / Society', value: 'trust_society' },
+              { label: 'Other', value: 'other' },
+            ],
             required: true,
           },
           {
@@ -2166,7 +2231,7 @@ export const formFlows: Record<string, FormFlow> = {
           {
             key: 'preExisting',
             label: 'Pre-existing Diseases (if any)',
-            placeholder: 'Yes / No',
+            placeholder: 'Select',
             type: 'select',
             options: [
               { label: 'Yes', value: 'yes' },
@@ -2189,7 +2254,7 @@ export const formFlows: Record<string, FormFlow> = {
           {
             key: 'claimHistory',
             label: 'Claim History (if any)',
-            placeholder: 'Yes / No',
+            placeholder: 'Select',
             type: 'select',
             options: [
               { label: 'Yes', value: 'yes' },
@@ -2407,7 +2472,7 @@ export const formFlows: Record<string, FormFlow> = {
           {
             key: 'preExisting',
             label: 'Pre-existing Diseases (if any)',
-            placeholder: 'Yes / No',
+            placeholder: 'Select',
             type: 'select',
             options: [
               { label: 'Yes', value: 'yes' },
@@ -2430,7 +2495,7 @@ export const formFlows: Record<string, FormFlow> = {
           {
             key: 'claimHistory',
             label: 'Claim History (if any)',
-            placeholder: 'Yes / No',
+            placeholder: 'Select',
             type: 'select',
             options: [
               { label: 'Yes', value: 'yes' },
@@ -2529,7 +2594,7 @@ export const formFlows: Record<string, FormFlow> = {
           {
             key: 'preExisting',
             label: 'Pre-existing Diseases (if any)',
-            placeholder: 'Yes / No',
+            placeholder: 'Select',
             type: 'select',
             options: [
               { label: 'Yes', value: 'yes' },
@@ -2540,7 +2605,7 @@ export const formFlows: Record<string, FormFlow> = {
           {
             key: 'claimHistory',
             label: 'Claim History (if any)',
-            placeholder: 'Yes / No',
+            placeholder: 'Select',
             type: 'select',
             options: [
               { label: 'Yes', value: 'yes' },
@@ -2629,7 +2694,7 @@ export const formFlows: Record<string, FormFlow> = {
           {
             key: 'preExisting',
             label: 'Pre-existing Diseases (if any)',
-            placeholder: 'Yes / No',
+            placeholder: 'Select',
             type: 'select',
             options: [
               { label: 'Yes', value: 'yes' },
@@ -2640,7 +2705,7 @@ export const formFlows: Record<string, FormFlow> = {
           {
             key: 'claimHistory',
             label: 'Claim History (if any)',
-            placeholder: 'Yes / No',
+            placeholder: 'Select',
             type: 'select',
             options: [
               { label: 'Yes', value: 'yes' },
@@ -2748,7 +2813,7 @@ export const formFlows: Record<string, FormFlow> = {
           {
             key: 'claims',
             label: 'Past Claims',
-            placeholder: 'Yes / No',
+            placeholder: 'Select',
             type: 'select',
             options: [
               { label: 'Yes', value: 'yes' },
@@ -3320,7 +3385,7 @@ export const formFlows: Record<string, FormFlow> = {
           {
             key: 'smoker',
             label: 'Are you a smoker?',
-            placeholder: 'Yes / No',
+            placeholder: 'Select',
             type: 'select',
             options: [
               { label: 'Yes', value: 'yes' },
@@ -3393,7 +3458,7 @@ export const formFlows: Record<string, FormFlow> = {
           {
             key: 'smoker',
             label: 'Are you a smoker?',
-            placeholder: 'Yes / No',
+            placeholder: 'Select',
             type: 'select',
             options: [
               { label: 'Yes', value: 'yes' },

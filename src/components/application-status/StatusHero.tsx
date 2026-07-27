@@ -80,8 +80,8 @@ export function StatusHero({
             Application status
           </h1>
           <p className="mt-4 max-w-2xl text-[14px] font-medium leading-7 text-[#5f6f82] md:text-[15px]">
-            Follow every important stage of your loan, insurance, or financial
-            service request from one secure place.
+            Follow every important stage of your loan, insurance, credit card,
+            or financial service request from one secure place.
           </p>
           <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2">
             <p className="flex items-center gap-2 text-[11px] font-bold text-[#477561]">

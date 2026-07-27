@@ -2,7 +2,6 @@
 
 import { ShieldCheck } from "lucide-react";
 import type { BankSeoPageData } from "@/services/bankSeoPages";
-import Image from "next/image";
 
 export function BankAboutSection({ page }: { page: BankSeoPageData }) {
   return (
@@ -60,62 +59,18 @@ export function BankAboutSection({ page }: { page: BankSeoPageData }) {
               ? page.whyApply
               : [
                   "Free & Easy Application",
-                  "100% Safe & Secure",
+                  "Safe & Secure",
                   "Multiple Loan Offers",
                   "Best Interest Rates",
                 ]
             ).map((item) => (
               <div
                 key={item}
-                className="flex items-center gap-3 text-[15px] font-medium text-[#90949c]"
+                className="rounded-xl border border-[#e5edf5] bg-[#f8fbff] px-4 py-3 text-[15px] font-medium text-[#667085]"
               >
-                {/* Precise Double Ring Circle Check Graphic matching image_eef248.png */}
-                <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-[#005ca8] bg-white text-[#005ca8]">
-                  <span className="text-[10px] font-bold">✓</span>
-                </div>
                 <span>{item}</span>
               </div>
             ))}
-          </div>
-
-          {/* Overlapping Social Proof Avatars Section */}
-          <div className="pt-2 flex items-center gap-4">
-            <div className="flex -space-x-3 overflow-hidden isolate py-1">
-              {/* Profile Headshots overlapping cleanly like a ratings block */}
-              <div className="relative z-30 h-9 w-9 rounded-full ring-2 ring-white shadow-sm overflow-hidden bg-gray-100">
-                <Image
-                  src="/assets/images/user1.png"
-                  alt="User Profile 1"
-                  fill
-                  sizes="36px"
-                  className="object-cover"
-                />
-              </div>
-              <div className="relative z-20 h-9 w-9 rounded-full ring-2 ring-white shadow-sm overflow-hidden bg-gray-100">
-                <Image
-                  src="/assets/images/user2.png"
-                  alt="User Profile 2"
-                  fill
-                  sizes="36px"
-                  className="object-cover"
-                />
-              </div>
-              <div className="relative z-10 h-9 w-9 rounded-full ring-2 ring-white shadow-sm overflow-hidden bg-gray-100">
-                <Image
-                  src="/assets/images/user3.png"
-                  alt="User Profile 3"
-                  fill
-                  sizes="36px"
-                  className="object-cover"
-                />
-              </div>
-            </div>
-            <div className="text-[14px] font-medium">
-              <span className="font-bold text-[#005ca8] text-[15px]">
-                50,000+
-              </span>{" "}
-              <span className="text-[#9fa3a9] ml-1">Happy Customers</span>
-            </div>
           </div>
         </div>
       </div>

@@ -18,6 +18,7 @@ import {
 import { buildApiUrl } from "@/services/apiUrl";
 import { WhatsAppConsent } from "@/components/common/WhatsAppConsent";
 import { buildWebsiteConsentPayload } from "@/lib/formConsent";
+import { CALL_PHONE, WHATSAPP_PHONE } from "@/data/company";
 
 type FormState = {
   fullName: string;
@@ -45,14 +46,14 @@ const cityRegex = /^[A-Za-z][A-Za-z\s.'-]{1,79}$/;
 const contactLinks = [
   {
     label: "Call",
-    value: "+91 84482 82679",
-    href: "tel:+918448282679",
+    value: CALL_PHONE.display,
+    href: CALL_PHONE.href,
     icon: Phone,
   },
   {
     label: "WhatsApp",
-    value: "+91 84482 82679",
-    href: "https://wa.me/918448282679",
+    value: WHATSAPP_PHONE.display,
+    href: WHATSAPP_PHONE.href,
     icon: MessageCircle,
     external: true,
   },

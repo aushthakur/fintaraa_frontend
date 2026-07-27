@@ -8,17 +8,6 @@ import {
   partnerBenefits,
 } from "./dsaData";
 
-const benefitColors: Record<string, { bg: string; text: string }> = {
-  "30+ Bank Tie-ups": { bg: "bg-[#fff4e5]", text: "text-[#d69a16]" },
-  "High Commissions": { bg: "bg-[#e6faf0]", text: "text-[#169954]" },
-  "Training Program": { bg: "bg-[#fff1f0]", text: "text-[#d94848]" },
-  "Dedicated Support": { bg: "bg-[#edf5ff]", text: "text-[#0d64bf]" },
-  "Faster Payouts": { bg: "bg-[#fff9e8]", text: "text-[#ca8a04]" },
-  "Marketing Material": { bg: "bg-[#f3e8ff]", text: "text-[#8b5cf6]" },
-  "Single Dashboard": { bg: "bg-[#edf5ff]", text: "text-[#0d64bf]" },
-  "Real-time Tracking": { bg: "bg-[#fff4e5]", text: "text-[#d69a16]" },
-};
-
 export function DsaPartnerBenefits() {
   return (
     <section className="px-4 pb-10 md:px-6 lg:px-8">
@@ -28,35 +17,19 @@ export function DsaPartnerBenefits() {
         </h2>
 
         <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {dsaBenefits.map(({ title, text, icon: Icon }) => {
-            const colors = benefitColors[title] || {
-              bg: "bg-[#edf5ff]",
-              text: "text-[#0d64bf]",
-            };
-
-            return (
-              <div
-                key={title}
-                className="rounded-[18px] border border-[#e3eaf3] bg-white p-4 shadow-[0_8px_24px_rgba(16,24,40,0.03)] transition hover:-translate-y-0.5 hover:shadow-[0_12px_28px_rgba(16,24,40,0.06)]"
-              >
-                <div className="flex items-start gap-3">
-                  <span
-                    className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${colors.bg} ${colors.text}`}
-                  >
-                    <Icon className="h-5 w-5" />
-                  </span>
-                  <div>
-                    <h3 className="text-[14px] font-extrabold text-[#22272e]">
-                      {title}
-                    </h3>
-                    <p className="mt-1 text-[11px] font-medium leading-5 text-[#8b95a5]">
-                      {text}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+          {dsaBenefits.map(({ title, text }) => (
+            <div
+              key={title}
+              className="rounded-[18px] border border-[#e3eaf3] bg-white p-4 shadow-[0_8px_24px_rgba(16,24,40,0.03)] transition hover:-translate-y-0.5 hover:shadow-[0_12px_28px_rgba(16,24,40,0.06)]"
+            >
+              <h3 className="text-[14px] font-extrabold text-[#22272e]">
+                {title}
+              </h3>
+              <p className="mt-1 text-[11px] font-medium leading-5 text-[#8b95a5]">
+                {text}
+              </p>
+            </div>
+          ))}
         </div>
 
         <div className="mt-8 grid gap-6 lg:grid-cols-1">

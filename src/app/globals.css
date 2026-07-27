@@ -537,6 +537,11 @@ select:disabled {
   display: none;
 }
 
+.product-card-carousel .swiper-button-prev,
+.product-card-carousel .swiper-button-next {
+  top: 22%;
+}
+
 @media (max-width: 639px) {
   .credit-card-carousel .swiper-button-prev,
   .credit-card-carousel .swiper-button-next {

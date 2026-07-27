@@ -108,6 +108,87 @@ export const annualComplianceConfig: BusinessServiceConfig = {
   trackingIdLabel: "Compliance Query ID",
 };
 
+export const rocFilingConfig: BusinessServiceConfig = {
+  slug: "roc-filing",
+  serviceType: "roc_filing",
+  title: "ROC Filing & Company Compliance",
+  description:
+    "Prepare annual and event-based Registrar of Companies filings with a clear document checklist, expert review and request tracking.",
+  image: "/assets/services/annual-compliance-service.png",
+  imageAlt: "ROC filing and company compliance document support",
+  formTitle: "Get ROC Filing Support",
+  formDescription:
+    "Share your company type and filing requirement so our compliance team can identify the applicable forms and documents.",
+  primaryLabel: "Company Type",
+  primaryPlaceholder: "Select company type",
+  primaryOptions: [
+    "Private Limited Company",
+    "One Person Company (OPC)",
+    "Limited Liability Partnership (LLP)",
+    "Section 8 Company",
+    "Other",
+  ],
+  secondaryLabel: "ROC Filing Requirement",
+  secondaryPlaceholder: "Select ROC filing requirement",
+  secondaryOptions: [
+    "AOC-4 Financial Statement Filing",
+    "MGT-7 / MGT-7A Annual Return",
+    "ADT-1 Auditor Appointment",
+    "DIR-3 KYC",
+    "Event-based ROC Filing",
+    "Complete Annual ROC Filing",
+    "ROC Filing Consultation",
+  ],
+  serviceCards: [
+    {
+      title: "Annual ROC Filings",
+      text: "Organise the recurring company filings required after the close of the financial year.",
+      rows: [
+        "AOC-4 financial statement filing",
+        "MGT-7 / MGT-7A annual return",
+        "DIR-3 KYC assistance",
+        "Form and due-date checklist",
+      ],
+    },
+    {
+      title: "Event-based ROC Filings",
+      text: "Get help identifying and preparing forms triggered by important company changes.",
+      rows: [
+        "Director and registered-office changes",
+        "Share capital and allotment filings",
+        "Auditor appointment support",
+        "SRN and acknowledgement tracking",
+      ],
+    },
+  ],
+  benefits: [
+    "Form-specific checklist",
+    "Expert document review",
+    "Due-date visibility",
+    "SRN status tracking",
+  ],
+  trustPoints: [
+    {
+      title: "Filing Scope Review",
+      text: "The applicable ROC forms and deadlines are identified before preparation starts.",
+    },
+    {
+      title: "Document Validation",
+      text: "Supporting records are checked for completeness and consistency.",
+    },
+    {
+      title: "Transparent Tracking",
+      text: "Follow your request through preparation, submission and acknowledgement.",
+    },
+  ],
+  submitLabel: "Request ROC Filing Support",
+  successTitle: "Your ROC filing request is submitted.",
+  successMessage:
+    "Our compliance team will review your company and filing requirement, then share the applicable document checklist.",
+  trackingTitle: "Track Your ROC Filing Request",
+  trackingIdLabel: "ROC Query ID",
+};
+
 export const taxComplianceConfig: BusinessServiceConfig = {
   slug: "tax-compliance",
   serviceType: "tax_compliance",

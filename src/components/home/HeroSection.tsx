@@ -12,6 +12,7 @@ import {
   CreditCard,
   Gauge,
   HandCoins,
+  IndianRupee,
   // Info,
   Umbrella,
   UserRound,
@@ -57,7 +58,10 @@ const loanTypeOptions = [
   quickLoanOption,
   ...loanProductDirectory.map((loan) => loan.name),
 ];
-const tenureOptions = ["5 Years", "3 Years", "7 Years", "10 Years"];
+const tenureOptions = Array.from(
+  { length: 30 },
+  (_, index) => `${index + 1} ${index === 0 ? "Year" : "Years"}`,
+);
 const salaryOptions = [
   "Salaried",
   "Self Employed",
@@ -154,8 +158,9 @@ export function HeroSection() {
   const [selectedProduct, setSelectedProduct] = useState(productTabs[0].label);
   const [amount, setAmount] = useState("1000000");
   const [purpose, setPurpose] = useState(loanTypeOptions[0]);
-  const [tenure, setTenure] = useState(tenureOptions[0]);
+  const [tenure, setTenure] = useState("5 Years");
   const [salaryType, setSalaryType] = useState(salaryOptions[0]);
+  const [monthlyIncome, setMonthlyIncome] = useState("50000");
   const [insuranceType, setInsuranceType] = useState(insuranceTypeOptions[0]);
   const [insuranceNeed, setInsuranceNeed] = useState(insuranceNeedOptions[0]);
   const [cardType, setCardType] = useState(cardTypeOptions[0]);
@@ -213,6 +218,7 @@ export function HeroSection() {
       loanType,
       amount: amount || "0",
       salaryType,
+      monthlyIncome: monthlyIncome || "0",
       cibilScore: String(cibilScore),
       tenureYears: String(getTenureYears(tenure)),
     });
@@ -222,6 +228,7 @@ export function HeroSection() {
     amount,
     cibilScore,
     insuranceType,
+    monthlyIncome,
     purpose,
     salaryType,
     selectedProduct,
@@ -235,7 +242,7 @@ export function HeroSection() {
         : "Explore Cards";
 
   return (
-    <section className="relative min-h-[460px] overflow-hidden bg-[#061a3d] px-4 py-8 text-white sm:min-h-[500px] md:px-6 md:py-8 lg:min-h-[540px] lg:px-8 lg:py-5">
+    <section className="relative min-h-115 overflow-hidden bg-[#061a3d] px-4 py-8 text-white sm:min-h-125 md:px-6 md:py-8 lg:min-h-135 lg:px-8 lg:py-5">
       <div className="absolute inset-0">
         {banners.map((banner, index) => (
           <Image
@@ -255,7 +262,7 @@ export function HeroSection() {
         <div className="absolute inset-x-0 bottom-0 h-28 bg-linear-to-t from-[#061a3d]/80 to-transparent" />
       </div>
 
-      <div className="relative z-10 mx-auto flex min-h-[400px] w-full max-w-9xl items-center py-0 sm:min-h-[440px] lg:min-h-[520px]">
+      <div className="relative z-10 mx-auto flex min-h-100 w-full max-w-9xl items-center py-0 sm:min-h-110 lg:min-h-130">
         <div className="grid w-full min-w-0 max-w-full items-center gap-5 md:gap-7 lg:grid-cols-[minmax(0,1fr)_minmax(340px,400px)] xl:grid-cols-[minmax(0,1fr)_minmax(360px,420px)]">
           <div className="mobile-hero-copy min-w-0 max-w-[calc(100vw-2rem)] lg:max-w-3xl">
             {/* <div className="hidden flex-wrap gap-4 sm:flex">
@@ -331,7 +338,10 @@ export function HeroSection() {
 
             <div className="mt-5 grid max-w-2xl grid-cols-3 gap-1 sm:gap-2">
               {trustStats.map(({ value, label, icon: Icon }) => (
-                <div key={label} className="flex min-w-0 items-center gap-1.5 sm:gap-3">
+                <div
+                  key={label}
+                  className="flex min-w-0 items-center gap-1.5 sm:gap-3"
+                >
                   <span className="hidden h-9 w-9 shrink-0 items-center justify-center text-[#8fc7ff] sm:flex">
                     <Icon className="h-4.5 w-4.5" />
                   </span>
@@ -439,12 +449,35 @@ export function HeroSection() {
 
                   <div className="grid gap-2.5 sm:grid-cols-2">
                     <CompactSelect
-                      label="Employment Type"
                       value={salaryType}
+                      label="Employment Type"
                       options={salaryOptions}
                       icon={BriefcaseBusiness}
                       onChange={setSalaryType}
                     />
+                    <label className="block">
+                      <span className="text-[12px] font-bold text-[#344054]">
+                        Monthly Salary / Income
+                      </span>
+                      <span className="mt-1 flex h-10 w-full items-center gap-2 rounded-xl border border-[#d7e5f3] bg-white px-3 transition focus-within:border-[#075cde]">
+                        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-[#e9f2ff] text-[#075cde]">
+                          <IndianRupee className="h-3.5 w-3.5" />
+                        </span>
+                        <input
+                          type="text"
+                          inputMode="numeric"
+                          value={monthlyIncome}
+                          onChange={(event) =>
+                            setMonthlyIncome(
+                              event.target.value.replace(/\D/g, ""),
+                            )
+                          }
+                          placeholder="Enter amount"
+                          className="min-w-0 flex-1 border-0 bg-transparent text-[12px] font-bold text-[#2f3a4a] outline-none"
+                          aria-label="Monthly Salary / Income"
+                        />
+                      </span>
+                    </label>
                     <label className="block">
                       <span className="text-[12px] font-bold text-[#344054]">
                         CIBIL Score

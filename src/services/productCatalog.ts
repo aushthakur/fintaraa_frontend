@@ -40,6 +40,8 @@ const fallbackCatalog: ProductCatalog = {
   insurance: insuranceProductCatalog,
 };
 
+const excludedLoanSlugs = new Set(["credit-score-loan"]);
+
 const slugify = (value: string) =>
   value
     .trim()
@@ -110,7 +112,12 @@ const normaliseRows = (
         ? String(row.loanTypeSlug || rawName)
         : String(row.insuranceTypeSlug || rawName),
     );
-    if (!slug || products.has(slug)) return;
+    if (
+      !slug ||
+      products.has(slug) ||
+      (kind === "loan" && excludedLoanSlugs.has(slug))
+    )
+      return;
 
     const known = fallbackBySlug.get(slug);
     products.set(slug, {
@@ -152,7 +159,8 @@ export const fetchPublicProductPages = async (): Promise<{
   return {
     loans: loanRows.filter(
       (row): row is PublicLoanProductPage =>
-        Boolean(row.loanType && row.loanTypeSlug),
+        Boolean(row.loanType && row.loanTypeSlug) &&
+        !excludedLoanSlugs.has(slugify(String(row.loanTypeSlug))),
     ),
     insurance: insuranceRows.filter(
       (row): row is PublicInsuranceProductPage =>

@@ -51,7 +51,7 @@ export const dsaSteps = [
 
 export const dsaBenefits = [
   {
-    title: "30+ Bank Tie-ups",
+    title: "Bank & NBFC Tie-ups",
     text: "Loan up to \u20b940 Lakh. Interest from 10.50% p.a.",
     icon: Banknote,
   },

@@ -277,6 +277,7 @@ export default async function EligibilityResultsPage({
   const loanType = firstValue(query.loanType) || "personal-loan";
   const amount = firstValue(query.amount) || "1000000";
   const salaryType = firstValue(query.salaryType) || "Salaried";
+  const monthlyIncome = firstValue(query.monthlyIncome) || "50000";
   const cibilScore = firstValue(query.cibilScore) || "720";
   const tenureYears = firstValue(query.tenureYears) || "5";
   const bank = firstValue(query.bank);
@@ -289,6 +290,7 @@ export default async function EligibilityResultsPage({
       loanType,
       amount,
       salaryType,
+      monthlyIncome,
       cibilScore,
       tenureYears,
       bank,
@@ -300,6 +302,7 @@ export default async function EligibilityResultsPage({
           loanType: "instant-loan",
           amount,
           salaryType,
+          monthlyIncome,
           cibilScore,
           tenureYears,
           bank,
@@ -336,6 +339,11 @@ export default async function EligibilityResultsPage({
       value: formatCurrency(Number(amount)),
     },
     {
+      icon: BadgeIndianRupee,
+      label: "Monthly income",
+      value: formatCurrency(Number(monthlyIncome)),
+    },
+    {
       icon: Landmark,
       label: "CIBIL score",
       value: cibilScore,
@@ -367,7 +375,7 @@ export default async function EligibilityResultsPage({
 
           <form
             action="/eligibility-results"
-            className="mt-3 grid grid-cols-2 gap-2 rounded-xl bg-[#f4f8fb] p-2 sm:gap-3 sm:p-3 md:mt-4 md:grid-cols-6 md:rounded-2xl xl:grid-cols-12"
+            className="mt-3 grid grid-cols-2 gap-2 rounded-xl bg-[#f4f8fb] p-2 sm:gap-3 sm:p-3 md:mt-4 md:grid-cols-6 md:rounded-2xl xl:grid-cols-[repeat(14,minmax(0,1fr))]"
           >
             <label className="col-span-2 md:col-span-2 xl:col-span-2">
               <span className="text-[10px] font-extrabold uppercase tracking-wide text-[#64748b] md:text-[12px]">
@@ -392,6 +400,17 @@ export default async function EligibilityResultsPage({
               <input
                 name="amount"
                 defaultValue={amount}
+                inputMode="numeric"
+                className="mt-1 h-10 w-full rounded-xl border border-[#d9e4ef] bg-white px-3 text-[13px] font-bold outline-none focus:border-[#00529b] md:mt-2 md:h-12 md:rounded-2xl md:px-4 md:text-[14px]"
+              />
+            </label>
+            <label className="xl:col-span-2">
+              <span className="text-[10px] font-extrabold uppercase tracking-wide text-[#64748b] md:text-[12px]">
+                Monthly income
+              </span>
+              <input
+                name="monthlyIncome"
+                defaultValue={monthlyIncome}
                 inputMode="numeric"
                 className="mt-1 h-10 w-full rounded-xl border border-[#d9e4ef] bg-white px-3 text-[13px] font-bold outline-none focus:border-[#00529b] md:mt-2 md:h-12 md:rounded-2xl md:px-4 md:text-[14px]"
               />
@@ -431,6 +450,9 @@ export default async function EligibilityResultsPage({
                 name="tenureYears"
                 defaultValue={tenureYears}
                 inputMode="numeric"
+                min={1}
+                max={30}
+                type="number"
                 className="mt-1 h-10 w-full rounded-xl border border-[#d9e4ef] bg-white px-3 text-[13px] font-bold outline-none focus:border-[#00529b] md:mt-2 md:h-12 md:rounded-2xl md:px-4 md:text-[14px]"
               />
             </label>
@@ -454,7 +476,7 @@ export default async function EligibilityResultsPage({
             </button>
           </form>
 
-          <div className="mt-2 grid grid-cols-2 gap-2 rounded-xl bg-[#f7fbff] p-2 sm:mt-3 sm:gap-3 sm:rounded-2xl sm:p-3 md:grid-cols-4">
+          <div className="mt-2 grid grid-cols-2 gap-2 rounded-xl bg-[#f7fbff] p-2 sm:mt-3 sm:gap-3 sm:rounded-2xl sm:p-3 md:grid-cols-5">
             {summaryItems.map((item) => {
               const Icon = item.icon;
               return (

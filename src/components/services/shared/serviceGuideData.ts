@@ -568,6 +568,214 @@ export const annualComplianceGuide: ServiceGuideConfig = {
   ],
 };
 
+export const rocFilingGuide: ServiceGuideConfig = {
+  guideTitle: "ROC Filing Guide",
+  knowledgeLabel: "Registrar of Companies filing guide",
+  supportLabel: "Get ROC Filing Help",
+  officialLabel: "Official MCA Portal",
+  officialUrl: "https://www.mca.gov.in/content/mca/global/en/home.html",
+  disclaimer:
+    "This is general information, not legal advice. Applicable forms, due dates, fees, attachments and certification depend on entity type, transaction and current MCA requirements.",
+  sections: [
+    {
+      id: "roc-overview",
+      label: "What is ROC Filing?",
+      shortLabel: "Overview",
+      title: "What does ROC filing cover?",
+      summary:
+        "ROC filing records prescribed company information and corporate events with the Registrar of Companies through the MCA system.",
+      icon: "overview",
+      blocks: [
+        paragraphs(
+          "Companies and LLPs have recurring and event-based filing responsibilities after registration. These filings keep public master data, financial information, directors, capital and other statutory records current.",
+          "The applicable form is determined by the entity, event and filing period. A filing should be supported by approved records, valid attachments and authorised digital signatures before submission.",
+        ),
+        bullets(
+          [
+            "Annual financial statement and annual return filings",
+            "Director, auditor and registered-office updates",
+            "Share capital, allotment and charge-related forms",
+            "Acknowledgement and SRN record maintenance",
+          ],
+          "Common ROC filing areas",
+        ),
+      ],
+    },
+    {
+      id: "roc-annual-forms",
+      label: "Annual ROC Forms",
+      shortLabel: "Annual Forms",
+      title: "Common annual ROC filings",
+      summary:
+        "Annual forms should agree with adopted financial statements, statutory registers and company master data.",
+      icon: "report",
+      blocks: [
+        table(
+          ["Filing area", "Common form", "Broad purpose"],
+          [
+            [
+              "Financial statements",
+              "AOC-4 family, as applicable",
+              "Files adopted financial statements and prescribed attachments",
+            ],
+            [
+              "Annual return",
+              "MGT-7 / MGT-7A, as applicable",
+              "Reports company, capital, member and governance information",
+            ],
+            [
+              "Director KYC",
+              "DIR-3 KYC / web service",
+              "Maintains prescribed KYC details for DIN holders",
+            ],
+            [
+              "Auditor appointment",
+              "ADT-1, when applicable",
+              "Records the company's auditor appointment",
+            ],
+          ],
+        ),
+        note(
+          "Form names are directional, not a complete checklist. Review company category, filing history and current MCA notifications before preparation.",
+        ),
+      ],
+    },
+    {
+      id: "roc-event-filings",
+      label: "Event-based Filings",
+      shortLabel: "Events",
+      title: "When event-based ROC filing may be required",
+      summary:
+        "Specified corporate changes can create a separate filing requirement and deadline outside the annual cycle.",
+      icon: "compliance",
+      blocks: [
+        cards([
+          {
+            title: "Directors & officers",
+            text: "Appointment, resignation or changes in prescribed particulars may require board records and ROC forms.",
+          },
+          {
+            title: "Registered office",
+            text: "A change in the registered office can require approvals, address evidence and jurisdiction-specific filings.",
+          },
+          {
+            title: "Capital & allotment",
+            text: "Share issues, allotments, transfers or capital changes should follow the applicable approval and filing sequence.",
+          },
+          {
+            title: "Charges & agreements",
+            text: "Creation, modification or satisfaction of a charge may require supporting instruments and time-bound filing.",
+          },
+        ]),
+      ],
+    },
+    {
+      id: "roc-documents",
+      label: "Documents Required",
+      shortLabel: "Documents",
+      title: "Prepare the filing documents",
+      summary:
+        "The form data and attachments should be consistent with company approvals, registers and underlying evidence.",
+      icon: "documents",
+      blocks: [
+        bullets(
+          [
+            "Certificate of incorporation and current company master data",
+            "PAN, registered-office and authorised signatory details",
+            "Director and shareholder information",
+            "Signed financial statements and audit report, where applicable",
+            "Board and shareholder resolutions or minutes",
+            "Relevant agreements, declarations and supporting proofs",
+            "Previous filed forms, challans and SRNs",
+            "Valid DSC and professional certification details, where required",
+          ],
+          "Practical ROC document checklist",
+        ),
+      ],
+    },
+    {
+      id: "roc-process",
+      label: "Filing Process",
+      shortLabel: "Process",
+      title: "How the ROC filing workflow works",
+      summary:
+        "A controlled process checks applicability and approvals before the form reaches the MCA portal.",
+      icon: "process",
+      blocks: [
+        steps([
+          "Confirm the entity, filing event or period and applicable ROC form.",
+          "Review company master data, filing history and any pending resubmissions.",
+          "Collect approvals, records and form-specific attachments.",
+          "Prepare the e-form and reconcile every material field with the supporting documents.",
+          "Complete DSC, authorised signatory and professional certification checks where applicable.",
+          "Submit through the MCA workflow and complete the applicable fee payment.",
+          "Save the challan, SRN and filed-form acknowledgement.",
+          "Track processing, resubmission or approval status until closure.",
+        ]),
+      ],
+    },
+    {
+      id: "roc-status",
+      label: "SRN & Filing Status",
+      shortLabel: "Status",
+      title: "Track the SRN and filing outcome",
+      summary:
+        "Submission is not always the final step; the acknowledgement should be monitored for processing, resubmission or approval.",
+      icon: "status",
+      blocks: [
+        bullets([
+          "Retain the Service Request Number and payment challan",
+          "Check whether the form is approved, pending or marked for resubmission",
+          "Respond to resubmission comments within the stated period",
+          "Download and archive the approved or taken-on-record form",
+          "Update statutory records and the next compliance calendar",
+        ]),
+        note(
+          "Do not treat payment alone as confirmation of approval. Check the final form status and preserve the acknowledgement.",
+        ),
+      ],
+    },
+    {
+      id: "roc-faqs",
+      label: "ROC Filing FAQs",
+      shortLabel: "FAQs",
+      title: "Frequently asked ROC filing questions",
+      summary:
+        "Quick answers to common questions about annual and event-based filings.",
+      icon: "faq",
+      blocks: [
+        faq([
+          {
+            question: "Is ROC filing required if the company had no business?",
+            answer:
+              "A registered entity can still have annual and other statutory duties even without revenue or operations. Review the entity's current status and applicable filings.",
+          },
+          {
+            question: "Are AOC-4 and MGT-7 the only ROC forms?",
+            answer:
+              "No. Director, auditor, office, capital, charge, beneficial-ownership and other event-based forms may also apply.",
+          },
+          {
+            question: "Can a late ROC form still be filed?",
+            answer:
+              "Many delayed forms may remain fileable with additional fees, but the route and consequences depend on the form, delay and company status.",
+          },
+          {
+            question: "What is an SRN?",
+            answer:
+              "The Service Request Number identifies a submitted MCA transaction and is used to track payment and processing status.",
+          },
+          {
+            question: "Does successful payment mean the filing is approved?",
+            answer:
+              "Not necessarily. Some forms are taken on record automatically, while others may remain pending, require review or be sent for resubmission.",
+          },
+        ]),
+      ],
+    },
+  ],
+};
+
 export const taxComplianceGuide: ServiceGuideConfig = {
   guideTitle: "Tax Compliance Guide",
   knowledgeLabel: "Business tax guide",
@@ -1080,6 +1288,7 @@ export const projectReportGuide: ServiceGuideConfig = {
 
 export const serviceGuidesBySlug: Record<string, ServiceGuideConfig> = {
   "annual-compliance": annualComplianceGuide,
+  "roc-filing": rocFilingGuide,
   "tax-compliance": taxComplianceGuide,
   "msme-registration": msmeRegistrationGuide,
   "project-report": projectReportGuide,

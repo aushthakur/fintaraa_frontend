@@ -3,7 +3,7 @@ import Link from "next/link";
 import {
   Mail,
   MapPin,
-  Clock3,
+  Landmark,
   MessageCircle,
   Users,
   Phone,
@@ -15,20 +15,26 @@ import { FaqAccordion } from "@/components/common/FaqAccordion";
 import { ContactConsultationForm } from "./ContactConsultationForm";
 import { AppDownloadBanner } from "@/components/common/layout/Footer";
 import { AnimatedCounter } from "@/components/common/AnimatedCounter";
+import {
+  CALL_PHONE,
+  COMPANY_NAME,
+  OFFICE,
+  WHATSAPP_PHONE,
+} from "@/data/company";
 
 const heroStats = [
   { value: "Quick Approval", label: "Just in 24hrs", icon: ShieldCheck },
   { value: "10,000+", label: "Happy Customers", icon: Users },
-  { value: "RBI Complaints", label: "Partners", icon: Clock3 },
+  { value: "100+", label: "Lending Partners", icon: Landmark },
 ];
 
 const contactCards = [
   {
     title: "Call Us",
-    value: "+91 84482 82679",
-    lines: ["Mon - Sat, 9:30 AM - 6:30 PM"],
+    value: CALL_PHONE.display,
+    lines: ["Mon - Sat, 10:00 AM - 7:00 PM"],
     icon: Phone,
-    href: "tel:+918448282679",
+    href: CALL_PHONE.href,
     actionLabel: "Call now",
   },
   {
@@ -41,19 +47,19 @@ const contactCards = [
   },
   {
     title: "WhatsApp",
-    value: "+91 84482 82679",
+    value: WHATSAPP_PHONE.display,
     lines: ["Chat With Our Expert"],
     icon: MessageCircle,
-    href: "https://wa.me/918448282679",
+    href: WHATSAPP_PHONE.href,
     actionLabel: "Open WhatsApp",
     external: true,
   },
   {
     title: "Visit Our Office",
-    value: "Spaze I-Tech Park, Sector 49",
-    lines: ["Unit 402, Tower A, Gurugram, Haryana - 122018"],
+    value: COMPANY_NAME,
+    lines: [OFFICE.address],
     icon: MapPin,
-    href: "https://www.google.com/maps/search/?api=1&query=Fintaraa+Financial+Services+Unit+402+Tower+A+Spaze+I-Tech+Park+Sector+49+Gurugram+Haryana+122018",
+    href: OFFICE.mapUrl,
     actionLabel: "View directions",
     external: true,
   },
@@ -160,7 +166,7 @@ export function ContactUsPage() {
                   Apply Loan
                 </Link>
                 <a
-                  href="tel:+918448282679"
+                  href={CALL_PHONE.href}
                   className="inline-flex h-12 w-full items-center justify-center rounded-full border border-[#73d08b] bg-white px-8 text-[15px] font-semibold text-[#16b654] no-underline sm:w-auto"
                 >
                   Call Us Now
@@ -178,7 +184,7 @@ export function ContactUsPage() {
               <div className="relative h-82.5 w-full max-w-140">
                 <Image
                   src="/assets/contact/contact-hero.png"
-                  alt="Contact hero illustration placeholder"
+                  alt="Fintaraa customer support team"
                   fill
                   priority
                   unoptimized
@@ -240,7 +246,7 @@ export function ContactUsPage() {
             </div>
 
             <a
-              href="tel:+918448282679"
+              href={CALL_PHONE.href}
               className="inline-flex h-14 w-full items-center justify-center gap-3 rounded-full bg-[#16b654] px-7 text-[16px] font-semibold text-white no-underline shadow-[0_16px_30px_rgba(22,182,84,0.24)] transition hover:-translate-y-0.5 hover:bg-[#119b48] sm:w-auto"
             >
               <Phone className="h-5 w-5" />

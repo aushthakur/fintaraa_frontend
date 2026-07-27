@@ -127,7 +127,7 @@ export const statementUploadItems = [
 export const fetchDocumentCatalog = async (): Promise<DocumentCatalogItem[]> => {
   const response = await Fetch<unknown>(
     "documents/document-catalog",
-    undefined,
+    { pagination: false },
     10000,
     true,
     false,

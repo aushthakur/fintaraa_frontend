@@ -8,7 +8,6 @@ import {
   CreditCardsHero,
 } from "./CreditCardsHero";
 import { CreditCardsStats } from "./CreditCardsStats";
-import { CreditEligibility } from "./CreditEligibility";
 import { CreditPartners } from "./CreditPartners";
 import { FaqAccordion } from "../common/FaqAccordion";
 import { ExploreCategories } from "./CategoryCardsGrid";
@@ -61,6 +60,7 @@ export function CreditCardsPage() {
             }}
           />
         </SectionReveal>
+        {/* CreditEligibility is intentionally hidden from this page. */}
         <SectionReveal>
           <div id="credit-card-results" className="scroll-mt-24">
             <CreditCardsExplorer
@@ -70,12 +70,6 @@ export function CreditCardsPage() {
               onClearRecommendation={() => setRecommendation(null)}
             />
           </div>
-        </SectionReveal>
-        <SectionReveal>
-          <CreditEligibility
-            onOffersRequested={handleRecommendation}
-            onCategorySelect={(category) => setSelectedCategories([category])}
-          />
         </SectionReveal>
         <SectionReveal>
           <CreditPartners />

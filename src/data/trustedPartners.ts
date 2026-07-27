@@ -176,14 +176,12 @@ export const getTrustedPartnerHref = (
   activeCategory: TrustedPartnerCategoryKey,
 ) => {
   if (activeCategory === "all") return `/banks/${partner.slug}`;
+  if (activeCategory === "credit-bureau") return "/cibil-score";
 
   const productSlug =
     activeCategory === "credit-card" && partner.categories.includes("credit-card")
       ? "credit-card"
-      : activeCategory === "credit-bureau" &&
-          partner.categories.includes("credit-bureau")
-        ? "credit-score-loan"
-        : partner.defaultProductSlug || "personal-loan";
+      : partner.defaultProductSlug || "personal-loan";
 
   return `/banks/${partner.slug}/${productSlug}`;
 };

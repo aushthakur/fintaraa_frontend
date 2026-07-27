@@ -1,4 +1,3 @@
-import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { whyChooseItems } from "./dsaData";
 
 export function DsaWhyChoose() {
@@ -20,7 +19,6 @@ export function DsaWhyChoose() {
 
             <div className="mt-6 rounded-[20px] bg-white/10 p-4">
               <div className="flex items-center gap-2 text-[13px] font-extrabold text-white">
-                <CheckCircle2 className="h-4 w-4 text-[#9ee6bd]" />
                 Built for partner growth
               </div>
               <p className="mt-2 text-[12px] font-medium leading-5 text-white/72">
@@ -31,22 +29,15 @@ export function DsaWhyChoose() {
           </div>
 
           <div className="grid gap-3 sm:grid-cols-2">
-            {whyChooseItems.map(({ title, text, icon: Icon }) => (
+            {whyChooseItems.map(({ title, text }) => (
               <div
                 key={title}
                 className="rounded-[18px] bg-white p-4 text-[#1d2633]"
               >
-                <div className="flex items-start gap-3">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#edf5ff] text-[#0b5aa8]">
-                    <Icon className="h-5 w-5" />
-                  </span>
-                  <div>
-                    <h3 className="text-[14px] font-extrabold">{title}</h3>
-                    <p className="mt-1 text-[12px] font-medium leading-5 text-[#667085]">
-                      {text}
-                    </p>
-                  </div>
-                </div>
+                <h3 className="text-[14px] font-extrabold">{title}</h3>
+                <p className="mt-1 text-[12px] font-medium leading-5 text-[#667085]">
+                  {text}
+                </p>
               </div>
             ))}
 
@@ -62,7 +53,6 @@ export function DsaWhyChoose() {
                   Share your details and our partnership team will contact you.
                 </span>
               </span>
-              <ArrowRight className="h-5 w-5 shrink-0 transition group-hover:translate-x-1" />
             </a>
           </div>
         </div>

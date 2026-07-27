@@ -8,7 +8,6 @@ import {
   ArrowRight,
   BadgeCheck,
   CalendarDays,
-  CheckCircle2,
   CreditCard,
   Loader2,
   Percent,
@@ -28,6 +27,7 @@ import {
   type OfferRecord,
 } from "@/services/offers";
 import { OffersHero } from "./OffersHero";
+import { SubmissionSuccessNotice } from "@/components/common/SubmissionSuccessNotice";
 
 const categories = [
   { label: "All Offers", value: "all", icon: Sparkles },
@@ -213,7 +213,10 @@ export function OffersPage() {
   const [loading, setLoading] = useState(true);
   const [applyingId, setApplyingId] = useState("");
   const [error, setError] = useState("");
-  const [message, setMessage] = useState("");
+  const [submittedApplication, setSubmittedApplication] = useState<{
+    referenceId: string;
+    referenceLabel: string;
+  } | null>(null);
   const [whatsappConsent, setWhatsappConsent] = useState(false);
 
   useEffect(() => {
@@ -286,24 +289,36 @@ export function OffersPage() {
     }
     if (!whatsappConsent) {
       setError("Please accept WhatsApp communication consent before applying.");
-      setMessage("");
+      setSubmittedApplication(null);
       return;
     }
     setApplyingId(offer._id);
     setError("");
-    setMessage("");
+    setSubmittedApplication(null);
     try {
       const consentPayload = buildWebsiteConsentPayload("website_offers_page");
-      await applyForOffer(offer._id, {
+      const result = await applyForOffer(offer._id, {
         metadata: {
           ...consentPayload,
           productCategory: offer.productCategory,
           productType: offer.productType,
         },
       });
-      setMessage(
-        "Offer application recorded. Our team will contact you shortly.",
-      );
+      const referenceId = result.applicationId || result.referenceId || "";
+      if (!referenceId) {
+        throw new Error(
+          "Application was submitted, but its tracking ID was not returned.",
+        );
+      }
+      setSubmittedApplication({
+        referenceId,
+        referenceLabel:
+          offer.productCategory === "card"
+            ? "Credit Card Application ID"
+            : offer.productCategory === "insurance"
+              ? "Insurance Reference ID"
+              : "Loan Application ID",
+      });
     } catch (err) {
       setError((err as Error).message || "Could not apply for this offer.");
     } finally {
@@ -372,10 +387,13 @@ export function OffersPage() {
               </div>
             </motion.div>
 
-            {message ? (
-              <div className="mt-6 flex items-center gap-2 rounded-lg bg-[#ecfdf3] px-4 py-3 text-[13px] font-extrabold text-[#027a48]">
-                <CheckCircle2 className="h-4 w-4" />
-                {message}
+            {submittedApplication ? (
+              <div className="mt-6">
+                <SubmissionSuccessNotice
+                  message="Application submitted successfully. Our team will contact you shortly."
+                  referenceId={submittedApplication.referenceId}
+                  referenceLabel={submittedApplication.referenceLabel}
+                />
               </div>
             ) : null}
             {error ? (

@@ -17,6 +17,7 @@ import {
   siteName,
   siteUrl,
 } from "@/services/seoConfig";
+import { CALL_PHONE, COMPANY_NAME, OFFICE } from "@/data/company";
 
 export const bodoni = Bodoni_Moda({
   subsets: ["latin"],
@@ -123,14 +124,15 @@ export default function RootLayout({
     {
       "@context": "https://schema.org",
       "@type": "Organization",
-      name: siteName,
+      name: COMPANY_NAME,
+      alternateName: siteName,
       url: siteUrl,
       logo: absoluteUrl("/assets/logo/logo.png"),
       email: "customercare@fintaraa.com",
       contactPoint: [
         {
           "@type": "ContactPoint",
-          telephone: "+91-84482-82679",
+          telephone: `+${CALL_PHONE.digits}`,
           contactType: "customer support",
           areaServed: "IN",
           availableLanguage: ["en", "hi"],
@@ -138,11 +140,10 @@ export default function RootLayout({
       ],
       address: {
         "@type": "PostalAddress",
-        streetAddress:
-          "Unit No. 402, 4th Floor, Tower A, Spaze I-Tech Park, Sector 49",
-        addressLocality: "Gurugram",
-        addressRegion: "Haryana",
-        postalCode: "122018",
+        streetAddress: OFFICE.streetAddress,
+        addressLocality: OFFICE.locality,
+        addressRegion: OFFICE.region,
+        postalCode: OFFICE.postalCode,
         addressCountry: "IN",
       },
     },

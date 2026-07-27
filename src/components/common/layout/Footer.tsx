@@ -21,6 +21,12 @@ import { FaApple, FaGooglePlay } from "react-icons/fa6";
 import Image from "next/image";
 import { productHref } from "@/lib/productRouting";
 import { useProductCatalog } from "@/hooks/useProductCatalog";
+import {
+  CALL_PHONE,
+  COMPANY_NAME,
+  OFFICE,
+  WHATSAPP_PHONE,
+} from "@/data/company";
 
 /* ─── DATA ─────────────────────────────────────────────────── */
 
@@ -30,6 +36,7 @@ const financialServiceLinks = [
   { label: "GST Registration", href: "/gst-registration" },
   { label: "MSME Registration", href: "/msme-registration" },
   { label: "Annual Compliance", href: "/annual-compliance" },
+  { label: "ROC Filing", href: "/roc-filing" },
   { label: "Tax Compliances", href: "/tax-compliance" },
   { label: "Project Report", href: "/project-report" },
   { label: "Company Registration", href: "/company-registration" },
@@ -42,6 +49,7 @@ const aboutCompanyLinks = [
   { label: "Franchise", href: "/franchise" },
   { label: "Become DSA", href: "/become-dsa" },
   { label: "Press Releases", href: "/press-release" },
+  { label: "Awards & Recognitions", href: "/awards-and-recognitions" },
   { label: "FAQs", href: "/faqs" },
   { label: "Feedback", href: "/feedback" },
 ];
@@ -57,7 +65,7 @@ const quickLinks = [
   { label: "Blog", href: "/blog", icon: Newspaper },
   { label: "Application Status", href: "/application-status", icon: Wrench },
   {
-    label: "Partner Login",
+    label: "Channel Partner Login",
     href: "/partner/login",
     icon: Landmark,
   },
@@ -310,31 +318,34 @@ export default function Footer() {
         <div className="mx-auto mt-8 max-w-9xl border-t border-white/10 px-4 md:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-5 py-7 text-[14px] text-white sm:grid-cols-2 sm:items-start lg:grid-cols-5 lg:items-center">
             {/* Address */}
-            <div className="flex items-start gap-2">
+            <a
+              href={OFFICE.mapUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-start gap-2 text-white no-underline transition-colors hover:text-white/80"
+            >
               <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-white/70" />
               <p className="leading-[1.7] text-white/90">
-                Fintaraa Financial Services Pvt. Ltd. Unit No. 402, 4th Floor,
-                Tower A, Spaze I-Tech Park, Sector 49, Gurugram, Haryana -
-                122018
+                {COMPANY_NAME} {OFFICE.address}
               </p>
-            </div>
+            </a>
 
             {/* Phone */}
             <a
-              href="tel:+918448282679"
+              href={CALL_PHONE.href}
               className="flex items-center gap-3 text-white no-underline transition-colors hover:text-white/80"
             >
               <PhoneCall className="h-4 w-4 shrink-0 text-white/70" />
-              +91 84482 82679
+              {CALL_PHONE.display}
             </a>
 
             {/* WhatsApp */}
             <a
-              href="https://wa.me/918448282679"
+              href={WHATSAPP_PHONE.href}
               className="flex items-center gap-3 text-white no-underline transition-colors hover:text-white/80"
             >
               <MessageCircle className="h-4 w-4 shrink-0 text-white/70" />
-              +91 84482 82679
+              {WHATSAPP_PHONE.display}
             </a>
 
             {/* Email */}
@@ -349,7 +360,7 @@ export default function Footer() {
             {/* Hours */}
             <div className="flex items-center gap-3 text-white">
               <Clock className="h-4 w-4 shrink-0 text-white/70" />
-              Mon - Sat: 9:30 AM - 6:30 PM
+              Mon - Sat: 10:00 AM - 7:00 PM
             </div>
           </div>
         </div>
@@ -381,7 +392,7 @@ export default function Footer() {
           <div className="mx-auto flex max-w-9xl flex-col items-start justify-between gap-4 px-4 py-4 md:px-6 lg:flex-row lg:items-center lg:px-8">
             {/* Copyright */}
             <p className="text-[13px] text-white/70">
-              © 2024 Fintaraa Financial Services Pvt. Ltd. All Rights Reserved.
+              © 2024 {COMPANY_NAME} All Rights Reserved.
             </p>
 
             {/* Legal links */}

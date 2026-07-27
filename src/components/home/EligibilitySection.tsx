@@ -4,15 +4,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import {
-  ArrowRight,
-  BadgeCheck,
-  CalendarDays,
   Check,
-  ChevronDown,
+  ArrowRight,
   CreditCard,
+  BadgeCheck,
+  ChevronDown,
+  CalendarDays,
   Gauge,
   HandCoins,
   Info,
+  IndianRupee,
   LockKeyhole,
   ShieldCheck,
   Star,
@@ -45,7 +46,10 @@ const stepperItems = [
 ];
 
 const loanTypeOptions = loanProductDirectory.map((loan) => loan.name);
-const tenureOptions = ["5 Years", "3 Years", "7 Years", "10 Years"];
+const tenureOptions = Array.from(
+  { length: 30 },
+  (_, index) => `${index + 1} ${index === 0 ? "Year" : "Years"}`,
+);
 const salaryOptions = [
   "Salaried",
   "Self Employed",
@@ -84,9 +88,7 @@ function PremiumSelect({
         type="button"
         onClick={() => setOpen((current) => !current)}
         className={`mt-1 flex h-11 w-full items-center gap-3 rounded-xl border bg-white px-3 text-left text-[13px] font-semibold transition ${
-          open
-            ? "border-[#075cde]"
-            : "border-[#d7e5f3] hover:border-[#075cde]"
+          open ? "border-[#075cde]" : "border-[#d7e5f3] hover:border-[#075cde]"
         }`}
       >
         <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#e9f2ff] text-[#075cde]">
@@ -133,8 +135,9 @@ export function EligibilitySection() {
   const [selectedProduct, setSelectedProduct] = useState("Loan");
   const [amount, setAmount] = useState(1000000);
   const [purpose, setPurpose] = useState(loanTypeOptions[0]);
-  const [tenure, setTenure] = useState(tenureOptions[0]);
+  const [tenure, setTenure] = useState("5 Years");
   const [salaryType, setSalaryType] = useState(salaryOptions[0]);
+  const [monthlyIncome, setMonthlyIncome] = useState("50000");
   const [cibilScore, setCibilScore] = useState(720);
   const activeStep = cibilScore ? 3 : amount ? 2 : selectedProduct ? 1 : 0;
 
@@ -148,12 +151,21 @@ export function EligibilitySection() {
       loanType,
       amount: String(amount),
       salaryType,
+      monthlyIncome: monthlyIncome || "0",
       cibilScore: String(cibilScore),
       tenureYears: String(getTenureYears(tenure)),
     });
 
     return `/eligibility-results?${params.toString()}`;
-  }, [amount, cibilScore, purpose, salaryType, selectedProduct, tenure]);
+  }, [
+    amount,
+    cibilScore,
+    monthlyIncome,
+    purpose,
+    salaryType,
+    selectedProduct,
+    tenure,
+  ]);
 
   const continueLabel =
     selectedProduct === "Loan" ? "Check Offers" : "Continue";
@@ -164,7 +176,7 @@ export function EligibilitySection() {
       className="bg-white px-4 py-12 md:px-6 lg:px-8"
     >
       <div className="mx-auto grid max-w-9xl overflow-hidden rounded-2xl bg-[#f7fbff] lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
-        <div className="relative flex flex-col justify-end overflow-hidden bg-[#e9f2ff] px-5 pt-7 sm:px-8 lg:min-h-[520px] lg:px-10">
+        <div className="relative flex flex-col justify-end overflow-hidden bg-[#e9f2ff] px-5 pt-7 sm:px-8 lg:min-h-130 lg:px-10">
           <div className="relative z-10">
             <div className="flex flex-wrap gap-2">
               {["RBI Registered", "ISO 27001 Certified"].map((item) => (
@@ -188,9 +200,18 @@ export function EligibilitySection() {
 
             <div className="mt-6 grid max-w-md gap-3">
               {[
-                ["100% Safe & Secure", "Bank-level encryption protects your data."],
-                ["Instant Results", "See matched offers in less than 30 seconds."],
-                ["No CIBIL Impact", "Checking eligibility will not affect your score."],
+                [
+                  "100% Safe & Secure",
+                  "Bank-level encryption protects your data.",
+                ],
+                [
+                  "Instant Results",
+                  "See matched offers in less than 30 seconds.",
+                ],
+                [
+                  "No CIBIL Impact",
+                  "Checking eligibility will not affect your score.",
+                ],
               ].map(([title, text]) => (
                 <div
                   key={title}
@@ -306,7 +327,9 @@ export function EligibilitySection() {
 
             <form className="mt-7 flex flex-col gap-5">
               <div>
-                <p className="text-[13px] font-semibold text-[#344054]">I want</p>
+                <p className="text-[13px] font-semibold text-[#344054]">
+                  I want
+                </p>
                 <div className="mt-2 grid grid-cols-3 gap-2">
                   {productOptions.map(({ label, icon: Icon }) => (
                     <button
@@ -369,7 +392,7 @@ export function EligibilitySection() {
                 </div>
               </div>
 
-              <div className="grid gap-4 sm:grid-cols-2">
+              <div className="grid gap-4 sm:grid-cols-3">
                 <PremiumSelect
                   label="Loan Type"
                   value={purpose}
@@ -394,6 +417,27 @@ export function EligibilitySection() {
                   icon={BriefcaseBusiness}
                   onChange={setSalaryType}
                 />
+                <label className="block">
+                  <span className="text-[13px] font-semibold text-[#344054]">
+                    Monthly Salary / Income
+                  </span>
+                  <span className="mt-1 flex h-11 w-full items-center gap-3 rounded-xl border border-[#d7e5f3] bg-white px-3 transition hover:border-[#075cde] focus-within:border-[#075cde]">
+                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#e9f2ff] text-[#075cde]">
+                      <IndianRupee className="h-4 w-4" />
+                    </span>
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      value={monthlyIncome}
+                      onChange={(event) =>
+                        setMonthlyIncome(event.target.value.replace(/\D/g, ""))
+                      }
+                      placeholder="Enter amount"
+                      className="min-w-0 flex-1 border-0 bg-transparent text-[13px] font-bold text-[#2f3a4a] outline-none"
+                      aria-label="Monthly Salary / Income"
+                    />
+                  </span>
+                </label>
                 <label className="block">
                   <span className="text-[13px] font-semibold text-[#344054]">
                     CIBIL Score

@@ -4,6 +4,7 @@ import { accountItemBySlug } from "@/data/accountProfile";
 import { AccountProfilePage } from "@/components/account/AccountProfilePage";
 import { getPageSeoMetadata } from "@/services/seoMetadata";
 import { noIndexRobots } from "@/services/seoConfig";
+import { CustomerAuthGuard } from "@/components/auth/CustomerAuthGuard";
 
 type PageProps = {
   params: Promise<{ section: string }>;
@@ -39,5 +40,9 @@ export default async function AccountSectionPage({ params }: PageProps) {
     notFound();
   }
 
-  return <AccountProfilePage activeSlug={section} />;
+  return (
+    <CustomerAuthGuard redirectTo={`/account/profile/${section}`}>
+      <AccountProfilePage activeSlug={section} />
+    </CustomerAuthGuard>
+  );
 }

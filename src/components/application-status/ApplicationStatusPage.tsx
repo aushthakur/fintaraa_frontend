@@ -39,6 +39,8 @@ import { AUTH_CHANGED_EVENT } from "@/lib/authEvents";
 import {
   fetchAccountInsuranceApplications,
   fetchAccountLoanApplications,
+  fetchAccountCreditCardApplications,
+  type AccountCreditCardApplication,
   type AccountInsuranceQuery,
   type AccountLoanQuery,
 } from "@/services/accountActivity";
@@ -54,12 +56,12 @@ import {
 
 type TimelineStatus = "pending" | "active" | "completed" | "blocked";
 type ViewerType = "user" | "agency" | null;
-type StatusFilter = "All" | "Loan" | "Insurance" | "Service";
+type StatusFilter = "All" | "Loan" | "Insurance" | "Credit Card" | "Service";
 
 type StatusItem = {
   id: string;
   queryId: string;
-  type: "loan" | "insurance" | "service";
+  type: "loan" | "insurance" | "card" | "service";
   title: string;
   subtitle: string;
   status: string;
@@ -121,6 +123,13 @@ const serviceTypes: ServiceOption[] = [
     icon: FileCheck2,
   },
   {
+    label: "ROC Filing",
+    shortLabel: "ROC",
+    value: "roc_filing",
+    example: "FIN202607110001",
+    icon: FileCheck2,
+  },
+  {
     label: "Tax Compliance",
     shortLabel: "Tax",
     value: "tax_compliance",
@@ -150,7 +159,23 @@ const serviceTypes: ServiceOption[] = [
   },
 ];
 
-const statusTabs: StatusFilter[] = ["All", "Loan", "Insurance", "Service"];
+const statusTabs: StatusFilter[] = [
+  "All",
+  "Loan",
+  "Insurance",
+  "Credit Card",
+  "Service",
+];
+
+const statusFilterType: Record<
+  Exclude<StatusFilter, "All">,
+  StatusItem["type"]
+> = {
+  Loan: "loan",
+  Insurance: "insurance",
+  "Credit Card": "card",
+  Service: "service",
+};
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -349,6 +374,21 @@ const mapInsurance = (item: AccountInsuranceQuery): StatusItem => ({
   timeline: loanTimeline(item.status),
 });
 
+const mapCreditCard = (
+  item: AccountCreditCardApplication,
+): StatusItem => ({
+  id: item._id,
+  queryId: item.applicationId || item.offerId || item._id,
+  type: "card",
+  title: item.title || "Credit Card Application",
+  subtitle: [item.lenderName, titleCase(item.productType || "")]
+    .filter(Boolean)
+    .join(" • "),
+  status: item.status || "Applied",
+  updatedAt: item.updatedAt || item.appliedAt || item.createdAt,
+  timeline: loanTimeline(item.status),
+});
+
 const mapService = (item: ServiceRequestRecord): StatusItem => ({
   id: item._id,
   queryId: item.queryId,
@@ -408,6 +448,11 @@ const itemTypeMeta: Record<
     label: "Insurance",
     icon: ShieldCheck,
     tone: "bg-[#eef8f4] text-[#087443]",
+  },
+  card: {
+    label: "Credit Card",
+    icon: WalletCards,
+    tone: "bg-[#f2efff] text-[#5b43d6]",
   },
   service: {
     label: "Service",
@@ -595,7 +640,7 @@ export function ApplicationStatusPage() {
     () =>
       tab === "All"
         ? items
-        : items.filter((item) => item.type === tab.toLowerCase()),
+        : items.filter((item) => item.type === statusFilterType[tab]),
     [items, tab],
   );
 
@@ -609,6 +654,7 @@ export function ApplicationStatusPage() {
       All: items.length,
       Loan: items.filter((item) => item.type === "loan").length,
       Insurance: items.filter((item) => item.type === "insurance").length,
+      "Credit Card": items.filter((item) => item.type === "card").length,
       Service: items.filter((item) => item.type === "service").length,
     }),
     [items],
@@ -654,11 +700,13 @@ export function ApplicationStatusPage() {
         const [
           loans,
           insurance,
+          creditCards,
           gst,
           itr,
           company,
           msme,
           annual,
+          roc,
           tax,
           project,
           franchise,
@@ -666,11 +714,13 @@ export function ApplicationStatusPage() {
         ] = await Promise.all([
           fetchAccountLoanApplications(),
           fetchAccountInsuranceApplications(),
+          fetchAccountCreditCardApplications(),
           fetchServiceRequestHistory({ serviceType: "gst_registration" }),
           fetchServiceRequestHistory({ serviceType: "itr_filing" }),
           fetchServiceRequestHistory({ serviceType: "company_registration" }),
           fetchServiceRequestHistory({ serviceType: "msme_registration" }),
           fetchServiceRequestHistory({ serviceType: "annual_compliance" }),
+          fetchServiceRequestHistory({ serviceType: "roc_filing" }),
           fetchServiceRequestHistory({ serviceType: "tax_compliance" }),
           fetchServiceRequestHistory({ serviceType: "project_report" }),
           fetchServiceRequestHistory({ serviceType: "franchise_partner" }),
@@ -680,12 +730,14 @@ export function ApplicationStatusPage() {
         const next = [
           ...loans.map(mapLoan),
           ...insurance.map(mapInsurance),
+          ...creditCards.map(mapCreditCard),
           ...[
             ...gst,
             ...itr,
             ...company,
             ...msme,
             ...annual,
+            ...roc,
             ...tax,
             ...project,
             ...franchise,
@@ -697,7 +749,31 @@ export function ApplicationStatusPage() {
             new Date(a.updatedAt || 0).getTime(),
         );
         setItems(next);
-        setSelectedId(next[0]?.id || "");
+        const requestedReference =
+          typeof window === "undefined"
+            ? ""
+            : new URLSearchParams(window.location.search)
+                .get("applicationId")
+                ?.trim() || "";
+        const requestedItem = requestedReference
+          ? next.find(
+              (item) =>
+                item.queryId.toLowerCase() ===
+                requestedReference.toLowerCase(),
+            )
+          : undefined;
+        setSelectedId(requestedItem?.id || next[0]?.id || "");
+        if (requestedItem) {
+          const requestedTab =
+            requestedItem.type === "card"
+              ? "Credit Card"
+              : requestedItem.type === "insurance"
+                ? "Insurance"
+                : requestedItem.type === "service"
+                  ? "Service"
+                  : "Loan";
+          setTab(requestedTab);
+        }
       } catch (err) {
         if (active) {
           setError(
@@ -826,9 +902,10 @@ export function ApplicationStatusPage() {
                 </h2>
                 <p className="mt-3 max-w-3xl text-[14px] font-medium leading-7 text-[#5f6f82] md:text-[15px]">
                   Public lookup is available for GST, ITR, company, MSME,
-                  annual compliance, tax compliance, project report, franchise,
-                  and DSA requests. Sign in to view loan and insurance
-                  applications linked to your account.
+                  annual compliance, ROC filing, tax compliance, project
+                  report, franchise, and DSA requests. Sign in to view loan,
+                  insurance, and credit card applications linked to your
+                  account.
                 </p>
               </div>
 
@@ -845,7 +922,7 @@ export function ApplicationStatusPage() {
                     href="/partner/login?redirect=/application-status"
                     className="inline-flex h-11 items-center justify-center gap-2 rounded-md bg-[#005ca8] px-5 text-[13px] font-extrabold text-white no-underline transition-colors hover:bg-[#004e8e]"
                   >
-                    Partner login
+                    Channel Partner login
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                 </div>
@@ -1449,7 +1526,7 @@ export function ApplicationStatusPage() {
                         ? "No matching record was returned for the submitted details. Verify the service type, Query ID, and registered mobile number."
                         : viewerType
                           ? "New and updated applications linked to this account will appear here automatically."
-                          : "Track a service request above, or sign in to securely view loan and insurance applications linked to your account."}
+                          : "Track a service request above, or sign in to securely view loan, insurance, and credit card applications linked to your account."}
                     </p>
                     <div className="mt-6 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
                       {tab !== "All" && items.length ? (
@@ -1497,7 +1574,7 @@ export function ApplicationStatusPage() {
                         {
                           icon: LockKeyhole,
                           title: "Account applications",
-                          text: "Loan and insurance records are available after secure login.",
+                          text: "Loan, insurance, and credit card records are available after secure login.",
                         },
                       ].map(({ icon: Icon, title, text }) => (
                         <div key={title} className="flex gap-3">
