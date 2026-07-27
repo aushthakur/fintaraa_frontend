@@ -7,6 +7,14 @@
   bottom: 0.8rem !important;
 }
 
+.product-hero-swiper .swiper-slide {
+  pointer-events: none;
+}
+
+.product-hero-swiper .swiper-slide-active {
+  pointer-events: auto;
+}
+
 .product-hero-swiper .swiper-pagination-bullet {
   width: 0.55rem;
   height: 0.55rem;

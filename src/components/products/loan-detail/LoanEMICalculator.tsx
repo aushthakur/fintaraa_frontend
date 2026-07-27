@@ -12,7 +12,13 @@ export function LoanEMICalculator({ page }: { page: LoanSeoPageData }) {
   });
 
   return (
-    <div id="loan-emi-calculator" className="scroll-mt-24">
+    <div
+      id="loan-emi-calculator"
+      style={{
+        scrollMarginTop:
+          "calc(var(--site-header-height, 8.25rem) + 5.5rem)",
+      }}
+    >
       <EmiCalculator
         key={page.loanTypeSlug}
         defaultLoanType={page.loanTypeSlug}

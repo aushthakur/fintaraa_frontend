@@ -19,7 +19,11 @@ export function LoanDocumentsRequired({
   return (
     <section
       id="loan-documents"
-      className={`scroll-mt-24 ${
+      style={{
+        scrollMarginTop:
+          "calc(var(--site-header-height, 8.25rem) + 5.5rem)",
+      }}
+      className={`${
         embedded ? "" : "border border-[#e2edf8] bg-white p-5 sm:p-6"
       }`}
     >

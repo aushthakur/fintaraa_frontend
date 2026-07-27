@@ -19,6 +19,11 @@ import type { InsuranceSeoLocationPage } from "@/services/insuranceSeoPages";
 import { getApplyHref } from "@/components/application/flowRegistry";
 import { ProductDetailPopupBanner } from "@/components/products/ProductDetailPopupBanner";
 import { ProductRelatedBlogs } from "../ProductRelatedBlogs";
+import {
+  PRODUCT_SECTION_NAVIGATION_EVENT,
+  type ProductSectionNavigationDetail,
+  scrollToProductSection,
+} from "@/lib/productSectionNavigation";
 
 export function InsuranceDetailPage({
   page,
@@ -37,13 +42,55 @@ export function InsuranceDetailPage({
   const [activeTab, setActiveTab] = useState(tabs[0]?.key || "coverage");
 
   useEffect(() => {
+    const matchingSectionTab = (sectionId: string) => {
+      const matches = (tab: (typeof tabs)[number], terms: string[]) => {
+        const identity = [tab.key, tab.label, ...(tab.filterKeys || [])]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase();
+        return terms.some((term) => identity.includes(term));
+      };
+
+      if (sectionId === "insurance-documents") {
+        return tabs.find((tab) => matches(tab, ["document", "kyc"]));
+      }
+      if (sectionId === "insurance-compare-plans") {
+        return tabs.find((tab) =>
+          matches(tab, ["premium", "plan", "compare"]),
+        );
+      }
+      return undefined;
+    };
+
     const selectHashTab = () => {
       const hashKey = window.location.hash.replace(/^#/, "");
-      if (tabs.some((tab) => tab.key === hashKey)) setActiveTab(hashKey);
+      const directTab = tabs.find((tab) => tab.key === hashKey);
+      const sectionTab = matchingSectionTab(hashKey);
+      const nextTab = directTab || sectionTab;
+      if (nextTab) setActiveTab(nextTab.key);
+      if (sectionTab) scrollToProductSection(`#${hashKey}`);
     };
+    const selectSectionTab = (event: Event) => {
+      const { sectionId } = (
+        event as CustomEvent<ProductSectionNavigationDetail>
+      ).detail;
+      const sectionTab = matchingSectionTab(sectionId);
+      if (sectionTab) setActiveTab(sectionTab.key);
+    };
+
     selectHashTab();
     window.addEventListener("hashchange", selectHashTab);
-    return () => window.removeEventListener("hashchange", selectHashTab);
+    window.addEventListener(
+      PRODUCT_SECTION_NAVIGATION_EVENT,
+      selectSectionTab,
+    );
+    return () => {
+      window.removeEventListener("hashchange", selectHashTab);
+      window.removeEventListener(
+        PRODUCT_SECTION_NAVIGATION_EVENT,
+        selectSectionTab,
+      );
+    };
   }, [tabs]);
   const active = tabs.find((tab) => tab.key === activeTab) || tabs[0];
   const tabIdentity = [

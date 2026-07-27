@@ -1,7 +1,7 @@
 "use client";
 
 import { getImageProps } from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "@/components/common/Modal";
 import { AuthRedirectLink } from "@/components/auth/AuthRedirectLink";
 import type { HomeBanner } from "@/services/homeBanners";
@@ -9,10 +9,7 @@ import {
   fetchProductPopupBanner,
   type ProductPopupDevice,
 } from "@/services/productPopupBanners";
-import {
-  getFallbackProductHeroBanners,
-  type ProductHeroCategory,
-} from "@/services/productHeroBanners";
+import type { ProductHeroCategory } from "@/services/productHeroBanners";
 
 const getDevice = (): ProductPopupDevice =>
   window.matchMedia("(max-width: 767px)").matches ? "mobile" : "web";
@@ -29,48 +26,36 @@ export function ProductDetailPopupBanner({
   applyHref: string;
 }) {
   const popupKey = `${category}:${productSlug}`;
-  const fallbackBanner = useMemo(
-    () =>
-      getFallbackProductHeroBanners({
-        category,
-        productName,
-        productSlug,
-      })[0],
-    [category, productName, productSlug],
-  );
   const [loadedBanner, setLoadedBanner] = useState<{
     key: string;
     banner: HomeBanner;
   } | null>(null);
   const [isVisible, setIsVisible] = useState(false);
-  const banner =
-    loadedBanner?.key === popupKey ? loadedBanner.banner : fallbackBanner;
+  const banner = loadedBanner?.key === popupKey ? loadedBanner.banner : null;
 
   useEffect(() => {
     let active = true;
     const device = getDevice();
+    const bannerRequest = fetchProductPopupBanner({
+      category,
+      device,
+      productSlug,
+    });
 
-    const timer = window.setTimeout(() => {
-      if (active) setIsVisible(true);
-    }, 5000);
-
-    queueMicrotask(async () => {
-      const result = await fetchProductPopupBanner({
-        category,
-        device,
-        productName,
-        productSlug,
-      });
-
+    const timer = window.setTimeout(async () => {
+      const result = await bannerRequest;
       if (!active || !result) return;
       setLoadedBanner({ key: popupKey, banner: result });
-    });
+      setIsVisible(true);
+    }, 5000);
 
     return () => {
       active = false;
       window.clearTimeout(timer);
     };
-  }, [category, popupKey, productName, productSlug]);
+  }, [category, popupKey, productSlug]);
+
+  if (!banner) return null;
 
   const alt = banner.imageAlt || banner.title;
   const { props: desktopImage } = getImageProps({

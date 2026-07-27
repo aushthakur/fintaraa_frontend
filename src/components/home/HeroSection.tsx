@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
+import { getImageProps } from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import {
   ArrowRight,
@@ -27,9 +27,7 @@ import { productHref } from "@/lib/productRouting";
 import {
   type HomeBanner,
   fetchHomeBanners,
-  fallbackHomeBanners,
 } from "@/services/homeBanners";
-import { LoanExpertButton } from "./LoanExpertPopup";
 
 const trustStats = [
   { value: "2M+", label: "customers", icon: UsersRound },
@@ -98,10 +96,51 @@ const loanPurposeSlugs: Record<string, string> = {
 const safeDuration = (value?: number) =>
   Math.min(Math.max(Number(value || 5000), 1500), 30000);
 
-const resolveBannerHref = (buttonText?: string, href?: string) => {
-  if (/eligibility/i.test(buttonText || "")) return "/#eligibility-check";
-  return href || "";
-};
+function HomeResponsiveBannerImage({
+  banner,
+  eager,
+  active,
+}: {
+  banner: HomeBanner;
+  eager: boolean;
+  active: boolean;
+}) {
+  const alt = banner.imageAlt || banner.title;
+  const { props: desktopImage } = getImageProps({
+    src: banner.image,
+    alt,
+    width: 1920,
+    height: 1080,
+    unoptimized: true,
+  });
+  const { props: mobileImage } = getImageProps({
+    src: banner.mobileImage || banner.image,
+    alt,
+    width: 900,
+    height: 1200,
+    unoptimized: true,
+  });
+
+  return (
+    <picture
+      className={`absolute inset-0 block h-full w-full transition-opacity duration-1000 ease-in-out ${
+        active ? "opacity-100" : "opacity-0"
+      }`}
+    >
+      <source
+        media="(max-width: 767px)"
+        srcSet={mobileImage.srcSet || mobileImage.src}
+      />
+      <img
+        {...desktopImage}
+        alt={alt}
+        loading={eager ? "eager" : "lazy"}
+        fetchPriority={eager ? "high" : "auto"}
+        className="absolute inset-0 h-full w-full object-cover object-center"
+      />
+    </picture>
+  );
+}
 
 const formatAmount = (value: number | string) => {
   const numericValue = Number(value);
@@ -153,7 +192,8 @@ function CompactSelect({
 }
 
 export function HeroSection() {
-  const [banners, setBanners] = useState<HomeBanner[]>(fallbackHomeBanners);
+  const [banners, setBanners] = useState<HomeBanner[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
   const [selectedProduct, setSelectedProduct] = useState(productTabs[0].label);
   const [amount, setAmount] = useState("1000000");
@@ -172,8 +212,9 @@ export function HeroSection() {
     queueMicrotask(async () => {
       const result = await fetchHomeBanners();
       if (!active) return;
-      setBanners(result.length ? result : fallbackHomeBanners);
+      setBanners(result);
       setActiveIndex(0);
+      setIsLoading(false);
     });
 
     return () => {
@@ -181,8 +222,8 @@ export function HeroSection() {
     };
   }, []);
 
-  const activeBanner = banners[activeIndex] || fallbackHomeBanners[0];
-  const duration = safeDuration(activeBanner.displayDurationMs);
+  const activeBanner = banners[activeIndex];
+  const duration = safeDuration(activeBanner?.displayDurationMs);
   const hasMultiple = banners.length > 1;
 
   useEffect(() => {
@@ -196,18 +237,16 @@ export function HeroSection() {
 
   const activeDescription = useMemo(
     () =>
-      activeBanner.description ||
+      activeBanner?.description ||
       "One secure check. Multiple trusted offers. No CIBIL impact.",
-    [activeBanner.description],
+    [activeBanner?.description],
   );
-  // const primaryHref =
-  //   resolveBannerHref(
-  //     activeBanner.secondaryButtonText,
-  //     activeBanner.secondaryLinkUrl,
-  //   ) || "/#eligibility-check";
+  const primaryHref = activeBanner?.linkUrl || "/products";
+  const primaryLabel = activeBanner?.buttonText || "Explore products";
   const secondaryHref =
-    resolveBannerHref(activeBanner.buttonText, activeBanner.linkUrl) ||
-    "/products";
+    activeBanner?.secondaryLinkUrl || "/#eligibility-check";
+  const secondaryLabel =
+    activeBanner?.secondaryButtonText || "Check eligibility";
   const continueHref = useMemo(() => {
     if (selectedProduct === "Credit Card") return "/credit-cards";
     if (selectedProduct === "Insurance") return productHref(insuranceType);
@@ -241,20 +280,27 @@ export function HeroSection() {
         ? "Explore Cover"
         : "Explore Cards";
 
+  if (isLoading) {
+    return (
+      <section
+        aria-busy="true"
+        aria-label="Loading homepage banners"
+        className="min-h-115 animate-pulse bg-[#061a3d] sm:min-h-125 lg:min-h-135"
+      />
+    );
+  }
+
+  if (!activeBanner) return null;
+
   return (
     <section className="relative min-h-115 overflow-hidden bg-[#061a3d] px-4 py-8 text-white sm:min-h-125 md:px-6 md:py-8 lg:min-h-135 lg:px-8 lg:py-5">
       <div className="absolute inset-0">
         {banners.map((banner, index) => (
-          <Image
-            src={banner.image}
-            alt={banner.imageAlt || banner.title}
+          <HomeResponsiveBannerImage
+            banner={banner}
             key={banner._id || `${banner.image}-${index}`}
-            fill
-            priority={index === 0}
-            unoptimized
-            className={`object-cover object-center transition-opacity duration-1000 ease-in-out ${
-              index === activeIndex ? "opacity-100" : "opacity-0"
-            }`}
+            eager={index === 0}
+            active={index === activeIndex}
           />
         ))}
         <div className="absolute inset-0 bg-[#061a3d]/22" />
@@ -316,24 +362,20 @@ export function HeroSection() {
             </div> */}
 
             <div className="mt-5 grid grid-cols-2 gap-2.5 sm:flex sm:flex-row sm:items-center sm:gap-3">
-              {/* <Link
-                href={primaryHref}
-                className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#075cde] px-5 text-[14px] font-semibold text-white no-underline transition hover:bg-[#064cb8]"
-              >
-                Check my eligibility - free & instant
-                <ArrowRight className="h-4 w-4" />
-              </Link> */}
               <Link
-                href={secondaryHref}
+                href={primaryHref}
                 className="inline-flex h-11 items-center justify-center gap-1.5 rounded-xl bg-[#075cde] px-3 text-center text-[12px] font-semibold text-white no-underline transition hover:bg-[#064cb8] sm:gap-2 sm:px-5 sm:text-[14px]"
               >
-                View all products
+                {primaryLabel}
                 <ArrowRight className="h-4 w-4 shrink-0" />
               </Link>
-              <LoanExpertButton
-                label="Loan Expert"
-                className="w-full bg-white/12 px-3 text-[12px] text-white hover:bg-white/18 sm:w-auto sm:px-4 sm:text-[14px]"
-              />
+              <Link
+                href={secondaryHref}
+                className="inline-flex h-11 items-center justify-center gap-1.5 rounded-xl border border-white/45 bg-white/12 px-3 text-center text-[12px] font-semibold text-white no-underline transition hover:bg-white/18 sm:gap-2 sm:px-5 sm:text-[14px]"
+              >
+                {secondaryLabel}
+                <ArrowRight className="h-4 w-4 shrink-0" />
+              </Link>
             </div>
 
             <div className="mt-5 grid max-w-2xl grid-cols-3 gap-1 sm:gap-2">

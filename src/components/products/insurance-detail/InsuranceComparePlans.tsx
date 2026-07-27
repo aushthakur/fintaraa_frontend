@@ -81,7 +81,11 @@ export function InsuranceComparePlans({
         ) : null}
         <div
           id="insurance-compare-plans"
-          className={`scroll-mt-40 overflow-x-auto rounded-2xl border border-[#dce7ef] text-left ${
+          style={{
+            scrollMarginTop:
+              "calc(var(--site-header-height, 8.25rem) + 5.5rem)",
+          }}
+          className={`overflow-x-auto rounded-2xl border border-[#dce7ef] text-left ${
             embedded ? "" : "mt-6"
           }`}
         >

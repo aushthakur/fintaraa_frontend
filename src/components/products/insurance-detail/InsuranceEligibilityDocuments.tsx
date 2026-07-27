@@ -61,7 +61,11 @@ export function InsuranceEligibilityDocuments({
   return (
     <section
       id={mode === "documents" ? "insurance-documents" : undefined}
-      className={`scroll-mt-40 antialiased text-[#111827] ${
+      style={{
+        scrollMarginTop:
+          "calc(var(--site-header-height, 8.25rem) + 5.5rem)",
+      }}
+      className={`antialiased text-[#111827] ${
         embedded
           ? ""
           : "bg-[#d2e7fa] px-6 py-14 md:px-12 lg:px-16"

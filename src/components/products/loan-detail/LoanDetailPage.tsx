@@ -24,6 +24,11 @@ import { AppDownloadBanner } from "@/components/common/layout/Footer";
 import { getApplyHref } from "@/components/application/flowRegistry";
 import { ProductDetailPopupBanner } from "@/components/products/ProductDetailPopupBanner";
 import type { BankProductLender } from "@/services/bankSeoPages";
+import {
+  PRODUCT_SECTION_NAVIGATION_EVENT,
+  type ProductSectionNavigationDetail,
+  scrollToProductSection,
+} from "@/lib/productSectionNavigation";
 
 export function LoanDetailPage({
   page,
@@ -82,13 +87,62 @@ export function LoanDetailPage({
   );
 
   useEffect(() => {
+    const matchingSectionTab = (sectionId: string) => {
+      const matches = (tab: (typeof tabs)[number], terms: string[]) => {
+        const identity = [tab.key, tab.label, ...(tab.filterKeys || [])]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase();
+        return terms.some((term) => identity.includes(term));
+      };
+
+      if (sectionId === "loan-documents") {
+        return tabs.find((tab) => matches(tab, ["document", "kyc"]));
+      }
+      if (sectionId === "loan-emi-calculator") {
+        return tabs.find((tab) =>
+          matches(tab, [
+            "emi",
+            "calculator",
+            "repayment",
+            "rate",
+            "fee",
+            "charge",
+          ]),
+        );
+      }
+      return undefined;
+    };
+
     const selectHashTab = () => {
       const hashKey = window.location.hash.replace(/^#/, "");
-      if (tabs.some((tab) => tab.key === hashKey)) setActiveTab(hashKey);
+      const directTab = tabs.find((tab) => tab.key === hashKey);
+      const sectionTab = matchingSectionTab(hashKey);
+      const nextTab = directTab || sectionTab;
+      if (nextTab) setActiveTab(nextTab.key);
+      if (sectionTab) scrollToProductSection(`#${hashKey}`);
     };
+    const selectSectionTab = (event: Event) => {
+      const { sectionId } = (
+        event as CustomEvent<ProductSectionNavigationDetail>
+      ).detail;
+      const sectionTab = matchingSectionTab(sectionId);
+      if (sectionTab) setActiveTab(sectionTab.key);
+    };
+
     selectHashTab();
     window.addEventListener("hashchange", selectHashTab);
-    return () => window.removeEventListener("hashchange", selectHashTab);
+    window.addEventListener(
+      PRODUCT_SECTION_NAVIGATION_EVENT,
+      selectSectionTab,
+    );
+    return () => {
+      window.removeEventListener("hashchange", selectHashTab);
+      window.removeEventListener(
+        PRODUCT_SECTION_NAVIGATION_EVENT,
+        selectSectionTab,
+      );
+    };
   }, [tabs]);
   const active = tabs.find((tab) => tab.key === activeTab) || tabs[0];
   const isOverviewTab = active?.key === "overview";

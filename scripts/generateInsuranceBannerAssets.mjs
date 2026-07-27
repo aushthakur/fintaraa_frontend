@@ -93,14 +93,11 @@ const desktopOverlay = (profile, slide) => {
   const benefits = isAssisted
     ? ["Plan comparison", "Secure application", "Human assistance"]
     : profile.benefits;
-  const primaryButton = isAssisted ? "Get Expert Help" : "Apply Now";
-  const secondaryButton = isAssisted ? "View Documents" : "Compare Plans";
   const titleLines = wrapText(title, 31).slice(0, 2);
   const titleY = 139;
   const descriptionY = titleY + (titleLines.length - 1) * 56 + 67;
   const descriptionLines = wrapText(description, 66).slice(0, 2);
   const benefitsY = descriptionY + (descriptionLines.length - 1) * 33 + 58;
-  const buttonY = Math.max(493, benefitsY + 58);
   let pillX = 92;
   const benefitPills = benefits
     .map((benefit) => {
@@ -123,13 +120,6 @@ const desktopOverlay = (profile, slide) => {
         <stop offset="0.52" stop-color="#06152d" stop-opacity="0.63"/>
         <stop offset="0.76" stop-color="#06152d" stop-opacity="0"/>
       </linearGradient>
-      <linearGradient id="buttonFill" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0" stop-color="${accent}"/>
-        <stop offset="1" stop-color="#1686f0"/>
-      </linearGradient>
-      <filter id="buttonShadow" x="-20%" y="-20%" width="140%" height="160%">
-        <feDropShadow dx="0" dy="9" stdDeviation="12" flood-color="#000000" flood-opacity="0.24"/>
-      </filter>
     </defs>
     <rect width="1600" height="640" fill="url(#leftShade)"/>
     <rect x="92" y="70" width="38" height="4" rx="2" fill="${accent}"/>
@@ -137,12 +127,6 @@ const desktopOverlay = (profile, slide) => {
     ${textLines({ lines: titleLines, x: 92, y: titleY, fontSize: 47, lineHeight: 56, weight: 800 })}
     ${textLines({ lines: descriptionLines, x: 92, y: descriptionY, fontSize: 22, lineHeight: 33, opacity: 0.9 })}
     ${benefitPills}
-    <g filter="url(#buttonShadow)">
-      <rect x="92" y="${buttonY}" width="210" height="66" rx="14" fill="url(#buttonFill)"/>
-      <text x="197" y="${buttonY + 41}" text-anchor="middle" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="800">${escapeXml(primaryButton)}</text>
-    </g>
-    <rect x="320" y="${buttonY}" width="238" height="66" rx="14" fill="#ffffff" fill-opacity="0.08" stroke="#ffffff" stroke-opacity="0.76" stroke-width="2"/>
-    <text x="439" y="${buttonY + 41}" text-anchor="middle" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="800">${escapeXml(secondaryButton)}</text>
     <text x="92" y="615" fill="#ffffff" fill-opacity="0.62" font-family="Arial, Helvetica, sans-serif" font-size="14">Coverage, premiums and terms depend on the insurer, plan and customer profile.</text>
   </svg>`);
 };

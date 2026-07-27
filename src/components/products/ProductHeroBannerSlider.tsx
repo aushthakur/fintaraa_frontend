@@ -2,19 +2,54 @@
 
 import { getImageProps } from "next/image";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { ArrowRight } from "lucide-react";
+import { type MouseEvent, useEffect, useState } from "react";
 import { A11y, Autoplay, EffectFade, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { AuthRedirectLink } from "@/components/auth/AuthRedirectLink";
+import { navigateToProductSection } from "@/lib/productSectionNavigation";
 import type { HomeBanner } from "@/services/homeBanners";
 import {
   fetchProductHeroBanners,
-  getFallbackProductHeroBanners,
   type ProductHeroCategory,
 } from "@/services/productHeroBanners";
 
 const safeDuration = (value?: number) =>
   Math.min(Math.max(Number(value || 5000), 1500), 30000);
+
+const primaryButtonClassName =
+  "group items-center justify-center gap-1.5 overflow-hidden rounded-[clamp(0.55rem,0.8vw,0.9rem)] bg-linear-to-br from-[#2cc5ff] to-[#1686f0] px-2 text-center font-extrabold text-white no-underline shadow-[0_8px_24px_rgba(0,0,0,0.28)] transition hover:brightness-110 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-white";
+
+const secondaryButtonClassName =
+  "group items-center justify-center gap-1.5 overflow-hidden rounded-[clamp(0.55rem,0.8vw,0.9rem)] border-2 border-white/80 bg-[#14283f]/95 px-2 text-center font-extrabold text-white no-underline shadow-[0_8px_24px_rgba(0,0,0,0.2)] transition hover:bg-[#1b3858] focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-white";
+
+function SecondaryBannerAction({
+  href,
+  label,
+  className,
+}: {
+  href: string;
+  label: string;
+  className: string;
+}) {
+  const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    if (!href.startsWith("#")) return;
+    event.preventDefault();
+    navigateToProductSection(href);
+  };
+
+  return (
+    <Link
+      href={href}
+      onClick={handleClick}
+      aria-label={label}
+      className={className}
+    >
+      <span className="truncate">{label}</span>
+      <ArrowRight className="h-[1em] w-[1em] shrink-0 transition-transform group-hover:translate-x-0.5" />
+    </Link>
+  );
+}
 
 function ResponsiveBannerImage({
   banner,
@@ -67,42 +102,45 @@ export function ProductHeroBannerSlider({
   productSlug: string;
   applyHref: string;
 }) {
-  const fallbackBanners = useMemo(
-    () =>
-      getFallbackProductHeroBanners({
-        category,
-        productName,
-        productSlug,
-      }),
-    [category, productName, productSlug],
-  );
-  const [banners, setBanners] = useState<HomeBanner[]>(fallbackBanners);
+  const [banners, setBanners] = useState<HomeBanner[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     let active = true;
 
     queueMicrotask(async () => {
+      setIsLoading(true);
       const result = await fetchProductHeroBanners({
         category,
-        productName,
         productSlug,
       });
       if (!active) return;
-      setBanners(result.length ? result : fallbackBanners);
+      setBanners(result);
+      setIsLoading(false);
     });
 
     return () => {
       active = false;
     };
-  }, [category, fallbackBanners, productName, productSlug]);
+  }, [category, productSlug]);
+
+  if (isLoading) {
+    return (
+      <div
+        aria-busy="true"
+        aria-label={`Loading ${productName} banners`}
+        className="aspect-[3/4] w-full animate-pulse bg-slate-100 md:aspect-[5/2]"
+      />
+    );
+  }
+
+  if (!banners.length) return null;
 
   const hasMultiple = banners.length > 1;
 
   return (
     <div className="relative w-full overflow-hidden bg-[#07162d]">
-      <div
-        className="relative aspect-[3/4] w-full overflow-hidden md:aspect-[5/2]"
-      >
+      <div className="relative aspect-[3/4] w-full overflow-hidden md:aspect-[5/2]">
         <Swiper
           modules={[Autoplay, EffectFade, Pagination, A11y]}
           effect="fade"
@@ -128,51 +166,64 @@ export function ProductHeroBannerSlider({
             >
               <div className="relative h-full w-full overflow-hidden">
                 <ResponsiveBannerImage banner={banner} eager={index === 0} />
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-40 bg-linear-to-t from-[#06152d]/90 via-[#06152d]/30 to-transparent md:hidden" />
 
-                {category === "loan" ? (
-                  <>
-                    <AuthRedirectLink
-                      href={applyHref}
-                      productSlug={productSlug}
-                      aria-label={`Apply for ${productName}`}
-                      className="absolute inset-0 z-10 no-underline md:hidden"
-                    >
-                      <span className="sr-only">Apply for {productName}</span>
-                    </AuthRedirectLink>
-                    <AuthRedirectLink
-                      href={applyHref}
-                      productSlug={productSlug}
-                      aria-label={`${banner.buttonText || "Apply now"} for ${productName}`}
-                      className="absolute left-[5.75%] top-[77%] z-10 hidden h-[10.5%] w-[13.2%] rounded-xl no-underline md:block"
-                    >
-                      <span className="sr-only">
-                        {banner.buttonText || "Apply now"}
-                      </span>
-                    </AuthRedirectLink>
-                    <Link
-                      href={
-                        banner.secondaryLinkUrl || "#loan-emi-calculator"
-                      }
-                      aria-label={
-                        banner.secondaryButtonText || "Calculate loan EMI"
-                      }
-                      className="absolute left-[20%] top-[77%] z-10 hidden h-[10.5%] w-[14.9%] rounded-xl no-underline md:block"
-                    >
-                      <span className="sr-only">
-                        {banner.secondaryButtonText || "Calculate EMI"}
-                      </span>
-                    </Link>
-                  </>
-                ) : (
-                  <AuthRedirectLink
-                    href={applyHref}
-                    productSlug={productSlug}
-                    aria-label={`Apply for ${productName}`}
-                    className="absolute inset-0 z-10 no-underline"
-                  >
-                    <span className="sr-only">Apply for {productName}</span>
-                  </AuthRedirectLink>
-                )}
+                {(() => {
+                  const staleProductLink = `/products/${productSlug}`;
+                  const configuredPrimaryHref = String(
+                    banner.linkUrl || "",
+                  ).trim();
+                  const primaryHref =
+                    configuredPrimaryHref &&
+                    configuredPrimaryHref !== staleProductLink
+                      ? configuredPrimaryHref
+                      : applyHref;
+                  const primaryLabel = banner.buttonText || "Apply Now";
+                  const secondaryHref =
+                    banner.secondaryLinkUrl ||
+                    (category === "loan"
+                      ? "#loan-emi-calculator"
+                      : "#insurance-compare-plans");
+                  const secondaryLabel =
+                    banner.secondaryButtonText ||
+                    (category === "loan" ? "Calculate EMI" : "Compare Plans");
+
+                  return (
+                    <>
+                      <div className="swiper-no-swiping absolute bottom-11 left-4 right-4 z-20 grid grid-cols-2 gap-2 md:hidden">
+                        <AuthRedirectLink
+                          href={primaryHref}
+                          productSlug={productSlug}
+                          aria-label={`${primaryLabel} for ${productName}`}
+                          className={`${primaryButtonClassName} flex h-11 text-[12px]`}
+                        >
+                          <span className="truncate">{primaryLabel}</span>
+                          <ArrowRight className="h-3.5 w-3.5 shrink-0 transition-transform group-hover:translate-x-0.5" />
+                        </AuthRedirectLink>
+                        <SecondaryBannerAction
+                          href={secondaryHref}
+                          label={secondaryLabel}
+                          className={`${secondaryButtonClassName} flex h-11 text-[12px]`}
+                        />
+                      </div>
+
+                      <AuthRedirectLink
+                        href={primaryHref}
+                        productSlug={productSlug}
+                        aria-label={`${primaryLabel} for ${productName}`}
+                        className={`${primaryButtonClassName} swiper-no-swiping absolute left-[5.75%] top-[77%] z-20 hidden h-[10.5%] w-[13.2%] text-[clamp(0.65rem,1.25vw,1.25rem)] md:flex`}
+                      >
+                        <span className="truncate">{primaryLabel}</span>
+                        <ArrowRight className="h-[1em] w-[1em] shrink-0 transition-transform group-hover:translate-x-0.5" />
+                      </AuthRedirectLink>
+                      <SecondaryBannerAction
+                        href={secondaryHref}
+                        label={secondaryLabel}
+                        className={`${secondaryButtonClassName} swiper-no-swiping absolute left-[20%] top-[77%] z-20 hidden h-[10.5%] w-[14.9%] text-[clamp(0.65rem,1.25vw,1.25rem)] md:flex`}
+                      />
+                    </>
+                  );
+                })()}
               </div>
             </SwiperSlide>
           ))}
