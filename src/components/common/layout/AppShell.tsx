@@ -6,6 +6,7 @@ import Footer from "@/components/common/layout/Footer";
 import { SiteBreadcrumbs } from "@/components/common/layout/SiteBreadcrumbs";
 import { MobileActionBar } from "@/components/common/layout/MobileActionBar";
 import { ResponsiveTableEnhancer } from "@/components/common/layout/ResponsiveTableEnhancer";
+import { PageSeoSchema } from "@/components/seo/PageSeoSchema";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -34,6 +35,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <Navbar />
       <SiteBreadcrumbs />
       <ResponsiveTableEnhancer />
+      <PageSeoSchema />
       <div>
         <div
           className={

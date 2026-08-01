@@ -15,5 +15,5 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function ProfilePage() {
-  redirect("/account/profile/edit-profile");
+  redirect("/account/profile/overview");
 }

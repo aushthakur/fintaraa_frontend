@@ -42,11 +42,11 @@ export function SupportTicketList({
   onRetry: () => void;
 }) {
   return (
-    <section className="bg-white p-5 shadow-[0_18px_45px_rgba(25,85,133,0.08)]">
+    <section className="overflow-hidden rounded-3xl border border-[#dfeaf4] bg-white p-5 shadow-[0_18px_45px_rgba(25,85,133,0.08)]">
       <div className="flex items-center justify-between gap-4">
         <div>
           <h2 className="text-[24px] font-extrabold text-[#07162d]">
-            Open tickets
+            Your tickets
           </h2>
           <p className="mt-1 text-[12px] font-semibold text-[#667085]">
             Updated from your support desk
@@ -89,8 +89,10 @@ export function SupportTicketList({
                 key={ticket.id}
                 type="button"
                 onClick={() => onSelect(ticket)}
-                className={`group relative overflow-hidden p-4 text-left shadow-[0_10px_26px_rgba(25,85,133,0.05)] transition hover:-translate-y-0.5 ${
-                  selected ? "bg-[#eef8ff]" : "bg-[#f8fcff]"
+                className={`group relative overflow-hidden rounded-2xl border p-4 text-left shadow-[0_10px_26px_rgba(25,85,133,0.05)] transition hover:-translate-y-0.5 ${
+                  selected
+                    ? "border-[#a8c9e1] bg-[#eef8ff] ring-2 ring-[#195585]/8"
+                    : "border-[#edf3f8] bg-[#f8fcff]"
                 }`}
               >
                 <span
@@ -142,7 +144,7 @@ function StateCard({
   text: string;
 }) {
   return (
-    <div className="flex gap-3 bg-[#f8fcff] p-4">
+    <div className="flex gap-3 rounded-2xl border border-[#edf3f8] bg-[#f8fcff] p-4">
       <Icon className="mt-0.5 h-5 w-5 shrink-0 text-[#195585]" />
       <div>
         <p className="text-[14px] font-extrabold text-[#07162d]">{title}</p>

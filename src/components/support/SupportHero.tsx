@@ -36,7 +36,7 @@ export function SupportHero() {
           ].map(([Icon, text], index) => (
             <div
               key={text as string}
-              className="blog-float flex items-center gap-3 bg-white/10 p-4 shadow-[0_16px_36px_rgba(0,0,0,0.16)] backdrop-blur"
+              className="blog-float flex items-center gap-3 rounded-2xl border border-white/10 bg-white/10 p-4 shadow-[0_16px_36px_rgba(0,0,0,0.16)] backdrop-blur"
               style={{ animationDelay: `${index * 0.25}s` }}
             >
               <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/12 text-[#7ee3a2]">

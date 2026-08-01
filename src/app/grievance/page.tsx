@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { getPageSeoMetadata } from "@/services/seoMetadata";
-import { legalPages } from "@/data/legalPages";
-import { LegalPolicyPage } from "@/components/legal/LegalPolicyPage";
+import { GrievanceManagementPage } from "@/components/grievance/GrievanceManagementPage";
 
 const fallbackMetadata: Metadata = {
   title: "Grievance Redressal Policy",
@@ -15,11 +15,8 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default function GrievancePage() {
   return (
-    <LegalPolicyPage
-      content={legalPages.grievance}
-      eyebrow="Complaint Resolution"
-      canonicalPath="/grievance"
-      simpleHeader
-    />
+    <Suspense fallback={null}>
+      <GrievanceManagementPage />
+    </Suspense>
   );
 }

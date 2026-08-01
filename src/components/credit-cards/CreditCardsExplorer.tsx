@@ -155,16 +155,18 @@ const getDerivedCategories = (card: CreditCardProduct) => {
   }
   if (
     income <= 50000 &&
-    ["Cashback", "Shopping", "Everyday", "Rewards", "Fuel", "Lifestyle"].includes(
-      card.cardType || "",
-    )
+    [
+      "Cashback",
+      "Shopping",
+      "Everyday",
+      "Rewards",
+      "Fuel",
+      "Lifestyle",
+    ].includes(card.cardType || "")
   ) {
     derived.push("Self-Employed");
   }
-  if (
-    card.cardType === "Premium" &&
-    (fee >= 2500 || income >= 75000)
-  ) {
+  if (card.cardType === "Premium" && (fee >= 2500 || income >= 75000)) {
     derived.push("Super-Premium");
   }
 
@@ -270,7 +272,9 @@ export function CreditCardsExplorer({
   const [selectedIncome, setSelectedIncome] = useState<string[]>([]);
   const [selectedRewards, setSelectedRewards] = useState<string[]>([]);
   const [selectedNetworks, setSelectedNetworks] = useState<string[]>([]);
-  const [selectedCreditScores, setSelectedCreditScores] = useState<string[]>([]);
+  const [selectedCreditScores, setSelectedCreditScores] = useState<string[]>(
+    [],
+  );
   const [loungeOnly, setLoungeOnly] = useState(false);
   const [featuredOnly, setFeaturedOnly] = useState(false);
   const [welcomeBenefitsOnly, setWelcomeBenefitsOnly] = useState(false);
@@ -430,7 +434,8 @@ export function CreditCardsExplorer({
         }
         if (
           recommendation?.creditScore &&
-          Number(card.creditScoreRequirement || 700) > recommendation.creditScore
+          Number(card.creditScoreRequirement || 700) >
+            recommendation.creditScore
         ) {
           return false;
         }
@@ -471,10 +476,14 @@ export function CreditCardsExplorer({
   const sortedCards = useMemo(() => {
     const next = [...filteredCards];
     if (sortBy === "fee-low") {
-      return next.sort((a, b) => Number(a.annualFee || 0) - Number(b.annualFee || 0));
+      return next.sort(
+        (a, b) => Number(a.annualFee || 0) - Number(b.annualFee || 0),
+      );
     }
     if (sortBy === "fee-high") {
-      return next.sort((a, b) => Number(b.annualFee || 0) - Number(a.annualFee || 0));
+      return next.sort(
+        (a, b) => Number(b.annualFee || 0) - Number(a.annualFee || 0),
+      );
     }
     if (sortBy === "income-low") {
       return next.sort(
@@ -670,12 +679,10 @@ export function CreditCardsExplorer({
   ];
 
   const renderFilters = (isMobile = false) => (
-    <div className="space-y-5">
+    <div className="space-y-4">
       <div className="flex items-center justify-between border-b border-[#f0f4f8] pb-2">
         <div className="flex items-center gap-2">
-          <span className="text-[14px] font-bold text-[#1a1d25]">
-            Filters
-          </span>
+          <span className="text-[14px] font-bold text-[#1a1d25]">Filters</span>
           {activeFilterCount ? (
             <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-[#005ca8] px-1.5 text-[10px] font-extrabold text-white">
               {activeFilterCount}
@@ -804,11 +811,7 @@ export function CreditCardsExplorer({
         options={creditScoreOptions}
         selected={selectedCreditScores}
         onToggle={(value) =>
-          toggleSelected(
-            value,
-            selectedCreditScores,
-            setSelectedCreditScores,
-          )
+          toggleSelected(value, selectedCreditScores, setSelectedCreditScores)
         }
       />
 
@@ -937,7 +940,8 @@ export function CreditCardsExplorer({
                     onClick={onClearRecommendation}
                     className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[11px] font-extrabold text-[#005ca8] ring-1 ring-[#cfe5f7]"
                   >
-                    ₹{recommendation.monthlyIncome.toLocaleString("en-IN")} income
+                    ₹{recommendation.monthlyIncome.toLocaleString("en-IN")}{" "}
+                    income
                     {recommendation.creditScore
                       ? ` · ${recommendation.creditScore}+ score`
                       : ""}
@@ -990,7 +994,9 @@ export function CreditCardsExplorer({
                     <option value="priority">Priority</option>
                     <option value="fee-low">Annual fee: Low to high</option>
                     <option value="fee-high">Annual fee: High to low</option>
-                    <option value="income-low">Income required: Low to high</option>
+                    <option value="income-low">
+                      Income required: Low to high
+                    </option>
                   </select>
                   <ChevronDown className="pointer-events-none absolute right-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[#4a5568]" />
                 </label>
@@ -1006,165 +1012,168 @@ export function CreditCardsExplorer({
             {loading ? (
               <CardsSkeleton />
             ) : sortedCards.length ? (
-              <motion.div layout className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              <motion.div
+                layout
+                className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+              >
                 <AnimatePresence mode="popLayout">
-                {sortedCards.map((card, cardIndex) => {
-                  const cardId = getCardId(card);
-                  const benefits = getCardBenefits(card);
-                  const tags = getCardTags(card);
-                  return (
-                    <motion.article
-                      key={cardId || card.name}
-                      layout
-                      initial={{ opacity: 0, scale: 0.975 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.97 }}
-                      transition={{
-                        duration: 0.45,
-                        delay: Math.min(cardIndex * 0.035, 0.18),
-                        ease: [0.22, 1, 0.36, 1],
-                      }}
-                      className="flex flex-col justify-between rounded-2xl border border-[#e2edf6] bg-white p-4 shadow-xs"
-                    >
-                      <div>
-                        <div className="flex h-7 items-center justify-between gap-2">
-                          <div className="flex items-center gap-2">
-                            {card.image ? (
-                              <BankLogoImage
-                                src={card.image}
-                                alt={card.bankName}
-                                className="h-6 w-auto max-w-24 object-contain"
-                              />
-                            ) : null}
-                            <span className="text-[12px] font-extrabold text-[#005ca8]">
-                              {card.bankName}
-                            </span>
-                          </div>
-                          <label className="flex cursor-pointer items-center gap-1.5 text-[11px] font-medium text-[#7a869a]">
-                            <input
-                              type="checkbox"
-                              checked={compareIds.includes(cardId)}
-                              onChange={() => toggleCompare(cardId)}
-                              className="rounded border-[#cbd5e1] text-[#005ca8] focus:ring-0"
-                            />
-                            <span>Compare</span>
-                          </label>
-                        </div>
-
-                        <div className="relative mt-3 flex h-28 w-full flex-col justify-between overflow-hidden rounded-xl bg-linear-to-br from-[#0c2340] to-[#1d3557] p-3 text-white shadow-sm">
-                          <div className="flex items-start justify-between">
-                            <div className="text-[9px] font-semibold uppercase tracking-wider opacity-70">
-                              {card.bankName}
-                            </div>
-                            {card.featured ? (
-                              <Star className="h-4 w-4 fill-amber-300 text-amber-300" />
-                            ) : (
-                              <div className="h-3.5 w-5 rounded-xs bg-amber-400/80" />
-                            )}
-                          </div>
-                          <div className="space-y-1">
-                            <div className="font-mono text-[8px] tracking-widest opacity-80">
-                              **** **** **** 8832
-                            </div>
-                            <div className="flex items-end justify-between">
-                              <div className="font-mono text-[7px] opacity-50">
-                                {card.cardType || "CREDIT"}
-                              </div>
-                              <div className="text-[11px] font-extrabold italic tracking-wide opacity-90">
-                                {card.cardNetwork || "CARD"}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        <h3 className="mt-4 min-h-10 text-[14px] font-bold leading-snug text-[#1a1d24]">
-                          {card.name}
-                        </h3>
-                        <div className="mt-2 flex flex-wrap gap-1.5">
-                          {tags.map((tag) => (
-                            <span
-                              key={tag}
-                              className="rounded-md bg-[#eef2ff] px-2.5 py-0.5 text-[10px] font-bold text-[#4f46e5]"
-                            >
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-
-                        <ul className="mt-4 space-y-2 border-b border-[#f3f7fa] pb-4">
-                          {benefits.map((benefit) => (
-                            <li
-                              key={benefit}
-                              className="flex items-start gap-1.5 text-[12px] font-medium text-[#4a5568]"
-                            >
-                              <span className="mt-0.5 text-[10px] text-[#a0aec0]">
-                                •
+                  {sortedCards.map((card, cardIndex) => {
+                    const cardId = getCardId(card);
+                    const benefits = getCardBenefits(card);
+                    const tags = getCardTags(card);
+                    return (
+                      <motion.article
+                        key={cardId || card.name}
+                        layout
+                        initial={{ opacity: 0, scale: 0.975 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.97 }}
+                        transition={{
+                          duration: 0.45,
+                          delay: Math.min(cardIndex * 0.035, 0.18),
+                          ease: [0.22, 1, 0.36, 1],
+                        }}
+                        className="flex flex-col justify-between rounded-2xl border border-[#e2edf6] bg-white p-4 shadow-xs"
+                      >
+                        <div>
+                          <div className="flex h-7 items-center justify-between gap-2">
+                            <div className="flex items-center gap-2">
+                              {card.image ? (
+                                <BankLogoImage
+                                  src={card.image}
+                                  alt={card.bankName}
+                                  className="h-6 w-auto max-w-24 object-contain"
+                                />
+                              ) : null}
+                              <span className="text-[12px] font-extrabold text-[#005ca8]">
+                                {card.bankName}
                               </span>
-                              <span>{benefit}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
+                            </div>
+                            <label className="flex cursor-pointer items-center gap-1.5 text-[11px] font-medium text-[#7a869a]">
+                              <input
+                                type="checkbox"
+                                checked={compareIds.includes(cardId)}
+                                onChange={() => toggleCompare(cardId)}
+                                className="rounded border-[#cbd5e1] text-[#005ca8] focus:ring-0"
+                              />
+                              <span>Compare</span>
+                            </label>
+                          </div>
 
-                      <div>
-                        <div className="my-3 grid grid-cols-2 gap-2 rounded-xl border border-[#f0f4f8] bg-[#fafcfe] py-3 text-center">
-                          <div>
-                            <span className="block text-[13px] font-bold text-[#1a1d24]">
-                              {formatCurrency(card.annualFee)}
-                            </span>
-                            <span className="text-[10px] font-medium text-[#7a869a]">
-                              Annual Fee
-                            </span>
+                          <div className="relative mt-3 flex h-28 w-full flex-col justify-between overflow-hidden rounded-xl bg-linear-to-br from-[#0c2340] to-[#1d3557] p-3 text-white shadow-sm">
+                            <div className="flex items-start justify-between">
+                              <div className="text-[9px] font-semibold uppercase tracking-wider opacity-70">
+                                {card.bankName}
+                              </div>
+                              {card.featured ? (
+                                <Star className="h-4 w-4 fill-amber-300 text-amber-300" />
+                              ) : (
+                                <div className="h-3.5 w-5 rounded-xs bg-amber-400/80" />
+                              )}
+                            </div>
+                            <div className="space-y-1">
+                              <div className="font-mono text-[8px] tracking-widest opacity-80">
+                                **** **** **** 8832
+                              </div>
+                              <div className="flex items-end justify-between">
+                                <div className="font-mono text-[7px] opacity-50">
+                                  {card.cardType || "CREDIT"}
+                                </div>
+                                <div className="text-[11px] font-extrabold italic tracking-wide opacity-90">
+                                  {card.cardNetwork || "CARD"}
+                                </div>
+                              </div>
+                            </div>
                           </div>
-                          <div className="border-l border-[#eef2f6]">
-                            <span className="block text-[13px] font-bold text-[#1a1d24]">
-                              {card.rewardsType || "Rewards"}
-                            </span>
-                            <span className="text-[10px] font-medium text-[#7a869a]">
-                              Reward Type
-                            </span>
+
+                          <h3 className="mt-4 min-h-10 text-[14px] font-bold leading-snug text-[#1a1d24]">
+                            {card.name}
+                          </h3>
+                          <div className="mt-2 flex flex-wrap gap-1.5">
+                            {tags.map((tag) => (
+                              <span
+                                key={tag}
+                                className="rounded-md bg-[#eef2ff] px-2.5 py-0.5 text-[10px] font-bold text-[#4f46e5]"
+                              >
+                                {tag}
+                              </span>
+                            ))}
                           </div>
+
+                          <ul className="mt-4 space-y-2 border-b border-[#f3f7fa] pb-4">
+                            {benefits.map((benefit) => (
+                              <li
+                                key={benefit}
+                                className="flex items-start gap-1.5 text-[12px] font-medium text-[#4a5568]"
+                              >
+                                <span className="mt-0.5 text-[10px] text-[#a0aec0]">
+                                  •
+                                </span>
+                                <span>{benefit}</span>
+                              </li>
+                            ))}
+                          </ul>
                         </div>
 
-                        <div className="mb-4 text-left">
-                          <div className="text-[12px] font-bold text-[#005ca8]">
-                            {card.welcomeBenefits ||
-                              "Welcome benefits available"}
+                        <div>
+                          <div className="my-3 grid grid-cols-2 gap-2 rounded-xl border border-[#f0f4f8] bg-[#fafcfe] py-3 text-center">
+                            <div>
+                              <span className="block text-[13px] font-bold text-[#1a1d24]">
+                                {formatCurrency(card.annualFee)}
+                              </span>
+                              <span className="text-[10px] font-medium text-[#7a869a]">
+                                Annual Fee
+                              </span>
+                            </div>
+                            <div className="border-l border-[#eef2f6]">
+                              <span className="block text-[13px] font-bold text-[#1a1d24]">
+                                {card.rewardsType || "Rewards"}
+                              </span>
+                              <span className="text-[10px] font-medium text-[#7a869a]">
+                                Reward Type
+                              </span>
+                            </div>
                           </div>
-                          <div className="text-[10px] font-medium text-[#9aa5b5]">
-                            Welcome Benefit
-                          </div>
-                        </div>
 
-                        <div className="space-y-2">
-                          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                          <div className="mb-4 text-left">
+                            <div className="text-[12px] font-bold text-[#005ca8]">
+                              {card.welcomeBenefits ||
+                                "Welcome benefits available"}
+                            </div>
+                            <div className="text-[10px] font-medium text-[#9aa5b5]">
+                              Welcome Benefit
+                            </div>
+                          </div>
+
+                          <div className="space-y-2">
+                            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                              <button
+                                type="button"
+                                onClick={() => handleDetails(card)}
+                                className="rounded-lg border border-[#005ca8] bg-white py-2 text-[12px] font-bold text-[#005ca8] transition-colors hover:bg-[#f4f9ff]"
+                              >
+                                View Details
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => handleApply(card)}
+                                className="rounded-lg bg-[#005ca8] py-2 text-center text-[12px] font-bold text-white shadow-xs transition-colors hover:bg-[#004b87]"
+                              >
+                                Apply Now
+                              </button>
+                            </div>
                             <button
                               type="button"
-                              onClick={() => handleDetails(card)}
-                              className="rounded-lg border border-[#005ca8] bg-white py-2 text-[12px] font-bold text-[#005ca8] transition-colors hover:bg-[#f4f9ff]"
+                              onClick={() => handleEligibility(card)}
+                              className="block w-full pt-1 text-center text-[11px] font-bold text-[#005ca8] hover:underline"
                             >
-                              View Details
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => handleApply(card)}
-                              className="rounded-lg bg-[#005ca8] py-2 text-center text-[12px] font-bold text-white shadow-xs transition-colors hover:bg-[#004b87]"
-                            >
-                              Apply Now
+                              View Eligibility
                             </button>
                           </div>
-                          <button
-                            type="button"
-                            onClick={() => handleEligibility(card)}
-                            className="block w-full pt-1 text-center text-[11px] font-bold text-[#005ca8] hover:underline"
-                          >
-                            View Eligibility
-                          </button>
                         </div>
-                      </div>
-                    </motion.article>
-                  );
-                })}
+                      </motion.article>
+                    );
+                  })}
                 </AnimatePresence>
               </motion.div>
             ) : (

@@ -5,6 +5,7 @@ import Link from "next/link";
 import {
   ArrowRight,
   BellRing,
+  CalendarClock,
   Database,
   Loader2,
   RefreshCcw,
@@ -22,10 +23,9 @@ import { CibilReportHero } from "./CibilReportHero";
 import { CibilReportSocial } from "./CibilReportSocial";
 import {
   type BureauScoreHistoryRecord,
+  downloadUserCibilPdf,
   fetchUserCibil,
   fetchUserCibilHistory,
-  fetchUserCibilPdf,
-  type UserCibilPdfResponse,
   type UserCibilResponse,
 } from "@/services/cibil";
 import { buildCibilReportData } from "./cibilReportData";
@@ -35,7 +35,6 @@ export function CibilReportPage() {
   const { user, loading } = useCurrentUser();
   const [authReady, setAuthReady] = useState(false);
   const [cibilData, setCibilData] = useState<UserCibilResponse | null>(null);
-  const [pdfData, setPdfData] = useState<UserCibilPdfResponse | null>(null);
   const [scoreHistory, setScoreHistory] = useState<
     BureauScoreHistoryRecord[]
   >([]);
@@ -76,10 +75,9 @@ export function CibilReportPage() {
       buildCibilReportData({
         user: (user as Record<string, unknown> | null) || null,
         cibil: cibilData || userCibilSnapshot,
-        pdf: pdfData,
         history: scoreHistory,
       }),
-    [cibilData, pdfData, scoreHistory, user, userCibilSnapshot],
+    [cibilData, scoreHistory, user, userCibilSnapshot],
   );
 
   useEffect(() => {
@@ -167,30 +165,22 @@ export function CibilReportPage() {
   };
 
   const handleDownloadReport = async () => {
-    if (
-      reportData.reportHref &&
-      reportData.reportHref !== "/cibil-score/report"
-    ) {
-      window.open(reportData.reportHref, "_blank", "noopener,noreferrer");
-      return;
-    }
-
     setPdfLoading(true);
     setReportError("");
     try {
-      const result = await fetchUserCibilPdf({ silent: true });
-      setPdfData(result || null);
-      const link = buildCibilReportData({
-        user: (user as Record<string, unknown> | null) || null,
-        cibil: cibilData,
-        pdf: result,
-      }).reportHref;
-
-      if (link && link !== "/cibil-score/report") {
-        window.open(link, "_blank", "noopener,noreferrer");
-      } else {
-        throw new Error("CIBIL PDF link is unavailable.");
-      }
+      const response = await downloadUserCibilPdf();
+      const disposition = String(response.headers["content-disposition"] || "");
+      const fileName =
+        disposition.match(/filename="?([^";]+)"?/i)?.[1] ||
+        "fintaraa-cibil-report.pdf";
+      const url = URL.createObjectURL(response.data);
+      const anchor = document.createElement("a");
+      anchor.href = url;
+      anchor.download = fileName;
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+      URL.revokeObjectURL(url);
     } catch (error) {
       setReportError(
         (error as Error).message ||
@@ -220,70 +210,81 @@ export function CibilReportPage() {
     ? "Syncing your saved profile and latest bureau data."
     : reportError
       ? reportError.replace(/^[^A-Za-z0-9]+/, "")
-      : refreshLocked
-        ? `The next bureau refresh is available in ${refreshDays} day${
-            refreshDays === 1 ? "" : "s"
-          }.`
-        : cibilData?.message ||
-          "Your latest saved credit report is available in this dashboard.";
+      : cibilData?.message && !refreshLocked
+        ? cibilData.message
+        : "Your latest saved credit report is available in this dashboard.";
 
   return (
     <main className="bg-white">
       <section className="bg-white px-4 py-5 md:px-6 lg:px-8">
         <div
-          className={`mx-auto flex max-w-9xl flex-col gap-4 rounded-lg border px-4 py-3.5 sm:flex-row sm:items-center sm:justify-between ${
+          className={`mx-auto max-w-9xl overflow-hidden rounded-lg border ${
             reportError
               ? "border-[#efc8cc] bg-[#fff7f8]"
               : "border-[#cbdfea] bg-[#f7fbfd]"
           }`}
           aria-live="polite"
         >
-          <div className="flex min-w-0 items-start gap-3">
-            <span
-              className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-md ${
-                reportError
-                  ? "bg-[#ffe8ea] text-[#b4232d]"
-                  : "bg-[#e8f3fb] text-[#075cde]"
-              }`}
+          <div className="flex flex-col gap-4 px-4 py-3.5 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex min-w-0 items-start gap-3">
+              <span
+                className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-md ${
+                  reportError
+                    ? "bg-[#ffe8ea] text-[#b4232d]"
+                    : "bg-[#e8f3fb] text-[#075cde]"
+                }`}
+              >
+                {reportLoading ? (
+                  <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                ) : (
+                  <Database className="h-4 w-4" aria-hidden="true" />
+                )}
+              </span>
+              <div>
+                <p className="text-[12px] font-extrabold text-[#254e69]">
+                  {reportLoading
+                    ? "Syncing credit report"
+                    : reportError
+                      ? "Saved profile fallback active"
+                      : reportData.sourceLabel}
+                </p>
+                <p className="mt-1 text-[10px] font-semibold leading-4 text-[#7890a2] sm:text-[11px]">
+                  {statusMessage}
+                  {reportData.lastConsentLabel
+                    ? ` Consent recorded ${reportData.lastConsentLabel}.`
+                    : ""}
+                </p>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={handleRefreshReport}
+              disabled={reportLoading || refreshLocked}
+              aria-describedby={refreshLocked ? "bureau-refresh-notice" : undefined}
+              className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-md border border-[#a8cbdc] bg-white px-4 text-[11px] font-extrabold text-[#075cde] transition-colors hover:border-[#075cde] disabled:cursor-not-allowed disabled:text-[#8ca0af]"
             >
-              {reportLoading ? (
-                <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
-              ) : (
-                <Database className="h-4 w-4" aria-hidden="true" />
-              )}
-            </span>
-            <div>
-              <p className="text-[12px] font-extrabold text-[#254e69]">
-                {reportLoading
-                  ? "Syncing credit report"
-                  : reportError
-                    ? "Saved profile fallback active"
-                    : reportData.sourceLabel}
-              </p>
-              <p className="mt-1 text-[10px] font-semibold leading-4 text-[#7890a2] sm:text-[11px]">
-                {statusMessage}
-                {reportData.lastConsentLabel
-                  ? ` Consent recorded ${reportData.lastConsentLabel}.`
-                  : ""}
+              <RefreshCcw
+                className={`h-4 w-4 ${reportLoading ? "animate-spin" : ""}`}
+                aria-hidden="true"
+              />
+              {reportLoading ? "Syncing..." : "Refresh report"}
+            </button>
+          </div>
+          {refreshLocked ? (
+            <div
+              id="bureau-refresh-notice"
+              className="flex w-full items-center gap-2.5 border-t border-[#cbdfea] bg-[#edf6fc] px-4 py-3 text-[12px] font-extrabold text-[#254e69]"
+            >
+              <CalendarClock
+                className="h-4 w-4 shrink-0 text-[#075cde]"
+                aria-hidden="true"
+              />
+              <p>
+                The next bureau refresh is available in {refreshDays} day
+                {refreshDays === 1 ? "" : "s"}.
               </p>
             </div>
-          </div>
-          <button
-            type="button"
-            onClick={handleRefreshReport}
-            disabled={reportLoading || refreshLocked}
-            className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-md border border-[#a8cbdc] bg-white px-4 text-[11px] font-extrabold text-[#075cde] transition-colors hover:border-[#075cde] disabled:cursor-not-allowed disabled:text-[#8ca0af]"
-          >
-            <RefreshCcw
-              className={`h-4 w-4 ${reportLoading ? "animate-spin" : ""}`}
-              aria-hidden="true"
-            />
-            {reportLoading
-              ? "Syncing..."
-              : refreshLocked
-                ? `Refresh in ${refreshDays} day${refreshDays === 1 ? "" : "s"}`
-                : "Refresh report"}
-          </button>
+          ) : null}
         </div>
       </section>
 

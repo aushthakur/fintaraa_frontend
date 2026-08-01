@@ -125,11 +125,20 @@ export function CreditEligibility({
               Complete four quick steps to see cards matched to your profile.
             </p>
 
-            <div className="mt-8 space-y-5">
+            <div className="mt-8 space-y-4">
               {[
-                ["No impact on your CIBIL score", "We use an indicative soft check only"],
-                ["Personalised results", "Matched with your income and profile"],
-                ["Compare top benefits", "Review fees, rewards and eligibility"],
+                [
+                  "No impact on your CIBIL score",
+                  "We use an indicative soft check only",
+                ],
+                [
+                  "Personalised results",
+                  "Matched with your income and profile",
+                ],
+                [
+                  "Compare top benefits",
+                  "Review fees, rewards and eligibility",
+                ],
               ].map(([title, text]) => (
                 <div key={title} className="flex items-start gap-3.5">
                   <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 border-[#005ca8] text-[#005ca8]">
@@ -177,8 +186,12 @@ export function CreditEligibility({
                   >
                     <ItemIcon className="h-5 w-5 shrink-0 text-[#005ca8]" />
                     <div>
-                      <div className="font-bold text-[#2d3142]">{String(title)}</div>
-                      <div className="text-[10px] text-[#9ca7b6]">{String(text)}</div>
+                      <div className="font-bold text-[#2d3142]">
+                        {String(title)}
+                      </div>
+                      <div className="text-[10px] text-[#9ca7b6]">
+                        {String(text)}
+                      </div>
                     </div>
                   </div>
                 );
@@ -192,7 +205,10 @@ export function CreditEligibility({
           <div className="relative z-10 min-h-125 rounded-2xl border border-[#e8eff6] bg-white p-6 shadow-[0_14px_36px_rgba(0,82,156,0.12)] sm:p-8">
             <div className="mb-7 flex items-center justify-between">
               {[1, 2, 3, 4].map((item, index) => (
-                <div key={item} className="flex flex-1 items-center last:flex-none">
+                <div
+                  key={item}
+                  className="flex flex-1 items-center last:flex-none"
+                >
                   <motion.span
                     animate={{
                       backgroundColor: item <= step ? "#005ca8" : "#e1f0ff",
@@ -259,7 +275,9 @@ export function CreditEligibility({
                             onChange={(event) =>
                               updateField(
                                 "mobile",
-                                event.target.value.replace(/\D/g, "").slice(0, 10),
+                                event.target.value
+                                  .replace(/\D/g, "")
+                                  .slice(0, 10),
                               )
                             }
                             autoComplete="tel"
@@ -273,7 +291,9 @@ export function CreditEligibility({
                           name="eligibilityEmail"
                           type="email"
                           value={form.email}
-                          onChange={(event) => updateField("email", event.target.value)}
+                          onChange={(event) =>
+                            updateField("email", event.target.value)
+                          }
                           autoComplete="email"
                           placeholder="Enter email ID"
                           className={fieldClass}
@@ -379,12 +399,21 @@ export function CreditEligibility({
                         {[
                           ["Applicant", form.fullName],
                           ["Mobile", `+91 ${form.mobile}`],
-                          ["Employment", form.employmentType.replace(/-/g, " ")],
+                          [
+                            "Employment",
+                            form.employmentType.replace(/-/g, " "),
+                          ],
                           ["Monthly income", `₹${form.monthlyIncome}`],
-                          ["Category", form.preferredCategory || "All suitable"],
+                          [
+                            "Category",
+                            form.preferredCategory || "All suitable",
+                          ],
                           ["Credit score", form.creditScore || "Not sure"],
                         ].map(([label, value]) => (
-                          <div key={label} className="rounded-xl bg-[#f6f9fc] p-3">
+                          <div
+                            key={label}
+                            className="rounded-xl bg-[#f6f9fc] p-3"
+                          >
                             <dt className="text-[10px] font-bold uppercase tracking-[0.07em] text-[#8a98aa]">
                               {label}
                             </dt>

@@ -14,6 +14,7 @@ export function GstPage() {
         title="Track Your GST Registration Status"
         idLabel="GST Query ID"
         serviceType="gst_registration"
+        deferCreatedRequestDisplay
       />
       <ServiceAppBanner />
     </main>

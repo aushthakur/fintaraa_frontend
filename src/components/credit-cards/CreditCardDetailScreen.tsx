@@ -403,7 +403,10 @@ export function CreditCardDetailScreen({
 
         cardDetailTabs.forEach((tab) => {
           const section = document.getElementById(tab.id);
-          if (section && section.getBoundingClientRect().top <= activationLine) {
+          if (
+            section &&
+            section.getBoundingClientRect().top <= activationLine
+          ) {
             current = tab.id;
           }
         });
@@ -419,7 +422,9 @@ export function CreditCardDetailScreen({
     const hashTimer = window.setTimeout(() => {
       if (validHash) {
         setActiveDetailSection(hashSection);
-        document.getElementById(hashSection)?.scrollIntoView({ block: "start" });
+        document
+          .getElementById(hashSection)
+          ?.scrollIntoView({ block: "start" });
       }
       updateActiveSection();
     }, 100);
@@ -790,8 +795,7 @@ export function CreditCardDetailScreen({
           id="highlights"
           className="scroll-mt-24 bg-white px-4 py-14 md:px-6 md:py-20"
           style={{
-            scrollMarginTop:
-              "calc(var(--site-header-height, 8.25rem) + 5rem)",
+            scrollMarginTop: "calc(var(--site-header-height, 8.25rem) + 5rem)",
           }}
         >
           <div className="mx-auto max-w-9xl">
@@ -865,8 +869,7 @@ export function CreditCardDetailScreen({
           id="eligibility"
           className="scroll-mt-24 bg-[#f2f9fd] px-4 py-14 md:px-6 md:py-20"
           style={{
-            scrollMarginTop:
-              "calc(var(--site-header-height, 8.25rem) + 5rem)",
+            scrollMarginTop: "calc(var(--site-header-height, 8.25rem) + 5rem)",
           }}
         >
           <div className="mx-auto max-w-9xl">
@@ -1013,7 +1016,7 @@ export function CreditCardDetailScreen({
                   title="Eligibility criteria"
                   description="These are the issuer's indicative requirements. Approval can also depend on location, employment and existing obligations."
                 />
-                <ul className="mt-8 space-y-5">
+                <ul className="mt-8 space-y-4">
                   {eligibilityCriteria.map((item) => (
                     <li
                       key={item}
@@ -1089,8 +1092,7 @@ export function CreditCardDetailScreen({
           id="fees"
           className="scroll-mt-24 bg-white px-4 py-14 md:px-6 md:py-20"
           style={{
-            scrollMarginTop:
-              "calc(var(--site-header-height, 8.25rem) + 5rem)",
+            scrollMarginTop: "calc(var(--site-header-height, 8.25rem) + 5rem)",
           }}
         >
           <div className="mx-auto grid max-w-9xl gap-12 lg:grid-cols-[340px_minmax(0,1fr)] lg:gap-20">
@@ -1154,8 +1156,7 @@ export function CreditCardDetailScreen({
           id="faqs"
           className="scroll-mt-24 bg-[#f2f9fd] px-4 py-14 md:px-6 md:py-20"
           style={{
-            scrollMarginTop:
-              "calc(var(--site-header-height, 8.25rem) + 5rem)",
+            scrollMarginTop: "calc(var(--site-header-height, 8.25rem) + 5rem)",
           }}
         >
           <div className="mx-auto grid max-w-9xl gap-10 lg:grid-cols-[330px_minmax(0,1fr)] lg:gap-20">

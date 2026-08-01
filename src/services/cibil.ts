@@ -19,6 +19,8 @@ export type UserCibilResponse = {
 
 export type UserCibilPdfResponse = {
   cached?: boolean;
+  cibilScore?: number;
+  pdfUrl?: string;
   report?: unknown;
   payload?: unknown;
   environment?: string;
@@ -88,7 +90,7 @@ export const fetchUserCibilPdf = async (options?: { silent?: boolean }) => {
       method: "POST",
       url: "cibil/user/pdf",
       data: {},
-      timeout: 30000,
+      timeout: 60000,
     });
     return unwrap(response.data);
   }
@@ -96,11 +98,19 @@ export const fetchUserCibilPdf = async (options?: { silent?: boolean }) => {
   const response = await Post<ApiEnvelope<UserCibilPdfResponse> | UserCibilPdfResponse>(
     "cibil/user/pdf",
     {},
-    30000,
+    60000,
     true,
   );
   return unwrap(response);
 };
+
+export const downloadUserCibilPdf = () =>
+  request<Blob>({
+    method: "GET",
+    url: "cibil/user/pdf/download",
+    responseType: "blob",
+    timeout: 60000,
+  });
 
 export const fetchUserCibilHistory = async (params?: {
   from?: string;

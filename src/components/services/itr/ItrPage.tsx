@@ -21,6 +21,7 @@ export function ItrPage() {
         title="Track Your ITR Filing Status"
         idLabel="ITR Query ID"
         serviceType="itr_filing"
+        deferCreatedRequestDisplay
       />
       <ServiceAppBanner />
     </main>

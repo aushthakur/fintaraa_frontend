@@ -2,19 +2,12 @@
 
 import { FormEvent, useState } from "react";
 import { MessageCircle, PlusCircle, Sparkles } from "lucide-react";
-import { createTicket } from "@/services/accountHelp";
+import {
+  createTicket,
+  SUPPORT_TICKET_CATEGORIES,
+} from "@/services/accountHelp";
 import { WhatsAppConsent } from "@/components/common/WhatsAppConsent";
 import { buildWebsiteConsentPayload } from "@/lib/formConsent";
-
-const categories = [
-  "Application support",
-  "Document verification",
-  "Payment or EMI",
-  "Credit score",
-  "Insurance",
-  "Account access",
-  "Grievance",
-];
 
 export function SupportTicketForm({
   onCreated,
@@ -28,7 +21,7 @@ export function SupportTicketForm({
   const [form, setForm] = useState({
     title: "",
     description: "",
-    category: categories[0],
+    category: SUPPORT_TICKET_CATEGORIES[0].value as string,
   });
 
   const submit = async (event: FormEvent) => {
@@ -53,11 +46,16 @@ export function SupportTicketForm({
       setForm({
         title: "",
         description: "",
-        category: categories[0],
+        category: SUPPORT_TICKET_CATEGORIES[0].value,
       });
       setWhatsappConsent(false);
       setCreated(true);
       await onCreated();
+    } catch (submitError) {
+      setError(
+        (submitError as Error)?.message?.replace(/^[^\w]+/, "") ||
+          "Ticket could not be created. Please try again.",
+      );
     } finally {
       setSubmitting(false);
     }
@@ -66,7 +64,7 @@ export function SupportTicketForm({
   return (
     <form
       onSubmit={submit}
-      className="bg-white p-5 shadow-[0_18px_45px_rgba(25,85,133,0.08)]"
+      className="bg-white p-5 sm:p-7"
     >
       <div className="inline-flex items-center gap-2 rounded-full bg-[#eef8ff] px-3 py-1 text-[11px] font-extrabold uppercase tracking-[0.14em] text-[#195585]">
         <Sparkles className="h-3.5 w-3.5" />
@@ -99,8 +97,13 @@ export function SupportTicketForm({
             }
             className="mt-1 h-12 w-full border-0 border-b border-[#cfddea] bg-transparent text-[15px] font-semibold text-[#07162d] outline-none focus:border-[#195585]"
           >
-            {categories.map((category) => (
-              <option key={category}>{category}</option>
+            {SUPPORT_TICKET_CATEGORIES.map((category, index) => (
+              <option
+                key={`${category.label}-${index}`}
+                value={category.value}
+              >
+                {category.label}
+              </option>
             ))}
           </select>
         </label>
@@ -142,7 +145,7 @@ export function SupportTicketForm({
         </p>
       ) : null}
 
-      <div className="mt-6 flex flex-col gap-3 bg-[#07162d] p-4 text-white sm:flex-row sm:items-center sm:justify-between">
+      <div className="mt-6 flex flex-col gap-3 rounded-2xl bg-[#07162d] p-4 text-white sm:flex-row sm:items-center sm:justify-between">
         <p className="text-[13px] font-semibold leading-6 text-white/72">
           {created
             ? "Ticket submitted. Your recent tickets were refreshed."

@@ -4,12 +4,14 @@ import { useEffect, useMemo, useState } from "react";
 import {
   AlertTriangle,
   CheckCircle2,
+  Download,
   Eye,
   EyeOff,
   FileText,
   ImageIcon,
   Lock,
   Plus,
+  RotateCcw,
   Search,
   ShieldCheck,
   Trash2,
@@ -18,10 +20,15 @@ import {
 } from "lucide-react";
 import {
   deleteDocument,
+  completeDocumentRequest,
   fallbackDocumentCatalog,
   fetchDocumentCatalog,
   fetchDocuments,
+  fetchMyDocumentRequests,
+  fetchMyDocumentReviews,
   uploadDocument,
+  type ApplicationDocumentReview,
+  type CustomerDocumentRequest,
   type DocumentCatalogItem,
   type UploadedDocument,
 } from "@/services/accountDocuments";
@@ -31,6 +38,8 @@ type DocState = {
   number?: string;
   password?: string;
   fileName?: string;
+  uploadedAt?: string;
+  verified?: boolean;
   uploaded?: boolean;
   showPassword?: boolean;
 };
@@ -51,6 +60,35 @@ function fileNameFromUrl(url?: string) {
   }
 }
 
+function formatDocumentDate(value?: string) {
+  if (!value) return "date not recorded";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "date not recorded";
+  return new Intl.DateTimeFormat("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  }).format(date);
+}
+
+const normalizeDocumentIdentity = (value?: string) =>
+  String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[._-]+/g, " ")
+    .replace(/\s+/g, " ");
+
+const pendingRequestedDocuments = (request: CustomerDocumentRequest) => {
+  const uploaded = new Set(
+    (request.uploadedDocuments || []).map((item) =>
+      normalizeDocumentIdentity(item.documentKey),
+    ),
+  );
+  return request.requestedDocuments.filter(
+    (item) => !uploaded.has(normalizeDocumentIdentity(item)),
+  );
+};
+
 export function UploadedDocumentsPanel() {
   const [loading, setLoading] = useState(true);
   const [catalogLoading, setCatalogLoading] = useState(true);
@@ -58,6 +96,8 @@ export function UploadedDocumentsPanel() {
   const [search, setSearch] = useState("");
   const [catalog, setCatalog] = useState<DocumentCatalogItem[]>([]);
   const [library, setLibrary] = useState<UploadedDocument[]>([]);
+  const [reviews, setReviews] = useState<ApplicationDocumentReview[]>([]);
+  const [requests, setRequests] = useState<CustomerDocumentRequest[]>([]);
   const [docUploads, setDocUploads] = useState<Record<string, DocState>>({});
   const [uploadingKey, setUploadingKey] = useState<string | null>(null);
   const [savingKey, setSavingKey] = useState<string | null>(null);
@@ -94,6 +134,8 @@ export function UploadedDocumentsPanel() {
         fileUrl: doc.fileUrl,
         number: doc.number,
         fileName: doc.referenceId || fileNameFromUrl(doc.fileUrl),
+        uploadedAt: doc.uploadedAt || doc.issuedOn,
+        verified: Boolean(doc.verified),
         uploaded: Boolean(doc.fileUrl),
         password: "",
         showPassword: false,
@@ -110,9 +152,12 @@ export function UploadedDocumentsPanel() {
       setCatalogLoading(true);
       setError(null);
       try {
-        const [catalogData, docsData] = await Promise.allSettled([
+        const [catalogData, docsData, reviewData, requestData] =
+          await Promise.allSettled([
           fetchDocumentCatalog(),
           fetchDocuments(),
+          fetchMyDocumentReviews(),
+          fetchMyDocumentRequests(),
         ]);
 
         if (!active) return;
@@ -127,6 +172,8 @@ export function UploadedDocumentsPanel() {
         } else {
           setError("Could not fetch documents. Please check login and API.");
         }
+        if (reviewData.status === "fulfilled") setReviews(reviewData.value);
+        if (requestData.status === "fulfilled") setRequests(requestData.value);
       } finally {
         if (active) {
           setLoading(false);
@@ -167,6 +214,32 @@ export function UploadedDocumentsPanel() {
       const docs = await uploadDocument(form);
       setLibrary(docs);
       syncDocUploads(docs);
+      const uploaded = docs.find((doc) => doc.docType === item.key);
+      const pendingRequest = requests.find(
+        (request) =>
+          request.status === "pending" &&
+          request.requestedDocuments.some(
+            (key) =>
+              key === item.key ||
+              key.endsWith(`.${item.key}`) ||
+              item.key.endsWith(`.${key}`),
+          ),
+      );
+      if (pendingRequest && uploaded?.fileUrl) {
+        await completeDocumentRequest(pendingRequest._id, {
+          documentKey:
+            pendingRequest.requestedDocuments.find(
+              (key) => key === item.key || key.endsWith(`.${item.key}`),
+            ) || item.key,
+          fileUrl: uploaded.fileUrl,
+        });
+        const [nextReviews, nextRequests] = await Promise.all([
+          fetchMyDocumentReviews(),
+          fetchMyDocumentRequests(),
+        ]);
+        setReviews(nextReviews);
+        setRequests(nextRequests);
+      }
       setDocUploads((prev) => ({
         ...prev,
         [item.key]: {
@@ -177,6 +250,50 @@ export function UploadedDocumentsPanel() {
           showPassword: false,
         },
       }));
+    } finally {
+      setUploadingKey(null);
+    }
+  };
+
+  const handleRequestedDocumentUpload = async (
+    request: CustomerDocumentRequest,
+    documentKey: string,
+    file?: File,
+  ) => {
+    if (!file) return;
+    const actionKey = `request:${request._id}:${normalizeDocumentIdentity(
+      documentKey,
+    )}`;
+    setUploadingKey(actionKey);
+    setError(null);
+    try {
+      const form = new FormData();
+      form.append("digiLockerFiles", file);
+      form.append("defaultDocType", documentKey);
+      form.append("name", documentKey.replace(/[._-]+/g, " "));
+      const docs = await uploadDocument(form);
+      const uploaded = docs.find((doc) => doc.docType === documentKey);
+      if (!uploaded?.fileUrl) {
+        throw new Error("Uploaded file could not be linked to this request.");
+      }
+      await completeDocumentRequest(request._id, {
+        documentKey,
+        fileUrl: uploaded.fileUrl,
+      });
+      const [nextReviews, nextRequests] = await Promise.all([
+        fetchMyDocumentReviews(),
+        fetchMyDocumentRequests(),
+      ]);
+      setLibrary(docs);
+      syncDocUploads(docs);
+      setReviews(nextReviews);
+      setRequests(nextRequests);
+    } catch (uploadError) {
+      setError(
+        uploadError instanceof Error
+          ? uploadError.message.replace(/^❌\s*/, "")
+          : "Requested document could not be uploaded.",
+      );
     } finally {
       setUploadingKey(null);
     }
@@ -298,6 +415,96 @@ export function UploadedDocumentsPanel() {
         <StatusRow text="No documents match your search." />
       ) : null}
 
+      {requests.some((request) => request.status === "pending") ? (
+        <section className="rounded-2xl border border-blue-200 bg-blue-50 p-4">
+          <h3 className="text-[16px] font-extrabold text-blue-950">
+            Documents requested by Fintaraa
+          </h3>
+          <p className="mt-1 text-[11px] font-semibold text-blue-700">
+            Upload the exact document below. It will be linked back to the application automatically.
+          </p>
+          <div className="mt-4 grid gap-3 lg:grid-cols-2">
+            {requests
+              .filter((request) => request.status === "pending")
+              .map((request) => {
+                const pendingDocuments = pendingRequestedDocuments(request);
+                const uploadedCount =
+                  request.requestedDocuments.length - pendingDocuments.length;
+                return (
+                  <article
+                    key={request._id}
+                    className="rounded-xl border border-blue-200 bg-white p-4"
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <p className="text-[13px] font-extrabold text-[#17364e]">
+                          {request.requestedDocuments
+                            .map((value) =>
+                              value
+                                .replace(/^policyDetails\./, "")
+                                .replace(/[._-]+/g, " ")
+                                .replace(/\b\w/g, (letter) => letter.toUpperCase()),
+                            )
+                            .join(", ")}
+                        </p>
+                        <p className="mt-1 text-[10px] font-bold text-[#718598]">
+                          {request.loanQuery?.loanId || "Profile verification"} · requested {formatDocumentDate(request.createdAt)}
+                        </p>
+                        <p className="mt-1 text-[10px] font-extrabold text-blue-700">
+                          {uploadedCount} of {request.requestedDocuments.length} uploaded
+                        </p>
+                      </div>
+                      <span className="rounded-full bg-blue-100 px-2.5 py-1 text-[10px] font-extrabold text-blue-700">
+                        Re-upload
+                      </span>
+                    </div>
+                    {request.message ? (
+                      <p className="mt-3 rounded-lg bg-red-50 px-3 py-2 text-[11px] font-bold leading-5 text-red-700">
+                        {request.message}
+                      </p>
+                    ) : null}
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {pendingDocuments.map((documentKey) => {
+                        const actionKey = `request:${
+                          request._id
+                        }:${normalizeDocumentIdentity(documentKey)}`;
+                        const label = documentKey
+                          .replace(/^policyDetails\./, "")
+                          .replace(/[._-]+/g, " ")
+                          .replace(/\b\w/g, (letter) => letter.toUpperCase());
+                        return (
+                          <label
+                            key={documentKey}
+                            className="inline-flex min-h-10 cursor-pointer items-center gap-2 rounded-xl bg-blue-700 px-4 py-2 text-[11px] font-extrabold text-white"
+                          >
+                            <UploadCloud className="h-4 w-4" />
+                            {uploadingKey === actionKey
+                              ? "Uploading…"
+                              : `Upload ${label}`}
+                            <input
+                              type="file"
+                              accept="image/*,.pdf"
+                              disabled={uploadingKey === actionKey}
+                              className="sr-only"
+                              onChange={(event) =>
+                                void handleRequestedDocumentUpload(
+                                  request,
+                                  documentKey,
+                                  event.target.files?.[0],
+                                )
+                              }
+                            />
+                          </label>
+                        );
+                      })}
+                    </div>
+                  </article>
+                );
+              })}
+          </div>
+        </section>
+      ) : null}
+
       <div className="grid gap-4 xl:grid-cols-2">
         {visibleDocs.map((item) => {
           const state = docUploads[item.key] || {};
@@ -305,6 +512,40 @@ export function UploadedDocumentsPanel() {
           const isSaving = savingKey === item.key;
           const isUploaded = Boolean(state.uploaded || state.fileUrl);
           const showPassword = Boolean(state.showPassword);
+          const review = reviews.find(
+            (entry) =>
+              (state.fileUrl && entry.fileUrl === state.fileUrl) ||
+              entry.documentKey === item.key ||
+              entry.documentKey.endsWith(`.${item.key}`),
+          );
+          const pendingRequest = requests.find(
+            (request) =>
+              request.status === "pending" &&
+              request.requestedDocuments.some(
+                (key) => key === item.key || key.endsWith(`.${item.key}`),
+              ),
+          );
+          const reviewStatus = pendingRequest
+            ? "reupload_requested"
+            : review?.status || (state.verified ? "approved" : "pending");
+          const reviewMeta = {
+            pending: {
+              label: "Pending",
+              className: "bg-amber-50 text-amber-700",
+            },
+            approved: {
+              label: "Verified",
+              className: "bg-emerald-50 text-emerald-700",
+            },
+            rejected: {
+              label: "Rejected",
+              className: "bg-red-50 text-red-700",
+            },
+            reupload_requested: {
+              label: "Re-upload required",
+              className: "bg-blue-50 text-blue-700",
+            },
+          }[reviewStatus];
 
           return (
             <article key={item.key} className="p-4 border border-gray-200">
@@ -318,21 +559,30 @@ export function UploadedDocumentsPanel() {
                     {item.label}
                   </h4>
                 </div>
-                <span
-                  className={`shrink-0 rounded-full px-2.5 py-1 text-[11px] font-semibold ${
-                    item.required
-                      ? "bg-[#fff7ed] text-[#c2410c]"
-                      : "bg-[#ecfdf3] text-[#079455]"
-                  }`}
-                >
-                  {item.required ? "Required" : "Optional"}
-                </span>
+                <div className="flex shrink-0 flex-col items-end gap-1.5">
+                  <span className={`rounded-full px-2.5 py-1 text-[11px] font-semibold ${reviewMeta.className}`}>
+                    {reviewMeta.label}
+                  </span>
+                  <span className="text-[10px] font-semibold text-[#98a2b3]">
+                    {item.required ? "Required" : "Optional"}
+                  </span>
+                </div>
               </div>
+
+              {(reviewStatus === "rejected" || pendingRequest) &&
+              (review?.reviewNote || pendingRequest?.message) ? (
+                <div className="mt-3 flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 px-3 py-2.5 text-[11px] font-bold leading-5 text-red-700">
+                  <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
+                  <span>
+                    {review?.reviewNote || pendingRequest?.message}
+                  </span>
+                </div>
+              ) : null}
 
               <div className="mt-4 grid grid-cols-2 gap-2">
                 <label className="inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#195585] px-3 text-[12px] font-bold text-white">
                   <Camera className="h-4 w-4" aria-hidden="true" />
-                  Take photo
+                  {pendingRequest ? "Re-take photo" : "Take photo"}
                   <input
                     type="file"
                     accept="image/*"
@@ -345,7 +595,7 @@ export function UploadedDocumentsPanel() {
                 </label>
                 <label className="inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-xl border border-[#c7d7e8] bg-white px-3 text-[12px] font-bold text-[#195585]">
                   <UploadCloud className="h-4 w-4" aria-hidden="true" />
-                  Browse files
+                  {pendingRequest ? "Re-upload file" : "Browse files"}
                   <input
                     type="file"
                     accept="image/*,.pdf"
@@ -377,7 +627,7 @@ export function UploadedDocumentsPanel() {
                         {state.fileName || item.label}
                       </p>
                       <p className="mt-1 text-[12px] font-semibold text-[#667085]">
-                        Tap to replace document
+                        Uploaded {formatDocumentDate(state.uploadedAt || review?.uploadedAt)}
                       </p>
                     </div>
                   </div>
@@ -454,6 +704,33 @@ export function UploadedDocumentsPanel() {
                   <CheckCircle2 className="h-4 w-4" />
                   {isSaving ? "Saving..." : "Save Details"}
                 </button>
+                {state.fileUrl ? (
+                  <>
+                    <a
+                      href={state.fileUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex h-9 items-center gap-2 rounded-full bg-[#eef8ff] px-4 text-[12px] font-semibold text-[#195585]"
+                    >
+                      <Eye className="h-4 w-4" />
+                      Preview
+                    </a>
+                    <a
+                      href={state.fileUrl}
+                      download={state.fileName || item.label}
+                      className="inline-flex h-9 items-center gap-2 rounded-full bg-[#ecfdf3] px-4 text-[12px] font-semibold text-[#067647]"
+                    >
+                      <Download className="h-4 w-4" />
+                      Download
+                    </a>
+                  </>
+                ) : null}
+                {pendingRequest ? (
+                  <span className="inline-flex h-9 items-center gap-2 rounded-full bg-blue-50 px-4 text-[12px] font-semibold text-blue-700">
+                    <RotateCcw className="h-4 w-4" />
+                    New copy requested
+                  </span>
+                ) : null}
                 <button
                   type="button"
                   className="inline-flex h-9 items-center gap-2 rounded-full bg-[#fff1f2] px-4 text-[12px] font-semibold text-[#be123c]"

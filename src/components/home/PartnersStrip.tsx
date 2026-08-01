@@ -4,8 +4,8 @@ export function PartnersStrip() {
   return (
     <TrustedPartnerBanksSection
       mode="grid"
-      title="Trusted by India's Leading Financial Institutions"
-      description="Compare offers from 30+ verified banks, NBFCs and credit bureaus in one secure platform."
+      title="Partner Financial Institutions"
+      description="Browse published banks, NBFCs and insurers across loan, credit-card and insurance journeys."
       viewAllHref="/partners/all"
       flushX
       mobileScroller

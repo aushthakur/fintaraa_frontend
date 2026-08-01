@@ -19,7 +19,6 @@ export function WhatsAppConsent({
         <input
           type="checkbox"
           checked={checked}
-          required
           onChange={(event) => onChange(event.target.checked)}
           className="mt-0.5 h-4 w-4 shrink-0 rounded border-[#b8c7d8] text-[#005ca8] focus:ring-[#005ca8]"
         />

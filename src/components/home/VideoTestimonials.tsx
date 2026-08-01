@@ -22,6 +22,11 @@ import {
   fetchWebsiteKnowledge,
   type WebsiteKnowledgeItem,
 } from "@/services/websiteKnowledge";
+import { ManagedVideoPlayer } from "@/components/common/ManagedVideoPlayer";
+import {
+  CarouselNavigation,
+  moveInfiniteCarousel,
+} from "./CarouselNavigation";
 
 const videoData: WebsiteKnowledgeItem[] = [
   {
@@ -87,7 +92,8 @@ export function VideoTestimonials() {
   const [loading, setLoading] = useState(true);
   const [isPaused, setIsPaused] = useState(false);
   const [trackWidth, setTrackWidth] = useState(0);
-  const [selectedVideoUrl, setSelectedVideoUrl] = useState<string | null>(null);
+  const [selectedVideo, setSelectedVideo] =
+    useState<WebsiteKnowledgeItem | null>(null);
 
   const x = useMotionValue(0);
   const baseSpeed = 0.65;
@@ -115,7 +121,7 @@ export function VideoTestimonials() {
 
   // Infinite carousel looping logic
   useAnimationFrame((_, delta) => {
-    if (isPaused || !trackWidth || selectedVideoUrl) return; // Freeze carousel auto-scroll when modal is active
+    if (isPaused || !trackWidth || selectedVideo) return; // Freeze carousel auto-scroll when modal is active
     const currentX = x.get();
     const newX = currentX - baseSpeed * (delta / 16);
     const loopThreshold = trackWidth / 3;
@@ -139,13 +145,37 @@ export function VideoTestimonials() {
               financial options with Fintaraa.
             </p> */}
           </div>
-          <Link
-            href="/video-testimonials"
-            className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-xl bg-[#075cde] px-5 text-[13px] font-bold leading-none text-white no-underline transition hover:bg-[#064cb8]"
-          >
-            View All
-            <ArrowRight className="h-4 w-4" />
-          </Link>
+          <div className="flex shrink-0 items-center gap-2">
+            <Link
+              href="/video-testimonials"
+              className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-xl bg-[#075cde] px-5 text-[13px] font-bold leading-none text-white no-underline transition hover:bg-[#064cb8]"
+            >
+              View All
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+            <CarouselNavigation
+              label="video testimonials"
+              disabled={loading || !trackWidth || Boolean(selectedVideo)}
+              onPrevious={() =>
+                moveInfiniteCarousel({
+                  direction: "previous",
+                  track: trackRef.current,
+                  trackWidth,
+                  x,
+                  onPauseChange: setIsPaused,
+                })
+              }
+              onNext={() =>
+                moveInfiniteCarousel({
+                  direction: "next",
+                  track: trackRef.current,
+                  trackWidth,
+                  x,
+                  onPauseChange: setIsPaused,
+                })
+              }
+            />
+          </div>
         </div>
 
         {/* Carousel Viewport Box */}
@@ -153,7 +183,7 @@ export function VideoTestimonials() {
           ref={containerRef}
           className="relative w-full overflow-hidden py-2"
           onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => !selectedVideoUrl && setIsPaused(false)}
+          onMouseLeave={() => !selectedVideo && setIsPaused(false)}
         >
           {loading ? (
             <div className="flex gap-6">
@@ -182,7 +212,7 @@ export function VideoTestimonials() {
               }}
               dragElastic={0.05}
               onDragStart={() => setIsPaused(true)}
-              onDragEnd={() => !selectedVideoUrl && setIsPaused(false)}
+              onDragEnd={() => !selectedVideo && setIsPaused(false)}
               className="flex w-max cursor-grab gap-6 active:cursor-grabbing"
             >
               {duplicatedVideos.map((item, index) => (
@@ -191,7 +221,9 @@ export function VideoTestimonials() {
                   type="button"
                   onClick={() => {
                     setIsPaused(true);
-                    setSelectedVideoUrl(item.videoUrl || null);
+                    if (item.videoUrl || item.youtubeUrl) {
+                      setSelectedVideo(item);
+                    }
                   }}
                   className="group flex h-90 w-76 shrink-0 flex-col overflow-hidden rounded-2xl border border-[#dfeaf5] bg-white text-left no-underline outline-none transition-colors duration-300 hover:border-[#bcd3e8] sm:w-[20.5rem] md:w-[23rem]"
                 >
@@ -269,14 +301,14 @@ export function VideoTestimonials() {
         </div>
         {/* Dynamic Video Lightbox Modal Popup */}
         <AnimatePresence>
-          {selectedVideoUrl && (
+          {selectedVideo && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
               onClick={() => {
-                setSelectedVideoUrl(null);
+                setSelectedVideo(null);
                 setIsPaused(false);
               }}
             >
@@ -291,7 +323,7 @@ export function VideoTestimonials() {
                 <button
                   type="button"
                   onClick={() => {
-                    setSelectedVideoUrl(null);
+                    setSelectedVideo(null);
                     setIsPaused(false);
                   }}
                   className="absolute right-4 top-4 z-10 flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-black/60 text-white backdrop-blur-sm transition-colors hover:bg-black/90"
@@ -300,11 +332,12 @@ export function VideoTestimonials() {
                 </button>
 
                 <div className="flex aspect-video w-full items-center justify-center bg-black">
-                  <video
-                    src={selectedVideoUrl}
+                  <ManagedVideoPlayer
+                    src={selectedVideo.videoUrl}
+                    youtubeUrl={selectedVideo.youtubeUrl}
+                    title={selectedVideo.title}
+                    poster={selectedVideo.coverImageUrl}
                     autoPlay
-                    controls
-                    controlsList="nodownload"
                     className="h-full w-full object-contain"
                   />
                 </div>

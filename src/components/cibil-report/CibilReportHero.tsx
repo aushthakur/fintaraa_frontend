@@ -1,25 +1,21 @@
 "use client";
 
-import { motion, MotionConfig } from "framer-motion";
 import type { LucideIcon } from "lucide-react";
+import { motion, MotionConfig } from "framer-motion";
 import {
-  ArrowDownToLine,
+  CreditCard,
   BadgeCheck,
   CalendarClock,
   CircleCheckBig,
-  CreditCard,
-  Database,
-  FileCheck2,
+  ArrowDownToLine,
   Gauge,
   Layers3,
+  Database,
   SearchCheck,
   ShieldCheck,
 } from "lucide-react";
 import CreditScoreGauge from "./CreditScoreGauge";
-import type {
-  CibilMetricIcon,
-  CibilReportViewData,
-} from "./types";
+import type { CibilMetricIcon, CibilReportViewData } from "./types";
 
 const metricIcons: Record<CibilMetricIcon, LucideIcon> = {
   payment: CircleCheckBig,
@@ -73,33 +69,39 @@ export function CibilReportHero({
             className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between"
           >
             <div>
-              <div className="flex items-center gap-2 text-[12px] font-bold text-[#075cde]">
-                <span className="flex h-8 w-8 items-center justify-center rounded-md bg-[#ddecf8]">
-                  <FileCheck2 className="h-4 w-4" aria-hidden="true" />
-                </span>
-                Free credit score plan
-              </div>
               <h1 className="mt-4 text-[31px] font-extrabold leading-tight text-[#102f49] sm:text-[36px] lg:text-[40px]">
-                Your CIBIL credit report
+                Your {data.scoreBureauLabel} credit report
               </h1>
               <p className="mt-3 max-w-2xl text-[14px] font-medium leading-7 text-[#58758a] sm:text-[15px]">
-                Hi <span className="font-bold text-[#254e69]">{data.userName}</span>,
-                this overview is built from the latest report saved securely to
-                your Fintaraa profile.
+                Hi{" "}
+                <span className="font-bold text-[#254e69]">
+                  {data.userName}
+                </span>
+                , this overview is built from the latest report saved securely
+                to your Fintaraa profile.
               </p>
             </div>
 
             <div className="flex flex-wrap gap-x-5 gap-y-2 text-[11px] font-bold text-[#526e82]">
               <span className="inline-flex items-center gap-2">
-                <Database className="h-4 w-4 text-[#075cde]" aria-hidden="true" />
+                <Database
+                  className="h-4 w-4 text-[#075cde]"
+                  aria-hidden="true"
+                />
                 {data.sourceLabel}
               </span>
               <span className="inline-flex items-center gap-2">
-                <CalendarClock className="h-4 w-4 text-[#075cde]" aria-hidden="true" />
+                <CalendarClock
+                  className="h-4 w-4 text-[#075cde]"
+                  aria-hidden="true"
+                />
                 Updated {data.scoreDateLabel}
               </span>
               <span className="inline-flex items-center gap-2">
-                <ShieldCheck className="h-4 w-4 text-[#168447]" aria-hidden="true" />
+                <ShieldCheck
+                  className="h-4 w-4 text-[#168447]"
+                  aria-hidden="true"
+                />
                 Profile synced
               </span>
             </div>
@@ -109,13 +111,17 @@ export function CibilReportHero({
             <motion.article
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+              transition={{
+                duration: 0.5,
+                delay: 0.08,
+                ease: [0.22, 1, 0.36, 1],
+              }}
               className="flex min-h-110 flex-col rounded-lg border border-[#c9dfec] bg-white p-5 sm:p-6"
             >
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <p className="text-[12px] font-extrabold text-[#075cde]">
-                    TransUnion CIBIL
+                    {data.scoreBureauLabel}
                   </p>
                   <h2 className="mt-1 text-[20px] font-extrabold text-[#102f49]">
                     Current credit score
@@ -133,13 +139,17 @@ export function CibilReportHero({
 
               <div className="grid grid-cols-2 border-y border-[#e3edf3] py-3">
                 <div className="border-r border-[#e3edf3] pr-3">
-                  <p className="text-[10px] font-bold text-[#7890a2]">Score band</p>
+                  <p className="text-[10px] font-bold text-[#7890a2]">
+                    Score band
+                  </p>
                   <p className={`mt-1 text-[14px] font-extrabold ${band.tone}`}>
                     {band.label}
                   </p>
                 </div>
                 <div className="pl-4">
-                  <p className="text-[10px] font-bold text-[#7890a2]">Report date</p>
+                  <p className="text-[10px] font-bold text-[#7890a2]">
+                    Report date
+                  </p>
                   <p className="mt-1 text-[14px] font-extrabold text-[#254e69]">
                     {data.reportDateLabel}
                   </p>
@@ -153,14 +163,20 @@ export function CibilReportHero({
                 className="mt-4 inline-flex h-11 w-full items-center justify-center gap-2 rounded-md bg-[#075cde] px-4 text-[13px] font-extrabold text-white transition-colors hover:bg-[#064cb8] disabled:cursor-not-allowed disabled:opacity-60"
               >
                 <ArrowDownToLine className="h-4 w-4" aria-hidden="true" />
-                {downloadingReport ? "Preparing report..." : "Download full report"}
+                {downloadingReport
+                  ? "Preparing report..."
+                  : "Download full report"}
               </button>
             </motion.article>
 
             <motion.article
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.14, ease: [0.22, 1, 0.36, 1] }}
+              transition={{
+                duration: 0.5,
+                delay: 0.14,
+                ease: [0.22, 1, 0.36, 1],
+              }}
               className="rounded-lg border border-[#c9dfec] bg-white p-5 sm:p-6"
             >
               <div className="flex items-start justify-between gap-4">

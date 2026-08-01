@@ -23,7 +23,7 @@ function DetailSkeleton() {
       <div className="mx-auto max-w-7xl animate-pulse">
         <div className="h-72 rounded-3xl bg-slate-100" />
         <div className="mt-10 grid gap-8 lg:grid-cols-[1fr_300px]">
-          <div className="space-y-5">
+          <div className="space-y-4">
             <div className="h-5 w-32 rounded bg-slate-100" />
             <div className="h-12 rounded bg-slate-100" />
             <div className="h-24 rounded bg-slate-100" />
@@ -77,7 +77,8 @@ export function BlogDetailClient({ slug }: { slug: string }) {
   const authorName = post.authorName || "Fintaraa Editorial";
   const authorRole = post.authorRole || "Financial Research Desk";
   const authorAvatar = post.authorAvatarUrl || "/assets/images/user1.png";
-  const description = post.excerpt || post.summary || stripHtml(post.content || "");
+  const description =
+    post.excerpt || post.summary || stripHtml(post.content || "");
   const categories = Array.from(
     new Set(
       [post, ...related]
@@ -159,12 +160,14 @@ export function BlogDetailClient({ slug }: { slug: string }) {
             <article
               className="prose prose-slate max-w-none prose-headings:font-extrabold prose-headings:text-black prose-p:text-[15px] prose-p:font-medium prose-p:leading-8 prose-p:text-[#4a5568] prose-li:text-[#4a5568]"
               dangerouslySetInnerHTML={{
-                __html: sanitizeRichText(post.content || `<p>${description}</p>`),
+                __html: sanitizeRichText(
+                  post.content || `<p>${description}</p>`,
+                ),
               }}
             />
           </div>
 
-          <aside className="space-y-5 lg:sticky lg:top-24">
+          <aside className="space-y-4 lg:sticky lg:top-24">
             <section className="rounded-2xl border border-[#dce9f7] bg-[#eef6ff] p-5">
               <h2 className="text-[16px] font-extrabold tracking-tight text-[#111625]">
                 Related Articles

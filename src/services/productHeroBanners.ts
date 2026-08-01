@@ -34,6 +34,7 @@ const normalise = (item: any): HomeBanner | null => {
     secondaryLinkUrl: item?.secondaryLinkUrl || "",
     secondaryButtonText: item?.secondaryButtonText || "",
     displayDurationMs: Number(item?.displayDurationMs || 5000),
+    contentOverlay: Boolean(item?.contentOverlay),
     priority: Number(item?.priority || 1),
   };
 };

@@ -283,6 +283,8 @@ export const formFlows: Record<string, FormFlow> = {
             label: 'Top-up Amount Needed',
             placeholder: 'e.g. 3,00,000',
             type: 'number',
+            pattern: '^[1-9]\\d*$',
+            patternError: 'Enter a top-up amount greater than zero.',
             required: true,
           },
           {
@@ -649,7 +651,7 @@ export const formFlows: Record<string, FormFlow> = {
     steps: [
       {
         key: 'basic',
-        title: 'Identity & Contact',
+        title: 'Personal Details',
         description: 'We verify identity and contact before fetching offers.',
         fields: [
           {
@@ -688,8 +690,31 @@ export const formFlows: Record<string, FormFlow> = {
             helperText: 'Speeds up eKYC if provided.',
           },
           {
+            key: 'preferredContactTime',
+            label: 'Preferred Contact Time',
+            placeholder: 'Select preferred contact time',
+            type: 'select',
+            options: [
+              { label: 'Morning', value: 'morning' },
+              { label: 'Afternoon', value: 'afternoon' },
+              { label: 'Evening', value: 'evening' },
+            ],
+          },
+          {
             key: 'consentKyc',
             label: 'I consent to digital KYC',
+            type: 'checkbox',
+            required: true,
+          },
+          {
+            key: 'consentBureau',
+            label: 'I allow credit bureau pull for offer eligibility',
+            type: 'checkbox',
+            required: true,
+          },
+          {
+            key: 'consentCommunication',
+            label: 'I agree to receive updates on SMS/Email/WhatsApp',
             type: 'checkbox',
             required: true,
           },
@@ -732,6 +757,7 @@ export const formFlows: Record<string, FormFlow> = {
             label: 'Monthly Income',
             placeholder: 'Net take-home in INR',
             type: 'number',
+            required: true,
           },
           {
             key: 'address',
@@ -752,7 +778,7 @@ export const formFlows: Record<string, FormFlow> = {
           },
           {
             key: 'emiBurden',
-            label: 'Total current EMIs (INR)',
+            label: 'Total Current EMI (INR)',
             placeholder: 'e.g. 12,000',
             type: 'number',
             helperText: 'Include credit card EMIs if any.',
@@ -763,37 +789,6 @@ export const formFlows: Record<string, FormFlow> = {
           },
         ],
       },
-      {
-        key: 'declarations',
-        title: 'Declarations',
-        description: 'Confirm your permissions so we can share offers.',
-        fields: [
-          {
-            key: 'consentBureau',
-            label: 'I allow credit bureau pull for offer eligibility',
-            type: 'checkbox',
-            required: true,
-          },
-          {
-            key: 'consentCommunication',
-            label: 'I agree to receive updates on SMS/Email/WhatsApp',
-            type: 'checkbox',
-            required: true,
-          },
-          {
-            key: 'preferredContactTime',
-            label: 'Preferred Contact Time',
-            type: 'multiSelect',
-            options: [
-              { label: 'Morning', value: 'morning' },
-              { label: 'Afternoon', value: 'afternoon' },
-              { label: 'Evening', value: 'evening' },
-            ],
-            helperText: 'Select one or more suitable contact times.',
-          },
-        ],
-      },
-
       {
         key: 'documents',
         title: 'Upload Documents',
@@ -842,10 +837,12 @@ export const formFlows: Record<string, FormFlow> = {
             required: true,
           },
           {
-            key: 'dateOfBirth',
-            label: 'Date of Birth',
-            placeholder: 'DD/MM/YYYY',
-            type: 'date',
+            key: 'age',
+            label: 'Age',
+            placeholder: 'Age in years',
+            type: 'number',
+            pattern: '^(?:[1-9]\\d?|1[01]\\d|120)$',
+            patternError: 'Enter an age between 1 and 120.',
             required: true,
           },
           {
@@ -972,33 +969,18 @@ export const formFlows: Record<string, FormFlow> = {
               { label: 'Current', value: 'current' },
               { label: 'Salary', value: 'salary' },
             ],
-            required: true,
           },
           {
             key: 'accountNumber',
             label: 'Account Number',
             placeholder: 'Bank account number',
             type: 'number',
-            required: true,
           },
           {
             key: 'ifscCode',
             label: 'IFSC Code',
             placeholder: 'e.g. HDFC0001234',
             type: 'text',
-            required: true,
-          },
-          {
-            key: 'coApplicant',
-            label: 'Add Co-applicant?',
-            type: 'checkbox',
-            helperText: 'Check if a co-borrower will apply with you.',
-          },
-          {
-            key: 'coApplicants',
-            label: 'Co-applicants',
-            type: 'coApplicants',
-            required: true,
           },
           {
             key: 'coApplicantRelation',
@@ -1029,10 +1011,12 @@ export const formFlows: Record<string, FormFlow> = {
             required: true,
           },
           {
-            key: 'coApplicantDateOfBirth',
-            label: 'Co-applicant Date of Birth',
-            placeholder: 'DD/MM/YYYY',
-            type: 'date',
+            key: 'coApplicantAge',
+            label: 'Co-applicant Age',
+            placeholder: 'Age in years',
+            type: 'number',
+            pattern: '^(?:[1-9]\\d?|1[01]\\d|120)$',
+            patternError: 'Enter an age between 1 and 120.',
             required: true,
           },
           {
@@ -1260,8 +1244,12 @@ export const formFlows: Record<string, FormFlow> = {
           {
             key: 'interestPreference',
             label: 'Interest Preference',
-            placeholder: 'Fixed / Floating',
-            type: 'text',
+            placeholder: 'Select interest preference',
+            type: 'select',
+            options: [
+              { label: 'Fixed', value: 'fixed' },
+              { label: 'Floating', value: 'floating' },
+            ],
           },
           {
             key: 'agreeCreditCheck',
@@ -1283,6 +1271,19 @@ export const formFlows: Record<string, FormFlow> = {
             placeholder: 'Sale deed, allotment letter, etc.',
             type: 'file',
             helperText: 'Attach clear scans of available documents.',
+          },
+        ],
+      },
+      {
+        key: 'coApplicant',
+        title: 'Co-Applicant',
+        description:
+          'Applicant details and documents are complete. Add a co-applicant only if needed.',
+        fields: [
+          {
+            key: 'coApplicants',
+            label: 'Co-applicants',
+            type: 'coApplicants',
           },
         ],
       },
@@ -1615,12 +1616,6 @@ export const formFlows: Record<string, FormFlow> = {
             placeholder: 'e.g. 2019',
             type: 'number',
           },
-        ],
-      },
-      {
-        key: 'vehicleDeclarations',
-        title: 'Declarations',
-        fields: [
           {
             key: 'insuranceConsent',
             label: 'I agree to bundle insurance quotation',
@@ -2075,10 +2070,12 @@ export const formFlows: Record<string, FormFlow> = {
             required: true,
           },
           {
-            key: 'dob',
-            label: 'DOB',
-            placeholder: 'Select date of birth (DD/MM/YYYY)',
-            type: 'date',
+            key: 'applicantAge',
+            label: 'Age',
+            placeholder: 'Age in years',
+            type: 'number',
+            pattern: '^(?:[1-9]\\d?|1[01]\\d|120)$',
+            patternError: 'Enter an age between 1 and 120.',
             required: true,
           },
           {
@@ -2316,10 +2313,12 @@ export const formFlows: Record<string, FormFlow> = {
             required: true,
           },
           {
-            key: 'dob',
-            label: 'DOB',
-            placeholder: 'Select date of birth (DD/MM/YYYY)',
-            type: 'date',
+            key: 'applicantAge',
+            label: 'Age',
+            placeholder: 'Age in years',
+            type: 'number',
+            pattern: '^(?:[1-9]\\d?|1[01]\\d|120)$',
+            patternError: 'Enter an age between 1 and 120.',
             required: true,
           },
           {
@@ -3504,4 +3503,194 @@ export const formFlows: Record<string, FormFlow> = {
       },
     ],
   },
+};
+
+const cloneLoanFlow = (
+  baseKey: string,
+  overrides: Pick<FormFlow, 'title' | 'subtitle' | 'description'>,
+): FormFlow => {
+  const base = formFlows[baseKey];
+  if (!base) throw new Error(`Missing base application flow: ${baseKey}`);
+  return {
+    ...base,
+    ...overrides,
+    tabs: base.tabs?.map((tab) => ({ ...tab })),
+    steps: base.steps.map((step) => ({
+      ...step,
+      fields: step.fields.map((field) => ({ ...field })),
+    })),
+  };
+};
+
+formFlows.balanceTransferTopUpLoan = cloneLoanFlow('balanceTransferLoan', {
+  title: 'Balance Transfer Loan + Top up Loan',
+  subtitle: 'Transfer your running loan and request an additional top-up',
+  description:
+    'Share the existing loan, outstanding balance, and any additional top-up requirement.',
+});
+const combinedLoanStep = formFlows.balanceTransferTopUpLoan.steps.find(
+  (step) => step.key === 'currentLoan',
+);
+if (combinedLoanStep) {
+  combinedLoanStep.fields.push({
+    key: 'topupAmount',
+    label: 'Additional Top-up Amount',
+    placeholder: 'Enter 0 when no additional amount is required',
+    type: 'number',
+    minValue: 0,
+    required: true,
+  });
+}
+
+formFlows.constructionLoan = cloneLoanFlow('homeLoan', {
+  title: 'Construction Loan',
+  subtitle: 'Finance residential construction in planned stages',
+  description:
+    'Provide applicant, land, construction estimate, and funding details for a construction-loan assessment.',
+});
+
+formFlows.solarLoan = cloneLoanFlow('homeLoan', {
+  title: 'Solar Loan',
+  subtitle: 'Finance a rooftop or commercial solar installation',
+  description:
+    'Share property, installation cost, income, and funding details for solar financing.',
+});
+
+formFlows.carLoan = cloneLoanFlow('vehicleLoan', {
+  title: 'Car Loan',
+  subtitle: 'Finance your car purchase',
+  description:
+    'Provide vehicle, income, and repayment details for a car-loan assessment.',
+});
+
+formFlows.instantLoan = cloneLoanFlow('personalLoan', {
+  title: 'Instant Loan',
+  subtitle: 'Fast digital eligibility and application',
+  description:
+    'Complete identity, income, and loan details for a quick instant-loan assessment.',
+});
+
+formFlows.machineryLoan = cloneLoanFlow('businessLoan', {
+  title: 'Machinery Loan',
+  subtitle: 'Finance business machinery and equipment',
+  description:
+    'Share business financials, machinery quotation, and funding requirement.',
+});
+
+formFlows.dodLoan = cloneLoanFlow('workingCapitalLoan', {
+  title: 'DOD Loan',
+  subtitle: 'Daily overdraft funding for business cash flow',
+  description:
+    'Provide turnover, banking, and working-capital details for a DOD facility.',
+});
+
+formFlows.odLoan = cloneLoanFlow('workingCapitalLoan', {
+  title: 'OD Loan',
+  subtitle: 'Overdraft funding for business liquidity',
+  description:
+    'Provide turnover, banking, and working-capital details for an overdraft facility.',
+});
+
+formFlows.industrialLoan = cloneLoanFlow('businessLoan', {
+  title: 'Industrial Loan',
+  subtitle: 'Finance industrial expansion and infrastructure',
+  description:
+    'Share industrial business, project, cash-flow, and funding requirement details.',
+});
+
+formFlows.commercialPurchasesLoan = cloneLoanFlow('businessLoan', {
+  title: 'Commercial Purchases Loan',
+  subtitle: 'Finance commercial purchases for your business',
+  description:
+    'Share purchase, quotation, business financials, and repayment details.',
+});
+
+formFlows.creditCard = {
+  title: 'Credit Card',
+  subtitle: 'Find a card matched to your profile',
+  description:
+    'Share identity, employment, income, and preferred card details for eligibility matching.',
+  steps: [
+    {
+      key: 'eligibility',
+      title: 'Applicant & Card Preference',
+      fields: [
+        {
+          key: 'fullName',
+          label: 'Full Name',
+          placeholder: 'As per PAN',
+          type: 'text',
+          required: true,
+        },
+        {
+          key: 'phone',
+          label: 'Mobile Number',
+          placeholder: '10-digit mobile number',
+          type: 'phone',
+          required: true,
+        },
+        {
+          key: 'email',
+          label: 'Email',
+          placeholder: 'name@example.com',
+          type: 'email',
+          required: true,
+        },
+        {
+          key: 'pan',
+          label: 'PAN',
+          placeholder: 'ABCDE1234F',
+          type: 'text',
+          required: true,
+        },
+        {
+          key: 'employmentType',
+          label: 'Employment Type',
+          type: 'select',
+          required: true,
+          options: [
+            { label: 'Salaried', value: 'salaried' },
+            { label: 'Self-employed', value: 'self_employed' },
+          ],
+        },
+        {
+          key: 'monthlyIncome',
+          label: 'Monthly Income',
+          placeholder: 'Monthly take-home income',
+          type: 'number',
+          minValue: 0,
+          required: true,
+        },
+        {
+          key: 'preferredCardType',
+          label: 'Preferred Card Benefit',
+          type: 'select',
+          required: true,
+          options: [
+            { label: 'Cashback', value: 'cashback' },
+            { label: 'Travel', value: 'travel' },
+            { label: 'Rewards', value: 'rewards' },
+            { label: 'Fuel', value: 'fuel' },
+            { label: 'Business', value: 'business' },
+          ],
+        },
+        {
+          key: 'requestedCreditLimit',
+          label: 'Preferred Credit Limit',
+          placeholder: 'Enter preferred credit limit',
+          type: 'number',
+          minValue: 1,
+          pattern: '^[1-9]\\d*$',
+          patternError: 'Enter a preferred credit limit greater than zero.',
+          required: true,
+        },
+        {
+          key: 'consentKyc',
+          label: 'I authorize KYC and credit eligibility checks',
+          type: 'checkbox',
+          required: true,
+        },
+      ],
+    },
+  ],
 };

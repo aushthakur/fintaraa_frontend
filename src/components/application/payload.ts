@@ -1,6 +1,12 @@
 import { Post } from "@/hooks/apiUtils";
 import { buildWebsiteSourcePayload } from "@/lib/formConsent";
+import { getWebsiteAttribution } from "@/services/attribution";
 import type { ApplicationCategory } from "./flowRegistry";
+import {
+  getRequiredLoanProductMetadata,
+  resolveLoanTypeForFlow,
+} from "./loanProductContract";
+import { buildCanonicalLoanPolicyDetails } from "./loanPolicyDetails";
 
 type Payload = Record<string, any>;
 
@@ -21,27 +27,6 @@ type SubmittedApplicationRecord = {
 export type ApplicationSubmissionResult = {
   referenceId: string;
   record: SubmittedApplicationRecord;
-};
-
-const loanTypeMap: Record<string, string> = {
-  personalLoan: "personal_loan",
-  homeLoan: "home_loan",
-  businessLoan: "business_loan",
-  vehicleLoan: "vehicle_loan",
-  twoWheelerLoan: "vehicle_loan",
-  usedCarLoan: "vehicle_loan",
-  balanceTransferLoan: "personal_loan",
-  topUpLoan: "personal_loan",
-  workingCapitalLoan: "working_capital_loan",
-  renovationLoan: "renovation_loan",
-  loanAgainstProperty: "loan_against_property",
-  loanAgainstSecurity: "loan_against_security",
-  loanAgainstCarValue: "loan_against_car",
-  goldLoan: "gold_loan",
-  agricultureLoan: "business_loan",
-  educationLoan: "education_loan",
-  machineryLoan: "machinery_loan",
-  instantLoan: "instant_loan",
 };
 
 const insuranceTypeMap: Record<string, string> = {
@@ -88,6 +73,7 @@ const loanFileMap: Record<string, string> = {
   admissionLetterUrl: "admissionLetterUrl",
   feeStructureUrl: "feeStructureUrl",
   rcCopyUrl: "rcCopyUrl",
+  inspectionPhotos: "inspectionPhotosUrl",
   valuationSlip: "goldPhotosUrl",
   carInsuranceUrl: "carInsuranceUrl",
   lastMonthBankStatementUrl: "lastMonthBankStatementUrl",
@@ -102,6 +88,7 @@ const loanFileMap: Record<string, string> = {
   proformaInvoiceOrQuotationUrl: "proformaInvoiceOrQuotationUrl",
   businessRegistrationCertificateUrl: "businessRegistrationCertificateUrl",
   inspectionPhotosUrl: "inspectionPhotosUrl",
+  landDocs: "landDocumentsUrl",
   landDocumentsUrl: "landDocumentsUrl",
 };
 
@@ -137,6 +124,51 @@ const normalizeName = (fullName?: string) => {
   const firstName = parts.shift() || "Applicant";
   const lastName = parts.join(" ") || "User";
   return { firstName, lastName };
+};
+
+const normalizeDateOfBirth = (values: Payload) => {
+  const provided = values.dateOfBirth || values.dob;
+  if (provided) {
+    const raw = String(provided).trim();
+    const dayFirstMatch = raw.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+    const parsed = dayFirstMatch
+      ? new Date(
+          Date.UTC(
+            Number(dayFirstMatch[3]),
+            Number(dayFirstMatch[2]) - 1,
+            Number(dayFirstMatch[1]),
+          ),
+        )
+      : new Date(raw);
+    if (!Number.isNaN(parsed.getTime())) return parsed.toISOString();
+  }
+
+  const age = toNumber(values.applicantAge || values.age || values.currentAge);
+  if (!age || age < 1 || age > 120) return undefined;
+  const now = new Date();
+  return new Date(Date.UTC(now.getUTCFullYear() - age, 0, 1)).toISOString();
+};
+
+const normalizeLoanEmploymentType = (value: unknown) => {
+  const token = String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, "");
+  if (token === "salaried" || token === "salary") return "salaried";
+  if (token.includes("professional")) {
+    return token.includes("nonprofessional")
+      ? "self_employed_non_professional"
+      : "self_employed_professional";
+  }
+  if (
+    token === "self" ||
+    token.includes("selfemployed") ||
+    token.includes("freelance") ||
+    token.includes("business")
+  ) {
+    return "self_employed";
+  }
+  return value;
 };
 
 const removeEmpty = (input: Payload) =>
@@ -177,8 +209,63 @@ const serializeForPolicyDetails = (value: unknown): unknown => {
 };
 
 const rootApplicationFields = new Set([
+  "status",
+  "dataSource",
+  "fullName",
+  "name",
+  "firstName",
+  "lastName",
+  "phone",
+  "mobile",
+  "email",
+  "applicantAge",
+  "age",
+  "currentAge",
+  "gender",
+  "marriedStatus",
+  "maritalStatus",
+  "pan",
+  "panNumber",
+  "aadhaar",
+  "aadhaarNumber",
+  "address",
+  "fullAddress",
+  "street",
+  "propertyAddress",
+  "city",
+  "state",
+  "pincode",
+  "pinCode",
+  "employmentType",
+  "employment",
+  "jobType",
+  "companyName",
+  "employerName",
+  "businessName",
+  "monthlyIncome",
+  "netIncome",
+  "income",
+  "salary",
+  "annualIncome",
+  "workExperience",
+  "experience",
+  "officeAddress",
+  "companyAddress",
+  "bankName",
+  "accountType",
+  "accountNumber",
+  "ifscCode",
+  "nomineeName",
+  "nominee",
+  "nomineeRelation",
+  "occupation",
+  "kycDocumentType",
+  "loanAmount",
+  "amount",
+  "requestedAmount",
   "whatsappConsent",
   "communicationConsent",
+  "rcLookup",
   "source",
   "platform",
   "sourcePlatform",
@@ -278,11 +365,23 @@ const appendInsuranceFiles = (formData: FormData, values: Payload) => {
 };
 
 const appendCatalogFiles = (formData: FormData, values: Payload) => {
-  const metadata =
+  const storedMetadata =
     values.__loanDocumentCatalogMeta &&
     typeof values.__loanDocumentCatalogMeta === "object"
       ? values.__loanDocumentCatalogMeta
       : {};
+  const metadata = {
+    ...storedMetadata,
+    ...(isFileArray(values.cibil_report) &&
+    !Object.prototype.hasOwnProperty.call(storedMetadata, "cibil_report")
+      ? {
+          cibil_report: {
+            key: "cibil_report",
+            label: "CIBIL Report",
+          },
+        }
+      : {}),
+  };
   const manifest: Array<{
     id?: string;
     key?: string;
@@ -313,7 +412,7 @@ const appendCatalogFiles = (formData: FormData, values: Payload) => {
 };
 
 const appendCoApplicantFiles = (formData: FormData, values: Payload) => {
-  if (!values.coApplicant || !Array.isArray(values.coApplicants)) return;
+  if (!Array.isArray(values.coApplicants) || !values.coApplicants.length) return;
 
   values.coApplicants.slice(0, 10).forEach((coApplicant: Payload, index: number) => {
     (["aadhaarFile", "panFile", "bankStatementFile"] as const).forEach((key) => {
@@ -333,14 +432,31 @@ const appendCoApplicantFiles = (formData: FormData, values: Payload) => {
   });
 };
 
-const buildLoanPayload = (flowKey: string, values: Payload, referrer?: string) => {
+export const buildLoanPayload = (
+  flowKey: string,
+  values: Payload,
+  referrer?: string,
+) => {
   const { firstName, lastName } = normalizeName(values.fullName || values.name);
-  const loanType = loanTypeMap[flowKey] || "personal_loan";
+  const loanType = resolveLoanTypeForFlow(flowKey);
+  const productMetadata = getRequiredLoanProductMetadata(flowKey);
   const source = buildWebsiteSourcePayload("website_application_flow");
-  const policyDetails = buildPolicyDetails(values, {
-    ...source,
-    coApplicants: values.coApplicant ? values.coApplicants : undefined,
-    referrer,
+  const attribution = {
+    ...getWebsiteAttribution(),
+    ...(referrer ? { referrer } : {}),
+  };
+  const policyDetails = buildCanonicalLoanPolicyDetails({
+    flowKey,
+    loanType,
+    values,
+    metadata: {
+      requestedProductName:
+        productMetadata?.requestedProductName || values.requestedProductName,
+      requestedProductSlug:
+        productMetadata?.requestedProductSlug || values.requestedProductSlug,
+      productVariant: productMetadata?.productVariant || values.productVariant,
+      metaFlowKey: flowKey,
+    },
   });
 
   return removeEmpty({
@@ -349,20 +465,25 @@ const buildLoanPayload = (flowKey: string, values: Payload, referrer?: string) =
     formSource: values.formSource || source.formSource,
     whatsappConsent: Boolean(values.whatsappConsent),
     communicationConsent: values.communicationConsent,
+    attribution,
+    dsaReferralCode: attribution.dsaReferralCode,
+    rcLookup: values.rcLookup,
     loanType,
     loanAmount:
       toNumber(values.loanAmount) ||
       toNumber(values.amount) ||
       toNumber(values.requestedAmount) ||
+      toNumber(values.outstanding) ||
       toNumber(values.topupAmount) ||
       toNumber(values.estimate) ||
       toNumber(values.estimatedCost) ||
       toNumber(values.wcNeed) ||
+      toNumber(values.requestedCreditLimit) ||
       toNumber(values.price) ||
       toNumber(values.totalCourseFee),
     firstName,
     lastName,
-    dateOfBirth: values.dateOfBirth || values.dob,
+    dateOfBirth: normalizeDateOfBirth(values),
     gender: values.gender,
     marriedStatus: values.marriedStatus || values.maritalStatus,
     mobile: String(values.phone || values.mobile || "").replace(/\D/g, ""),
@@ -373,7 +494,9 @@ const buildLoanPayload = (flowKey: string, values: Payload, referrer?: string) =
     city: values.city,
     state: values.state,
     pincode: values.pincode || values.pinCode,
-    employmentType: values.employmentType || values.employment || values.jobType,
+    employmentType: normalizeLoanEmploymentType(
+      values.employmentType || values.employment || values.jobType,
+    ),
     companyName: values.companyName || values.employerName || values.businessName,
     monthlyIncome:
       toNumber(values.monthlyIncome) ||
@@ -390,7 +513,7 @@ const buildLoanPayload = (flowKey: string, values: Payload, referrer?: string) =
   });
 };
 
-const buildInsurancePayload = (
+export const buildInsurancePayload = (
   flowKey: string,
   values: Payload,
   referrer?: string,
@@ -399,6 +522,7 @@ const buildInsurancePayload = (
     values.fullName || values.name || values.firstName,
   );
   const source = buildWebsiteSourcePayload("website_application_flow");
+  const attribution = getWebsiteAttribution();
 
   return removeEmpty({
     typeOfInsurance: insuranceTypeMap[flowKey] || "health",
@@ -407,9 +531,12 @@ const buildInsurancePayload = (
     formSource: values.formSource || source.formSource,
     whatsappConsent: Boolean(values.whatsappConsent),
     communicationConsent: values.communicationConsent,
+    attribution,
+    dsaReferralCode: attribution.dsaReferralCode,
+    rcLookup: values.rcLookup,
     firstName: values.firstName || firstName,
     lastName: values.lastName || lastName,
-    dateOfBirth: values.dob || values.dateOfBirth,
+    age: toNumber(values.applicantAge || values.age || values.currentAge),
     gender: values.gender || "other",
     mobile: String(values.mobile || values.phone || "").replace(/\D/g, ""),
     email: values.email,

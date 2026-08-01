@@ -12,25 +12,33 @@ import {
   Building2,
   ClipboardList,
   FileText,
+  LayoutDashboard,
   LogOut,
   Phone,
   RefreshCw,
   ShieldCheck,
+  UploadCloud,
   UserRound,
   WalletCards,
 } from "lucide-react";
 import {
   fetchPartnerClickSummary,
+  completePartnerDocumentRequest,
+  fetchPartnerDocumentRequests,
   fetchPartnerLeadEvents,
   fetchPartnerLeadSummary,
   fetchPartnerProfile,
   isPartnerLoggedIn,
   logoutPartner,
+  uploadPartnerVaultDocument,
+  type PartnerDocumentRequest,
   type PartnerClickSummary,
   type PartnerLeadEvent,
   type PartnerLeadSummary,
   type PartnerProfile,
 } from "@/services/partner";
+import { resolveLoanProductDisplayName } from "@/components/application/loanProductContract";
+import { DsaPortalWorkspace } from "@/components/partner/DsaPortalWorkspace";
 
 const stringValue = (value: unknown) =>
   typeof value === "string" ? value.trim() : "";
@@ -52,6 +60,13 @@ const prettyLabel = (value?: string) => {
     .join(" ");
 };
 
+const loanProductLabel = (
+  loanType?: string,
+  policyDetails?: Record<string, unknown>,
+) =>
+  resolveLoanProductDisplayName({ loanType, policyDetails }) ||
+  prettyLabel(loanType);
+
 const formatINR = (value?: number) => {
   const amount = Number(value || 0);
   return `Rs. ${amount.toLocaleString("en-IN")}`;
@@ -66,6 +81,24 @@ const formatDate = (value?: string) => {
     month: "short",
     year: "numeric",
   });
+};
+
+const normalizeDocumentIdentity = (value?: string) =>
+  String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[._-]+/g, " ")
+    .replace(/\s+/g, " ");
+
+const pendingRequestedDocuments = (request: PartnerDocumentRequest) => {
+  const uploaded = new Set(
+    (request.uploadedDocuments || []).map((item) =>
+      normalizeDocumentIdentity(item.documentKey),
+    ),
+  );
+  return request.requestedDocuments.filter(
+    (document) => !uploaded.has(normalizeDocumentIdentity(document)),
+  );
 };
 
 const getAddress = (profile?: PartnerProfile | null) => {
@@ -184,6 +217,7 @@ const normalizePartner = (profile?: PartnerProfile | null) => {
 
 const partnerAccountTabs = [
   { key: "overview", label: "Overview", icon: ClipboardList },
+  { key: "workspace", label: "DSA Workspace", icon: LayoutDashboard },
   { key: "leads", label: "Leads", icon: BadgeCheck },
   { key: "profile", label: "Profile Details", icon: Building2 },
   { key: "bank", label: "Bank Details", icon: BriefcaseBusiness },
@@ -200,6 +234,12 @@ export function PartnerProfilePage() {
   const [clickSummary, setClickSummary] = useState<PartnerClickSummary | null>(
     null,
   );
+  const [documentRequests, setDocumentRequests] = useState<
+    PartnerDocumentRequest[]
+  >([]);
+  const [uploadingRequestKey, setUploadingRequestKey] = useState<string | null>(
+    null,
+  );
   const [loading, setLoading] = useState(true);
   const [dashboardLoading, setDashboardLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<PartnerAccountTab>("overview");
@@ -208,11 +248,12 @@ export function PartnerProfilePage() {
   const loadDashboard = useCallback(async () => {
     setDashboardLoading(true);
     try {
-      const [summaryResult, eventsResult, clickResult] =
+      const [summaryResult, eventsResult, clickResult, requestsResult] =
         await Promise.allSettled([
           fetchPartnerLeadSummary(),
           fetchPartnerLeadEvents(),
           fetchPartnerClickSummary(),
+          fetchPartnerDocumentRequests(),
         ]);
 
       if (summaryResult.status === "fulfilled") {
@@ -223,6 +264,9 @@ export function PartnerProfilePage() {
       }
       if (clickResult.status === "fulfilled") {
         setClickSummary(clickResult.value || null);
+      }
+      if (requestsResult.status === "fulfilled") {
+        setDocumentRequests(requestsResult.value || []);
       }
     } finally {
       setDashboardLoading(false);
@@ -326,6 +370,9 @@ export function PartnerProfilePage() {
   ];
 
   const documents = profile?.kycProfile?.documents || [];
+  const pendingDocumentRequestCount = documentRequests.filter(
+    (request) => request.status === "pending",
+  ).length;
   const missingFields = partner.completion.missing || [];
   const productBreakdown = leadSummary?.loanTypeBreakdown || [];
   const currentTab =
@@ -335,6 +382,44 @@ export function PartnerProfilePage() {
   const handleLogout = () => {
     logoutPartner();
     router.replace("/partner/login");
+  };
+
+  const handleRequestedDocumentUpload = async (
+    request: PartnerDocumentRequest,
+    documentKey: string,
+    file?: File,
+  ) => {
+    if (!file) return;
+    const actionKey = `${request._id}:${normalizeDocumentIdentity(documentKey)}`;
+    setUploadingRequestKey(actionKey);
+    setMessage("");
+    try {
+      const documents = await uploadPartnerVaultDocument(file, documentKey);
+      const uploaded = documents.find(
+        (document) =>
+          normalizeDocumentIdentity(document.docType) ===
+          normalizeDocumentIdentity(documentKey),
+      );
+      if (!uploaded?.fileUrl) {
+        throw new Error("Uploaded file could not be linked to this request.");
+      }
+      await completePartnerDocumentRequest(request._id, {
+        documentKey,
+        fileUrl: uploaded.fileUrl,
+      });
+      const [nextRequests, nextProfile] = await Promise.all([
+        fetchPartnerDocumentRequests(),
+        fetchPartnerProfile(),
+      ]);
+      setDocumentRequests(nextRequests);
+      setProfile(nextProfile);
+    } catch (error) {
+      setMessage(
+        (error as Error).message || "Requested document could not be uploaded.",
+      );
+    } finally {
+      setUploadingRequestKey(null);
+    }
   };
 
   const renderLeadMovement = (limit?: number) => {
@@ -352,7 +437,8 @@ export function PartnerProfilePage() {
                   {event.customerName || "Unnamed lead"}
                 </p>
                 <p className="mt-1 text-[13px] font-semibold text-[#667085]">
-                  {prettyLabel(event.loanType)} | {prettyLabel(event.status)}
+                  {loanProductLabel(event.loanType, event.policyDetails)} |{" "}
+                  {prettyLabel(event.status)}
                   {event.loanId ? ` | ${event.loanId}` : ""}
                 </p>
               </div>
@@ -488,6 +574,18 @@ export function PartnerProfilePage() {
                     >
                       <Icon className="h-4 w-4" />
                       {item.label}
+                      {item.key === "documents" &&
+                      pendingDocumentRequestCount > 0 ? (
+                        <span
+                          className={`ml-auto px-2 py-0.5 text-[10px] ${
+                            isActive
+                              ? "bg-white text-[#195585]"
+                              : "bg-[#dceeff] text-[#195585]"
+                          }`}
+                        >
+                          {pendingDocumentRequestCount}
+                        </span>
+                      ) : null}
                     </button>
                   );
                 })}
@@ -538,6 +636,26 @@ export function PartnerProfilePage() {
               </div>
             ) : (
               <div className="grid gap-5 p-5 md:p-7">
+                {pendingDocumentRequestCount > 0 && activeTab === "overview" ? (
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab("documents")}
+                    className="flex w-full flex-col gap-3 border border-[#b9d7ef] bg-[#f2f8fd] p-4 text-left md:flex-row md:items-center md:justify-between"
+                  >
+                    <span>
+                      <span className="block text-[15px] font-extrabold text-[#07162d]">
+                        {pendingDocumentRequestCount} document request
+                        {pendingDocumentRequestCount === 1 ? "" : "s"} pending
+                      </span>
+                      <span className="mt-1 block text-[13px] font-semibold text-[#52677a]">
+                        Upload the requested files to keep applications moving.
+                      </span>
+                    </span>
+                    <span className="inline-flex h-10 shrink-0 items-center justify-center bg-[#195585] px-4 text-[13px] font-extrabold text-white">
+                      Review requests
+                    </span>
+                  </button>
+                ) : null}
                 {partner.completion.percent < 100 && activeTab === "overview" ? (
                   <div className="flex flex-col gap-3 bg-[#fff8e6] p-4 ring-1 ring-[#ffe3a3] md:flex-row md:items-center md:justify-between">
                     <div>
@@ -637,6 +755,12 @@ export function PartnerProfilePage() {
                   </>
                 ) : null}
 
+                {activeTab === "workspace" ? (
+                  <DsaPortalWorkspace
+                    onShowLeads={() => setActiveTab("leads")}
+                  />
+                ) : null}
+
                 {activeTab === "leads" ? (
                   <>
                     <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
@@ -676,7 +800,16 @@ export function PartnerProfilePage() {
                               >
                                 <div className="flex items-center justify-between gap-3">
                                   <span className="text-[13px] font-extrabold text-[#344054]">
-                                    {prettyLabel(stringValue(row.loanType))}
+                                    {loanProductLabel(
+                                      stringValue(row.loanType),
+                                      row.policyDetails &&
+                                        typeof row.policyDetails === "object"
+                                        ? (row.policyDetails as Record<
+                                            string,
+                                            unknown
+                                          >)
+                                        : undefined,
+                                    )}
                                   </span>
                                   <span className="text-[16px] font-extrabold text-[#195585]">
                                     {Number(row.count || 0)}
@@ -795,6 +928,91 @@ export function PartnerProfilePage() {
                         Upload documents
                       </Link>
                     </div>
+                    {documentRequests.some(
+                      (request) => request.status === "pending",
+                    ) ? (
+                      <div className="mt-5 border border-[#b9d7ef] bg-[#f2f8fd] p-4">
+                        <div className="flex items-start gap-3">
+                          <UploadCloud className="mt-0.5 h-5 w-5 text-[#195585]" />
+                          <div>
+                            <p className="text-[14px] font-extrabold text-[#07162d]">
+                              Documents requested by Fintaraa
+                            </p>
+                            <p className="mt-1 text-[12px] font-semibold text-[#52677a]">
+                              Upload each requested file here. Every upload is
+                              recorded against the correct application.
+                            </p>
+                          </div>
+                        </div>
+                        <div className="mt-4 grid gap-3">
+                          {documentRequests
+                            .filter((request) => request.status === "pending")
+                            .map((request) => {
+                              const pendingDocuments =
+                                pendingRequestedDocuments(request);
+                              const uploadedCount =
+                                request.requestedDocuments.length -
+                                pendingDocuments.length;
+                              return (
+                                <div
+                                  key={request._id}
+                                  className="border border-[#d6e6f3] bg-white p-4"
+                                >
+                                  <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
+                                    <div>
+                                      <p className="text-[13px] font-extrabold text-[#07162d]">
+                                        {request.loanQuery?.loanId ||
+                                          "Partner profile documents"}
+                                      </p>
+                                      {request.message ? (
+                                        <p className="mt-1 text-[12px] font-semibold text-[#667085]">
+                                          {request.message}
+                                        </p>
+                                      ) : null}
+                                    </div>
+                                    <span className="text-[11px] font-extrabold text-[#195585]">
+                                      {uploadedCount} of {request.requestedDocuments.length} uploaded
+                                    </span>
+                                  </div>
+                                  <div className="mt-3 flex flex-wrap gap-2">
+                                    {pendingDocuments.map((documentKey) => {
+                                      const actionKey = `${
+                                        request._id
+                                      }:${normalizeDocumentIdentity(documentKey)}`;
+                                      return (
+                                        <label
+                                          key={documentKey}
+                                          className="inline-flex min-h-10 cursor-pointer items-center gap-2 bg-[#195585] px-4 py-2 text-[12px] font-extrabold text-white"
+                                        >
+                                          <UploadCloud className="h-4 w-4" />
+                                          {uploadingRequestKey === actionKey
+                                            ? "Uploading…"
+                                            : `Upload ${prettyLabel(documentKey)}`}
+                                          <input
+                                            type="file"
+                                            accept="image/*,.pdf"
+                                            className="sr-only"
+                                            disabled={
+                                              uploadingRequestKey === actionKey
+                                            }
+                                            onChange={(event) =>
+                                              void handleRequestedDocumentUpload(
+                                                request,
+                                                documentKey,
+                                                event.target.files?.[0],
+                                              )
+                                            }
+                                          />
+                                        </label>
+                                      );
+                                    })}
+                                  </div>
+                                </div>
+                              );
+                            })}
+                        </div>
+                      </div>
+                    ) : null}
                     <div className="mt-5 grid gap-3">
                       {documents.length ? (
                         documents.map((doc, index) => {

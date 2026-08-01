@@ -56,10 +56,13 @@ export function MobileActionBar() {
       </a>
 
       <a
-        href={`${WHATSAPP_PHONE.href}?text=Hi%20Fintaraa%20team!%20I%20need%20help%20choosing%20a%20financial%20product.`}
+        href={`${WHATSAPP_PHONE.href}?text=Hi!%20I%20want%20to%20apply%20for%20a%20loan%20at%20Fintaraa`}
         target="_blank"
         rel="noreferrer"
         aria-label="Chat with Fintaraa on WhatsApp"
+        data-analytics-category="whatsapp"
+        data-analytics-name="Floating WhatsApp - Apply for a loan"
+        data-analytics-placement="floating_contact"
         className="group pointer-events-auto relative flex h-14 w-14 items-center justify-center rounded-full border border-white/80 bg-[linear-gradient(135deg,#25D366_0%,#128C4B_100%)] text-white no-underline shadow-[0_12px_34px_rgba(18,140,75,0.38)] transition hover:-translate-y-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1ebe5a] sm:h-auto sm:w-auto sm:gap-3 sm:px-5 sm:py-2.5"
       >
         <span className="absolute -inset-1 -z-10 animate-pulse rounded-full bg-[#25D366]/35 blur-[2px] motion-reduce:animate-none" />

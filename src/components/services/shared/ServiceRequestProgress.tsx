@@ -1,6 +1,11 @@
 "use client";
 
-import { CheckCircle2, Clock3, Loader2 } from "lucide-react";
+import {
+  CalendarClock,
+  CheckCircle2,
+  Clock3,
+  Loader2,
+} from "lucide-react";
 import type { ServiceRequestRecord } from "@/services/serviceRequests";
 
 const formatDate = (value?: string) => {
@@ -19,9 +24,11 @@ const formatDate = (value?: string) => {
 export function ServiceRequestProgress({
   request,
   loading,
+  showQueryId = true,
 }: {
   request: ServiceRequestRecord | null;
   loading?: boolean;
+  showQueryId?: boolean;
 }) {
   if (loading) {
     return (
@@ -37,6 +44,7 @@ export function ServiceRequestProgress({
   if (!request) return null;
 
   const currentItem = request.timeline?.[request.currentStageIndex];
+  const latestFollowUps = (request.followUpHistory || []).slice(-3).reverse();
 
   return (
     <div className="rounded-2xl border border-[#dce9f7] bg-white p-5 shadow-[0_10px_30px_rgba(16,24,40,0.05)] md:p-6">
@@ -53,12 +61,17 @@ export function ServiceRequestProgress({
               "Our team will update remarks as the case moves."}
           </p>
         </div>
-        <div className="rounded-xl bg-[#eef7ff] px-4 py-3 text-[13px] font-bold text-[#005ca8]">
-          Query ID: {request.queryId}
-        </div>
+        {showQueryId ? (
+          <div
+            data-service-query-id={request.queryId}
+            className="rounded-xl bg-[#eef7ff] px-4 py-3 text-[13px] font-bold text-[#005ca8]"
+          >
+            Query ID: {request.queryId}
+          </div>
+        ) : null}
       </div>
 
-      <div className="mt-5 grid gap-3 md:grid-cols-3">
+      <div className="mt-5 grid gap-3 md:grid-cols-4">
         <div className="rounded-xl border border-[#edf2f7] bg-[#fbfdff] p-3">
           <p className="text-[12px] font-extrabold text-[#98a2b3]">
             Assigned Executive
@@ -83,7 +96,54 @@ export function ServiceRequestProgress({
             {formatDate(currentItem?.updatedAt || request.updatedAt)}
           </p>
         </div>
+        <div className="rounded-xl border border-[#edf2f7] bg-[#fbfdff] p-3">
+          <p className="text-[12px] font-extrabold text-[#98a2b3]">
+            Next Follow-up
+          </p>
+          <p className="mt-1 text-[14px] font-bold text-[#1f2937]">
+            {request.followUpStatus === "cancelled"
+              ? "Cancelled"
+              : formatDate(request.followUpAt)}
+          </p>
+          {request.followUpNote ? (
+            <p className="mt-1 text-[12px] font-semibold leading-5 text-[#667085]">
+              {request.followUpNote}
+            </p>
+          ) : null}
+        </div>
       </div>
+
+      {latestFollowUps.length ? (
+        <div className="mt-6 rounded-xl border border-[#e5edf6] bg-[#f8fbff] p-4">
+          <div className="flex items-center gap-2 text-[14px] font-extrabold text-[#1f2937]">
+            <CalendarClock className="h-4 w-4 text-[#005ca8]" />
+            Latest follow-up updates
+          </div>
+          <div className="mt-3 grid gap-2">
+            {latestFollowUps.map((followUp, index) => (
+              <div
+                key={`${followUp.updatedAt || followUp.scheduledAt || "follow-up"}:${index}`}
+                className="rounded-lg border border-[#e8eef5] bg-white px-3 py-2.5"
+              >
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <p className="text-[13px] font-extrabold text-[#344054]">
+                    {formatDate(followUp.scheduledAt)}
+                  </p>
+                  <span className="rounded-full bg-[#eef7ff] px-2.5 py-1 text-[11px] font-extrabold capitalize text-[#005ca8]">
+                    {followUp.status}
+                  </span>
+                </div>
+                <p className="mt-1 text-[12px] font-semibold leading-5 text-[#667085]">
+                  {followUp.note || "Follow-up schedule updated"}
+                  {followUp.assignedExecutive
+                    ? ` · ${followUp.assignedExecutive}`
+                    : ""}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : null}
 
       <div className="mt-6 grid gap-3">
         {request.timeline?.map((item, index) => {

@@ -13,6 +13,8 @@ import {
   CheckCircle2,
   ChevronRight,
   FileText,
+  KeyRound,
+  Phone,
   ShieldCheck,
   UploadCloud,
   UserRound,
@@ -20,8 +22,10 @@ import {
 import {
   fetchPartnerProfile,
   isPartnerLoggedIn,
+  sendPartnerMobileChangeOtp,
   updatePartnerKycProfile,
   uploadPartnerBankDocument,
+  verifyPartnerMobileChangeOtp,
   type PartnerProfile,
 } from "@/services/partner";
 
@@ -613,6 +617,14 @@ export function PartnerCompleteProfilePage() {
   const [saving, setSaving] = useState(false);
   const [uploadingCheque, setUploadingCheque] = useState(false);
   const [message, setMessage] = useState("");
+  const [showMobileChange, setShowMobileChange] = useState(false);
+  const [mobileChangeStep, setMobileChangeStep] = useState<"mobile" | "otp">(
+    "mobile",
+  );
+  const [newMobile, setNewMobile] = useState("");
+  const [mobileOtp, setMobileOtp] = useState("");
+  const [mobileChangeMessage, setMobileChangeMessage] = useState("");
+  const [mobileChangeLoading, setMobileChangeLoading] = useState(false);
 
   useEffect(() => {
     if (!isPartnerLoggedIn()) {
@@ -846,6 +858,59 @@ export function PartnerCompleteProfilePage() {
     }
   };
 
+  const requestMobileChangeOtp = async () => {
+    const mobile = newMobile.replace(/\D/g, "");
+    setMobileChangeMessage("");
+    if (!patterns.phone.test(mobile)) {
+      setMobileChangeMessage("Enter a valid 10-digit mobile number.");
+      return;
+    }
+    if (mobile === form.mobile.replace(/\D/g, "")) {
+      setMobileChangeMessage("New mobile number must be different.");
+      return;
+    }
+    setMobileChangeLoading(true);
+    try {
+      await sendPartnerMobileChangeOtp(mobile);
+      setNewMobile(mobile);
+      setMobileChangeStep("otp");
+      setMobileChangeMessage("OTP sent to the new mobile number.");
+    } catch (error) {
+      setMobileChangeMessage(
+        (error as Error).message || "Unable to send mobile verification OTP.",
+      );
+    } finally {
+      setMobileChangeLoading(false);
+    }
+  };
+
+  const confirmMobileChange = async () => {
+    if (!/^\d{6}$/.test(mobileOtp)) {
+      setMobileChangeMessage("Enter the 6-digit OTP.");
+      return;
+    }
+    setMobileChangeLoading(true);
+    setMobileChangeMessage("");
+    try {
+      await verifyPartnerMobileChangeOtp(newMobile, mobileOtp);
+      const current = await fetchPartnerProfile();
+      const verifiedMobile = stringValue(current.mobile) || newMobile;
+      setProfile(current);
+      setForm((previous) => ({ ...previous, mobile: verifiedMobile }));
+      setShowMobileChange(false);
+      setMobileChangeStep("mobile");
+      setNewMobile("");
+      setMobileOtp("");
+      setMessage("Login mobile number updated and verified successfully.");
+    } catch (error) {
+      setMobileChangeMessage(
+        (error as Error).message || "Unable to verify the mobile number.",
+      );
+    } finally {
+      setMobileChangeLoading(false);
+    }
+  };
+
   const partnerName =
     stringValue(form.fullName) || stringValue(profile?.name) || "Partner";
 
@@ -907,6 +972,126 @@ export function PartnerCompleteProfilePage() {
           ? "Company full address"
           : meta.label;
     const isRequired = Boolean(requiredLabelMap[key]);
+
+    if (key === "mobile") {
+      return (
+        <div key={key}>
+          <FormField
+            id={`partner-${key}`}
+            label="Verified login mobile"
+            value={String(form.mobile || "")}
+            onChange={() => undefined}
+            placeholder={meta.placeholder}
+            type="tel"
+            error={errors[key]}
+            required={isRequired}
+            readOnly
+          />
+          {!showMobileChange ? (
+            <button
+              type="button"
+              onClick={() => {
+                setShowMobileChange(true);
+                setMobileChangeStep("mobile");
+                setMobileChangeMessage("");
+              }}
+              className="mt-2 inline-flex items-center gap-2 text-[12px] font-extrabold text-[#195585] underline underline-offset-4"
+            >
+              <Phone className="h-3.5 w-3.5" />
+              Change number with OTP
+            </button>
+          ) : (
+            <div className="mt-3 grid gap-3 border border-[#cfe0ed] bg-[#f7fbff] p-4">
+              {mobileChangeStep === "mobile" ? (
+                <label className="grid gap-1 text-[12px] font-extrabold text-[#344054]">
+                  New mobile number
+                  <input
+                    aria-label="New mobile number"
+                    value={newMobile}
+                    onChange={(event) =>
+                      setNewMobile(
+                        event.target.value.replace(/\D/g, "").slice(0, 10),
+                      )
+                    }
+                    inputMode="numeric"
+                    className="h-11 border border-[#cfe0ed] bg-white px-3 outline-none"
+                    placeholder="10-digit mobile"
+                  />
+                </label>
+              ) : (
+                <label className="grid gap-1 text-[12px] font-extrabold text-[#344054]">
+                  OTP sent to {newMobile}
+                  <input
+                    aria-label="Mobile change OTP"
+                    value={mobileOtp}
+                    onChange={(event) =>
+                      setMobileOtp(
+                        event.target.value.replace(/\D/g, "").slice(0, 6),
+                      )
+                    }
+                    inputMode="numeric"
+                    className="h-11 border border-[#cfe0ed] bg-white px-3 tracking-[0.25em] outline-none"
+                    placeholder="6-digit OTP"
+                  />
+                </label>
+              )}
+              {mobileChangeMessage ? (
+                <p className="text-[12px] font-semibold text-[#195585]">
+                  {mobileChangeMessage}
+                </p>
+              ) : null}
+              <div className="flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  disabled={mobileChangeLoading}
+                  onClick={() =>
+                    void (mobileChangeStep === "mobile"
+                      ? requestMobileChangeOtp()
+                      : confirmMobileChange())
+                  }
+                  className="inline-flex items-center gap-2 rounded-full bg-[#195585] px-4 py-2 text-[12px] font-extrabold text-white disabled:opacity-60"
+                >
+                  <KeyRound className="h-3.5 w-3.5" />
+                  {mobileChangeLoading
+                    ? "Please wait..."
+                    : mobileChangeStep === "mobile"
+                      ? "Send OTP"
+                      : "Verify and update"}
+                </button>
+                {mobileChangeStep === "otp" ? (
+                  <button
+                    type="button"
+                    disabled={mobileChangeLoading}
+                    onClick={() => {
+                      setMobileChangeStep("mobile");
+                      setMobileOtp("");
+                      setMobileChangeMessage("");
+                    }}
+                    className="rounded-full border border-[#cfe0ed] px-4 py-2 text-[12px] font-extrabold text-[#344054]"
+                  >
+                    Edit number
+                  </button>
+                ) : null}
+                <button
+                  type="button"
+                  disabled={mobileChangeLoading}
+                  onClick={() => {
+                    setShowMobileChange(false);
+                    setMobileChangeStep("mobile");
+                    setNewMobile("");
+                    setMobileOtp("");
+                    setMobileChangeMessage("");
+                  }}
+                  className="rounded-full border border-[#cfe0ed] px-4 py-2 text-[12px] font-extrabold text-[#344054]"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    }
 
     if (key === "cancelledChequeUrl") {
       return (
@@ -1288,6 +1473,7 @@ function FormField({
   wide = false,
   error,
   required,
+  readOnly = false,
 }: {
   id: string;
   label: string;
@@ -1298,6 +1484,7 @@ function FormField({
   wide?: boolean;
   error?: string;
   required?: boolean;
+  readOnly?: boolean;
 }) {
   return (
     <label className={wide ? "md:col-span-2" : ""}>
@@ -1311,8 +1498,9 @@ function FormField({
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
         type={type}
+        readOnly={readOnly}
         className={`mt-2 h-12 w-full bg-[#f6f9fc] px-4 text-[14px] font-semibold text-[#07162d] outline-none transition placeholder:text-[#98a2b3] focus:bg-[#eef6ff] ${
-          error ? "bg-[#fff4f2]" : ""
+          error ? "bg-[#fff4f2]" : readOnly ? "cursor-not-allowed text-[#667085]" : ""
         }`}
       />
       {error ? (

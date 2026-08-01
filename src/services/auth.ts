@@ -1,5 +1,9 @@
 import { Fetch, Post, Put } from "@/hooks/apiUtils";
 import { emitAuthChanged } from "@/lib/authEvents";
+import {
+  attributionRegistrationSource,
+  getWebsiteAttribution,
+} from "@/services/attribution";
 
 type ApiResponse<T> = T & { message?: string; success?: boolean };
 type WrappedApiResponse<T> = {
@@ -29,6 +33,11 @@ export type VerifyOtpResponse = {
   needsProfileCompletion?: boolean;
 };
 
+export type SendOtpResponse = {
+  existed?: boolean;
+  expiresInSeconds?: number;
+};
+
 export type MobileToPanResponse = {
   data?: {
     client_id?: string;
@@ -42,9 +51,14 @@ export type MobileToPanResponse = {
 };
 
 export const sendOtp = (mobile: string) =>
-  Post<ApiResponse<{ existed?: boolean }>>(
+  Post<ApiResponse<SendOtpResponse>>(
     "user/send-otp",
-    { mobile, accountSource: WEBSITE_ACCOUNT_SOURCE },
+    {
+      mobile,
+      accountSource: WEBSITE_ACCOUNT_SOURCE,
+      registrationSource: attributionRegistrationSource(),
+      acquisition: getWebsiteAttribution(),
+    },
     15000,
   );
 
@@ -68,6 +82,8 @@ export const verifyOtp = async (
       referralCode: referral?.referralCode,
       referralVisitorId: referral?.referralVisitorId,
       accountSource: WEBSITE_ACCOUNT_SOURCE,
+      registrationSource: attributionRegistrationSource(),
+      acquisition: getWebsiteAttribution(),
     },
   );
   const payload =
@@ -96,6 +112,8 @@ export const signup = (payload: SignupPayload) =>
   Post<ApiResponse<unknown>>("user", {
     ...payload,
     accountSource: WEBSITE_ACCOUNT_SOURCE,
+    registrationSource: attributionRegistrationSource(),
+    acquisition: getWebsiteAttribution(),
   });
 
 export const updateUserProfile = async (payload: Record<string, unknown>) => {

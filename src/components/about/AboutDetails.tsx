@@ -170,12 +170,15 @@ function SectionLabel({ children }: { children: ReactNode }) {
 function SectionHeading({
   children,
   className = "",
+  id,
 }: {
   children: ReactNode;
   className?: string;
+  id?: string;
 }) {
   return (
     <h2
+      id={id}
       className={[
         "text-[30px] font-extrabold leading-[1.2] text-[#0b1f3a] md:text-[35px] lg:text-[38px]",
         className,
@@ -291,14 +294,16 @@ export function AboutDetails() {
         </div>
       </section>
 
-      <section className="bg-[#f6fbff] px-4 py-16 md:px-6 md:py-20 lg:px-8">
-        <div className="mx-auto grid max-w-9xl gap-11 lg:grid-cols-[0.72fr_1.28fr] lg:gap-16">
-          <motion.div
-            {...reveal()}
-            className="lg:sticky lg:top-28 lg:self-start"
-          >
+      <section
+        aria-labelledby="why-fintaraa-heading"
+        className="bg-[#f6fbff] px-4 py-16 md:px-6 md:py-20 lg:px-8"
+      >
+        <div className="mx-auto max-w-9xl">
+          <motion.div {...reveal()} className="max-w-3xl">
             <SectionLabel>Built Around You</SectionLabel>
-            <SectionHeading>Why Fintaraa stands out.</SectionHeading>
+            <SectionHeading id="why-fintaraa-heading">
+              Why Fintaraa stands out.
+            </SectionHeading>
             <p className="mt-5 max-w-xl text-[15px] font-medium leading-8 text-[#5a687b] md:text-[16px]">
               A technology-led platform should still feel human. Fintaraa
               combines fast digital processing with relationship-led support for
@@ -306,12 +311,13 @@ export function AboutDetails() {
             </p>
           </motion.div>
 
-          <div className="grid gap-x-10 gap-y-9 md:grid-cols-2">
+          <div className="mt-10 grid overflow-hidden rounded-2xl border border-[#d8e9f6] bg-[#d8e9f6] sm:grid-cols-2 xl:grid-cols-5">
             {standOut.map(({ title, text }, index) => (
               <motion.article
                 key={title}
                 {...reveal(index * 0.06, 18)}
-                whileHover={{ x: 4 }}
+                whileHover={{ y: -3 }}
+                className="min-h-56 bg-white p-6 sm:last:col-span-2 xl:last:col-span-1 xl:min-h-64"
               >
                 <h3 className="text-[18px] font-extrabold leading-7 text-[#132842]">
                   {title}
@@ -319,7 +325,6 @@ export function AboutDetails() {
                 <p className="mt-2 text-[14px] font-medium leading-7 text-[#637186] md:text-[15px]">
                   {text}
                 </p>
-                <span className="mt-6 block h-px w-full bg-[#cfe6f7]" />
               </motion.article>
             ))}
           </div>

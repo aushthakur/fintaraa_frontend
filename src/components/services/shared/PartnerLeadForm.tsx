@@ -21,9 +21,11 @@ type PartnerLeadFormProps = {
   primarySelectLabel: string;
   primarySelectPlaceholder: string;
   primaryOptions: string[];
+  primaryFieldKey?: string;
   secondarySelectLabel: string;
   secondarySelectPlaceholder: string;
   secondaryOptions: string[];
+  secondaryFieldKey?: string;
 };
 
 const nameRegex = /^[A-Za-z][A-Za-z\s.'-]{1,79}$/;
@@ -39,9 +41,11 @@ export function PartnerLeadForm({
   primarySelectLabel,
   primarySelectPlaceholder,
   primaryOptions,
+  primaryFieldKey,
   secondarySelectLabel,
   secondarySelectPlaceholder,
   secondaryOptions,
+  secondaryFieldKey,
 }: PartnerLeadFormProps) {
   const [form, setForm] = useState({
     name: "",
@@ -107,6 +111,10 @@ export function PartnerLeadForm({
           businessName: form.businessName.trim(),
           [primarySelectLabel]: form.primary,
           [secondarySelectLabel]: form.secondary,
+          ...(primaryFieldKey ? { [primaryFieldKey]: form.primary } : {}),
+          ...(secondaryFieldKey
+            ? { [secondaryFieldKey]: form.secondary }
+            : {}),
           notes: form.notes.trim(),
         },
       });

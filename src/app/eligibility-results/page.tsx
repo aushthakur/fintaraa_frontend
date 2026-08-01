@@ -10,7 +10,9 @@ import {
   ShieldCheck,
   CheckCircle2,
   ChevronDown,
+  CreditCard,
   SlidersHorizontal,
+  Zap,
 } from "lucide-react";
 import { slugifyProduct } from "@/lib/productRouting";
 import { trustedPartners } from "@/data/trustedPartners";
@@ -18,6 +20,15 @@ import { loanProductDirectory } from "@/data/bankDirectory";
 import { BankLogoImage } from "@/components/common/BankLogoImage";
 import { getApplyHref } from "@/components/application/flowRegistry";
 import { AuthRedirectLink } from "@/components/auth/AuthRedirectLink";
+import { BankProductOfferCard } from "@/components/eligibility/BankProductOfferCard";
+import { LoadMoreResultGrid } from "@/components/eligibility/LoadMoreResultGrid";
+import {
+  fetchBankProducts,
+  getBankProductApplyUrl,
+  getInstantLoanBankApplyUrl,
+  type BankProduct,
+  type BankProductType,
+} from "@/services/bankProducts";
 import {
   loanTypeToLabel,
   loanTypeToSlug,
@@ -85,10 +96,7 @@ const formatPercent = (value?: number | null) => {
 };
 
 const formatFee = (result: EligibilityCriteriaResult) => {
-  if (
-    result.processingFees === null ||
-    result.processingFees === undefined
-  ) {
+  if (result.processingFees === null || result.processingFees === undefined) {
     return "-";
   }
   return result.processingFeesType === "fixed"
@@ -122,10 +130,26 @@ const resolveBank = (bankName: string) => {
   };
 };
 
-const getApplyLink = (result: EligibilityCriteriaResult) => {
-  const loanSlug = loanTypeToSlug(result.loanType);
+const getApplyLink = (
+  result: EligibilityCriteriaResult,
+  productSlug?: string,
+  bankProducts: BankProduct[] = [],
+) => {
+  const loanSlug = productSlug || loanTypeToSlug(result.loanType);
   const bank = resolveBank(result.bankName);
   const referrer = `/banks/${bank.slug}/${loanSlug}`;
+
+  if (loanSlug === "instant-loan") {
+    const bankProduct = bankProducts.find(
+      (product) =>
+        slugifyProduct(product.bankName) === slugifyProduct(result.bankName) ||
+        resolveBank(product.bankName).slug === bank.slug,
+    );
+    return bankProduct
+      ? getBankProductApplyUrl(bankProduct, referrer)
+      : referrer;
+  }
+
   return getApplyHref({
     category: "loan",
     productSlug: loanSlug,
@@ -151,13 +175,20 @@ const ResultCard = ({
   result,
   requestedAmount,
   requestedTenureYears,
+  productSlug,
+  productLabel,
+  bankProducts = [],
 }: {
   result: EligibilityCriteriaResult;
   requestedAmount: number;
   requestedTenureYears: number;
+  productSlug?: string;
+  productLabel?: string;
+  bankProducts?: BankProduct[];
 }) => {
   const bankInfo = resolveBank(result.bankName);
-  const loanSlug = loanTypeToSlug(result.loanType);
+  const loanSlug = productSlug || loanTypeToSlug(result.loanType);
+  const resolvedProductLabel = productLabel || loanTypeToLabel(result.loanType);
   const indicativeAmount = Math.min(
     requestedAmount,
     result.maximumLoanAmount || requestedAmount,
@@ -171,6 +202,8 @@ const ResultCard = ({
     result.roi,
     indicativeTenure,
   );
+  const applyHref = getApplyLink(result, loanSlug, bankProducts);
+  const isExternalApply = /^https?:\/\//i.test(applyHref);
 
   return (
     <article className="overflow-hidden rounded-2xl bg-[#f8fbff] p-4">
@@ -191,8 +224,13 @@ const ResultCard = ({
               <Landmark className="h-5 w-5" />
             </span>
           )}
-          <span className="truncate text-[16px] font-extrabold text-[#07162d]">
-            {result.bankName}
+          <span className="min-w-0">
+            <span className="block truncate text-[16px] font-extrabold text-[#07162d]">
+              {result.bankName}
+            </span>
+            <span className="mt-0.5 block truncate text-[11px] font-extrabold uppercase tracking-wide text-[#00529b]">
+              {resolvedProductLabel}
+            </span>
           </span>
         </Link>
         <span className="self-start">
@@ -225,13 +263,24 @@ const ResultCard = ({
           </dd>
         </div>
       </dl>
-      <AuthRedirectLink
-        href={getApplyLink(result)}
-        productSlug={loanSlug}
-        className="mt-4 inline-flex h-10 w-full items-center justify-center rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] text-[13px] font-extrabold text-white no-underline"
-      >
-        Apply Now
-      </AuthRedirectLink>
+      {loanSlug === "instant-loan" ? (
+        <a
+          href={applyHref}
+          target={isExternalApply ? "_blank" : undefined}
+          rel={isExternalApply ? "noopener noreferrer" : undefined}
+          className="mt-4 inline-flex h-10 w-full items-center justify-center rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] text-[13px] font-extrabold text-white no-underline"
+        >
+          {isExternalApply ? "Apply on bank site" : "View bank offer"}
+        </a>
+      ) : (
+        <AuthRedirectLink
+          href={applyHref}
+          productSlug={loanSlug}
+          className="mt-4 inline-flex h-10 w-full items-center justify-center rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] text-[13px] font-extrabold text-white no-underline"
+        >
+          Apply Now
+        </AuthRedirectLink>
+      )}
     </article>
   );
 };
@@ -242,33 +291,188 @@ const ResultCardsSection = ({
   sectionKey,
   requestedAmount,
   requestedTenureYears,
+  description,
+  productSlug,
+  productLabel,
+  bankProducts,
 }: {
   title: string;
   results: EligibilityCriteriaResult[];
   sectionKey: string;
   requestedAmount: number;
   requestedTenureYears: number;
+  description?: string;
+  productSlug?: string;
+  productLabel?: string;
+  bankProducts?: BankProduct[];
 }) =>
   results.length > 0 ? (
     <section className="px-4 pt-3 pb-4 md:px-6 lg:px-8">
       <div className="mx-auto max-w-9xl">
-        <div className="mb-3 flex items-center gap-2">
-          <SlidersHorizontal className="h-5 w-5 text-[#00529b]" />
-          <h2 className="text-[22px] font-extrabold tracking-tight">{title}</h2>
+        <div className="mb-3">
+          <div className="flex items-center gap-2">
+            <SlidersHorizontal className="h-5 w-5 text-[#00529b]" />
+            <h2 className="text-[22px] font-extrabold tracking-tight">
+              {title}
+            </h2>
+          </div>
+          {description ? (
+            <p className="mt-1 max-w-3xl text-[12px] font-semibold leading-5 text-[#64748b] md:text-[13px]">
+              {description}
+            </p>
+          ) : null}
         </div>
-        <div className="grid gap-4 lg:grid-cols-3">
+        <LoadMoreResultGrid
+          key={`${sectionKey}:${productSlug || "result"}:${results
+            .map((result) => result._id)
+            .join(",")}`}
+        >
           {results.map((result, index) => (
             <ResultCard
-              key={`${sectionKey}-${result._id}-${index}`}
+              key={`${sectionKey}-${productSlug || result.loanType}-${result._id}-${index}`}
               result={result}
               requestedAmount={requestedAmount}
               requestedTenureYears={requestedTenureYears}
+              productSlug={productSlug}
+              productLabel={productLabel}
+              bankProducts={bankProducts}
             />
           ))}
-        </div>
+        </LoadMoreResultGrid>
       </div>
     </section>
   ) : null;
+
+const sortBankProducts = (products: BankProduct[]) =>
+  [...products].sort((a, b) => {
+    if (Boolean(a.featured) !== Boolean(b.featured)) {
+      return a.featured ? -1 : 1;
+    }
+    const priorityDifference =
+      (a.priorityOrder ?? a.rank ?? 9999) - (b.priorityOrder ?? b.rank ?? 9999);
+    if (priorityDifference !== 0) return priorityDifference;
+    return a.name.localeCompare(b.name);
+  });
+
+const BankProductCardsSection = ({
+  title,
+  description,
+  products,
+  productType,
+  emptyMessage,
+}: {
+  title: string;
+  description: string;
+  products: BankProduct[];
+  productType: BankProductType;
+  emptyMessage?: string;
+}) => (
+  <section className="px-4 pb-5 pt-3 md:px-6 lg:px-8">
+    <div className="mx-auto max-w-9xl">
+      <div className="mb-3">
+        <div className="flex items-center gap-2">
+          {productType === "credit_card" ? (
+            <CreditCard className="h-5 w-5 text-[#00529b]" />
+          ) : (
+            <Zap className="h-5 w-5 text-[#00529b]" />
+          )}
+          <h2 className="text-[22px] font-extrabold tracking-tight">{title}</h2>
+        </div>
+        <p className="mt-1 max-w-3xl text-[12px] font-semibold leading-5 text-[#64748b] md:text-[13px]">
+          {description}
+        </p>
+      </div>
+
+      {products.length > 0 ? (
+        <LoadMoreResultGrid>
+          {sortBankProducts(products).map((product, index) => {
+            const bank = resolveBank(product.bankName);
+            return (
+              <BankProductOfferCard
+                key={`${productType}-${product._id || product.id || index}`}
+                product={product}
+                productType={productType}
+                fallbackHref={
+                  productType === "credit_card"
+                    ? "/credit-cards"
+                    : `/banks/${bank.slug}/instant-loan`
+                }
+              />
+            );
+          })}
+        </LoadMoreResultGrid>
+      ) : emptyMessage ? (
+        <div className="rounded-2xl border border-[#dce8f3] bg-[#f8fbff] px-5 py-6 text-[13px] font-semibold text-[#64748b]">
+          {emptyMessage}
+        </div>
+      ) : null}
+    </div>
+  </section>
+);
+
+const dedupeEligibilityResults = (items: EligibilityCriteriaResult[]) => {
+  const seen = new Set<string>();
+  return items.filter((result) => {
+    const key =
+      result._id ||
+      [
+        loanTypeToSlug(result.loanType),
+        slugifyProduct(result.bankName),
+        slugifyProduct(result.salaryType),
+      ].join(":");
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+};
+
+const buildInstantLoanFallbackProducts = (
+  results: EligibilityCriteriaResult[],
+) => {
+  const seenBanks = new Set<string>();
+  return results.flatMap((result) => {
+    const bank = resolveBank(result.bankName);
+    const bankKey = slugifyProduct(bank.name);
+    if (!bankKey || seenBanks.has(bankKey)) return [];
+    seenBanks.add(bankKey);
+
+    return [
+      {
+        _id: `instant-loan-${bankKey}`,
+        name: `${bank.name} Instant Personal Loan`,
+        title: `${bank.name} Instant Personal Loan`,
+        bankName: result.bankName,
+        type: "loan",
+        image: bank.logo || "",
+        link:
+          getInstantLoanBankApplyUrl(result.bankName) ||
+          `/banks/${bank.slug}/instant-loan`,
+        applyUrl: getInstantLoanBankApplyUrl(result.bankName),
+        creditScoreRequirement: result.cibilScore,
+        processingTime: "Digital lender journey",
+        featuresList: (result.terms || [])
+          .slice(0, 3)
+          .map((term) => `${term.label}: ${term.value}`),
+        rank: result.eligible ? 1 : 2,
+      } satisfies BankProduct,
+    ];
+  });
+};
+
+const mergeInstantLoanProducts = (
+  configured: BankProduct[],
+  fallback: BankProduct[],
+) => {
+  const configuredBanks = new Set(
+    configured.map((product) => slugifyProduct(product.bankName)),
+  );
+  return [
+    ...configured,
+    ...fallback.filter(
+      (product) => !configuredBanks.has(slugifyProduct(product.bankName)),
+    ),
+  ];
+};
 
 export default async function EligibilityResultsPage({
   searchParams,
@@ -283,55 +487,96 @@ export default async function EligibilityResultsPage({
   const bank = firstValue(query.bank);
   const q = firstValue(query.q);
   const requestedLoanSlug = loanTypeToSlug(loanType);
-  const shouldLoadInstantLoans = requestedLoanSlug === "personal-loan";
+  const isPersonalLoanFamily = ["personal-loan", "instant-loan"].includes(
+    requestedLoanSlug,
+  );
+  const relatedLoanType =
+    requestedLoanSlug === "instant-loan" ? "personal-loan" : "instant-loan";
+  const commonSearchParams = {
+    amount,
+    salaryType,
+    monthlyIncome,
+    cibilScore,
+    tenureYears,
+    bank,
+    q,
+  };
 
-  const [data, instantLoanData] = await Promise.all([
-    searchEligibilityCriteria({
-      loanType,
-      amount,
-      salaryType,
-      monthlyIncome,
-      cibilScore,
-      tenureYears,
-      bank,
-      q,
-      limit: 50,
-    }),
-    shouldLoadInstantLoans
-      ? searchEligibilityCriteria({
-          loanType: "instant-loan",
-          amount,
-          salaryType,
-          monthlyIncome,
-          cibilScore,
-          tenureYears,
-          bank,
-          q,
-          limit: 12,
-        })
-      : Promise.resolve(null),
-  ]);
+  const [requestedData, relatedData, instantLoanProducts, creditCardProducts] =
+    await Promise.all([
+      searchEligibilityCriteria({
+        ...commonSearchParams,
+        loanType: requestedLoanSlug,
+        limit: 50,
+      }),
+      isPersonalLoanFamily
+        ? searchEligibilityCriteria({
+            ...commonSearchParams,
+            loanType: relatedLoanType,
+            limit: 50,
+          })
+        : Promise.resolve(null),
+      isPersonalLoanFamily
+        ? fetchBankProducts("loan").catch(() => [])
+        : Promise.resolve([]),
+      isPersonalLoanFamily
+        ? fetchBankProducts("credit_card").catch(() => [])
+        : Promise.resolve([]),
+    ]);
 
-  const results = data.results || [];
-  const bestResults = results.filter((result) => result.eligible).slice(0, 3);
-  const instantLoanResults = (instantLoanData?.results || [])
-    .filter((result) => result.eligible)
-    .slice(0, 6);
-  const resolvedLoanType = data.filters.loanType || loanType;
-  const loanLabel = loanTypeToLabel(resolvedLoanType);
-  const visibleLoanTypeOptions = getLoanTypeOptions(resolvedLoanType);
+  const personalLoanData =
+    requestedLoanSlug === "personal-loan"
+      ? requestedData
+      : requestedLoanSlug === "instant-loan"
+        ? relatedData
+        : null;
+  const instantLoanData =
+    requestedLoanSlug === "instant-loan"
+      ? requestedData
+      : requestedLoanSlug === "personal-loan"
+        ? relatedData
+        : null;
+  const personalLoanResults = (personalLoanData?.results || []).filter(
+    (result) => result.eligible,
+  );
+  const allPersonalLoanResults = dedupeEligibilityResults(
+    personalLoanData?.results || [],
+  );
+  const effectiveInstantLoanProducts = mergeInstantLoanProducts(
+    instantLoanProducts,
+    buildInstantLoanFallbackProducts(allPersonalLoanResults),
+  );
+  const results = dedupeEligibilityResults(
+    isPersonalLoanFamily
+      ? [
+          ...(instantLoanData?.results || []),
+          ...(personalLoanData?.results || []),
+        ]
+      : requestedData.results || [],
+  );
+  const bestResults = isPersonalLoanFamily
+    ? personalLoanResults
+    : results.filter((result) => result.eligible);
+  const otherPersonalLoanResults = allPersonalLoanResults;
+  const nearResults = results.filter((result) => !result.eligible);
+  const eligibleCount = results.filter((result) => result.eligible).length;
+  const partnerCount = new Set(
+    results.map((result) => slugifyProduct(result.bankName)),
+  ).size;
+  const loanLabel = loanTypeToLabel(requestedLoanSlug);
+  const visibleLoanTypeOptions = getLoanTypeOptions(requestedLoanSlug);
   const numericAmount = Number(amount) || 0;
   const numericTenureYears = Number(tenureYears) || 0;
   const summaryItems = [
     {
       icon: Building2,
       label: "Partner options",
-      value: String(data.total || 0),
+      value: String(partnerCount),
     },
     {
       icon: ShieldCheck,
       label: "Indicative matches",
-      value: String(data.eligibleCount || 0),
+      value: String(eligibleCount),
     },
     {
       icon: BadgeIndianRupee,
@@ -363,7 +608,9 @@ export default async function EligibilityResultsPage({
               Back to eligibility check
             </Link>
             <h1 className="mt-3 max-w-3xl text-[26px] font-extrabold leading-tight tracking-tight text-[#07162d] sm:text-[30px] md:text-[42px]">
-              Your {loanLabel} partner matches
+              {requestedLoanSlug === "instant-loan"
+                ? "Your instant and personal loan matches"
+                : `Your ${loanLabel} partner matches`}
             </h1>
             <p className="mt-2 max-w-3xl text-[13px] font-medium leading-5 text-[#5f6b7a] md:text-[14px]">
               These are indicative matches from active Fintaraa partner
@@ -375,7 +622,7 @@ export default async function EligibilityResultsPage({
 
           <form
             action="/eligibility-results"
-            className="mt-3 grid grid-cols-2 gap-2 rounded-xl bg-[#f4f8fb] p-2 sm:gap-3 sm:p-3 md:mt-4 md:grid-cols-6 md:rounded-2xl xl:grid-cols-[repeat(14,minmax(0,1fr))]"
+            className="mt-3 grid grid-cols-2 gap-2 rounded-xl bg-[#f4f8fb] p-2 sm:gap-3 sm:p-3 md:mt-4 md:grid-cols-6 md:rounded-2xl xl:grid-cols-14"
           >
             <label className="col-span-2 md:col-span-2 xl:col-span-2">
               <span className="text-[10px] font-extrabold uppercase tracking-wide text-[#64748b] md:text-[12px]">
@@ -383,7 +630,7 @@ export default async function EligibilityResultsPage({
               </span>
               <select
                 name="loanType"
-                defaultValue={loanType}
+                defaultValue={requestedLoanSlug}
                 className="mt-1 h-10 w-full rounded-xl border border-[#d9e4ef] bg-white px-3 text-[13px] font-bold outline-none focus:border-[#00529b] md:mt-2 md:h-12 md:rounded-2xl md:px-4 md:text-[14px]"
               >
                 {visibleLoanTypeOptions.map((item) => (
@@ -401,6 +648,9 @@ export default async function EligibilityResultsPage({
                 name="amount"
                 defaultValue={amount}
                 inputMode="numeric"
+                min={1}
+                required
+                type="number"
                 className="mt-1 h-10 w-full rounded-xl border border-[#d9e4ef] bg-white px-3 text-[13px] font-bold outline-none focus:border-[#00529b] md:mt-2 md:h-12 md:rounded-2xl md:px-4 md:text-[14px]"
               />
             </label>
@@ -412,6 +662,9 @@ export default async function EligibilityResultsPage({
                 name="monthlyIncome"
                 defaultValue={monthlyIncome}
                 inputMode="numeric"
+                min={0}
+                required
+                type="number"
                 className="mt-1 h-10 w-full rounded-xl border border-[#d9e4ef] bg-white px-3 text-[13px] font-bold outline-none focus:border-[#00529b] md:mt-2 md:h-12 md:rounded-2xl md:px-4 md:text-[14px]"
               />
             </label>
@@ -423,6 +676,10 @@ export default async function EligibilityResultsPage({
                 name="cibilScore"
                 defaultValue={cibilScore}
                 inputMode="numeric"
+                max={900}
+                min={300}
+                required
+                type="number"
                 className="mt-1 h-10 w-full rounded-xl border border-[#d9e4ef] bg-white px-3 text-[13px] font-bold outline-none focus:border-[#00529b] md:mt-2 md:h-12 md:rounded-2xl md:px-4 md:text-[14px]"
               />
             </label>
@@ -452,6 +709,7 @@ export default async function EligibilityResultsPage({
                 inputMode="numeric"
                 min={1}
                 max={30}
+                required
                 type="number"
                 className="mt-1 h-10 w-full rounded-xl border border-[#d9e4ef] bg-white px-3 text-[13px] font-bold outline-none focus:border-[#00529b] md:mt-2 md:h-12 md:rounded-2xl md:px-4 md:text-[14px]"
               />
@@ -502,215 +760,318 @@ export default async function EligibilityResultsPage({
         </div>
       </section>
 
-      <ResultCardsSection
-        title="Best matches"
-        results={bestResults}
-        sectionKey="best"
-        requestedAmount={numericAmount}
-        requestedTenureYears={numericTenureYears}
-      />
+      {requestedLoanSlug === "instant-loan" ? (
+        <>
+          <BankProductCardsSection
+            title="Instant loan partner offers"
+            description="Continue directly to the partner bank for the latest offer, eligibility checks and final application."
+            products={effectiveInstantLoanProducts}
+            productType="loan"
+            emptyMessage="No active instant-loan partner offers are configured right now. You can still compare the eligible personal-loan alternatives below."
+          />
+          <ResultCardsSection
+            title="Other personal loan options"
+            description="More eligible personal-loan alternatives from active partner criteria, ranked for the same details."
+            results={otherPersonalLoanResults}
+            sectionKey="personal-alternatives"
+            requestedAmount={numericAmount}
+            requestedTenureYears={numericTenureYears}
+            productSlug="personal-loan"
+            productLabel="Personal Loan"
+          />
+          <BankProductCardsSection
+            title="Credit cards from partner banks"
+            description="Compare active credit-card products here and continue securely to the issuing bank when you are ready to apply."
+            products={creditCardProducts}
+            productType="credit_card"
+            emptyMessage="No active credit-card products are available right now."
+          />
+        </>
+      ) : requestedLoanSlug === "personal-loan" ? (
+        <>
+          <ResultCardsSection
+            title="Best personal loan matches"
+            results={bestResults}
+            sectionKey="best-personal"
+            requestedAmount={numericAmount}
+            requestedTenureYears={numericTenureYears}
+            productSlug="personal-loan"
+            productLabel="Personal Loan"
+          />
+          <BankProductCardsSection
+            title="Instant loan partner offers"
+            description="Fast-loan products from active partner banks. Applying continues on the bank's own website."
+            products={effectiveInstantLoanProducts}
+            productType="loan"
+            emptyMessage="No active instant-loan partner offers are configured right now."
+          />
+          <BankProductCardsSection
+            title="Credit cards from partner banks"
+            description="Explore active credit-card products without leaving this comparison page."
+            products={creditCardProducts}
+            productType="credit_card"
+            emptyMessage="No active credit-card products are available right now."
+          />
+        </>
+      ) : (
+        <ResultCardsSection
+          title="Best matches"
+          results={bestResults}
+          sectionKey="best"
+          requestedAmount={numericAmount}
+          requestedTenureYears={numericTenureYears}
+        />
+      )}
 
-      <ResultCardsSection
-        title="Instant loan options"
-        results={instantLoanResults}
-        sectionKey="instant"
-        requestedAmount={numericAmount}
-        requestedTenureYears={numericTenureYears}
-      />
+      {eligibleCount === 0 && nearResults.length > 0 ? (
+        <ResultCardsSection
+          sectionKey="near"
+          results={nearResults}
+          title="Closest partner options"
+          requestedAmount={numericAmount}
+          bankProducts={effectiveInstantLoanProducts}
+          requestedTenureYears={numericTenureYears}
+          description="No exact match currently meets every supplied criterion. These are the nearest active options for lender review; expand the comparison below to see which checks need attention."
+        />
+      ) : null}
 
-      <details className="group mx-4 mb-10 mt-4 rounded-2xl border border-[#dbe8f4] bg-white md:mx-6 lg:mx-8">
-        <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-4 py-4 text-[15px] font-extrabold text-[#07162d] marker:content-none md:px-6 md:text-[17px]">
-          <span>View full partner criteria ({results.length})</span>
-          <ChevronDown className="h-5 w-5 shrink-0 text-[#00529b] transition-transform group-open:rotate-180" />
-        </summary>
-      <section className="border-t border-[#e4edf5] px-4 py-6 md:px-6 lg:px-8">
-        <div className="mx-auto max-w-9xl">
-          <h2 className="text-[24px] font-extrabold tracking-tight">
-            Partner eligibility comparison
-          </h2>
-          <div className="mt-5 overflow-x-auto rounded-3xl border border-[#e4edf5]">
-            <table className="w-full min-w-260 border-collapse bg-white text-left text-[13px]">
-              <thead className="bg-[#f7fbff] text-[#334155]">
-                <tr>
-                  {[
-                    "Bank",
-                    "Status",
-                    "Rate & amount",
-                    "Core criteria",
-                    "Fees",
-                    "Action",
-                  ].map((heading) => (
-                    <th key={heading} className="px-5 py-4 font-extrabold">
-                      {heading}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-[#eef3f8]">
-                {results.map((result) => {
-                  const bankInfo = resolveBank(result.bankName);
-                  const loanSlug = loanTypeToSlug(result.loanType);
-                  return (
-                    <tr
-                      key={result._id}
-                      className="align-top hover:bg-[#fbfdff]"
-                    >
-                      <td className="px-5 py-5">
-                        <Link
-                          href={`/banks/${bankInfo.slug}/${loanSlug}`}
-                          className="flex items-center gap-3 no-underline"
-                        >
-                          {bankInfo.logo ? (
-                            <BankLogoImage
-                              src={bankInfo.logo}
-                              alt={bankInfo.name}
-                              className="h-8 w-24"
-                              imageClassName="object-left"
-                            />
-                          ) : (
-                            <Landmark className="h-5 w-5 text-[#00529b]" />
-                          )}
-                          <span className="font-extrabold text-[#07162d]">
-                            {result.bankName}
-                          </span>
-                        </Link>
-                        <p className="mt-2 text-[12px] font-bold text-[#7a8699]">
-                          {loanTypeToLabel(result.loanType)} ·{" "}
-                          {result.salaryType}
-                        </p>
-                      </td>
-                      <td className="px-5 py-5">
-                        <ResultStatus result={result} />
-                        <p className="mt-2 text-[12px] font-bold text-[#7a8699]">
-                          Score {result.matchScore}
-                        </p>
-                      </td>
-                      <td className="px-5 py-5 font-bold text-[#334155]">
-                        <p>{formatPercent(result.roi)} p.a.</p>
-                        <p className="mt-1">
-                          {formatCurrency(result.maximumLoanAmount)}
-                        </p>
-                        <p className="mt-1">
-                          Up to {result.maxTenureYears || "-"} years
-                        </p>
-                      </td>
-                      <td className="px-5 py-5">
-                        <div className="space-y-2">
-                          {result.checks.map((check) => (
-                            <div
-                              key={`${result._id}-${check.label}`}
-                              className="flex items-start gap-2"
-                            >
-                              {check.passed ? (
-                                <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#13a653]" />
-                              ) : (
-                                <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-[#d97706]" />
-                              )}
-                              <span>
-                                <span className="font-extrabold text-[#07162d]">
-                                  {check.label}:
-                                </span>{" "}
-                                <span className="text-[#64748b]">
-                                  {check.provided} / {check.requirement}
-                                </span>
-                              </span>
-                            </div>
-                          ))}
-                        </div>
-                      </td>
-                      <td className="px-5 py-5 font-bold text-[#334155]">
-                        <p>Processing {formatFee(result)}</p>
-                        <p className="mt-1">Login {result.loginFees || "-"}</p>
-                        <p className="mt-1">
-                          Insurance {result.insurance || "-"}
-                        </p>
-                      </td>
-                      <td className="px-5 py-5">
-                        <AuthRedirectLink
-                          href={getApplyLink(result)}
-                          productSlug={loanSlug}
-                          className="inline-flex h-9 items-center justify-center rounded-full bg-[#13a653] px-5 text-[12px] font-extrabold text-white no-underline"
-                        >
-                          Apply Now
-                        </AuthRedirectLink>
-                      </td>
-                    </tr>
-                  );
-                })}
-                {results.length === 0 ? (
-                  <tr>
-                    <td
-                      colSpan={6}
-                      className="px-5 py-12 text-center text-[14px] font-bold text-[#64748b]"
-                    >
-                      No eligibility rows found for this search. Try another
-                      bank, loan type, or salary profile.
-                    </td>
-                  </tr>
-                ) : null}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      {results.length > 0 ? (
-        <section className="px-4 pb-16 md:px-6 lg:px-8">
-          <div className="mobile-safe-container">
-            <h2 className="text-[24px] font-extrabold tracking-tight">
-              Detailed partner terms
+      {results.length === 0 ? (
+        <section className="px-4 py-6 md:px-6 lg:px-8">
+          <div className="mx-auto max-w-9xl rounded-2xl border border-[#f1d8a8] bg-[#fffaf0] px-5 py-6 text-center">
+            <AlertTriangle className="mx-auto h-7 w-7 text-[#b45309]" />
+            <h2 className="mt-3 text-[20px] font-extrabold text-[#07162d]">
+              No partner criteria found
             </h2>
-            <div className="mt-4 grid gap-3">
-              {results.map((result) => {
-                const bankInfo = resolveBank(result.bankName);
-                const loanSlug = loanTypeToSlug(result.loanType);
-                return (
-                  <article
-                    key={`${result._id}-terms`}
-                    className="rounded-2xl border border-[#dbe8f4] bg-white px-3 py-3 md:px-4 md:py-4"
-                  >
-                    <div className="flex items-start justify-between gap-3">
-                      <Link
-                        href={`/banks/${bankInfo.slug}/${loanSlug}`}
-                        className="flex min-w-0 items-center gap-3 text-[15px] font-extrabold text-[#07162d] no-underline md:text-[17px]"
-                      >
-                        {bankInfo.logo ? (
-                          <BankLogoImage
-                            src={bankInfo.logo}
-                            alt={bankInfo.name}
-                            className="h-7 w-20 md:h-8 md:w-24"
-                            imageClassName="object-left"
-                          />
-                        ) : (
-                          <Landmark className="h-5 w-5 text-[#00529b]" />
-                        )}
-                        <span className="truncate">{result.bankName}</span>
-                      </Link>
-                      <ResultStatus result={result} />
-                    </div>
-                    <div className="mt-3 grid grid-cols-2 gap-x-3 border-t border-[#e4edf5] pt-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-                      {(result.terms || []).map((term, termIndex) => (
-                        <div
-                          key={`${result._id}-term-${termIndex}`}
-                          className="min-w-0 border-b border-[#edf3f8] py-1.5"
-                        >
-                          <p className="truncate text-[9px] font-extrabold uppercase tracking-wide text-[#7a8699] md:text-[10px]">
-                            {term.label}
-                          </p>
-                          <p className="mt-0.5 line-clamp-2 text-[11px] font-bold leading-4 text-[#07162d] md:text-[12px]">
-                            {term.value}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                  </article>
-                );
-              })}
-            </div>
+            <p className="mx-auto mt-2 max-w-2xl text-[13px] font-semibold leading-5 text-[#64748b]">
+              Try removing the bank keyword or choose another loan type or
+              income profile. Active partner criteria will appear here as soon
+              as they are available.
+            </p>
           </div>
         </section>
       ) : null}
-      </details>
+
+      {results.length > 0 ? (
+        <details className="group mx-4 mb-10 mt-4 rounded-2xl border border-[#dbe8f4] bg-white md:mx-6 lg:mx-8">
+          <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-4 py-4 text-[15px] font-extrabold text-[#07162d] marker:content-none md:px-6 md:text-[17px]">
+            <span>View full partner criteria ({results.length})</span>
+            <ChevronDown className="h-5 w-5 shrink-0 text-[#00529b] transition-transform group-open:rotate-180" />
+          </summary>
+          <section className="border-t border-[#e4edf5] px-4 py-6 md:px-6 lg:px-8">
+            <div className="mx-auto max-w-9xl">
+              <h2 className="text-[24px] font-extrabold tracking-tight">
+                Partner eligibility comparison
+              </h2>
+              <div className="mt-5 overflow-x-auto rounded-3xl border border-[#e4edf5]">
+                <table className="w-full min-w-260 border-collapse bg-white text-left text-[13px]">
+                  <thead className="bg-[#f7fbff] text-[#334155]">
+                    <tr>
+                      {[
+                        "Bank",
+                        "Status",
+                        "Rate & amount",
+                        "Core criteria",
+                        "Fees",
+                        "Action",
+                      ].map((heading) => (
+                        <th key={heading} className="px-5 py-4 font-extrabold">
+                          {heading}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-[#eef3f8]">
+                    {results.map((result) => {
+                      const bankInfo = resolveBank(result.bankName);
+                      const loanSlug = loanTypeToSlug(result.loanType);
+                      const applyHref = getApplyLink(
+                        result,
+                        undefined,
+                        effectiveInstantLoanProducts,
+                      );
+                      const isInstantLoan = loanSlug === "instant-loan";
+                      const isExternalApply = /^https?:\/\//i.test(applyHref);
+                      return (
+                        <tr
+                          key={result._id}
+                          className="align-top hover:bg-[#fbfdff]"
+                        >
+                          <td className="px-5 py-5">
+                            <Link
+                              href={`/banks/${bankInfo.slug}/${loanSlug}`}
+                              className="flex items-center gap-3 no-underline"
+                            >
+                              {bankInfo.logo ? (
+                                <BankLogoImage
+                                  src={bankInfo.logo}
+                                  alt={bankInfo.name}
+                                  className="h-8 w-24"
+                                  imageClassName="object-left"
+                                />
+                              ) : (
+                                <Landmark className="h-5 w-5 text-[#00529b]" />
+                              )}
+                              <span className="font-extrabold text-[#07162d]">
+                                {result.bankName}
+                              </span>
+                            </Link>
+                            <p className="mt-2 text-[12px] font-bold text-[#7a8699]">
+                              {loanTypeToLabel(result.loanType)} ·{" "}
+                              {result.salaryType}
+                            </p>
+                          </td>
+                          <td className="px-5 py-5">
+                            <ResultStatus result={result} />
+                            <p className="mt-2 text-[12px] font-bold text-[#7a8699]">
+                              Score {result.matchScore}
+                            </p>
+                          </td>
+                          <td className="px-5 py-5 font-bold text-[#334155]">
+                            <p>{formatPercent(result.roi)} p.a.</p>
+                            <p className="mt-1">
+                              {formatCurrency(result.maximumLoanAmount)}
+                            </p>
+                            <p className="mt-1">
+                              Up to {result.maxTenureYears || "-"} years
+                            </p>
+                          </td>
+                          <td className="px-5 py-5">
+                            <div className="space-y-2">
+                              {result.checks.map((check) => (
+                                <div
+                                  key={`${result._id}-${check.label}`}
+                                  className="flex items-start gap-2"
+                                >
+                                  {check.passed ? (
+                                    <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#13a653]" />
+                                  ) : (
+                                    <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-[#d97706]" />
+                                  )}
+                                  <span>
+                                    <span className="font-extrabold text-[#07162d]">
+                                      {check.label}:
+                                    </span>{" "}
+                                    <span className="text-[#64748b]">
+                                      {check.provided} / {check.requirement}
+                                    </span>
+                                  </span>
+                                </div>
+                              ))}
+                            </div>
+                          </td>
+                          <td className="px-5 py-5 font-bold text-[#334155]">
+                            <p>Processing {formatFee(result)}</p>
+                            <p className="mt-1">
+                              Login {result.loginFees || "-"}
+                            </p>
+                            <p className="mt-1">
+                              Insurance {result.insurance || "-"}
+                            </p>
+                          </td>
+                          <td className="px-5 py-5">
+                            {isInstantLoan ? (
+                              <a
+                                href={applyHref}
+                                target={isExternalApply ? "_blank" : undefined}
+                                rel={
+                                  isExternalApply
+                                    ? "noopener noreferrer"
+                                    : undefined
+                                }
+                                className="inline-flex h-9 items-center justify-center rounded-full bg-[#13a653] px-5 text-[12px] font-extrabold text-white no-underline"
+                              >
+                                {isExternalApply
+                                  ? "Apply on bank site"
+                                  : "View bank offer"}
+                              </a>
+                            ) : (
+                              <AuthRedirectLink
+                                href={applyHref}
+                                productSlug={loanSlug}
+                                className="inline-flex h-9 items-center justify-center rounded-full bg-[#13a653] px-5 text-[12px] font-extrabold text-white no-underline"
+                              >
+                                Apply Now
+                              </AuthRedirectLink>
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                    {results.length === 0 ? (
+                      <tr>
+                        <td
+                          colSpan={6}
+                          className="px-5 py-12 text-center text-[14px] font-bold text-[#64748b]"
+                        >
+                          No eligibility rows found for this search. Try another
+                          bank, loan type, or salary profile.
+                        </td>
+                      </tr>
+                    ) : null}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          {results.length > 0 ? (
+            <section className="px-4 pb-16 md:px-6 lg:px-8">
+              <div className="mobile-safe-container">
+                <h2 className="text-[24px] font-extrabold tracking-tight">
+                  Detailed partner terms
+                </h2>
+                <div className="mt-4 grid gap-3">
+                  {results.map((result) => {
+                    const bankInfo = resolveBank(result.bankName);
+                    const loanSlug = loanTypeToSlug(result.loanType);
+                    return (
+                      <article
+                        key={`${result._id}-terms`}
+                        className="rounded-2xl border border-[#dbe8f4] bg-white px-3 py-3 md:px-4 md:py-4"
+                      >
+                        <div className="flex items-start justify-between gap-3">
+                          <Link
+                            href={`/banks/${bankInfo.slug}/${loanSlug}`}
+                            className="flex min-w-0 items-center gap-3 text-[15px] font-extrabold text-[#07162d] no-underline md:text-[17px]"
+                          >
+                            {bankInfo.logo ? (
+                              <BankLogoImage
+                                src={bankInfo.logo}
+                                alt={bankInfo.name}
+                                className="h-7 w-20 md:h-8 md:w-24"
+                                imageClassName="object-left"
+                              />
+                            ) : (
+                              <Landmark className="h-5 w-5 text-[#00529b]" />
+                            )}
+                            <span className="truncate">{result.bankName}</span>
+                          </Link>
+                          <ResultStatus result={result} />
+                        </div>
+                        <div className="mt-3 grid grid-cols-2 gap-x-3 border-t border-[#e4edf5] pt-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                          {(result.terms || []).map((term, termIndex) => (
+                            <div
+                              key={`${result._id}-term-${termIndex}`}
+                              className="min-w-0 border-b border-[#edf3f8] py-1.5"
+                            >
+                              <p className="truncate text-[9px] font-extrabold uppercase tracking-wide text-[#7a8699] md:text-[10px]">
+                                {term.label}
+                              </p>
+                              <p className="mt-0.5 line-clamp-2 text-[11px] font-bold leading-4 text-[#07162d] md:text-[12px]">
+                                {term.value}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                      </article>
+                    );
+                  })}
+                </div>
+              </div>
+            </section>
+          ) : null}
+        </details>
+      ) : null}
     </main>
   );
 }

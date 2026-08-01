@@ -6,6 +6,8 @@ import {
   Plus,
   Trash2,
   FileText,
+  Eye,
+  Lock,
   UploadCloud,
   CheckCircle2,
 } from "lucide-react";
@@ -58,6 +60,11 @@ const GENERIC_DOCUMENTS: DocumentDefinition[] = [
     key: "bank_statement",
     label: "Bank Statement",
     helper: "Latest bank statement in PDF or image format.",
+  },
+  {
+    key: "cibil_report",
+    label: "CIBIL Report",
+    helper: "Latest available CIBIL report.",
   },
   {
     key: "itr_form_16",
@@ -257,6 +264,8 @@ const catalogUploadAliases: Record<string, string> = {
   adharcard: "aadhaar_card",
   applicantphoto: "photo",
   bankstatement: "bank_statement",
+  cibilreport: "cibil_report",
+  creditreport: "cibil_report",
   latest1yrbanking: "bank_statement",
   latest3monthssalaryslip: "salary_slip",
   latest3yearsitrwithcomputation: "itr_form_16",
@@ -316,6 +325,7 @@ const defaultsByFlow: Record<string, string[]> = {
     "photo",
     "salary_slip",
     "bank_statement",
+    "cibil_report",
   ],
   homeLoan: [
     "pan_card",
@@ -508,7 +518,28 @@ const defaultsByFlow: Record<string, string[]> = {
   petInsurance: ["pan_card", "aadhaar_card", "photo", "petMedicalRecords"],
 };
 
+defaultsByFlow.balanceTransferTopUpLoan = [
+  ...defaultsByFlow.balanceTransferLoan,
+];
+defaultsByFlow.constructionLoan = [...defaultsByFlow.homeLoan];
+defaultsByFlow.solarLoan = [...defaultsByFlow.homeLoan];
+defaultsByFlow.carLoan = [...defaultsByFlow.vehicleLoan];
+defaultsByFlow.dodLoan = [...defaultsByFlow.workingCapitalLoan];
+defaultsByFlow.odLoan = [...defaultsByFlow.workingCapitalLoan];
+defaultsByFlow.industrialLoan = [...defaultsByFlow.businessLoan];
+defaultsByFlow.commercialPurchasesLoan = [...defaultsByFlow.businessLoan];
+defaultsByFlow.creditCard = [
+  "pan_card",
+  "aadhaar_card",
+  "photo",
+  "salary_slip",
+  "bank_statement",
+];
+
 const INTERNAL_SELECTED_KEY = "__selectedLoanDocumentTypes";
+const INTERNAL_PASSWORD_PROTECTED_KEY =
+  "__loanDocumentPasswordProtected";
+const DOCUMENT_PASSWORDS_KEY = "documentPasswords";
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
 const allowedFileTypes = new Set([
   "application/pdf",
@@ -526,6 +557,64 @@ const formatFileSize = (size: number) => {
   return `${(size / (1024 * 1024)).toFixed(1)} MB`;
 };
 
+const containsBytes = (source: Uint8Array, target: Uint8Array) => {
+  if (!target.length || source.length < target.length) return false;
+  for (let index = 0; index <= source.length - target.length; index += 1) {
+    let matches = true;
+    for (
+      let targetIndex = 0;
+      targetIndex < target.length;
+      targetIndex += 1
+    ) {
+      if (source[index + targetIndex] !== target[targetIndex]) {
+        matches = false;
+        break;
+      }
+    }
+    if (matches) return true;
+  }
+  return false;
+};
+
+const isPasswordProtectedPdf = async (file: File) => {
+  const isPdf =
+    file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf");
+  if (!isPdf) return false;
+
+  try {
+    const bytes = new Uint8Array(await file.arrayBuffer());
+    return containsBytes(
+      bytes,
+      new Uint8Array([47, 69, 110, 99, 114, 121, 112, 116]),
+    );
+  } catch {
+    return false;
+  }
+};
+
+function LocalDocumentButton({
+  file,
+  suffix,
+}: {
+  file: File;
+  suffix?: string;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={() => {
+        const url = URL.createObjectURL(file);
+        window.open(url, "_blank", "noopener,noreferrer");
+        window.setTimeout(() => URL.revokeObjectURL(url), 60_000);
+      }}
+      className="mt-0.5 inline-flex items-center gap-1 text-[9px] font-extrabold text-[#005ca8] no-underline hover:underline"
+    >
+      <Eye className="h-3 w-3" aria-hidden="true" />
+      View Document{suffix}
+    </button>
+  );
+}
+
 export function LoanDocumentUploader({
   category = "loan",
   flowKey,
@@ -541,11 +630,21 @@ export function LoanDocumentUploader({
     [],
   );
   const [catalogLoading, setCatalogLoading] = useState(true);
+  const passwordProtectedDocuments =
+    values[INTERNAL_PASSWORD_PROTECTED_KEY] &&
+    typeof values[INTERNAL_PASSWORD_PROTECTED_KEY] === "object"
+      ? values[INTERNAL_PASSWORD_PROTECTED_KEY]
+      : {};
+  const documentPasswords =
+    values[DOCUMENT_PASSWORDS_KEY] &&
+    typeof values[DOCUMENT_PASSWORDS_KEY] === "object"
+      ? values[DOCUMENT_PASSWORDS_KEY]
+      : {};
   const defaultKeys =
     defaultsByFlow[flowKey] ||
     (category === "insurance"
       ? defaultsByFlow.healthInsurance
-      : defaultsByFlow.personalLoan);
+      : []);
   const additionalKeys = Array.isArray(values[INTERNAL_SELECTED_KEY])
     ? values[INTERNAL_SELECTED_KEY].map(String)
     : [];
@@ -752,10 +851,48 @@ export function LoanDocumentUploader({
       delete nextMeta[key];
       onChange(INTERNAL_CATALOG_META_KEY, nextMeta);
     }
+    const nextPasswordProtectedDocuments = {
+      ...passwordProtectedDocuments,
+    };
+    delete nextPasswordProtectedDocuments[key];
+    onChange(
+      INTERNAL_PASSWORD_PROTECTED_KEY,
+      nextPasswordProtectedDocuments,
+    );
+    const nextDocumentPasswords = { ...documentPasswords };
+    delete nextDocumentPasswords[key];
+    onChange(DOCUMENT_PASSWORDS_KEY, nextDocumentPasswords);
     setFileErrors((current) => ({ ...current, [key]: "" }));
   };
 
-  const applyFiles = (document: DocumentDefinition, selectedFiles: File[]) => {
+  const setDocumentPasswordProtected = (
+    documentKey: string,
+    isProtected: boolean,
+  ) => {
+    onChange(INTERNAL_PASSWORD_PROTECTED_KEY, {
+      ...passwordProtectedDocuments,
+      [documentKey]: isProtected,
+    });
+    if (!isProtected && documentPasswords[documentKey]) {
+      const nextDocumentPasswords = { ...documentPasswords };
+      delete nextDocumentPasswords[documentKey];
+      onChange(DOCUMENT_PASSWORDS_KEY, nextDocumentPasswords);
+    }
+  };
+
+  const setDocumentPassword = (documentKey: string, password: string) => {
+    const nextDocumentPasswords = {
+      ...documentPasswords,
+      [documentKey]: password,
+    };
+    if (!password) delete nextDocumentPasswords[documentKey];
+    onChange(DOCUMENT_PASSWORDS_KEY, nextDocumentPasswords);
+  };
+
+  const applyFiles = async (
+    document: DocumentDefinition,
+    selectedFiles: File[],
+  ) => {
     const invalidType = selectedFiles.find(
       (file) => file.type && !allowedFileTypes.has(file.type),
     );
@@ -780,6 +917,13 @@ export function LoanDocumentUploader({
       ? selectedFiles.slice(0, 10)
       : selectedFiles.slice(0, 1);
     onChange(document.key, nextFiles);
+    const protectionChecks = await Promise.all(
+      nextFiles.map((file) => isPasswordProtectedPdf(file)),
+    );
+    setDocumentPasswordProtected(
+      document.key,
+      protectionChecks.some(Boolean),
+    );
     setFileErrors((current) => ({ ...current, [document.key]: "" }));
   };
 
@@ -787,10 +931,23 @@ export function LoanDocumentUploader({
     const currentFiles = Array.isArray(values[documentKey])
       ? values[documentKey]
       : [];
-    onChange(
-      documentKey,
-      currentFiles.filter((_: File, index: number) => index !== fileIndex),
+    const remainingFiles = currentFiles.filter(
+      (_: File, index: number) => index !== fileIndex,
     );
+    onChange(documentKey, remainingFiles);
+    if (!remainingFiles.length) {
+      const nextPasswordProtectedDocuments = {
+        ...passwordProtectedDocuments,
+      };
+      delete nextPasswordProtectedDocuments[documentKey];
+      onChange(
+        INTERNAL_PASSWORD_PROTECTED_KEY,
+        nextPasswordProtectedDocuments,
+      );
+      const nextDocumentPasswords = { ...documentPasswords };
+      delete nextDocumentPasswords[documentKey];
+      onChange(DOCUMENT_PASSWORDS_KEY, nextDocumentPasswords);
+    }
   };
 
   return (
@@ -862,10 +1019,18 @@ export function LoanDocumentUploader({
           const hasProfileDocument = Boolean(profileDocument?.fileUrl);
           const hasDocument = hasFiles || hasProfileDocument;
           const isDefault = defaultKeys.includes(document.key);
+          const hasProtectionPreference = Object.prototype.hasOwnProperty.call(
+            passwordProtectedDocuments,
+            document.key,
+          );
+          const isPasswordProtected = hasProtectionPreference
+            ? Boolean(passwordProtectedDocuments[document.key])
+            : Boolean(!hasFiles && profileDocument?.password);
 
           return (
             <section
               key={document.key}
+              data-document-upload={document.key}
               className={`rounded-xl border p-3.5 transition ${
                 hasDocument
                   ? "border-none bg-emerald-50/40"
@@ -930,6 +1095,10 @@ export function LoanDocumentUploader({
                         <p className="text-[9px] font-semibold text-[#94a3b8]">
                           {formatFileSize(file.size)}
                         </p>
+                        <LocalDocumentButton
+                          file={file}
+                          suffix={files.length > 1 ? ` ${index + 1}` : undefined}
+                        />
                       </div>
                       <button
                         type="button"
@@ -951,7 +1120,7 @@ export function LoanDocumentUploader({
                 >
                   <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-emerald-600" />
                   <span className="min-w-0 flex-1 truncate text-[9px] font-extrabold text-emerald-800">
-                    Saved document ready
+                    View Document
                   </span>
                   <span className="max-w-[45%] truncate text-[8px] font-semibold text-[#64748b]">
                     {profileDocument.referenceId || profileDocument.docType}
@@ -969,7 +1138,7 @@ export function LoanDocumentUploader({
                     multiple={Boolean(document.multiple)}
                     className="sr-only"
                     onChange={(event) => {
-                      applyFiles(
+                      void applyFiles(
                         document,
                         Array.from(event.target.files || []),
                       );
@@ -982,6 +1151,40 @@ export function LoanDocumentUploader({
                 <p className="mt-1.5 text-[9px] font-semibold text-[#64748b]">
                   Up to 10 files can be selected.
                 </p>
+              ) : null}
+              {hasDocument ? (
+                <label className="mt-3 flex items-center gap-2 text-[10px] font-bold text-[#475569]">
+                  <input
+                    type="checkbox"
+                    checked={isPasswordProtected}
+                    onChange={(event) =>
+                      setDocumentPasswordProtected(
+                        document.key,
+                        event.target.checked,
+                      )
+                    }
+                    className="h-3.5 w-3.5 accent-[#005ca8]"
+                  />
+                  Password-protected document
+                </label>
+              ) : null}
+              {hasDocument && isPasswordProtected ? (
+                <label className="mt-2 grid gap-1.5">
+                  <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#1f2937]">
+                    <Lock className="h-3 w-3" aria-hidden="true" />
+                    Enter Password
+                  </span>
+                  <input
+                    type="password"
+                    value={documentPasswords[document.key] || ""}
+                    placeholder="Enter document password"
+                    autoComplete="new-password"
+                    onChange={(event) =>
+                      setDocumentPassword(document.key, event.target.value)
+                    }
+                    className="h-9 rounded-lg border border-[#cddff0] bg-white px-3 text-[11px] font-semibold text-[#344054] outline-none focus:border-[#005ca8] focus:ring-2 focus:ring-[#e5f1ff]"
+                  />
+                </label>
               ) : null}
               {fileErrors[document.key] ? (
                 <p className="mt-1.5 text-[9px] font-bold text-red-600">

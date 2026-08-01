@@ -5,7 +5,10 @@ export const apiRootUrl = rawBaseUrl
   .replace(/\/api$/i, "");
 
 export const buildApiUrl = (path: string) => {
-  if (!apiRootUrl) return "";
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+  if (typeof window !== "undefined") {
+    return `/backend-api${normalizedPath}`;
+  }
+  if (!apiRootUrl) return "";
   return `${apiRootUrl}/api${normalizedPath}`;
 };

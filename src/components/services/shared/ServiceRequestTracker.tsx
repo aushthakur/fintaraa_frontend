@@ -117,12 +117,14 @@ export function ServiceRequestTracker({
   serviceType,
   sectionId,
   requireLogin = false,
+  deferCreatedRequestDisplay = false,
 }: {
   title: string;
   idLabel: string;
   serviceType: ServiceRequestType;
   sectionId?: string;
   requireLogin?: boolean;
+  deferCreatedRequestDisplay?: boolean;
 }) {
   const [mobile, setMobile] = useState("");
   const [queryId, setQueryId] = useState("");
@@ -163,9 +165,11 @@ export function ServiceRequestTracker({
       setRequests((current) => {
         const next = mergeRequests(current, [request]);
         writeStored(serviceType, next);
-        return next;
+        return deferCreatedRequestDisplay ? current : next;
       });
-      setSelectedId(request._id);
+      if (!deferCreatedRequestDisplay) {
+        setSelectedId(request._id);
+      }
     };
 
     window.addEventListener("service-request-created", onCreated);
@@ -173,7 +177,13 @@ export function ServiceRequestTracker({
       active = false;
       window.removeEventListener("service-request-created", onCreated);
     };
-  }, [authReady, loggedIn, requireLogin, serviceType]);
+  }, [
+    authReady,
+    deferCreatedRequestDisplay,
+    loggedIn,
+    requireLogin,
+    serviceType,
+  ]);
 
   useEffect(() => {
     let active = true;
@@ -211,6 +221,46 @@ export function ServiceRequestTracker({
     [requests, selectedId],
   );
   const activeStep = compactStepIndex(selectedRequest);
+  const trackedQueryId = selectedRequest?.queryId;
+
+  useEffect(() => {
+    if (!trackedQueryId) return;
+
+    let active = true;
+    const refreshSelectedRequest = async () => {
+      try {
+        const result = await fetchServiceRequestHistory({
+          serviceType,
+          queryId: trackedQueryId,
+        });
+        if (!active || !result.length) return;
+        setRequests((current) => {
+          const next = mergeRequests(current, result);
+          writeStored(serviceType, next);
+          return next;
+        });
+      } catch {
+        // Keep the last known timeline visible during a temporary API failure.
+      }
+    };
+    const refreshWhenVisible = () => {
+      if (document.visibilityState === "visible") {
+        void refreshSelectedRequest();
+      }
+    };
+
+    void refreshSelectedRequest();
+    const timer = window.setInterval(refreshSelectedRequest, 30_000);
+    window.addEventListener("focus", refreshSelectedRequest);
+    document.addEventListener("visibilitychange", refreshWhenVisible);
+
+    return () => {
+      active = false;
+      window.clearInterval(timer);
+      window.removeEventListener("focus", refreshSelectedRequest);
+      document.removeEventListener("visibilitychange", refreshWhenVisible);
+    };
+  }, [serviceType, trackedQueryId]);
 
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -318,7 +368,7 @@ export function ServiceRequestTracker({
                 <input
                   value={queryId}
                   onChange={(event) => setQueryId(event.target.value)}
-                  placeholder="FT-ITR-20260619-XXXXX"
+                  placeholder="e.g. FIN2607310001"
                   className="h-11 rounded-lg border border-[#dce3eb] px-3 text-[13px] font-semibold uppercase outline-none placeholder:normal-case placeholder:text-[#a0a7b2] focus:border-[#005ca8] md:text-sm"
                 />
               </label>
@@ -394,7 +444,10 @@ export function ServiceRequestTracker({
                             : "text-[#667085] hover:bg-[#f8fbff]"
                         }`}
                       >
-                        <td className="px-3 py-3.5 font-extrabold">
+                        <td
+                          data-service-query-id={request.queryId}
+                          className="px-3 py-3.5 font-extrabold"
+                        >
                           {request.queryId}
                         </td>
                         <td className="px-3 py-3.5">
@@ -436,7 +489,10 @@ export function ServiceRequestTracker({
         </div>
 
         {selectedRequest ? (
-          <ServiceRequestProgress request={selectedRequest} />
+          <ServiceRequestProgress
+            request={selectedRequest}
+            showQueryId={false}
+          />
         ) : null}
       </div>
     </section>

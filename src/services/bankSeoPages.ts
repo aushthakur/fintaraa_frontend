@@ -4,6 +4,7 @@ import {
   type ParsedLoanLocation,
 } from "@/lib/productRouting";
 import { bankDirectory } from "@/data/bankDirectory";
+import { getTrustedPartnersByCategory } from "@/data/trustedPartners";
 import { isServerApiReachable } from "./serverApiAvailability";
 
 export type BankSeoStat = {
@@ -496,20 +497,67 @@ export async function getBankSeoLocationPages(
   }
 }
 
-const fallbackProductLenders = (
-  productSlug: string,
-): BankProductLender[] =>
-  bankDirectory.map((bank) => ({
+const instantLoanSpecialistLenders = [
+  { name: "L&T Finance", slug: "l-and-t-finance" },
+  { name: "Credit Saison", slug: "credit-saison" },
+  {
+    name: "Aditya Birla Finance Limited",
+    slug: "aditya-birla-finance-limited",
+  },
+  { name: "InCred Finance", slug: "incred-finance" },
+  { name: "WeRize", slug: "werize" },
+  { name: "Tata Capital", slug: "tata-capital" },
+  { name: "Piramal Finance", slug: "piramal-finance" },
+  { name: "SMFG India Credit", slug: "smfg-fullerton" },
+];
+
+const fallbackProductLenders = (productSlug: string): BankProductLender[] => {
+  const directory =
+    productSlug === "instant-loan"
+      ? [
+          ...getTrustedPartnersByCategory("loan").map((partner) => ({
+            name: partner.name,
+            slug: partner.slug,
+            logo: partner.logo,
+          })),
+          ...instantLoanSpecialistLenders.map((partner) => ({
+            ...partner,
+            logo: undefined,
+          })),
+        ]
+      : bankDirectory;
+  const unique = new Map<string, BankProductLender>();
+
+  directory.forEach((bank) => {
+    const bankSlug = slugifyProduct(bank.slug);
+    unique.set(bankSlug, {
     bankName: bank.name,
-    bankSlug: bank.slug,
+      bankSlug,
     productSlug,
     logoUrl: bank.logo,
-    canonicalPath: buildBankPath(bank.slug, productSlug),
+      canonicalPath: buildBankPath(bankSlug, productSlug),
     interestRate: "Check lender details",
     processingFee: "As per lender policy",
     loanAmount: "Profile based",
     tenure: "Flexible tenure",
-  }));
+    });
+  });
+
+  return Array.from(unique.values());
+};
+
+const mergeProductLenders = (
+  fallback: BankProductLender[],
+  configured: BankProductLender[],
+) => {
+  const merged = new Map(
+    fallback.map((lender) => [lender.bankSlug, lender] as const),
+  );
+  configured.forEach((lender) => merged.set(lender.bankSlug, lender));
+  return Array.from(merged.values()).sort((first, second) =>
+    first.bankName.localeCompare(second.bankName),
+  );
+};
 
 const isRootBankPage = (page: BankSeoLocationPage) => {
   const location = page.location || ({} as ParsedLoanLocation);
@@ -603,7 +651,7 @@ export async function getBankProductLenders(
       }),
     );
 
-    return lenders.sort((a, b) => a.bankName.localeCompare(b.bankName));
+    return mergeProductLenders(fallback, lenders);
   } catch {
     return fallback;
   }

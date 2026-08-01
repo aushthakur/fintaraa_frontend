@@ -69,6 +69,19 @@ export type SupportTicketDetail = SupportTicket & {
   interactions?: SupportInteraction[];
 };
 
+export const SUPPORT_TICKET_CATEGORIES = [
+  { value: "app_support", label: "Application support" },
+  {
+    value: "document_verification_support",
+    label: "Document verification",
+  },
+  { value: "payment_emi_support", label: "Payment or EMI" },
+  { value: "credit_score_support", label: "Credit score" },
+  { value: "insurance_support", label: "Insurance" },
+  { value: "account_access_support", label: "Account access" },
+  { value: "grievance_support", label: "Grievance" },
+] as const;
+
 const unwrap = (response: unknown) => {
   const value = response as Record<string, unknown>;
   const data = value?.data as Record<string, unknown> | unknown[] | undefined;
@@ -256,21 +269,15 @@ export const fetchTicketById = async (
 export const addTicketInteraction = async ({
   ticketId,
   content,
-  initiator,
-  receiver,
 }: {
   ticketId: string;
   content: string;
-  initiator: string;
-  receiver: string;
 }): Promise<SupportTicketDetail | null> => {
   const response = await Post<unknown>(
     "support/tickets/interactions",
     {
       ticketId,
       content,
-      initiator,
-      receiver,
       action: "commented",
     },
     10000,

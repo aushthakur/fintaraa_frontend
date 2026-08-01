@@ -14,6 +14,7 @@ import {
   Star,
 } from "lucide-react";
 import type { KnowledgePageConfig } from "@/components/knowledge/knowledgePageConfig";
+import { ManagedVideoPlayer } from "@/components/common/ManagedVideoPlayer";
 import {
   fetchKnowledgeBySlug,
   fetchWebsiteKnowledge,
@@ -152,7 +153,10 @@ export function KnowledgeDetailClient({
                   <span className="inline-flex gap-0.5 text-[#f97316]">
                     {Array.from({ length: Number(item.rating || 5) }).map(
                       (_, index) => (
-                        <Star key={index} className="h-3.5 w-3.5 fill-current" />
+                        <Star
+                          key={index}
+                          className="h-3.5 w-3.5 fill-current"
+                        />
                       ),
                     )}
                   </span>
@@ -161,13 +165,12 @@ export function KnowledgeDetailClient({
             </header>
 
             <div className="relative overflow-hidden rounded-2xl bg-[#eef4f8]">
-              {isVideo && item.videoUrl ? (
-                <video
+              {isVideo && (item.videoUrl || item.youtubeUrl) ? (
+                <ManagedVideoPlayer
                   src={item.videoUrl}
-                  controls
-                  playsInline
+                  youtubeUrl={item.youtubeUrl}
+                  title={item.title}
                   poster={item.coverImageUrl || config.fallbackImage}
-                  className="aspect-video w-full bg-black object-contain"
                 />
               ) : (
                 <div className="relative h-60 sm:h-80 lg:h-105">
@@ -184,7 +187,7 @@ export function KnowledgeDetailClient({
                     className="object-cover"
                     priority
                   />
-                  {isVideo && !item.videoUrl ? (
+                  {isVideo && !item.videoUrl && !item.youtubeUrl ? (
                     <div className="absolute inset-0 flex items-center justify-center bg-[#07162d]/28 text-white">
                       <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white/22 ring-1 ring-white/55 backdrop-blur-sm">
                         <Play className="ml-0.5 h-6 w-6 fill-current" />
@@ -208,7 +211,7 @@ export function KnowledgeDetailClient({
             />
           </div>
 
-          <aside className="space-y-5 lg:sticky lg:top-24 lg:self-start">
+          <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
             <section className="rounded-2xl border border-[#dce9f7] bg-[#eef6ff] p-5">
               <h2 className="text-[16px] font-extrabold tracking-tight text-[#111625]">
                 {relatedTitle}

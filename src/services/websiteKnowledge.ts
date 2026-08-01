@@ -5,7 +5,8 @@ export type WebsiteKnowledgeType =
   | "blog"
   | "testimonial"
   | "press_release"
-  | "video";
+  | "video"
+  | "award";
 
 export type WebsiteKnowledgeItem = {
   _id?: string;
@@ -27,6 +28,7 @@ export type WebsiteKnowledgeItem = {
   readTime?: string;
   accent?: string;
   videoUrl?: string;
+  youtubeUrl?: string;
   buttonLabel?: string;
   tags?: string[];
   publishedAt?: string;
@@ -59,6 +61,7 @@ const normalise = (item: any): WebsiteKnowledgeItem => ({
   readTime: item?.readTime || "5 min read",
   accent: item?.accent || "#005ca8",
   videoUrl: item?.videoUrl || "",
+  youtubeUrl: item?.youtubeUrl || "",
   buttonLabel: item?.buttonLabel || "",
   tags: Array.isArray(item?.tags) ? item.tags : [],
   publishedAt: item?.publishedAt || item?.createdAt || new Date().toISOString(),

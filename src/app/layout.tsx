@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import Script from "next/script";
 import { Providers } from "./providers";
 import { Inter, Poppins } from "next/font/google";
@@ -18,6 +19,17 @@ import {
   siteUrl,
 } from "@/services/seoConfig";
 import { CALL_PHONE, COMPANY_NAME, OFFICE } from "@/data/company";
+import { AnalyticsRouteTracker } from "@/components/analytics/AnalyticsRouteTracker";
+import { EngagementTracker } from "@/components/analytics/EngagementTracker";
+import { GlobalPopupManager } from "@/components/popups/GlobalPopupManager";
+
+const readAnalyticsId = (
+  value: string | undefined,
+  pattern: RegExp,
+): string | undefined => {
+  const normalized = value?.trim();
+  return normalized && pattern.test(normalized) ? normalized : undefined;
+};
 
 export const bodoni = Bodoni_Moda({
   subsets: ["latin"],
@@ -117,9 +129,22 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const clarityProjectId = process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID;
-  const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
-  const metaPixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
+  const clarityProjectId = readAnalyticsId(
+    process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID,
+    /^[a-z0-9]{5,}$/i,
+  );
+  const gaMeasurementId = readAnalyticsId(
+    process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID,
+    /^G-[a-z0-9]{4,}$/i,
+  );
+  const gtmId = readAnalyticsId(
+    process.env.NEXT_PUBLIC_GTM_ID,
+    /^GTM-[a-z0-9]+$/i,
+  );
+  const metaPixelId = readAnalyticsId(
+    process.env.NEXT_PUBLIC_META_PIXEL_ID,
+    /^\d{5,30}$/,
+  );
   const structuredData = [
     {
       "@context": "https://schema.org",
@@ -198,10 +223,42 @@ export default function RootLayout({
         className="min-h-full flex flex-col overflow-x-clip font-sans"
         suppressHydrationWarning
       >
+        {gtmId ? (
+          <noscript>
+            <iframe
+              src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
+              height="0"
+              width="0"
+              title="Google Tag Manager"
+              style={{ display: "none", visibility: "hidden" }}
+            />
+          </noscript>
+        ) : null}
         <Providers>
           <AppShell>{children}</AppShell>
         </Providers>
         <div id="modal-root" />
+        <Suspense fallback={null}>
+          <AnalyticsRouteTracker
+            clarityProjectId={clarityProjectId}
+            gaMeasurementId={gaMeasurementId}
+            gtmId={gtmId}
+            metaPixelId={metaPixelId}
+          />
+          <EngagementTracker clarityEnabled={Boolean(clarityProjectId)} />
+          <GlobalPopupManager />
+        </Suspense>
+        {gtmId ? (
+          <Script id="google-tag-manager" strategy="afterInteractive">
+            {`
+              (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+              new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+              j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+              'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+              })(window,document,'script','dataLayer',${JSON.stringify(gtmId)});
+            `}
+          </Script>
+        ) : null}
         {clarityProjectId ? (
           <Script id="microsoft-clarity" strategy="afterInteractive">
             {`
@@ -209,7 +266,7 @@ export default function RootLayout({
                 c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
                 t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
                 y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-              })(window, document, "clarity", "script", "${clarityProjectId}");
+              })(window, document, "clarity", "script", ${JSON.stringify(clarityProjectId)});
             `}
           </Script>
         ) : null}
@@ -224,7 +281,7 @@ export default function RootLayout({
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
                 gtag('js', new Date());
-                gtag('config', '${gaMeasurementId}');
+                gtag('config', ${JSON.stringify(gaMeasurementId)});
               `}
             </Script>
           </>
@@ -241,7 +298,7 @@ export default function RootLayout({
                 t.src=v;s=b.getElementsByTagName(e)[0];
                 s.parentNode.insertBefore(t,s)}(window, document,'script',
                 'https://connect.facebook.net/en_US/fbevents.js');
-                fbq('init', '${metaPixelId}');
+                fbq('init', ${JSON.stringify(metaPixelId)});
                 fbq('track', 'PageView');
               `}
             </Script>

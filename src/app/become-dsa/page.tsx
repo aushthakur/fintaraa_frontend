@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { getPageSeoMetadata } from "@/services/seoMetadata";
 import { DsaPage } from "@/components/dsa/DsaPage";
+import { getPageSeoMetadata } from "@/services/seoMetadata";
 
 const fallbackMetadata: Metadata = {
   title: "Become a Fintaraa DSA Partner",

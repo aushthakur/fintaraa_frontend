@@ -26,6 +26,15 @@ export type ServiceWorkflowItem = {
   updatedAt?: string;
 };
 
+export type ServiceFollowUpItem = {
+  scheduledAt?: string;
+  note?: string;
+  status: "pending" | "completed" | "cancelled";
+  assignedExecutive?: string;
+  updatedBy?: string;
+  updatedAt?: string;
+};
+
 export type ServiceRequestRecord = {
   _id: string;
   queryId: string;
@@ -35,6 +44,7 @@ export type ServiceRequestRecord = {
   mobile?: string;
   email?: string;
   businessName?: string;
+  monthlyLoanAmount?: string;
   businessType?: string;
   gstRequirement?: string;
   state?: string;
@@ -48,6 +58,10 @@ export type ServiceRequestRecord = {
   currentStage: string;
   currentStageIndex: number;
   assignedExecutive?: string;
+  followUpAt?: string;
+  followUpNote?: string;
+  followUpStatus?: "pending" | "completed" | "cancelled";
+  followUpHistory?: ServiceFollowUpItem[];
   timeline: ServiceWorkflowItem[];
   updatedAt?: string;
   createdAt?: string;

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { Children, type ReactNode, useEffect, useMemo, useState } from "react";
 import {
   BadgeIndianRupee,
   BadgePercent,
@@ -38,8 +38,6 @@ import {
   ResponsiveServicesRow,
   ServiceWorkflowCard,
 } from "@/components/home/ProductExplorer";
-import { slugifyProduct } from "@/lib/productRouting";
-import { fetchPublicProductPages } from "@/services/productCatalog";
 
 const productSections = [
   {
@@ -368,11 +366,48 @@ const categoryLabel = (value: string) => {
   return value.replace("Explore ", "");
 };
 
+function ResponsiveProductCollection({
+  children,
+  ariaLabel,
+}: {
+  children: ReactNode;
+  ariaLabel: string;
+}) {
+  const items = Children.toArray(children);
+
+  return (
+    <>
+      <div className="md:hidden">
+        <AutoCarousel
+          ariaLabel={ariaLabel}
+          mobileSlides={2}
+          tabletSlides={2}
+          delay={4600}
+          className="product-card-carousel"
+        >
+          {items}
+        </AutoCarousel>
+      </div>
+
+      <div
+        role="region"
+        aria-label={ariaLabel}
+        className="hidden gap-4 md:grid md:grid-cols-4 lg:grid-cols-7"
+      >
+        {items.map((item, index) => (
+          <div key={index} className="h-full min-w-0">
+            {item}
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
+
 export function ProductsPage() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("All");
   const [filtersOpen, setFiltersOpen] = useState(true);
-  const [managedSlugs, setManagedSlugs] = useState<Set<string>>(new Set());
 
   const normalizedQuery = query.trim().toLowerCase();
   const totalProducts = productSections.reduce(
@@ -387,30 +422,6 @@ export function ProductsPage() {
       const search = params.get("q") || params.get("search");
       if (search) setQuery(search);
     });
-  }, []);
-
-  useEffect(() => {
-    let active = true;
-
-    fetchPublicProductPages()
-      .then(({ loans, insurance }) => {
-        if (!active) return;
-        setManagedSlugs(
-          new Set(
-            [
-              ...loans.map((item) => item.loanTypeSlug),
-              ...insurance.map((item) => item.insuranceTypeSlug),
-            ].filter(Boolean) as string[],
-          ),
-        );
-      })
-      .catch(() => {
-        if (active) setManagedSlugs(new Set());
-      });
-
-    return () => {
-      active = false;
-    };
   }, []);
 
   const filteredSections = useMemo(() => {
@@ -549,19 +560,11 @@ export function ProductsPage() {
                     ))}
                   </ResponsiveServicesRow>
                 ) : (
-                  <AutoCarousel
+                  <ResponsiveProductCollection
                     ariaLabel={`${section.title} products`}
-                    mobileSlides={2}
-                    tabletSlides={3}
-                    desktopSlides={4}
-                    wideSlides={6}
-                    delay={4600}
-                    className="product-card-carousel"
                   >
                     {section.products.map((product) => {
                       const { title } = product;
-                      const slug = slugifyProduct(title);
-                      const isManaged = managedSlugs.has(slug);
 
                       return (
                         <ImageProductCard
@@ -569,11 +572,10 @@ export function ProductsPage() {
                           product={product}
                           hideContentBadge
                           hideIcon
-                          statusBadge={isManaged ? "Managed" : undefined}
                         />
                       );
                     })}
-                  </AutoCarousel>
+                  </ResponsiveProductCollection>
                 )}
               </div>
             ))

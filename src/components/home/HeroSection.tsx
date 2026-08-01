@@ -24,10 +24,7 @@ import {
 import { loanProductDirectory } from "@/data/bankDirectory";
 import { AnimatedCounter } from "@/components/common/AnimatedCounter";
 import { productHref } from "@/lib/productRouting";
-import {
-  type HomeBanner,
-  fetchHomeBanners,
-} from "@/services/homeBanners";
+import { type HomeBanner, fetchHomeBanners } from "@/services/homeBanners";
 
 const trustStats = [
   { value: "2M+", label: "customers", icon: UsersRound },
@@ -243,8 +240,7 @@ export function HeroSection() {
   );
   const primaryHref = activeBanner?.linkUrl || "/products";
   const primaryLabel = activeBanner?.buttonText || "Explore products";
-  const secondaryHref =
-    activeBanner?.secondaryLinkUrl || "/#eligibility-check";
+  const secondaryHref = activeBanner?.secondaryLinkUrl || "/#eligibility-check";
   const secondaryLabel =
     activeBanner?.secondaryButtonText || "Check eligibility";
   const continueHref = useMemo(() => {
@@ -294,6 +290,14 @@ export function HeroSection() {
 
   return (
     <section className="relative min-h-115 overflow-hidden bg-[#061a3d] px-4 py-8 text-white sm:min-h-125 md:px-6 md:py-8 lg:min-h-135 lg:px-8 lg:py-5">
+      <div
+        key={`analytics-${activeBanner._id || activeIndex}`}
+        aria-hidden="true"
+        data-analytics-banner
+        data-analytics-name={activeBanner.title}
+        data-analytics-placement={`home_hero:${activeBanner._id || activeIndex}`}
+        className="pointer-events-none absolute inset-0"
+      />
       <div className="absolute inset-0">
         {banners.map((banner, index) => (
           <HomeResponsiveBannerImage
@@ -364,6 +368,9 @@ export function HeroSection() {
             <div className="mt-5 grid grid-cols-2 gap-2.5 sm:flex sm:flex-row sm:items-center sm:gap-3">
               <Link
                 href={primaryHref}
+                data-analytics-category="banner"
+                data-analytics-name={`${activeBanner.title} - ${primaryLabel}`}
+                data-analytics-placement={`home_hero:${activeBanner._id || activeIndex}`}
                 className="inline-flex h-11 items-center justify-center gap-1.5 rounded-xl bg-[#075cde] px-3 text-center text-[12px] font-semibold text-white no-underline transition hover:bg-[#064cb8] sm:gap-2 sm:px-5 sm:text-[14px]"
               >
                 {primaryLabel}
@@ -371,6 +378,9 @@ export function HeroSection() {
               </Link>
               <Link
                 href={secondaryHref}
+                data-analytics-category="banner"
+                data-analytics-name={`${activeBanner.title} - ${secondaryLabel}`}
+                data-analytics-placement={`home_hero:${activeBanner._id || activeIndex}`}
                 className="inline-flex h-11 items-center justify-center gap-1.5 rounded-xl border border-white/45 bg-white/12 px-3 text-center text-[12px] font-semibold text-white no-underline transition hover:bg-white/18 sm:gap-2 sm:px-5 sm:text-[14px]"
               >
                 {secondaryLabel}

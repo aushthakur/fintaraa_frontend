@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { Clock, Loader2, LockKeyhole, ShieldCheck } from "lucide-react";
 import { ServiceRequestProgress } from "@/components/services/shared/ServiceRequestProgress";
 import {
@@ -11,6 +11,7 @@ import {
 import { WhatsAppConsent } from "@/components/common/WhatsAppConsent";
 import { buildWebsiteConsentPayload } from "@/lib/formConsent";
 import { ServiceRequestSuccess } from "@/components/services/shared/ServiceRequestSuccess";
+import { useTransientServiceFeedback } from "@/hooks/useTransientServiceFeedback";
 
 const employmentTypes = [
   "Salaried",
@@ -57,34 +58,42 @@ export function ItrHero() {
   });
   const [request, setRequest] = useState<ServiceRequestRecord | null>(null);
   const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState("");
   const [whatsappConsent, setWhatsappConsent] = useState(false);
+  const {
+    error,
+    successVisible,
+    clearError,
+    showError,
+    showSuccess,
+  } = useTransientServiceFeedback();
 
   const updateField = (key: keyof typeof form, value: string) => {
     setForm((current) => ({ ...current, [key]: value }));
-    setError("");
+    clearError();
   };
 
-  const submit = async () => {
+  const submit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
     if (!nameRegex.test(form.name.trim())) {
-      setError("Enter a valid full name.");
+      showError("Enter a valid full name.");
       return;
     }
     if (!mobileRegex.test(form.mobile.trim())) {
-      setError("Enter a valid 10-digit mobile number.");
+      showError("Enter a valid 10-digit mobile number.");
       return;
     }
     if (!form.employmentType || !form.annualIncome) {
-      setError("Please select employment type and annual income.");
+      showError("Please select employment type and annual income.");
       return;
     }
     if (!whatsappConsent) {
-      setError("Please accept WhatsApp communication consent.");
+      showError("Please accept WhatsApp communication consent.");
       return;
     }
 
     setSubmitting(true);
-    setError("");
+    clearError();
     try {
       const consentPayload = buildWebsiteConsentPayload("website_itr_filing");
       const result = await createServiceRequest({
@@ -96,13 +105,21 @@ export function ItrHero() {
         ...consentPayload,
       });
       setRequest(result);
+      showSuccess();
+      setForm({
+        name: "",
+        mobile: "",
+        employmentType: "",
+        annualIncome: "",
+      });
+      setWhatsappConsent(false);
       if (typeof window !== "undefined") {
         window.dispatchEvent(
           new CustomEvent("service-request-created", { detail: result }),
         );
       }
     } catch (err) {
-      setError((err as Error).message || "Unable to submit ITR request.");
+      showError((err as Error).message || "Unable to submit ITR request.");
     } finally {
       setSubmitting(false);
     }
@@ -166,7 +183,10 @@ export function ItrHero() {
             <p className="mt-2 text-[13px] font-medium leading-6 text-[#8b95a3] sm:text-sm md:text-[15px]">
               Fill in your details and our expert will get in touch with you.
             </p>
-            <form className="mt-5 grid gap-4 sm:mt-6 sm:gap-5">
+            <form
+              className="mt-5 grid gap-4 sm:mt-6 sm:gap-5"
+              onSubmit={(event) => void submit(event)}
+            >
               <label className="grid gap-1.5 sm:gap-2">
                 <span className="text-[13px] font-bold text-[#1f2937] sm:text-sm">
                   Name
@@ -219,19 +239,21 @@ export function ItrHero() {
                 checked={whatsappConsent}
                 onChange={(checked) => {
                   setWhatsappConsent(checked);
-                  if (checked) setError("");
+                  if (checked) clearError();
                 }}
               />
 
               {error ? (
-                <p className="rounded-lg bg-red-50 px-3 py-2 text-[13px] font-bold text-red-700">
+                <p
+                  role="alert"
+                  className="rounded-lg bg-red-50 px-3 py-2 text-[13px] font-bold text-red-700"
+                >
                   {error}
                 </p>
               ) : null}
 
               <button
-                type="button"
-                onClick={submit}
+                type="submit"
                 disabled={submitting}
                 className="mx-auto mt-2 inline-flex h-11 w-full max-w-xs items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#1cb45c] to-[#28cf6c] text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-70 sm:h-12"
               >
@@ -248,11 +270,13 @@ export function ItrHero() {
 
       {request ? (
         <div className="mobile-safe-container mt-8 grid gap-5">
-          <ServiceRequestSuccess
-            request={request}
-            title="Thank you! Your ITR filing request has been submitted."
-            message="We have created your ITR service request. Our tax expert will review your profile and contact you for the next steps."
-          />
+          {successVisible ? (
+            <ServiceRequestSuccess
+              request={request}
+              title="Thank you! Your ITR filing request has been submitted."
+              message="We have created your ITR service request. Our tax expert will review your profile and contact you for the next steps."
+            />
+          ) : null}
           <ServiceRequestProgress request={request} />
         </div>
       ) : null}

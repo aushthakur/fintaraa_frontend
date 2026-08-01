@@ -1,11 +1,17 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import {
+  FormEvent,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   AlertCircle,
   CheckCircle2,
+  Loader2,
   MessageCircle,
-  Paperclip,
   Send,
   UserRound,
 } from "lucide-react";
@@ -23,7 +29,7 @@ const starterMessages: SupportInteraction[] = [
     content:
       "Select a ticket to view the conversation. If no agent is assigned yet, you can still prepare the next message here.",
     senderId: "support",
-    createdAt: new Date().toISOString(),
+    createdAt: "",
   },
 ];
 
@@ -66,26 +72,42 @@ export function SupportChatPanel({
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [sending, setSending] = useState(false);
+  const [chatError, setChatError] = useState("");
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   const userId = useMemo(() => getStoredUserId(), []);
 
   useEffect(() => {
     let active = true;
     if (!ticket?.id) {
-      return;
+      queueMicrotask(() => {
+        if (!active) return;
+        setDetail(null);
+        setMessages([]);
+        setChatError("");
+      });
+      return () => {
+        active = false;
+      };
     }
     queueMicrotask(() => {
       if (!active) return;
       setLoading(true);
+      setChatError("");
       fetchTicketById(ticket.id)
         .then((data) => {
           if (!active) return;
           setDetail(data);
           setMessages(data?.interactions?.length ? data.interactions : []);
         })
-        .catch(() => {
+        .catch((error) => {
           if (!active) return;
           setDetail(null);
           setMessages([]);
+          setChatError(
+            (error as Error)?.message?.replace(/^[^\w]+/, "") ||
+              "Conversation could not be loaded.",
+          );
         })
         .finally(() => {
           if (active) setLoading(false);
@@ -96,17 +118,26 @@ export function SupportChatPanel({
     };
   }, [ticket?.id]);
 
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ block: "end" });
+  }, [messages, loading]);
+
+  useEffect(() => {
+    if (ticket?.id) inputRef.current?.focus();
+  }, [ticket?.id]);
+
   const selectedTitle =
     detail?.title || ticket?.title || "Support conversation";
   const assigneeId = detail?.assignee?.id || ticket?.assigneeId;
   const assigneeName =
     detail?.assignee?.name || ticket?.assigneeName || "Support";
   const displayMessages = ticket ? messages : starterMessages;
+  const closed = (ticket?.status || "").toLowerCase() === "closed";
 
   const submit = async (event: FormEvent) => {
     event.preventDefault();
     const trimmed = input.trim();
-    if (!trimmed || !ticket?.id) return;
+    if (!trimmed || !ticket?.id || sending || closed) return;
 
     const optimistic: SupportInteraction = {
       id: `local-${Date.now()}`,
@@ -116,46 +147,59 @@ export function SupportChatPanel({
     };
     setMessages((prev) => [...prev, optimistic]);
     setInput("");
-
-    if (!userId || !assigneeId) return;
-
+    setChatError("");
     setSending(true);
     try {
       const updated = await addTicketInteraction({
         ticketId: ticket.id,
         content: trimmed,
-        initiator: userId,
-        receiver: assigneeId,
       });
       if (updated) {
         setDetail(updated);
         setMessages(updated.interactions || []);
         await onTicketUpdated();
       }
+    } catch (error) {
+      setMessages((current) =>
+        current.filter((message) => message.id !== optimistic.id),
+      );
+      setInput(trimmed);
+      setChatError(
+        (error as Error)?.message?.replace(/^[^\w]+/, "") ||
+          "Message could not be sent. Please try again.",
+      );
     } finally {
       setSending(false);
+      inputRef.current?.focus();
     }
   };
 
   return (
-    <section className="flex min-h-168 flex-col bg-white shadow-[0_18px_45px_rgba(25,85,133,0.08)]">
-      <div className="flex flex-col gap-4 border-b border-[#e4edf5] p-5 md:flex-row md:items-center md:justify-between">
+    <section className="flex min-h-[42rem] flex-col overflow-hidden rounded-3xl border border-[#dfeaf4] bg-white shadow-[0_20px_55px_rgba(25,85,133,0.10)]">
+      <div className="flex flex-col gap-4 border-b border-[#e4edf5] bg-white p-5 md:flex-row md:items-center md:justify-between">
         <div className="flex gap-3">
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#195585] text-white">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#195585] text-white shadow-[0_10px_24px_rgba(25,85,133,0.22)]">
             <MessageCircle className="h-5 w-5" />
           </div>
-          <div>
+          <div className="min-w-0">
             <p className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#195585]">
               Ticket chat
             </p>
-            <h2 className="mt-1 text-[22px] font-extrabold text-[#07162d]">
+            <h2 className="mt-1 truncate text-[22px] font-extrabold text-[#07162d]">
               {selectedTitle}
             </h2>
             <p className="mt-1 text-[12px] font-semibold text-[#667085]">
               {loading
                 ? "Loading conversation..."
-                : `Assigned to ${assigneeName}`}
+                : assigneeId
+                  ? `Assigned to ${assigneeName}`
+                  : "Waiting for a support specialist"}
             </p>
+            {ticket?.id ? (
+              <p className="mt-1 font-mono text-[10px] font-semibold uppercase tracking-wider text-[#98a2b3]">
+                Ticket #{ticket.id.slice(-8)}
+              </p>
+            ) : null}
           </div>
         </div>
         <span className="inline-flex w-fit items-center gap-2 rounded-full bg-[#ecfdf3] px-3 py-1 text-[11px] font-extrabold uppercase tracking-[0.12em] text-[#079455]">
@@ -164,12 +208,17 @@ export function SupportChatPanel({
         </span>
       </div>
 
-      <div className="flex-1 space-y-4 overflow-y-auto bg-[#f8fcff] p-5">
+      <div
+        className="flex-1 space-y-4 overflow-y-auto bg-linear-to-b from-[#f8fcff] to-[#f3f8fc] p-5"
+        aria-live="polite"
+      >
         {!ticket ? (
           <Notice text="Choose a ticket from the left, or create a new one to start tracking a support request." />
         ) : !assigneeId ? (
-          <Notice text="No agent is assigned yet. Messages you type are shown locally until the ticket is picked up by support." />
+          <Notice text="Your ticket is in the support queue. You can send a message now—it will be saved for the specialist who picks it up." />
         ) : null}
+
+        {chatError ? <Notice text={chatError} tone="error" /> : null}
 
         {displayMessages.length ? (
           displayMessages.map((message) => {
@@ -186,8 +235,10 @@ export function SupportChatPanel({
                   </div>
                 ) : null}
                 <div
-                  className={`max-w-[78%] p-3 shadow-[0_8px_22px_rgba(25,85,133,0.06)] ${
-                    mine ? "bg-[#195585] text-white" : "bg-white text-[#07162d]"
+                  className={`max-w-[82%] rounded-2xl px-4 py-3 shadow-[0_8px_22px_rgba(25,85,133,0.07)] ${
+                    mine
+                      ? "rounded-br-md bg-[#195585] text-white"
+                      : "rounded-bl-md border border-[#e4edf5] bg-white text-[#07162d]"
                   }`}
                 >
                   <p className="text-[13px] font-semibold leading-6">
@@ -200,6 +251,23 @@ export function SupportChatPanel({
                   >
                     {formatTime(message.createdAt)}
                   </p>
+                  {message.attachments?.length ? (
+                    <div className="mt-2 grid gap-1">
+                      {message.attachments.map((attachment, index) => (
+                        <a
+                          key={`${attachment.url}-${index}`}
+                          href={attachment.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className={`truncate text-[11px] font-bold underline ${
+                            mine ? "text-white/80" : "text-[#195585]"
+                          }`}
+                        >
+                          {attachment.name || `Attachment ${index + 1}`}
+                        </a>
+                      ))}
+                    </div>
+                  ) : null}
                 </div>
               </div>
             );
@@ -207,50 +275,85 @@ export function SupportChatPanel({
         ) : (
           <Notice text="No messages in this ticket yet. Start the conversation below." />
         )}
+        <div ref={messagesEndRef} />
       </div>
 
-      <form onSubmit={submit} className="border-t border-[#e4edf5] p-4">
-        <div className="flex items-end gap-3">
-          <button
-            type="button"
-            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#eef8ff] text-[#195585]"
-            aria-label="Attach file"
-          >
-            <Paperclip className="h-4 w-4" />
-          </button>
-          <label className="group relative block flex-1">
+      <form
+        onSubmit={submit}
+        className="border-t border-[#e4edf5] bg-white p-4"
+      >
+        {closed ? (
+          <p className="mb-3 rounded-xl bg-[#f2f4f7] px-3 py-2 text-[12px] font-bold text-[#667085]">
+            This ticket is closed. Create a new ticket if you need more help.
+          </p>
+        ) : null}
+        <div className="flex items-end gap-3 rounded-2xl border border-[#cfdeeb] bg-[#fbfdff] p-2 transition focus-within:border-[#195585] focus-within:ring-4 focus-within:ring-[#195585]/10">
+          <label className="block flex-1">
+            <span className="sr-only">Support message</span>
             <textarea
+              ref={inputRef}
               value={input}
               onChange={(event) => setInput(event.target.value)}
-              rows={1}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" && !event.shiftKey) {
+                  event.preventDefault();
+                  event.currentTarget.form?.requestSubmit();
+                }
+              }}
+              rows={2}
+              maxLength={2000}
+              aria-label="Support message"
               placeholder={
                 ticket
-                  ? "Type your message..."
+                  ? "Write a message to the support team..."
                   : "Select a ticket to start a conversation"
               }
-              disabled={!ticket}
-              className="peer min-h-11 w-full resize-none border-0 border-b border-[#cfddea] bg-transparent py-2 text-[14px] font-semibold leading-6 text-[#07162d] outline-none placeholder:text-[#98a2b3] disabled:opacity-60"
+              disabled={!ticket || closed}
+              className="min-h-14 w-full resize-none border-0 bg-transparent px-2 py-2 text-[14px] font-semibold leading-6 text-[#07162d] outline-none placeholder:text-[#98a2b3] disabled:cursor-not-allowed disabled:opacity-60"
             />
-            <span className="pointer-events-none absolute bottom-0 left-0 h-0.5 w-full origin-left scale-x-0 bg-linear-to-r from-[#195585] via-[#12b76a] to-[#1375de] transition-transform duration-300 peer-focus:scale-x-100" />
           </label>
           <button
             type="submit"
-            disabled={!ticket || !input.trim() || sending}
-            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#195585] text-white disabled:opacity-50"
+            disabled={!ticket || !input.trim() || sending || closed}
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#195585] text-white shadow-[0_8px_18px_rgba(25,85,133,0.20)] transition hover:bg-[#12466f] disabled:cursor-not-allowed disabled:opacity-50"
             aria-label="Send message"
           >
-            <Send className="h-4 w-4" />
+            {sending ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Send className="h-4 w-4" />
+            )}
           </button>
+        </div>
+        <div className="mt-2 flex items-center justify-between gap-3 px-1 text-[10px] font-semibold text-[#98a2b3]">
+          <span>Press Enter to send · Shift + Enter for a new line</span>
+          <span>{input.length}/2000</span>
         </div>
       </form>
     </section>
   );
 }
 
-function Notice({ text }: { text: string }) {
+function Notice({
+  text,
+  tone = "info",
+}: {
+  text: string;
+  tone?: "info" | "error";
+}) {
   return (
-    <div className="flex gap-3 bg-white p-4 text-[13px] font-semibold leading-6 text-[#667085]">
-      <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-[#f97316]" />
+    <div
+      className={`flex gap-3 rounded-2xl border p-4 text-[13px] font-semibold leading-6 ${
+        tone === "error"
+          ? "border-[#fecdca] bg-[#fef3f2] text-[#b42318]"
+          : "border-[#e4edf5] bg-white text-[#667085]"
+      }`}
+    >
+      <AlertCircle
+        className={`mt-0.5 h-4 w-4 shrink-0 ${
+          tone === "error" ? "text-[#f04438]" : "text-[#f97316]"
+        }`}
+      />
       {text}
     </div>
   );

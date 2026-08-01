@@ -42,6 +42,32 @@ export type EligibleOffersResponse = {
   };
 };
 
+export type ScoreEligibilityCheck = {
+  label: string;
+  requirement: string;
+  provided: string;
+  passed: boolean;
+};
+
+export type ScoreEligibilityResult = {
+  _id: string;
+  loanType: string;
+  bankName: string;
+  salaryType?: string;
+  cibilScore?: number;
+  roi?: number;
+  maximumLoanAmount?: number;
+  eligible: boolean;
+  matchScore: number;
+  checks?: ScoreEligibilityCheck[];
+};
+
+export type ScoreEligibilityResponse = {
+  total: number;
+  eligibleCount: number;
+  results: ScoreEligibilityResult[];
+};
+
 export type OfferApplicationResult = {
   offerId: string;
   applicationId: string;
@@ -99,6 +125,22 @@ export const fetchEligibleOffers = async () => {
   return {
     offers: normalizeList(data),
     snapshot: (data as EligibleOffersResponse)?.snapshot,
+  };
+};
+
+export const fetchScoreEligibility = async (cibilScore: number) => {
+  const response = await Fetch<ApiEnvelope<ScoreEligibilityResponse>>(
+    "eligibility-criteria/public/search",
+    { cibilScore, limit: 100 },
+    15000,
+    true,
+    false,
+  );
+  const data = unwrap(response);
+  return {
+    total: Number(data?.total || 0),
+    eligibleCount: Number(data?.eligibleCount || 0),
+    results: Array.isArray(data?.results) ? data.results : [],
   };
 };
 

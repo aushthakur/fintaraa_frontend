@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getPageSeoMetadata } from "@/services/seoMetadata";
+import { fetchPublicPartners } from "@/services/partners";
 import PartnersByProductPage from "@/components/partners-by-product/PartnersByProductPage";
 
 const fallbackMetadata: Metadata = {
@@ -12,6 +13,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return getPageSeoMetadata("/partners-by-product", fallbackMetadata);
 }
 
-export default function Page() {
-  return <PartnersByProductPage />;
+export default async function Page() {
+  const livePartners = await fetchPublicPartners().catch(() => undefined);
+  return <PartnersByProductPage initialPartners={livePartners} />;
 }

@@ -1,32 +1,17 @@
 import { formFlows, type FormFlow } from "./flows";
+import {
+  requiredLoanProductContracts,
+  requiredLoanSlugToFlowKey,
+} from "./loanProductContract";
 
 export type ApplicationCategory = "loan" | "insurance";
 
 const loanSlugToFlowKey: Record<string, string> = {
-  "personal-loan": "personalLoan",
-  "home-loan": "homeLoan",
-  "business-loan": "businessLoan",
+  ...requiredLoanSlugToFlowKey,
+  // Historical website routes remain resolvable with explicit, non-default flows.
   "vehicle-loan": "vehicleLoan",
-  "car-loan": "vehicleLoan",
-  "two-wheeler-loan": "twoWheelerLoan",
-  "used-car-loan": "usedCarLoan",
-  "gold-loan": "goldLoan",
-  "education-loan": "educationLoan",
-  "instant-loan": "instantLoan",
-  "loan-against-property": "loanAgainstProperty",
-  "renovation-loan": "renovationLoan",
-  "working-capital-loan": "workingCapitalLoan",
-  "loan-against-security": "loanAgainstSecurity",
   "loan-against-car": "loanAgainstCarValue",
   "loan-against-car-value": "loanAgainstCarValue",
-  "machinery-loan": "machineryLoan",
-  "balance-transfer-loan": "balanceTransferLoan",
-  "top-up-loan": "topUpLoan",
-  "agriculture-loan": "agricultureLoan",
-  "dod-loan": "businessLoan",
-  "od-loan": "workingCapitalLoan",
-  "industrial-loan": "machineryLoan",
-  "commercial-purchases-loan": "businessLoan",
 };
 
 const insuranceSlugToFlowKey: Record<string, string> = {
@@ -53,6 +38,30 @@ const insuranceSlugToFlowKey: Record<string, string> = {
   "cyber-insurance": "cyberInsurance",
   "pet-insurance": "petInsurance",
 };
+
+const assertRequiredLoanApplicationContracts = () => {
+  if (requiredLoanProductContracts.length !== 24) {
+    throw new Error(
+      `Expected 24 required loan products, received ${requiredLoanProductContracts.length}`,
+    );
+  }
+
+  requiredLoanProductContracts.forEach(({ name, slug, aliases, flowKey }) => {
+    const routeSlugs = [slug, ...(aliases || [])];
+    routeSlugs.forEach((routeSlug) => {
+      if (loanSlugToFlowKey[routeSlug] !== flowKey) {
+        throw new Error(
+          `Loan route contract mismatch for ${name}: ${routeSlug} must resolve to ${flowKey}`,
+        );
+      }
+    });
+    if (!formFlows[flowKey]) {
+      throw new Error(`Missing registered application form for ${name}: ${flowKey}`);
+    }
+  });
+};
+
+assertRequiredLoanApplicationContracts();
 
 export const slugifyProduct = (value: string) =>
   value

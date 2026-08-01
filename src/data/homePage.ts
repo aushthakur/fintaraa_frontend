@@ -49,7 +49,7 @@ export const productSections = [
     title:
       "Get Instant Loan (Get Money in 5 Minutes -Complete Digital Process)",
     cta: "View All",
-    ctaHref: "/banks",
+    ctaHref: "/products/instant-loan",
     tag: "Cashback Offers",
     products: [
       {

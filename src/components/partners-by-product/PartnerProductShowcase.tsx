@@ -1,215 +1,474 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Loader2 } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { ArrowRight, Building2, Layers3 } from "lucide-react";
+import { trustedPartners } from "@/data/trustedPartners";
 import {
   fetchCreditCards,
   type CreditCardProduct,
 } from "@/services/bankProducts";
+import {
+  fetchPublicPartnerProducts,
+  fetchPublicPartners,
+  getPublicPartnerHref,
+  slugifyPartnerValue,
+  type PublicPartner,
+  type PublicPartnerProduct,
+  type PublicPartnerProductCategory,
+} from "@/services/partners";
 
-const productTabs = [
-  "Credit Card Partners",
-  "Featured Partners",
-  "Rewards Partners",
-] as const;
+type ProductTabKey = PublicPartnerProductCategory | "featured";
 
-const fallbackPartners = [
-  { name: "State Bank of India", src: "/assets/banks/sbi.png", count: 0 },
-  { name: "ICICI Bank", src: "/assets/banks/ICICI-Bank.png", count: 0 },
-  { name: "Kotak Bank", src: "/assets/banks/kotak.png", count: 0 },
-  { name: "IndusInd Bank", src: "/assets/banks/indusind.png", count: 0 },
+const productTabs: Array<{ key: ProductTabKey; label: string }> = [
+  { key: "loan", label: "Loans" },
+  { key: "credit_card", label: "Credit Cards" },
+  { key: "insurance", label: "Insurance" },
+  { key: "featured", label: "Featured" },
 ];
 
+type PartnerRecord = {
+  partner: PublicPartner;
+  products: PublicPartnerProduct[];
+  productsLoaded: boolean;
+};
+
 const bankLogo = (bankName: string) => {
-  const slug = bankName.toLowerCase();
+  const slug = slugifyPartnerValue(bankName);
   if (slug.includes("hdfc")) return "/assets/banks/hdfc.png";
   if (slug.includes("icici")) return "/assets/banks/icici.png";
   if (slug.includes("kotak")) return "/assets/banks/kotak.png";
-  if (slug.includes("sbi") || slug.includes("state bank"))
+  if (slug.includes("sbi") || slug.includes("state-bank")) {
     return "/assets/banks/sbi.png";
-  if (slug.includes("pnb") || slug.includes("punjab"))
+  }
+  if (slug.includes("pnb") || slug.includes("punjab")) {
     return "/assets/banks/pnb.png";
+  }
   if (slug.includes("indus")) return "/assets/banks/indusind.png";
   return "/assets/banks/indian.png";
 };
 
-const isRewardsCard = (card: CreditCardProduct) =>
-  [card.cardType, card.rewardsType, card.rewardStructure, card.cashbackDetails]
-    .filter(Boolean)
-    .join(" ")
-    .toLowerCase()
-    .match(/reward|cashback|travel|lounge|points/);
+const createEmptyRecord = (partner: PublicPartner): PartnerRecord => ({
+  partner,
+  products: [],
+  productsLoaded: false,
+});
 
-type PartnerLogo = {
-  name: string;
-  src: string;
-  count: number;
+const preferredProductTab = (partners: PublicPartner[]): ProductTabKey => {
+  for (const category of [
+    "loan",
+    "credit_card",
+    "insurance",
+  ] as PublicPartnerProductCategory[]) {
+    if (
+      partners.some((partner) => partner.productCategories.includes(category))
+    ) {
+      return category;
+    }
+  }
+  return partners.some((partner) => partner.featured) ? "featured" : "loan";
 };
 
-const buildPartners = (cards: CreditCardProduct[]): PartnerLogo[] => {
-  const byBank = new Map<string, number>();
+const staticFallbackRecords: PartnerRecord[] = trustedPartners.map(
+  (partner) => ({
+    partner: {
+      id: `fallback-${partner.slug}`,
+      name: partner.name,
+      slug: partner.slug,
+      logo: partner.logo,
+      type:
+        partner.type === "NBFC"
+          ? "nbfc"
+          : partner.type === "Insurer"
+            ? "insurer"
+            : "bank",
+      productCategories: partner.categories
+        .map((category) =>
+          category === "credit-card"
+            ? "credit_card"
+            : category === "loan" || category === "insurance"
+              ? category
+              : null,
+        )
+        .filter(
+          (category): category is PublicPartnerProductCategory =>
+            Boolean(category),
+        ),
+      productCount: 0,
+      featured: false,
+      website: "",
+      status: "active",
+    },
+    products: [],
+    productsLoaded: false,
+  }),
+);
+
+const productFromCreditCard = (
+  card: CreditCardProduct,
+  partner: PublicPartner,
+): PublicPartnerProduct => ({
+  id: card._id || card.id || `${partner.slug}-${slugifyPartnerValue(card.name)}`,
+  partnerId: partner.id,
+  partnerSlug: partner.slug,
+  name: card.name,
+  code: "",
+  category: "credit_card",
+  productType: card.cardType || "credit-card",
+  processingFee: card.annualFee,
+  minAmount: undefined,
+  maxAmount: undefined,
+  minTenureMonths: undefined,
+  maxTenureMonths: undefined,
+  eligibility: card.eligibilityCriteria || null,
+  publication: null,
+  featured: Boolean(card.featured),
+  status: "active",
+});
+
+const buildCreditCardFallback = (cards: CreditCardProduct[]) => {
+  const grouped = new Map<string, CreditCardProduct[]>();
   cards.forEach((card) => {
-    const bank = card.bankName?.trim();
-    if (!bank) return;
-    byBank.set(bank, (byBank.get(bank) || 0) + 1);
+    const bankName = card.bankName?.trim();
+    if (!bankName) return;
+    const list = grouped.get(bankName) || [];
+    list.push(card);
+    grouped.set(bankName, list);
   });
-  return Array.from(byBank.entries())
-    .map(([name, count]) => ({ name, count, src: bankLogo(name) }))
-    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+
+  return Array.from(grouped.entries()).map(([name, bankCards]) => {
+    const slug = slugifyPartnerValue(name);
+    const partner: PublicPartner = {
+      id: `card-fallback-${slug}`,
+      name,
+      slug,
+      logo: bankCards.find((card) => card.image)?.image || bankLogo(name),
+      type: "bank",
+      productCategories: ["credit_card"],
+      productCount: bankCards.length,
+      featured: bankCards.some((card) => card.featured),
+      website: "",
+      status: "active",
+    };
+    return {
+      partner,
+      products: bankCards.map((card) => productFromCreditCard(card, partner)),
+      productsLoaded: true,
+    } satisfies PartnerRecord;
+  });
 };
+
+const loadProducts = async (
+  partners: PublicPartner[],
+): Promise<PartnerRecord[]> => {
+  const results = await Promise.allSettled(
+    partners.map((partner) => fetchPublicPartnerProducts(partner)),
+  );
+  return partners.map((partner, index) => {
+    const result = results[index];
+    return result.status === "fulfilled"
+      ? { partner, products: result.value, productsLoaded: true }
+      : createEmptyRecord(partner);
+  });
+};
+
+const categoryProductCount = (
+  record: PartnerRecord,
+  category?: PublicPartnerProductCategory,
+) => {
+  if (!category) {
+    return record.productsLoaded
+      ? record.products.length
+      : record.partner.productCount;
+  }
+  const count = record.products.filter(
+    (product) => product.category === category,
+  ).length;
+  if (count || record.productsLoaded) return count;
+  return record.partner.productCount;
+};
+
+const partnerSupportsCategory = (
+  record: PartnerRecord,
+  category: PublicPartnerProductCategory,
+) =>
+  record.partner.productCategories.includes(category) ||
+  record.products.some((product) => product.category === category);
 
 function LogoTile({
-  src,
-  name,
-  count,
+  record,
+  activeTab,
 }: {
-  src: string;
-  name: string;
-  count: number;
+  record: PartnerRecord;
+  activeTab: ProductTabKey;
 }) {
+  const category = activeTab === "featured" ? undefined : activeTab;
+  const count = categoryProductCount(record, category);
+  const productNames = record.products
+    .filter((product) => !category || product.category === category)
+    .slice(0, 2)
+    .map((product) => product.name);
+  const href = getPublicPartnerHref(record.partner, category, record.products);
+  const typeLabel =
+    record.partner.type === "nbfc"
+      ? "NBFC"
+      : record.partner.type === "insurer"
+        ? "Insurer"
+        : "Bank";
+
   return (
-    <div className="flex h-22.5 items-center justify-between gap-4 rounded-xl border border-[#e6eaf0] bg-white px-5 shadow-[0_4px_14px_rgba(15,23,42,0.04)]">
-      <Image
-        src={src}
-        alt={name}
-        width={104}
-        height={40}
-        unoptimized
-        className="h-auto max-h-10 w-auto object-contain"
-      />
-      {count ? (
-        <span className="rounded-full bg-[#eef7ff] px-2.5 py-1 text-[11px] font-extrabold text-[#005ca8]">
-          {count} cards
+    <Link
+      href={href}
+      aria-label={`Explore ${record.partner.name} products`}
+      className="group flex min-h-45 flex-col rounded-2xl border border-[#dde8f1] bg-white p-5 no-underline transition hover:-translate-y-0.5 hover:border-[#9ec9e8]"
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex h-14 min-w-28 items-center">
+          {record.partner.logo ? (
+            <Image
+              src={record.partner.logo}
+              alt={`${record.partner.name} logo`}
+              width={128}
+              height={52}
+              unoptimized
+              className="max-h-12 w-auto max-w-32 object-contain mix-blend-multiply"
+            />
+          ) : (
+            <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#eaf4ff] text-[13px] font-extrabold text-[#075cde]">
+              {record.partner.name
+                .split(/\s+/)
+                .slice(0, 2)
+                .map((word) => word[0])
+                .join("")
+                .toUpperCase()}
+            </span>
+          )}
+        </div>
+        <span className="rounded-full bg-[#f1f6fa] px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-[0.1em] text-[#65798d]">
+          {typeLabel}
         </span>
-      ) : null}
-    </div>
+      </div>
+
+      <div className="mt-4 flex-1">
+        <h3 className="line-clamp-1 text-[15px] font-extrabold text-[#17354d] transition group-hover:text-[#075cde]">
+          {record.partner.name}
+        </h3>
+        <p className="mt-1 line-clamp-2 min-h-10 text-[11px] font-medium leading-5 text-[#718598]">
+          {productNames.length
+            ? productNames.join(" · ")
+            : category === "loan"
+              ? "Loan products"
+              : category === "insurance"
+                ? "Insurance products"
+                : category === "credit_card"
+                  ? "Credit card products"
+                  : "Financial products"}
+        </p>
+      </div>
+
+      <div className="mt-4 flex items-center justify-between border-t border-[#edf2f6] pt-3">
+        <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-[#61748f]">
+          <Layers3 className="h-3.5 w-3.5" />
+          {count > 0 ? `${count} ${count === 1 ? "product" : "products"}` : "Explore"}
+        </span>
+        <ArrowRight className="h-4 w-4 text-[#075cde] transition-transform group-hover:translate-x-1" />
+      </div>
+    </Link>
   );
 }
 
-export function PartnerProductShowcase() {
-  const [activeTab, setActiveTab] = useState<(typeof productTabs)[number]>(
-    productTabs[0],
+export function PartnerProductShowcase({
+  initialPartners,
+}: {
+  initialPartners?: PublicPartner[];
+}) {
+  const [activeTab, setActiveTab] = useState<ProductTabKey>(() =>
+    preferredProductTab(initialPartners || []),
   );
-  const [cards, setCards] = useState<CreditCardProduct[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [records, setRecords] = useState<PartnerRecord[]>(
+    (initialPartners || []).map(createEmptyRecord),
+  );
+  const [loading, setLoading] = useState(initialPartners === undefined);
 
   useEffect(() => {
     let active = true;
 
-    fetchCreditCards()
-      .then((result) => {
-        if (!active) return;
-        setCards(result);
-        setError("");
-      })
-      .catch((err) => {
-        if (!active) return;
-        setCards([]);
-        setError((err as Error).message || "Unable to load partners.");
-      })
-      .finally(() => {
-        if (active) setLoading(false);
-      });
+    const load = async () => {
+      try {
+        const partners = initialPartners ?? (await fetchPublicPartners());
+        if (active) {
+          setRecords(partners.map(createEmptyRecord));
+          setActiveTab(preferredProductTab(partners));
+          setLoading(false);
+        }
+        const hydratedRecords = await loadProducts(partners);
+        if (active) setRecords(hydratedRecords);
+      } catch {
+        try {
+          const cards = await fetchCreditCards();
+          if (active) {
+            const cardRecords = buildCreditCardFallback(cards);
+            if (cardRecords.length) {
+              setRecords(cardRecords);
+              setActiveTab("credit_card");
+            } else {
+              setRecords(staticFallbackRecords);
+              setActiveTab(preferredProductTab(
+                staticFallbackRecords.map((record) => record.partner),
+              ));
+            }
+          }
+        } catch {
+          if (active) {
+            setRecords(staticFallbackRecords);
+            setActiveTab(
+              preferredProductTab(
+                staticFallbackRecords.map((record) => record.partner),
+              ),
+            );
+          }
+        } finally {
+          if (active) setLoading(false);
+        }
+      }
+    };
 
+    void load();
     return () => {
       active = false;
     };
-  }, []);
+  }, [initialPartners]);
 
-  const visiblePartners = useMemo(() => {
-    const filtered =
-      activeTab === "Featured Partners"
-        ? cards.filter((card) => card.featured)
-        : activeTab === "Rewards Partners"
-          ? cards.filter(isRewardsCard)
-          : cards;
+  const tabCounts = useMemo(
+    () =>
+      productTabs.reduce<Record<ProductTabKey, number>>(
+        (counts, tab) => {
+          counts[tab.key] = records.filter((record) =>
+            tab.key === "featured"
+              ? record.partner.featured
+              : partnerSupportsCategory(record, tab.key),
+          ).length;
+          return counts;
+        },
+        { loan: 0, credit_card: 0, insurance: 0, featured: 0 },
+      ),
+    [records],
+  );
 
-    const partners = buildPartners(filtered);
-    return partners.length ? partners : buildPartners(cards);
-  }, [activeTab, cards]);
-
-  const partnerRows = useMemo(() => {
-    const source = visiblePartners.length ? visiblePartners : fallbackPartners;
-    const rows: PartnerLogo[][] = [];
-    for (let index = 0; index < source.length; index += 4) {
-      rows.push(source.slice(index, index + 4));
-    }
-    return rows.slice(0, 4);
-  }, [visiblePartners]);
+  const visibleRecords = useMemo(
+    () =>
+      records
+        .filter((record) =>
+          activeTab === "featured"
+            ? record.partner.featured
+            : partnerSupportsCategory(record, activeTab),
+        )
+        .sort((a, b) => {
+          const featuredDifference =
+            Number(b.partner.featured) - Number(a.partner.featured);
+          if (featuredDifference) return featuredDifference;
+          const countDifference =
+            categoryProductCount(
+              b,
+              activeTab === "featured" ? undefined : activeTab,
+            ) -
+            categoryProductCount(
+              a,
+              activeTab === "featured" ? undefined : activeTab,
+            );
+          return countDifference || a.partner.name.localeCompare(b.partner.name);
+        }),
+    [activeTab, records],
+  );
 
   return (
-    <section className="px-4 py-14 md:px-6 lg:px-8 lg:py-16">
+    <section className="bg-[#f8fbfe] px-4 py-12 md:px-6 lg:px-8 lg:py-16">
       <div className="mx-auto max-w-9xl">
-        <h2 className="text-[24px] font-bold tracking-[-0.02em] text-[#111827] sm:text-[30px]">
-          Our Partner by Product
-        </h2>
+        <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-[#075cde]">
+              Product network
+            </p>
+            <h2 className="mt-2 text-[26px] font-extrabold tracking-[-0.03em] text-[#111827] sm:text-[34px]">
+              Partners by product
+            </h2>
+            <p className="mt-2 max-w-2xl text-[13px] font-medium leading-6 text-[#61748f]">
+              Browse published partner institutions and their available product
+              categories from one connected catalogue.
+            </p>
+          </div>
 
-        {/* Tabs */}
-        <div className="mt-6 flex flex-wrap items-center gap-3">
+          <Link
+            href="/partners"
+            className="inline-flex h-10 w-fit items-center gap-2 rounded-xl border border-[#bdd7eb] bg-white px-4 text-[12px] font-bold text-[#075cde] no-underline transition hover:border-[#075cde]"
+          >
+            Full directory
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+
+        <div
+          className="mt-7 flex max-w-full items-center gap-2 overflow-x-auto pb-2"
+          aria-label="Filter partners by product"
+        >
           {productTabs.map((tab) => {
-            const isActive = activeTab === tab;
+            const isActive = activeTab === tab.key;
             return (
               <button
-                key={tab}
+                key={tab.key}
                 type="button"
-                onClick={() => setActiveTab(tab)}
-                className={`h-10 rounded-lg border px-5 text-[13px] font-semibold transition-colors ${
+                aria-pressed={isActive}
+                onClick={() => setActiveTab(tab.key)}
+                className={`inline-flex h-10 shrink-0 items-center gap-2 rounded-xl border px-4 text-[12px] font-bold transition-colors ${
                   isActive
-                    ? "border-[#14b85d] bg-[#14b85d] text-white shadow-[0_8px_18px_rgba(20,184,93,0.18)]"
-                    : "border-[#d1d5db] bg-white text-[#374151] hover:border-[#86efac]"
+                    ? "border-[#075cde] bg-[#075cde] text-white"
+                    : "border-[#d5e3ee] bg-white text-[#52657d] hover:border-[#8fbadc] hover:text-[#075cde]"
                 }`}
               >
-                {tab}
+                {tab.label}
+                <span
+                  className={`rounded-full px-1.5 py-0.5 text-[9px] ${
+                    isActive
+                      ? "bg-white/20 text-white"
+                      : "bg-[#eef3f7] text-[#65798d]"
+                  }`}
+                >
+                  {tabCounts[tab.key]}
+                </span>
               </button>
             );
           })}
         </div>
 
-        {/* Logo grid rows */}
-        <div className="mt-8 space-y-4">
+        <div className="mt-6">
           {loading ? (
-            Array.from({ length: 3 }).map((_, index) => (
-              <div
-                key={index}
-                className="h-22.5 animate-pulse rounded-2xl bg-[#eef3f8]"
-              />
-            ))
-          ) : error ? (
-            <div className="rounded-2xl bg-[#fff7ed] px-5 py-5 text-[13px] font-bold text-[#b45309]">
-              {error}
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {Array.from({ length: 8 }).map((_, index) => (
+                <div
+                  key={index}
+                  className="h-45 animate-pulse rounded-2xl border border-[#e3ebf2] bg-white"
+                />
+              ))}
             </div>
-          ) : partnerRows.length ? (
-            partnerRows.map((row, index) => (
-              <div
-                key={`${activeTab}-row-${index}`}
-                className="rounded-2xl border border-[#e5e8ef] bg-white px-5 py-5 shadow-[0_4px_18px_rgba(15,23,42,0.04)]"
-              >
-                <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-[repeat(4,minmax(0,1fr))_auto] lg:items-center">
-                  {row.map((logo) => (
-                    <LogoTile
-                      key={`${logo.name}-${index}-${activeTab}`}
-                      {...logo}
-                    />
-                  ))}
-                  <Link
-                    href="/partners"
-                    className="inline-flex h-22.5 items-center justify-center gap-1.5 rounded-xl border border-transparent px-4 text-[14px] font-semibold text-[#1da34c] no-underline transition-colors hover:text-[#13853d]"
-                  >
-                    View all
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </div>
-              </div>
-            ))
+          ) : visibleRecords.length ? (
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {visibleRecords.map((record) => (
+                <LogoTile
+                  key={record.partner.id || record.partner.slug}
+                  record={record}
+                  activeTab={activeTab}
+                />
+              ))}
+            </div>
           ) : (
-            <div className="rounded-2xl bg-[#f8fbff] px-6 py-8 text-center">
-              <Loader2 className="mx-auto h-6 w-6 text-[#005ca8]" />
-              <p className="mt-3 text-[14px] font-bold text-[#667085]">
-                Partner data will appear here once cards are published from
-                admin.
+            <div className="rounded-2xl border border-dashed border-[#cbddeb] bg-white px-6 py-12 text-center">
+              <Building2 className="mx-auto h-7 w-7 text-[#7c9bb3]" />
+              <p className="mt-3 text-[14px] font-bold text-[#334e68]">
+                No published partners in this category yet.
+              </p>
+              <p className="mt-1 text-[12px] font-medium text-[#718598]">
+                Select another product category to continue browsing.
               </p>
             </div>
           )}

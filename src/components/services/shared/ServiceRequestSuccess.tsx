@@ -13,10 +13,14 @@ export function ServiceRequestSuccess({
   message: string;
 }) {
   return (
-    <div className="overflow-hidden rounded-2xl border border-[#bfe8d0] bg-white shadow-[0_16px_42px_rgba(16,24,40,0.08)]">
+    <div
+      role="status"
+      aria-live="polite"
+      className="overflow-hidden rounded-2xl border border-[#bfe8d0] bg-white shadow-[0_16px_42px_rgba(16,24,40,0.08)]"
+    >
       <div className="relative bg-linear-to-r from-[#e8f8ef] via-white to-[#e8f4ff] px-5 py-5 md:px-6">
         <div className="absolute -right-10 -top-10 h-28 w-28 rounded-full bg-[#1cb45c]/10" />
-        <div className="relative flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+        <div className="relative flex flex-col gap-4 md:flex-row md:items-start">
           <div className="flex gap-4">
             <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[#1cb45c] text-white shadow-[0_14px_28px_rgba(28,180,92,0.25)]">
               <CheckCircle2 className="h-7 w-7" />
@@ -32,14 +36,6 @@ export function ServiceRequestSuccess({
                 {message}
               </p>
             </div>
-          </div>
-          <div className="rounded-xl border border-[#cdebd8] bg-white px-4 py-3">
-            <p className="text-[12px] font-extrabold text-[#98a2b3]">
-              Your Query ID
-            </p>
-            <p className="mt-1 text-[16px] font-extrabold text-[#005ca8]">
-              {request.queryId}
-            </p>
           </div>
         </div>
       </div>
@@ -74,7 +70,7 @@ export function ServiceRequestSuccess({
               Track anytime
             </p>
             <p className="mt-1 text-[13px] font-semibold leading-5 text-[#667085]">
-              Save this Query ID for future status updates.
+              Open request tracking whenever you need the latest status.
             </p>
           </div>
         </div>

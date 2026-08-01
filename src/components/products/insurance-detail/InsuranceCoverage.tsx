@@ -5,46 +5,56 @@ import type { InsuranceSeoTab } from "@/services/insuranceSeoPages";
 const coveredItems = [
   {
     title: "In-patient Hospitalization",
-    description: "Covers room rent, boarding, and nursing expenses for min 24h stay.",
+    description:
+      "Covers room rent, boarding, and nursing expenses for min 24h stay.",
   },
   {
     title: "Pre & Post Hospitalization",
-    description: "Expenses incurred 30–60 days before and 60–180 days after admission.",
+    description:
+      "Expenses incurred 30–60 days before and 60–180 days after admission.",
   },
   {
     title: "Day Care Procedures",
-    description: "Medical treatments that require less than 24 hours of hospitalization.",
+    description:
+      "Medical treatments that require less than 24 hours of hospitalization.",
   },
   {
     title: "Ambulance Charges",
-    description: "Emergency transport costs to the nearest hospital are reimbursed.",
+    description:
+      "Emergency transport costs to the nearest hospital are reimbursed.",
   },
   {
     title: "Organ Donor Expenses",
-    description: "Hospitalization expenses for the person donating an organ to you.",
+    description:
+      "Hospitalization expenses for the person donating an organ to you.",
   },
   {
     title: "AYUSH Treatment",
-    description: "Coverage for Ayurvedic, Unani, Sidha, and Homeopathy treatments.",
+    description:
+      "Coverage for Ayurvedic, Unani, Sidha, and Homeopathy treatments.",
   },
 ];
 
 const notCoveredItems = [
   {
     title: "Self-Inflicted Injuries",
-    description: "Any injuries arising from intentional self-harm or suicide attempts.",
+    description:
+      "Any injuries arising from intentional self-harm or suicide attempts.",
   },
   {
     title: "Cosmetic Surgery",
-    description: "Treatments like plastic surgery unless required due to an accident.",
+    description:
+      "Treatments like plastic surgery unless required due to an accident.",
   },
   {
     title: "Adventure Sports",
-    description: "Injuries sustained while participating in high-risk sports activities.",
+    description:
+      "Injuries sustained while participating in high-risk sports activities.",
   },
   {
     title: "War & Nuclear Fallout",
-    description: "Medical issues resulting from war, invasion or radioactive contamination.",
+    description:
+      "Medical issues resulting from war, invasion or radioactive contamination.",
   },
   {
     title: "Weight Loss Treatments",
@@ -52,7 +62,8 @@ const notCoveredItems = [
   },
   {
     title: "Drug & Alcohol Abuse",
-    description: "Hospitalization due to addiction or overdose of illegal substances.",
+    description:
+      "Hospitalization due to addiction or overdose of illegal substances.",
   },
 ];
 
@@ -96,8 +107,8 @@ export function InsuranceCoverageExplanation({
           <h3 className="text-lg font-bold text-gray-900 tracking-tight border-b border-gray-50 pb-2">
             What&apos;s Covered
           </h3>
-          
-          <div className="space-y-5">
+
+          <div className="space-y-4">
             {covered.map((item) => (
               <div key={item.title} className="space-y-0.5">
                 <h4 className="text-[15px] font-bold text-gray-800 tracking-tight">
@@ -117,8 +128,8 @@ export function InsuranceCoverageExplanation({
           <h3 className="text-lg font-bold text-gray-900 tracking-tight border-b border-gray-50 pb-2">
             What&apos;s Not Covered
           </h3>
-          
-          <div className="space-y-5">
+
+          <div className="space-y-4">
             {notCovered.map((item) => (
               <div key={item.title} className="space-y-0.5">
                 <h4 className="text-[15px] font-bold text-gray-800 tracking-tight">

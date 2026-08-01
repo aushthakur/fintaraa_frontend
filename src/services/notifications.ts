@@ -1,4 +1,4 @@
-import { Fetch, Put } from "@/hooks/apiUtils";
+import { Delete, Fetch, Post, Put } from "@/hooks/apiUtils";
 
 type ApiEnvelope<T> = {
   data?: T;
@@ -16,6 +16,12 @@ export type NotificationRecord = {
   status: "unread" | "read" | "deleted";
   readAt?: string;
   createdAt: string;
+  data?: {
+    actionUrl?: string;
+    url?: string;
+    campaignId?: string;
+    [key: string]: unknown;
+  };
   from?: {
     _id?: string;
     name?: string;
@@ -115,3 +121,125 @@ export const markAllNotificationsRead = (
     12000,
     true,
   );
+
+const urlBase64ToUint8Array = (value: string) => {
+  const padding = "=".repeat((4 - (value.length % 4)) % 4);
+  const base64 = (value + padding).replace(/-/g, "+").replace(/_/g, "/");
+  const raw = window.atob(base64);
+  return Uint8Array.from([...raw].map((character) => character.charCodeAt(0)));
+};
+
+const arrayBuffersMatch = (
+  current?: ArrayBuffer | null,
+  expected?: Uint8Array,
+) => {
+  if (!current || !expected) return false;
+  const currentBytes = new Uint8Array(current);
+  if (currentBytes.length !== expected.length) return false;
+  return currentBytes.every((value, index) => value === expected[index]);
+};
+
+const getPushRegistration = async () => {
+  if (
+    typeof window === "undefined" ||
+    !("serviceWorker" in navigator) ||
+    !("PushManager" in window)
+  ) {
+    throw new Error("Web push is not supported in this browser.");
+  }
+  return navigator.serviceWorker.register("/push-sw.js");
+};
+
+export const getWebsitePushState = async () => {
+  if (
+    typeof window === "undefined" ||
+    !("Notification" in window) ||
+    !("serviceWorker" in navigator) ||
+    !("PushManager" in window)
+  ) {
+    return { supported: false, permission: "default", subscribed: false };
+  }
+  const registration = await getPushRegistration();
+  const subscription = await registration.pushManager.getSubscription();
+  return {
+    supported: true,
+    permission: Notification.permission,
+    subscribed: Boolean(subscription),
+  };
+};
+
+export const enableWebsitePush = async (requestPermission = true) => {
+  const registration = await getPushRegistration();
+  const permission =
+    Notification.permission === "default" && requestPermission
+      ? await Notification.requestPermission()
+      : Notification.permission;
+  if (permission !== "granted") {
+    throw new Error("Browser notification permission was not granted.");
+  }
+  const keyResponse = await Fetch<
+    ApiEnvelope<{ publicKey?: string }>
+  >("web-push/vapid-public-key", undefined, 12000, true, false);
+  const publicKey = unwrap(keyResponse)?.publicKey;
+  if (!publicKey) {
+    throw new Error("Website push keys are not configured on the server.");
+  }
+  const applicationServerKey = urlBase64ToUint8Array(publicKey);
+
+  let existing = await registration.pushManager.getSubscription();
+  if (
+    existing &&
+    !arrayBuffersMatch(
+      existing.options.applicationServerKey,
+      applicationServerKey,
+    )
+  ) {
+    await Delete(
+      "web-push/subscriptions",
+      { endpoint: existing.endpoint },
+      undefined,
+      12000,
+      true,
+    ).catch(() => undefined);
+    await existing.unsubscribe();
+    existing = null;
+  }
+  const subscription =
+    existing ||
+    (await registration.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey,
+    }));
+  await Post(
+    "web-push/subscriptions",
+    { subscription: subscription.toJSON() },
+    15000,
+    true,
+  );
+  return subscription;
+};
+
+export const syncWebsitePush = async () => {
+  if (
+    typeof window === "undefined" ||
+    !("Notification" in window) ||
+    Notification.permission !== "granted"
+  ) {
+    return null;
+  }
+  return enableWebsitePush(false);
+};
+
+export const disableWebsitePush = async () => {
+  const registration = await getPushRegistration();
+  const subscription = await registration.pushManager.getSubscription();
+  if (!subscription) return;
+  await Delete(
+    "web-push/subscriptions",
+    { endpoint: subscription.endpoint },
+    undefined,
+    12000,
+    true,
+  );
+  await subscription.unsubscribe();
+};

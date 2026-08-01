@@ -45,7 +45,11 @@ export type CreditCardProduct = {
   faqs?: Array<{ question: string; answer: string }>;
   featured?: boolean;
   priorityOrder?: number;
+  rank?: number;
 };
+
+export type BankProduct = CreditCardProduct;
+export type BankProductType = "loan" | "credit_card";
 
 export type CreditCardFilters = {
   banks: string[];
@@ -91,7 +95,9 @@ export const buildCreditCardTypePath = (bankName: string, cardType?: string) =>
 
 export const buildCreditCardDetailPath = (card: CreditCardProduct) => {
   const id = getCreditCardId(card);
-  const cardSlug = [slugifyCreditCardValue(card.name), id].filter(Boolean).join("-");
+  const cardSlug = [slugifyCreditCardValue(card.name), id]
+    .filter(Boolean)
+    .join("-");
   return `${buildCreditCardTypePath(card.bankName, card.cardType)}/${cardSlug}`;
 };
 
@@ -100,20 +106,61 @@ export const buildCreditCardEligibilityPath = (card: CreditCardProduct) =>
 
 const creditCardBankApplyUrls: Record<string, string> = {
   "sbi-card": "https://www.sbicard.com/en/personal/credit-cards.page",
-  "state-bank-of-india": "https://www.sbicard.com/en/personal/credit-cards.page",
+  "state-bank-of-india":
+    "https://www.sbicard.com/en/personal/credit-cards.page",
   "hdfc-bank": "https://www.hdfcbank.com/personal/pay/cards/credit-cards",
   "icici-bank": "https://www.icicibank.com/personal-banking/cards/credit-card",
   "axis-bank": "https://www.axisbank.com/retail/cards/credit-card",
   "kotak-mahindra-bank":
     "https://www.kotak.com/en/personal-banking/cards/credit-cards.html",
-  "indusind-bank": "https://www.indusind.com/in/en/personal/cards/credit-card.html",
+  "indusind-bank":
+    "https://www.indusind.com/in/en/personal/cards/credit-card.html",
   "idfc-first-bank": "https://www.idfcfirstbank.com/credit-card",
 };
 
 export const getCreditCardBankApplyUrl = (bankName?: string) =>
   creditCardBankApplyUrls[slugifyCreditCardValue(bankName)] || "";
 
-const normalizeCreditCardApplyUrl = (value: string) => {
+const instantLoanBankApplyUrls: Record<string, string> = {
+  sbi: "https://sbi.co.in/web/personal-banking/loans/personal-loans",
+  "sbi-card": "https://sbi.co.in/web/personal-banking/loans/personal-loans",
+  "state-bank-of-india":
+    "https://sbi.co.in/web/personal-banking/loans/personal-loans",
+  "hdfc-bank":
+    "https://www.hdfcbank.com/personal/borrow/popular-loans/personal-loan",
+  "icici-bank":
+    "https://www.icicibank.com/personal-banking/loans/personal-loan.html",
+  "axis-bank": "https://www.axisbank.com/retail/loans/personal-loan",
+  "kotak-mahindra-bank":
+    "https://www.kotak.com/en/personal-banking/loans/personal-loan.html",
+  "idfc-first-bank":
+    "https://www.idfcfirstbank.com/personal-banking/loans/personal-loan",
+  "indusind-bank": "https://www.indusind.com/in/en/personal/loans.html",
+  "bank-of-baroda":
+    "https://www.bankofbaroda.in/personal-banking/loans/personal-loan",
+  "punjab-national-bank": "https://pnb.bank.in/personal.html",
+  pnb: "https://pnb.bank.in/personal.html",
+  "yes-bank":
+    "https://www.yesbank.in/personal-banking/yes-individual/loans/personal-loan",
+  "l-and-t-finance": "https://www.ltfinance.com/personal-loan",
+  "lt-finance": "https://www.ltfinance.com/personal-loan",
+  "credit-saison": "https://www.creditsaison.in/",
+  "aditya-birla-finance-limited":
+    "https://finance.adityabirlacapital.com/personal-finance/personal-loan",
+  "abfl-aditya-birla-finance-limited":
+    "https://finance.adityabirlacapital.com/personal-finance/personal-loan",
+  "incred-finance": "https://www.incred.com/personal-loan/",
+  werize: "https://www.werize.com/",
+  "tata-capital": "https://www.tatacapital.com/personal-loan.html",
+  "piramal-finance": "https://www.piramalfinance.com/personal-loan",
+  "smfg-fullerton":
+    "https://www.smfgindiacredit.com/personal-loan/personal-loan.aspx",
+};
+
+export const getInstantLoanBankApplyUrl = (bankName?: string) =>
+  instantLoanBankApplyUrls[slugifyCreditCardValue(bankName)] || "";
+
+const normalizeBankProductApplyUrl = (value: string) => {
   const trimmed = value.trim();
   if (!trimmed) return "";
   if (/^https?:\/\//i.test(trimmed) || trimmed.startsWith("/")) return trimmed;
@@ -123,17 +170,28 @@ const normalizeCreditCardApplyUrl = (value: string) => {
   return trimmed;
 };
 
+export const getBankProductApplyUrl = (
+  product: Partial<BankProduct>,
+  fallback = "",
+) =>
+  normalizeBankProductApplyUrl(
+    String(
+      product.applyUrl ||
+        product.link ||
+        (product.type === "credit_card"
+          ? getCreditCardBankApplyUrl(product.bankName)
+          : "") ||
+        fallback,
+    ),
+  );
+
 export const getCreditCardApplyUrl = (
   card: Partial<CreditCardProduct>,
   fallback = "/credit-cards",
 ) =>
-  normalizeCreditCardApplyUrl(
-    String(
-      card.applyUrl ||
-        card.link ||
-        getCreditCardBankApplyUrl(card.bankName) ||
-        fallback,
-    ),
+  getBankProductApplyUrl(
+    { ...card, type: card.type || "credit_card" },
+    fallback,
   );
 
 export const parseCreditCardIdFromSlug = (segment = "") => {
@@ -172,16 +230,18 @@ const normalizeList = <T>(payload: unknown): T[] => {
   return [];
 };
 
-export const fetchCreditCards = async () => {
+export const fetchBankProducts = async (type: BankProductType) => {
   const response = await Fetch<ApiEnvelope<unknown>>(
     "bank-products/public",
-    { type: "credit_card", pagination: false },
+    { type, pagination: false },
     15000,
     true,
     false,
   );
-  return normalizeList<CreditCardProduct>(response);
+  return normalizeList<BankProduct>(response);
 };
+
+export const fetchCreditCards = async () => fetchBankProducts("credit_card");
 
 export const fetchCreditCardById = async (id: string) => {
   const response = await Fetch<ApiEnvelope<CreditCardProduct>>(

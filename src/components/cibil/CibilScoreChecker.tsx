@@ -129,6 +129,7 @@ export function CibilScoreChecker() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState<Step>("phone");
+  const [otpExpiresIn, setOtpExpiresIn] = useState(0);
   const [hasUserSession, setHasUserSession] = useState(false);
   const [scoreData, setScoreData] = useState<UserCibilResponse | null>(null);
   const [form, setForm] = useState({
@@ -216,6 +217,14 @@ export function CibilScoreChecker() {
     };
   }, [user]);
 
+  useEffect(() => {
+    if (step !== "otp" || otpExpiresIn <= 0) return;
+    const timer = window.setInterval(() => {
+      setOtpExpiresIn((value) => Math.max(value - 1, 0));
+    }, 1000);
+    return () => window.clearInterval(timer);
+  }, [otpExpiresIn, step]);
+
   const setField = (key: keyof typeof form, value: string) => {
     setError("");
     setMessage("");
@@ -241,11 +250,29 @@ export function CibilScoreChecker() {
 
     setLoading(true);
     try {
-      await sendOtp(normalizePhone(form.mobile));
+      const response = await sendOtp(normalizePhone(form.mobile));
       setStep("otp");
+      setOtpExpiresIn(response?.expiresInSeconds || 5 * 60);
       setMessage("OTP sent to your mobile number.");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unable to send OTP.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResendOtp = async () => {
+    if (otpExpiresIn > 0 || loading) return;
+    setError("");
+    setMessage("");
+    setLoading(true);
+    try {
+      const response = await sendOtp(normalizePhone(form.mobile));
+      setOtpExpiresIn(response?.expiresInSeconds || 5 * 60);
+      setForm((current) => ({ ...current, otp: "" }));
+      setMessage("OTP resent successfully.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to resend OTP.");
     } finally {
       setLoading(false);
     }
@@ -426,6 +453,18 @@ export function CibilScoreChecker() {
                 }
               />
             </label>
+            <div className="flex items-center justify-between rounded-xl bg-[#f4f8fc] px-3 py-2 text-[12px] font-bold">
+              <span className="text-[#667085]">OTP validity</span>
+              <span
+                className={
+                  otpExpiresIn > 0 ? "text-[#087443]" : "text-[#b42318]"
+                }
+              >
+                {otpExpiresIn > 0
+                  ? `${String(Math.floor(otpExpiresIn / 60)).padStart(2, "0")}:${String(otpExpiresIn % 60).padStart(2, "0")}`
+                  : "Expired"}
+              </span>
+            </div>
             <div className="flex flex-wrap items-center justify-between gap-3">
               <button
                 type="button"
@@ -434,13 +473,16 @@ export function CibilScoreChecker() {
               >
                 Change mobile
               </button>
-              <button
-                type="button"
-                onClick={() => void sendOtp(normalizePhone(form.mobile))}
-                className="text-[12px] font-extrabold text-[#00529c]"
-              >
-                Resend OTP
-              </button>
+              {otpExpiresIn <= 0 ? (
+                <button
+                  type="button"
+                  onClick={() => void handleResendOtp()}
+                  disabled={loading}
+                  className="text-[12px] font-extrabold text-[#00529c] disabled:opacity-60"
+                >
+                  Resend OTP
+                </button>
+              ) : null}
             </div>
             <button
               type="submit"

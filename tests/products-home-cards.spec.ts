@@ -44,6 +44,30 @@ test.describe("Products page homepage card system", () => {
     );
   });
 
+  test("desktop uses a seven-column loan grid without a carousel", async ({
+    page,
+  }) => {
+    const response = await page.goto("/products?category=Loans", {
+      waitUntil: "domcontentloaded",
+    });
+    expect(response?.ok(), "Products page should load").toBeTruthy();
+
+    const loans = page.getByRole("region", {
+      name: "Explore Loan Options products",
+    });
+    await expect(loans).toBeVisible();
+    await expect(loans).toHaveClass(/lg:grid-cols-7/);
+    await expect(loans.locator(".swiper")).toHaveCount(0);
+    await expect(loans).not.toContainText("Managed");
+
+    const cards = loans.locator("a");
+    await expect(cards).toHaveCount(18);
+    const firstRowTops = await cards.evaluateAll((items) =>
+      items.slice(0, 7).map((item) => item.getBoundingClientRect().top),
+    );
+    expect(new Set(firstRowTops.map((top) => Math.round(top))).size).toBe(1);
+  });
+
   test("Additional Services contains exactly the eight homepage services", async ({
     page,
   }) => {

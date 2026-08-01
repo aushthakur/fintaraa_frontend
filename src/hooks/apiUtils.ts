@@ -2,8 +2,12 @@ import { clearAuthSession, getAuthToken } from "./authStorage";
 import { toast, Id, TypeOptions } from "react-toastify";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
-// Define API base URL
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+// Browser requests use a same-origin proxy so a deployed website never tries
+// to call the visitor's localhost when the server-side API is locally hosted.
+const BASE_URL =
+  typeof window === "undefined"
+    ? process.env.NEXT_PUBLIC_BASE_URL
+    : "/backend-api/";
 
 const api = axios.create({
   baseURL: BASE_URL,

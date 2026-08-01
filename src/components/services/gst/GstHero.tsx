@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import {
   BadgeCheck,
   CalendarCheck2,
@@ -19,6 +19,7 @@ import { WhatsAppConsent } from "@/components/common/WhatsAppConsent";
 import { indianStateOptions } from "@/data/indianStates";
 import { buildWebsiteConsentPayload } from "@/lib/formConsent";
 import { ServiceRequestSuccess } from "@/components/services/shared/ServiceRequestSuccess";
+import { useTransientServiceFeedback } from "@/hooks/useTransientServiceFeedback";
 
 const trustBadges = [
   {
@@ -71,34 +72,42 @@ export function GstHero() {
   });
   const [request, setRequest] = useState<ServiceRequestRecord | null>(null);
   const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState("");
   const [whatsappConsent, setWhatsappConsent] = useState(false);
+  const {
+    error,
+    successVisible,
+    clearError,
+    showError,
+    showSuccess,
+  } = useTransientServiceFeedback();
 
   const updateField = (key: keyof typeof form, value: string) => {
     setForm((current) => ({ ...current, [key]: value }));
-    setError("");
+    clearError();
   };
 
-  const submit = async () => {
+  const submit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
     if (!form.businessName.trim()) {
-      setError("Business name is required.");
+      showError("Business name is required.");
       return;
     }
     if (!mobileRegex.test(form.mobile.trim())) {
-      setError("Enter a valid 10-digit mobile number.");
+      showError("Enter a valid 10-digit mobile number.");
       return;
     }
     if (!form.businessType || !form.gstRequirement || !form.state) {
-      setError("Please select business type, GST requirement and state.");
+      showError("Please select business type, GST requirement and state.");
       return;
     }
     if (!whatsappConsent) {
-      setError("Please accept WhatsApp communication consent.");
+      showError("Please accept WhatsApp communication consent.");
       return;
     }
 
     setSubmitting(true);
-    setError("");
+    clearError();
     try {
       const consentPayload = buildWebsiteConsentPayload(
         "website_gst_registration",
@@ -113,13 +122,22 @@ export function GstHero() {
         ...consentPayload,
       });
       setRequest(result);
+      showSuccess();
+      setForm({
+        businessName: "",
+        mobile: "",
+        businessType: "",
+        gstRequirement: "",
+        state: "",
+      });
+      setWhatsappConsent(false);
       if (typeof window !== "undefined") {
         window.dispatchEvent(
           new CustomEvent("service-request-created", { detail: result }),
         );
       }
     } catch (err) {
-      setError((err as Error).message || "Unable to submit GST request.");
+      showError((err as Error).message || "Unable to submit GST request.");
     } finally {
       setSubmitting(false);
     }
@@ -187,7 +205,10 @@ export function GstHero() {
               with you.
             </p>
 
-            <div className="mt-4 grid gap-3 sm:mt-5 sm:gap-4">
+            <form
+              className="mt-4 grid gap-3 sm:mt-5 sm:gap-4"
+              onSubmit={(event) => void submit(event)}
+            >
               <label className="grid gap-1 sm:gap-1.5">
                 <span className="text-[13px] font-extrabold text-[#2a2f36] sm:text-sm">
                   Business Name
@@ -255,19 +276,21 @@ export function GstHero() {
                 checked={whatsappConsent}
                 onChange={(checked) => {
                   setWhatsappConsent(checked);
-                  if (checked) setError("");
+                  if (checked) clearError();
                 }}
               />
 
               {error ? (
-                <p className="rounded-lg bg-red-50 px-3 py-2 text-[13px] font-bold text-red-700">
+                <p
+                  role="alert"
+                  className="rounded-lg bg-red-50 px-3 py-2 text-[13px] font-bold text-red-700"
+                >
                   {error}
                 </p>
               ) : null}
 
               <button
-                type="button"
-                onClick={submit}
+                type="submit"
                 disabled={submitting}
                 className="mx-auto mt-1 inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-[#13a653] text-sm font-extrabold text-white transition hover:bg-[#0f8f45] disabled:cursor-not-allowed disabled:opacity-70"
               >
@@ -280,18 +303,20 @@ export function GstHero() {
                 <ShieldCheck className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
                 Your information is safe with us
               </p>
-            </div>
+            </form>
           </div>
         </div>
       </div>
 
       {request ? (
         <div className="mx-auto mt-8 grid max-w-9xl gap-5">
-          <ServiceRequestSuccess
-            request={request}
-            title="Thank you! Your GST request has been submitted."
-            message="We have created your GST service request. Our compliance team will verify the details and guide you on the required documents."
-          />
+          {successVisible ? (
+            <ServiceRequestSuccess
+              request={request}
+              title="Thank you! Your GST request has been submitted."
+              message="We have created your GST service request. Our compliance team will verify the details and guide you on the required documents."
+            />
+          ) : null}
           <ServiceRequestProgress request={request} />
         </div>
       ) : null}

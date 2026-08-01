@@ -33,6 +33,7 @@ import {
   fetchTickets,
   type FaqItem,
   fetchKnowledge,
+  SUPPORT_TICKET_CATEGORIES,
   type KnowledgeItem,
   type KnowledgeType,
   type SupportTicket,
@@ -168,7 +169,7 @@ export function ContactSupportPanel() {
   const [form, setForm] = useState({
     title: "",
     description: "",
-    category: "Application support",
+    category: SUPPORT_TICKET_CATEGORIES[0].value as string,
   });
 
   useEffect(() => {
@@ -207,10 +208,19 @@ export function ContactSupportPanel() {
         tags: [form.category],
         ...buildWebsiteConsentPayload("website_account_support_ticket"),
       });
-      setForm({ title: "", description: "", category: "Application support" });
+      setForm({
+        title: "",
+        description: "",
+        category: SUPPORT_TICKET_CATEGORIES[0].value,
+      });
       setWhatsappConsent(false);
       const data = await fetchTickets();
       setTickets(data);
+    } catch (error) {
+      setSubmitError(
+        (error as Error)?.message?.replace(/^[^\w]+/, "") ||
+          "Ticket could not be created. Please try again.",
+      );
     } finally {
       setSubmitting(false);
     }
@@ -293,11 +303,14 @@ export function ContactSupportPanel() {
             }
             className="h-11 border-0 border-b border-[#cfddea] bg-transparent text-[14px] font-semibold text-[#07162d] outline-none focus:border-[#195585]"
           >
-            <option>Application support</option>
-            <option>Document verification</option>
-            <option>Payment or EMI</option>
-            <option>Account access</option>
-            <option>Grievance</option>
+            {SUPPORT_TICKET_CATEGORIES.map((category, index) => (
+              <option
+                key={`${category.label}-${index}`}
+                value={category.value}
+              >
+                {category.label}
+              </option>
+            ))}
           </select>
           <input
             value={form.title}

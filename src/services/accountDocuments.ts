@@ -1,4 +1,4 @@
-import { Delete, Fetch, Post, Put } from "@/hooks/apiUtils";
+import { Delete, Fetch, Patch, Post, Put } from "@/hooks/apiUtils";
 
 export type DocumentCatalogItem = {
   id: string;
@@ -19,6 +19,50 @@ export type UploadedDocument = {
   verified?: boolean;
   referenceId?: string;
   issuedOn?: string;
+  uploadedAt?: string;
+};
+
+export type DocumentReviewStatus =
+  | "pending"
+  | "approved"
+  | "rejected"
+  | "reupload_requested";
+
+export type ApplicationDocumentReview = {
+  _id: string;
+  documentKey: string;
+  fileUrl: string;
+  status: DocumentReviewStatus;
+  reviewNote?: string;
+  uploadedAt: string;
+  reviewedAt?: string;
+  application?: {
+    _id: string;
+    loanId?: string;
+    loanType?: string;
+    status?: string;
+  };
+};
+
+export type CustomerDocumentRequest = {
+  _id: string;
+  requestedDocuments: string[];
+  message?: string;
+  status: "pending" | "uploaded" | "cancelled";
+  createdAt: string;
+  fulfilledAt?: string;
+  uploadedDocuments?: Array<{
+    documentKey: string;
+    fileUrl: string;
+    uploadedAt?: string;
+  }>;
+  sourceReview?: string;
+  loanQuery?: {
+    _id: string;
+    loanId?: string;
+    loanType?: string;
+    status?: string;
+  };
 };
 
 export type StatementDoc = {
@@ -106,6 +150,7 @@ export const fallbackDocumentCatalog: DocumentCatalogItem[] = [
   { id: "offer_letter", key: "offer_letter", label: "Offer Letter", required: true, numberLabel: "Document Number" },
   { id: "relieving_letter", key: "relieving_letter", label: "Relieving Letter", required: true, numberLabel: "Document Number" },
   { id: "bank_statement", key: "bank_statement", label: "Bank Statement", required: true, numberLabel: "Account Number" },
+  { id: "cibil_report", key: "cibil_report", label: "CIBIL Report", required: false, numberLabel: "Report Reference Number" },
   { id: "gst_certificate", key: "gst_certificate", label: "GST Certificate", required: true, numberLabel: "GST Number" },
   { id: "gst_returns", key: "gst_returns", label: "GST Returns", required: true, numberLabel: "GSTIN" },
   { id: "shop_act", key: "shop_act", label: "Shop Act", required: true, numberLabel: "Document Number" },
@@ -164,6 +209,47 @@ export const deleteDocument = async (
   const response = await Delete<unknown>(`user/digilocker/${docType}`);
   const docs = unwrapList(response, "documents");
   return Array.isArray(docs) ? (docs as UploadedDocument[]) : [];
+};
+
+export const fetchMyDocumentReviews = async () => {
+  const response = await Fetch<unknown>(
+    "application-document-reviews/my",
+    undefined,
+    15000,
+    true,
+    false,
+  );
+  const reviews = unwrapList(response, "reviews");
+  return Array.isArray(reviews)
+    ? (reviews as ApplicationDocumentReview[])
+    : [];
+};
+
+export const fetchMyDocumentRequests = async () => {
+  const response = await Fetch<unknown>(
+    "document-requests/my",
+    undefined,
+    15000,
+    true,
+    false,
+  );
+  const requests = unwrapList(response, "requests");
+  return Array.isArray(requests)
+    ? (requests as CustomerDocumentRequest[])
+    : [];
+};
+
+export const completeDocumentRequest = async (
+  requestId: string,
+  payload: { documentKey: string; fileUrl: string },
+) => {
+  const response = await Patch<unknown>(
+    `document-requests/${encodeURIComponent(requestId)}/uploaded`,
+    payload,
+    15000,
+    true,
+  );
+  return unwrapList(response, "request") as CustomerDocumentRequest;
 };
 
 export const fetchStatements = async (): Promise<StatementDoc[]> => {

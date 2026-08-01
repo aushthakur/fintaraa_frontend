@@ -1,9 +1,7 @@
 import Link from "next/link";
 import {
   Sparkles,
-  Landmark,
   ArrowRight,
-  CreditCard,
   SearchCheck,
   ShieldCheck,
   CheckCircle2,
@@ -15,6 +13,38 @@ import {
   bankDirectory,
   loanProductDirectory,
 } from "@/data/bankDirectory";
+import {
+  trustedPartners,
+  type TrustedPartnerCapability,
+} from "@/data/trustedPartners";
+
+const capabilityLabels: Record<TrustedPartnerCapability, string> = {
+  loan: "Loans",
+  insurance: "Insurance",
+  "credit-card": "Credit Cards",
+  "credit-bureau": "Credit Health",
+};
+
+const coreBanksBySlug = new Map(
+  bankDirectory.map((bank) => [bank.slug, bank] as const),
+);
+
+const directoryBanks = trustedPartners
+  .filter((partner) => partner.type === "Bank" || partner.type === "NBFC")
+  .map((partner) => {
+    const coreBank = coreBanksBySlug.get(partner.slug);
+    return {
+      name: partner.name,
+      slug: partner.slug,
+      logo: partner.logo,
+      minRate: coreBank?.minRate,
+      maxRate: coreBank?.maxRate,
+      products:
+        coreBank?.products ||
+        partner.categories.map((category) => capabilityLabels[category]),
+      type: partner.type,
+    };
+  });
 
 export function BankDirectorySection({
   compact = false,
@@ -57,7 +87,7 @@ export function BankDirectorySection({
 
           <div className="grid grid-cols-2 gap-3">
             {[
-              [String(bankDirectory.length), "Bank partners"],
+              [String(directoryBanks.length), "Lending partners"],
               [String(loanProductDirectory.length), "Loan categories"],
               ["100%", "Assisted journey"],
               ["One place", "To compare"],
@@ -96,77 +126,75 @@ export function BankDirectorySection({
           </div>
         </div>
 
-        <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          {bankDirectory.map((bank) => (
-            <article
-              key={bank.slug}
-              className="group flex h-full flex-col rounded-3xl border border-[#e1eaf4] bg-white p-6 shadow-[0_14px_38px_rgba(16,44,69,0.06)] transition hover:-translate-y-1 hover:border-[#bdd7ef] hover:shadow-[0_20px_48px_rgba(16,44,69,0.11)]"
-            >
-              <div className="flex items-start justify-between gap-4">
-                <div>
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {directoryBanks.map((bank) => {
+            const hasConfiguredRates =
+              typeof bank.minRate === "number" &&
+              typeof bank.maxRate === "number";
+
+            return (
+              <article
+                key={bank.slug}
+                className="group flex h-full min-h-65 flex-col rounded-2xl border border-[#e1eaf4] bg-white p-5 shadow-[0_10px_28px_rgba(16,44,69,0.055)] transition hover:-translate-y-0.5 hover:border-[#bdd7ef] hover:shadow-[0_16px_36px_rgba(16,44,69,0.09)]"
+              >
+                <div className="flex items-start justify-between gap-3">
                   <BankLogoImage
                     src={bank.logo}
                     alt={bank.name}
-                    className="h-10 w-28"
+                    className="h-8 w-24"
                     imageClassName="object-left"
                   />
-                  <h3 className="mt-4 text-[20px] font-extrabold text-[#07162d]">
-                    {bank.name}
-                  </h3>
-                </div>
-                <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#eef7ff] text-[#005ca8]">
-                  <Landmark className="h-5 w-5" />
-                </span>
-              </div>
-
-              <div className="mt-5 grid grid-cols-2 gap-3">
-                <div className="rounded-xl bg-[#f8fbff] p-3">
-                  <p className="text-[10px] font-extrabold uppercase tracking-wide text-[#98a2b3]">
-                    Starting from
-                  </p>
-                  <p className="mt-1 text-[18px] font-extrabold text-[#0b7a3b]">
-                    {formatRate(bank.minRate)}
-                  </p>
-                </div>
-                <div className="rounded-xl bg-[#f8fbff] p-3 text-right">
-                  <p className="text-[10px] font-extrabold uppercase tracking-wide text-[#98a2b3]">
-                    Indicative up to
-                  </p>
-                  <p className="mt-1 text-[18px] font-extrabold text-[#07162d]">
-                    {formatRate(bank.maxRate)}
-                  </p>
-                </div>
-              </div>
-
-              <div className="mt-5 flex flex-1 flex-wrap content-start gap-2">
-                {bank.products.map((product) => (
-                  <span
-                    key={product}
-                    className="rounded-full bg-[#f1f8ff] px-3 py-1 text-[11px] font-extrabold text-[#195585]"
-                  >
-                    {product}
+                  <span className="rounded-full bg-[#f1f7fb] px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-wide text-[#56738c]">
+                    {bank.type}
                   </span>
-                ))}
-              </div>
+                </div>
 
-              <div className="mt-6 grid grid-cols-2 gap-2">
+                <h3 className="mt-4 min-h-12 text-[17px] font-extrabold leading-6 text-[#07162d]">
+                  {bank.name}
+                </h3>
+
+                <div className="mt-3 flex items-center justify-between gap-3 rounded-xl bg-[#f7fafc] px-3.5 py-3">
+                  <div className="flex items-center gap-2">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#e8f3fb] text-[#075cde]">
+                      <BadgeIndianRupee className="h-4 w-4" />
+                    </span>
+                    <p className="text-[10px] font-bold text-[#7890a2]">
+                      {hasConfiguredRates ? "Rates from" : "Rate details"}
+                    </p>
+                  </div>
+                  <p className="text-[13px] font-extrabold text-[#0b7a3b]">
+                    {hasConfiguredRates
+                      ? formatRate(bank.minRate as number)
+                      : "On request"}
+                  </p>
+                </div>
+
+                <div className="mt-3 flex flex-1 flex-wrap content-start gap-1.5">
+                  {bank.products.slice(0, 2).map((product) => (
+                    <span
+                      key={product}
+                      className="rounded-full border border-[#dce8f1] bg-[#f8fbfd] px-2.5 py-1 text-[10px] font-bold text-[#4f6f88]"
+                    >
+                      {product}
+                    </span>
+                  ))}
+                  {bank.products.length > 2 ? (
+                    <span className="rounded-full bg-[#edf6fc] px-2.5 py-1 text-[10px] font-extrabold text-[#075cde]">
+                      +{bank.products.length - 2}
+                    </span>
+                  ) : null}
+                </div>
+
                 <Link
                   href={`/banks/${bank.slug}`}
-                  className="inline-flex h-11 items-center justify-center gap-1.5 rounded-full border border-[#cfe0ef] text-[12px] font-extrabold text-[#005ca8] no-underline transition hover:bg-[#f2f8ff]"
+                  className="mt-4 inline-flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-[#075cde] px-4 text-[11px] font-extrabold text-white no-underline transition hover:bg-[#064fbf]"
                 >
-                  <BadgeIndianRupee className="h-3.5 w-3.5" />
-                  View products
+                  Explore partner
+                  <ArrowRight className="h-3.5 w-3.5" />
                 </Link>
-                <Link
-                  href={`/banks/${bank.slug}/credit-card`}
-                  className="inline-flex h-11 items-center justify-center gap-1.5 rounded-full bg-[#075cde] text-[12px] font-extrabold text-white no-underline transition hover:bg-[#064fbf]"
-                >
-                  <CreditCard className="h-3.5 w-3.5" />
-                  Credit cards
-                </Link>
-              </div>
-            </article>
-          ))}
+              </article>
+            );
+          })}
         </div>
 
         {!compact ? (

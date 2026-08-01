@@ -47,7 +47,8 @@ export default async function VideoTestimonialDetailPage({ params }: PageProps) 
           description,
           thumbnailUrl: item.coverImageUrl ? [absoluteUrl(item.coverImageUrl)] : [],
           uploadDate: item.publishedAt || item.createdAt,
-          contentUrl: item.videoUrl,
+          ...(item.videoUrl ? { contentUrl: item.videoUrl } : {}),
+          ...(item.youtubeUrl ? { embedUrl: item.youtubeUrl } : {}),
           publisher: {
             "@type": "Organization",
             name: siteName,

@@ -20,7 +20,7 @@ export type TrustedPartner = {
   name: string;
   slug: string;
   logo: string;
-  type: "Bank" | "NBFC";
+  type: "Bank" | "NBFC" | "Insurer";
   categories: TrustedPartnerCapability[];
   defaultProductSlug?: string;
 };
@@ -175,8 +175,13 @@ export const getTrustedPartnerHref = (
   partner: TrustedPartner,
   activeCategory: TrustedPartnerCategoryKey,
 ) => {
-  if (activeCategory === "all") return `/banks/${partner.slug}`;
+  if (activeCategory === "all") {
+    return partner.type === "Insurer"
+      ? "/products/health-insurance"
+      : `/banks/${partner.slug}`;
+  }
   if (activeCategory === "credit-bureau") return "/cibil-score";
+  if (activeCategory === "insurance") return "/products/health-insurance";
 
   const productSlug =
     activeCategory === "credit-card" && partner.categories.includes("credit-card")

@@ -5,6 +5,7 @@ import {
   FileText,
   Folder,
   Gift,
+  LayoutDashboard,
   LogOut,
   Sliders,
   UserCheck,
@@ -41,6 +42,12 @@ export const accountMenuSections: AccountMenuSection[] = [
   {
     title: "Account",
     items: [
+      {
+        label: "Overview",
+        slug: "overview",
+        icon: LayoutDashboard,
+        description: "Your complete financial dashboard at a glance.",
+      },
       {
         label: "My Applications",
         slug: "my-applications",

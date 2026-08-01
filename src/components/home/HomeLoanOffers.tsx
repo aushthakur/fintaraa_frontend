@@ -11,6 +11,7 @@ import {
   formatRate,
   loanProductDirectory,
 } from "@/data/bankDirectory";
+import { getTrustedPartnersByCategory } from "@/data/trustedPartners";
 
 interface LoanRateOffer {
   id: string;
@@ -29,17 +30,13 @@ const pluralLoanLabel = (value: string) =>
 function LoanRateOfferCard({
   offer,
   activeTab,
-  repeated = false,
 }: {
   offer: LoanRateOffer;
   activeTab: string;
-  repeated?: boolean;
 }) {
   return (
     <Link
       href={`/banks/${offer.bankSlug}/${slugifyProduct(activeTab)}`}
-      aria-hidden={repeated ? true : undefined}
-      tabIndex={repeated ? -1 : undefined}
       className="group block h-full w-full rounded-xl border border-gray-200 bg-white p-2.5 no-underline transition-colors duration-300 hover:border-[#bcd8f4] sm:p-3"
     >
       <div className="flex flex-col items-start gap-1">
@@ -93,17 +90,22 @@ export function HomeLoanOffers() {
     const activeProduct =
       loanProductDirectory.find((product) => product.name === activeTab) ||
       loanProductDirectory[0];
-    const offers: LoanRateOffer[] = bankDirectory.map((bank) => {
-      const rateOffset = bank.minRate - 7.1;
-      return {
-        id: `${bank.slug}-${activeProduct.slug}`,
-        bankSlug: bank.slug,
-        bankName: bank.name,
-        logoSrc: bank.logo,
-        minRate: formatRate(activeProduct.minRate + rateOffset),
-        maxRate: formatRate(activeProduct.maxRate + rateOffset),
-      };
-    });
+    const rateOffsets = new Map(
+      bankDirectory.map((bank) => [bank.slug, bank.minRate - 7.1]),
+    );
+    const offers: LoanRateOffer[] = getTrustedPartnersByCategory("loan").map(
+      (partner) => {
+        const rateOffset = rateOffsets.get(partner.slug) || 0;
+        return {
+          id: `${partner.slug}-${activeProduct.slug}`,
+          bankSlug: partner.slug,
+          bankName: partner.name,
+          logoSrc: partner.logo,
+          minRate: formatRate(activeProduct.minRate + rateOffset),
+          maxRate: formatRate(activeProduct.maxRate + rateOffset),
+        };
+      },
+    );
 
     if (!query) return offers;
     return offers.filter((offer) =>
@@ -113,13 +115,32 @@ export function HomeLoanOffers() {
         .includes(query),
     );
   }, [activeTab, searchQuery]);
+
+  const offerColumns = filteredOffers.reduce<LoanRateOffer[][]>(
+    (columns, offer, index) => {
+      if (index % 2 === 0) {
+        columns.push([offer]);
+      } else {
+        columns[columns.length - 1].push(offer);
+      }
+      return columns;
+    },
+    [],
+  );
+
   return (
-    <section className="bg-white px-4 py-12 md:px-6 lg:px-8">
+    <section
+      aria-labelledby="home-loan-offers-heading"
+      className="bg-white px-4 py-12 md:px-6 lg:px-8"
+    >
       {/* Container Box featuring the signature clean borders visible in image_a1c8bd.png */}
       <div className="mx-auto max-w-9xl rounded-3xl">
         {/* Main Centered Styled Section Title */}
         <div className="w-full text-center mb-8">
-          <h2 className="text-[24px] font-bold leading-tight text-gray-900 sm:text-[30px] md:text-[34px]">
+          <h2
+            id="home-loan-offers-heading"
+            className="text-[24px] font-bold leading-tight text-gray-900 sm:text-[30px] md:text-[34px]"
+          >
             {pluralLoanLabel(activeTab)} from{" "}
             <span className="text-[#12b76a]">7.10%*</span> Only with{" "}
             <span className="text-[#00529c]">Fintaraa</span>
@@ -174,22 +195,29 @@ export function HomeLoanOffers() {
           })}
         </div>
 
-        {/* Two-row, auto-playing partner offers */}
+        {/* Keep every available partner in a moving, two-row carousel. */}
         {filteredOffers.length ? (
           <AutoCarousel
             ariaLabel={`${activeTab} offers`}
             mobileSlides={2}
-            tabletSlides={2}
+            tabletSlides={3}
             desktopSlides={4}
             wideSlides={7}
-            className="mt-6"
+            className="home-loan-offers-carousel mt-6"
           >
-            {filteredOffers.map((offer) => (
-              <LoanRateOfferCard
-                key={offer.id}
-                offer={offer}
-                activeTab={activeTab}
-              />
+            {offerColumns.map((offers) => (
+              <div
+                key={offers.map((offer) => offer.id).join("-")}
+                className="grid gap-3"
+              >
+                {offers.map((offer) => (
+                  <LoanRateOfferCard
+                    key={offer.id}
+                    offer={offer}
+                    activeTab={activeTab}
+                  />
+                ))}
+              </div>
             ))}
           </AutoCarousel>
         ) : null}

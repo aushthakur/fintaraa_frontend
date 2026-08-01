@@ -51,6 +51,8 @@ export type AccountLoanQuery = {
   loanType?: string;
   status?: string;
   loanAmount?: number | string;
+  disbursedAmount?: number | string;
+  disbursedDate?: string;
   firstName?: string;
   lastName?: string;
   mobile?: string;
@@ -148,6 +150,38 @@ export const fetchAccountInsuranceApplications = async () => {
     false,
   );
   return normalizeList<AccountInsuranceQuery>(response);
+};
+
+export const fetchPublicLoanApplication = async (params: {
+  applicationId: string;
+  mobile: string;
+}) => {
+  const response = await Fetch<
+    ApiEnvelope<AccountLoanQuery | null>
+  >(
+    "loanquery/public/track",
+    params,
+    15000,
+    true,
+    false,
+  );
+  return unwrap(response);
+};
+
+export const fetchPublicInsuranceApplication = async (params: {
+  applicationId: string;
+  mobile: string;
+}) => {
+  const response = await Fetch<
+    ApiEnvelope<AccountInsuranceQuery | null>
+  >(
+    "insurancequery/public/track",
+    params,
+    15000,
+    true,
+    false,
+  );
+  return unwrap(response);
 };
 
 export const fetchAccountCreditCardApplications = async () => {

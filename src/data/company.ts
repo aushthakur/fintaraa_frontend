@@ -23,3 +23,26 @@ export const OFFICE = {
   postalCode: "121004",
   mapUrl: "https://maps.app.goo.gl/UtZsZEzZvbM5LUsj7",
 } as const;
+
+export const SOCIAL_MEDIA_LINKS = [
+  {
+    key: "facebook",
+    label: "Facebook",
+    href: "https://www.facebook.com/fintaraa",
+  },
+  {
+    key: "instagram",
+    label: "Instagram",
+    href: "https://www.instagram.com/fintaraa/",
+  },
+  {
+    key: "linkedin",
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/company/fintaraa/",
+  },
+  {
+    key: "x",
+    label: "X",
+    href: "https://x.com/fintaraa",
+  },
+] as const;

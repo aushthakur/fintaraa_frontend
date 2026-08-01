@@ -13,7 +13,9 @@ type PageProps = {
   searchParams: Promise<{ referrer?: string; bank?: string }>;
 };
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
   const { category, product } = await params;
   const title = `Apply for ${humanizeProduct(product)}`;
   return {
@@ -24,7 +26,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default async function ApplyProductPage({ params, searchParams }: PageProps) {
+export default async function ApplyProductPage({
+  params,
+  searchParams,
+}: PageProps) {
   const { category, product } = await params;
   const { referrer, bank } = await searchParams;
   if (category !== "loan" && category !== "insurance") notFound();

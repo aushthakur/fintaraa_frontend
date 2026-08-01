@@ -40,6 +40,8 @@ import {
   fetchAccountInsuranceApplications,
   fetchAccountLoanApplications,
   fetchAccountCreditCardApplications,
+  fetchPublicInsuranceApplication,
+  fetchPublicLoanApplication,
   type AccountCreditCardApplication,
   type AccountInsuranceQuery,
   type AccountLoanQuery,
@@ -53,6 +55,7 @@ import {
   type ServiceRequestRecord,
   type ServiceRequestType,
 } from "@/services/serviceRequests";
+import { resolveLoanProductDisplayName } from "@/components/application/loanProductContract";
 
 type TimelineStatus = "pending" | "active" | "completed" | "blocked";
 type ViewerType = "user" | "agency" | null;
@@ -78,15 +81,34 @@ type StatusItem = {
   }>;
 };
 
-type ServiceOption = {
+type LookupType = "loan" | "insurance" | ServiceRequestType;
+
+type LookupOption = {
   label: string;
   shortLabel: string;
-  value: ServiceRequestType;
+  value: LookupType;
   example: string;
   icon: LucideIcon;
 };
 
-const serviceTypes: ServiceOption[] = [
+const applicationTypes: LookupOption[] = [
+  {
+    label: "Loan Application",
+    shortLabel: "Loan",
+    value: "loan",
+    example: "2608010001",
+    icon: WalletCards,
+  },
+  {
+    label: "Insurance Application",
+    shortLabel: "Insurance",
+    value: "insurance",
+    example: "FT-INS-260801-0001",
+    icon: ShieldCheck,
+  },
+];
+
+const serviceTypes: LookupOption[] = [
   {
     label: "GST Registration",
     shortLabel: "GST",
@@ -159,6 +181,8 @@ const serviceTypes: ServiceOption[] = [
   },
 ];
 
+const lookupTypes = [...applicationTypes, ...serviceTypes];
+
 const statusTabs: StatusFilter[] = [
   "All",
   "Loan",
@@ -188,9 +212,7 @@ const titleCase = (value = "") =>
     .replace(/\s+/g, " ")
     .trim()
     .replace(/\b\w/g, (char) => char.toUpperCase())
-    .replace(/\b(Gst|Itr|Dsa|Kyc|Emi|Nbfc)\b/g, (word) =>
-      word.toUpperCase(),
-    );
+    .replace(/\b(Gst|Itr|Dsa|Kyc|Emi|Nbfc)\b/g, (word) => word.toUpperCase());
 
 const isCompletedStatus = (value?: string) => {
   const normalized = String(value || "").toLowerCase();
@@ -347,7 +369,11 @@ const mapLoan = (item: AccountLoanQuery): StatusItem => ({
   id: item._id,
   queryId: item.loanId || item._id,
   type: "loan",
-  title: titleCase(item.loanType || "Loan Application"),
+  title:
+    resolveLoanProductDisplayName({
+      loanType: item.loanType,
+      policyDetails: item.policyDetails,
+    }) || titleCase(item.loanType || "Loan Application"),
   subtitle: [item.bankName, item.city, item.state].filter(Boolean).join(" • "),
   status: item.status || "Submitted",
   amount: formatCurrency(item.loanAmount),
@@ -374,9 +400,7 @@ const mapInsurance = (item: AccountInsuranceQuery): StatusItem => ({
   timeline: loanTimeline(item.status),
 });
 
-const mapCreditCard = (
-  item: AccountCreditCardApplication,
-): StatusItem => ({
+const mapCreditCard = (item: AccountCreditCardApplication): StatusItem => ({
   id: item._id,
   queryId: item.applicationId || item.offerId || item._id,
   type: "card",
@@ -414,7 +438,8 @@ const mapPartnerLead = (item: PartnerLeadEvent): StatusItem => {
       ? titleCase(
           String(item.loanType || "insurance").replace(/^insurance_/, ""),
         )
-      : titleCase(item.loanType || "Loan Application");
+      : resolveLoanProductDisplayName({ loanType: item.loanType }) ||
+        titleCase(item.loanType || "Loan Application");
 
   return {
     id:
@@ -581,7 +606,7 @@ function StatusSkeleton() {
             <div key={index} className="h-18 rounded bg-[#f1f5f9]" />
           ))}
         </div>
-        <div className="mt-9 space-y-5">
+        <div className="mt-9 space-y-4">
           {Array.from({ length: 4 }).map((_, index) => (
             <div key={index} className="h-14 rounded bg-[#f1f5f9]" />
           ))}
@@ -601,8 +626,8 @@ export function ApplicationStatusPage() {
     "queryId" | "mobile" | "both" | null
   >(null);
   const [hasSearched, setHasSearched] = useState(false);
-  const [searchServiceType, setSearchServiceType] =
-    useState<ServiceRequestType>("gst_registration");
+  const [searchLookupType, setSearchLookupType] =
+    useState<LookupType>("loan");
   const [queryId, setQueryId] = useState("");
   const [mobile, setMobile] = useState("");
   const [activeSearchField, setActiveSearchField] = useState<
@@ -629,12 +654,14 @@ export function ApplicationStatusPage() {
     return () => window.removeEventListener(AUTH_CHANGED_EVENT, syncViewer);
   }, []);
 
-  const selectedService = useMemo(
+  const selectedLookup = useMemo(
     () =>
-      serviceTypes.find((item) => item.value === searchServiceType) ||
-      serviceTypes[0],
-    [searchServiceType],
+      lookupTypes.find((item) => item.value === searchLookupType) ||
+      lookupTypes[0],
+    [searchLookupType],
   );
+  const isApplicationLookup =
+    searchLookupType === "loan" || searchLookupType === "insurance";
 
   const filtered = useMemo(
     () =>
@@ -758,8 +785,7 @@ export function ApplicationStatusPage() {
         const requestedItem = requestedReference
           ? next.find(
               (item) =>
-                item.queryId.toLowerCase() ===
-                requestedReference.toLowerCase(),
+                item.queryId.toLowerCase() === requestedReference.toLowerCase(),
             )
           : undefined;
         setSelectedId(requestedItem?.id || next[0]?.id || "");
@@ -802,9 +828,22 @@ export function ApplicationStatusPage() {
     const normalizedQueryId = queryId.trim().toUpperCase();
     const normalizedMobile = mobile.replace(/\D/g, "");
 
+    if (isApplicationLookup && (!normalizedQueryId || !normalizedMobile)) {
+      setFieldError(
+        !normalizedQueryId && !normalizedMobile
+          ? "both"
+          : !normalizedQueryId
+            ? "queryId"
+            : "mobile",
+      );
+      setError(
+        "Enter both the application number and registered mobile number for secure tracking.",
+      );
+      return;
+    }
     if (!normalizedQueryId && !normalizedMobile) {
       setFieldError("both");
-      setError("Enter a Query ID or the registered mobile number.");
+      setError("Enter a Query ID or registered mobile number.");
       return;
     }
     if (normalizedMobile && normalizedMobile.length !== 10) {
@@ -819,25 +858,45 @@ export function ApplicationStatusPage() {
     setHasSearched(true);
     setQueryId(normalizedQueryId);
     try {
-      const result = await fetchServiceRequestHistory({
-        serviceType: searchServiceType,
-        queryId: normalizedQueryId,
-        mobile: normalizedMobile,
-      });
-      const mapped = result.map(mapService);
+      let mapped: StatusItem[] = [];
+      let resultTab: StatusFilter = "Service";
+
+      if (searchLookupType === "loan") {
+        const result = await fetchPublicLoanApplication({
+          applicationId: normalizedQueryId,
+          mobile: normalizedMobile,
+        });
+        mapped = result ? [mapLoan(result)] : [];
+        resultTab = "Loan";
+      } else if (searchLookupType === "insurance") {
+        const result = await fetchPublicInsuranceApplication({
+          applicationId: normalizedQueryId,
+          mobile: normalizedMobile,
+        });
+        mapped = result ? [mapInsurance(result)] : [];
+        resultTab = "Insurance";
+      } else {
+        const result = await fetchServiceRequestHistory({
+          serviceType: searchLookupType,
+          queryId: normalizedQueryId,
+          mobile: normalizedMobile,
+        });
+        mapped = result.map(mapService);
+      }
+
       setItems((current) => {
         const map = new Map<string, StatusItem>();
         [...mapped, ...current].forEach((item) => map.set(item.id, item));
         return Array.from(map.values());
       });
       if (mapped.length) {
-        setTab("Service");
+        setTab(resultTab);
         setSelectedId(mapped[0].id);
       } else {
         setError(
           "No matching " +
-            selectedService.label.toLowerCase() +
-            " request was found. Check the submitted details and try again.",
+            selectedLookup.label.toLowerCase() +
+            " was found. Check the submitted details and try again.",
         );
       }
     } catch (err) {
@@ -898,14 +957,13 @@ export function ApplicationStatusPage() {
                     ? "Applications and lead activity"
                     : viewerType === "user"
                       ? "Your applications and service requests"
-                      : "Track a submitted service request"}
+                    : "Track an application or service request"}
                 </h2>
                 <p className="mt-3 max-w-3xl text-[14px] font-medium leading-7 text-[#5f6f82] md:text-[15px]">
-                  Public lookup is available for GST, ITR, company, MSME,
-                  annual compliance, ROC filing, tax compliance, project
-                  report, franchise, and DSA requests. Sign in to view loan,
-                  insurance, and credit card applications linked to your
-                  account.
+                  Secure lookup is available for loan and insurance applications,
+                  plus GST, ITR, company, MSME, compliance, project report,
+                  franchise, and DSA requests. Sign in to load all records linked
+                  to your account automatically.
                 </p>
               </div>
 
@@ -953,7 +1011,7 @@ export function ApplicationStatusPage() {
                   </span>
                   <div>
                     <p className="text-[13px] font-extrabold text-[#172b45]">
-                      Find your service request
+                      Find your application or service request
                     </p>
                     <p className="mt-0.5 text-[11px] font-semibold text-[#718096]">
                       Use the details entered when the request was submitted
@@ -968,19 +1026,19 @@ export function ApplicationStatusPage() {
 
               <fieldset className="px-5 pt-5">
                 <legend className="text-[11px] font-extrabold uppercase text-[#667085]">
-                  Select service type
+                  Select request type
                 </legend>
                 <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
-                  {serviceTypes.map((item) => {
+                  {lookupTypes.map((item) => {
                     const Icon = item.icon;
-                    const active = searchServiceType === item.value;
+                    const active = searchLookupType === item.value;
                     return (
                       <button
                         key={item.value}
                         type="button"
                         aria-pressed={active}
                         onClick={() => {
-                          setSearchServiceType(item.value);
+                          setSearchLookupType(item.value);
                           clearFieldFeedback();
                         }}
                         className={cx(
@@ -1018,10 +1076,14 @@ export function ApplicationStatusPage() {
               <div className="grid gap-4 px-5 pb-5 pt-5 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto]">
                 <TrackSearchField
                   id="application-query-id"
-                  label="Query ID"
+                  label={isApplicationLookup ? "Application Number" : "Query ID"}
                   value={queryId}
-                  placeholder={selectedService.example}
-                  hint="Shown in your confirmation message or email"
+                  placeholder={selectedLookup.example}
+                  hint={
+                    isApplicationLookup
+                      ? "Shown after your application was submitted"
+                      : "Shown in your confirmation message or email"
+                  }
                   icon={<Hash className="h-4.5 w-4.5" />}
                   active={activeSearchField === "queryId"}
                   invalid={fieldError === "queryId" || fieldError === "both"}
@@ -1065,14 +1127,19 @@ export function ApplicationStatusPage() {
                   ) : (
                     <Search className="h-4.5 w-4.5" />
                   )}
-                  {loading ? "Checking..." : "Track request"}
+                  {loading
+                    ? "Checking..."
+                    : isApplicationLookup
+                      ? "Track application"
+                      : "Track request"}
                 </motion.button>
               </div>
 
               <div className="flex flex-col gap-2 bg-[#fbfcfd] px-5 py-3 text-[11px] font-semibold text-[#718096] sm:flex-row sm:items-center sm:justify-between">
                 <p>
-                  Enter either the Query ID or registered mobile number. Both
-                  are not required.
+                  {isApplicationLookup
+                    ? "Enter both the application number and registered mobile number."
+                    : "Enter either the Query ID or registered mobile number. Both are not required."}
                 </p>
                 <Link
                   href="/support"
@@ -1523,10 +1590,10 @@ export function ApplicationStatusPage() {
                     </h3>
                     <p className="mt-3 max-w-xl text-[14px] font-medium leading-7 text-[#617186] md:text-[15px]">
                       {hasSearched
-                        ? "No matching record was returned for the submitted details. Verify the service type, Query ID, and registered mobile number."
+                        ? "No matching record was returned. Verify the request type, application number or Query ID, and registered mobile number."
                         : viewerType
                           ? "New and updated applications linked to this account will appear here automatically."
-                          : "Track a service request above, or sign in to securely view loan, insurance, and credit card applications linked to your account."}
+                          : "Track a loan, insurance, or service request above. Sign in to load your complete account-linked history, including credit card applications."}
                     </p>
                     <div className="mt-6 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
                       {tab !== "All" && items.length ? (
@@ -1564,7 +1631,7 @@ export function ApplicationStatusPage() {
                         {
                           icon: Hash,
                           title: "Confirmation message",
-                          text: "Your Query ID is shared after a service request is submitted.",
+                          text: "Your application number or Query ID is shared after submission.",
                         },
                         {
                           icon: Phone,
@@ -1574,7 +1641,7 @@ export function ApplicationStatusPage() {
                         {
                           icon: LockKeyhole,
                           title: "Account applications",
-                          text: "Loan, insurance, and credit card records are available after secure login.",
+                          text: "Sign in to load your complete loan, insurance, and credit card history automatically.",
                         },
                       ].map(({ icon: Icon, title, text }) => (
                         <div key={title} className="flex gap-3">

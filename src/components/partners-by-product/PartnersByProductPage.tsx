@@ -8,6 +8,7 @@ import {
   PhoneCall,
 } from "lucide-react";
 import { AppDownloadBanner } from "@/components/common/layout/Footer";
+import type { PublicPartner } from "@/services/partners";
 import { PartnerProductShowcase } from "./PartnerProductShowcase";
 
 function HeroBadge({
@@ -26,7 +27,11 @@ function HeroBadge({
   );
 }
 
-export default function PartnersByProductPage() {
+export default function PartnersByProductPage({
+  initialPartners,
+}: {
+  initialPartners?: PublicPartner[];
+}) {
   return (
     <main className="bg-white">
       <section className="relative overflow-hidden bg-[linear-gradient(180deg,#0d377f_0%,#092e77_45%,#082767_100%)] px-4 text-white md:px-6 lg:px-8">
@@ -78,7 +83,7 @@ export default function PartnersByProductPage() {
         </div>
       </section>
 
-      <PartnerProductShowcase />
+      <PartnerProductShowcase initialPartners={initialPartners} />
 
       <section className="px-4 pb-14 md:px-6 lg:px-8">
         <div className="mx-auto max-w-9xl rounded-[18px] border border-[#d9eafb] bg-[#eaf4ff] px-5 py-6 shadow-[0_18px_42px_rgba(16,24,40,0.06)] md:px-7">

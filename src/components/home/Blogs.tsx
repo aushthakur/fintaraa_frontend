@@ -22,6 +22,10 @@ import {
   stripHtml,
   type WebsiteKnowledgeItem,
 } from "@/services/websiteKnowledge";
+import {
+  CarouselNavigation,
+  moveInfiniteCarousel,
+} from "./CarouselNavigation";
 
 const fallbackBlogs: WebsiteKnowledgeItem[] = [
   {
@@ -245,13 +249,37 @@ export function RecentBlogs() {
           <h2 className="text-[24px] font-bold tracking-tight text-[#111625] md:text-[28px]">
             Recent Blogs
           </h2>
-          <Link
-            href="/blog"
-            className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-xl bg-[#075cde] px-5 text-[13px] font-bold text-white no-underline transition hover:bg-[#064cb8]"
-          >
-            View All Blogs
-            <ArrowRight className="h-4 w-4" />
-          </Link>
+          <div className="flex shrink-0 items-center gap-2">
+            <Link
+              href="/blog"
+              className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-xl bg-[#075cde] px-5 text-[13px] font-bold text-white no-underline transition hover:bg-[#064cb8]"
+            >
+              View All Blogs
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+            <CarouselNavigation
+              label="blogs"
+              disabled={loading || !trackWidth}
+              onPrevious={() =>
+                moveInfiniteCarousel({
+                  direction: "previous",
+                  track: trackRef.current,
+                  trackWidth,
+                  x,
+                  onPauseChange: setIsPaused,
+                })
+              }
+              onNext={() =>
+                moveInfiniteCarousel({
+                  direction: "next",
+                  track: trackRef.current,
+                  trackWidth,
+                  x,
+                  onPauseChange: setIsPaused,
+                })
+              }
+            />
+          </div>
         </div>
 
         <div

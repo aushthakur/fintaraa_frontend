@@ -46,7 +46,6 @@ export function PartnerLoginPage({
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [otpExpiresIn, setOtpExpiresIn] = useState(0);
-  const [resendIn, setResendIn] = useState(0);
   const [acceptPolicies, setAcceptPolicies] = useState(false);
   const [whatsappConsent, setWhatsappConsent] = useState(false);
   const [form, setForm] = useState({
@@ -94,13 +93,12 @@ export function PartnerLoginPage({
   }, [redirectTarget, router]);
 
   useEffect(() => {
-    if (step !== "otp" || (otpExpiresIn <= 0 && resendIn <= 0)) return;
+    if (step !== "otp" || otpExpiresIn <= 0) return;
     const timer = window.setInterval(() => {
       setOtpExpiresIn((value) => Math.max(value - 1, 0));
-      setResendIn((value) => Math.max(value - 1, 0));
     }, 1000);
     return () => window.clearInterval(timer);
-  }, [otpExpiresIn, resendIn, step]);
+  }, [otpExpiresIn, step]);
 
   const update = (key: keyof typeof form, value: string) => {
     setForm((prev) => ({
@@ -145,7 +143,6 @@ export function PartnerLoginPage({
       }
       setStep("otp");
       setOtpExpiresIn(5 * 60);
-      setResendIn(30);
       setMessage("OTP sent to your registered mobile number.");
     } catch (error) {
       setMessage((error as Error).message || "Unable to send OTP.");
@@ -187,7 +184,7 @@ export function PartnerLoginPage({
   };
 
   const resendOtp = async () => {
-    if (resendIn > 0) return;
+    if (otpExpiresIn > 0) return;
     setLoading(true);
     setMessage("");
     try {
@@ -201,7 +198,6 @@ export function PartnerLoginPage({
         await sendPartnerOtp(digits);
       }
       setOtpExpiresIn(5 * 60);
-      setResendIn(30);
       setMessage("OTP resent successfully.");
     } catch (error) {
       setMessage((error as Error).message || "Unable to resend OTP.");
@@ -350,14 +346,16 @@ export function PartnerLoginPage({
                   >
                     Change details
                   </button>
-                  <button
-                    type="button"
-                    onClick={resendOtp}
-                    disabled={loading || resendIn > 0}
-                    className="text-[13px] font-extrabold text-[#195585] disabled:opacity-60"
-                  >
-                    {resendIn > 0 ? `Resend in ${resendIn}s` : "Resend OTP"}
-                  </button>
+                  {otpExpiresIn <= 0 ? (
+                    <button
+                      type="button"
+                      onClick={resendOtp}
+                      disabled={loading}
+                      className="text-[13px] font-extrabold text-[#195585] disabled:opacity-60"
+                    >
+                      Resend OTP
+                    </button>
+                  ) : null}
                 </div>
                 <PartnerSubmitBlock
                   message={message}

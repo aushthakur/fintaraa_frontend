@@ -17,7 +17,14 @@ import {
   ChevronDown,
   ChevronRight,
 } from "lucide-react";
-import { FaApple, FaGooglePlay } from "react-icons/fa6";
+import {
+  FaApple,
+  FaFacebookF,
+  FaGooglePlay,
+  FaInstagram,
+  FaLinkedinIn,
+  FaXTwitter,
+} from "react-icons/fa6";
 import Image from "next/image";
 import { productHref } from "@/lib/productRouting";
 import { useProductCatalog } from "@/hooks/useProductCatalog";
@@ -25,6 +32,7 @@ import {
   CALL_PHONE,
   COMPANY_NAME,
   OFFICE,
+  SOCIAL_MEDIA_LINKS,
   WHATSAPP_PHONE,
 } from "@/data/company";
 
@@ -45,7 +53,7 @@ const financialServiceLinks = [
 const aboutCompanyLinks = [
   { label: "About Us", href: "/about-us" },
   { label: "Careers", href: "/careers" },
-  { label: "Partners", href: "/partners" },
+  { label: "Banking Partners", href: "/partners" },
   { label: "Franchise", href: "/franchise" },
   { label: "Become DSA", href: "/become-dsa" },
   { label: "Press Releases", href: "/press-release" },
@@ -82,6 +90,13 @@ const trustItems = [
     icon: LockKeyhole,
   },
 ];
+
+const socialMediaIcons = {
+  facebook: FaFacebookF,
+  instagram: FaInstagram,
+  linkedin: FaLinkedinIn,
+  x: FaXTwitter,
+} as const;
 
 /* ─── HELPERS ───────────────────────────────────────────────── */
 
@@ -165,6 +180,32 @@ function ColHeading({ children }: { children: React.ReactNode }) {
       <h3 className="text-[16px] font-bold text-white">{children}</h3>
       <div className="mt-2 h-0.5 w-8 rounded-full bg-[#8fc7ff]" />
     </div>
+  );
+}
+
+function SocialMediaLinks() {
+  return (
+    <nav
+      aria-label="Fintaraa social media"
+      className="flex flex-wrap items-center gap-2.5"
+    >
+      {SOCIAL_MEDIA_LINKS.map(({ key, label, href }) => {
+        const Icon = socialMediaIcons[key];
+        return (
+          <a
+            key={key}
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`Follow Fintaraa on ${label}`}
+            title={label}
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/25 bg-white/5 text-white no-underline transition duration-200 hover:-translate-y-0.5 hover:border-white/60 hover:bg-white hover:text-[#002B4D] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+          >
+            <Icon className="h-4 w-4" aria-hidden="true" />
+          </a>
+        );
+      })}
+    </nav>
   );
 }
 
@@ -389,14 +430,17 @@ export default function Footer() {
 
         {/* ── Bottom bar ── */}
         <div className="border-t border-white/10">
-          <div className="mx-auto flex max-w-9xl flex-col items-start justify-between gap-4 px-4 py-4 md:px-6 lg:flex-row lg:items-center lg:px-8">
+          <div className="mx-auto grid max-w-9xl gap-4 px-4 py-4 md:px-6 lg:grid-cols-[1fr_auto_1fr] lg:items-center lg:px-8">
             {/* Copyright */}
             <p className="text-[13px] text-white/70">
               © 2024 {COMPANY_NAME} All Rights Reserved.
             </p>
 
+            {/* Social media */}
+            <SocialMediaLinks />
+
             {/* Legal links */}
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-[13px] text-white/80">
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-[13px] text-white/80 lg:justify-end">
               {[
                 { label: "Privacy Policy", href: "/privacy-policy" },
                 { label: "Terms & Conditions", href: "/terms-and-conditions" },

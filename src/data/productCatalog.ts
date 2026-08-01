@@ -1,3 +1,5 @@
+import { requiredLoanProductContracts } from "@/components/application/loanProductContract";
+
 export type ProductCatalogItem = {
   name: string;
   slug: string;
@@ -5,56 +7,13 @@ export type ProductCatalogItem = {
 };
 
 export const loanProductCatalog: ProductCatalogItem[] = [
-  { name: "Personal Loan", slug: "personal-loan", group: "personal" },
-  { name: "Instant Loan", slug: "instant-loan", group: "personal" },
-  { name: "Education Loan", slug: "education-loan", group: "personal" },
-  { name: "Renovation Loan", slug: "renovation-loan", group: "personal" },
-  { name: "Home Loan", slug: "home-loan", group: "secured" },
-  {
-    name: "Loan Against Property",
-    slug: "loan-against-property",
-    group: "secured",
-  },
-  { name: "Gold Loan", slug: "gold-loan", group: "secured" },
-  {
-    name: "Loan Against Security",
-    slug: "loan-against-security",
-    group: "secured",
-  },
-  {
-    name: "Balance Transfer Loan",
-    slug: "balance-transfer-loan",
-    group: "secured",
-  },
-  { name: "Top Up Loan", slug: "top-up-loan", group: "secured" },
-  { name: "Business Loan", slug: "business-loan", group: "business" },
-  {
-    name: "Working Capital Loan",
-    slug: "working-capital-loan",
-    group: "business",
-  },
-  { name: "DOD Loan", slug: "dod-loan", group: "business" },
-  { name: "OD Loan", slug: "od-loan", group: "business" },
-  { name: "Machinery Loan", slug: "machinery-loan", group: "business" },
-  { name: "Industrial Loan", slug: "industrial-loan", group: "business" },
-  {
-    name: "Commercial Purchases Loan",
-    slug: "commercial-purchases-loan",
-    group: "business",
-  },
-  {
-    name: "Agriculture Loan",
-    slug: "agriculture-loan",
-    group: "business",
-  },
+  ...requiredLoanProductContracts.map(({ name, slug, group }) => ({
+    name,
+    slug,
+    group,
+  })),
+  // Historical routes remain available without replacing the required catalog.
   { name: "Vehicle Loan", slug: "vehicle-loan", group: "vehicle" },
-  { name: "Car Loan", slug: "car-loan", group: "vehicle" },
-  { name: "Used Car Loan", slug: "used-car-loan", group: "vehicle" },
-  {
-    name: "Two Wheeler Loan",
-    slug: "two-wheeler-loan",
-    group: "vehicle",
-  },
   {
     name: "Loan Against Car",
     slug: "loan-against-car",

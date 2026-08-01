@@ -103,6 +103,7 @@ export function DsaPartnerBenefits() {
                 successMessage="We have generated your partner query ID. Our partnership team will review your profile and contact you."
                 primarySelectLabel="Partner Profile"
                 primarySelectPlaceholder="Select partner profile"
+                primaryFieldKey="partnerProfile"
                 primaryOptions={[
                   "FreeLancer",
                   "Loan consultant",
@@ -112,13 +113,15 @@ export function DsaPartnerBenefits() {
                   "Real estate broker",
                   "Other",
                 ]}
-                secondarySelectLabel="Monthly Lead Volume"
-                secondarySelectPlaceholder="Select expected volume"
+                secondarySelectLabel="Monthly Loan Amount"
+                secondarySelectPlaceholder="Select monthly loan amount"
+                secondaryFieldKey="monthlyLoanAmount"
                 secondaryOptions={[
-                  "1 - 10 leads",
-                  "11 - 25 leads",
-                  "26 - 50 leads",
-                  "50+ leads",
+                  "Up to ₹10 lakh",
+                  "₹10 lakh - ₹25 lakh",
+                  "₹25 lakh - ₹50 lakh",
+                  "₹50 lakh - ₹1 crore",
+                  "Above ₹1 crore",
                 ]}
               />
             </div>

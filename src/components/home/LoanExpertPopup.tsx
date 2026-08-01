@@ -22,6 +22,8 @@ export function LoanExpertButton({
     <button
       type="button"
       onClick={openLoanExpertPopup}
+      data-analytics-category="cta"
+      data-analytics-name={label}
       className={`inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-[#13a653] px-5 text-[14px] font-semibold text-white transition hover:bg-[#108e46] ${className}`}
     >
       <PhoneCall className="h-4 w-4" />
@@ -46,7 +48,13 @@ export function LoanExpertPopupHost() {
         width="w-[90%] lg:w-[40%]"
         onClose={() => setOpen(false)}
       >
-        <ContactConsultationForm />
+        <div
+          data-analytics-popup
+          data-analytics-name="Loan expert consultation"
+          data-analytics-placement="loan_expert_popup"
+        >
+          <ContactConsultationForm />
+        </div>
       </Modal>
     </>
   );

@@ -1,13 +1,21 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import {
+  type FormEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import {
   Copy,
+  CheckCircle2,
   Mail,
   Camera,
   Share2,
   Loader2,
+  MessageSquareText,
   UserCheck,
   type LucideIcon,
 } from "lucide-react";
@@ -24,8 +32,14 @@ import { ServiceAppBanner } from "@/components/services/shared/ServiceShared";
 import {
   ReferralSummary,
   ReferralHistoryItem,
+  MAX_REFERRAL_PAYOUT_AMOUNT,
+  type ReferralPayoutRequest,
+  type ReferralWallet,
+  createReferralPayoutRequest,
+  fetchReferralPayoutRequests,
   fetchReferralSummary,
   fetchReferralHistory,
+  fetchReferralWallet,
 } from "@/services/referrals";
 
 const howItWorks = [
@@ -52,6 +66,44 @@ const formatDate = (value?: string) => {
 
 const isLoggedIn = () => getAuthType() === "user" && Boolean(getAuthToken());
 
+function StageCell({ date }: { date?: string }) {
+  return date ? (
+    <span className="inline-flex items-center gap-1.5 whitespace-nowrap text-[11px] font-bold text-emerald-700">
+      <CheckCircle2 className="h-3.5 w-3.5" />
+      {formatDate(date)}
+    </span>
+  ) : (
+    <span className="whitespace-nowrap text-[11px] font-semibold text-[#98a2b3]">
+      Pending
+    </span>
+  );
+}
+
+const payoutStatusLabel = (status: ReferralPayoutRequest["status"]) =>
+  ({
+    pending: "Pending",
+    approved: "Approved",
+    rejected: "Rejected",
+    paid: "Paid",
+  })[status];
+
+const payoutStatusDate = (request: ReferralPayoutRequest) => {
+  if (request.status === "paid") return request.paidAt || request.updatedAt;
+  if (request.status === "rejected")
+    return request.rejectedAt || request.updatedAt;
+  if (request.status === "approved")
+    return request.approvedAt || request.updatedAt;
+  return request.updatedAt || request.requestedAt || request.createdAt;
+};
+
+const payoutStatusClass = (status: ReferralPayoutRequest["status"]) =>
+  ({
+    pending: "bg-amber-100 text-amber-800",
+    approved: "bg-blue-100 text-blue-800",
+    rejected: "bg-red-100 text-red-800",
+    paid: "bg-emerald-100 text-emerald-800",
+  })[status];
+
 export function ReferPage() {
   const router = useRouter();
   const [authReady, setAuthReady] = useState(false);
@@ -60,6 +112,19 @@ export function ReferPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [copied, setCopied] = useState("");
+  const [wallet, setWallet] = useState<ReferralWallet | null>(null);
+  const [payoutRequests, setPayoutRequests] = useState<
+    ReferralPayoutRequest[]
+  >([]);
+  const [walletLoading, setWalletLoading] = useState(true);
+  const [walletApiReady, setWalletApiReady] = useState(false);
+  const [walletError, setWalletError] = useState("");
+  const [withdrawalAmount, setWithdrawalAmount] = useState("");
+  const [submittingWithdrawal, setSubmittingWithdrawal] = useState(false);
+  const [withdrawalFeedback, setWithdrawalFeedback] = useState<{
+    type: "success" | "error";
+    text: string;
+  } | null>(null);
 
   useEffect(() => {
     let active = true;
@@ -109,15 +174,66 @@ export function ReferPage() {
     };
   }, [authReady]);
 
+  const loadWalletData = useCallback(async () => {
+    const [walletResult, payoutResult] = await Promise.all([
+      fetchReferralWallet(),
+      fetchReferralPayoutRequests(),
+    ]);
+    setWallet(walletResult);
+    setPayoutRequests(payoutResult);
+    setWalletApiReady(true);
+    setWalletError("");
+  }, []);
+
+  useEffect(() => {
+    if (!authReady) return;
+    let active = true;
+    queueMicrotask(() => {
+      if (!active) return;
+      void loadWalletData()
+        .catch(() => {
+          if (!active) return;
+          setWalletApiReady(false);
+          setWalletError(
+            "Referral withdrawals are temporarily unavailable. Please try again later.",
+          );
+        })
+        .finally(() => {
+          if (active) setWalletLoading(false);
+        });
+    });
+    return () => {
+      active = false;
+    };
+  }, [authReady, loadWalletData]);
+
   const referralCode = summary?.referralCode || "";
+  const rewardAmount = Number(summary?.rewardAmount);
+  const referralConfigAvailable = Boolean(
+    summary && Number.isFinite(rewardAmount) && rewardAmount > 0,
+  );
+  const configuredReward = referralConfigAvailable ? rewardAmount : 0;
+  const minimumDisbursementAmount = Number(
+    summary?.minimumDisbursementAmount || 0,
+  );
+  const programActive =
+    referralConfigAvailable && summary?.programActive !== false;
+  const programPaused =
+    referralConfigAvailable && summary?.programActive === false;
   const referralLink = useMemo(() => {
     if (typeof window === "undefined" || !referralCode) return "";
     return `${window.location.origin}/login?ref=${encodeURIComponent(referralCode)}`;
   }, [referralCode]);
 
-  const shareText = referralCode
-    ? `Use my Fintaraa referral code ${referralCode} to explore loans, cards and insurance.`
-    : "Join Fintaraa to explore loans, cards and insurance.";
+  const minimumDisbursementText =
+    minimumDisbursementAmount > 0
+      ? ` The referred loan must have a minimum disbursement of ${formatCurrency(minimumDisbursementAmount)}.`
+      : "";
+  const shareText = programPaused
+    ? "Fintaraa referral rewards are currently paused."
+    : programActive && referralCode
+      ? `Use my Fintaraa referral code ${referralCode}. Refer a friend, earn ${formatCurrency(configuredReward)} when their loan is disbursed.${minimumDisbursementText}`
+      : "Current Fintaraa referral reward terms are unavailable.";
 
   const copyValue = async (value: string, label: string) => {
     if (!value) return;
@@ -138,6 +254,15 @@ export function ReferPage() {
       action: () =>
         openShare(
           `https://wa.me/?text=${encodeURIComponent(`${shareText} ${referralLink}`)}`,
+        ),
+    },
+    {
+      label: "SMS",
+      icon: MessageSquareText,
+      color: "#075cde",
+      action: () =>
+        window.location.assign(
+          `sms:?&body=${encodeURIComponent(`${shareText} ${referralLink}`)}`,
         ),
     },
     {
@@ -191,10 +316,8 @@ export function ReferPage() {
       icon: UserCheck,
     },
     {
-      value: String(
-        summary?.successfulReferrals || summary?.rewardedCount || 0,
-      ),
-      label: "Successful",
+      value: String(summary?.paidCount || 0),
+      label: "Reward Paid",
       icon: UserCheck,
     },
     {
@@ -208,6 +331,111 @@ export function ReferPage() {
       icon: Camera,
     },
   ];
+
+  const minimumPayoutAmount = Math.max(
+    500,
+    Number(wallet?.minimumPayoutAmount || 500),
+  );
+  const availableBalance = Number(wallet?.availableAmount || 0);
+  const maximumPayoutAmount = Math.min(
+    availableBalance,
+    MAX_REFERRAL_PAYOUT_AMOUNT,
+  );
+  const walletAllowsRequest = wallet?.canRequestPayout !== false;
+  const parsedWithdrawalAmount = Number(withdrawalAmount);
+  const withdrawalHasExcessPrecision =
+    Number.isFinite(parsedWithdrawalAmount) &&
+    Math.abs(
+      parsedWithdrawalAmount -
+        Math.round(parsedWithdrawalAmount * 100) / 100,
+    ) > 0.000001;
+  const activePayoutRequest = payoutRequests.find(
+    (request) =>
+      request.status === "pending" || request.status === "approved",
+  );
+  const withdrawalValidation = !withdrawalAmount.trim()
+    ? ""
+    : !Number.isFinite(parsedWithdrawalAmount) || parsedWithdrawalAmount <= 0
+      ? "Enter a valid withdrawal amount."
+      : parsedWithdrawalAmount < minimumPayoutAmount
+        ? `Minimum withdrawal request is ${formatCurrency(minimumPayoutAmount)}.`
+        : withdrawalHasExcessPrecision
+          ? "Withdrawal amount can have at most two decimal places."
+        : parsedWithdrawalAmount > availableBalance
+          ? `Amount cannot exceed your available wallet balance of ${formatCurrency(availableBalance)}.`
+          : parsedWithdrawalAmount > MAX_REFERRAL_PAYOUT_AMOUNT
+            ? `Maximum withdrawal request is ${formatCurrency(MAX_REFERRAL_PAYOUT_AMOUNT)}.`
+          : "";
+  const canSubmitWithdrawal = Boolean(
+    walletApiReady &&
+      !walletLoading &&
+      !submittingWithdrawal &&
+      walletAllowsRequest &&
+      !activePayoutRequest &&
+      availableBalance >= minimumPayoutAmount &&
+      withdrawalAmount.trim() &&
+      !withdrawalValidation,
+  );
+  const withdrawalControlsDisabled = Boolean(
+    !walletApiReady ||
+      walletLoading ||
+      submittingWithdrawal ||
+      !walletAllowsRequest ||
+      activePayoutRequest ||
+      availableBalance < minimumPayoutAmount,
+  );
+
+  const submitWithdrawal = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setWithdrawalFeedback(null);
+    if (!walletApiReady) {
+      setWithdrawalFeedback({
+        type: "error",
+        text: "Referral withdrawals are temporarily unavailable.",
+      });
+      return;
+    }
+    if (!canSubmitWithdrawal) {
+      setWithdrawalFeedback({
+        type: "error",
+        text:
+          withdrawalValidation ||
+          (activePayoutRequest
+            ? "You already have an active withdrawal request."
+            : !walletAllowsRequest
+              ? "A new withdrawal request is not available right now."
+            : `Enter an amount from ${formatCurrency(minimumPayoutAmount)} to ${formatCurrency(maximumPayoutAmount)}.`),
+      });
+      return;
+    }
+
+    setSubmittingWithdrawal(true);
+    try {
+      await createReferralPayoutRequest(parsedWithdrawalAmount);
+      setWithdrawalAmount("");
+      setWithdrawalFeedback({
+        type: "success",
+        text: "Withdrawal request submitted for manual admin review.",
+      });
+      try {
+        await loadWalletData();
+      } catch {
+        setWalletApiReady(false);
+        setWalletError(
+          "Your request was submitted, but updated wallet details could not be loaded. Refresh the page before taking another action.",
+        );
+      }
+    } catch (requestError) {
+      setWithdrawalFeedback({
+        type: "error",
+        text:
+          (requestError as Error).message ||
+          "Unable to create the withdrawal request.",
+      });
+    } finally {
+      setSubmittingWithdrawal(false);
+    }
+  };
 
   if (!authReady) {
     return (
@@ -254,12 +482,37 @@ export function ReferPage() {
               <div className="grid gap-4 rounded-2xl border border-[#e3e8ef] bg-white p-6 shadow-[0_4px_18px_rgba(16,24,40,0.04)] md:grid-cols-[1.1fr_0.9fr] md:items-center md:p-8">
                 <div>
                   <h1 className="text-[34px] font-extrabold leading-[1.08] tracking-[-0.02em] text-[#005ca8] md:text-[42px]">
-                    Refer a friend
-                    <span className="block text-[#4ade80]">earn rewards</span>
+                    {loading
+                      ? "Referral rewards"
+                      : !referralConfigAvailable
+                        ? "Referral details"
+                        : programActive
+                          ? "Refer a friend"
+                          : "Referral rewards"}
+                    <span className="block text-[#4ade80]">
+                      {loading
+                        ? "loading..."
+                        : !referralConfigAvailable
+                          ? "temporarily unavailable"
+                          : programActive
+                            ? "earn rewards"
+                            : "currently paused"}
+                    </span>
                   </h1>
                   <p className="mt-5 text-[17px] font-semibold text-[#1f2937] md:text-[19px]">
-                    Track registrations, conversions and rewards live
+                    {loading
+                      ? "Loading the current referral reward and eligibility terms."
+                      : !referralConfigAvailable
+                        ? "Current referral reward terms could not be loaded. Please try again shortly."
+                        : programActive
+                      ? `Refer a friend, earn ${formatCurrency(configuredReward)} when their loan is disbursed`
+                      : "New referral sharing and reward eligibility are temporarily unavailable."}
                   </p>
+                  {programActive && minimumDisbursementAmount > 0 ? (
+                    <p className="mt-3 text-[13px] font-bold text-[#667085]">
+                      Minimum eligible loan disbursement: {formatCurrency(minimumDisbursementAmount)}
+                    </p>
+                  ) : null}
                 </div>
                 <div className="relative min-h-50 md:min-h-57.5">
                   <Image
@@ -286,6 +539,14 @@ export function ReferPage() {
                   </p>
                 ) : (
                   <>
+                    {!programActive ? (
+                      <p
+                        role="status"
+                        className="mb-6 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-[13px] font-bold text-amber-800"
+                      >
+                        Referral sharing is disabled while the program is paused. Your existing history remains available below.
+                      </p>
+                    ) : null}
                     <div className="grid gap-6 md:grid-cols-2">
                       {[
                         ["Your Referral Link", referralLink, "link"],
@@ -304,7 +565,8 @@ export function ReferPage() {
                             <button
                               type="button"
                               onClick={() => copyValue(value, key)}
-                              className="inline-flex h-11 shrink-0 items-center gap-1.5 bg-[#dbeeff] px-4 text-[13px] font-bold text-[#0d64bf]"
+                              disabled={!programActive || !value}
+                              className="inline-flex h-11 shrink-0 items-center gap-1.5 bg-[#dbeeff] px-4 text-[13px] font-bold text-[#0d64bf] disabled:cursor-not-allowed disabled:bg-[#edf1f5] disabled:text-[#98a2b3]"
                             >
                               <Copy className="h-4 w-4" />
                               {copied === key ? "Copied" : "Copy"}
@@ -325,7 +587,8 @@ export function ReferPage() {
                               key={label}
                               type="button"
                               onClick={action}
-                              className="inline-flex h-12 min-w-37 items-center justify-center gap-2.5 rounded-lg bg-[#eaf6ff] px-5 text-[14px] font-bold text-[#1f2937]"
+                              disabled={!programActive || !referralLink}
+                              className="inline-flex h-12 min-w-37 items-center justify-center gap-2.5 rounded-lg bg-[#eaf6ff] px-5 text-[14px] font-bold text-[#1f2937] disabled:cursor-not-allowed disabled:bg-[#edf1f5] disabled:text-[#98a2b3]"
                             >
                               <Icon
                                 className="h-5 w-5 shrink-0"
@@ -374,21 +637,267 @@ export function ReferPage() {
                 )}
               </div>
 
+              <div
+                data-referral-wallet
+                className="rounded-2xl border border-[#d9e6f2] bg-[#f8fbff] p-6 shadow-[0_4px_18px_rgba(16,24,40,0.04)] md:p-8"
+              >
+                <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+                  <div>
+                    <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[#0d64bf]">
+                      Referral wallet
+                    </p>
+                    <h2 className="mt-1 text-[22px] font-extrabold text-[#1f2937]">
+                      Rewards and withdrawals
+                    </h2>
+                  </div>
+                  <p className="max-w-xl text-[12px] font-semibold leading-5 text-[#667085]">
+                    Withdrawal requests are reviewed and paid manually by the
+                    Fintaraa admin team. Submitting a request does not trigger
+                    an automatic transfer.
+                  </p>
+                </div>
+
+                <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+                  {[
+                    ["Lifetime credited", wallet?.lifetimeCredited],
+                    ["Reserved / pending", wallet?.reservedAmount],
+                    ["Paid", wallet?.paidAmount],
+                    ["Available wallet", wallet?.availableAmount],
+                  ].map(([label, amount]) => (
+                    <div
+                      key={String(label)}
+                      data-wallet-metric={String(label)}
+                      className="rounded-xl border border-[#dce8f3] bg-white px-4 py-4"
+                    >
+                      <span className="block text-[11px] font-bold text-[#667085]">
+                        {label}
+                      </span>
+                      <span className="mt-1 block text-[20px] font-extrabold text-[#17364e]">
+                        {walletLoading
+                          ? "Loading..."
+                          : wallet
+                            ? formatCurrency(Number(amount || 0))
+                            : "—"}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                {walletError ? (
+                  <p
+                    role="alert"
+                    className="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-[12px] font-bold text-red-700"
+                  >
+                    {walletError}
+                  </p>
+                ) : null}
+                {programPaused && walletApiReady ? (
+                  <p className="mt-4 rounded-xl border border-blue-200 bg-blue-50 px-4 py-3 text-[12px] font-semibold text-blue-800">
+                    The referral program is paused, but rewards already credited
+                    to your available wallet can still be requested for payout.
+                  </p>
+                ) : null}
+
+                <div className="mt-6 grid gap-6 xl:grid-cols-[340px_1fr]">
+                  <form
+                    aria-label="Request referral withdrawal"
+                    onSubmit={submitWithdrawal}
+                    className="h-fit rounded-2xl border border-[#dce8f3] bg-white p-5"
+                  >
+                    <h3 className="text-[16px] font-extrabold text-[#1f2937]">
+                      Request withdrawal
+                    </h3>
+                    <p className="mt-2 text-[11px] font-semibold leading-5 text-[#667085]">
+                      Minimum request: {formatCurrency(minimumPayoutAmount)}.
+                      Admin will review the request and update its payment status.
+                    </p>
+                    <label
+                      htmlFor="referral-withdrawal-amount"
+                      className="mt-5 block text-[12px] font-extrabold text-[#344054]"
+                    >
+                      Withdrawal amount
+                    </label>
+                    <div className="mt-2 flex h-12 items-center rounded-xl border border-[#cfddea] bg-white px-3 focus-within:border-[#0d64bf]">
+                      <span className="text-[15px] font-extrabold text-[#667085]">
+                        ₹
+                      </span>
+                      <input
+                        id="referral-withdrawal-amount"
+                        name="withdrawalAmount"
+                        type="number"
+                        inputMode="decimal"
+                        min={minimumPayoutAmount}
+                        max={maximumPayoutAmount}
+                        step="0.01"
+                        value={withdrawalAmount}
+                        disabled={withdrawalControlsDisabled}
+                        aria-invalid={Boolean(withdrawalValidation)}
+                        aria-describedby="referral-withdrawal-help"
+                        onChange={(event) => {
+                          setWithdrawalAmount(event.target.value);
+                          setWithdrawalFeedback(null);
+                        }}
+                        placeholder={String(minimumPayoutAmount)}
+                        className="h-full min-w-0 flex-1 border-0 bg-transparent px-2 text-[15px] font-bold text-[#1f2937] outline-none disabled:cursor-not-allowed disabled:text-[#98a2b3]"
+                      />
+                    </div>
+                    <p
+                      id="referral-withdrawal-help"
+                      className={`mt-2 text-[11px] font-semibold ${
+                        withdrawalValidation ? "text-red-700" : "text-[#667085]"
+                      }`}
+                    >
+                      {withdrawalValidation ||
+                        `Available wallet: ${formatCurrency(availableBalance)}. Maximum per request: ${formatCurrency(maximumPayoutAmount)}.`}
+                    </p>
+
+                    {activePayoutRequest ? (
+                      <p className="mt-3 rounded-lg bg-amber-50 px-3 py-2 text-[11px] font-bold text-amber-800">
+                        You already have an active {activePayoutRequest.status}
+                        {" "}request for {formatCurrency(activePayoutRequest.amount)}.
+                      </p>
+                    ) : walletApiReady &&
+                      availableBalance < minimumPayoutAmount ? (
+                      <p className="mt-3 rounded-lg bg-slate-100 px-3 py-2 text-[11px] font-bold text-slate-700">
+                        At least {formatCurrency(minimumPayoutAmount)} must be
+                        available before you can request a withdrawal.
+                      </p>
+                    ) : walletApiReady && !walletAllowsRequest ? (
+                      <p className="mt-3 rounded-lg bg-slate-100 px-3 py-2 text-[11px] font-bold text-slate-700">
+                        A new withdrawal request is not available right now.
+                      </p>
+                    ) : null}
+
+                    {withdrawalFeedback ? (
+                      <p
+                        role={
+                          withdrawalFeedback.type === "error"
+                            ? "alert"
+                            : "status"
+                        }
+                        className={`mt-3 rounded-lg px-3 py-2 text-[11px] font-bold ${
+                          withdrawalFeedback.type === "success"
+                            ? "bg-emerald-50 text-emerald-700"
+                            : "bg-red-50 text-red-700"
+                        }`}
+                      >
+                        {withdrawalFeedback.text}
+                      </p>
+                    ) : null}
+
+                    <button
+                      type="submit"
+                      disabled={!canSubmitWithdrawal}
+                      className="mt-4 inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-[#0d64bf] px-4 text-[12px] font-extrabold text-white disabled:cursor-not-allowed disabled:bg-[#9db9d1]"
+                    >
+                      {submittingWithdrawal ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : null}
+                      {submittingWithdrawal
+                        ? "Submitting request..."
+                        : "Request withdrawal"}
+                    </button>
+                  </form>
+
+                  <div className="min-w-0 rounded-2xl border border-[#dce8f3] bg-white p-5">
+                    <h3 className="text-[16px] font-extrabold text-[#1f2937]">
+                      Withdrawal requests
+                    </h3>
+                    {walletLoading ? (
+                      <div className="mt-4 flex items-center gap-2 text-[12px] font-bold text-[#667085]">
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        Loading withdrawal requests...
+                      </div>
+                    ) : payoutRequests.length ? (
+                      <div className="mt-4 overflow-x-auto">
+                        <table className="w-full min-w-190 border-collapse text-left">
+                          <thead>
+                            <tr className="border-b border-[#e3e8ef] text-[11px] text-[#667085]">
+                              {[
+                                "Amount",
+                                "Status",
+                                "Requested",
+                                "Status date",
+                                "Reference",
+                                "Note",
+                              ].map((heading) => (
+                                <th
+                                  key={heading}
+                                  className="px-2 py-2.5 font-extrabold"
+                                >
+                                  {heading}
+                                </th>
+                              ))}
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {payoutRequests.map((request) => (
+                              <tr
+                                key={request.id}
+                                data-payout-request={request.id}
+                                className="border-b border-[#eef1f5] text-[11px] font-semibold text-[#475467]"
+                              >
+                                <td className="px-2 py-3 font-extrabold text-[#17364e]">
+                                  {formatCurrency(request.amount)}
+                                </td>
+                                <td className="px-2 py-3">
+                                  <span
+                                    className={`inline-flex rounded-full px-2.5 py-1 text-[10px] font-extrabold ${payoutStatusClass(request.status)}`}
+                                  >
+                                    {payoutStatusLabel(request.status)}
+                                  </span>
+                                </td>
+                                <td className="px-2 py-3 whitespace-nowrap">
+                                  {formatDate(
+                                    request.requestedAt || request.createdAt,
+                                  )}
+                                </td>
+                                <td className="px-2 py-3 whitespace-nowrap">
+                                  {formatDate(payoutStatusDate(request))}
+                                </td>
+                                <td className="px-2 py-3">
+                                  {request.payoutReference || "—"}
+                                </td>
+                                <td className="max-w-55 px-2 py-3">
+                                  {request.adminNote ||
+                                    request.rejectionReason ||
+                                    "—"}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    ) : walletApiReady ? (
+                      <p className="mt-4 rounded-xl bg-[#f5f8fb] px-4 py-4 text-[12px] font-semibold text-[#667085]">
+                        No withdrawal requests yet.
+                      </p>
+                    ) : (
+                      <p className="mt-4 rounded-xl bg-[#f5f8fb] px-4 py-4 text-[12px] font-semibold text-[#667085]">
+                        Withdrawal request history is unavailable.
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+
               <div className="rounded-2xl border border-[#e3e8ef] bg-white p-6 shadow-[0_4px_18px_rgba(16,24,40,0.04)] md:p-8">
                 <h2 className="text-[20px] font-extrabold text-[#1f2937]">
                   Referral History
                 </h2>
                 {loading || history.length ? (
                   <div className="mt-4 overflow-x-auto">
-                    <table className="w-full min-w-170 border-collapse text-left">
+                    <table className="w-full min-w-245 border-collapse text-left">
                       <thead>
                         <tr className="border-b border-[#e3e8ef] text-[14px] text-[#1f2937]">
                           {[
                             "Name",
-                            "Date",
-                            "Status",
+                            "Referred",
+                            "Registered",
+                            "Applied",
+                            "Approved",
+                            "Reward Paid",
                             "Reward",
-                            "Conversion",
                           ].map((head) => (
                             <th key={head} className="px-3 py-3 font-extrabold">
                               {head}
@@ -403,7 +912,7 @@ export function ReferPage() {
                                 key={index}
                                 className="border-b border-[#eef1f5]"
                               >
-                                <td colSpan={5} className="px-3 py-3.5">
+                                <td colSpan={7} className="px-3 py-3.5">
                                   <div className="h-5 animate-pulse rounded bg-[#eef3f8]" />
                                 </td>
                               </tr>
@@ -417,24 +926,24 @@ export function ReferPage() {
                                   {row.referredUser?.name || "New user"}
                                 </td>
                                 <td className="px-3 py-3.5">
-                                  {formatDate(row.createdAt)}
+                                  <StageCell date={row.createdAt} />
+                                </td>
+                                <td className="px-3 py-3.5">
+                                  <StageCell date={row.registeredAt || row.createdAt} />
+                                </td>
+                                <td className="px-3 py-3.5">
+                                  <StageCell date={row.appliedAt} />
+                                </td>
+                                <td className="px-3 py-3.5">
+                                  <StageCell date={row.approvedAt} />
+                                </td>
+                                <td className="px-3 py-3.5">
+                                  <StageCell date={row.paidAt} />
                                 </td>
                                 <td className="px-3 py-3.5 font-bold text-[#0d64bf]">
-                                  {row.status}
-                                </td>
-                                <td className="px-3 py-3.5">
-                                  {formatCurrency(row.rewardAmount)}
-                                </td>
-                                <td className="px-3 py-3.5">
-                                  <span
-                                    className={`rounded-sm px-2.5 py-1 text-[12px] font-semibold ${
-                                      row.conversionStatus === "Converted"
-                                        ? "bg-[#cdf3da] text-[#1cb45c]"
-                                        : "bg-[#eef3bd] text-[#a3a300]"
-                                    }`}
-                                  >
-                                    {row.conversionStatus || "Pending"}
-                                  </span>
+                                  {row.rewardAmount
+                                    ? formatCurrency(row.rewardAmount)
+                                    : "—"}
                                 </td>
                               </tr>
                             ))}
@@ -456,7 +965,7 @@ export function ReferPage() {
                         <button
                           type="button"
                           onClick={() => copyValue(referralLink, "link")}
-                          disabled={!referralLink}
+                          disabled={!programActive || !referralLink}
                           className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[#005ca8] px-6 text-[14px] font-extrabold text-white shadow-[0_12px_24px_rgba(0,92,168,0.18)] disabled:cursor-not-allowed disabled:bg-[#9db9d1]"
                         >
                           <Copy className="h-4 w-4" />
@@ -469,7 +978,7 @@ export function ReferPage() {
                               `https://wa.me/?text=${encodeURIComponent(`${shareText} ${referralLink}`)}`,
                             )
                           }
-                          disabled={!referralLink}
+                          disabled={!programActive || !referralLink}
                           className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[#1cb45c] px-6 text-[14px] font-extrabold text-white shadow-[0_12px_24px_rgba(28,180,92,0.18)] disabled:cursor-not-allowed disabled:bg-[#b7dec6]"
                         >
                           <Share2 className="h-4 w-4" />
@@ -513,20 +1022,22 @@ export function ReferPage() {
                     </span>
                   </span>
                 </div>
-                <button
-                  type="button"
-                  className="mt-6 h-12 w-full rounded-full bg-[#1cb45c] text-[15px] font-bold text-white shadow-[0_10px_22px_rgba(28,180,92,0.25)]"
-                >
-                  Withdraw Earnings
-                </button>
-                <p className="mt-3 text-center text-[12px] font-medium text-[#98a2b3]">
-                  Min. withdraw amount is ₹500
+                <p className="mt-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-center text-[12px] font-semibold leading-5 text-emerald-700">
+                  {programActive
+                    ? `Eligible rewards are credited after loan disbursement${minimumDisbursementAmount > 0 ? ` of at least ${formatCurrency(minimumDisbursementAmount)}` : ""}, and payout status is updated here by the Fintaraa team.`
+                    : programPaused
+                      ? "New referral rewards are paused. Existing payout history remains visible here."
+                      : "Current reward terms are unavailable. Refresh the page before sharing a referral."}
                 </p>
               </div>
 
               <div className="rounded-2xl border border-[#e3e8ef] bg-white p-6 shadow-[0_4px_18px_rgba(16,24,40,0.04)] md:p-7">
                 <h2 className="text-[19px] font-extrabold text-[#1f2937]">
-                  How it work?
+                  {programActive
+                    ? "How it works"
+                    : programPaused
+                      ? "How it works when active"
+                      : "How referrals work"}
                 </h2>
                 <div className="mt-5 grid gap-5">
                   {howItWorks.map((item, index) => (

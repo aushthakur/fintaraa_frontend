@@ -12,4 +12,4 @@ export const fetchPersonCibil = (payload: Record<string, unknown>) =>
   Post<any>("cibil/fetch", { ...payload, consent: "Y" }, 20000, true);
 
 export const fetchPersonCibilPdf = (payload: Record<string, unknown>) =>
-  Post<any>("cibil/fetch-pdf", { ...payload, consent: "Y" }, 20000, true);
+  Post<any>("cibil/fetch-pdf", { ...payload, consent: "Y" }, 60000, true);

@@ -4,7 +4,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
+import {
+  FormEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   Loader2,
   Sparkles,
@@ -18,7 +25,6 @@ import {
   ChevronRight,
   Camera,
 } from "lucide-react";
-import { Post } from "@/hooks/apiUtils";
 import { submitApplication } from "./payload";
 import { getCurrentUser } from "@/services/auth";
 import type { FormField, FormFlow } from "./flows";
@@ -35,6 +41,11 @@ import { LoanDocumentUploader } from "./LoanDocumentUploader";
 import { humanizeProduct, type ApplicationCategory } from "./flowRegistry";
 import { CoApplicantsSection, type CoApplicant } from "./CoApplicantsSection";
 import { SubmissionSuccessNotice } from "@/components/common/SubmissionSuccessNotice";
+import {
+  completeApplicationJourney,
+  getApplicationJourneyId,
+  trackApplicationJourney,
+} from "@/services/applicationJourney";
 
 type FormValues = Record<string, any>;
 type CurrentUser = Record<string, any>;
@@ -175,6 +186,23 @@ const formatDateInput = (value: unknown) => {
   return date.toISOString().slice(0, 10);
 };
 
+const calculateAge = (value: unknown) => {
+  const formattedDate = formatDateInput(value);
+  if (!formattedDate) return undefined;
+
+  const [birthYear, birthMonth, birthDay] = formattedDate
+    .split("-")
+    .map(Number);
+  const today = new Date();
+  let age = today.getFullYear() - birthYear;
+  const birthdayHasPassed =
+    today.getMonth() + 1 > birthMonth ||
+    (today.getMonth() + 1 === birthMonth && today.getDate() >= birthDay);
+
+  if (!birthdayHasPassed) age -= 1;
+  return age >= 0 ? age : undefined;
+};
+
 const toSnake = (value: unknown) =>
   String(value || "")
     .trim()
@@ -286,8 +314,12 @@ const buildAutofillValues = (
   const bankDetails = user.bankDetails || {};
   const fullName = pickValue(personal.fullName, user.name);
   const { firstName, lastName } = splitName(fullName);
-  const dateOfBirth = formatDateInput(
-    pickValue(personal.dateOfBirth, user.dateOfBirth),
+  const age = pickValue(
+    personal.age,
+    user.age,
+    personal.currentAge,
+    user.currentAge,
+    calculateAge(pickValue(personal.dateOfBirth, user.dateOfBirth)),
   );
   const mobile = String(pickValue(personal.mobile, user.mobile) || "").replace(
     /\D/g,
@@ -303,6 +335,9 @@ const buildAutofillValues = (
     financial.annualIncome,
     user.annualIncome,
   );
+  const dateOfBirth = formatDateInput(
+    pickValue(personal.dateOfBirth, user.dateOfBirth),
+  );
   const income =
     category === "insurance"
       ? pickValue(annualIncome, Number(monthlyIncome || 0) * 12 || undefined)
@@ -316,6 +351,8 @@ const buildAutofillValues = (
     email: pickValue(personal.email, user.email),
     phone: mobile,
     mobile,
+    age,
+    applicantAge: age,
     dateOfBirth,
     dob: dateOfBirth,
     gender: pickValue(personal.gender, user.gender),
@@ -414,7 +451,7 @@ function visibleFields(
 ) {
   const step = flow.steps[stepIndex];
   return step.fields.filter((field) => {
-    if (field.type === "coApplicants") return Boolean(values.coApplicant);
+    if (field.type === "coApplicants") return true;
     if (field.key.startsWith("coApplicant") && field.key !== "coApplicant") {
       return false;
     }
@@ -437,7 +474,9 @@ function estimatePremium(category: ApplicationCategory, values: FormValues) {
       ).replace(/,/g, ""),
     ) || 500000;
   const age =
-    Number(firstValue(values, ["age", "currentAge", "dob"]) || 30) || 30;
+    Number(
+      firstValue(values, ["applicantAge", "age", "currentAge"]) || 30,
+    ) || 30;
   const monthly = Math.max(
     399,
     Math.round((cover / 100000) * (age > 45 ? 145 : 95)),
@@ -544,7 +583,10 @@ function FieldInput({
         <CoApplicantsSection
           value={value}
           error={error}
-          onChange={(next) => onChange(field.key, next)}
+          onChange={(next) => {
+            onChange(field.key, next);
+            onChange("coApplicant", next.length > 0);
+          }}
         />
       </div>
     );
@@ -882,6 +924,12 @@ export function ApplicationFlowPage({
   const [submitError, setSubmitError] = useState("");
   const [whatsappConsent, setWhatsappConsent] = useState(false);
   const [whatsappConsentError, setWhatsappConsentError] = useState("");
+  const journeyIdRef = useRef("");
+  const submittedJourneyRef = useRef(false);
+  const journeyStateRef = useRef({
+    stepIndex: 0,
+    whatsappConsent: false,
+  });
   const activeTab = flow.tabFieldKey
     ? values[flow.tabFieldKey] || flow.tabs?.[0]?.key
     : undefined;
@@ -905,6 +953,49 @@ export function ApplicationFlowPage({
     const query = params.toString();
     return `/apply/${category}/${productSlug}${query ? `?${query}` : ""}`;
   }, [bank, category, productSlug, referrer]);
+
+  useEffect(() => {
+    journeyStateRef.current = { stepIndex, whatsappConsent };
+  }, [stepIndex, whatsappConsent]);
+
+  useEffect(() => {
+    if (!authReady || getAuthType() !== "user" || !getAuthToken()) return;
+    const journeyId = getApplicationJourneyId(flowKey, productSlug);
+    journeyIdRef.current = journeyId;
+    submittedJourneyRef.current = false;
+
+    const track = (action: "start" | "abandoned") =>
+      trackApplicationJourney({
+        action,
+        category,
+        flowKey,
+        productName: flow.title || humanizeProduct(productSlug),
+        productSlug,
+        journeyId,
+        stepIndex: journeyStateRef.current.stepIndex,
+        totalSteps: flow.steps.length,
+        resumeUrl: currentApplyHref,
+        whatsappConsent: journeyStateRef.current.whatsappConsent,
+      }).catch(() => undefined);
+
+    void track("start");
+    const abandon = () => {
+      if (!submittedJourneyRef.current) void track("abandoned");
+    };
+    window.addEventListener("pagehide", abandon);
+    return () => {
+      window.removeEventListener("pagehide", abandon);
+      abandon();
+    };
+  }, [
+    authReady,
+    category,
+    currentApplyHref,
+    flow.steps.length,
+    flow.title,
+    flowKey,
+    productSlug,
+  ]);
 
   useEffect(() => {
     const isLoggedIn = getAuthType() === "user" && Boolean(getAuthToken());
@@ -1004,8 +1095,13 @@ export function ApplicationFlowPage({
     setRcLookupMessage("");
     try {
       const response = await fetchCarRcDetails(normalized);
-      const payload = response?.data?.data || response?.data || response || {};
-      const rcData = payload?.data || payload?.result || payload || {};
+      const responseData = response?.data || response || {};
+      const providerPayload = responseData?.data || responseData || {};
+      const rcData =
+        providerPayload?.data ||
+        providerPayload?.result ||
+        providerPayload ||
+        {};
 
       const makeModel = pickString(
         rcData?.maker_model,
@@ -1039,6 +1135,12 @@ export function ApplicationFlowPage({
         [fieldKey]: rcData?.rc_number
           ? normalizeRcNumber(String(rcData.rc_number))
           : normalized,
+        rcLookup: responseData?.rcLookup || {
+          idNumber: normalized,
+          report: providerPayload,
+          fetchedAt: new Date().toISOString(),
+          source: "website_rc_lookup",
+        },
       };
 
       if (fieldKey === "registrationNumber") {
@@ -1157,7 +1259,7 @@ export function ApplicationFlowPage({
       }
     });
 
-    if (values.coApplicant && Array.isArray(values.coApplicants)) {
+    if (Array.isArray(values.coApplicants) && values.coApplicants.length) {
       values.coApplicants.forEach((item: CoApplicant, index: number) => {
         const mobile = normalizePhone(String(item.mobile || ""));
         const pan = String(item.pan || "").toUpperCase();
@@ -1187,6 +1289,20 @@ export function ApplicationFlowPage({
 
   const goNext = () => {
     if (!validateStep()) return;
+    if (journeyIdRef.current) {
+      void trackApplicationJourney({
+        action: "continue",
+        category,
+        flowKey,
+        productName: flow.title || humanizeProduct(productSlug),
+        productSlug,
+        journeyId: journeyIdRef.current,
+        stepIndex: Math.min(stepIndex + 1, flow.steps.length - 1),
+        totalSteps: flow.steps.length,
+        resumeUrl: currentApplyHref,
+        whatsappConsent,
+      }).catch(() => undefined);
+    }
     setStepIndex((current) => Math.min(current + 1, flow.steps.length - 1));
   };
 
@@ -1228,25 +1344,22 @@ export function ApplicationFlowPage({
         },
         referrer,
       });
-      void Post(
-        "form-submit-clicks",
-        {
-          formType: category === "insurance" ? "insurance" : "loan",
+      submittedJourneyRef.current = true;
+      if (journeyIdRef.current) {
+        void trackApplicationJourney({
           action: "submitted",
+          category,
+          flowKey,
+          productName: flow.title || humanizeProduct(productSlug),
+          productSlug,
+          journeyId: journeyIdRef.current,
           stepIndex,
           totalSteps: flow.steps.length,
-          meta: {
-            source: "website",
-            platform: "website",
-            formSource: "website_application_flow",
-            flowKey,
-            productName: flow.title || humanizeProduct(productSlug),
-            productSlug,
-          },
-        },
-        10000,
-        true,
-      ).catch(() => undefined);
+          resumeUrl: currentApplyHref,
+          whatsappConsent,
+        }).catch(() => undefined);
+        completeApplicationJourney(flowKey, productSlug);
+      }
       setSubmittedReference(submission.referenceId);
     } catch (error) {
       setSubmitError(
@@ -1518,11 +1631,7 @@ export function ApplicationFlowPage({
                 <SubmissionSuccessNotice
                   message="Application saved successfully. Our team will contact you for the next step."
                   referenceId={submittedReference}
-                  referenceLabel={
-                    category === "insurance"
-                      ? "Insurance Reference ID"
-                      : "Loan Application ID"
-                  }
+                  referenceLabel="Application Number"
                 />
               </div>
             ) : null}
@@ -1583,8 +1692,8 @@ export function ApplicationFlowPage({
                   Keep PAN, Aadhaar, income proof, and bank statement ready.
                 </li>
                 <li>
-                  Co-applicant documents can be added now or requested later by
-                  the team.
+                  Co-applicant details and documents can be added after your
+                  documents are complete.
                 </li>
                 <li>
                   Uploaded files are used only for application verification.

@@ -312,12 +312,7 @@ export function OffersPage() {
       }
       setSubmittedApplication({
         referenceId,
-        referenceLabel:
-          offer.productCategory === "card"
-            ? "Credit Card Application ID"
-            : offer.productCategory === "insurance"
-              ? "Insurance Reference ID"
-              : "Loan Application ID",
+        referenceLabel: "Application Number",
       });
     } catch (err) {
       setError((err as Error).message || "Could not apply for this offer.");

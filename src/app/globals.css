@@ -341,6 +341,13 @@ main
     letter-spacing: -0.02em !important;
   }
 
+  main h1.product-banner-title {
+    font-size: clamp(1rem, 4.8vw, 1.25rem) !important;
+    line-height: 1.1 !important;
+    letter-spacing: -0.035em !important;
+    text-wrap: wrap !important;
+  }
+
   main
     :where(
       h2[class*="text-[30px]"],

@@ -24,6 +24,7 @@ export type CibilScoreHistoryPoint = {
 export type CibilReportViewData = {
   userName: string;
   score: number;
+  scoreBureauLabel: "TransUnion CIBIL" | "Experian";
   scoreDateLabel: string;
   reportDateLabel: string;
   compareDateLabel: string;

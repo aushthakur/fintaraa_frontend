@@ -21,6 +21,7 @@ import {
   getInsuranceSeoPage,
 } from "@/services/insuranceSeoPages";
 import { getBankProductLenders } from "@/services/bankSeoPages";
+import { InstantLoanMarketplacePage } from "@/components/products/instant-loan/InstantLoanMarketplacePage";
 
 type PageProps = {
   params: Promise<{
@@ -181,11 +182,19 @@ export default async function ProductLoanPage({ params }: PageProps) {
           },
         ]}
       />
-      <LoanDetailPage
-        page={page}
-        locationPages={locationPages}
-        bankLenders={bankLenders}
-      />
+      {productSlug === "instant-loan" ? (
+        <InstantLoanMarketplacePage
+          page={page}
+          lenders={bankLenders}
+          locationPages={locationPages}
+        />
+      ) : (
+        <LoanDetailPage
+          page={page}
+          locationPages={locationPages}
+          bankLenders={bankLenders}
+        />
+      )}
     </>
   );
 }

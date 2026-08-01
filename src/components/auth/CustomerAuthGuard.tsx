@@ -33,7 +33,10 @@ export function CustomerAuthGuard({
   );
 
   useEffect(() => {
-    if (!authenticated) {
+    // During hydration the server snapshot is unauthenticated. Re-check the
+    // browser session before redirecting so a valid local session is not sent
+    // through a login loop on a direct visit to a protected route.
+    if (!authenticated && !isUserLoggedIn()) {
       router.replace(buildLoginRedirectHref({ redirectTo }));
     }
   }, [authenticated, redirectTo, router]);

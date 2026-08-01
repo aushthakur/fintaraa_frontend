@@ -1,8 +1,7 @@
 "use client";
 
-import { SupportHero } from "@/components/support/SupportHero";
-import { useCallback, useEffect, useMemo, useState } from "react";
 import Modal from "@/components/common/Modal";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { SupportChatPanel } from "@/components/support/SupportChatPanel";
 import { fetchTickets, type SupportTicket } from "@/services/accountHelp";
 import { SupportTicketForm } from "@/components/support/SupportTicketForm";
@@ -43,7 +42,6 @@ export function SupportPage() {
         }
         return data[0] || null;
       });
-      if (!data.length) setError("No open tickets right now.");
     } catch {
       setError("Unable to load tickets right now.");
     } finally {
@@ -69,15 +67,13 @@ export function SupportPage() {
   );
 
   return (
-    <main className="bg-gray-100">
-      <SupportHero />
-
+    <main className="min-h-screen bg-[#f4f8fb]">
       <section className="px-4 py-8 md:px-6 lg:px-8">
         <div className="mx-auto grid max-w-9xl gap-4 md:grid-cols-4">
           {quickStats.map(({ icon: Icon, label, value }) => (
             <div
               key={label}
-              className="flex items-center gap-3 bg-white p-4 shadow-[0_12px_30px_rgba(25,85,133,0.07)]"
+              className="flex items-center gap-3 rounded-2xl border border-[#e2edf6] bg-white p-4 shadow-[0_12px_30px_rgba(25,85,133,0.07)]"
             >
               <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#eef8ff] text-[#195585]">
                 <Icon className="h-5 w-5" />
@@ -94,13 +90,13 @@ export function SupportPage() {
           ))}
         </div>
 
-        <div className="mx-auto mt-5 flex max-w-9xl flex-col gap-3 bg-[#195585] p-4 text-white md:flex-row md:items-center md:justify-between">
+        <div className="mx-auto mt-5 flex max-w-9xl flex-col gap-3 overflow-hidden rounded-3xl bg-linear-to-r from-[#123f63] to-[#195585] p-5 text-white shadow-[0_18px_45px_rgba(25,85,133,0.18)] md:flex-row md:items-center md:justify-between md:p-6">
           <div>
             <p className="text-[12px] font-extrabold uppercase tracking-[0.16em] text-[#7ee3a2]">
               Need help now?
             </p>
             <h2 className="mt-1 text-[22px] font-extrabold">
-              Create a support ticket from the top workspace
+              One request, one clear conversation
             </h2>
             <p className="mt-1 max-w-2xl text-[13px] font-semibold leading-6 text-white/70">
               Share your issue once, then track updates and continue the chat
@@ -120,7 +116,7 @@ export function SupportPage() {
 
       <section className="px-4 pb-16 md:px-6 lg:px-8">
         <div className="mx-auto grid max-w-9xl items-start gap-6 xl:grid-cols-[25rem_minmax(0,1fr)]">
-          <div className="grid gap-5 xl:sticky xl:top-28 xl:max-h-[calc(100vh-8rem)] xl:overflow-y-auto xl:pr-1 scrollbar-thin">
+          <div className="grid gap-5">
             <SupportTicketList
               tickets={tickets}
               loading={loading}
@@ -131,7 +127,7 @@ export function SupportPage() {
             />
           </div>
 
-          <div className="xl:sticky xl:top-28 xl:max-h-[calc(100vh-8rem)] xl:overflow-y-auto scrollbar-thin">
+          <div className="min-w-0 xl:sticky xl:top-24">
             <SupportChatPanel
               ticket={selectedTicket}
               onTicketUpdated={loadTickets}

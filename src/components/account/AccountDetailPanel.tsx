@@ -50,6 +50,9 @@ import {
   fetchServiceRequestHistory,
 } from "@/services/serviceRequests";
 import { NotificationsPanel } from "@/components/notifications/NotificationsPanel";
+import { WebPushControl } from "@/components/notifications/WebPushControl";
+import { UserDashboardOverview } from "@/components/account/UserDashboardOverview";
+import { resolveLoanProductDisplayName } from "@/components/application/loanProductContract";
 
 type EditProfileFieldKey =
   | "fullName"
@@ -1021,130 +1024,122 @@ function EditProfileForm() {
   return (
     <div className="grid gap-5">
       <div className="grid gap-2 md:grid-cols-3">
-        {editProfileSteps.map(
-          ({ step, id, title, icon: Icon }, index) => (
-            <a
-              key={title}
-              href={`#${id}`}
-              className={`flex items-center gap-3 rounded-lg p-3 no-underline transition ${
+        {editProfileSteps.map(({ step, id, title, icon: Icon }, index) => (
+          <a
+            key={title}
+            href={`#${id}`}
+            className={`flex items-center gap-3 rounded-lg p-3 no-underline transition ${
+              index === 0
+                ? "bg-[#195585] text-white"
+                : "bg-[#f7fbff] text-[#07162d] ring-1 ring-[#e4edf5] hover:bg-[#eef7ff]"
+            }`}
+          >
+            <span
+              className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${
                 index === 0
-                  ? "bg-[#195585] text-white"
-                  : "bg-[#f7fbff] text-[#07162d] ring-1 ring-[#e4edf5] hover:bg-[#eef7ff]"
+                  ? "bg-white/12 text-[#7ee3a2]"
+                  : "bg-white text-[#195585]"
               }`}
             >
+              <Icon className="h-4.5 w-4.5" />
+            </span>
+            <span className="min-w-0">
               <span
-                className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${
-                  index === 0
-                    ? "bg-white/12 text-[#7ee3a2]"
-                    : "bg-white text-[#195585]"
+                className={`block text-[9px] font-extrabold uppercase tracking-[0.14em] ${
+                  index === 0 ? "text-white/68" : "text-[#718397]"
                 }`}
               >
-                <Icon className="h-4.5 w-4.5" />
+                Step {step}
               </span>
-              <span className="min-w-0">
-                <span
-                  className={`block text-[9px] font-extrabold uppercase tracking-[0.14em] ${
-                    index === 0 ? "text-white/68" : "text-[#718397]"
-                  }`}
-                >
-                  Step {step}
-                </span>
-                <span className="mt-0.5 block truncate text-[13px] font-extrabold">
-                  {title}
-                </span>
+              <span className="mt-0.5 block truncate text-[13px] font-extrabold">
+                {title}
               </span>
-            </a>
-          ),
-        )}
+            </span>
+          </a>
+        ))}
       </div>
 
       <form className="grid gap-7" onSubmit={handleSubmit}>
-        {editProfileSteps.map(
-          ({ step, id, title, icon: Icon, fields }) => {
-            const sectionFields =
-              id === "professional-details"
-                ? professionalFieldsByType[activeEmploymentType]
-                : fields;
+        {editProfileSteps.map(({ step, id, title, icon: Icon, fields }) => {
+          const sectionFields =
+            id === "professional-details"
+              ? professionalFieldsByType[activeEmploymentType]
+              : fields;
 
-            return (
-              <section key={title} id={id} className="scroll-mt-32 bg-white">
-                <div className="flex items-center gap-3 border-b border-[#e4edf5] pb-3">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#eef8ff] text-[#195585]">
-                    <Icon className="h-5 w-5" />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-[9px] font-extrabold uppercase tracking-[0.14em] text-[#195585]">
-                      Step {step}
-                    </p>
-                    <h3 className="mt-0.5 text-[20px] font-extrabold text-[#07162d]">
-                      {title}
-                    </h3>
-                  </div>
-                  <span className="w-fit shrink-0 rounded-full bg-[#ecfdf3] px-3 py-1 text-[10px] font-extrabold uppercase tracking-[0.1em] text-[#079455]">
-                    {loading ? "Syncing" : dirty ? "Editing" : "Synced"}
-                  </span>
+          return (
+            <section key={title} id={id} className="scroll-mt-32 bg-white">
+              <div className="flex items-center gap-3 border-b border-[#e4edf5] pb-3">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#eef8ff] text-[#195585]">
+                  <Icon className="h-5 w-5" />
                 </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-[9px] font-extrabold uppercase tracking-[0.14em] text-[#195585]">
+                    Step {step}
+                  </p>
+                  <h3 className="mt-0.5 text-[20px] font-extrabold text-[#07162d]">
+                    {title}
+                  </h3>
+                </div>
+                <span className="w-fit shrink-0 rounded-full bg-[#ecfdf3] px-3 py-1 text-[10px] font-extrabold uppercase tracking-[0.1em] text-[#079455]">
+                  {loading ? "Syncing" : dirty ? "Editing" : "Synced"}
+                </span>
+              </div>
 
-                {id === "professional-details" ? (
-                  <div className="mt-5 grid gap-2 md:grid-cols-3">
-                    {employmentOptions.map((option) => {
-                      const active = activeEmploymentType === option.value;
-                      return (
-                        <button
-                          key={option.value}
-                          type="button"
-                          onClick={() => updateEmploymentType(option.value)}
-                          className={`rounded-lg p-3 text-left transition ${
-                            active
-                              ? "bg-[#195585] text-white"
-                              : "bg-[#f8fcff] text-[#07162d] ring-1 ring-[#e4edf5] hover:bg-[#eef7ff]"
+              {id === "professional-details" ? (
+                <div className="mt-5 grid gap-2 md:grid-cols-3">
+                  {employmentOptions.map((option) => {
+                    const active = activeEmploymentType === option.value;
+                    return (
+                      <button
+                        key={option.value}
+                        type="button"
+                        onClick={() => updateEmploymentType(option.value)}
+                        className={`rounded-lg p-3 text-left transition ${
+                          active
+                            ? "bg-[#195585] text-white"
+                            : "bg-[#f8fcff] text-[#07162d] ring-1 ring-[#e4edf5] hover:bg-[#eef7ff]"
+                        }`}
+                      >
+                        <span
+                          className={`text-[9px] font-extrabold uppercase tracking-[0.12em] ${
+                            active ? "text-white/68" : "text-[#718397]"
                           }`}
                         >
-                          <span
-                            className={`text-[9px] font-extrabold uppercase tracking-[0.12em] ${
-                              active ? "text-white/68" : "text-[#718397]"
-                            }`}
-                          >
-                            Employment type
-                          </span>
-                          <span className="mt-1 block text-[13px] font-extrabold">
-                            {option.label}
-                          </span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                ) : null}
-
-                <div className="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-                  {sectionFields.map((field) => (
-                    <FormField
-                      type={"type" in field ? field.type : undefined}
-                      min={
-                        field.key === "dateOfBirth" ? "1900-01-01" : undefined
-                      }
-                      max={
-                        field.key === "dateOfBirth"
-                          ? getAdultMaxDob()
-                          : undefined
-                      }
-                      helper={
-                        field.key === "dateOfBirth"
-                          ? "You must be 18 years or older to use Fintaraa services."
-                          : undefined
-                      }
-                      key={field.label}
-                      label={field.label}
-                      value={form[field.key]}
-                      placeholder={field.placeholder}
-                      onChange={(value) => updateField(field.key, value)}
-                    />
-                  ))}
+                          Employment type
+                        </span>
+                        <span className="mt-1 block text-[13px] font-extrabold">
+                          {option.label}
+                        </span>
+                      </button>
+                    );
+                  })}
                 </div>
-              </section>
-            );
-          },
-        )}
+              ) : null}
+
+              <div className="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+                {sectionFields.map((field) => (
+                  <FormField
+                    type={"type" in field ? field.type : undefined}
+                    min={field.key === "dateOfBirth" ? "1900-01-01" : undefined}
+                    max={
+                      field.key === "dateOfBirth" ? getAdultMaxDob() : undefined
+                    }
+                    helper={
+                      field.key === "dateOfBirth"
+                        ? "You must be 18 years or older to use Fintaraa services."
+                        : undefined
+                    }
+                    key={field.label}
+                    label={field.label}
+                    value={form[field.key]}
+                    placeholder={field.placeholder}
+                    onChange={(value) => updateField(field.key, value)}
+                  />
+                ))}
+              </div>
+            </section>
+          );
+        })}
 
         <div className="flex flex-col gap-3 rounded-lg bg-[#07162d] p-4 text-white md:flex-row md:items-center md:justify-between">
           <p className="text-[12px] font-semibold text-white/72">{status}</p>
@@ -1360,7 +1355,11 @@ const normalizeLoanApplication = (
 ): AccountApplication => {
   const amount = getNumber(item.loanAmount);
   const status = normalizeLabel(item.status || "submitted");
-  const product = normalizeLabel(item.loanType, "Loan Application");
+  const product =
+    resolveLoanProductDisplayName({
+      loanType: item.loanType,
+      policyDetails: item.policyDetails,
+    }) || normalizeLabel(item.loanType, "Loan Application");
   const location = [item.city, item.state].filter(Boolean).join(", ");
   const reference =
     firstValue(item.loanId, item._id ? item._id.slice(-8).toUpperCase() : "") ||
@@ -1928,7 +1927,7 @@ function ApplicationDetailsModal({
 
         <div className="max-h-[calc(92vh-82px)] overflow-auto p-4 sm:p-5">
           <div className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
-            <div className="space-y-5">
+            <div className="space-y-4">
               <div
                 className={`overflow-hidden rounded-2xl bg-linear-to-br ${getApplicationAccent(application.category)} p-5 text-white shadow-sm`}
               >
@@ -2037,7 +2036,7 @@ function ApplicationDetailsModal({
               </section>
             </div>
 
-            <div className="space-y-5">
+            <div className="space-y-4">
               <section className="rounded-2xl border border-[#e2edf6] bg-[#fafcff] p-5">
                 <h4 className="text-[15px] font-extrabold text-[#1a1d25]">
                   Application details
@@ -2215,12 +2214,11 @@ function AccountApplicationsPanel() {
       const serviceResults = settled.slice(2) as PromiseSettledResult<
         ServiceRequestRecord[]
       >[];
-      const services = serviceResults
-        .flatMap((result) =>
-          result.status === "fulfilled"
-            ? result.value.map(normalizeServiceApplication)
-            : [],
-        );
+      const services = serviceResults.flatMap((result) =>
+        result.status === "fulfilled"
+          ? result.value.map(normalizeServiceApplication)
+          : [],
+      );
 
       setRecords([...loans, ...insurance, ...services]);
       setError(
@@ -2902,7 +2900,9 @@ export function AccountDetailPanel({ slug = "overview" }: { slug?: string }) {
     "Manage your Fintaraa profile, applications, offers, documents, and preferences from one place.";
 
   return (
-    <section className={`bg-white/95 ${compactEditProfile ? "p-4 md:p-5" : "p-4 md:p-6"}`}>
+    <section
+      className={`bg-white/95 ${compactEditProfile ? "p-4 md:p-5" : "p-4 md:p-6"}`}
+    >
       <div
         className={`flex flex-col border-b border-[#e4edf5] md:flex-row md:items-end md:justify-between ${
           compactEditProfile ? "gap-2 pb-3" : "gap-4 pb-5"
@@ -2936,6 +2936,8 @@ export function AccountDetailPanel({ slug = "overview" }: { slug?: string }) {
 
 function renderPanel(slug: string) {
   switch (slug) {
+    case "overview":
+      return <UserDashboardOverview />;
     case "edit-profile":
       return <EditProfileForm />;
     case "uploaded-documents":
@@ -2945,6 +2947,7 @@ function renderPanel(slug: string) {
     case "notification-preferences":
       return (
         <div className="grid gap-6">
+          <WebPushControl />
           <div className="bg-linear-to-r from-[#195585] to-[#1375de] p-5 text-white">
             <Bell className="h-6 w-6 text-[#7ee3a2]" />
             <h3 className="mt-4 text-[22px] font-extrabold">
@@ -3023,11 +3026,6 @@ function renderPanel(slug: string) {
     case "logout":
       return <LogoutPanel />;
     default:
-      return (
-        <EmptyState
-          title="Profile & Settings"
-          text="Choose a section from the left to manage profile details, applications, offers, documents, and preferences."
-        />
-      );
+      return <UserDashboardOverview />;
   }
 }

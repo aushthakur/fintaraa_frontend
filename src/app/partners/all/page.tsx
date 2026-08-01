@@ -1,22 +1,26 @@
 import type { Metadata } from "next";
 import { TrustedPartnerBanksSection } from "@/components/partners/TrustedPartnerBanksSection";
+import { fetchPublicPartners } from "@/services/partners";
 
 export const metadata: Metadata = {
-  title: "All Partner Banks & NBFCs | Fintaraa",
+  title: "All Partner Banks, NBFCs & Insurers | Fintaraa",
   description:
-    "Browse all Fintaraa partner banks and NBFCs for loans, insurance, credit cards, and credit bureau assisted journeys.",
+    "Browse Fintaraa partner banks, NBFCs and insurers for loan, insurance and credit-card assisted journeys.",
 };
 
-export default function AllPartnersPage() {
+export default async function AllPartnersPage() {
+  const livePartners = await fetchPublicPartners().catch(() => undefined);
+
   return (
     <main className="bg-white">
       <TrustedPartnerBanksSection
         mode="grid"
         defaultShowAll
         showViewAllAction={false}
-        title="All Trusted Partner Banks & NBFCs"
-        description="Filter by product category or open any partner directly from the logo grid."
+        title="All Partner Banks, NBFCs & Insurers"
+        description="Filter the live partner directory by product category and open an institution's available journey."
         className="pt-10"
+        initialPartners={livePartners}
       />
     </main>
   );

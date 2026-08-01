@@ -33,6 +33,7 @@ import {
   LayoutDashboard,
   LogOut,
   PencilLine,
+  PhoneCall,
 } from "lucide-react";
 import {
   clearAuthSession,
@@ -45,6 +46,7 @@ import { AUTH_CHANGED_EVENT } from "@/lib/authEvents";
 import {
   isLoanProduct,
   isInsuranceProduct,
+  productHref,
 } from "@/lib/productRouting";
 import { buildLoginRedirectHref } from "@/lib/loginRedirect";
 import {
@@ -59,6 +61,7 @@ import {
 } from "@/services/partner";
 import { LogoutConfirmationModal } from "@/components/account/LogoutConfirmationModal";
 import { fetchNotificationStats } from "@/services/notifications";
+import { CALL_PHONE } from "@/data/company";
 
 type NavLink = {
   label: string;
@@ -79,7 +82,7 @@ type NavItem = NavLink & {
 const productLinks = (products: ProductCatalogItem[]): NavLink[] =>
   products.map((product) => ({
     label: product.name,
-    href: `/products/${product.slug}`,
+    href: productHref(product.slug),
   }));
 
 const groupedSection = (
@@ -746,16 +749,21 @@ export default function Navbar() {
     >
       <div className="bg-[#002B4D] px-3 text-white min-[380px]:px-4 md:px-6 lg:pl-8 lg:pr-10">
         <div className="mx-auto flex min-h-8 max-w-9xl items-center justify-between gap-2 py-1.5 text-[8.5px] font-semibold min-[360px]:text-[9.5px] sm:gap-3 sm:py-2 sm:text-[11px]">
-          <p className="flex min-w-0 items-center gap-1.5 leading-4 sm:gap-2">
-            <ShieldCheck className="h-3.5 w-3.5 shrink-0 text-[#8fc7ff] sm:h-4 sm:w-4" />
-            <span className="whitespace-nowrap sm:hidden">
-              30+ trusted institutions
-            </span>
+          <div className="flex min-w-0 items-center gap-1.5 leading-4 sm:gap-2">
+            <a
+              href={CALL_PHONE.href}
+              aria-label={`Call customer care at ${CALL_PHONE.display}`}
+              className="flex items-center gap-1 whitespace-nowrap text-white/95 no-underline transition hover:text-white sm:hidden"
+            >
+              <PhoneCall className="h-3.5 w-3.5 shrink-0 text-[#8fc7ff]" />
+              <span>{CALL_PHONE.national}</span>
+            </a>
+            <ShieldCheck className="hidden h-4 w-4 shrink-0 text-[#8fc7ff] sm:block" />
             <span className="hidden sm:inline">
               Compare offers from regulated banks, NBFCs and insurers with
               secure assisted applications.
             </span>
-          </p>
+          </div>
           <div className="flex shrink-0 items-center gap-4">
             <a
               href="mailto:customercare@fintaraa.com"
@@ -1563,13 +1571,13 @@ function MegaDropdown({
   const hideDescriptions = item.label === "Loans" || item.label === "Insurance";
   const dropdownMaxWidthClass =
     sections.length >= 4
-      ? "max-w-[68rem]"
+      ? "max-w-[78rem]"
       : sections.length === 3
         ? "max-w-[58rem]"
         : "max-w-[52rem]";
   const columnCount =
     sections.length >= 4
-      ? "xl:grid-cols-5"
+      ? "xl:grid-cols-[0.78fr_repeat(4,minmax(0,1fr))]"
       : sections.length === 3
       ? "xl:grid-cols-[0.8fr_1fr_1fr_1fr]"
       : sections.length === 2
@@ -1588,8 +1596,8 @@ function MegaDropdown({
       }`}
     >
       <div className="overflow-hidden rounded-xl border border-[#d9e9f6] bg-white shadow-[0_24px_60px_rgba(7,22,45,0.18)]">
-        <div className={`grid gap-0 ${columnCount}`}>
-          <div className="bg-[linear-gradient(145deg,#195585,#0f6fba)] p-4 text-white">
+        <div className={`grid min-w-0 gap-0 ${columnCount}`}>
+          <div className="min-w-0 bg-[linear-gradient(145deg,#195585,#0f6fba)] p-4 text-white">
             <div className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-white/12">
               <Sparkles className="h-5 w-5 text-[#8fc7ff]" />
             </div>
@@ -1613,9 +1621,10 @@ function MegaDropdown({
           {sections.map((section) => (
             <div
               key={section.title}
-              className="border-l border-[#edf3f8] px-3 py-4"
+              data-nav-section={section.title}
+              className="min-w-0 overflow-hidden border-l border-[#edf3f8] px-3 py-4"
             >
-              <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-[#195585]">
+              <p className="break-words text-[12px] font-semibold uppercase leading-5 tracking-[0.14em] text-[#195585]">
                 {section.title}
               </p>
               {!hideDescriptions && section.subtitle ? (
@@ -1629,12 +1638,12 @@ function MegaDropdown({
                     key={`${section.title}-${link.href}-${link.label}`}
                     href={link.href}
                     onClick={onNavigate}
-                    className={`group/item relative block rounded-lg px-2 text-[#07162d] no-underline transition after:absolute after:bottom-0 after:left-2 after:right-2 after:h-0.5 after:origin-left after:scale-x-0 after:bg-[#195585] after:transition-transform after:duration-300 after:ease-out hover:after:scale-x-100 ${
+                    className={`group/item relative block min-w-0 overflow-hidden rounded-lg px-2 text-[#07162d] no-underline transition after:absolute after:bottom-0 after:left-2 after:right-2 after:h-0.5 after:origin-left after:scale-x-0 after:bg-[#195585] after:transition-transform after:duration-300 after:ease-out hover:after:scale-x-100 ${
                       hideDescriptions ? "py-1.5" : "py-2"
                     }`}
                   >
-                    <span className="min-w-0">
-                      <span className="inline-block max-w-full truncate text-[13px] font-semibold group-hover/item:text-[#195585]">
+                    <span className="block min-w-0 max-w-full">
+                      <span className="block max-w-full break-words text-[13px] font-semibold leading-5 whitespace-normal group-hover/item:text-[#195585]">
                         {link.label}
                       </span>
                       {!hideDescriptions && link.description ? (
@@ -1691,8 +1700,8 @@ function CompactDropdown({
                 hideDescriptions ? "py-1.5" : "py-2"
               }`}
             >
-              <span className="min-w-0">
-                <span className="inline-block max-w-full truncate text-[13px] font-semibold group-hover/item:text-[#195585]">
+              <span className="block min-w-0 max-w-full">
+                <span className="block max-w-full break-words text-[13px] font-semibold leading-5 whitespace-normal group-hover/item:text-[#195585]">
                   {link.label}
                 </span>
                 {!hideDescriptions && link.description ? (

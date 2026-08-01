@@ -1,4 +1,4 @@
-import { Fetch, Post, Put } from "@/hooks/apiUtils";
+import { Fetch, Patch, Post, Put } from "@/hooks/apiUtils";
 import {
   clearAuthSession,
   getAuthToken,
@@ -87,6 +87,7 @@ export type PartnerLeadEvent = {
   commissionAmount?: number;
   disbursedAmount?: number;
   productType?: "loan" | "insurance" | string;
+  policyDetails?: Record<string, unknown>;
 };
 
 export type PartnerClickSummary = {
@@ -100,6 +101,34 @@ export type PartnerUploadedDocument = {
   name?: string;
   mimetype?: string;
   size?: number;
+};
+
+export type PartnerVaultDocument = {
+  docType: string;
+  fileUrl: string;
+  referenceId?: string;
+  issuedOn?: string;
+  uploadedAt?: string;
+};
+
+export type PartnerDocumentRequest = {
+  _id: string;
+  requestedDocuments: string[];
+  uploadedDocuments?: Array<{
+    documentKey: string;
+    fileUrl: string;
+    uploadedAt?: string;
+  }>;
+  message?: string;
+  status: "pending" | "uploaded" | "cancelled";
+  createdAt?: string;
+  fulfilledAt?: string;
+  loanQuery?: {
+    _id?: string;
+    loanId?: string;
+    loanType?: string;
+    status?: string;
+  };
 };
 
 const unwrap = <T>(response: ApiEnvelope<T> | T): T => {
@@ -212,6 +241,27 @@ export const fetchPartnerProfile = async () => {
   return profile;
 };
 
+export const sendPartnerMobileChangeOtp = (mobile: string) =>
+  Post<ApiEnvelope<unknown>>(
+    "dsa/mobile-change/send-otp",
+    { mobile: normalizePhone(mobile) },
+    15000,
+    true,
+  );
+
+export const verifyPartnerMobileChangeOtp = async (
+  mobile: string,
+  otp: string,
+) => {
+  const response = await Post<ApiEnvelope<PartnerProfile> | PartnerProfile>(
+    "dsa/mobile-change/verify-otp",
+    { mobile: normalizePhone(mobile), otp: otp.replace(/\D/g, "") },
+    15000,
+    true,
+  );
+  return unwrap<PartnerProfile>(response);
+};
+
 export const updatePartnerKycProfile = async (
   payload: Record<string, unknown>,
 ) => {
@@ -278,6 +328,46 @@ export const fetchPartnerClickSummary = async () => {
     false,
   );
   return unwrap<PartnerClickSummary>(response);
+};
+
+export const fetchPartnerDocumentRequests = async () => {
+  const response = await Fetch<
+    ApiEnvelope<PartnerDocumentRequest[]> | PartnerDocumentRequest[]
+  >("document-requests/my", undefined, 15000, true, false);
+  const requests = unwrap<PartnerDocumentRequest[]>(response);
+  return Array.isArray(requests) ? requests : [];
+};
+
+export const uploadPartnerVaultDocument = async (
+  file: File,
+  documentKey: string,
+) => {
+  const formData = new FormData();
+  formData.append("digiLockerFiles", file);
+  formData.append("defaultDocType", documentKey);
+  formData.append("name", documentKey.replace(/[._-]+/g, " "));
+  const response = await Post<
+    ApiEnvelope<{ documents?: PartnerVaultDocument[] }> | {
+      documents?: PartnerVaultDocument[];
+    }
+  >("agency/digilocker-sync", formData, 30000);
+  const payload = unwrap<{ documents?: PartnerVaultDocument[] }>(response);
+  return Array.isArray(payload?.documents) ? payload.documents : [];
+};
+
+export const completePartnerDocumentRequest = async (
+  requestId: string,
+  payload: { documentKey: string; fileUrl: string },
+) => {
+  const response = await Patch<
+    ApiEnvelope<PartnerDocumentRequest> | PartnerDocumentRequest
+  >(
+    `document-requests/${encodeURIComponent(requestId)}/uploaded`,
+    payload,
+    15000,
+    true,
+  );
+  return unwrap<PartnerDocumentRequest>(response);
 };
 
 const hasValue = (value: unknown) =>

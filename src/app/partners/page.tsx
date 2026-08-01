@@ -16,6 +16,7 @@ import {
   PageMotionProvider,
 } from "@/components/common/motion/SectionReveal";
 import { trustedPartners } from "@/data/trustedPartners";
+import { fetchPublicPartners } from "@/services/partners";
 import { getPageSeoMetadata } from "@/services/seoMetadata";
 
 const fallbackMetadata: Metadata = {
@@ -24,17 +25,10 @@ const fallbackMetadata: Metadata = {
     "View Fintaraa's lending and insurance partners, due diligence approach, product coverage, and servicing principles.",
 };
 
-const networkStats = [
-  { value: `${trustedPartners.length}+`, label: "Trusted institutions" },
-  { value: "4", label: "Product categories" },
-  { value: "100%", label: "Consent-led journeys" },
-  { value: "1", label: "Assisted platform" },
-];
-
 const standards = [
   {
-    title: "Regulated institutions",
-    text: "Banks, NBFCs and insurers are reviewed for regulatory standing and product governance.",
+    title: "Clear institution profiles",
+    text: "Partner records identify whether an institution is a bank, NBFC or insurer and the products it offers.",
     icon: ShieldCheck,
   },
   {
@@ -76,7 +70,19 @@ export async function generateMetadata(): Promise<Metadata> {
   return getPageSeoMetadata("/partners", fallbackMetadata);
 }
 
-export default function PartnersPage() {
+export default async function PartnersPage() {
+  const livePartners = await fetchPublicPartners().catch(() => undefined);
+  const partnerCount = livePartners?.length ?? trustedPartners.length;
+  const productCategoryCount = livePartners
+    ? new Set(livePartners.flatMap((partner) => partner.productCategories)).size
+    : 3;
+  const networkStats = [
+    { value: String(partnerCount), label: "Published institutions" },
+    { value: String(productCategoryCount), label: "Product categories" },
+    { value: "100%", label: "Consent-led journeys" },
+    { value: "1", label: "Assisted platform" },
+  ];
+
   return (
     <PageMotionProvider>
       <main className="bg-white text-[#102c45]">
@@ -137,9 +143,10 @@ export default function PartnersPage() {
           <div id="partner-directory" className="scroll-mt-28">
             <TrustedPartnerBanksSection
               mode="grid"
-              title="Banks, NBFCs and financial partners"
+              title="Banks, NBFCs and insurers"
               className="py-10 md:py-12"
               showViewAllAction={false}
+              initialPartners={livePartners}
             />
           </div>
         </SectionReveal>

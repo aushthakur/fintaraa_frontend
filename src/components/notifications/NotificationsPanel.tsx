@@ -24,6 +24,7 @@ import {
   type NotificationPagination,
   type NotificationRecord,
 } from "@/services/notifications";
+import { WebPushControl } from "./WebPushControl";
 
 const emptyPagination: NotificationPagination = {
   currentPage: 1,
@@ -78,7 +79,8 @@ export function NotificationsPanel({
 
   const load = useCallback(
     async (page = 1, append = false) => {
-      append ? setLoadingMore(true) : setLoading(true);
+      if (append) setLoadingMore(true);
+      else setLoading(true);
       setError("");
       try {
         const result = await fetchNotifications(accountType, page, 20);
@@ -119,7 +121,8 @@ export function NotificationsPanel({
       router.replace("/partner/profile/notifications");
       return;
     }
-    void load();
+    const timeout = window.setTimeout(() => void load(), 0);
+    return () => window.clearTimeout(timeout);
   }, [accountType, load, router]);
 
   const visibleNotifications = useMemo(
@@ -135,8 +138,23 @@ export function NotificationsPanel({
     (item) => item.status === "unread",
   ).length;
 
+  const openNotificationDestination = (item: NotificationRecord) => {
+    const destination = String(
+      item.data?.actionUrl || item.data?.url || "",
+    ).trim();
+    if (destination.startsWith("/")) {
+      router.push(destination);
+    } else if (/^https?:\/\//i.test(destination)) {
+      window.location.assign(destination);
+    }
+  };
+
   const handleMarkRead = async (item: NotificationRecord) => {
-    if (item.status === "read" || updating) return;
+    if (updating) return;
+    if (item.status === "read") {
+      openNotificationDestination(item);
+      return;
+    }
     setUpdating(item._id);
     try {
       await markNotificationRead(accountType, item._id);
@@ -152,6 +170,7 @@ export function NotificationsPanel({
         ),
       );
       window.dispatchEvent(new Event("notifications:changed"));
+      openNotificationDestination(item);
     } catch (updateError) {
       setError(
         updateError instanceof Error
@@ -197,6 +216,7 @@ export function NotificationsPanel({
           : "mx-auto w-full max-w-5xl rounded-2xl border border-[#e1eaf2] bg-white p-4 shadow-[0_16px_44px_rgba(16,44,69,0.07)] sm:p-6"
       }
     >
+      <WebPushControl />
       {!embedded ? (
         <div className="border-b border-[#e7eef4] pb-5">
           <p className="text-[11px] font-extrabold uppercase tracking-[0.15em] text-[#1b68b3]">

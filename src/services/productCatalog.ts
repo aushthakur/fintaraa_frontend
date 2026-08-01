@@ -41,6 +41,10 @@ const fallbackCatalog: ProductCatalog = {
 };
 
 const excludedLoanSlugs = new Set(["credit-score-loan"]);
+const canonicalLoanSlugAliases: Record<string, string> = {
+  "balance-transfer-loan": "balance-transfer-top-up-loan",
+  "balance-transfer-and-top-up-loan": "balance-transfer-top-up-loan",
+};
 
 const slugify = (value: string) =>
   value
@@ -102,26 +106,32 @@ const normaliseRows = (
   fallback: ProductCatalogItem[],
 ) => {
   const fallbackBySlug = new Map(fallback.map((item) => [item.slug, item]));
-  const products = new Map<string, ProductCatalogItem>();
+  const products = new Map<string, ProductCatalogItem>(fallbackBySlug);
+  const seenApiSlugs = new Set<string>();
 
   rows.forEach((row) => {
     const rawName =
       kind === "loan" ? String(row.loanType || "") : String(row.insuranceType || "");
-    const slug = slugify(
+    const incomingSlug = slugify(
       kind === "loan"
         ? String(row.loanTypeSlug || rawName)
         : String(row.insuranceTypeSlug || rawName),
     );
+    const slug =
+      kind === "loan"
+        ? canonicalLoanSlugAliases[incomingSlug] || incomingSlug
+        : incomingSlug;
     if (
       !slug ||
-      products.has(slug) ||
+      seenApiSlugs.has(slug) ||
       (kind === "loan" && excludedLoanSlugs.has(slug))
     )
       return;
+    seenApiSlugs.add(slug);
 
     const known = fallbackBySlug.get(slug);
     products.set(slug, {
-      name: rawName.trim() || known?.name || slug,
+      name: known?.name || rawName.trim() || slug,
       slug,
       group:
         known?.group ||
@@ -129,7 +139,7 @@ const normaliseRows = (
     });
   });
 
-  return products.size ? Array.from(products.values()) : fallback;
+  return Array.from(products.values());
 };
 
 const readRows = async (path: string) => {

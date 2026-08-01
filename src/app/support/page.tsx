@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getPageSeoMetadata } from "@/services/seoMetadata";
 import { SupportPage } from "@/components/support/SupportPage";
+import { CustomerAuthGuard } from "@/components/auth/CustomerAuthGuard";
 
 const fallbackMetadata: Metadata = {
   title: "Support & Service Desk",
@@ -21,5 +22,9 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function SupportRoute() {
-  return <SupportPage />;
+  return (
+    <CustomerAuthGuard redirectTo="/support">
+      <SupportPage />
+    </CustomerAuthGuard>
+  );
 }

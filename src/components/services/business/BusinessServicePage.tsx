@@ -26,6 +26,7 @@ import { ServiceRequestTracker } from "@/components/services/shared/ServiceReque
 import { ServiceInformationGuide } from "@/components/services/shared/ServiceInformationGuide";
 import { serviceGuidesBySlug } from "@/components/services/shared/serviceGuideData";
 import type { BusinessServiceConfig } from "./businessServiceData";
+import { useTransientServiceFeedback } from "@/hooks/useTransientServiceFeedback";
 
 const nameRegex = /^[A-Za-z][A-Za-z\s.'-]{1,79}$/;
 const mobileRegex = /^(?:\+91[\s-]?)?[6-9]\d{9}$/;
@@ -120,42 +121,48 @@ function BusinessServiceHero({ config }: { config: BusinessServiceConfig }) {
   const [form, setForm] = useState<ServiceForm>(emptyForm);
   const [request, setRequest] = useState<ServiceRequestRecord | null>(null);
   const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState("");
   const [whatsappConsent, setWhatsappConsent] = useState(false);
+  const {
+    error,
+    successVisible,
+    clearError,
+    showError,
+    showSuccess,
+  } = useTransientServiceFeedback();
 
   const updateField = (key: keyof ServiceForm, value: string) => {
     setForm((current) => ({ ...current, [key]: value }));
-    setError("");
+    clearError();
   };
 
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (!nameRegex.test(form.name.trim())) {
-      setError("Enter a valid full name.");
+      showError("Enter a valid full name.");
       return;
     }
     if (!mobileRegex.test(form.mobile.trim())) {
-      setError("Enter a valid 10-digit mobile number.");
+      showError("Enter a valid 10-digit mobile number.");
       return;
     }
     if (!emailRegex.test(form.email.trim())) {
-      setError("Enter a valid email address.");
+      showError("Enter a valid email address.");
       return;
     }
     if (!form.primary || !form.secondary || !form.state) {
-      setError(
+      showError(
         `Please select ${config.primaryLabel.toLowerCase()}, ${config.secondaryLabel.toLowerCase()} and state.`,
       );
       return;
     }
     if (!whatsappConsent) {
-      setError("Please accept WhatsApp communication consent.");
+      showError("Please accept WhatsApp communication consent.");
       return;
     }
 
     setSubmitting(true);
-    setError("");
+    clearError();
     try {
       const consentPayload = buildWebsiteConsentPayload(
         `website_${config.serviceType}`,
@@ -178,13 +185,14 @@ function BusinessServiceHero({ config }: { config: BusinessServiceConfig }) {
         },
       });
       setRequest(result);
+      showSuccess();
       setForm(emptyForm);
       setWhatsappConsent(false);
       window.dispatchEvent(
         new CustomEvent("service-request-created", { detail: result }),
       );
     } catch (err) {
-      setError((err as Error).message || "Unable to submit your request.");
+      showError((err as Error).message || "Unable to submit your request.");
     } finally {
       setSubmitting(false);
     }
@@ -302,12 +310,15 @@ function BusinessServiceHero({ config }: { config: BusinessServiceConfig }) {
                 className="sm:col-span-2"
                 onChange={(checked) => {
                   setWhatsappConsent(checked);
-                  if (checked) setError("");
+                  if (checked) clearError();
                 }}
               />
 
               {error ? (
-                <p className="rounded-xl bg-red-50 px-3 py-2 text-[12px] font-bold leading-5 text-red-700 sm:col-span-2">
+                <p
+                  role="alert"
+                  className="rounded-xl bg-red-50 px-3 py-2 text-[12px] font-bold leading-5 text-red-700 sm:col-span-2"
+                >
                   {error}
                 </p>
               ) : null}
@@ -331,11 +342,13 @@ function BusinessServiceHero({ config }: { config: BusinessServiceConfig }) {
 
       {request ? (
         <div className="mobile-safe-container relative mt-9 grid gap-5">
-          <ServiceRequestSuccess
-            request={request}
-            title={config.successTitle}
-            message={config.successMessage}
-          />
+          {successVisible ? (
+            <ServiceRequestSuccess
+              request={request}
+              title={config.successTitle}
+              message={config.successMessage}
+            />
+          ) : null}
           <ServiceRequestProgress request={request} />
         </div>
       ) : null}
@@ -463,6 +476,7 @@ export function BusinessServicePage({
         title={config.trackingTitle}
         idLabel={config.trackingIdLabel}
         serviceType={config.serviceType}
+        deferCreatedRequestDisplay
       />
       <AppDownloadBanner />
     </main>
