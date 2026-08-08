@@ -6,6 +6,9 @@ const backendApiBase = (
 
 const nextConfig: NextConfig = {
   allowedDevOrigins: ["127.0.0.1"],
+  experimental: {
+    proxyClientMaxBodySize: "100mb",
+  },
   async rewrites() {
     return [
       {
