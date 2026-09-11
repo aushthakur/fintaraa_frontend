@@ -10,7 +10,7 @@ const stats = [
 
 export function CreditCardsStats() {
   return (
-    <section className="bg-[#005ca8] px-2 py-2 text-white md:px-6 md:py-5 lg:px-8">
+    <section className="bg-[#4c1d95] px-2 py-2 text-white md:px-6 md:py-5 lg:px-8">
       <div className="mx-auto grid max-w-5xl grid-cols-2 gap-y-0.5 md:grid-cols-4 md:gap-4 md:py-5">
         {stats.map(({ value, label, icon: Icon }) => (
           <div

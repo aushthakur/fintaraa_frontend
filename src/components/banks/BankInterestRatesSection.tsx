@@ -110,13 +110,13 @@ export function BankInterestRatesSection({
                     className="rounded-2xl border border-[#e3ebf3] bg-white p-5 flex flex-col justify-between shadow-[0_4px_12px_rgba(22,34,50,0.02)] hover:shadow-sm transition-shadow min-h-40"
                   >
                     <div className="flex items-start gap-4">
-                      <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#edf4fd] text-[#005ca8]">
+                      <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#edf4fd] text-[#4c1d95]">
                         <Icon className="h-6 w-6 stroke-[1.75]" />
                       </span>
                       <div>
                         <Link
                           href={detailsHref}
-                          className="text-[15px] font-bold text-[#000000] no-underline hover:text-[#005ca8]"
+                          className="text-[15px] font-bold text-[#000000] no-underline hover:text-[#4c1d95]"
                         >
                           {product.title}
                         </Link>
@@ -225,7 +225,7 @@ export function BankInterestRatesSection({
                       key={item}
                       className="flex items-center gap-2.5 text-[13px] font-medium text-[#7a869a]"
                     >
-                      <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full border border-[#005ca8] bg-white text-[#005ca8]">
+                      <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full border border-[#4c1d95] bg-white text-[#4c1d95]">
                         <span className="text-[8px] font-bold">✓</span>
                       </div>
                       <span>{item}</span>

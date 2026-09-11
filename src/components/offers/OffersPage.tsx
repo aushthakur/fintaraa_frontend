@@ -49,8 +49,8 @@ const categoryMeta: Record<
   loan: {
     icon: WalletCards,
     label: "Loan Offer",
-    tone: "bg-[#e8f4ff] text-[#005ca8]",
-    chip: "bg-[#e8f4ff] text-[#005ca8]",
+    tone: "bg-[#e8f4ff] text-[#4c1d95]",
+    chip: "bg-[#e8f4ff] text-[#4c1d95]",
     surface: "from-[#e8f4ff] to-white",
   },
   card: {
@@ -197,7 +197,7 @@ function EmptyOffers({
       <button
         type="button"
         onClick={onReset}
-        className="mt-6 inline-flex h-11 items-center justify-center rounded-md bg-[#075cde] px-5 text-[13px] font-extrabold text-white transition-colors hover:bg-[#064cb8]"
+        className="mt-6 inline-flex h-11 items-center justify-center rounded-md bg-[#5b21b6] px-5 text-[13px] font-extrabold text-white transition-colors hover:bg-[#4c1d95]"
       >
         View all offers
       </button>
@@ -339,7 +339,7 @@ export function OffersPage() {
               className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between"
             >
               <div>
-                <h2 className="max-w-2xl text-[27px] font-extrabold leading-tight text-[#102f49] sm:text-[31px] lg:text-[34px]">
+                <h2 className="max-w-2xl text-[27px] font-extrabold leading-tight text-[#3b0764] sm:text-[31px] lg:text-[34px]">
                   Benefits selected for real financial needs
                 </h2>
                 <p className="mt-3 max-w-2xl text-[14px] font-medium leading-7 text-[#667f91] sm:text-[15px]">
@@ -369,8 +369,8 @@ export function OffersPage() {
                         onClick={() => setCategory(item.value)}
                         className={`inline-flex h-10 shrink-0 items-center gap-2 rounded-lg border px-3.5 text-[12px] font-extrabold transition-colors sm:h-11 sm:px-4 ${
                           category === item.value
-                            ? "border-[#075cde] bg-[#075cde] text-white"
-                            : "border-[#d9e6ef] bg-white text-[#526e82] hover:border-[#9ec5db] hover:bg-[#f4f9fc] hover:text-[#075cde]"
+                            ? "border-[#5b21b6] bg-[#5b21b6] text-white"
+                            : "border-[#d9e6ef] bg-white text-[#526e82] hover:border-[#9ec5db] hover:bg-[#f4f9fc] hover:text-[#5b21b6]"
                         }`}
                       >
                         <CategoryIcon className="h-4 w-4" aria-hidden="true" />
@@ -478,7 +478,7 @@ export function OffersPage() {
                               <Icon className="h-3.5 w-3.5 shrink-0" />
                               <span className="truncate">{meta.label}</span>
                             </span>
-                            <span className="inline-flex h-7 max-w-28 items-center rounded-md border border-white/80 bg-white/90 px-2.5 text-[10px] font-extrabold uppercase text-[#075cde] backdrop-blur">
+                            <span className="inline-flex h-7 max-w-28 items-center rounded-md border border-white/80 bg-white/90 px-2.5 text-[10px] font-extrabold uppercase text-[#5b21b6] backdrop-blur">
                               <span className="truncate">
                                 {offer.badge || "Active"}
                               </span>
@@ -489,7 +489,7 @@ export function OffersPage() {
 
                       <div className="flex flex-1 flex-col p-4 md:p-5">
                         <div className="flex items-center justify-between gap-3">
-                          <p className="min-w-0 truncate text-[12px] font-extrabold text-[#005ca8] md:text-[13px]">
+                          <p className="min-w-0 truncate text-[12px] font-extrabold text-[#4c1d95] md:text-[13px]">
                             {offer.lenderName}
                           </p>
                           <span className="inline-flex shrink-0 items-center gap-1.5 text-[10px] font-extrabold text-[#027a48]">
@@ -515,7 +515,7 @@ export function OffersPage() {
                                 className="min-w-0 border-r border-[#e7eef4] px-2 last:border-r-0"
                               >
                                 <div className="flex items-center gap-1 text-[9px] font-extrabold uppercase text-[#7a869a]">
-                                  <Metric className="h-3.5 w-3.5 shrink-0 text-[#005ca8]" />
+                                  <Metric className="h-3.5 w-3.5 shrink-0 text-[#4c1d95]" />
                                   <span className="truncate">{item.label}</span>
                                 </div>
                                 <p className="mt-1 min-h-8 text-[10.5px] font-extrabold leading-4 text-[#1f2937] md:text-[11px]">
@@ -541,7 +541,7 @@ export function OffersPage() {
                           type="button"
                           onClick={() => handleApply(offer)}
                           disabled={applyingId === offer._id}
-                          className="mt-4 inline-flex h-11 items-center justify-center gap-2 rounded-md bg-[#075cde] px-4 text-[13px] font-extrabold text-white transition-colors hover:bg-[#064cb8] disabled:cursor-not-allowed disabled:opacity-70 md:mt-auto"
+                          className="mt-4 inline-flex h-11 items-center justify-center gap-2 rounded-md bg-[#5b21b6] px-4 text-[13px] font-extrabold text-white transition-colors hover:bg-[#4c1d95] disabled:cursor-not-allowed disabled:opacity-70 md:mt-auto"
                         >
                           {applyingId === offer._id ? (
                             <Loader2 className="h-4 w-4 animate-spin" />

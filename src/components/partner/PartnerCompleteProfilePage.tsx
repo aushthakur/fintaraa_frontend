@@ -952,8 +952,8 @@ export function PartnerCompleteProfilePage() {
                 }
                 className={`h-11 text-[13px] font-extrabold transition ${
                   form.registerAs === item.value
-                    ? "bg-[#195585] text-white"
-                    : "text-[#344054] hover:bg-white hover:text-[#195585]"
+                    ? "bg-[#3b0764] text-white"
+                    : "text-[#344054] hover:bg-white hover:text-[#3b0764]"
                 }`}
               >
                 {item.label}
@@ -995,7 +995,7 @@ export function PartnerCompleteProfilePage() {
                 setMobileChangeStep("mobile");
                 setMobileChangeMessage("");
               }}
-              className="mt-2 inline-flex items-center gap-2 text-[12px] font-extrabold text-[#195585] underline underline-offset-4"
+              className="mt-2 inline-flex items-center gap-2 text-[12px] font-extrabold text-[#3b0764] underline underline-offset-4"
             >
               <Phone className="h-3.5 w-3.5" />
               Change number with OTP
@@ -1036,7 +1036,7 @@ export function PartnerCompleteProfilePage() {
                 </label>
               )}
               {mobileChangeMessage ? (
-                <p className="text-[12px] font-semibold text-[#195585]">
+                <p className="text-[12px] font-semibold text-[#3b0764]">
                   {mobileChangeMessage}
                 </p>
               ) : null}
@@ -1049,7 +1049,7 @@ export function PartnerCompleteProfilePage() {
                       ? requestMobileChangeOtp()
                       : confirmMobileChange())
                   }
-                  className="inline-flex items-center gap-2 rounded-full bg-[#195585] px-4 py-2 text-[12px] font-extrabold text-white disabled:opacity-60"
+                  className="inline-flex items-center gap-2 rounded-full bg-[#3b0764] px-4 py-2 text-[12px] font-extrabold text-white disabled:opacity-60"
                 >
                   <KeyRound className="h-3.5 w-3.5" />
                   {mobileChangeLoading
@@ -1146,7 +1146,7 @@ export function PartnerCompleteProfilePage() {
           <div>
             <Link
               href="/partner/profile"
-              className="inline-flex items-center gap-2 text-[13px] font-extrabold text-[#195585] no-underline"
+              className="inline-flex items-center gap-2 text-[13px] font-extrabold text-[#3b0764] no-underline"
             >
               <ArrowLeft className="h-4 w-4" />
               Back to partner profile
@@ -1159,7 +1159,7 @@ export function PartnerCompleteProfilePage() {
             <p className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#667085]">
               Completion
             </p>
-            <p className="mt-1 text-[32px] font-extrabold leading-none text-[#195585]">
+            <p className="mt-1 text-[32px] font-extrabold leading-none text-[#3b0764]">
               {completion}%
             </p>
           </div>
@@ -1172,7 +1172,7 @@ export function PartnerCompleteProfilePage() {
               aria-hidden="true"
             >
               <div
-                className="h-full bg-[#195585] transition-[width] duration-700 ease-out"
+                className="h-full bg-[#3b0764] transition-[width] duration-700 ease-out"
                 style={{ width: `${progress}%` }}
               />
             </div>
@@ -1197,7 +1197,7 @@ export function PartnerCompleteProfilePage() {
                     <span
                       className={`flex h-10 w-10 items-center justify-center text-sm font-extrabold transition-all duration-300 ${
                         isActive || isDone
-                          ? "bg-[#195585] text-white"
+                          ? "bg-[#3b0764] text-white"
                           : "bg-[#edf3f8] text-[#667085]"
                       }`}
                     >
@@ -1206,7 +1206,7 @@ export function PartnerCompleteProfilePage() {
                     <span>
                       <span
                         className={`block text-[11px] font-extrabold uppercase tracking-[0.12em] ${
-                          isActive ? "text-[#195585]" : "text-[#667085]"
+                          isActive ? "text-[#3b0764]" : "text-[#667085]"
                         }`}
                       >
                         Step {index + 1}
@@ -1248,7 +1248,7 @@ export function PartnerCompleteProfilePage() {
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center bg-[#eaf4ff] text-[#195585]">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center bg-[#eaf4ff] text-[#3b0764]">
                     {step.icon}
                   </div>
                   <div>
@@ -1266,7 +1266,7 @@ export function PartnerCompleteProfilePage() {
                 </div>
 
                 {message ? (
-                  <p className="mt-5 text-[13px] font-semibold leading-6 text-[#195585]">
+                  <p className="mt-5 text-[13px] font-semibold leading-6 text-[#3b0764]">
                     {message}
                   </p>
                 ) : null}
@@ -1276,7 +1276,7 @@ export function PartnerCompleteProfilePage() {
                     type="button"
                     onClick={goBack}
                     disabled={stepIndex === 0 || saving || uploadingCheque}
-                    className="inline-flex h-12 items-center justify-center gap-2 bg-[#eef5fb] px-5 text-[14px] font-extrabold text-[#195585] transition hover:bg-[#e3f0fb] disabled:cursor-not-allowed disabled:opacity-40"
+                    className="inline-flex h-12 items-center justify-center gap-2 bg-[#eef5fb] px-5 text-[14px] font-extrabold text-[#3b0764] transition hover:bg-[#e3f0fb] disabled:cursor-not-allowed disabled:opacity-40"
                   >
                     <ArrowLeft className="h-4 w-4" />
                     Back
@@ -1284,7 +1284,7 @@ export function PartnerCompleteProfilePage() {
                   <button
                     type="submit"
                     disabled={saving || loading || uploadingCheque}
-                    className="inline-flex h-12 min-w-[12rem] items-center justify-center gap-2 bg-[#195585] px-6 text-[14px] font-extrabold text-white transition hover:bg-[#13486f] disabled:opacity-60"
+                    className="inline-flex h-12 min-w-[12rem] items-center justify-center gap-2 bg-[#3b0764] px-6 text-[14px] font-extrabold text-white transition hover:bg-[#13486f] disabled:opacity-60"
                   >
                     {uploadingCheque
                       ? "Uploading..."
@@ -1310,7 +1310,7 @@ export function PartnerCompleteProfilePage() {
 
           <aside className="h-fit xl:sticky xl:top-[calc(var(--site-header-height,0px)+1rem)]">
             <div className="flex items-start gap-3">
-              <BriefcaseBusiness className="mt-1 h-5 w-5 shrink-0 text-[#195585]" />
+              <BriefcaseBusiness className="mt-1 h-5 w-5 shrink-0 text-[#3b0764]" />
               <div className="min-w-0">
                 <p className="truncate text-[18px] font-extrabold text-[#07162d]">
                   {partnerName}
@@ -1330,7 +1330,7 @@ export function PartnerCompleteProfilePage() {
               </div>
               <div className="mt-2 h-2 overflow-hidden bg-[#edf3f8]">
                 <div
-                  className="h-full bg-gradient-to-r from-[#195585] to-[#12b76a] transition-[width] duration-700 ease-out"
+                  className="h-full bg-gradient-to-r from-[#3b0764] to-[#12b76a] transition-[width] duration-700 ease-out"
                   style={{ width: `${completion}%` }}
                 />
               </div>
@@ -1382,7 +1382,7 @@ export function PartnerCompleteProfilePage() {
             )}
 
             <div className="mt-6 flex items-start gap-2 text-[12px] font-semibold leading-5 text-[#667085]">
-              <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-[#195585]" />
+              <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-[#3b0764]" />
               Details are saved to the same agency profile used by the B2B
               partner app.
             </div>
@@ -1433,13 +1433,13 @@ function ChequeUploadField({
               href={value}
               target="_blank"
               rel="noreferrer"
-              className="mt-2 inline-flex text-[12px] font-extrabold text-[#195585] no-underline"
+              className="mt-2 inline-flex text-[12px] font-extrabold text-[#3b0764] no-underline"
             >
               View uploaded cheque
             </Link>
           ) : null}
         </div>
-        <label className="inline-flex h-11 cursor-pointer items-center justify-center gap-2 bg-[#195585] px-4 text-[13px] font-extrabold text-white transition hover:bg-[#13486f]">
+        <label className="inline-flex h-11 cursor-pointer items-center justify-center gap-2 bg-[#3b0764] px-4 text-[13px] font-extrabold text-white transition hover:bg-[#13486f]">
           <UploadCloud className="h-4 w-4" />
           {uploading ? "Uploading..." : value ? "Replace file" : "Upload file"}
           <input

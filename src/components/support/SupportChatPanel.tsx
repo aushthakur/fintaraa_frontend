@@ -178,11 +178,11 @@ export function SupportChatPanel({
     <section className="flex min-h-[42rem] flex-col overflow-hidden rounded-3xl border border-[#dfeaf4] bg-white shadow-[0_20px_55px_rgba(25,85,133,0.10)]">
       <div className="flex flex-col gap-4 border-b border-[#e4edf5] bg-white p-5 md:flex-row md:items-center md:justify-between">
         <div className="flex gap-3">
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#195585] text-white shadow-[0_10px_24px_rgba(25,85,133,0.22)]">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#3b0764] text-white shadow-[0_10px_24px_rgba(25,85,133,0.22)]">
             <MessageCircle className="h-5 w-5" />
           </div>
           <div className="min-w-0">
-            <p className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#195585]">
+            <p className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#3b0764]">
               Ticket chat
             </p>
             <h2 className="mt-1 truncate text-[22px] font-extrabold text-[#07162d]">
@@ -230,14 +230,14 @@ export function SupportChatPanel({
                 className={`flex gap-3 ${mine ? "justify-end" : "justify-start"}`}
               >
                 {!mine ? (
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#195585] text-white">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#3b0764] text-white">
                     <UserRound className="h-4 w-4" />
                   </div>
                 ) : null}
                 <div
                   className={`max-w-[82%] rounded-2xl px-4 py-3 shadow-[0_8px_22px_rgba(25,85,133,0.07)] ${
                     mine
-                      ? "rounded-br-md bg-[#195585] text-white"
+                      ? "rounded-br-md bg-[#3b0764] text-white"
                       : "rounded-bl-md border border-[#e4edf5] bg-white text-[#07162d]"
                   }`}
                 >
@@ -260,7 +260,7 @@ export function SupportChatPanel({
                           target="_blank"
                           rel="noreferrer"
                           className={`truncate text-[11px] font-bold underline ${
-                            mine ? "text-white/80" : "text-[#195585]"
+                            mine ? "text-white/80" : "text-[#3b0764]"
                           }`}
                         >
                           {attachment.name || `Attachment ${index + 1}`}
@@ -287,7 +287,7 @@ export function SupportChatPanel({
             This ticket is closed. Create a new ticket if you need more help.
           </p>
         ) : null}
-        <div className="flex items-end gap-3 rounded-2xl border border-[#cfdeeb] bg-[#fbfdff] p-2 transition focus-within:border-[#195585] focus-within:ring-4 focus-within:ring-[#195585]/10">
+        <div className="flex items-end gap-3 rounded-2xl border border-[#cfdeeb] bg-[#fbfdff] p-2 transition focus-within:border-[#3b0764] focus-within:ring-4 focus-within:ring-[#3b0764]/10">
           <label className="block flex-1">
             <span className="sr-only">Support message</span>
             <textarea
@@ -315,7 +315,7 @@ export function SupportChatPanel({
           <button
             type="submit"
             disabled={!ticket || !input.trim() || sending || closed}
-            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#195585] text-white shadow-[0_8px_18px_rgba(25,85,133,0.20)] transition hover:bg-[#12466f] disabled:cursor-not-allowed disabled:opacity-50"
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#3b0764] text-white shadow-[0_8px_18px_rgba(25,85,133,0.20)] transition hover:bg-[#12466f] disabled:cursor-not-allowed disabled:opacity-50"
             aria-label="Send message"
           >
             {sending ? (

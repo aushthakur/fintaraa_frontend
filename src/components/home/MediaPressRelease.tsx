@@ -97,21 +97,27 @@ export function MediaPressRelease() {
   const duplicatedPress = [...items, ...items, ...items];
 
   return (
-    <section className="overflow-hidden select-none bg-white px-4 pt-8 md:px-6 lg:px-8">
-      <div className="mx-auto max-w-9xl">
-        <div className="mb-2 flex items-center justify-between gap-4">
-          <div className="max-w-2xl">
-            <h2 className="text-[24px] font-bold tracking-tight text-[#111625] md:text-[28px]">
-              Media & Press Release
-            </h2>
+    <section className="overflow-hidden select-none bg-white py-6 sm:py-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mb-3 flex items-center justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="h-2 w-2 rounded-full bg-[#5b21b6]" />
+              <h2 className="text-[17px] font-extrabold text-[#0f172a] sm:text-[20px]">
+                Media &amp; Press Releases
+              </h2>
+            </div>
+            <p className="text-[12px] font-medium text-[#64748b]">
+              Official news coverage, company updates and announcements
+            </p>
           </div>
           <div className="flex shrink-0 items-center gap-2">
             <Link
               href="/press-release"
-              className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-xl bg-[#075cde] px-5 text-[13px] font-bold leading-none text-white no-underline transition hover:bg-[#064cb8]"
+              className="inline-flex h-8.5 shrink-0 items-center justify-center gap-1.5 rounded-lg bg-[#5b21b6] px-3.5 text-[12px] font-bold leading-none text-white no-underline transition hover:bg-[#4c1d95]"
             >
               View All
-              <ArrowRight className="h-4 w-4" />
+              <ArrowRight className="h-3.5 w-3.5" />
             </Link>
             <CarouselNavigation
               label="media and press releases"
@@ -185,16 +191,16 @@ export function MediaPressRelease() {
                   <div className="pointer-events-none flex flex-1 flex-col justify-between p-5">
                     <div>
                       <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[12px] font-bold text-[#667085]">
-                        <span className="inline-flex items-center gap-1.5 text-[#075cde]">
+                        <span className="inline-flex items-center gap-1.5 text-[#5b21b6]">
                           <Newspaper className="h-3.5 w-3.5" />
                           {post.category || "Press Release"}
                         </span>
                         <span className="inline-flex items-center gap-1.5">
-                          <CalendarDays className="h-3.5 w-3.5 text-[#195585]" />
+                          <CalendarDays className="h-3.5 w-3.5 text-[#3b0764]" />
                           {formatKnowledgeDate(post.publishedAt)}
                         </span>
                       </div>
-                      <h3 className="mt-3 line-clamp-2 text-[18px] font-extrabold leading-snug tracking-tight text-[#111625] transition group-hover:text-[#075cde]">
+                      <h3 className="mt-3 line-clamp-2 text-[18px] font-extrabold leading-snug tracking-tight text-[#111625] transition group-hover:text-[#5b21b6]">
                         {post.title}
                       </h3>
                       <p className="mt-2 line-clamp-1 text-[13px] font-semibold leading-6 text-[#667085]">
@@ -205,7 +211,7 @@ export function MediaPressRelease() {
                       <span className="text-[12px] font-extrabold uppercase tracking-widest text-[#98a2b3]">
                         {post.category || "Media"}
                       </span>
-                      <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[#075cde] text-white transition group-hover:translate-x-1 group-hover:bg-[#064cb8]">
+                      <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[#5b21b6] text-white transition group-hover:translate-x-1 group-hover:bg-[#4c1d95]">
                         <ArrowRight className="h-4 w-4" />
                       </span>
                     </div>

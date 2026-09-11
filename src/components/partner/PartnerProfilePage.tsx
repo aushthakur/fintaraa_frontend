@@ -443,7 +443,7 @@ export function PartnerProfilePage() {
                 </p>
               </div>
               <div className="text-left md:text-right">
-                <p className="text-[15px] font-extrabold text-[#195585]">
+                <p className="text-[15px] font-extrabold text-[#3b0764]">
                   {formatINR(event.loanAmount)}
                 </p>
                 <p className="mt-1 text-[12px] font-semibold text-[#667085]">
@@ -468,7 +468,7 @@ export function PartnerProfilePage() {
           <aside className="grid gap-4 bg-white xl:h-full xl:overflow-y-auto xl:border-r xl:border-r-gray-200 xl:pr-3 scrollbar-thin">
             <section className="bg-white p-5">
               <div className="flex items-start gap-4">
-                <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full bg-linear-to-br from-[#195585] to-[#12b76a] text-[18px] font-extrabold text-white">
+                <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full bg-linear-to-br from-[#3b0764] to-[#12b76a] text-[18px] font-extrabold text-white">
                   {partner.avatar ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
@@ -481,7 +481,7 @@ export function PartnerProfilePage() {
                   )}
                 </div>
                 <div className="min-w-0">
-                  <p className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#195585]">
+                  <p className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#3b0764]">
                     Partner Profile
                   </p>
                   <h1 className="mt-2 truncate text-[22px] font-extrabold leading-tight text-[#07162d]">
@@ -500,7 +500,7 @@ export function PartnerProfilePage() {
                 </div>
                 <div className="mt-2 h-2 overflow-hidden rounded-full bg-[#edf3f8]">
                   <div
-                    className="h-full rounded-full bg-linear-to-r from-[#195585] to-[#12b76a]"
+                    className="h-full rounded-full bg-linear-to-r from-[#3b0764] to-[#12b76a]"
                     style={{ width: `${partner.completion.percent}%` }}
                   />
                 </div>
@@ -519,14 +519,14 @@ export function PartnerProfilePage() {
               <div className="mt-5 grid grid-cols-2 gap-2">
                 <Link
                   href="/partner/profile/complete"
-                  className="inline-flex h-11 items-center justify-center rounded-full bg-[#195585] px-4 text-[13px] font-extrabold text-white no-underline"
+                  className="inline-flex h-11 items-center justify-center rounded-full bg-[#3b0764] px-4 text-[13px] font-extrabold text-white no-underline"
                 >
                   Edit profile
                 </Link>
                 <button
                   type="button"
                   onClick={handleLogout}
-                  className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-[#d7e5f3] bg-white px-4 text-[13px] font-extrabold text-[#344054]"
+                  className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-[#e9d5ff] bg-white px-4 text-[13px] font-extrabold text-[#344054]"
                 >
                   <LogOut className="h-4 w-4" />
                   Logout
@@ -534,7 +534,7 @@ export function PartnerProfilePage() {
               </div>
               <Link
                 href="/partner/profile/notifications"
-                className="mt-2 inline-flex h-10 w-full items-center justify-center gap-2 rounded-full border border-[#cfe0ed] bg-[#f6fbff] px-4 text-[12px] font-extrabold text-[#195585] no-underline transition hover:bg-[#eaf5ff]"
+                className="mt-2 inline-flex h-10 w-full items-center justify-center gap-2 rounded-full border border-[#cfe0ed] bg-[#f6fbff] px-4 text-[12px] font-extrabold text-[#3b0764] no-underline transition hover:bg-[#eaf5ff]"
               >
                 <Bell className="h-4 w-4" />
                 View notifications
@@ -545,7 +545,7 @@ export function PartnerProfilePage() {
               <p className="text-[13px] font-extrabold text-[#07162d]">
                 Relationship Manager
               </p>
-              <p className="mt-3 text-[16px] font-extrabold text-[#195585]">
+              <p className="mt-3 text-[16px] font-extrabold text-[#3b0764]">
                 {partner.rmName}
               </p>
               <p className="mt-1 text-[13px] font-semibold text-[#667085]">
@@ -568,8 +568,8 @@ export function PartnerProfilePage() {
                       onClick={() => setActiveTab(item.key)}
                       className={`flex h-11 items-center gap-3 px-3 text-left text-[13px] font-extrabold transition ${
                         isActive
-                          ? "bg-[#195585] text-white"
-                          : "bg-[#f7fbff] text-[#344054] hover:bg-[#edf6ff] hover:text-[#195585]"
+                          ? "bg-[#3b0764] text-white"
+                          : "bg-[#f7fbff] text-[#344054] hover:bg-[#edf6ff] hover:text-[#3b0764]"
                       }`}
                     >
                       <Icon className="h-4 w-4" />
@@ -579,8 +579,8 @@ export function PartnerProfilePage() {
                         <span
                           className={`ml-auto px-2 py-0.5 text-[10px] ${
                             isActive
-                              ? "bg-white text-[#195585]"
-                              : "bg-[#dceeff] text-[#195585]"
+                              ? "bg-white text-[#3b0764]"
+                              : "bg-[#dceeff] text-[#3b0764]"
                           }`}
                         >
                           {pendingDocumentRequestCount}
@@ -597,7 +597,7 @@ export function PartnerProfilePage() {
             <div className="border-b border-[#edf3f8] p-5 md:p-7">
               <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                 <div>
-                  <p className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#195585]">
+                  <p className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#3b0764]">
                     Partner account
                   </p>
                   <h2 className="mt-2 text-[28px] font-extrabold tracking-[-0.02em] text-[#07162d] md:text-[36px]">
@@ -609,7 +609,7 @@ export function PartnerProfilePage() {
                     type="button"
                     onClick={() => void loadProfile()}
                     disabled={loading || dashboardLoading}
-                    className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-[#d7e5f3] px-4 text-[13px] font-extrabold text-[#195585] disabled:opacity-60"
+                    className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-[#e9d5ff] px-4 text-[13px] font-extrabold text-[#3b0764] disabled:opacity-60"
                   >
                     <RefreshCw className="h-4 w-4" />
                     Refresh
@@ -651,7 +651,7 @@ export function PartnerProfilePage() {
                         Upload the requested files to keep applications moving.
                       </span>
                     </span>
-                    <span className="inline-flex h-10 shrink-0 items-center justify-center bg-[#195585] px-4 text-[13px] font-extrabold text-white">
+                    <span className="inline-flex h-10 shrink-0 items-center justify-center bg-[#3b0764] px-4 text-[13px] font-extrabold text-white">
                       Review requests
                     </span>
                   </button>
@@ -669,7 +669,7 @@ export function PartnerProfilePage() {
                     </div>
                     <Link
                       href="/partner/profile/complete"
-                      className="inline-flex h-10 shrink-0 items-center justify-center rounded-full bg-[#195585] px-4 text-[13px] font-extrabold text-white no-underline"
+                      className="inline-flex h-10 shrink-0 items-center justify-center rounded-full bg-[#3b0764] px-4 text-[13px] font-extrabold text-white no-underline"
                     >
                       Continue setup
                     </Link>
@@ -684,7 +684,7 @@ export function PartnerProfilePage() {
                           key={label}
                           className="bg-[#f7fbff] p-4 ring-1 ring-[#e1edf8]"
                         >
-                          <Icon className="h-5 w-5 text-[#195585]" />
+                          <Icon className="h-5 w-5 text-[#3b0764]" />
                           <p className="mt-4 text-[12px] font-extrabold uppercase tracking-[0.12em] text-[#667085]">
                             {label}
                           </p>
@@ -701,7 +701,7 @@ export function PartnerProfilePage() {
                     <div className="grid gap-5 xl:grid-cols-[1fr_0.85fr]">
                       <section className="border border-[#e1edf8] bg-white p-5">
                         <div className="flex items-center gap-3">
-                          <Building2 className="h-5 w-5 text-[#195585]" />
+                          <Building2 className="h-5 w-5 text-[#3b0764]" />
                           <h3 className="text-[18px] font-extrabold text-[#07162d]">
                             Profile Snapshot
                           </h3>
@@ -715,7 +715,7 @@ export function PartnerProfilePage() {
 
                       <section className="border border-[#e1edf8] bg-white p-5">
                         <div className="flex items-center gap-3">
-                          <BriefcaseBusiness className="h-5 w-5 text-[#195585]" />
+                          <BriefcaseBusiness className="h-5 w-5 text-[#3b0764]" />
                           <h3 className="text-[18px] font-extrabold text-[#07162d]">
                             Lead Stages
                           </h3>
@@ -734,7 +734,7 @@ export function PartnerProfilePage() {
                               <span className="text-[13px] font-extrabold text-[#344054]">
                                 {label}
                               </span>
-                              <span className="text-[18px] font-extrabold text-[#195585]">
+                              <span className="text-[18px] font-extrabold text-[#3b0764]">
                                 {Number(value || 0)}
                               </span>
                             </div>
@@ -745,7 +745,7 @@ export function PartnerProfilePage() {
 
                     <section className="border border-[#e1edf8] bg-white p-5">
                       <div className="flex items-center gap-3">
-                        <ClipboardList className="h-5 w-5 text-[#195585]" />
+                        <ClipboardList className="h-5 w-5 text-[#3b0764]" />
                         <h3 className="text-[18px] font-extrabold text-[#07162d]">
                           Recent Lead Movement
                         </h3>
@@ -769,7 +769,7 @@ export function PartnerProfilePage() {
                           key={label}
                           className="bg-[#f7fbff] p-4 ring-1 ring-[#e1edf8]"
                         >
-                          <Icon className="h-5 w-5 text-[#195585]" />
+                          <Icon className="h-5 w-5 text-[#3b0764]" />
                           <p className="mt-4 text-[12px] font-extrabold uppercase tracking-[0.12em] text-[#667085]">
                             {label}
                           </p>
@@ -786,7 +786,7 @@ export function PartnerProfilePage() {
                     <div className="grid gap-5 xl:grid-cols-[0.78fr_1.22fr]">
                       <section className="border border-[#e1edf8] bg-white p-5">
                         <div className="flex items-center gap-3">
-                          <BriefcaseBusiness className="h-5 w-5 text-[#195585]" />
+                          <BriefcaseBusiness className="h-5 w-5 text-[#3b0764]" />
                           <h3 className="text-[18px] font-extrabold text-[#07162d]">
                             Product Mix
                           </h3>
@@ -811,7 +811,7 @@ export function PartnerProfilePage() {
                                         : undefined,
                                     )}
                                   </span>
-                                  <span className="text-[16px] font-extrabold text-[#195585]">
+                                  <span className="text-[16px] font-extrabold text-[#3b0764]">
                                     {Number(row.count || 0)}
                                   </span>
                                 </div>
@@ -830,7 +830,7 @@ export function PartnerProfilePage() {
 
                       <section className="border border-[#e1edf8] bg-white p-5">
                         <div className="flex items-center gap-3">
-                          <ClipboardList className="h-5 w-5 text-[#195585]" />
+                          <ClipboardList className="h-5 w-5 text-[#3b0764]" />
                           <h3 className="text-[18px] font-extrabold text-[#07162d]">
                             Lead Movement
                           </h3>
@@ -845,14 +845,14 @@ export function PartnerProfilePage() {
                   <section className="border border-[#e1edf8] bg-white p-5">
                     <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                       <div className="flex items-center gap-3">
-                        <Building2 className="h-5 w-5 text-[#195585]" />
+                        <Building2 className="h-5 w-5 text-[#3b0764]" />
                         <h3 className="text-[18px] font-extrabold text-[#07162d]">
                           Profile Details
                         </h3>
                       </div>
                       <Link
                         href="/partner/profile/complete"
-                        className="inline-flex h-10 items-center justify-center bg-[#195585] px-4 text-[13px] font-extrabold text-white no-underline"
+                        className="inline-flex h-10 items-center justify-center bg-[#3b0764] px-4 text-[13px] font-extrabold text-white no-underline"
                       >
                         Edit profile
                       </Link>
@@ -874,14 +874,14 @@ export function PartnerProfilePage() {
                   <section className="border border-[#e1edf8] bg-white p-5">
                     <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                       <div className="flex items-center gap-3">
-                        <BriefcaseBusiness className="h-5 w-5 text-[#195585]" />
+                        <BriefcaseBusiness className="h-5 w-5 text-[#3b0764]" />
                         <h3 className="text-[18px] font-extrabold text-[#07162d]">
                           Bank Details
                         </h3>
                       </div>
                       <Link
                         href="/partner/profile/complete"
-                        className="inline-flex h-10 items-center justify-center bg-[#195585] px-4 text-[13px] font-extrabold text-white no-underline"
+                        className="inline-flex h-10 items-center justify-center bg-[#3b0764] px-4 text-[13px] font-extrabold text-white no-underline"
                       >
                         Edit bank
                       </Link>
@@ -897,7 +897,7 @@ export function PartnerProfilePage() {
                               href={String(value)}
                               target="_blank"
                               rel="noreferrer"
-                              className="mt-1 inline-flex text-[14px] font-extrabold text-[#195585] no-underline"
+                              className="mt-1 inline-flex text-[14px] font-extrabold text-[#3b0764] no-underline"
                             >
                               View uploaded file
                             </Link>
@@ -916,14 +916,14 @@ export function PartnerProfilePage() {
                   <section className="border border-[#e1edf8] bg-white p-5">
                     <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                       <div className="flex items-center gap-3">
-                        <FileText className="h-5 w-5 text-[#195585]" />
+                        <FileText className="h-5 w-5 text-[#3b0764]" />
                         <h3 className="text-[18px] font-extrabold text-[#07162d]">
                           Documents
                         </h3>
                       </div>
                       <Link
                         href="/partner/profile/complete"
-                        className="inline-flex h-10 items-center justify-center bg-[#195585] px-4 text-[13px] font-extrabold text-white no-underline"
+                        className="inline-flex h-10 items-center justify-center bg-[#3b0764] px-4 text-[13px] font-extrabold text-white no-underline"
                       >
                         Upload documents
                       </Link>
@@ -933,7 +933,7 @@ export function PartnerProfilePage() {
                     ) ? (
                       <div className="mt-5 border border-[#b9d7ef] bg-[#f2f8fd] p-4">
                         <div className="flex items-start gap-3">
-                          <UploadCloud className="mt-0.5 h-5 w-5 text-[#195585]" />
+                          <UploadCloud className="mt-0.5 h-5 w-5 text-[#3b0764]" />
                           <div>
                             <p className="text-[14px] font-extrabold text-[#07162d]">
                               Documents requested by Fintaraa
@@ -970,7 +970,7 @@ export function PartnerProfilePage() {
                                         </p>
                                       ) : null}
                                     </div>
-                                    <span className="text-[11px] font-extrabold text-[#195585]">
+                                    <span className="text-[11px] font-extrabold text-[#3b0764]">
                                       {uploadedCount} of {request.requestedDocuments.length} uploaded
                                     </span>
                                   </div>
@@ -982,7 +982,7 @@ export function PartnerProfilePage() {
                                       return (
                                         <label
                                           key={documentKey}
-                                          className="inline-flex min-h-10 cursor-pointer items-center gap-2 bg-[#195585] px-4 py-2 text-[12px] font-extrabold text-white"
+                                          className="inline-flex min-h-10 cursor-pointer items-center gap-2 bg-[#3b0764] px-4 py-2 text-[12px] font-extrabold text-white"
                                         >
                                           <UploadCloud className="h-4 w-4" />
                                           {uploadingRequestKey === actionKey
@@ -1036,7 +1036,7 @@ export function PartnerProfilePage() {
                                   href={url}
                                   target="_blank"
                                   rel="noreferrer"
-                                  className="inline-flex h-10 items-center justify-center bg-white px-4 text-[13px] font-extrabold text-[#195585] no-underline"
+                                  className="inline-flex h-10 items-center justify-center bg-white px-4 text-[13px] font-extrabold text-[#3b0764] no-underline"
                                 >
                                   View
                                 </Link>
@@ -1082,7 +1082,7 @@ export function PartnerProfilePage() {
 function InfoLine({ icon, value }: { icon: React.ReactNode; value: string }) {
   return (
     <div className="flex min-w-0 items-center gap-2">
-      <span className="text-[#195585]">{icon}</span>
+      <span className="text-[#3b0764]">{icon}</span>
       <span className="truncate">{value}</span>
     </div>
   );

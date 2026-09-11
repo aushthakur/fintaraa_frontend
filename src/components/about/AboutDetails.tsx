@@ -267,7 +267,7 @@ export function AboutDetails() {
 
             <div className="mt-8 grid gap-7 sm:grid-cols-2">
               <div className="flex gap-4">
-                <span className="mt-1 h-12 w-0.75 shrink-0 bg-[#075cde]" />
+                <span className="mt-1 h-12 w-0.75 shrink-0 bg-[#5b21b6]" />
                 <div>
                   <p className="text-[18px] font-extrabold text-[#0b1f3a]">
                     Customer first
@@ -402,7 +402,7 @@ export function AboutDetails() {
                       className="object-cover transition-transform duration-700 hover:scale-[1.04]"
                     />
                   </motion.div>
-                  <figcaption className="mt-3 text-[12px] font-extrabold uppercase text-[#075cde] md:text-[13px]">
+                  <figcaption className="mt-3 text-[12px] font-extrabold uppercase text-[#5b21b6] md:text-[13px]">
                     {image.label} finance
                   </figcaption>
                 </motion.figure>
@@ -418,7 +418,7 @@ export function AboutDetails() {
                 className="group"
               >
                 <div className="flex items-start gap-4">
-                  <span className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#edf7ff] text-[#075cde] transition-colors group-hover:bg-[#d9eeff]">
+                  <span className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#edf7ff] text-[#5b21b6] transition-colors group-hover:bg-[#d9eeff]">
                     <Icon className="h-4.75 w-4.75" />
                   </span>
                   <div>
@@ -489,7 +489,7 @@ export function AboutDetails() {
         </div>
       </section>
 
-      <section className="overflow-hidden bg-[#f5fbff] px-4 py-16 md:px-6 md:py-20 lg:px-8">
+      <section className="overflow-hidden bg-[#faf5ff] px-4 py-16 md:px-6 md:py-20 lg:px-8">
         <div className="mx-auto grid max-w-9xl gap-12 lg:grid-cols-[1.02fr_0.98fr] lg:items-center lg:gap-16">
           <motion.div
             {...reveal()}
@@ -558,7 +558,7 @@ export function AboutDetails() {
                   }}
                   className="flex gap-4"
                 >
-                  <span className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#dff1ff] text-[#075cde]">
+                  <span className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#dff1ff] text-[#5b21b6]">
                     <Check className="h-3.5 w-3.5" strokeWidth={2.8} />
                   </span>
                   <div>
@@ -615,7 +615,7 @@ export function AboutDetails() {
             whileInView={{ scaleX: 1 }}
             viewport={{ once: true, amount: 0.8 }}
             transition={{ duration: 0.9, ease }}
-            className="h-0.75 origin-left bg-[#075cde]"
+            className="h-0.75 origin-left bg-[#5b21b6]"
           />
           <div className="grid gap-x-8 gap-y-9 py-8 sm:grid-cols-2 lg:grid-cols-4">
             {scaleStats.map((stat, index) => (
@@ -624,7 +624,7 @@ export function AboutDetails() {
                 className="text-center"
                 {...reveal(index * 0.07, 16)}
               >
-                <p className="text-[29px] font-extrabold leading-none text-[#075cde] md:text-[35px]">
+                <p className="text-[29px] font-extrabold leading-none text-[#5b21b6] md:text-[35px]">
                   {stat.value}
                 </p>
                 <p className="mt-3 text-[13px] font-bold leading-6 text-[#40536b] md:text-[14px]">

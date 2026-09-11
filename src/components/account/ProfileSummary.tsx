@@ -152,7 +152,7 @@ export function ProfileSummary() {
     <section className="bg-white px-5 pt-5">
       <div className="flex flex-col gap-4 sm:flex-row">
         <div className="relative h-20 w-20 shrink-0">
-          <div className="flex h-full w-full items-center justify-center overflow-hidden rounded-3xl bg-linear-to-br from-[#195585] to-[#12b76a] text-[24px] font-extrabold text-white">
+          <div className="flex h-full w-full items-center justify-center overflow-hidden rounded-3xl bg-linear-to-br from-[#3b0764] to-[#12b76a] text-[24px] font-extrabold text-white">
             {showAvatar ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
@@ -171,7 +171,7 @@ export function ProfileSummary() {
             title="Change profile photo"
             disabled={uploading}
             onClick={() => fileInputRef.current?.click()}
-            className="absolute -bottom-1.5 -right-1.5 flex h-8 w-8 items-center justify-center rounded-full bg-[#195585] text-white shadow-[0_5px_14px_rgba(25,85,133,0.3)] ring-2 ring-white transition hover:bg-[#0f4771] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#075cde] disabled:cursor-wait disabled:opacity-80"
+            className="absolute -bottom-1.5 -right-1.5 flex h-8 w-8 items-center justify-center rounded-full bg-[#3b0764] text-white shadow-[0_5px_14px_rgba(25,85,133,0.3)] ring-2 ring-white transition hover:bg-[#0f4771] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5b21b6] disabled:cursor-wait disabled:opacity-80"
           >
             {uploading ? (
               <Loader2 className="h-4 w-4 animate-spin" />
@@ -198,19 +198,19 @@ export function ProfileSummary() {
             </h1>
             <Link
               href="/account/profile/edit-profile"
-              className="inline-flex h-8 items-center gap-2 rounded-full bg-[#eef8ff] px-3 text-[12px] font-extrabold text-[#195585] no-underline"
+              className="inline-flex h-8 items-center gap-2 rounded-full bg-[#eef8ff] px-3 text-[12px] font-extrabold text-[#3b0764] no-underline"
             >
               <Edit3 className="h-3.5 w-3.5" />
               Edit Profile
             </Link>
           </div>
 
-          <p className="mt-2 text-[12px] font-extrabold text-[#195585]">
+          <p className="mt-2 text-[12px] font-extrabold text-[#3b0764]">
             Profile {profile.completion.percent}% complete
           </p>
           <div className="mt-2 h-2 max-w-sm overflow-hidden rounded-full bg-[#e4edf5]">
             <div
-              className="h-full rounded-full bg-linear-to-r from-[#195585] to-[#12b76a]"
+              className="h-full rounded-full bg-linear-to-r from-[#3b0764] to-[#12b76a]"
               style={{ width: `${profile.completion.percent}%` }}
             />
           </div>
@@ -231,7 +231,7 @@ export function ProfileSummary() {
           <AlertCircle className="h-4 w-4" />
           {profile.kycStatus}
         </Link>
-        <span className="inline-flex h-9 items-center gap-2 rounded-full bg-[#eef8ff] px-4 text-[12px] font-extrabold text-[#195585]">
+        <span className="inline-flex h-9 items-center gap-2 rounded-full bg-[#eef8ff] px-4 text-[12px] font-extrabold text-[#3b0764]">
           <Smartphone className="h-4 w-4" />
           {profile.mobile}
         </span>

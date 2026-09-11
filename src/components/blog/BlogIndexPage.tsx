@@ -170,14 +170,14 @@ export function BlogIndexPage() {
                     value={searchQuery}
                     onChange={(event) => updateSearch(event.target.value)}
                     placeholder="Search articles"
-                    className="h-11 w-full rounded-full bg-white pl-10 pr-10 text-[13px] font-semibold text-[#17354d] outline-none transition placeholder:text-[#98a6b3] focus:bg-[#e8f3ff]"
+                    className="h-11 w-full rounded-full bg-white pl-10 pr-10 text-[13px] font-semibold text-[#3b0764] outline-none transition placeholder:text-[#98a6b3] focus:bg-[#e8f3ff]"
                   />
                   {searchQuery ? (
                     <button
                       type="button"
                       onClick={() => updateSearch("")}
                       aria-label="Clear article search"
-                      className="absolute right-2 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full text-[#718397] hover:bg-[#eef6ff] hover:text-[#075cde]"
+                      className="absolute right-2 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full text-[#718397] hover:bg-[#eef6ff] hover:text-[#5b21b6]"
                     >
                       <X className="h-4 w-4" aria-hidden="true" />
                     </button>
@@ -200,8 +200,8 @@ export function BlogIndexPage() {
                       onClick={() => selectCategory(category)}
                       className={`h-10 shrink-0 rounded-full px-4 text-[12px] font-extrabold transition ${
                         selected
-                          ? "bg-[#075cde] text-white"
-                          : "bg-white/85 text-[#526b80] hover:bg-[#dceeff] hover:text-[#075cde]"
+                          ? "bg-[#5b21b6] text-white"
+                          : "bg-white/85 text-[#526b80] hover:bg-[#dceeff] hover:text-[#5b21b6]"
                       }`}
                     >
                       {category}

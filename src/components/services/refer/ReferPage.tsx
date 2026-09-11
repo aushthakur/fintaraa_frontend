@@ -259,7 +259,7 @@ export function ReferPage() {
     {
       label: "SMS",
       icon: MessageSquareText,
-      color: "#075cde",
+      color: "#5b21b6",
       action: () =>
         window.location.assign(
           `sms:?&body=${encodeURIComponent(`${shareText} ${referralLink}`)}`,
@@ -295,7 +295,7 @@ export function ReferPage() {
     {
       label: "Copy Link",
       icon: Mail,
-      color: "#005ca8",
+      color: "#4c1d95",
       action: () => copyValue(referralLink, "link"),
     },
   ];
@@ -440,7 +440,7 @@ export function ReferPage() {
   if (!authReady) {
     return (
       <main className="flex min-h-[60vh] items-center justify-center bg-white px-4">
-        <span className="inline-flex items-center gap-2 rounded-full border border-[#dce9f7] px-5 py-3 text-[13px] font-bold text-[#195585]">
+        <span className="inline-flex items-center gap-2 rounded-full border border-[#dce9f7] px-5 py-3 text-[13px] font-bold text-[#3b0764]">
           <Loader2 className="h-4 w-4 animate-spin" />
           Checking login...
         </span>
@@ -481,7 +481,7 @@ export function ReferPage() {
             <div className="grid gap-5">
               <div className="grid gap-4 rounded-2xl border border-[#e3e8ef] bg-white p-6 shadow-[0_4px_18px_rgba(16,24,40,0.04)] md:grid-cols-[1.1fr_0.9fr] md:items-center md:p-8">
                 <div>
-                  <h1 className="text-[34px] font-extrabold leading-[1.08] tracking-[-0.02em] text-[#005ca8] md:text-[42px]">
+                  <h1 className="text-[34px] font-extrabold leading-[1.08] tracking-[-0.02em] text-[#4c1d95] md:text-[42px]">
                     {loading
                       ? "Referral rewards"
                       : !referralConfigAvailable
@@ -529,7 +529,7 @@ export function ReferPage() {
 
               <div className="rounded-2xl border border-[#e3e8ef] bg-white p-6 shadow-[0_4px_18px_rgba(16,24,40,0.04)] md:p-8">
                 {loading ? (
-                  <div className="flex items-center gap-2 text-[13px] font-bold text-[#005ca8]">
+                  <div className="flex items-center gap-2 text-[13px] font-bold text-[#4c1d95]">
                     <Loader2 className="h-4 w-4 animate-spin" />
                     Loading referral details...
                   </div>
@@ -566,7 +566,7 @@ export function ReferPage() {
                               type="button"
                               onClick={() => copyValue(value, key)}
                               disabled={!programActive || !value}
-                              className="inline-flex h-11 shrink-0 items-center gap-1.5 bg-[#dbeeff] px-4 text-[13px] font-bold text-[#0d64bf] disabled:cursor-not-allowed disabled:bg-[#edf1f5] disabled:text-[#98a2b3]"
+                              className="inline-flex h-11 shrink-0 items-center gap-1.5 bg-[#dbeeff] px-4 text-[13px] font-bold text-[#6d28d9] disabled:cursor-not-allowed disabled:bg-[#edf1f5] disabled:text-[#98a2b3]"
                             >
                               <Copy className="h-4 w-4" />
                               {copied === key ? "Copied" : "Copy"}
@@ -622,7 +622,7 @@ export function ReferPage() {
                     } = item as (typeof summaryCards)[number];
                     return (
                       <div key={label} className="flex items-center gap-3">
-                        <Icon className="h-6 w-6 shrink-0 text-[#0d64bf]" />
+                        <Icon className="h-6 w-6 shrink-0 text-[#6d28d9]" />
                         <span>
                           <span className="block text-[17px] font-extrabold text-[#1f2937]">
                             {value}
@@ -643,7 +643,7 @@ export function ReferPage() {
               >
                 <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
                   <div>
-                    <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[#0d64bf]">
+                    <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[#6d28d9]">
                       Referral wallet
                     </p>
                     <h2 className="mt-1 text-[22px] font-extrabold text-[#1f2937]">
@@ -717,7 +717,7 @@ export function ReferPage() {
                     >
                       Withdrawal amount
                     </label>
-                    <div className="mt-2 flex h-12 items-center rounded-xl border border-[#cfddea] bg-white px-3 focus-within:border-[#0d64bf]">
+                    <div className="mt-2 flex h-12 items-center rounded-xl border border-[#cfddea] bg-white px-3 focus-within:border-[#6d28d9]">
                       <span className="text-[15px] font-extrabold text-[#667085]">
                         ₹
                       </span>
@@ -788,7 +788,7 @@ export function ReferPage() {
                     <button
                       type="submit"
                       disabled={!canSubmitWithdrawal}
-                      className="mt-4 inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-[#0d64bf] px-4 text-[12px] font-extrabold text-white disabled:cursor-not-allowed disabled:bg-[#9db9d1]"
+                      className="mt-4 inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-[#6d28d9] px-4 text-[12px] font-extrabold text-white disabled:cursor-not-allowed disabled:bg-[#9db9d1]"
                     >
                       {submittingWithdrawal ? (
                         <Loader2 className="h-4 w-4 animate-spin" />
@@ -940,7 +940,7 @@ export function ReferPage() {
                                 <td className="px-3 py-3.5">
                                   <StageCell date={row.paidAt} />
                                 </td>
-                                <td className="px-3 py-3.5 font-bold text-[#0d64bf]">
+                                <td className="px-3 py-3.5 font-bold text-[#6d28d9]">
                                   {row.rewardAmount
                                     ? formatCurrency(row.rewardAmount)
                                     : "—"}
@@ -966,7 +966,7 @@ export function ReferPage() {
                           type="button"
                           onClick={() => copyValue(referralLink, "link")}
                           disabled={!programActive || !referralLink}
-                          className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[#005ca8] px-6 text-[14px] font-extrabold text-white shadow-[0_12px_24px_rgba(0,92,168,0.18)] disabled:cursor-not-allowed disabled:bg-[#9db9d1]"
+                          className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[#4c1d95] px-6 text-[14px] font-extrabold text-white shadow-[0_12px_24px_rgba(0,92,168,0.18)] disabled:cursor-not-allowed disabled:bg-[#9db9d1]"
                         >
                           <Copy className="h-4 w-4" />
                           Copy Referral Link
@@ -1042,7 +1042,7 @@ export function ReferPage() {
                 <div className="mt-5 grid gap-5">
                   {howItWorks.map((item, index) => (
                     <div key={item} className="flex items-start gap-3">
-                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#dbeeff] text-[13px] font-extrabold text-[#0d64bf]">
+                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#dbeeff] text-[13px] font-extrabold text-[#6d28d9]">
                         {index + 1}
                       </span>
                       <p className="pt-0.5 text-[13.5px] font-medium leading-5 text-[#475467]">

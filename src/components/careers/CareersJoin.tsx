@@ -152,7 +152,7 @@ export function CareersJoin() {
           <p className="text-[16px] font-extrabold text-[#111827]">
             Don&apos;t See the Right Role?
           </p>
-          <h2 className="mt-3 text-[24px] font-extrabold tracking-[-0.03em] text-[#0d64bf] md:text-[28px]">
+          <h2 className="mt-3 text-[24px] font-extrabold tracking-[-0.03em] text-[#6d28d9] md:text-[28px]">
             We&apos;d Love to Hear From You!
           </h2>
           <p className="mt-4 max-w-md text-[12px] font-medium leading-6 text-[#7d8794]">
@@ -198,7 +198,7 @@ export function CareersJoin() {
                     updateField(key as keyof typeof form, event.target.value)
                   }
                   placeholder={placeholder}
-                  className="h-10 rounded-lg border border-[#d9dfe8] px-3 text-[12px] outline-none placeholder:text-[#a0a7b2] focus:border-[#0d64bf]"
+                  className="h-10 rounded-lg border border-[#d9dfe8] px-3 text-[12px] outline-none placeholder:text-[#a0a7b2] focus:border-[#6d28d9]"
                 />
               </label>
             ))}
@@ -209,7 +209,7 @@ export function CareersJoin() {
               <select
                 value={selectedJobId}
                 onChange={(event) => setSelectedJobId(event.target.value)}
-                className="h-10 rounded-lg border border-[#d9dfe8] bg-white px-3 text-[12px] text-[#475467] outline-none focus:border-[#0d64bf]"
+                className="h-10 rounded-lg border border-[#d9dfe8] bg-white px-3 text-[12px] text-[#475467] outline-none focus:border-[#6d28d9]"
               >
                 <option value="">
                   {loadingJobs ? "Loading positions..." : "Open Application"}
@@ -232,7 +232,7 @@ export function CareersJoin() {
                 }
                 placeholder="Briefly tell us why you are a good fit"
                 rows={3}
-                className="rounded-lg border border-[#d9dfe8] px-3 py-2 text-[12px] outline-none placeholder:text-[#a0a7b2] focus:border-[#0d64bf]"
+                className="rounded-lg border border-[#d9dfe8] px-3 py-2 text-[12px] outline-none placeholder:text-[#a0a7b2] focus:border-[#6d28d9]"
               />
             </label>
             <label className="grid gap-2 md:col-span-2">

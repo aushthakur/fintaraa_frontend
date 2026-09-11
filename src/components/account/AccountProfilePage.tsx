@@ -9,7 +9,7 @@ export function AccountProfilePage({ activeSlug }: { activeSlug?: string }) {
       <div className="mx-auto h-full max-w-9xl">
         {/* <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className="text-[12px] font-extrabold uppercase tracking-[0.18em] text-[#195585]">
+            <p className="text-[12px] font-extrabold uppercase tracking-[0.18em] text-[#3b0764]">
               Profile & Settings
             </p>
             <h1 className="mt-2 text-[24px] font-extrabold leading-tight tracking-[-0.02em] text-[#07162d] md:text-[36px]">

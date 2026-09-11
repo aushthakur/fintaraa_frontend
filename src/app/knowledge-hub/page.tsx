@@ -25,7 +25,7 @@ export default function KnowledgeHubPage() {
   return (
     <main className="bg-white px-4 py-12 text-[#111625] md:px-6 lg:px-8">
       <div className="mx-auto max-w-9xl">
-        <p className="text-[12px] font-extrabold uppercase tracking-[0.18em] text-[#005ca8]">
+        <p className="text-[12px] font-extrabold uppercase tracking-[0.18em] text-[#4c1d95]">
           Knowledge Hub
         </p>
         <h1 className="mt-3 text-[38px] font-extrabold tracking-tight text-[#07162d] md:text-[56px]">
@@ -41,9 +41,9 @@ export default function KnowledgeHubPage() {
             <Link
               key={config.hrefRoot}
               href={config.hrefRoot}
-              className="rounded-2xl border border-[#e2edf6] bg-[#f8fbff] p-6 text-[#07162d] no-underline transition hover:-translate-y-0.5 hover:border-[#005ca8] hover:bg-white"
+              className="rounded-2xl border border-[#e2edf6] bg-[#f8fbff] p-6 text-[#07162d] no-underline transition hover:-translate-y-0.5 hover:border-[#4c1d95] hover:bg-white"
             >
-              <p className="text-[12px] font-extrabold uppercase tracking-[0.16em] text-[#005ca8]">
+              <p className="text-[12px] font-extrabold uppercase tracking-[0.16em] text-[#4c1d95]">
                 {config.eyebrow}
               </p>
               <h2 className="mt-3 text-[22px] font-extrabold">
@@ -56,9 +56,9 @@ export default function KnowledgeHubPage() {
           ))}
           <Link
             href="/blog"
-            className="rounded-2xl border border-[#e2edf6] bg-[#f8fbff] p-6 text-[#07162d] no-underline transition hover:-translate-y-0.5 hover:border-[#005ca8] hover:bg-white"
+            className="rounded-2xl border border-[#e2edf6] bg-[#f8fbff] p-6 text-[#07162d] no-underline transition hover:-translate-y-0.5 hover:border-[#4c1d95] hover:bg-white"
           >
-            <p className="text-[12px] font-extrabold uppercase tracking-[0.16em] text-[#005ca8]">
+            <p className="text-[12px] font-extrabold uppercase tracking-[0.16em] text-[#4c1d95]">
               Financial Guides
             </p>
             <h2 className="mt-3 text-[22px] font-extrabold">Blogs</h2>

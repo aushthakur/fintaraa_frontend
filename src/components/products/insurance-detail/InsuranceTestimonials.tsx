@@ -21,10 +21,10 @@ export function InsuranceTestimonials({
           {testimonials.map((item) => (
             <div
               key={item.name}
-              className="rounded-[28px] border border-dashed border-[#005ca8] p-6 text-left"
+              className="rounded-[28px] border border-dashed border-[#4c1d95] p-6 text-left"
             >
               <div className="flex items-center gap-3">
-                <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#e8f4ff] text-[#005ca8]">
+                <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#e8f4ff] text-[#4c1d95]">
                   <UserRound className="h-5 w-5" />
                 </span>
                 <span>

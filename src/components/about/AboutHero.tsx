@@ -62,7 +62,7 @@ export function AboutHero() {
               className="max-w-172.5 text-[34px] font-extrabold leading-[1.1] text-[#0b1f3a] sm:text-[40px] md:text-[45px] lg:text-[48px]"
             >
               Your trusted financial partner for loans that{" "}
-              <span className="text-[#075cde]">move life forward.</span>
+              <span className="text-[#5b21b6]">move life forward.</span>
             </motion.h1>
 
             <motion.p
@@ -88,7 +88,7 @@ export function AboutHero() {
             >
               {trustPoints.map((point) => (
                 <div key={point} className="flex items-center gap-2.5">
-                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#e7f4ff] text-[#075cde]">
+                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#e7f4ff] text-[#5b21b6]">
                     <Check className="h-3.5 w-3.5" strokeWidth={2.8} />
                   </span>
                   <span className="text-[13px] font-bold leading-5 text-[#26364d] md:text-[14px]">
@@ -105,7 +105,7 @@ export function AboutHero() {
               <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
                 <Link
                   href="/products"
-                  className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-md bg-[#075cde] px-6 text-[14px] font-extrabold text-white no-underline transition-colors hover:bg-[#064ebd] sm:w-auto"
+                  className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-md bg-[#5b21b6] px-6 text-[14px] font-extrabold text-white no-underline transition-colors hover:bg-[#064ebd] sm:w-auto"
                 >
                   Explore Loan Services
                   <ArrowRight className="h-4 w-4" />
@@ -114,7 +114,7 @@ export function AboutHero() {
               <motion.div whileHover={{ x: 2 }} whileTap={{ scale: 0.98 }}>
                 <a
                   href={CALL_PHONE.href}
-                  className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-md bg-[#eaf6ff] px-6 text-[14px] font-extrabold text-[#075cde] no-underline transition-colors hover:bg-[#dcedff] sm:w-auto"
+                  className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-md bg-[#eaf6ff] px-6 text-[14px] font-extrabold text-[#5b21b6] no-underline transition-colors hover:bg-[#dcedff] sm:w-auto"
                 >
                   <PhoneCall className="h-4 w-4" />
                   Call {CALL_PHONE.national}
@@ -181,7 +181,7 @@ export function AboutHero() {
             >
               <span className="h-10 w-0.75 bg-[#16a3e0]" />
               <div>
-                <p className="text-[20px] font-extrabold leading-none text-[#075cde]">
+                <p className="text-[20px] font-extrabold leading-none text-[#5b21b6]">
                   Since 2016
                 </p>
                 <p className="mt-1 text-[11px] font-bold text-[#637083] sm:text-[12px]">
@@ -204,7 +204,7 @@ export function AboutHero() {
             whileInView={{ scaleX: 1 }}
             viewport={{ once: true, amount: 0.8 }}
             transition={{ duration: 1, ease }}
-            className="block h-0.75 origin-left bg-[#075cde]"
+            className="block h-0.75 origin-left bg-[#5b21b6]"
           />
           <div className="grid gap-x-7 gap-y-8 py-8 sm:grid-cols-2 lg:grid-cols-4">
             {heroStats.map((stat, index) => (
@@ -220,7 +220,7 @@ export function AboutHero() {
                 }}
                 className="justify-center text-center"
               >
-                <p className="text-[29px] font-extrabold leading-none text-[#075cde] md:text-[34px]">
+                <p className="text-[29px] font-extrabold leading-none text-[#5b21b6] md:text-[34px]">
                   {stat.value}
                 </p>
                 <p className="mt-3 w-2/3 mx-auto text-[13px] font-semibold leading-6 text-[#5a687c]">

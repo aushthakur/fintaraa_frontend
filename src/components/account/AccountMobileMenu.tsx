@@ -38,7 +38,7 @@ export function AccountMobileMenu({ activeSlug }: { activeSlug?: string }) {
         aria-label={`Open account menu. Current section: ${activeLabel}`}
         className="flex w-full items-center gap-3 rounded-xl border border-[#dce7ef] bg-[#f7fbff] p-3 text-left"
       >
-        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#195585] text-white">
+        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#3b0764] text-white">
           <Menu className="h-5 w-5" aria-hidden="true" />
         </span>
         <span className="min-w-0 flex-1">
@@ -49,7 +49,7 @@ export function AccountMobileMenu({ activeSlug }: { activeSlug?: string }) {
             {activeLabel}
           </span>
         </span>
-        <span className="inline-flex items-center gap-1 text-[11px] font-extrabold text-[#195585]">
+        <span className="inline-flex items-center gap-1 text-[11px] font-extrabold text-[#3b0764]">
           Open
           <ChevronRight className="h-4 w-4" aria-hidden="true" />
         </span>
@@ -83,7 +83,7 @@ export function AccountMobileMenu({ activeSlug }: { activeSlug?: string }) {
                 type="button"
                 onClick={() => setOpen(false)}
                 aria-label="Close account menu"
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-[#eef8ff] text-[#195585]"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-[#eef8ff] text-[#3b0764]"
               >
                 <X className="h-5 w-5" aria-hidden="true" />
               </button>

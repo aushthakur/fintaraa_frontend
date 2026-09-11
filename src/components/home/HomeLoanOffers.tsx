@@ -37,7 +37,7 @@ function LoanRateOfferCard({
   return (
     <Link
       href={`/banks/${offer.bankSlug}/${slugifyProduct(activeTab)}`}
-      className="group block h-full w-full rounded-xl border border-gray-200 bg-white p-2.5 no-underline transition-colors duration-300 hover:border-[#bcd8f4] sm:p-3"
+      className="group block h-full w-full rounded-2xl border border-white/60 bg-white/60 p-3 shadow-[0_8px_30px_rgba(91,33,182,0.04)] backdrop-blur-xl no-underline transition-all duration-500 hover:-translate-y-1 hover:border-[#ddd6fe] hover:bg-white/90 hover:shadow-[0_20px_40px_rgba(91,33,182,0.12)]"
     >
       <div className="flex flex-col items-start gap-1">
         <div className="relative h-9 w-full overflow-hidden">
@@ -50,7 +50,7 @@ function LoanRateOfferCard({
             className="object-contain object-center"
           />
         </div>
-        <h4 className="line-clamp-1 mt-1 text-center w-full min-h-8 text-[12px] font-bold leading-4 tracking-tight text-[#00529c] sm:text-[13px]">
+        <h4 className="line-clamp-1 mt-1 text-center w-full min-h-8 text-[12px] font-bold leading-4 tracking-tight text-[#4c1d95] sm:text-[13px]">
           {offer.bankName}
         </h4>
       </div>
@@ -131,7 +131,7 @@ export function HomeLoanOffers() {
   return (
     <section
       aria-labelledby="home-loan-offers-heading"
-      className="bg-white px-4 py-12 md:px-6 lg:px-8"
+      className="relative overflow-hidden bg-white px-4 py-12 md:px-6 lg:px-8"
     >
       {/* Container Box featuring the signature clean borders visible in image_a1c8bd.png */}
       <div className="mx-auto max-w-9xl rounded-3xl">
@@ -143,7 +143,7 @@ export function HomeLoanOffers() {
           >
             {pluralLoanLabel(activeTab)} from{" "}
             <span className="text-[#12b76a]">7.10%*</span> Only with{" "}
-            <span className="text-[#00529c]">Fintaraa</span>
+            <span className="text-[#4c1d95]">Fintaraa</span>
           </h2>
         </div>
 
@@ -155,7 +155,7 @@ export function HomeLoanOffers() {
 
           <Link
             href={`/products/${slugifyProduct(activeTab)}`}
-            className="order-2 inline-flex h-9 shrink-0 items-center justify-center gap-1 rounded-lg bg-[#e9f2ff] px-3 text-[12px] font-bold leading-none text-[#075cde] no-underline transition hover:bg-[#d9eaff] sm:order-3 sm:h-11 sm:rounded-xl sm:bg-[#075cde] sm:px-5 sm:text-[13px] sm:text-white sm:hover:bg-[#064cb8]"
+            className="order-2 inline-flex h-9 shrink-0 items-center justify-center gap-1 rounded-lg bg-[#ede9fe] px-3 text-[12px] font-bold leading-none text-[#5b21b6] no-underline transition hover:bg-[#d9eaff] sm:order-3 sm:h-11 sm:rounded-xl sm:bg-[#5b21b6] sm:px-5 sm:text-[13px] sm:text-white sm:hover:bg-[#4c1d95]"
           >
             <span className="hidden sm:inline">View All</span>
             <span className="sm:hidden">View</span>
@@ -185,7 +185,7 @@ export function HomeLoanOffers() {
                 onClick={() => setActiveTab(tab)}
                 className={`shrink-0 rounded-xl border px-5 py-2.5 text-[13px] font-semibold transition-all ${
                   isSelected
-                    ? "border-[#075cde] bg-[#075cde] text-white font-bold"
+                    ? "border-[#5b21b6] bg-[#5b21b6] text-white font-bold"
                     : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
                 }`}
               >

@@ -6,10 +6,10 @@ import { productHref } from "@/lib/productRouting";
 // Soft, clean color palette configurations mirroring the design circles
 const toneClass: Record<string, string> = {
   amber: "bg-[#fff3df] text-[#f79009]",
-  blue: "bg-[#e4f4ff] text-[#195585]",
+  blue: "bg-[#e4f4ff] text-[#3b0764]",
   brown: "bg-[#fff3e5] text-[#a36a19]",
   gold: "bg-[#fff3c6] text-[#d4a42f]",
-  green: "bg-[#e9f2ff] text-[#075cde]",
+  green: "bg-[#ede9fe] text-[#5b21b6]",
   orange: "bg-[#fff4eb] text-[#f28c28]",
   pink: "bg-[#ffe4f2] text-[#f1129d]",
   red: "bg-[#ffe1e4] text-[#ef1010]",
@@ -72,14 +72,14 @@ const bankCards = [
 export function LoanOtherProducts() {
   return (
     <section className="px-4 pb-10 md:px-6 lg:px-8">
-      <div className="mx-auto max-w-9xl">
+      <div className="mx-auto max-w-7xl">
         <div className="flex items-center justify-between">
           <h2 className="text-[18px] font-extrabold text-[#111827]">
             Explore Other Products
           </h2>
           <Link
             href="/products"
-            className="inline-flex shrink-0 items-center gap-1 text-[14px] font-bold text-[#075cde] no-underline transition-colors hover:text-[#004b93]"
+            className="inline-flex shrink-0 items-center gap-1 text-[14px] font-bold text-[#5b21b6] no-underline transition-colors hover:text-[#4c1d95]"
           >
             View All
             <span className="text-[15px] font-light">→</span>

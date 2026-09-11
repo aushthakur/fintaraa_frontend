@@ -41,33 +41,37 @@ export function LoanBankComparison({
   const visibleRows = showAll || isExpanded ? rows : rows.slice(0, 5);
 
   return (
-    <section className="w-full max-w-9xl mx-auto bg-white px-4 py-12 antialiased text-[#111827] md:px-6">
+    <section className="w-full max-w-7xl mx-auto bg-white px-4 py-12 antialiased text-slate-900 md:px-6 lg:px-8">
       
       {/* SECTION TITLE & DESCRIPTION BLOCK */}
-      <div className="mb-6">
-        <h2 className="text-[28px] font-bold tracking-tight text-gray-900 leading-none">
+      <div className="mb-8">
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-purple-50 px-3.5 py-1 text-xs font-bold text-[#5b21b6] border border-purple-100 mb-2.5">
+          <Star className="h-3 w-3 fill-[#5b21b6] text-[#5b21b6]" />
+          Verified Bank Partners
+        </span>
+        <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
           {title}
         </h2>
-        <p className="mt-2 text-sm font-medium text-gray-400">
+        <p className="mt-1.5 text-sm font-medium text-slate-500">
           {description}
         </p>
       </div>
 
       {/* RESPONSIVE SCROLL-WRAPPER TABLE DOCK */}
-      <div className="w-full overflow-x-auto rounded-xl border border-gray-100 shadow-sm">
-        <table className="w-full min-w-210 border-collapse bg-white text-left text-sm">
-          <thead className="bg-[#f4f5f6] text-gray-700 select-none">
+      <div className="w-full overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-xs">
+        <table className="w-full min-w-[700px] border-collapse bg-white text-left text-sm">
+          <thead className="bg-slate-50/90 text-slate-600 text-xs font-bold uppercase tracking-wider border-b border-slate-200 select-none">
             <tr>
-              <th className="px-6 py-4 font-bold tracking-tight w-[24%]">Lender</th>
-              <th className="px-6 py-4 font-bold tracking-tight w-[20%]">Interest Rate (p.a)</th>
-              <th className="px-6 py-4 font-bold tracking-tight w-[18%]">Processing Fee</th>
-              <th className="px-6 py-4 font-bold tracking-tight w-[16%]">Max Amount</th>
-              <th className="px-6 py-4 font-bold tracking-tight w-[14%]">Max Tenure</th>
-              <th className="px-6 py-4 font-bold tracking-tight text-center w-[12%]">Action</th>
+              <th className="px-6 py-4 w-[24%]">Lender</th>
+              <th className="px-6 py-4 w-[20%]">Interest Rate (p.a)</th>
+              <th className="px-6 py-4 w-[18%]">Processing Fee</th>
+              <th className="px-6 py-4 w-[16%]">Max Amount</th>
+              <th className="px-6 py-4 w-[12%]">Max Tenure</th>
+              <th className="px-6 py-4 text-center w-[10%]">Action</th>
             </tr>
           </thead>
           
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-slate-100">
             {visibleRows.map((row) => {
               const bankSlug =
                 "bankSlug" in row && row.bankSlug
@@ -87,25 +91,25 @@ export function LoanBankComparison({
               return (
                 <tr
                   key={row.name}
-                  className="transition-colors hover:bg-gray-50/40"
+                  className="transition-colors hover:bg-purple-50/25"
                 >
                 {/* 1. LENDER LOGO & STAR RATINGS */}
                 <td className="px-6 py-4.5">
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-3.5">
                     <Link
                       href={bankDetailHref}
-                      className="block shrink-0 focus:outline-none"
+                      className="block shrink-0 focus:outline-none transition-transform hover:scale-105"
                     >
                       <BankLogoImage
                         src={row.logo || "/assets/banks/indian.png"}
                         alt={row.name}
                         className="h-8 w-28"
-                        imageClassName="object-left"
+                        imageClassName="object-left object-contain"
                       />
                     </Link>
-                    <div className="flex items-center gap-0.5 text-xs font-bold text-gray-400 select-none">
-                      <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
-                      <span className="pt-0.5">
+                    <div className="flex items-center gap-1 rounded-md bg-amber-50 px-2 py-0.5 text-xs font-bold text-amber-700 border border-amber-200/60 select-none">
+                      <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
+                      <span>
                         {"rating" in row && row.rating
                           ? row.rating
                           : "4.5"}
@@ -115,16 +119,16 @@ export function LoanBankComparison({
                 </td>
 
                 {/* 2. SPECIFIC FINANCIAL INFO DETAILS COLUMNS */}
-                <td className="px-6 py-4.5 font-medium text-gray-900">
+                <td className="px-6 py-4.5 font-bold text-[#5b21b6] text-[15px]">
                   {row.rate || "11.49% - 21.00%"}
                 </td>
-                <td className="px-6 py-4.5 font-medium text-gray-900">
+                <td className="px-6 py-4.5 font-medium text-slate-700">
                   {row.fee || "Up to 2.5%"}
                 </td>
-                <td className="px-6 py-4.5 font-medium text-gray-900">
+                <td className="px-6 py-4.5 font-bold text-slate-900">
                   {row.amount || "₹ 40 Lakh"}
                 </td>
-                <td className="px-6 py-4.5 font-medium text-gray-900">
+                <td className="px-6 py-4.5 font-medium text-slate-700">
                   {row.tenure || "60 Months"}
                 </td>
 
@@ -133,7 +137,7 @@ export function LoanBankComparison({
                   <AuthRedirectLink
                     href={applyHref}
                     productSlug={page.loanTypeSlug}
-                    className="inline-flex h-9 items-center justify-center rounded-full whitespace-nowrap  bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-5 text-xs font-bold text-white transition-colors hover:bg-[#009948] no-underline shadow-sm active:scale-[0.98]"
+                    className="inline-flex h-9 items-center justify-center rounded-xl whitespace-nowrap bg-[#5b21b6] px-4 text-xs font-bold text-white transition-all hover:bg-[#4c1d95] active:scale-[0.98] no-underline shadow-xs hover:shadow-md"
                   >
                     Apply Now
                   </AuthRedirectLink>
@@ -151,11 +155,11 @@ export function LoanBankComparison({
           <button
             type="button"
             onClick={() => setIsExpanded(!isExpanded)}
-            className="flex items-center gap-1.5 text-sm font-bold text-[#00529b] hover:text-[#00407a] transition-colors group select-none"
+            className="flex items-center gap-2 rounded-full border border-purple-200 bg-purple-50/70 px-6 py-2.5 text-xs font-bold text-[#5b21b6] transition-all hover:bg-purple-100 hover:border-purple-300 shadow-2xs active:scale-[0.98] cursor-pointer"
           >
-            <span>{isExpanded ? "View fewer partners" : "View more partners"}</span>
+            <span>{isExpanded ? "View fewer lenders" : `View all ${rows.length} partner lenders`}</span>
             <ChevronDown 
-              className={`h-4 w-4 text-[#00529b] transition-transform duration-200 ${
+              className={`h-4 w-4 text-[#5b21b6] transition-transform duration-200 ${
                 isExpanded ? "rotate-180" : ""
               }`} 
               strokeWidth={2.5}

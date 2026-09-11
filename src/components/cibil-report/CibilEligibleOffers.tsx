@@ -353,11 +353,11 @@ export function CibilEligibleOffers({ score = 0 }: { score?: number }) {
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           >
-            <p className="inline-flex items-center gap-2 rounded-full border border-[#cfe2ee] bg-white px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.1em] text-[#075cde]">
+            <p className="inline-flex items-center gap-2 rounded-full border border-[#cfe2ee] bg-white px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.1em] text-[#5b21b6]">
               <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
               CIBIL-based matching
             </p>
-            <h2 className="mt-4 text-[27px] font-extrabold leading-tight tracking-[-0.02em] text-[#102f49] sm:text-[32px]">
+            <h2 className="mt-4 text-[27px] font-extrabold leading-tight tracking-[-0.02em] text-[#3b0764] sm:text-[32px]">
               Loan eligibility for your credit score
             </h2>
             <p className="mt-2 max-w-3xl text-[14px] font-medium text-[#667f91]">
@@ -373,15 +373,15 @@ export function CibilEligibleOffers({ score = 0 }: { score?: number }) {
 
           {loading ? (
             <div className="mt-7 flex min-h-44 items-center justify-center gap-2 rounded-2xl border border-[#cddfe9] bg-white text-[12px] font-bold text-[#526e82]">
-              <Loader2 className="h-4 w-4 animate-spin text-[#075cde]" />
+              <Loader2 className="h-4 w-4 animate-spin text-[#5b21b6]" />
               Matching loan types and partner banks...
             </div>
           ) : (
             <>
               <div className="mt-7 rounded-2xl border border-[#cddfe9] bg-white p-5 shadow-[0_12px_34px_rgba(30,74,102,0.065)]">
                 <div className="flex items-center gap-2">
-                  <BadgeCheck className="h-5 w-5 text-[#075cde]" />
-                  <h3 className="text-[16px] font-extrabold text-[#102f49]">
+                  <BadgeCheck className="h-5 w-5 text-[#5b21b6]" />
+                  <h3 className="text-[16px] font-extrabold text-[#3b0764]">
                     Loan types indicated by your score
                   </h3>
                 </div>
@@ -391,7 +391,7 @@ export function CibilEligibleOffers({ score = 0 }: { score?: number }) {
                       <Link
                         key={loan.slug}
                         href={eligibilityHref(loan.slug, score)}
-                        className="inline-flex items-center gap-2 rounded-xl border border-[#cfe2ee] bg-[#f7fbfe] px-3.5 py-2.5 text-[12px] font-extrabold text-[#075cde] no-underline hover:border-[#075cde]"
+                        className="inline-flex items-center gap-2 rounded-xl border border-[#cfe2ee] bg-[#f7fbfe] px-3.5 py-2.5 text-[12px] font-extrabold text-[#5b21b6] no-underline hover:border-[#5b21b6]"
                       >
                         {loan.slug === "instant-loan" ? (
                           <Zap className="h-4 w-4" />
@@ -417,7 +417,7 @@ export function CibilEligibleOffers({ score = 0 }: { score?: number }) {
 
               <div className="mt-5">
                 <div className="flex items-center justify-between gap-3">
-                  <h3 className="text-[20px] font-extrabold text-[#102f49]">
+                  <h3 className="text-[20px] font-extrabold text-[#3b0764]">
                     Partner banks for these loan types
                   </h3>
                   {bankMatches.length ? (
@@ -450,15 +450,15 @@ export function CibilEligibleOffers({ score = 0 }: { score?: number }) {
                                 imageClassName="object-left"
                               />
                             ) : (
-                              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#e8f3fb] text-[#075cde]">
+                              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#e8f3fb] text-[#5b21b6]">
                                 <Landmark className="h-5 w-5" />
                               </span>
                             )}
                             <div className="min-w-0 flex-1">
-                              <p className="truncate text-[14px] font-extrabold text-[#102f49]">
+                              <p className="truncate text-[14px] font-extrabold text-[#3b0764]">
                                 {bank.name}
                               </p>
-                              <span className="mt-1 inline-flex rounded-full bg-[#edf6fc] px-2 py-1 text-[9px] font-extrabold uppercase tracking-wide text-[#075cde]">
+                              <span className="mt-1 inline-flex rounded-full bg-[#edf6fc] px-2 py-1 text-[9px] font-extrabold uppercase tracking-wide text-[#5b21b6]">
                                 {match.loanLabel}
                               </span>
                             </div>
@@ -481,7 +481,7 @@ export function CibilEligibleOffers({ score = 0 }: { score?: number }) {
                             href={match.href}
                             target={external ? "_blank" : undefined}
                             rel={external ? "noopener noreferrer" : undefined}
-                            className="mt-3 inline-flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-[#075cde] px-4 text-[11px] font-extrabold text-white no-underline hover:bg-[#064cb8]"
+                            className="mt-3 inline-flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-[#5b21b6] px-4 text-[11px] font-extrabold text-white no-underline hover:bg-[#4c1d95]"
                           >
                             Check full eligibility
                             <ArrowRight className="h-4 w-4" />
@@ -493,7 +493,7 @@ export function CibilEligibleOffers({ score = 0 }: { score?: number }) {
                 ) : (
                   <div className="mt-4 rounded-2xl border border-[#f1d8a8] bg-[#fffaf0] px-5 py-7 text-center">
                     <AlertTriangle className="mx-auto h-7 w-7 text-[#b45309]" />
-                    <h4 className="mt-3 text-[16px] font-extrabold text-[#102f49]">
+                    <h4 className="mt-3 text-[16px] font-extrabold text-[#3b0764]">
                       No bank-specific match is available right now
                     </h4>
                     <p className="mx-auto mt-2 max-w-2xl text-[12px] font-semibold leading-5 text-[#7890a2]">

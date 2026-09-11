@@ -160,7 +160,7 @@ export function SiteBreadcrumbs() {
               ) : (
                 <Link
                   href={item.href}
-                  className="inline-flex items-center gap-1.5 text-[#667085] no-underline transition hover:text-[#00529b]"
+                  className="inline-flex items-center gap-1.5 text-[#667085] no-underline transition hover:text-[#4c1d95]"
                 >
                   {index === 0 ? <Home className="h-3.5 w-3.5" /> : null}
                   {item.label}

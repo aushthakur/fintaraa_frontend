@@ -47,7 +47,7 @@ export function GstServices() {
     <section className="px-4 py-8 md:px-6 lg:px-8">
       <div className="mx-auto max-w-9xl rounded-xl border border-[#d7dfe8] bg-white p-5 sm:p-6 md:p-8">
         {/* Section heading */}
-        <h2 className="text-xl font-extrabold tracking-[-0.01em] text-[#005ca8] sm:text-2xl md:text-[28px] lg:text-[32px]">
+        <h2 className="text-xl font-extrabold tracking-[-0.01em] text-[#4c1d95] sm:text-2xl md:text-[28px] lg:text-[32px]">
           Our GST Services
         </h2>
 
@@ -59,12 +59,12 @@ export function GstServices() {
               className={`rounded-xl border ${card.border} ${card.bg} p-5 sm:p-6 md:p-7`}
             >
               {/* Card header with icon placeholder */}
-              <h3 className="flex items-center gap-3 text-base font-extrabold text-[#005ca8] sm:text-[17px] md:text-[18px] lg:text-xl">
+              <h3 className="flex items-center gap-3 text-base font-extrabold text-[#4c1d95] sm:text-[17px] md:text-[18px] lg:text-xl">
                 {/* Icon placeholder box — swap with <Image> later */}
                 <span
                   className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${card.iconBg} sm:h-9 sm:w-9`}
                 >
-                  <FileText className="h-4 w-4 text-[#005ca8] sm:h-5 sm:w-5" />
+                  <FileText className="h-4 w-4 text-[#4c1d95] sm:h-5 sm:w-5" />
                 </span>
                 {card.title}
               </h3>
@@ -80,7 +80,7 @@ export function GstServices() {
                     key={row}
                     className="flex items-center gap-3 text-sm font-semibold text-[#4b5563] md:text-[15px]"
                   >
-                    <CircleCheck className="h-3.5 w-3.5 shrink-0 text-[#005ca8] sm:h-4 sm:w-4" />
+                    <CircleCheck className="h-3.5 w-3.5 shrink-0 text-[#4c1d95] sm:h-4 sm:w-4" />
                     {row}
                   </div>
                 ))}
@@ -92,12 +92,12 @@ export function GstServices() {
         {/* 4 feature badges */}
         <div className="mt-6 grid grid-cols-2 gap-4 border-t border-[#eaf0f8] pt-6 sm:mt-8 sm:pt-7 md:grid-cols-4">
           {featureBadges.map(({ label, icon: Icon }) => (
-            <div key={label} className="flex items-center gap-3 text-[#005ca8]">
+            <div key={label} className="flex items-center gap-3 text-[#4c1d95]">
               {/* Icon placeholder box — swap with <Image> later */}
               <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#e8f4ff] sm:h-9 sm:w-9">
-                <Icon className="h-4 w-4 text-[#005ca8] sm:h-5 sm:w-5" />
+                <Icon className="h-4 w-4 text-[#4c1d95] sm:h-5 sm:w-5" />
               </span>
-              <span className="text-[13px] font-extrabold leading-[1.4] text-[#005ca8] sm:text-sm md:text-[15px]">
+              <span className="text-[13px] font-extrabold leading-[1.4] text-[#4c1d95] sm:text-sm md:text-[15px]">
                 {label}
               </span>
             </div>

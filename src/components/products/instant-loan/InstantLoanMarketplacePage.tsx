@@ -296,26 +296,26 @@ export function InstantLoanMarketplacePage({
           >
             <Link
               href="/"
-              className="text-[#667085] no-underline hover:text-[#075cde]"
+              className="text-[#667085] no-underline hover:text-[#5b21b6]"
             >
               Home
             </Link>
             <span aria-hidden="true">/</span>
             <Link
               href="/products?category=loans"
-              className="text-[#667085] no-underline hover:text-[#075cde]"
+              className="text-[#667085] no-underline hover:text-[#5b21b6]"
             >
               Loans
             </Link>
             <span aria-hidden="true">/</span>
-            <span className="text-[#075cde]">Instant Loan</span>
+            <span className="text-[#5b21b6]">Instant Loan</span>
           </nav>
 
           <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1.08fr)_minmax(420px,0.82fr)] lg:gap-12">
             <div className="pt-2 lg:pt-8">
               <h1 className="mt-5 max-w-4xl text-[36px] font-extrabold leading-[1.06] tracking-[-0.04em] text-[#07162d] sm:text-[46px] lg:text-[54px]">
                 Compare Instant Loans from{" "}
-                <span className="text-[#075cde]">all partner banks</span>
+                <span className="text-[#5b21b6]">all partner banks</span>
               </h1>
               <p className="mt-5 max-w-2xl text-[15px] font-medium leading-7 text-[#52657d] sm:text-[17px]">
                 Review indicative lender terms, choose a suitable bank or NBFC,
@@ -328,7 +328,7 @@ export function InstantLoanMarketplacePage({
                     key={title}
                     className="rounded-2xl border border-white/80 bg-white/85 p-4 shadow-[0_10px_35px_rgba(7,22,45,0.06)] backdrop-blur"
                   >
-                    <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#eaf3ff] text-[#075cde]">
+                    <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#eaf3ff] text-[#5b21b6]">
                       <Icon className="h-4.5 w-4.5" />
                     </span>
                     <p className="mt-3 text-[13px] font-extrabold text-[#07162d]">
@@ -364,7 +364,7 @@ export function InstantLoanMarketplacePage({
             >
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[#075cde]">
+                  <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[#5b21b6]">
                     Free expert callback
                   </p>
                   <h2 className="mt-1.5 text-[24px] font-extrabold tracking-tight text-[#07162d]">
@@ -491,7 +491,7 @@ export function InstantLoanMarketplacePage({
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-linear-to-r from-[#0d5dc7] to-[#0878dd] px-6 text-[14px] font-extrabold text-white shadow-[0_12px_28px_rgba(7,92,222,0.24)] transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-65 disabled:hover:translate-y-0 sm:col-span-2"
+                  className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-linear-to-r from-[#0d5dc7] to-[#0878dd] px-6 text-[14px] font-extrabold text-white shadow-[0_12px_28px_rgba(91,33,182,0.24)] transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-65 disabled:hover:translate-y-0 sm:col-span-2"
                 >
                   {isSubmitting ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
@@ -537,7 +537,7 @@ export function InstantLoanMarketplacePage({
                   setSearch(event.target.value);
                   setVisibleLenderCount(lendersPerPage);
                 }}
-                className="h-12 w-full rounded-xl border border-[#d7e5f2] bg-[#fbfdff] pl-11 pr-4 text-[13px] font-semibold text-[#07162d] outline-none transition placeholder:text-[#98a2b3] focus:border-[#075cde] focus:ring-3 focus:ring-[#075cde]/10"
+                className="h-12 w-full rounded-xl border border-[#d7e5f2] bg-[#fbfdff] pl-11 pr-4 text-[13px] font-semibold text-[#07162d] outline-none transition placeholder:text-[#98a2b3] focus:border-[#5b21b6] focus:ring-3 focus:ring-[#5b21b6]/10"
               />
             </label>
           </div>
@@ -578,7 +578,7 @@ export function InstantLoanMarketplacePage({
                   setSearch("");
                   setVisibleLenderCount(lendersPerPage);
                 }}
-                className="mt-4 text-[12px] font-extrabold text-[#075cde]"
+                className="mt-4 text-[12px] font-extrabold text-[#5b21b6]"
               >
                 Clear search
               </button>
@@ -594,7 +594,7 @@ export function InstantLoanMarketplacePage({
                     Math.min(current + lendersPerPage, filteredLenders.length),
                   )
                 }
-                className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-[#b9d5ee] bg-white px-6 text-[12px] font-extrabold text-[#075cde] shadow-[0_8px_22px_rgba(7,92,222,0.08)] transition hover:-translate-y-0.5 hover:bg-[#f5f9ff]"
+                className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-[#b9d5ee] bg-white px-6 text-[12px] font-extrabold text-[#5b21b6] shadow-[0_8px_22px_rgba(91,33,182,0.08)] transition hover:-translate-y-0.5 hover:bg-[#f5f9ff]"
               >
                 Load {Math.min(lendersPerPage, remainingLenderCount)} more lenders
                 <ChevronDown className="h-4 w-4" />
@@ -617,7 +617,7 @@ export function InstantLoanMarketplacePage({
       <section className="bg-[#f7faff] px-4 py-12 md:px-6 md:py-14 lg:px-8">
         <div className="mx-auto max-w-9xl">
           <div className="text-center">
-            <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[#075cde]">
+            <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[#5b21b6]">
               Simple application journey
             </p>
             <h2 className="mt-2 text-[27px] font-extrabold tracking-tight text-[#07162d]">
@@ -631,7 +631,7 @@ export function InstantLoanMarketplacePage({
                 className="relative rounded-2xl border border-[#dce8f3] bg-white p-5 shadow-[0_9px_30px_rgba(7,22,45,0.04)]"
               >
                 <div className="flex items-center justify-between">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#eaf3ff] text-[#075cde]">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#eaf3ff] text-[#5b21b6]">
                     <Icon className="h-5 w-5" />
                   </span>
                   <span className="text-[30px] font-black text-[#e0eaf4]">
@@ -710,7 +710,7 @@ function LenderCard({
                 sizes="112px"
               />
             ) : (
-              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#eaf3ff] text-[13px] font-black text-[#075cde]">
+              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#eaf3ff] text-[13px] font-black text-[#5b21b6]">
                 {lender.bankName
                   .split(/\s+/)
                   .slice(0, 2)
@@ -728,7 +728,7 @@ function LenderCard({
             </span>
           </span>
         </Link>
-        <BadgeCheck className="h-5 w-5 shrink-0 text-[#075cde]" />
+        <BadgeCheck className="h-5 w-5 shrink-0 text-[#5b21b6]" />
       </div>
 
       <dl className="mt-5 grid grid-cols-2 overflow-hidden rounded-xl border border-[#e6eef6] bg-[#f8fbff]">
@@ -740,7 +740,7 @@ function LenderCard({
             <dt className="text-[9px] font-extrabold uppercase tracking-[0.08em] text-[#8a94a6]">
               {item.label}
             </dt>
-            <dd className="mt-1 line-clamp-2 text-[12px] font-extrabold leading-5 text-[#17354d]">
+            <dd className="mt-1 line-clamp-2 text-[12px] font-extrabold leading-5 text-[#3b0764]">
               {item.value || "Check lender details"}
             </dd>
           </div>
@@ -751,7 +751,7 @@ function LenderCard({
         <button
           type="button"
           onClick={onRequestCallback}
-          className="inline-flex h-10 items-center justify-center rounded-xl border border-[#bdd5ea] bg-white px-3 text-[11px] font-extrabold text-[#075cde] transition hover:bg-[#f3f8ff]"
+          className="inline-flex h-10 items-center justify-center rounded-xl border border-[#bdd5ea] bg-white px-3 text-[11px] font-extrabold text-[#5b21b6] transition hover:bg-[#f3f8ff]"
         >
           Get callback
         </button>
@@ -787,7 +787,7 @@ function LeadInput({
         className={`flex h-11 items-center rounded-xl border bg-white transition ${
           error
             ? "border-[#f04438]"
-            : "border-[#d7e2ee] focus-within:border-[#075cde] focus-within:ring-3 focus-within:ring-[#075cde]/10"
+            : "border-[#d7e2ee] focus-within:border-[#5b21b6] focus-within:ring-3 focus-within:ring-[#5b21b6]/10"
         }`}
       >
         <span className="ml-3.5 shrink-0 text-[#7a8aa0]">{icon}</span>
@@ -838,7 +838,7 @@ function LeadSelect({
         className={`flex h-11 items-center rounded-xl border bg-white transition ${
           error
             ? "border-[#f04438]"
-            : "border-[#d7e2ee] focus-within:border-[#075cde] focus-within:ring-3 focus-within:ring-[#075cde]/10"
+            : "border-[#d7e2ee] focus-within:border-[#5b21b6] focus-within:ring-3 focus-within:ring-[#5b21b6]/10"
         }`}
       >
         <span className="ml-3.5 shrink-0 text-[#7a8aa0]">{icon}</span>

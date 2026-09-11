@@ -52,9 +52,9 @@ type CurrentUser = Record<string, any>;
 type FormErrors = Record<string, string>;
 
 const fieldClass =
-  "h-11 w-full rounded-xl border border-[#dce9f7] bg-white px-3 text-[13px] font-semibold text-[#111827] outline-none transition placeholder:text-[#9aa8b8] focus:border-[#005ca8] focus:ring-2 focus:ring-[#e5f1ff]";
+  "h-11 w-full rounded-xl border border-[#dce9f7] bg-white px-3 text-[13px] font-semibold text-[#111827] outline-none transition placeholder:text-[#9aa8b8] focus:border-[#4c1d95] focus:ring-2 focus:ring-[#e5f1ff]";
 const textareaClass =
-  "min-h-24 w-full rounded-xl border border-[#dce9f7] bg-white px-3 py-3 text-[13px] font-semibold text-[#111827] outline-none transition placeholder:text-[#9aa8b8] focus:border-[#005ca8] focus:ring-2 focus:ring-[#e5f1ff]";
+  "min-h-24 w-full rounded-xl border border-[#dce9f7] bg-white px-3 py-3 text-[13px] font-semibold text-[#111827] outline-none transition placeholder:text-[#9aa8b8] focus:border-[#4c1d95] focus:ring-2 focus:ring-[#e5f1ff]";
 
 const patterns: Record<string, RegExp> = {
   email: /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/,
@@ -668,7 +668,7 @@ function FieldInput({
           type="checkbox"
           checked={Boolean(value)}
           onChange={(event) => onChange(field.key, event.target.checked)}
-          className="mt-1 h-4 w-4 accent-[#005ca8]"
+          className="mt-1 h-4 w-4 accent-[#4c1d95]"
         />
         <span>
           <span className="block text-[13px] font-bold text-[#111827]">
@@ -737,11 +737,11 @@ function FieldInput({
       ) : field.type === "file" ? (
         <div className="rounded-xl border border-dashed border-[#c9ddf2] bg-[#fbfdff] p-3">
           <div className="flex items-center gap-2 text-[12px] font-extrabold text-[#111827]">
-            <UploadCloud className="h-4 w-4 text-[#005ca8]" />
+            <UploadCloud className="h-4 w-4 text-[#4c1d95]" />
             {field.placeholder || "Upload PDF or image"}
           </div>
           <div className="mt-3 grid grid-cols-2 gap-2">
-            <label className="inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#075cde] px-3 text-[12px] font-extrabold text-white">
+            <label className="inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#5b21b6] px-3 text-[12px] font-extrabold text-white">
               <Camera className="h-4 w-4" aria-hidden="true" />
               Take photo
               <input
@@ -757,7 +757,7 @@ function FieldInput({
                 }
               />
             </label>
-            <label className="inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-xl border border-[#c9ddf2] bg-white px-3 text-[12px] font-extrabold text-[#005ca8]">
+            <label className="inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-xl border border-[#c9ddf2] bg-white px-3 text-[12px] font-extrabold text-[#4c1d95]">
               <UploadCloud className="h-4 w-4" aria-hidden="true" />
               Browse files
               <input
@@ -794,7 +794,7 @@ function FieldInput({
             type="button"
             disabled={rcLookupLoading}
             onClick={onRcLookup}
-            className="inline-flex h-11 w-full shrink-0 items-center justify-center gap-2 rounded-xl bg-[#005ca8] px-4 text-[12px] font-extrabold text-white disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
+            className="inline-flex h-11 w-full shrink-0 items-center justify-center gap-2 rounded-xl bg-[#4c1d95] px-4 text-[12px] font-extrabold text-white disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
           >
             {rcLookupLoading ? (
               <Loader2 className="h-4 w-4 animate-spin" />
@@ -836,7 +836,7 @@ function FieldInput({
                         {match.bankName}
                       </span>
                     </span>
-                    <span className="shrink-0 rounded-full bg-[#eaf3ff] px-2.5 py-1 text-[10px] font-extrabold text-[#005ca8]">
+                    <span className="shrink-0 rounded-full bg-[#eaf3ff] px-2.5 py-1 text-[10px] font-extrabold text-[#4c1d95]">
                       {(match.categories || []).join(", ")}
                     </span>
                   </button>
@@ -847,7 +847,7 @@ function FieldInput({
           {Array.isArray(values.companyCategory) &&
           values.companyCategory.length > 0 &&
           values.companyCategoryBankName ? (
-            <div className="mt-2 rounded-lg bg-[#f0f8ff] px-3 py-2 text-[11px] font-bold text-[#005ca8]">
+            <div className="mt-2 rounded-lg bg-[#f0f8ff] px-3 py-2 text-[11px] font-bold text-[#4c1d95]">
               {values.companyCategoryBankName}:{" "}
               {values.companyCategory.join(", ")}
             </div>
@@ -1375,7 +1375,7 @@ export function ApplicationFlowPage({
   if (!authReady) {
     return (
       <main className="flex min-h-[60vh] items-center justify-center bg-white px-4 py-12">
-        <div className="flex items-center gap-3 rounded-2xl border border-[#dce9f7] bg-[#f7fbff] px-5 py-4 text-[13px] font-extrabold text-[#005ca8]">
+        <div className="flex items-center gap-3 rounded-2xl border border-[#dce9f7] bg-[#f7fbff] px-5 py-4 text-[13px] font-extrabold text-[#4c1d95]">
           <Loader2 className="h-4 w-4 animate-spin" />
           Redirecting to login...
         </div>
@@ -1388,7 +1388,7 @@ export function ApplicationFlowPage({
       <div className="mx-auto max-w-7xl">
         <Link
           href={referrer || "/products"}
-          className="mb-6 inline-flex items-center gap-2 text-[13px] font-bold text-[#005ca8] no-underline"
+          className="mb-6 inline-flex items-center gap-2 text-[13px] font-bold text-[#4c1d95] no-underline"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to product
@@ -1399,14 +1399,14 @@ export function ApplicationFlowPage({
             <div className="mb-8 rounded-2xl border border-[#dce9f7] bg-[linear-gradient(180deg,#ffffff_0%,#f6fbff_100%)] p-4 shadow-[0_16px_40px_rgba(0,92,168,0.06)]">
               <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
                 <div className="min-w-0 flex-1">
-                  <p className="wrap-break-word text-[11px] font-extrabold uppercase tracking-[0.14em] text-[#005ca8] sm:tracking-[0.16em]">
+                  <p className="wrap-break-word text-[11px] font-extrabold uppercase tracking-[0.14em] text-[#4c1d95] sm:tracking-[0.16em]">
                     Application progress
                   </p>
                   <p className="mt-1 wrap-break-words text-[13px] font-semibold leading-5 text-[#667085]">
                     Step {stepIndex + 1} of {flow.steps.length}: {step.title}
                   </p>
                 </div>
-                <span className="shrink-0 rounded-full border border-[#cfe6ff] bg-white px-3 py-1 text-[11px] font-extrabold text-[#005ca8]">
+                <span className="shrink-0 rounded-full border border-[#cfe6ff] bg-white px-3 py-1 text-[11px] font-extrabold text-[#4c1d95]">
                   {Math.round(progress)}% complete
                 </span>
               </div>
@@ -1414,7 +1414,7 @@ export function ApplicationFlowPage({
               <div className="relative pt-2 overflow-x-auto pb-1">
                 <div className="absolute left-5 right-5 top-5 h-1 rounded-full bg-[#d7eafd]" />
                 <motion.div
-                  className="absolute left-5 top-5 h-1 rounded-full bg-[linear-gradient(90deg,#005ca8,#13a653)]"
+                  className="absolute left-5 top-5 h-1 rounded-full bg-[linear-gradient(90deg,#4c1d95,#13a653)]"
                   initial={false}
                   animate={{ width: `calc((100% - 40px) * ${progress / 100})` }}
                   transition={{ duration: 0.3, ease: "easeOut" }}
@@ -1441,7 +1441,7 @@ export function ApplicationFlowPage({
                             completed
                               ? "border-[#13a653] bg-[#13a653] text-white"
                               : active
-                                ? "border-[#005ca8] bg-[#005ca8] text-white ring-4 ring-[#dcefff]"
+                                ? "border-[#4c1d95] bg-[#4c1d95] text-white ring-4 ring-[#dcefff]"
                                 : "border-[#cfe3f6] bg-white text-[#8bb7dc]"
                           }`}
                         >
@@ -1452,7 +1452,7 @@ export function ApplicationFlowPage({
                           )}
                         </motion.span>
                         <span
-                          className={`hidden max-w-28 truncate text-[11px] font-extrabold md:block ${active ? "text-[#005ca8]" : "text-[#8a94a6]"}`}
+                          className={`hidden max-w-28 truncate text-[11px] font-extrabold md:block ${active ? "text-[#4c1d95]" : "text-[#8a94a6]"}`}
                         >
                           {item.title}
                         </span>
@@ -1464,12 +1464,12 @@ export function ApplicationFlowPage({
             </div>
 
             <div className="mb-5">
-              <p className="text-[12px] font-extrabold uppercase tracking-wide text-[#005ca8]">
+              <p className="text-[12px] font-extrabold uppercase tracking-wide text-[#4c1d95]">
                 {category === "insurance"
                   ? "Insurance application"
                   : "Loan application"}
               </p>
-              <h1 className="mt-1 text-[28px] font-extrabold tracking-tight text-[#005ca8] md:text-[34px]">
+              <h1 className="mt-1 text-[28px] font-extrabold tracking-tight text-[#4c1d95] md:text-[34px]">
                 Apply for {flow.title || humanizeProduct(productSlug)}
               </h1>
               <p className="mt-1 text-[13px] font-medium text-[#7a869a]">
@@ -1478,12 +1478,12 @@ export function ApplicationFlowPage({
                   "Complete the details step by step."}
               </p>
               {bank ? (
-                <p className="mt-2 inline-flex rounded-full bg-[#eef6ff] px-3 py-1 text-[11px] font-extrabold text-[#005ca8]">
+                <p className="mt-2 inline-flex rounded-full bg-[#eef6ff] px-3 py-1 text-[11px] font-extrabold text-[#4c1d95]">
                   Partner context: {humanizeProduct(bank)}
                 </p>
               ) : null}
               {autofillMessage ? (
-                <p className="mt-2 inline-flex rounded-full border border-[#dce9f7] bg-white px-3 py-1 text-[11px] font-extrabold text-[#005ca8]">
+                <p className="mt-2 inline-flex rounded-full border border-[#dce9f7] bg-white px-3 py-1 text-[11px] font-extrabold text-[#4c1d95]">
                   {autofillMessage}
                 </p>
               ) : null}
@@ -1503,8 +1503,8 @@ export function ApplicationFlowPage({
                     onClick={() => updateValue(flow.tabFieldKey!, tab.key)}
                     className={`rounded-full border px-4 py-2 text-[12px] font-extrabold transition ${
                       activeTab === tab.key
-                        ? "border-[#005ca8] bg-[#005ca8] text-white"
-                        : "border-[#dce9f7] bg-white text-[#005ca8]"
+                        ? "border-[#4c1d95] bg-[#4c1d95] text-white"
+                        : "border-[#dce9f7] bg-white text-[#4c1d95]"
                     }`}
                   >
                     {tab.label}
@@ -1657,7 +1657,7 @@ export function ApplicationFlowPage({
                   Sparkles;
                 return (
                   <div key={title} className="flex gap-3">
-                    <Icon className="mt-0.5 h-4 w-4 shrink-0 text-[#005ca8]" />
+                    <Icon className="mt-0.5 h-4 w-4 shrink-0 text-[#4c1d95]" />
                     <div>
                       <p className="text-[12px] font-extrabold text-[#111827]">
                         {title}
@@ -1672,7 +1672,7 @@ export function ApplicationFlowPage({
             </div>
             {premium ? (
               <div className="mt-5 rounded-xl border border-[#cfe6ff] bg-white p-4">
-                <p className="text-[11px] font-extrabold uppercase tracking-wide text-[#005ca8]">
+                <p className="text-[11px] font-extrabold uppercase tracking-wide text-[#4c1d95]">
                   Premium placeholder
                 </p>
                 <p className="mt-1 text-[20px] font-extrabold text-[#111827]">
@@ -1684,7 +1684,7 @@ export function ApplicationFlowPage({
               </div>
             ) : null}
             <div className="mt-5 rounded-xl border border-[#dce9f7] bg-white p-4">
-              <p className="text-[11px] font-extrabold uppercase tracking-wide text-[#005ca8]">
+              <p className="text-[11px] font-extrabold uppercase tracking-wide text-[#4c1d95]">
                 Notes
               </p>
               <ul className="mt-2 space-y-1.5 text-[11px] font-medium leading-5 text-[#667085]">

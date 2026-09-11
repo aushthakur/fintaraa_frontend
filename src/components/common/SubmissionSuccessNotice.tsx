@@ -56,7 +56,7 @@ export function SubmissionSuccessNotice({
             <button
               type="button"
               onClick={copyReference}
-              className="inline-flex h-9 w-fit shrink-0 items-center justify-center gap-2 rounded-lg bg-[#005ca8] px-3 text-[11px] font-extrabold text-white transition-colors hover:bg-[#004d8d]"
+              className="inline-flex h-9 w-fit shrink-0 items-center justify-center gap-2 rounded-lg bg-[#4c1d95] px-3 text-[11px] font-extrabold text-white transition-colors hover:bg-[#004d8d]"
               aria-label={`Copy ${referenceLabel}`}
             >
               {copied ? (

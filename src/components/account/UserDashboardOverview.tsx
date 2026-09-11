@@ -294,7 +294,7 @@ export function UserDashboardOverview() {
   if (loading) {
     return (
       <div className="grid min-h-96 place-items-center">
-        <span className="inline-flex items-center gap-2 text-[13px] font-bold text-[#195585]">
+        <span className="inline-flex items-center gap-2 text-[13px] font-bold text-[#3b0764]">
           <Loader2 className="h-5 w-5 animate-spin" />
           Loading your financial overview...
         </span>
@@ -315,7 +315,7 @@ export function UserDashboardOverview() {
             >
               <div className="grid h-full w-full place-items-center rounded-full bg-white text-center">
                 <span>
-                  <span className="block text-[33px] font-extrabold text-[#102c45]">
+                  <span className="block text-[33px] font-extrabold text-[#3b0764]">
                     {score || "—"}
                   </span>
                   <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#6b8194]">
@@ -325,10 +325,10 @@ export function UserDashboardOverview() {
               </div>
             </div>
             <div className="min-w-0 flex-1">
-              <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#075cde]">
+              <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#5b21b6]">
                 Credit health
               </p>
-              <h3 className="mt-2 text-[23px] font-extrabold text-[#102c45]">
+              <h3 className="mt-2 text-[23px] font-extrabold text-[#3b0764]">
                 {score >= 750
                   ? "Your score is in a strong range"
                   : score
@@ -343,14 +343,14 @@ export function UserDashboardOverview() {
                   type="button"
                   onClick={() => void refreshScore()}
                   disabled={refreshingScore}
-                  className="inline-flex h-10 items-center gap-2 rounded-xl bg-[#075cde] px-4 text-[12px] font-extrabold text-white disabled:opacity-60"
+                  className="inline-flex h-10 items-center gap-2 rounded-xl bg-[#5b21b6] px-4 text-[12px] font-extrabold text-white disabled:opacity-60"
                 >
                   <RefreshCw className={`h-4 w-4 ${refreshingScore ? "animate-spin" : ""}`} />
                   Refresh Score
                 </button>
                 <Link
                   href="/cibil-score/report"
-                  className="inline-flex h-10 items-center gap-2 rounded-xl border border-blue-200 bg-white px-4 text-[12px] font-extrabold text-[#075cde]"
+                  className="inline-flex h-10 items-center gap-2 rounded-xl border border-blue-200 bg-white px-4 text-[12px] font-extrabold text-[#5b21b6]"
                 >
                   View report
                   <ArrowRight className="h-4 w-4" />
@@ -368,10 +368,10 @@ export function UserDashboardOverview() {
         <article className="rounded-3xl border border-[#dbe8f3] bg-white p-5 md:p-6">
           <div className="flex items-center justify-between gap-4">
             <div>
-              <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#075cde]">
+              <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#5b21b6]">
                 Profile readiness
               </p>
-              <p className="mt-2 text-[30px] font-extrabold text-[#102c45]">
+              <p className="mt-2 text-[30px] font-extrabold text-[#3b0764]">
                 {profile.completion.percent}%
               </p>
             </div>
@@ -379,7 +379,7 @@ export function UserDashboardOverview() {
           </div>
           <div className="mt-5 h-3 overflow-hidden rounded-full bg-[#e5edf4]">
             <div
-              className="h-full rounded-full bg-linear-to-r from-[#075cde] to-[#12a866]"
+              className="h-full rounded-full bg-linear-to-r from-[#5b21b6] to-[#12a866]"
               style={{ width: `${profile.completion.percent}%` }}
             />
           </div>
@@ -390,7 +390,7 @@ export function UserDashboardOverview() {
           <div className="mt-4 grid grid-cols-2 gap-3">
             <Link
               href="/account/profile/edit-profile"
-              className="inline-flex h-10 items-center justify-center rounded-xl bg-[#102c45] px-3 text-[12px] font-extrabold text-white"
+              className="inline-flex h-10 items-center justify-center rounded-xl bg-[#3b0764] px-3 text-[12px] font-extrabold text-white"
             >
               Complete profile
             </Link>
@@ -420,7 +420,7 @@ export function UserDashboardOverview() {
               return (
                 <article key={`${application.type}-${application.id}`} className="rounded-2xl border border-[#e0eaf2] p-4">
                   <div className="flex items-center justify-between gap-3">
-                    <span className="grid h-10 w-10 place-items-center rounded-xl bg-blue-50 text-[#075cde]">
+                    <span className="grid h-10 w-10 place-items-center rounded-xl bg-blue-50 text-[#5b21b6]">
                       <Icon className="h-5 w-5" />
                     </span>
                     <span className="rounded-full bg-amber-50 px-2.5 py-1 text-[10px] font-extrabold text-amber-700">
@@ -433,7 +433,7 @@ export function UserDashboardOverview() {
                   <p className="mt-1 font-mono text-[11px] font-bold text-[#718598]">
                     {application.reference}
                   </p>
-                  <Link href="/account/profile/my-applications" className="mt-4 inline-flex items-center gap-1 text-[11px] font-extrabold text-[#075cde]">
+                  <Link href="/account/profile/my-applications" className="mt-4 inline-flex items-center gap-1 text-[11px] font-extrabold text-[#5b21b6]">
                     Track application <ArrowRight className="h-3.5 w-3.5" />
                   </Link>
                 </article>
@@ -588,9 +588,9 @@ export function UserDashboardOverview() {
               const Icon = icon as typeof Landmark;
               return (
                 <Link key={String(label)} href={String(href)} className="group rounded-2xl border border-[#dbe8f3] p-4 hover:border-blue-300 hover:bg-blue-50/40">
-                  <Icon className="h-5 w-5 text-[#075cde]" />
+                  <Icon className="h-5 w-5 text-[#5b21b6]" />
                   <p className="mt-3 text-[12px] font-extrabold text-[#28465d]">{String(label)}</p>
-                  <span className="mt-2 inline-flex items-center gap-1 text-[10px] font-bold text-[#075cde]">
+                  <span className="mt-2 inline-flex items-center gap-1 text-[10px] font-bold text-[#5b21b6]">
                     Apply now <ArrowRight className="h-3 w-3 transition group-hover:translate-x-0.5" />
                   </span>
                 </Link>
@@ -676,7 +676,7 @@ function DashboardSection({
           <p className="mt-1 text-[11px] font-semibold text-[#718598]">{subtitle}</p>
         </div>
         {href ? (
-          <Link href={href} className="inline-flex shrink-0 items-center gap-1 text-[11px] font-extrabold text-[#075cde]">
+          <Link href={href} className="inline-flex shrink-0 items-center gap-1 text-[11px] font-extrabold text-[#5b21b6]">
             View all <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         ) : null}
@@ -703,7 +703,7 @@ function DataRow({
 }) {
   return (
     <div className="flex items-center gap-3 rounded-2xl border border-[#e0eaf2] p-3">
-      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-blue-50 text-[#075cde]">
+      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-blue-50 text-[#5b21b6]">
         <Icon className="h-5 w-5" />
       </span>
       <div className="min-w-0 flex-1">

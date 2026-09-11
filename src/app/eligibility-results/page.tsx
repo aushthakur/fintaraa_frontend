@@ -220,7 +220,7 @@ const ResultCard = ({
               imageClassName="object-left"
             />
           ) : (
-            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#00529b]">
+            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#4c1d95]">
               <Landmark className="h-5 w-5" />
             </span>
           )}
@@ -228,7 +228,7 @@ const ResultCard = ({
             <span className="block truncate text-[16px] font-extrabold text-[#07162d]">
               {result.bankName}
             </span>
-            <span className="mt-0.5 block truncate text-[11px] font-extrabold uppercase tracking-wide text-[#00529b]">
+            <span className="mt-0.5 block truncate text-[11px] font-extrabold uppercase tracking-wide text-[#4c1d95]">
               {resolvedProductLabel}
             </span>
           </span>
@@ -311,7 +311,7 @@ const ResultCardsSection = ({
       <div className="mx-auto max-w-9xl">
         <div className="mb-3">
           <div className="flex items-center gap-2">
-            <SlidersHorizontal className="h-5 w-5 text-[#00529b]" />
+            <SlidersHorizontal className="h-5 w-5 text-[#4c1d95]" />
             <h2 className="text-[22px] font-extrabold tracking-tight">
               {title}
             </h2>
@@ -372,9 +372,9 @@ const BankProductCardsSection = ({
       <div className="mb-3">
         <div className="flex items-center gap-2">
           {productType === "credit_card" ? (
-            <CreditCard className="h-5 w-5 text-[#00529b]" />
+            <CreditCard className="h-5 w-5 text-[#4c1d95]" />
           ) : (
-            <Zap className="h-5 w-5 text-[#00529b]" />
+            <Zap className="h-5 w-5 text-[#4c1d95]" />
           )}
           <h2 className="text-[22px] font-extrabold tracking-tight">{title}</h2>
         </div>
@@ -602,7 +602,7 @@ export default async function EligibilityResultsPage({
           <div>
             <Link
               href="/#eligibility-check"
-              className="inline-flex items-center gap-2 text-[13px] font-bold text-[#00529b] no-underline"
+              className="inline-flex items-center gap-2 text-[13px] font-bold text-[#4c1d95] no-underline"
             >
               <ArrowRight className="h-4 w-4 rotate-180" />
               Back to eligibility check
@@ -631,7 +631,7 @@ export default async function EligibilityResultsPage({
               <select
                 name="loanType"
                 defaultValue={requestedLoanSlug}
-                className="mt-1 h-10 w-full rounded-xl border border-[#d9e4ef] bg-white px-3 text-[13px] font-bold outline-none focus:border-[#00529b] md:mt-2 md:h-12 md:rounded-2xl md:px-4 md:text-[14px]"
+                className="mt-1 h-10 w-full rounded-xl border border-[#d9e4ef] bg-white px-3 text-[13px] font-bold outline-none focus:border-[#4c1d95] md:mt-2 md:h-12 md:rounded-2xl md:px-4 md:text-[14px]"
               >
                 {visibleLoanTypeOptions.map((item) => (
                   <option key={item.value} value={item.value}>
@@ -651,7 +651,7 @@ export default async function EligibilityResultsPage({
                 min={1}
                 required
                 type="number"
-                className="mt-1 h-10 w-full rounded-xl border border-[#d9e4ef] bg-white px-3 text-[13px] font-bold outline-none focus:border-[#00529b] md:mt-2 md:h-12 md:rounded-2xl md:px-4 md:text-[14px]"
+                className="mt-1 h-10 w-full rounded-xl border border-[#d9e4ef] bg-white px-3 text-[13px] font-bold outline-none focus:border-[#4c1d95] md:mt-2 md:h-12 md:rounded-2xl md:px-4 md:text-[14px]"
               />
             </label>
             <label className="xl:col-span-2">
@@ -665,7 +665,7 @@ export default async function EligibilityResultsPage({
                 min={0}
                 required
                 type="number"
-                className="mt-1 h-10 w-full rounded-xl border border-[#d9e4ef] bg-white px-3 text-[13px] font-bold outline-none focus:border-[#00529b] md:mt-2 md:h-12 md:rounded-2xl md:px-4 md:text-[14px]"
+                className="mt-1 h-10 w-full rounded-xl border border-[#d9e4ef] bg-white px-3 text-[13px] font-bold outline-none focus:border-[#4c1d95] md:mt-2 md:h-12 md:rounded-2xl md:px-4 md:text-[14px]"
               />
             </label>
             <label className="xl:col-span-1">
@@ -680,7 +680,7 @@ export default async function EligibilityResultsPage({
                 min={300}
                 required
                 type="number"
-                className="mt-1 h-10 w-full rounded-xl border border-[#d9e4ef] bg-white px-3 text-[13px] font-bold outline-none focus:border-[#00529b] md:mt-2 md:h-12 md:rounded-2xl md:px-4 md:text-[14px]"
+                className="mt-1 h-10 w-full rounded-xl border border-[#d9e4ef] bg-white px-3 text-[13px] font-bold outline-none focus:border-[#4c1d95] md:mt-2 md:h-12 md:rounded-2xl md:px-4 md:text-[14px]"
               />
             </label>
             <label className="col-span-2 md:col-span-2 xl:col-span-2">
@@ -690,7 +690,7 @@ export default async function EligibilityResultsPage({
               <select
                 name="salaryType"
                 defaultValue={salaryType}
-                className="mt-1 h-10 w-full rounded-xl border border-[#d9e4ef] bg-white px-3 text-[13px] font-bold outline-none focus:border-[#00529b] md:mt-2 md:h-12 md:rounded-2xl md:px-4 md:text-[14px]"
+                className="mt-1 h-10 w-full rounded-xl border border-[#d9e4ef] bg-white px-3 text-[13px] font-bold outline-none focus:border-[#4c1d95] md:mt-2 md:h-12 md:rounded-2xl md:px-4 md:text-[14px]"
               >
                 {salaryTypeOptions.map((item) => (
                   <option key={item} value={item}>
@@ -711,7 +711,7 @@ export default async function EligibilityResultsPage({
                 max={30}
                 required
                 type="number"
-                className="mt-1 h-10 w-full rounded-xl border border-[#d9e4ef] bg-white px-3 text-[13px] font-bold outline-none focus:border-[#00529b] md:mt-2 md:h-12 md:rounded-2xl md:px-4 md:text-[14px]"
+                className="mt-1 h-10 w-full rounded-xl border border-[#d9e4ef] bg-white px-3 text-[13px] font-bold outline-none focus:border-[#4c1d95] md:mt-2 md:h-12 md:rounded-2xl md:px-4 md:text-[14px]"
               />
             </label>
             <label className="md:col-span-2 xl:col-span-2">
@@ -722,12 +722,12 @@ export default async function EligibilityResultsPage({
                 name="q"
                 defaultValue={bank || q}
                 placeholder="Axis, HDFC, SBI..."
-                className="mt-1 h-10 w-full rounded-xl border border-[#d9e4ef] bg-white px-3 text-[13px] font-bold outline-none focus:border-[#00529b] md:mt-2 md:h-12 md:rounded-2xl md:px-4 md:text-[14px]"
+                className="mt-1 h-10 w-full rounded-xl border border-[#d9e4ef] bg-white px-3 text-[13px] font-bold outline-none focus:border-[#4c1d95] md:mt-2 md:h-12 md:rounded-2xl md:px-4 md:text-[14px]"
               />
             </label>
             <button
               type="submit"
-              className="col-span-2 inline-flex h-10 items-center justify-center gap-2 self-end rounded-full bg-[#00529b] px-5 text-[13px] font-extrabold text-white md:col-span-2 md:h-12 md:px-6 md:text-[14px] xl:col-span-2"
+              className="col-span-2 inline-flex h-10 items-center justify-center gap-2 self-end rounded-full bg-[#4c1d95] px-5 text-[13px] font-extrabold text-white md:col-span-2 md:h-12 md:px-6 md:text-[14px] xl:col-span-2"
             >
               <Search className="h-4 w-4" />
               Update Matches
@@ -742,7 +742,7 @@ export default async function EligibilityResultsPage({
                   key={item.label}
                   className="flex min-w-0 items-center gap-2 rounded-xl bg-white px-3 py-2 md:gap-3 md:px-4 md:py-3"
                 >
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#eef6ff] text-[#00529b] md:h-10 md:w-10 md:rounded-xl">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#eef6ff] text-[#4c1d95] md:h-10 md:w-10 md:rounded-xl">
                     <Icon className="h-4 w-4 md:h-4.5 md:w-4.5" />
                   </span>
                   <span className="min-w-0">
@@ -855,7 +855,7 @@ export default async function EligibilityResultsPage({
         <details className="group mx-4 mb-10 mt-4 rounded-2xl border border-[#dbe8f4] bg-white md:mx-6 lg:mx-8">
           <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-4 py-4 text-[15px] font-extrabold text-[#07162d] marker:content-none md:px-6 md:text-[17px]">
             <span>View full partner criteria ({results.length})</span>
-            <ChevronDown className="h-5 w-5 shrink-0 text-[#00529b] transition-transform group-open:rotate-180" />
+            <ChevronDown className="h-5 w-5 shrink-0 text-[#4c1d95] transition-transform group-open:rotate-180" />
           </summary>
           <section className="border-t border-[#e4edf5] px-4 py-6 md:px-6 lg:px-8">
             <div className="mx-auto max-w-9xl">
@@ -909,7 +909,7 @@ export default async function EligibilityResultsPage({
                                   imageClassName="object-left"
                                 />
                               ) : (
-                                <Landmark className="h-5 w-5 text-[#00529b]" />
+                                <Landmark className="h-5 w-5 text-[#4c1d95]" />
                               )}
                               <span className="font-extrabold text-[#07162d]">
                                 {result.bankName}
@@ -1042,7 +1042,7 @@ export default async function EligibilityResultsPage({
                                 imageClassName="object-left"
                               />
                             ) : (
-                              <Landmark className="h-5 w-5 text-[#00529b]" />
+                              <Landmark className="h-5 w-5 text-[#4c1d95]" />
                             )}
                             <span className="truncate">{result.bankName}</span>
                           </Link>

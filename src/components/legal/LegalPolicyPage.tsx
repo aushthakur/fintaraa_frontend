@@ -44,7 +44,7 @@ export function LegalPolicyPage({
       {simpleHeader ? (
         <section className="border-b border-[#e3ebf2] px-4 py-10 md:px-6 md:py-12 lg:px-8">
           <div className="mx-auto max-w-9xl">
-            <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#195585]">
+            <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#3b0764]">
               {eyebrow}
             </p>
             <div className="mt-3 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
@@ -63,15 +63,15 @@ export function LegalPolicyPage({
           </div>
         </section>
       ) : (
-        <section className="relative overflow-hidden border-b border-[#d9e8f4] bg-[#f5fbff] px-4 py-16 md:px-6 lg:px-8">
-          <div className="absolute inset-x-0 top-0 h-1 bg-linear-to-r from-[#195585] via-[#12b76a] to-[#1375de]" />
+        <section className="relative overflow-hidden border-b border-[#d9e8f4] bg-[#faf5ff] px-4 py-16 md:px-6 lg:px-8">
+          <div className="absolute inset-x-0 top-0 h-1 bg-linear-to-r from-[#3b0764] via-[#12b76a] to-[#1375de]" />
           <div className="pointer-events-none absolute right-0 top-0 h-80 w-80 rounded-full bg-[#12b76a]/10 blur-3xl" />
-          <div className="pointer-events-none absolute bottom-0 left-0 h-96 w-96 rounded-full bg-[#195585]/12 blur-3xl" />
+          <div className="pointer-events-none absolute bottom-0 left-0 h-96 w-96 rounded-full bg-[#3b0764]/12 blur-3xl" />
 
           <div className="relative mx-auto max-w-9xl">
             <div className="grid gap-10 lg:grid-cols-[1fr_26rem] lg:items-end">
               <div>
-                <div className="inline-flex items-center gap-2 rounded-full bg-[#195585] px-4 py-2 text-[12px] font-extrabold uppercase tracking-[0.16em] text-white">
+                <div className="inline-flex items-center gap-2 rounded-full bg-[#3b0764] px-4 py-2 text-[12px] font-extrabold uppercase tracking-[0.16em] text-white">
                   <ShieldCheck className="h-4 w-4" />
                   {eyebrow}
                 </div>
@@ -83,7 +83,7 @@ export function LegalPolicyPage({
                 </p>
               </div>
 
-              <div className="border-l-4 border-[#195585] pl-6">
+              <div className="border-l-4 border-[#3b0764] pl-6">
                 <p className="text-[12px] font-extrabold uppercase tracking-[0.18em] text-[#667085]">
                   Effective status
                 </p>
@@ -101,7 +101,7 @@ export function LegalPolicyPage({
               {content.badges.map((badge) => (
                 <span
                   key={badge}
-                  className="rounded-full bg-white px-4 py-2 text-[13px] font-extrabold text-[#195585] shadow-[0_8px_24px_rgba(25,85,133,0.08)]"
+                  className="rounded-full bg-white px-4 py-2 text-[13px] font-extrabold text-[#3b0764] shadow-[0_8px_24px_rgba(25,85,133,0.08)]"
                 >
                   {badge}
                 </span>
@@ -126,8 +126,8 @@ export function LegalPolicyPage({
                     href={item.href}
                     className={`group flex items-center justify-between border-l-2 px-4 py-3 text-[14px] font-extrabold no-underline transition ${
                       active
-                        ? "border-[#195585] bg-[#f1f8ff] text-[#195585]"
-                        : "border-transparent text-[#475467] hover:border-[#195585] hover:text-[#195585]"
+                        ? "border-[#3b0764] bg-[#f1f8ff] text-[#3b0764]"
+                        : "border-transparent text-[#475467] hover:border-[#3b0764] hover:text-[#3b0764]"
                     }`}
                   >
                     {item.label}
@@ -137,7 +137,7 @@ export function LegalPolicyPage({
               })}
             </nav>
             {!simpleHeader ? (
-              <button className="mt-8 inline-flex h-11 items-center gap-2 rounded-full bg-[#195585] px-5 text-[13px] font-extrabold text-white">
+              <button className="mt-8 inline-flex h-11 items-center gap-2 rounded-full bg-[#3b0764] px-5 text-[13px] font-extrabold text-white">
                 <Download className="h-4 w-4" />
                 Download PDF
               </button>
@@ -171,7 +171,7 @@ export function LegalPolicyPage({
                   id={toSectionId(section)}
                   className="grid scroll-mt-32 py-10 md:grid-cols-[6rem_1fr]"
                 >
-                  <div className="text-[14px] pt-2 font-extrabold tracking-[0.16em] text-[#195585]">
+                  <div className="text-[14px] pt-2 font-extrabold tracking-[0.16em] text-[#3b0764]">
                     {String(index + 1).padStart(2, "0")}
                   </div>
                   <div>
@@ -186,7 +186,7 @@ export function LegalPolicyPage({
               ))}
             </section>
 
-            <section className="mt-8 overflow-hidden bg-[#195585] text-white">
+            <section className="mt-8 overflow-hidden bg-[#3b0764] text-white">
               <div className="grid gap-8 p-8 md:grid-cols-[1fr_auto] md:items-center md:p-10">
                 <div>
                   <div className="flex items-center gap-3">
@@ -203,7 +203,7 @@ export function LegalPolicyPage({
                 </div>
                 <a
                   href="mailto:customercare@fintaraa.com"
-                  className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-white px-6 text-[14px] font-extrabold text-[#195585] no-underline"
+                  className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-white px-6 text-[14px] font-extrabold text-[#3b0764] no-underline"
                 >
                   <Mail className="h-4 w-4" />
                   customercare@fintaraa.com

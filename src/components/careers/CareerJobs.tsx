@@ -105,10 +105,10 @@ export function CareerJobs() {
               </p>
               <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
                 <div className="flex gap-3">
-                  <span className="rounded-full bg-[#edf5ff] px-5 py-2 text-[11px] font-semibold text-[#0d64bf]">
+                  <span className="rounded-full bg-[#edf5ff] px-5 py-2 text-[11px] font-semibold text-[#6d28d9]">
                     {job.experience}
                   </span>
-                  <span className="rounded-full bg-[#edf5ff] px-5 py-2 text-[11px] font-semibold text-[#0d64bf]">
+                  <span className="rounded-full bg-[#edf5ff] px-5 py-2 text-[11px] font-semibold text-[#6d28d9]">
                     {job.employmentType}
                   </span>
                 </div>

@@ -16,7 +16,7 @@ export function OfferCards() {
               type="button"
               className={`h-11 shrink-0 rounded-full px-6 text-[14px] font-bold transition-colors ${
                 index === 0
-                  ? "bg-[#005ca8] text-white"
+                  ? "bg-[#4c1d95] text-white"
                   : "bg-[#e8f4ff] text-[#111827] hover:bg-[#d0e8ff]"
               }`}
             >
@@ -44,7 +44,7 @@ export function OfferCards() {
             <div
               key={`${offer.bank}-${index}`}
               className={`flex flex-col rounded-xl border bg-white p-6 ${
-                offer.featured ? "border-[#005ca8]" : "border-[#e5e7eb]"
+                offer.featured ? "border-[#4c1d95]" : "border-[#e5e7eb]"
               }`}
             >
               {/* Bank logo + Exclusive badge */}
@@ -76,7 +76,7 @@ export function OfferCards() {
               </p>
 
               {/* Valid date */}
-              <p className="mt-5 flex items-center gap-1.5 text-[12px] font-semibold text-[#005ca8]">
+              <p className="mt-5 flex items-center gap-1.5 text-[12px] font-semibold text-[#4c1d95]">
                 <CalendarDays className="h-4 w-4 shrink-0" />
                 Valid till 15 Jun 2024
               </p>

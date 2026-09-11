@@ -286,17 +286,17 @@ export function MajorBankCreditCards() {
   };
 
   return (
-    <section className="bg-white px-3 py-8 min-[360px]:px-4 min-[360px]:py-10 md:px-6 lg:px-8">
-      <div className="mx-auto max-w-9xl overflow-hidden rounded-2xl">
+    <section className="relative overflow-hidden bg-linear-to-b from-[#f5f3ff] to-white px-3 py-8 min-[360px]:px-4 min-[360px]:py-10 md:px-6 lg:px-8">
+      <div className="mx-auto max-w-9xl overflow-hidden rounded-2xl relative z-10">
         <div className="pb-6">
           <div className="flex items-center justify-between gap-3">
             <h2 className="min-w-0 max-w-3xl flex-1 whitespace-nowrap text-[15px] font-bold leading-tight tracking-tight text-gray-900 min-[360px]:text-[16px] sm:text-[30px] md:text-[34px]">
               Find the Right Credit Card
-              {/* <span className="text-[#075cde]">Top Banks</span> */}
+              {/* <span className="text-[#5b21b6]">Top Banks</span> */}
             </h2>
             <Link
               href="/credit-cards"
-              className="inline-flex h-9 shrink-0 items-center justify-center gap-1 rounded-lg bg-[#e9f2ff] px-3 text-[12px] font-bold leading-none text-[#075cde] no-underline transition hover:bg-[#d9eaff] sm:h-10 sm:gap-2 sm:bg-[#075cde] sm:px-5 sm:text-[13px] sm:text-white sm:hover:bg-[#064cb8]"
+              className="inline-flex h-9 shrink-0 items-center justify-center gap-1 rounded-lg bg-[#ede9fe] px-3 text-[12px] font-bold leading-none text-[#5b21b6] no-underline transition hover:bg-[#d9eaff] sm:h-10 sm:gap-2 sm:bg-[#5b21b6] sm:px-5 sm:text-[13px] sm:text-white sm:hover:bg-[#4c1d95]"
             >
               <span className="hidden sm:inline">View All Cards</span>
               <span className="sm:hidden">View</span>
@@ -305,7 +305,7 @@ export function MajorBankCreditCards() {
           </div>
         </div>
 
-        <div className="bg-white">
+        <div className="bg-transparent">
           <div className="flex min-w-0 items-center gap-1.5 overflow-x-auto pb-1 scrollbar-hide sm:gap-2">
             {loading ? (
               <span className="inline-flex items-center gap-2 text-[13px] font-semibold text-[#667085]">
@@ -323,8 +323,8 @@ export function MajorBankCreditCards() {
                     onClick={() => setActiveBank(tab)}
                     className={`inline-flex h-9 shrink-0 items-center gap-1.5 rounded-lg border px-3 text-[12px] font-bold transition-all sm:h-11 sm:gap-2 sm:rounded-xl sm:px-4 sm:text-[13px] ${
                       isActive
-                        ? "border-[#075cde] bg-[#e9f2ff] text-[#075cde]"
-                        : "border-[#dceaf7] bg-white text-[#52657d] hover:border-[#075cde]"
+                        ? "border-[#5b21b6] bg-[#ede9fe] text-[#5b21b6]"
+                        : "border-[#dceaf7] bg-white text-[#52657d] hover:border-[#5b21b6]"
                     }`}
                   >
                     {logoSrc ? (
@@ -343,7 +343,7 @@ export function MajorBankCreditCards() {
           </div>
         </div>
 
-        <div className="bg-white py-6">
+        <div className="bg-transparent py-6">
           {error ? (
             <div className="rounded-xl border border-red-100 bg-red-50 p-5 text-[13px] font-semibold text-red-700">
               {error}
@@ -353,7 +353,7 @@ export function MajorBankCreditCards() {
           {activeBank ? (
             <div className="mb-5 flex flex-col gap-3 sm:mb-6 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
               <div className="flex min-w-0 items-center gap-3 sm:gap-4">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[#d7e8fb] bg-[#e9f2ff] text-lg font-bold text-[#075cde] min-[360px]:h-11 min-[360px]:w-11 sm:h-12 sm:w-12 sm:rounded-2xl">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[#d7e8fb] bg-[#ede9fe] text-lg font-bold text-[#5b21b6] min-[360px]:h-11 min-[360px]:w-11 sm:h-12 sm:w-12 sm:rounded-2xl">
                   {activeBankLogoSrc ? (
                     <BankLogoImage
                       src={activeBankLogoSrc}
@@ -400,7 +400,7 @@ export function MajorBankCreditCards() {
                 return (
                   <article
                     key={getCardId(card) || card.name}
-                    className="group flex h-full flex-col justify-between rounded-xl border border-[#e2edf8] bg-white p-3.5 transition-colors duration-300 hover:border-[#bcd8f4] min-[360px]:p-4"
+                    className="group flex h-full flex-col justify-between rounded-2xl border border-white/60 bg-white/60 p-4 shadow-[0_8px_30px_rgba(91,33,182,0.04)] backdrop-blur-xl transition-all duration-500 hover:-translate-y-1 hover:border-[#ddd6fe] hover:bg-white/90 hover:shadow-[0_20px_40px_rgba(91,33,182,0.12)]"
                   >
                     <div>
                       <div className="relative aspect-[1.58/1] overflow-hidden rounded-2xl bg-[#0b315f]">

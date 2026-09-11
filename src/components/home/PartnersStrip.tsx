@@ -3,7 +3,7 @@ import { TrustedPartnerBanksSection } from "@/components/partners/TrustedPartner
 export function PartnersStrip() {
   return (
     <TrustedPartnerBanksSection
-      mode="grid"
+      mode="marquee"
       title="Partner Financial Institutions"
       description="Browse published banks, NBFCs and insurers across loan, credit-card and insurance journeys."
       viewAllHref="/partners/all"

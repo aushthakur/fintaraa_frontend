@@ -69,7 +69,7 @@ export function DsaPartnerBenefits() {
                   key={title}
                   className="rounded-[18px] border border-[#e3eaf3] bg-white px-4 py-5 text-center shadow-[0_8px_24px_rgba(16,24,40,0.03)]"
                 >
-                  <span className="mx-auto flex h-10 w-10 items-center justify-center rounded-xl bg-[#edf5ff] text-[#0d64bf]">
+                  <span className="mx-auto flex h-10 w-10 items-center justify-center rounded-xl bg-[#edf5ff] text-[#6d28d9]">
                     <Icon className="h-5 w-5" />
                   </span>
                   <p className="mt-4 text-[12px] font-extrabold leading-5 text-[#22272e]">
@@ -138,7 +138,7 @@ export function DsaPartnerBenefits() {
                     key={benefit}
                     className="flex items-center gap-2 text-[13px] font-medium text-[#4d5968]"
                   >
-                    <CircleCheck className="h-4 w-4 shrink-0 text-[#0d64bf]" />
+                    <CircleCheck className="h-4 w-4 shrink-0 text-[#6d28d9]" />
                     {benefit}
                   </div>
                 ))}

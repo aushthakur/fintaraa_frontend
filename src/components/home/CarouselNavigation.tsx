@@ -65,7 +65,7 @@ export function CarouselNavigation({
   disabled?: boolean;
 }) {
   const buttonClassName =
-    "inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#d9e6f2] bg-white text-[#075cde] shadow-[0_8px_22px_rgba(7,22,45,0.1)] transition hover:border-[#075cde] hover:bg-[#075cde] hover:text-white disabled:cursor-not-allowed disabled:opacity-40";
+    "inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#d9e6f2] bg-white text-[#5b21b6] shadow-[0_8px_22px_rgba(7,22,45,0.1)] transition hover:border-[#5b21b6] hover:bg-[#5b21b6] hover:text-white disabled:cursor-not-allowed disabled:opacity-40";
 
   return (
     <div className="hidden items-center gap-2 lg:flex">

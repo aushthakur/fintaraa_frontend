@@ -311,8 +311,8 @@ function OverviewContent() {
             key={item.title}
             className="rounded-2xl border border-[#dce8f2] bg-[#f8fbff] p-4"
           >
-            <CheckCircle2 className="h-5 w-5 text-[#075cde]" />
-            <h3 className="mt-3 text-[14px] font-extrabold text-[#17354d]">
+            <CheckCircle2 className="h-5 w-5 text-[#5b21b6]" />
+            <h3 className="mt-3 text-[14px] font-extrabold text-[#3b0764]">
               {item.title}
             </h3>
             <p className="mt-1.5 text-[12px] font-medium leading-5 text-[#687f92]">
@@ -339,11 +339,11 @@ function EligibilityContent() {
             key={item.title}
             className="flex gap-3 rounded-2xl border border-[#dfe8ef] bg-white p-4"
           >
-            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#e9f3ff] text-[11px] font-extrabold text-[#075cde]">
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#e9f3ff] text-[11px] font-extrabold text-[#5b21b6]">
               {String(index + 1).padStart(2, "0")}
             </span>
             <div>
-              <h3 className="text-[13px] font-extrabold leading-5 text-[#17354d]">
+              <h3 className="text-[13px] font-extrabold leading-5 text-[#3b0764]">
                 {item.title}
               </h3>
               <p className="mt-1 text-[12px] font-medium leading-5 text-[#6c8193]">
@@ -367,7 +367,7 @@ function ThresholdContent() {
     <>
       <div className="overflow-x-auto rounded-2xl border border-[#dce7ef]">
         <table className="w-full min-w-180 border-collapse text-left">
-          <thead className="bg-[#eaf4ff] text-[#17354d]">
+          <thead className="bg-[#eaf4ff] text-[#3b0764]">
             <tr>
               <th className="px-4 py-3 text-[11px] font-extrabold uppercase tracking-wide">
                 Supply profile
@@ -414,8 +414,8 @@ function DocumentsContent() {
           key={group.title}
           className="rounded-2xl border border-[#dce7ef] bg-white p-4 sm:p-5"
         >
-          <h3 className="flex items-center gap-2 text-[14px] font-extrabold text-[#17354d]">
-            <FileText className="h-4.5 w-4.5 text-[#075cde]" />
+          <h3 className="flex items-center gap-2 text-[14px] font-extrabold text-[#3b0764]">
+            <FileText className="h-4.5 w-4.5 text-[#5b21b6]" />
             {group.title}
           </h3>
           <div className="mt-3 grid gap-2.5">
@@ -443,7 +443,7 @@ function ProcessContent() {
           key={step}
           className="flex items-start gap-4 rounded-2xl border border-[#dfe8ef] bg-white p-4"
         >
-          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#075cde] text-[12px] font-extrabold text-white">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#5b21b6] text-[12px] font-extrabold text-white">
             {index + 1}
           </span>
           <div>
@@ -471,7 +471,7 @@ function StatusContent() {
             "Enter the ARN and captcha to view the result",
           ].map((step, index) => (
             <li key={step} className="flex gap-3">
-              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#075cde] text-[10px] font-extrabold text-white">
+              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#5b21b6] text-[10px] font-extrabold text-white">
                 {index + 1}
               </span>
               <span className="text-[12px] font-semibold leading-5 text-[#3f586c]">
@@ -487,7 +487,7 @@ function StatusContent() {
             key={item.title}
             className="rounded-2xl border border-[#dce7ef] bg-white p-4"
           >
-            <h3 className="text-[13px] font-extrabold text-[#17354d]">
+            <h3 className="text-[13px] font-extrabold text-[#3b0764]">
               {item.title}
             </h3>
             <p className="mt-1.5 text-[12px] font-medium leading-5 text-[#687f92]">
@@ -500,7 +500,7 @@ function StatusContent() {
         href="https://www.gst.gov.in/"
         target="_blank"
         rel="noreferrer"
-        className="mt-5 inline-flex h-10 items-center gap-2 rounded-full bg-[#075cde] px-4 text-[12px] font-extrabold text-white no-underline transition hover:bg-[#064eb9]"
+        className="mt-5 inline-flex h-10 items-center gap-2 rounded-full bg-[#5b21b6] px-4 text-[12px] font-extrabold text-white no-underline transition hover:bg-[#064eb9]"
       >
         Open official GST Portal
         <ExternalLink className="h-3.5 w-3.5" />
@@ -546,7 +546,7 @@ function CertificateContent() {
             key={step}
             className="flex items-start gap-3 rounded-2xl border border-[#dce7ef] bg-white p-4"
           >
-            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#e9f3ff] text-[11px] font-extrabold text-[#075cde]">
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#e9f3ff] text-[11px] font-extrabold text-[#5b21b6]">
               {index + 1}
             </span>
             <p className="text-[12px] font-semibold leading-5 text-[#526b80]">
@@ -585,9 +585,9 @@ function FaqContent() {
     <div className="divide-y divide-[#e2eaf0] overflow-hidden rounded-2xl border border-[#dce7ef] bg-white">
       {faqItems.map((item, index) => (
         <details key={item.question} className="group" open={index === 0}>
-          <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-4 py-4 text-[13px] font-extrabold text-[#17354d] marker:content-none sm:px-5">
+          <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-4 py-4 text-[13px] font-extrabold text-[#3b0764] marker:content-none sm:px-5">
             {item.question}
-            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#edf5fb] text-[#075cde] transition group-open:rotate-90">
+            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#edf5fb] text-[#5b21b6] transition group-open:rotate-90">
               <ArrowRight className="h-3.5 w-3.5" />
             </span>
           </summary>
@@ -648,8 +648,8 @@ export function GstInformationGuide() {
                 aria-pressed={selected}
                 className={`h-10 shrink-0 rounded-full px-4 text-[11px] font-extrabold transition sm:px-5 sm:text-[12px] ${
                   selected
-                    ? "bg-[#075cde] text-white"
-                    : "border border-[#d6e3ec] bg-white text-[#36546b] hover:border-[#8db9d6] hover:text-[#075cde]"
+                    ? "bg-[#5b21b6] text-white"
+                    : "border border-[#d6e3ec] bg-white text-[#36546b] hover:border-[#8db9d6] hover:text-[#5b21b6]"
                 }`}
               >
                 <span className="sm:hidden">{tab.shortLabel}</span>
@@ -669,7 +669,7 @@ export function GstInformationGuide() {
             <p className="text-[10px] font-extrabold uppercase tracking-[0.13em] text-[#7890a2]">
               Quick links
             </p>
-            <h2 className="mt-1 text-[16px] font-extrabold text-[#17354d]">
+            <h2 className="mt-1 text-[16px] font-extrabold text-[#3b0764]">
               GST Registration Guide
             </h2>
           </div>
@@ -684,8 +684,8 @@ export function GstInformationGuide() {
                   onClick={() => selectTab(tab.id)}
                   className={`flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-left text-[11px] font-bold leading-4 transition ${
                     selected
-                      ? "bg-[#e9f3ff] text-[#075cde]"
-                      : "text-[#526b80] hover:bg-[#f5f8fa] hover:text-[#075cde]"
+                      ? "bg-[#e9f3ff] text-[#5b21b6]"
+                      : "text-[#526b80] hover:bg-[#f5f8fa] hover:text-[#5b21b6]"
                   }`}
                 >
                   <Icon className="h-4 w-4 shrink-0" />
@@ -711,14 +711,14 @@ export function GstInformationGuide() {
           className="min-w-0 rounded-2xl border border-[#dce7ef] bg-white p-5 sm:p-7 md:p-8"
         >
           <div className="flex items-start gap-4 border-b border-[#e5edf3] pb-5">
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#e9f3ff] text-[#075cde]">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#e9f3ff] text-[#5b21b6]">
               <ActiveIcon className="h-5 w-5" />
             </span>
             <div>
-              <p className="text-[10px] font-extrabold uppercase tracking-[0.13em] text-[#075cde]">
+              <p className="text-[10px] font-extrabold uppercase tracking-[0.13em] text-[#5b21b6]">
                 GST knowledge guide
               </p>
-              <h2 className="mt-1 text-[23px] font-extrabold leading-tight tracking-[-0.02em] text-[#17354d] sm:text-[28px]">
+              <h2 className="mt-1 text-[23px] font-extrabold leading-tight tracking-[-0.02em] text-[#3b0764] sm:text-[28px]">
                 {active.title}
               </h2>
               <p className="mt-2 text-[13px] font-medium leading-6 text-[#718598] sm:text-[14px]">
@@ -741,7 +741,7 @@ export function GstInformationGuide() {
               href="https://tutorial.gst.gov.in/userguide/registration/"
               target="_blank"
               rel="noreferrer"
-              className="inline-flex shrink-0 items-center gap-1.5 text-[11px] font-extrabold text-[#075cde] no-underline hover:underline"
+              className="inline-flex shrink-0 items-center gap-1.5 text-[11px] font-extrabold text-[#5b21b6] no-underline hover:underline"
             >
               Official registration guide
               <ExternalLink className="h-3.5 w-3.5" />

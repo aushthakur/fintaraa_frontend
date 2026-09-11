@@ -105,7 +105,7 @@ function GuideBlock({ block }: { block: ServiceGuideBlock }) {
     return (
       <div className="rounded-2xl bg-[#f1f8ff] p-4 sm:p-5">
         {block.title ? (
-          <h3 className="mb-3 text-[14px] font-extrabold text-[#17354d]">
+          <h3 className="mb-3 text-[14px] font-extrabold text-[#3b0764]">
             {block.title}
           </h3>
         ) : null}
@@ -136,7 +136,7 @@ function GuideBlock({ block }: { block: ServiceGuideBlock }) {
                 : "border-[#cfe8da] bg-[#f4fbf7]"
             }`}
           >
-            <h3 className="text-[14px] font-extrabold text-[#17354d]">
+            <h3 className="text-[14px] font-extrabold text-[#3b0764]">
               {item.title}
             </h3>
             <p className="mt-1.5 text-[12px] font-medium leading-6 text-[#657d90]">
@@ -156,7 +156,7 @@ function GuideBlock({ block }: { block: ServiceGuideBlock }) {
             key={item}
             className="flex items-start gap-4 rounded-2xl border border-[#dfe8ef] bg-white p-4"
           >
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#075cde] text-[12px] font-extrabold text-white">
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#5b21b6] text-[12px] font-extrabold text-white">
               {index + 1}
             </span>
             <div>
@@ -221,9 +221,9 @@ function GuideBlock({ block }: { block: ServiceGuideBlock }) {
     <div className="divide-y divide-[#e2eaf0] overflow-hidden rounded-2xl border border-[#dce7ef] bg-white">
       {block.items.map((item, index) => (
         <details key={item.question} className="group" open={index === 0}>
-          <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-4 py-4 text-[13px] font-extrabold text-[#17354d] marker:content-none sm:px-5">
+          <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-4 py-4 text-[13px] font-extrabold text-[#3b0764] marker:content-none sm:px-5">
             {item.question}
-            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#edf5fb] text-[#075cde] transition group-open:rotate-90">
+            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#edf5fb] text-[#5b21b6] transition group-open:rotate-90">
               <ArrowRight className="h-3.5 w-3.5" />
             </span>
           </summary>
@@ -271,8 +271,8 @@ export function ServiceInformationGuide({
                 aria-pressed={selected}
                 className={`h-10 shrink-0 rounded-full px-4 text-[11px] font-extrabold transition sm:px-5 sm:text-[12px] ${
                   selected
-                    ? "bg-[#075cde] text-white"
-                    : "border border-[#d6e3ec] bg-white text-[#36546b] hover:border-[#8db9d6] hover:text-[#075cde]"
+                    ? "bg-[#5b21b6] text-white"
+                    : "border border-[#d6e3ec] bg-white text-[#36546b] hover:border-[#8db9d6] hover:text-[#5b21b6]"
                 }`}
               >
                 <span className="sm:hidden">{section.shortLabel}</span>
@@ -292,7 +292,7 @@ export function ServiceInformationGuide({
             <p className="text-[10px] font-extrabold uppercase tracking-[0.13em] text-[#7890a2]">
               Quick links
             </p>
-            <h2 className="mt-1 text-[16px] font-extrabold text-[#17354d]">
+            <h2 className="mt-1 text-[16px] font-extrabold text-[#3b0764]">
               {config.guideTitle}
             </h2>
           </div>
@@ -307,8 +307,8 @@ export function ServiceInformationGuide({
                   onClick={() => selectTab(section.id)}
                   className={`flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-left text-[11px] font-bold leading-4 transition ${
                     selected
-                      ? "bg-[#e9f3ff] text-[#075cde]"
-                      : "text-[#526b80] hover:bg-[#f5f8fa] hover:text-[#075cde]"
+                      ? "bg-[#e9f3ff] text-[#5b21b6]"
+                      : "text-[#526b80] hover:bg-[#f5f8fa] hover:text-[#5b21b6]"
                   }`}
                 >
                   <Icon className="h-4 w-4 shrink-0" />
@@ -331,14 +331,14 @@ export function ServiceInformationGuide({
 
         <article className="min-w-0 rounded-2xl border border-[#dce7ef] bg-white p-5 sm:p-7 md:p-8">
           <div className="flex items-start gap-4 border-b border-[#e5edf3] pb-5">
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#e9f3ff] text-[#075cde]">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#e9f3ff] text-[#5b21b6]">
               <ActiveIcon className="h-5 w-5" />
             </span>
             <div>
-              <p className="text-[10px] font-extrabold uppercase tracking-[0.13em] text-[#075cde]">
+              <p className="text-[10px] font-extrabold uppercase tracking-[0.13em] text-[#5b21b6]">
                 {config.knowledgeLabel}
               </p>
-              <h2 className="mt-1 text-[23px] font-extrabold leading-tight tracking-[-0.02em] text-[#17354d] sm:text-[28px]">
+              <h2 className="mt-1 text-[23px] font-extrabold leading-tight tracking-[-0.02em] text-[#3b0764] sm:text-[28px]">
                 {active.title}
               </h2>
               <p className="mt-2 text-[13px] font-medium leading-6 text-[#718598] sm:text-[14px]">
@@ -361,7 +361,7 @@ export function ServiceInformationGuide({
               href={config.officialUrl}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex shrink-0 items-center gap-1.5 text-[11px] font-extrabold text-[#075cde] no-underline hover:underline"
+              className="inline-flex shrink-0 items-center gap-1.5 text-[11px] font-extrabold text-[#5b21b6] no-underline hover:underline"
             >
               {config.officialLabel}
               <ExternalLink className="h-3.5 w-3.5" />

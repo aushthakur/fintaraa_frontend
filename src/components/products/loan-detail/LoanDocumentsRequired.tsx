@@ -24,34 +24,37 @@ export function LoanDocumentsRequired({
           "calc(var(--site-header-height, 8.25rem) + 5.5rem)",
       }}
       className={`${
-        embedded ? "" : "border border-[#e2edf8] bg-white p-5 sm:p-6"
+        embedded ? "" : "rounded-2xl border border-slate-200 bg-white p-6 md:p-8 shadow-xs"
       }`}
     >
       {!embedded ? (
-        <div className="max-w-3xl">
-        <p className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#00529b]">
-          Document checklist
-        </p>
-        <h2 className="mt-2 text-[24px] font-extrabold text-[#111827]">
-          Documents required to apply for{" "}
-          <span className="text-[#13a653]">{page.loanType}</span>
-        </h2>
+        <div className="max-w-3xl mb-6">
+          <p className="text-xs font-extrabold uppercase tracking-wider text-[#5b21b6]">
+            Document checklist
+          </p>
+          <h2 className="mt-1.5 text-2xl font-extrabold text-slate-900">
+            Documents required to apply for{" "}
+            <span className="text-[#5b21b6]">{page.loanType}</span>
+          </h2>
+          <p className="mt-2 text-sm font-medium leading-relaxed text-slate-600">
+            Keep these documents ready for faster digital verification and immediate loan processing.
+          </p>
         </div>
       ) : null}
 
       <div
-        className={`${embedded ? "grid gap-3 sm:grid-cols-2" : "mt-5 grid gap-2"}`}
+        className={`${embedded ? "grid gap-3 sm:grid-cols-2" : "mt-6 grid gap-3 sm:grid-cols-2"}`}
       >
         {documentItems.map((item) => (
           <div
             key={item}
-            className="flex items-start gap-3 rounded-2xl border border-[#e1eaf1] bg-[#fbfdff] px-4 py-3.5"
+            className="flex items-start gap-3.5 rounded-2xl border border-slate-200/90 bg-white p-4 shadow-2xs transition-all hover:border-purple-200 hover:shadow-xs"
           >
-            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#e9f6ff] text-[#00529b]">
-              <FileCheck2 className="h-4 w-4" />
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-purple-50 text-[#5b21b6] border border-purple-100/60">
+              <FileCheck2 className="h-4.5 w-4.5" />
             </span>
             <div className="min-w-0">
-              <p className="text-[13px] font-bold leading-6 text-[#111827]">
+              <p className="text-xs sm:text-sm font-semibold leading-relaxed text-slate-800">
                 {item}
               </p>
             </div>

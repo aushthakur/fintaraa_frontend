@@ -30,7 +30,7 @@ export function AccountMenu({
     <div className="grid gap-4">
       {accountMenuSections.map((section) => (
         <section key={section.title} className="bg-white/92 p-4">
-          <h2 className="text-[13px] font-extrabold uppercase tracking-[0.14em] text-[#195585]">
+          <h2 className="text-[13px] font-extrabold uppercase tracking-[0.14em] text-[#3b0764]">
             {section.title}
           </h2>
           <div className="mt-3 divide-y divide-[#edf2f7]">
@@ -44,7 +44,7 @@ export function AccountMenu({
               const content = (
                 <div
                   className={`group flex items-center gap-4 py-4 ${
-                    active ? "text-[#195585]" : "text-[#07162d]"
+                    active ? "text-[#3b0764]" : "text-[#07162d]"
                   }`}
                 >
                   <span
@@ -52,8 +52,8 @@ export function AccountMenu({
                       item.action === "logout"
                         ? "bg-[#fff1f2] text-[#b91c1c]"
                         : active
-                          ? "bg-[#195585] text-white"
-                          : "bg-[#eef8ff] text-[#195585]"
+                          ? "bg-[#3b0764] text-white"
+                          : "bg-[#eef8ff] text-[#3b0764]"
                     }`}
                   >
                     <Icon className="h-4.5 w-4.5" />
@@ -74,7 +74,7 @@ export function AccountMenu({
                     className={`h-4 w-4 shrink-0 ${
                       item.action === "logout"
                         ? "text-[#fecaca]"
-                        : "text-[#98a2b3] group-hover:text-[#195585]"
+                        : "text-[#98a2b3] group-hover:text-[#3b0764]"
                     }`}
                   />
                 </div>

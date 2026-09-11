@@ -222,7 +222,7 @@ export function NotificationsPanel({
           <p className="text-[11px] font-extrabold uppercase tracking-[0.15em] text-[#1b68b3]">
             {accountType === "partner" ? "Partner account" : "Customer account"}
           </p>
-          <h1 className="mt-1 text-[28px] font-extrabold tracking-[-0.02em] text-[#102c45] sm:text-[34px]">
+          <h1 className="mt-1 text-[28px] font-extrabold tracking-[-0.02em] text-[#3b0764] sm:text-[34px]">
             Notifications
           </h1>
           <p className="mt-2 text-[13px] font-medium leading-6 text-[#6c8192]">
@@ -243,7 +243,7 @@ export function NotificationsPanel({
               onClick={() => setFilter(value as "all" | "unread")}
               className={`rounded-lg px-3.5 py-2 text-[12px] font-extrabold transition ${
                 filter === value
-                  ? "bg-white text-[#075cab] shadow-sm"
+                  ? "bg-white text-[#5b21b6] shadow-sm"
                   : "text-[#667b8d] hover:text-[#23465f]"
               }`}
             >
@@ -257,7 +257,7 @@ export function NotificationsPanel({
             onClick={() => void load()}
             disabled={loading}
             aria-label="Refresh notifications"
-            className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-[#d9e5ee] text-[#587386] transition hover:border-[#9fc7e8] hover:text-[#075cab] disabled:opacity-50"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-[#d9e5ee] text-[#587386] transition hover:border-[#9fc7e8] hover:text-[#5b21b6] disabled:opacity-50"
           >
             <RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} />
           </button>
@@ -265,7 +265,7 @@ export function NotificationsPanel({
             type="button"
             onClick={handleMarkAll}
             disabled={!unreadCount || Boolean(updating)}
-            className="inline-flex h-9 items-center gap-2 rounded-lg border border-[#cfe2f2] bg-[#f5faff] px-3 text-[11px] font-extrabold text-[#075cab] transition hover:bg-[#eaf5ff] disabled:cursor-not-allowed disabled:opacity-45"
+            className="inline-flex h-9 items-center gap-2 rounded-lg border border-[#cfe2f2] bg-[#f5faff] px-3 text-[11px] font-extrabold text-[#5b21b6] transition hover:bg-[#eaf5ff] disabled:cursor-not-allowed disabled:opacity-45"
           >
             {updating === "all" ? (
               <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -314,7 +314,7 @@ export function NotificationsPanel({
                 <span
                   className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${
                     unread
-                      ? "bg-[#dff0ff] text-[#075cab]"
+                      ? "bg-[#dff0ff] text-[#5b21b6]"
                       : "bg-[#f0f3f6] text-[#718495]"
                   }`}
                 >
@@ -327,7 +327,7 @@ export function NotificationsPanel({
                 <span className="min-w-0 flex-1">
                   <span className="flex items-start justify-between gap-3">
                     <span
-                      className={`text-[13px] leading-5 text-[#17354d] ${
+                      className={`text-[13px] leading-5 text-[#3b0764] ${
                         unread ? "font-extrabold" : "font-bold"
                       }`}
                     >
@@ -354,7 +354,7 @@ export function NotificationsPanel({
       ) : (
         <div className="rounded-2xl border border-dashed border-[#d9e5ee] bg-[#fbfdff] px-5 py-12 text-center">
           <Inbox className="mx-auto h-9 w-9 text-[#9db2c1]" />
-          <h2 className="mt-3 text-[16px] font-extrabold text-[#17354d]">
+          <h2 className="mt-3 text-[16px] font-extrabold text-[#3b0764]">
             {filter === "unread" ? "You're all caught up" : "No notifications yet"}
           </h2>
           <p className="mx-auto mt-2 max-w-sm text-[12px] font-medium leading-5 text-[#718596]">
@@ -371,7 +371,7 @@ export function NotificationsPanel({
             type="button"
             onClick={() => void load(pagination.currentPage + 1, true)}
             disabled={loadingMore}
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-full border border-[#cbdde9] px-5 text-[12px] font-extrabold text-[#075cab] hover:bg-[#f4faff] disabled:opacity-50"
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-full border border-[#cbdde9] px-5 text-[12px] font-extrabold text-[#5b21b6] hover:bg-[#f4faff] disabled:opacity-50"
           >
             {loadingMore ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
             Load older notifications
@@ -388,7 +388,7 @@ export function NotificationsPanel({
                 ? "/partner/profile"
                 : "/account/profile/notification-preferences"
             }
-            className="font-extrabold text-[#075cab] no-underline hover:underline"
+            className="font-extrabold text-[#5b21b6] no-underline hover:underline"
           >
             notification preferences
           </Link>

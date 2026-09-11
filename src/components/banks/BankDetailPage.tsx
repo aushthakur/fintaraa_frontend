@@ -129,7 +129,7 @@ export function BankDetailPage({
                 onClick={() => handleTabChange(tab.key)}
                 className={`h-10 min-w-28 shrink-0 rounded-full px-5 text-[12px] font-extrabold transition ${
                   isSelected
-                    ? "bg-[#005ca8] text-white shadow-sm"
+                    ? "bg-[#4c1d95] text-white shadow-sm"
                     : "bg-white text-[#2a2f36] hover:bg-[#f7fbff]"
                 }`}
               >

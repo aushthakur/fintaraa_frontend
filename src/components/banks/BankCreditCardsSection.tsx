@@ -158,7 +158,7 @@ export function BankCreditCardsSection({
       <div className="mx-auto max-w-9xl">
         <div className="flex flex-col gap-4 border-b border-[#dce9f7] pb-5 lg:flex-row lg:items-end lg:justify-between">
           <div className="flex min-w-0 gap-4">
-            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white text-[#005ca8] shadow-[0_10px_28px_rgba(16,24,40,0.06)]">
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white text-[#4c1d95] shadow-[0_10px_28px_rgba(16,24,40,0.06)]">
               {logoCard?.image ? (
                 <BankLogoImage
                   src={logoCard.image}
@@ -170,7 +170,7 @@ export function BankCreditCardsSection({
               )}
             </div>
             <div className="min-w-0">
-              <p className="text-[12px] font-extrabold uppercase tracking-[0.16em] text-[#005ca8]">
+              <p className="text-[12px] font-extrabold uppercase tracking-[0.16em] text-[#4c1d95]">
                 Bank credit cards
               </p>
               <h2 className="mt-1 text-[24px] font-extrabold tracking-tight text-[#07162d] md:text-[30px]">
@@ -184,7 +184,7 @@ export function BankCreditCardsSection({
           </div>
           <Link
             href="/credit-cards"
-            className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-[#cfe0ef] bg-white px-5 text-[13px] font-extrabold text-[#005ca8] no-underline transition hover:border-[#005ca8]"
+            className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-[#cfe0ef] bg-white px-5 text-[13px] font-extrabold text-[#4c1d95] no-underline transition hover:border-[#4c1d95]"
           >
             View partner banks
             <ArrowRight className="h-4 w-4" />
@@ -216,7 +216,7 @@ export function BankCreditCardsSection({
 
         {!loading && !error && !bankCards.length ? (
           <div className="mt-7 rounded-2xl bg-white px-6 py-10 text-center shadow-[0_14px_42px_rgba(16,24,40,0.05)]">
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#eef6ff] text-[#005ca8]">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#eef6ff] text-[#4c1d95]">
               <CreditCard className="h-6 w-6" />
             </div>
             <h3 className="mt-4 text-[18px] font-extrabold text-[#07162d]">
@@ -239,7 +239,7 @@ export function BankCreditCardsSection({
                 <div>
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex min-w-0 items-center gap-3">
-                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#eef6ff] text-[#005ca8]">
+                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#eef6ff] text-[#4c1d95]">
                         {card.image ? (
                           <BankLogoImage
                             src={card.image}
@@ -251,7 +251,7 @@ export function BankCreditCardsSection({
                         )}
                       </div>
                       <div className="min-w-0">
-                        <p className="truncate text-[12px] font-extrabold text-[#005ca8]">
+                        <p className="truncate text-[12px] font-extrabold text-[#4c1d95]">
                           {card.bankName}
                         </p>
                         <h3 className="mt-1 line-clamp-2 text-[17px] font-extrabold leading-6 text-[#07162d]">
@@ -303,7 +303,7 @@ export function BankCreditCardsSection({
                           key={item.label}
                           className="rounded-xl border border-[#eef3f8] bg-[#fafcff] p-3"
                         >
-                          <Icon className="h-4 w-4 text-[#005ca8]" />
+                          <Icon className="h-4 w-4 text-[#4c1d95]" />
                           <p className="mt-2 text-[10px] font-extrabold uppercase tracking-wide text-[#98a2b3]">
                             {item.label}
                           </p>
@@ -339,7 +339,7 @@ export function BankCreditCardsSection({
                   <button
                     type="button"
                     onClick={() => handleDetails(card)}
-                    className="inline-flex h-11 items-center justify-center rounded-full border border-[#cfe0ef] bg-white px-4 text-[13px] font-extrabold text-[#005ca8] transition hover:border-[#005ca8]"
+                    className="inline-flex h-11 items-center justify-center rounded-full border border-[#cfe0ef] bg-white px-4 text-[13px] font-extrabold text-[#4c1d95] transition hover:border-[#4c1d95]"
                   >
                     View Details
                   </button>
@@ -353,7 +353,7 @@ export function BankCreditCardsSection({
                   <button
                     type="button"
                     onClick={() => handleEligibility(card)}
-                    className="inline-flex h-11 items-center justify-center rounded-full border border-[#dce9f7] bg-[#f8fbff] px-4 text-[13px] font-extrabold text-[#005ca8] transition hover:border-[#005ca8] sm:col-span-2"
+                    className="inline-flex h-11 items-center justify-center rounded-full border border-[#dce9f7] bg-[#f8fbff] px-4 text-[13px] font-extrabold text-[#4c1d95] transition hover:border-[#4c1d95] sm:col-span-2"
                   >
                     View Eligibility
                   </button>

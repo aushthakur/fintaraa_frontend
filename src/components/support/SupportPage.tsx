@@ -75,7 +75,7 @@ export function SupportPage() {
               key={label}
               className="flex items-center gap-3 rounded-2xl border border-[#e2edf6] bg-white p-4 shadow-[0_12px_30px_rgba(25,85,133,0.07)]"
             >
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#eef8ff] text-[#195585]">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#eef8ff] text-[#3b0764]">
                 <Icon className="h-5 w-5" />
               </span>
               <span>
@@ -90,7 +90,7 @@ export function SupportPage() {
           ))}
         </div>
 
-        <div className="mx-auto mt-5 flex max-w-9xl flex-col gap-3 overflow-hidden rounded-3xl bg-linear-to-r from-[#123f63] to-[#195585] p-5 text-white shadow-[0_18px_45px_rgba(25,85,133,0.18)] md:flex-row md:items-center md:justify-between md:p-6">
+        <div className="mx-auto mt-5 flex max-w-9xl flex-col gap-3 overflow-hidden rounded-3xl bg-linear-to-r from-[#123f63] to-[#3b0764] p-5 text-white shadow-[0_18px_45px_rgba(25,85,133,0.18)] md:flex-row md:items-center md:justify-between md:p-6">
           <div>
             <p className="text-[12px] font-extrabold uppercase tracking-[0.16em] text-[#7ee3a2]">
               Need help now?
@@ -106,7 +106,7 @@ export function SupportPage() {
           <button
             type="button"
             onClick={() => setCreateOpen(true)}
-            className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-full bg-white px-5 text-[13px] font-extrabold text-[#195585]"
+            className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-full bg-white px-5 text-[13px] font-extrabold text-[#3b0764]"
           >
             <PlusCircle className="h-4 w-4" />
             Create ticket

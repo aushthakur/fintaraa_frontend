@@ -6,7 +6,7 @@ export function AppPromo() {
     <section className="px-4 py-12">
       <div className="mx-auto grid max-w-9xl items-center gap-8 rounded-xl border border-[#b9ecff] bg-[#e9fbff] px-7 py-8 md:grid-cols-[1fr_auto]">
         <div>
-          <p className="text-[12px] font-extrabold uppercase text-[#195585]">
+          <p className="text-[12px] font-extrabold uppercase text-[#3b0764]">
             For better experience
           </p>
           <h2 className="mt-2 max-w-md text-[28px] font-extrabold leading-tight text-[#101828]">
@@ -32,7 +32,7 @@ export function AppPromo() {
           </div>
         </div>
         <div className="relative hidden h-52 w-80 md:block">
-          <div className="absolute left-6 top-2 h-44 w-24 rotate-[-8deg] rounded-3xl border-[7px] border-[#195585] bg-white shadow-xl">
+          <div className="absolute left-6 top-2 h-44 w-24 rotate-[-8deg] rounded-3xl border-[7px] border-[#3b0764] bg-white shadow-xl">
             <Image
               src="/assets/logo/logo.png"
               alt="Fintaraa"
@@ -47,7 +47,7 @@ export function AppPromo() {
             </div>
           </div>
           <div className="absolute right-4 top-12 rounded-xl bg-white p-4 shadow-lg">
-            <Smartphone className="h-8 w-8 text-[#195585]" />
+            <Smartphone className="h-8 w-8 text-[#3b0764]" />
             <p className="mt-2 text-[12px] font-extrabold text-[#101828]">
               Mobile first
             </p>

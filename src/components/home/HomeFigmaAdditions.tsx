@@ -71,7 +71,7 @@ export function CreditScoreMinuteBanner() {
           {["Experian", "Equifax", "CRIF", "CIBIL"].map((bureau) => (
             <span
               key={bureau}
-              className="rounded-md bg-white px-5 py-2 text-[12px] font-extrabold text-[#195585] shadow-sm ring-1 ring-[#dbe8f2]"
+              className="rounded-md bg-white px-5 py-2 text-[12px] font-extrabold text-[#3b0764] shadow-sm ring-1 ring-[#dbe8f2]"
             >
               {bureau}
             </span>
@@ -116,7 +116,7 @@ export function HomeMediaSections() {
             </h2>
             <Link
               href="/blog"
-              className="rounded-full bg-[#075cde] px-5 py-2 text-[12px] font-extrabold text-white no-underline"
+              className="rounded-full bg-[#5b21b6] px-5 py-2 text-[12px] font-extrabold text-white no-underline"
             >
               View all
             </Link>
@@ -156,7 +156,7 @@ export function HomeMediaSections() {
             </h2>
             <Link
               href="/blog"
-              className="rounded-full bg-[#075cde] px-5 py-2 text-[12px] font-extrabold text-white no-underline"
+              className="rounded-full bg-[#5b21b6] px-5 py-2 text-[12px] font-extrabold text-white no-underline"
             >
               View all
             </Link>
@@ -167,7 +167,7 @@ export function HomeMediaSections() {
                 key={item}
                 className="rounded-lg border border-[#e8eef5] bg-white p-3"
               >
-                <div className="flex h-32 items-center justify-center rounded-md bg-[#eef8ff] text-[#195585]">
+                <div className="flex h-32 items-center justify-center rounded-md bg-[#eef8ff] text-[#3b0764]">
                   <Newspaper className="h-10 w-10" />
                 </div>
                 <p className="mt-3 text-[12px] font-extrabold leading-5 text-[#101828]">
@@ -224,7 +224,7 @@ export function HomeLoanOffers() {
               place.
             </p>
           </div>
-          <Home className="h-10 w-10 text-[#195585]" />
+          <Home className="h-10 w-10 text-[#3b0764]" />
         </div>
 
         <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">

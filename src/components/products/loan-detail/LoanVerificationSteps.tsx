@@ -46,87 +46,81 @@ export function LoanVerificationSteps({
   if (embedded) {
     return (
       <div>
-        <div className="grid gap-3 sm:grid-cols-2">
+        <div className="grid gap-3.5 sm:grid-cols-2">
           {sequentialSteps.map((item, index) => (
             <article
               key={item.stepNumber}
-              className="flex items-start gap-3 rounded-2xl border border-[#dfe8ef] bg-white p-4"
+              className="flex items-start gap-3.5 rounded-2xl border border-slate-200/90 bg-white p-4.5 shadow-2xs transition-all hover:border-purple-200 hover:shadow-xs"
             >
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#075cde] text-[11px] font-extrabold text-white">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#5b21b6] text-xs font-extrabold text-white shadow-2xs">
                 {String(index + 1).padStart(2, "0")}
               </span>
               <div>
-                <p className="text-[10px] font-extrabold uppercase tracking-[0.1em] text-[#8295a5]">
+                <p className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
                   Step {index + 1}
                 </p>
-                <h3 className="mt-1 text-[14px] font-extrabold text-[#17354d]">
+                <h3 className="mt-0.5 text-sm font-bold text-slate-900">
                   {item.title}
                 </h3>
-                <p className="mt-1 text-[12px] font-medium leading-5 text-[#687f92]">
+                <p className="mt-1 text-xs font-medium leading-relaxed text-slate-500">
                   {item.description}
                 </p>
               </div>
             </article>
           ))}
         </div>
-        <AuthRedirectLink
-          href={applyHref}
-          productSlug={page.loanTypeSlug}
-          className="mt-5 inline-flex h-10 items-center justify-center gap-2 rounded-full bg-[#13a653] px-5 text-[12px] font-extrabold text-white no-underline transition hover:bg-[#0f8f45]"
-        >
-          Start {page.loanType} Application
-          <ArrowRight className="h-3.5 w-3.5" />
-        </AuthRedirectLink>
+        <div className="mt-6">
+          <AuthRedirectLink
+            href={applyHref}
+            productSlug={page.loanTypeSlug}
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-[#5b21b6] px-5 text-xs font-bold text-white no-underline shadow-xs transition-all hover:bg-[#4c1d95] active:scale-[0.98]"
+          >
+            Start {page.loanType} Application
+            <ArrowRight className="h-3.5 w-3.5" />
+          </AuthRedirectLink>
+        </div>
       </div>
     );
   }
 
   return (
-    <section className="w-full max-w-9xl mx-auto bg-white px-6 py-12 antialiased text-[#111827] sm:px-8 md:px-12 lg:px-16">
+    <section className="w-full max-w-7xl mx-auto bg-white px-4 py-12 antialiased text-slate-900 md:px-6 lg:px-8">
       <div className="grid gap-12 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
         
         {/* LEFT CONTAINER: VERIFICATION STEPS MATRICES */}
-        <div className="space-y-10">
+        <div className="space-y-8">
           <div>
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-purple-50 px-3.5 py-1 text-xs font-bold text-[#5b21b6] border border-purple-100 mb-2.5">
+              Quick 4-Step Process
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
               Steps to Apply for {page.loanType}
             </h2>
-            <p className="mt-2 text-sm font-medium text-gray-400">
-              Follow a simple assisted process from profile check to partner
-              review.
+            <p className="mt-1.5 text-sm font-medium text-slate-500">
+              Follow a simple assisted digital journey from profile assessment to instant partner sanction.
             </p>
           </div>
 
-          {/* Steps Presentation Grid mapping the layout rules inside image_06651e.png */}
-          <div className="grid gap-x-12 gap-y-8 sm:grid-cols-2">
-            {sequentialSteps.map((item) => (
-              <div key={item.stepNumber} className="flex items-start gap-2">
-                
-                {/* Custom layout drawing mimicking the smartphone asset boxes */}
-                <div >
-                    <Image 
-                      src={`/assets/refer/phone.png`}
-                      alt={item.stepNumber}
-                      width={24}
-                      height={24}
-                      priority
-                      unoptimized
-                      className="object-contain w-full h-14"
-                    />
-                    <span className="text-xs  flex justify-center font-bold text-center ms-6 text-gray-400">
-                      {item.stepNumber.split("-")[1]}
-                    </span>
-                </div>
+          {/* Steps Presentation Grid */}
+          <div className="grid gap-4 sm:grid-cols-2">
+            {sequentialSteps.map((item, index) => (
+              <div 
+                key={item.stepNumber} 
+                className="flex items-start gap-3.5 rounded-2xl border border-slate-200/90 bg-white p-4 shadow-2xs transition-all hover:border-purple-200 hover:shadow-xs"
+              >
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#5b21b6] text-xs font-extrabold text-white shadow-2xs">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
 
                 {/* Text Content Stack */}
-                <div className="space-y-1">
-                  <span className="block text-xs font-bold text-gray-400">
+                <div className="space-y-0.5">
+                  <span className="block text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
                     {item.stepNumber}
                   </span>
-                  <h4 className="text-[15px] font-bold tracking-tight text-gray-900 leading-tight">
+                  <h4 className="text-sm font-bold text-slate-900">
                     {item.title}
                   </h4>
-                  <p className="text-xs font-medium text-gray-400 leading-normal">
+                  <p className="text-xs font-medium text-slate-500 leading-relaxed">
                     {item.description}
                   </p>
                 </div>
@@ -139,7 +133,7 @@ export function LoanVerificationSteps({
             <AuthRedirectLink
               href={applyHref}
               productSlug={page.loanTypeSlug}
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-full  bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-6 text-sm font-bold text-white transition-all hover:bg-[#009948] active:scale-[0.99] no-underline shadow-sm"
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#5b21b6] px-6 text-sm font-bold text-white transition-all hover:bg-[#4c1d95] active:scale-[0.98] no-underline shadow-xs hover:shadow-md"
             >
               Apply for {page.loanType}
               <ArrowRight className="h-4 w-4" strokeWidth={2.5} />
@@ -149,7 +143,7 @@ export function LoanVerificationSteps({
 
         {/* RIGHT CONTAINER: DESIGN MOCKUP BACKGROUND ILLUSTATION */}
         <div className="relative w-full flex items-center justify-center lg:justify-end">
-          <div className="relative w-full  aspect-square flex items-center justify-center">
+          <div className="relative w-full max-w-md aspect-square flex items-center justify-center">
             <Image
               src="/assets/refer/boy.png"
               alt="Fintaraa simple 4-step verification journey"
@@ -157,7 +151,7 @@ export function LoanVerificationSteps({
               height={440}
               priority
               unoptimized
-              className="object-contain w-full h-auto "
+              className="object-contain w-full h-auto"
             />
           </div>
         </div>

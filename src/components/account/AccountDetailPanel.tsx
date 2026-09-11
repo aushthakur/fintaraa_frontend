@@ -519,7 +519,7 @@ function FormField({
 }) {
   return (
     <label className="group relative block pt-2">
-      <span className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#667085] transition-colors duration-300 group-focus-within:text-[#195585]">
+      <span className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#667085] transition-colors duration-300 group-focus-within:text-[#3b0764]">
         {label}
       </span>
       <div className="relative mt-1">
@@ -532,8 +532,8 @@ function FormField({
           className="peer h-12 w-full border-0 border-b border-[#cfddea] bg-transparent px-0 text-[15px] font-extrabold text-[#07162d] outline-none transition-all duration-300 placeholder:text-[#98a2b3] placeholder:font-semibold placeholder:transition-colors focus:border-transparent focus:placeholder:text-[#c8d5e1]"
           placeholder={placeholder}
         />
-        <span className="pointer-events-none absolute bottom-0 left-0 h-0.5 w-full origin-left scale-x-0 bg-linear-to-r from-[#195585] via-[#12b76a] to-[#1375de] transition-transform duration-300 ease-out peer-focus:scale-x-100" />
-        <span className="pointer-events-none absolute -bottom-1 left-0 h-2 w-2 scale-0 rounded-full bg-[#195585] opacity-0 transition-all duration-300 peer-focus:scale-100 peer-focus:opacity-100" />
+        <span className="pointer-events-none absolute bottom-0 left-0 h-0.5 w-full origin-left scale-x-0 bg-linear-to-r from-[#3b0764] via-[#12b76a] to-[#1375de] transition-transform duration-300 ease-out peer-focus:scale-x-100" />
+        <span className="pointer-events-none absolute -bottom-1 left-0 h-2 w-2 scale-0 rounded-full bg-[#3b0764] opacity-0 transition-all duration-300 peer-focus:scale-100 peer-focus:opacity-100" />
       </div>
       {helper ? (
         <span className="mt-2 block text-[11px] font-semibold leading-5 text-[#667085]">
@@ -1030,7 +1030,7 @@ function EditProfileForm() {
             href={`#${id}`}
             className={`flex items-center gap-3 rounded-lg p-3 no-underline transition ${
               index === 0
-                ? "bg-[#195585] text-white"
+                ? "bg-[#3b0764] text-white"
                 : "bg-[#f7fbff] text-[#07162d] ring-1 ring-[#e4edf5] hover:bg-[#eef7ff]"
             }`}
           >
@@ -1038,7 +1038,7 @@ function EditProfileForm() {
               className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${
                 index === 0
                   ? "bg-white/12 text-[#7ee3a2]"
-                  : "bg-white text-[#195585]"
+                  : "bg-white text-[#3b0764]"
               }`}
             >
               <Icon className="h-4.5 w-4.5" />
@@ -1069,11 +1069,11 @@ function EditProfileForm() {
           return (
             <section key={title} id={id} className="scroll-mt-32 bg-white">
               <div className="flex items-center gap-3 border-b border-[#e4edf5] pb-3">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#eef8ff] text-[#195585]">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#eef8ff] text-[#3b0764]">
                   <Icon className="h-5 w-5" />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="text-[9px] font-extrabold uppercase tracking-[0.14em] text-[#195585]">
+                  <p className="text-[9px] font-extrabold uppercase tracking-[0.14em] text-[#3b0764]">
                     Step {step}
                   </p>
                   <h3 className="mt-0.5 text-[20px] font-extrabold text-[#07162d]">
@@ -1096,7 +1096,7 @@ function EditProfileForm() {
                         onClick={() => updateEmploymentType(option.value)}
                         className={`rounded-lg p-3 text-left transition ${
                           active
-                            ? "bg-[#195585] text-white"
+                            ? "bg-[#3b0764] text-white"
                             : "bg-[#f8fcff] text-[#07162d] ring-1 ring-[#e4edf5] hover:bg-[#eef7ff]"
                         }`}
                       >
@@ -1154,7 +1154,7 @@ function EditProfileForm() {
             <button
               type="submit"
               disabled={saving}
-              className="h-11 rounded-full bg-white px-6 text-[13px] font-extrabold text-[#195585]"
+              className="h-11 rounded-full bg-white px-6 text-[13px] font-extrabold text-[#3b0764]"
             >
               {saving ? "Saving..." : "Save Profile"}
             </button>
@@ -1309,7 +1309,7 @@ const getStatusTone = (status: string) => {
   if (normalized.includes("pending") || normalized.includes("draft")) {
     return "bg-[#fffaeb] text-[#b54708] ring-[#fedf89]";
   }
-  return "bg-[#eef8ff] text-[#195585] ring-[#c7e7ff]";
+  return "bg-[#eef8ff] text-[#3b0764] ring-[#c7e7ff]";
 };
 
 const getUserAnnualIncome = (user?: CurrentUser | null) => {
@@ -1633,7 +1633,7 @@ function AccountPanelToolbar({
           value={search}
           onChange={(event) => onSearch(event.target.value)}
           placeholder="Search by product, bank, reference, or status"
-          className="h-12 w-full rounded-2xl border border-[#d9e6f2] bg-[#f8fbff] pl-11 pr-4 text-[14px] font-semibold text-[#07162d] outline-none transition placeholder:text-[#98a2b3] focus:border-[#195585] focus:bg-white focus:ring-4 focus:ring-[#195585]/10"
+          className="h-12 w-full rounded-2xl border border-[#d9e6f2] bg-[#f8fbff] pl-11 pr-4 text-[14px] font-semibold text-[#07162d] outline-none transition placeholder:text-[#98a2b3] focus:border-[#3b0764] focus:bg-white focus:ring-4 focus:ring-[#3b0764]/10"
         />
       </label>
       <div className="flex flex-wrap gap-2">{children}</div>
@@ -1660,7 +1660,7 @@ function SoftSelect({
       <select
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className="h-11 rounded-2xl border border-[#d9e6f2] bg-white px-3 text-[13px] font-extrabold text-[#07162d] outline-none transition focus:border-[#195585] focus:ring-4 focus:ring-[#195585]/10"
+        className="h-11 rounded-2xl border border-[#d9e6f2] bg-white px-3 text-[13px] font-extrabold text-[#07162d] outline-none transition focus:border-[#3b0764] focus:ring-4 focus:ring-[#3b0764]/10"
       >
         {options.map((option) => (
           <option key={option.value} value={option.value}>
@@ -1707,7 +1707,7 @@ type ApplicationTimelineStep = {
 const getApplicationAccent = (category: AccountApplication["category"]) => {
   if (category === "loan") return "from-[#0c2340] to-[#1d3557]";
   if (category === "insurance") return "from-[#063b48] to-[#0f766e]";
-  return "from-[#11284a] to-[#195585]";
+  return "from-[#11284a] to-[#3b0764]";
 };
 
 function ApplicationCategoryIcon({
@@ -1897,14 +1897,14 @@ function ApplicationDetailsModal({
       <div className="max-h-[92vh] w-full max-w-7xl overflow-hidden rounded-2xl bg-white shadow-[0_28px_80px_rgba(15,23,42,0.28)]">
         <div className="flex flex-col gap-3 border-b border-[#e2edf6] px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-start gap-3">
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#e8f4ff] text-[#005ca8]">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#e8f4ff] text-[#4c1d95]">
               <ApplicationCategoryIcon
                 category={application.category}
                 className="h-5 w-5"
               />
             </span>
             <div>
-              <p className="text-[11px] font-extrabold uppercase tracking-wide text-[#005ca8]">
+              <p className="text-[11px] font-extrabold uppercase tracking-wide text-[#4c1d95]">
                 {application.reference}
               </p>
               <h3 className="mt-1 text-[20px] font-extrabold text-[#1a1d25]">
@@ -1969,7 +1969,7 @@ function ApplicationDetailsModal({
 
               <section className="rounded-2xl border border-[#e2edf6] bg-white p-5">
                 <div className="flex items-center gap-2">
-                  <Clock3 className="h-5 w-5 text-[#005ca8]" />
+                  <Clock3 className="h-5 w-5 text-[#4c1d95]" />
                   <h4 className="text-[15px] font-extrabold text-[#1a1d25]">
                     Step-wise tracking
                   </h4>
@@ -1990,7 +1990,7 @@ function ApplicationDetailsModal({
                               done
                                 ? "bg-[#12b76a] text-white ring-[#ecfdf3]"
                                 : active
-                                  ? "bg-[#005ca8] text-white ring-[#e8f4ff]"
+                                  ? "bg-[#4c1d95] text-white ring-[#e8f4ff]"
                                   : blocked
                                     ? "bg-[#f04438] text-white ring-[#fef3f2]"
                                     : "bg-[#f2f6fb] text-[#98a2b3] ring-white"
@@ -2012,7 +2012,7 @@ function ApplicationDetailsModal({
                                 done
                                   ? "bg-[#ecfdf3] text-[#067647]"
                                   : active
-                                    ? "bg-[#e8f4ff] text-[#005ca8]"
+                                    ? "bg-[#e8f4ff] text-[#4c1d95]"
                                     : blocked
                                       ? "bg-[#fef3f2] text-[#b42318]"
                                       : "bg-[#f2f6fb] text-[#667085]"
@@ -2061,7 +2061,7 @@ function ApplicationDetailsModal({
               <section className="rounded-2xl border border-[#e2edf6] bg-white p-5">
                 <div className="flex items-center justify-between gap-3">
                   <div className="flex items-center gap-2">
-                    <MessageCircle className="h-5 w-5 text-[#005ca8]" />
+                    <MessageCircle className="h-5 w-5 text-[#4c1d95]" />
                     <h4 className="text-[15px] font-extrabold text-[#1a1d25]">
                       Application chat
                     </h4>
@@ -2074,7 +2074,7 @@ function ApplicationDetailsModal({
                 <div className="mt-4 flex h-64 flex-col rounded-xl border border-[#edf3f8] bg-[#fafcff]">
                   <div className="flex-1 space-y-3 overflow-auto p-3">
                     {chatLoading ? (
-                      <div className="flex items-center gap-2 text-[12px] font-bold text-[#005ca8]">
+                      <div className="flex items-center gap-2 text-[12px] font-bold text-[#4c1d95]">
                         <Loader2 className="h-4 w-4 animate-spin" />
                         Loading chat...
                       </div>
@@ -2089,7 +2089,7 @@ function ApplicationDetailsModal({
                             <div
                               className={`max-w-[82%] rounded-2xl px-3 py-2 ${
                                 mine
-                                  ? "bg-[#005ca8] text-white"
+                                  ? "bg-[#4c1d95] text-white"
                                   : "bg-white text-[#1a1d25] ring-1 ring-[#e2edf6]"
                               }`}
                             >
@@ -2133,7 +2133,7 @@ function ApplicationDetailsModal({
                             ? "Type your message..."
                             : "Chat will be available after assignment"
                         }
-                        className="h-10 min-w-0 flex-1 rounded-lg border border-[#d8e3ef] px-3 text-[12px] font-semibold outline-none focus:border-[#005ca8] focus:ring-4 focus:ring-[#005ca8]/10 disabled:bg-[#f8fafc]"
+                        className="h-10 min-w-0 flex-1 rounded-lg border border-[#d8e3ef] px-3 text-[12px] font-semibold outline-none focus:border-[#4c1d95] focus:ring-4 focus:ring-[#4c1d95]/10 disabled:bg-[#f8fafc]"
                         onKeyDown={(event) => {
                           if (event.key === "Enter") {
                             event.preventDefault();
@@ -2147,7 +2147,7 @@ function ApplicationDetailsModal({
                         disabled={
                           !application.chatKind || !chatDraft.trim() || sending
                         }
-                        className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-[#005ca8] text-white disabled:cursor-not-allowed disabled:bg-[#9db9d1]"
+                        className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-[#4c1d95] text-white disabled:cursor-not-allowed disabled:bg-[#9db9d1]"
                         aria-label="Send message"
                       >
                         {sending ? (
@@ -2294,11 +2294,11 @@ function AccountApplicationsPanel() {
       <div className="rounded-3xl border border-[#dce9f6] bg-[#f8fbff] p-5 shadow-[0_18px_50px_rgba(25,85,133,0.07)] md:p-6">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex gap-4">
-            <span className="flex h-13 w-13 shrink-0 items-center justify-center rounded-2xl bg-white text-[#195585] shadow-[0_14px_30px_rgba(25,85,133,0.08)]">
+            <span className="flex h-13 w-13 shrink-0 items-center justify-center rounded-2xl bg-white text-[#3b0764] shadow-[0_14px_30px_rgba(25,85,133,0.08)]">
               <FileSearch className="h-6 w-6" />
             </span>
             <div>
-              <p className="text-[12px] font-extrabold uppercase tracking-[0.16em] text-[#195585]">
+              <p className="text-[12px] font-extrabold uppercase tracking-[0.16em] text-[#3b0764]">
                 Application command center
               </p>
               <h3 className="mt-2 text-[20px] font-extrabold text-[#07162d] md:text-[24px]">
@@ -2313,7 +2313,7 @@ function AccountApplicationsPanel() {
           <button
             type="button"
             onClick={() => setReloadKey((key) => key + 1)}
-            className="inline-flex h-11 w-fit items-center justify-center gap-2 rounded-full bg-[#195585] px-5 text-[13px] font-extrabold text-white shadow-[0_12px_26px_rgba(25,85,133,0.18)] transition hover:-translate-y-0.5"
+            className="inline-flex h-11 w-fit items-center justify-center gap-2 rounded-full bg-[#3b0764] px-5 text-[13px] font-extrabold text-white shadow-[0_12px_26px_rgba(25,85,133,0.18)] transition hover:-translate-y-0.5"
           >
             {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
             Refresh
@@ -2333,7 +2333,7 @@ function AccountApplicationsPanel() {
               key={String(label)}
               className="rounded-2xl bg-white p-4 ring-1 ring-[#e4edf5]"
             >
-              <Icon className="h-5 w-5 text-[#195585]" />
+              <Icon className="h-5 w-5 text-[#3b0764]" />
               <p className="mt-3 text-[24px] font-extrabold text-[#07162d]">
                 {String(value).padStart(2, "0")}
               </p>
@@ -2398,7 +2398,7 @@ function AccountApplicationsPanel() {
               >
                 <div>
                   <div className="flex h-7 items-center justify-between gap-2">
-                    <span className="truncate text-[12px] font-extrabold text-[#005ca8]">
+                    <span className="truncate text-[12px] font-extrabold text-[#4c1d95]">
                       {record.reference}
                     </span>
                     <span
@@ -2497,7 +2497,7 @@ function AccountApplicationsPanel() {
                   </div>
 
                   <div className="mb-4 text-left">
-                    <div className="line-clamp-1 text-[12px] font-bold text-[#005ca8]">
+                    <div className="line-clamp-1 text-[12px] font-bold text-[#4c1d95]">
                       {activeStep?.description || "Track every status update."}
                     </div>
                     <div className="text-[10px] font-medium text-[#9aa5b5]">
@@ -2510,14 +2510,14 @@ function AccountApplicationsPanel() {
                       <button
                         type="button"
                         onClick={() => setSelectedApplication(record)}
-                        className="rounded-lg border border-[#005ca8] bg-white py-2 text-center text-[12px] font-bold text-[#005ca8] transition-colors hover:bg-[#f4f9ff]"
+                        className="rounded-lg border border-[#4c1d95] bg-white py-2 text-center text-[12px] font-bold text-[#4c1d95] transition-colors hover:bg-[#f4f9ff]"
                       >
                         View Details
                       </button>
                       <button
                         type="button"
                         onClick={() => setSelectedApplication(record)}
-                        className="rounded-lg bg-[#005ca8] py-2 text-center text-[12px] font-bold text-white shadow-xs transition-colors hover:bg-[#004b87]"
+                        className="rounded-lg bg-[#4c1d95] py-2 text-center text-[12px] font-bold text-white shadow-xs transition-colors hover:bg-[#004b87]"
                       >
                         Chat
                       </button>
@@ -2525,7 +2525,7 @@ function AccountApplicationsPanel() {
                     <button
                       type="button"
                       onClick={() => setSelectedApplication(record)}
-                      className="block w-full pt-1 text-center text-[11px] font-bold text-[#005ca8] hover:underline"
+                      className="block w-full pt-1 text-center text-[11px] font-bold text-[#4c1d95] hover:underline"
                     >
                       View step-wise tracking
                     </button>
@@ -2537,7 +2537,7 @@ function AccountApplicationsPanel() {
         </div>
       ) : (
         <div className="rounded-3xl border border-[#e4edf5] bg-white p-8 text-center shadow-[0_18px_45px_rgba(15,23,42,0.05)]">
-          <FileSearch className="mx-auto h-10 w-10 text-[#195585]" />
+          <FileSearch className="mx-auto h-10 w-10 text-[#3b0764]" />
           <h3 className="mt-5 text-[24px] font-extrabold text-[#07162d]">
             No applications match these filters
           </h3>
@@ -2548,7 +2548,7 @@ function AccountApplicationsPanel() {
           </p>
           <Link
             href="/products"
-            className="mt-6 inline-flex h-11 items-center gap-2 rounded-full bg-[#195585] px-5 text-[13px] font-extrabold text-white no-underline"
+            className="mt-6 inline-flex h-11 items-center gap-2 rounded-full bg-[#3b0764] px-5 text-[13px] font-extrabold text-white no-underline"
           >
             Browse products
             <ArrowRight className="h-4 w-4" />
@@ -2580,7 +2580,7 @@ function OfferLink({
         href={href}
         target="_blank"
         rel="noreferrer"
-        className="rounded-lg bg-[#005ca8] py-2 text-center text-[12px] font-bold text-white no-underline shadow-xs transition-colors hover:bg-[#004b87]"
+        className="rounded-lg bg-[#4c1d95] py-2 text-center text-[12px] font-bold text-white no-underline shadow-xs transition-colors hover:bg-[#004b87]"
       >
         {children}
       </a>
@@ -2589,7 +2589,7 @@ function OfferLink({
   return (
     <Link
       href={href}
-      className="rounded-lg bg-[#005ca8] py-2 text-center text-[12px] font-bold text-white no-underline shadow-xs transition-colors hover:bg-[#004b87]"
+      className="rounded-lg bg-[#4c1d95] py-2 text-center text-[12px] font-bold text-white no-underline shadow-xs transition-colors hover:bg-[#004b87]"
     >
       {children}
     </Link>
@@ -2742,7 +2742,7 @@ function MyOffersPanel() {
                         className="h-6 w-auto max-w-24 object-contain"
                       />
                     ) : null}
-                    <span className="truncate text-[12px] font-extrabold text-[#005ca8]">
+                    <span className="truncate text-[12px] font-extrabold text-[#4c1d95]">
                       {offer.bank}
                     </span>
                   </div>
@@ -2839,7 +2839,7 @@ function MyOffersPanel() {
                 </div>
 
                 <div className="mb-4 text-left">
-                  <div className="line-clamp-1 text-[12px] font-bold text-[#005ca8]">
+                  <div className="line-clamp-1 text-[12px] font-bold text-[#4c1d95]">
                     {offer.welcomeBenefit}
                   </div>
                   <div className="text-[10px] font-medium text-[#9aa5b5]">
@@ -2851,7 +2851,7 @@ function MyOffersPanel() {
                   <div className="grid grid-cols-2 gap-2">
                     <Link
                       href="/credit-cards"
-                      className="rounded-lg border border-[#005ca8] bg-white py-2 text-center text-[12px] font-bold text-[#005ca8] no-underline transition-colors hover:bg-[#f4f9ff]"
+                      className="rounded-lg border border-[#4c1d95] bg-white py-2 text-center text-[12px] font-bold text-[#4c1d95] no-underline transition-colors hover:bg-[#f4f9ff]"
                     >
                       View Details
                     </Link>
@@ -2859,7 +2859,7 @@ function MyOffersPanel() {
                   </div>
                   <Link
                     href="/credit-cards"
-                    className="block w-full pt-1 text-center text-[11px] font-bold text-[#005ca8] no-underline hover:underline"
+                    className="block w-full pt-1 text-center text-[11px] font-bold text-[#4c1d95] no-underline hover:underline"
                   >
                     View Eligibility
                   </Link>
@@ -2870,7 +2870,7 @@ function MyOffersPanel() {
         </div>
       ) : (
         <div className="rounded-3xl border border-[#e4edf5] bg-white p-8 text-center shadow-[0_18px_45px_rgba(15,23,42,0.05)]">
-          <Gift className="mx-auto h-10 w-10 text-[#195585]" />
+          <Gift className="mx-auto h-10 w-10 text-[#3b0764]" />
           <h3 className="mt-5 text-[24px] font-extrabold text-[#07162d]">
             No offers match these filters
           </h3>
@@ -2880,7 +2880,7 @@ function MyOffersPanel() {
           </p>
           <Link
             href="/credit-cards"
-            className="mt-6 inline-flex h-11 items-center gap-2 rounded-full bg-[#195585] px-5 text-[13px] font-extrabold text-white no-underline"
+            className="mt-6 inline-flex h-11 items-center gap-2 rounded-full bg-[#3b0764] px-5 text-[13px] font-extrabold text-white no-underline"
           >
             Explore credit cards
             <ArrowRight className="h-4 w-4" />
@@ -2910,7 +2910,7 @@ export function AccountDetailPanel({ slug = "overview" }: { slug?: string }) {
       >
         <div>
           {!compactEditProfile ? (
-            <p className="text-[12px] font-extrabold uppercase tracking-[0.18em] text-[#195585]">
+            <p className="text-[12px] font-extrabold uppercase tracking-[0.18em] text-[#3b0764]">
               Account workspace
             </p>
           ) : null}
@@ -2948,7 +2948,7 @@ function renderPanel(slug: string) {
       return (
         <div className="grid gap-6">
           <WebPushControl />
-          <div className="bg-linear-to-r from-[#195585] to-[#1375de] p-5 text-white">
+          <div className="bg-linear-to-r from-[#3b0764] to-[#1375de] p-5 text-white">
             <Bell className="h-6 w-6 text-[#7ee3a2]" />
             <h3 className="mt-4 text-[22px] font-extrabold">
               Stay updated without noise
@@ -2983,7 +2983,7 @@ function renderPanel(slug: string) {
                 className="flex items-start justify-between gap-4 bg-linear-to-r from-[#f8fcff] to-white p-5"
               >
                 <span className="flex gap-3">
-                  <Bell className="mt-1 h-5 w-5 text-[#195585]" />
+                  <Bell className="mt-1 h-5 w-5 text-[#3b0764]" />
                   <span>
                     <span className="block text-[15px] font-extrabold text-[#07162d]">
                       {pref}
@@ -2996,7 +2996,7 @@ function renderPanel(slug: string) {
                 <input
                   type="checkbox"
                   defaultChecked
-                  className="mt-1 h-5 w-5 shrink-0 accent-[#195585]"
+                  className="mt-1 h-5 w-5 shrink-0 accent-[#3b0764]"
                 />
               </label>
             ))}

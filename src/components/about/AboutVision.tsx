@@ -215,7 +215,7 @@ export function AboutVision() {
                   >
                     <motion.span
                       whileHover={{ scale: 1.08 }}
-                      className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-full bg-[#075cde] text-white md:relative md:z-10"
+                      className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-full bg-[#5b21b6] text-white md:relative md:z-10"
                     >
                       <Icon className="h-4.5 w-4.5" />
                     </motion.span>
@@ -236,7 +236,7 @@ export function AboutVision() {
         </div>
       </section>
 
-      <section className="overflow-hidden bg-[#f5fbff] px-4 py-16 md:px-6 md:py-20 lg:px-8">
+      <section className="overflow-hidden bg-[#faf5ff] px-4 py-16 md:px-6 md:py-20 lg:px-8">
         <div className="mx-auto grid max-w-9xl gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:gap-16">
           <motion.div {...reveal()}>
             <SectionLabel>Vision & Belief</SectionLabel>
@@ -252,9 +252,9 @@ export function AboutVision() {
 
             <div className="mt-8 grid gap-7 sm:grid-cols-2">
               <div className="flex gap-4">
-                <span className="mt-1 h-14 w-0.75 shrink-0 bg-[#075cde]" />
+                <span className="mt-1 h-14 w-0.75 shrink-0 bg-[#5b21b6]" />
                 <div>
-                  <p className="text-[12px] font-extrabold uppercase text-[#075cde]">
+                  <p className="text-[12px] font-extrabold uppercase text-[#5b21b6]">
                     Our vision
                   </p>
                   <p className="mt-2 text-[14px] font-semibold leading-7 text-[#3f5067]">
@@ -266,7 +266,7 @@ export function AboutVision() {
               <div className="flex gap-4">
                 <span className="mt-1 h-14 w-0.75 shrink-0 bg-[#16a3e0]" />
                 <div>
-                  <p className="text-[12px] font-extrabold uppercase text-[#075cde]">
+                  <p className="text-[12px] font-extrabold uppercase text-[#5b21b6]">
                     Our mission
                   </p>
                   <p className="mt-2 text-[14px] font-semibold leading-7 text-[#3f5067]">
@@ -340,7 +340,7 @@ export function AboutVision() {
             </p>
 
             <div className="mt-9">
-              <p className="font-highlight text-[42px] font-bold italic leading-none text-[#075cde] md:text-[48px]">
+              <p className="font-highlight text-[42px] font-bold italic leading-none text-[#5b21b6] md:text-[48px]">
                 Rs. 1,000 crore
               </p>
               <p className="mt-3 max-w-sm text-[13px] font-bold leading-6 text-[#52647a]">
@@ -358,7 +358,7 @@ export function AboutVision() {
                 whileHover={{ y: -3 }}
               >
                 <div className="flex items-start justify-between gap-4">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#e6f4ff] text-[#075cde]">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#e6f4ff] text-[#5b21b6]">
                     <Icon className="h-5 w-5" />
                   </span>
                   <span className="font-highlight text-[23px] font-bold italic text-[#9acff0]">
@@ -454,7 +454,7 @@ export function AboutVision() {
                   <span className="text-[16px] font-extrabold leading-7 text-[#132842] md:text-[17px]">
                     {faq.question}
                   </span>
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#e2f2ff] text-[#075cde]">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#e2f2ff] text-[#5b21b6]">
                     <ChevronDown className="h-4 w-4 transition-transform duration-300 group-open:rotate-180" />
                   </span>
                 </summary>
@@ -484,7 +484,7 @@ export function AboutVision() {
               <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
                 <Link
                   href="/products"
-                  className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-md bg-[#075cde] px-6 text-[14px] font-extrabold text-white no-underline transition-colors hover:bg-[#064ebd] sm:w-auto"
+                  className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-md bg-[#5b21b6] px-6 text-[14px] font-extrabold text-white no-underline transition-colors hover:bg-[#064ebd] sm:w-auto"
                 >
                   Explore Loan Options
                   <ArrowRight className="h-4 w-4" />
@@ -493,7 +493,7 @@ export function AboutVision() {
               <motion.div whileHover={{ x: 2 }} whileTap={{ scale: 0.98 }}>
                 <a
                   href={CALL_PHONE.href}
-                  className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-md bg-white px-6 text-[14px] font-extrabold text-[#075cde] no-underline transition-colors hover:bg-[#f8fcff] sm:w-auto"
+                  className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-md bg-white px-6 text-[14px] font-extrabold text-[#5b21b6] no-underline transition-colors hover:bg-[#f8fcff] sm:w-auto"
                 >
                   <PhoneCall className="h-4 w-4" />
                   Talk to an Expert
@@ -506,7 +506,7 @@ export function AboutVision() {
                 href="mailto:customercare@fintaraa.com"
                 className="flex items-start gap-3 text-[#213750] no-underline"
               >
-                <Mail className="mt-1 h-4.5 w-4.5 shrink-0 text-[#075cde]" />
+                <Mail className="mt-1 h-4.5 w-4.5 shrink-0 text-[#5b21b6]" />
                 <span className="text-[13px] font-bold leading-6">
                   customercare@fintaraa.com
                 </span>
@@ -515,7 +515,7 @@ export function AboutVision() {
                 href={CALL_PHONE.href}
                 className="flex items-start gap-3 text-[#213750] no-underline"
               >
-                <PhoneCall className="mt-1 h-4.5 w-4.5 shrink-0 text-[#075cde]" />
+                <PhoneCall className="mt-1 h-4.5 w-4.5 shrink-0 text-[#5b21b6]" />
                 <span className="text-[13px] font-bold leading-6">
                   {CALL_PHONE.display}
                 </span>
@@ -526,7 +526,7 @@ export function AboutVision() {
                 rel="noopener noreferrer"
                 className="flex items-start gap-3 text-inherit no-underline"
               >
-                <MapPin className="mt-1 h-4.5 w-4.5 shrink-0 text-[#075cde]" />
+                <MapPin className="mt-1 h-4.5 w-4.5 shrink-0 text-[#5b21b6]" />
                 <p className="text-[12px] font-semibold leading-6 text-[#4f6278] md:text-[13px]">
                   {COMPANY_NAME}: {OFFICE.address}
                 </p>

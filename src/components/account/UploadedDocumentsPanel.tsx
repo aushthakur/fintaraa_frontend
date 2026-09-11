@@ -398,7 +398,7 @@ export function UploadedDocumentsPanel() {
             <button
               key={item.key}
               type="button"
-              className="shrink-0 rounded-full bg-white/10 px-3.5 py-1.5 text-[12px] font-semibold text-white/80 transition hover:bg-white hover:text-[#195585]"
+              className="shrink-0 rounded-full bg-white/10 px-3.5 py-1.5 text-[12px] font-semibold text-white/80 transition hover:bg-white hover:text-[#3b0764]"
               onClick={() => setSearch(item.label)}
             >
               {item.label}
@@ -551,7 +551,7 @@ export function UploadedDocumentsPanel() {
             <article key={item.key} className="p-4 border border-gray-200">
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
-                  <div className="inline-flex max-w-full items-center gap-2 rounded-full bg-[#eef8ff] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#195585]">
+                  <div className="inline-flex max-w-full items-center gap-2 rounded-full bg-[#eef8ff] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#3b0764]">
                     <FileText className="h-3.5 w-3.5 shrink-0" />
                     <span className="truncate">{item.label}</span>
                   </div>
@@ -580,7 +580,7 @@ export function UploadedDocumentsPanel() {
               ) : null}
 
               <div className="mt-4 grid grid-cols-2 gap-2">
-                <label className="inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#195585] px-3 text-[12px] font-bold text-white">
+                <label className="inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#3b0764] px-3 text-[12px] font-bold text-white">
                   <Camera className="h-4 w-4" aria-hidden="true" />
                   {pendingRequest ? "Re-take photo" : "Take photo"}
                   <input
@@ -593,7 +593,7 @@ export function UploadedDocumentsPanel() {
                     }
                   />
                 </label>
-                <label className="inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-xl border border-[#c7d7e8] bg-white px-3 text-[12px] font-bold text-[#195585]">
+                <label className="inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-xl border border-[#c7d7e8] bg-white px-3 text-[12px] font-bold text-[#3b0764]">
                   <UploadCloud className="h-4 w-4" aria-hidden="true" />
                   {pendingRequest ? "Re-upload file" : "Browse files"}
                   <input
@@ -610,7 +610,7 @@ export function UploadedDocumentsPanel() {
               <div className="mt-3 bg-white/85 p-3 ring-1 ring-[#e4edf5]">
                 {state.fileUrl ? (
                   <div className="mb-3 flex items-center gap-3">
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden bg-[#eef8ff] text-[#195585]">
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden bg-[#eef8ff] text-[#3b0764]">
                       {isImageUrl(state.fileUrl) ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img
@@ -645,7 +645,7 @@ export function UploadedDocumentsPanel() {
                       {isUploaded ? "Tap to replace" : "or click to browse"}
                     </p>
                   </div>
-                  <UploadCloud className="h-6 w-6 text-[#195585]" />
+                  <UploadCloud className="h-6 w-6 text-[#3b0764]" />
                 </div>
               </div>
 
@@ -659,7 +659,7 @@ export function UploadedDocumentsPanel() {
                   }
                 />
                 <label className="group block pt-2">
-                  <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#667085] transition group-focus-within:text-[#195585]">
+                  <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#667085] transition group-focus-within:text-[#3b0764]">
                     Password if required
                   </span>
                   <div className="relative mt-1 flex h-11 items-center gap-2 border-b border-[#cfddea]">
@@ -678,7 +678,7 @@ export function UploadedDocumentsPanel() {
                       aria-label={
                         showPassword ? "Hide password" : "Show password"
                       }
-                      className="text-[#98a2b3] transition hover:text-[#195585]"
+                      className="text-[#98a2b3] transition hover:text-[#3b0764]"
                       onClick={() =>
                         updateDocField(item.key, "showPassword", !showPassword)
                       }
@@ -689,7 +689,7 @@ export function UploadedDocumentsPanel() {
                         <EyeOff className="h-4 w-4" />
                       )}
                     </button>
-                    <span className="pointer-events-none absolute bottom-0 left-0 h-0.5 w-full origin-left scale-x-0 bg-linear-to-r from-[#195585] via-[#12b76a] to-[#1375de] transition-transform duration-300 peer-focus:scale-x-100" />
+                    <span className="pointer-events-none absolute bottom-0 left-0 h-0.5 w-full origin-left scale-x-0 bg-linear-to-r from-[#3b0764] via-[#12b76a] to-[#1375de] transition-transform duration-300 peer-focus:scale-x-100" />
                   </div>
                 </label>
               </div>
@@ -698,7 +698,7 @@ export function UploadedDocumentsPanel() {
                 <button
                   type="button"
                   disabled={isSaving}
-                  className="inline-flex h-9 items-center gap-2 rounded-full bg-[#195585] px-4 text-[12px] font-semibold text-white disabled:opacity-60"
+                  className="inline-flex h-9 items-center gap-2 rounded-full bg-[#3b0764] px-4 text-[12px] font-semibold text-white disabled:opacity-60"
                   onClick={() => handleSave(item)}
                 >
                   <CheckCircle2 className="h-4 w-4" />
@@ -710,7 +710,7 @@ export function UploadedDocumentsPanel() {
                       href={state.fileUrl}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex h-9 items-center gap-2 rounded-full bg-[#eef8ff] px-4 text-[12px] font-semibold text-[#195585]"
+                      className="inline-flex h-9 items-center gap-2 rounded-full bg-[#eef8ff] px-4 text-[12px] font-semibold text-[#3b0764]"
                     >
                       <Eye className="h-4 w-4" />
                       Preview
@@ -767,7 +767,7 @@ function BottomInput({
 }) {
   return (
     <label className="group block pt-2">
-      <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#667085] transition group-focus-within:text-[#195585]">
+      <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#667085] transition group-focus-within:text-[#3b0764]">
         {label}
       </span>
       <div className="relative mt-1">
@@ -777,7 +777,7 @@ function BottomInput({
           placeholder={placeholder}
           className="peer h-11 w-full border-0 border-b border-[#cfddea] bg-transparent px-0 text-[14px] font-semibold text-[#07162d] outline-none placeholder:text-[#98a2b3] focus:placeholder:text-[#c8d5e1]"
         />
-        <span className="pointer-events-none absolute bottom-0 left-0 h-0.5 w-full origin-left scale-x-0 bg-linear-to-r from-[#195585] via-[#12b76a] to-[#1375de] transition-transform duration-300 peer-focus:scale-x-100" />
+        <span className="pointer-events-none absolute bottom-0 left-0 h-0.5 w-full origin-left scale-x-0 bg-linear-to-r from-[#3b0764] via-[#12b76a] to-[#1375de] transition-transform duration-300 peer-focus:scale-x-100" />
       </div>
     </label>
   );
@@ -795,7 +795,7 @@ function StatusRow({
   return (
     <div
       className={`flex items-center gap-3 p-3.5 text-[13px] font-semibold ${
-        isError ? "bg-[#fff1f2] text-[#b42318]" : "bg-[#f8fcff] text-[#195585]"
+        isError ? "bg-[#fff1f2] text-[#b42318]" : "bg-[#f8fcff] text-[#3b0764]"
       }`}
     >
       <Icon className="h-4 w-4" />

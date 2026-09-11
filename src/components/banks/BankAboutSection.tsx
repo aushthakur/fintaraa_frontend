@@ -31,7 +31,7 @@ export function BankAboutSection({ page }: { page: BankSeoPageData }) {
             ).map(({ label, value }) => (
               <div key={label} className="flex items-center gap-3.5">
                 {/* Modern Soft Blue Shape Border Badge */}
-                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-[#eef5ff] text-[#005ca8]">
+                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-[#eef5ff] text-[#4c1d95]">
                   <ShieldCheck className="h-6 w-6 stroke-[1.75]" />
                 </div>
                 <div>

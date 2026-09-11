@@ -195,7 +195,7 @@ export function CibilReportPage() {
     return (
       <main className="flex min-h-[60vh] items-center justify-center bg-white px-4">
         <div className="flex items-center gap-3 text-[13px] font-bold text-[#254e69]">
-          <span className="flex h-10 w-10 items-center justify-center rounded-md bg-[#e8f3fb] text-[#075cde]">
+          <span className="flex h-10 w-10 items-center justify-center rounded-md bg-[#e8f3fb] text-[#5b21b6]">
             <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" />
           </span>
           Loading your saved CIBIL report...
@@ -231,7 +231,7 @@ export function CibilReportPage() {
                 className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-md ${
                   reportError
                     ? "bg-[#ffe8ea] text-[#b4232d]"
-                    : "bg-[#e8f3fb] text-[#075cde]"
+                    : "bg-[#e8f3fb] text-[#5b21b6]"
                 }`}
               >
                 {reportLoading ? (
@@ -261,7 +261,7 @@ export function CibilReportPage() {
               onClick={handleRefreshReport}
               disabled={reportLoading || refreshLocked}
               aria-describedby={refreshLocked ? "bureau-refresh-notice" : undefined}
-              className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-md border border-[#a8cbdc] bg-white px-4 text-[11px] font-extrabold text-[#075cde] transition-colors hover:border-[#075cde] disabled:cursor-not-allowed disabled:text-[#8ca0af]"
+              className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-md border border-[#a8cbdc] bg-white px-4 text-[11px] font-extrabold text-[#5b21b6] transition-colors hover:border-[#5b21b6] disabled:cursor-not-allowed disabled:text-[#8ca0af]"
             >
               <RefreshCcw
                 className={`h-4 w-4 ${reportLoading ? "animate-spin" : ""}`}
@@ -276,7 +276,7 @@ export function CibilReportPage() {
               className="flex w-full items-center gap-2.5 border-t border-[#cbdfea] bg-[#edf6fc] px-4 py-3 text-[12px] font-extrabold text-[#254e69]"
             >
               <CalendarClock
-                className="h-4 w-4 shrink-0 text-[#075cde]"
+                className="h-4 w-4 shrink-0 text-[#5b21b6]"
                 aria-hidden="true"
               />
               <p>
@@ -304,7 +304,7 @@ export function CibilReportPage() {
       <section className="border-y border-[#dce9f1] bg-[#f4f9fc] px-4 py-6 md:px-6 lg:px-8">
         <div className="mx-auto flex max-w-9xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-start gap-3">
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-[#e8f3fb] text-[#075cde]">
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-[#e8f3fb] text-[#5b21b6]">
               <BellRing className="h-4 w-4" aria-hidden="true" />
             </span>
             <div>
@@ -318,7 +318,7 @@ export function CibilReportPage() {
           </div>
           <Link
             href="/support"
-            className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-md border border-[#a8cbdc] bg-white px-4 text-[11px] font-extrabold text-[#075cde] no-underline transition-colors hover:border-[#075cde]"
+            className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-md border border-[#a8cbdc] bg-white px-4 text-[11px] font-extrabold text-[#5b21b6] no-underline transition-colors hover:border-[#5b21b6]"
           >
             Contact support
             <ArrowRight className="h-4 w-4" aria-hidden="true" />

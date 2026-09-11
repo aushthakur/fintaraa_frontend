@@ -89,7 +89,7 @@ function PageOption({
       href={href}
       className="group flex min-h-32 items-start gap-4 rounded-2xl border border-white/20 bg-white/10 p-5 text-white no-underline backdrop-blur-sm transition-colors hover:bg-white/15"
     >
-      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white text-[#075cde]">
+      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white text-[#5b21b6]">
         <Icon className="h-5 w-5" />
       </span>
       <span>
@@ -127,8 +127,8 @@ export function AwardsRecognitionsPage({
     : recognitionHighlights;
 
   return (
-    <main className="bg-white text-[#102c45]">
-      <section className="overflow-hidden bg-[linear-gradient(135deg,#071f3e_0%,#075cde_68%,#078856_140%)] px-4 py-14 text-white md:px-6 md:py-18 lg:px-8">
+    <main className="bg-white text-[#3b0764]">
+      <section className="overflow-hidden bg-[linear-gradient(135deg,#071f3e_0%,#5b21b6_68%,#078856_140%)] px-4 py-14 text-white md:px-6 md:py-18 lg:px-8">
         <div className="mx-auto grid max-w-9xl gap-10 lg:grid-cols-[1.08fr_0.92fr] lg:items-center">
           <div>
             <p className="inline-flex items-center gap-2 text-[12px] font-extrabold uppercase tracking-[0.2em] text-[#b7e2ff]">
@@ -172,12 +172,12 @@ export function AwardsRecognitionsPage({
       >
         <div className="mx-auto max-w-9xl">
           <div className="max-w-3xl">
-            <p className="text-[12px] font-extrabold uppercase tracking-[0.18em] text-[#075cde]">
+            <p className="text-[12px] font-extrabold uppercase tracking-[0.18em] text-[#5b21b6]">
               Recognition highlights
             </p>
             <h2
               id="awards-heading"
-              className="mt-3 text-[29px] font-extrabold tracking-[-0.03em] text-[#102c45] md:text-[39px]"
+              className="mt-3 text-[29px] font-extrabold tracking-[-0.03em] text-[#3b0764] md:text-[39px]"
             >
               Progress worth recognising
             </h2>
@@ -195,7 +195,7 @@ export function AwardsRecognitionsPage({
                   className="flex h-full flex-col rounded-3xl border border-[#dce8f2] bg-[#f8fbff] p-6 md:p-7"
                 >
                   <div className="flex items-start justify-between gap-4">
-                    <span className="relative flex h-12 w-12 items-center justify-center overflow-hidden rounded-2xl bg-white text-[#075cde] shadow-sm">
+                    <span className="relative flex h-12 w-12 items-center justify-center overflow-hidden rounded-2xl bg-white text-[#5b21b6] shadow-sm">
                       {imageUrl ? (
                         <Image
                           src={imageUrl}
@@ -209,14 +209,14 @@ export function AwardsRecognitionsPage({
                         <Icon className="h-5 w-5" />
                       )}
                     </span>
-                    <span className="rounded-full bg-[#e7f3ff] px-3 py-1 text-[10px] font-extrabold uppercase tracking-[0.12em] text-[#075cde]">
+                    <span className="rounded-full bg-[#e7f3ff] px-3 py-1 text-[10px] font-extrabold uppercase tracking-[0.12em] text-[#5b21b6]">
                       {label}
                     </span>
                   </div>
-                  <p className="mt-7 text-[24px] font-extrabold text-[#075cde]">
+                  <p className="mt-7 text-[24px] font-extrabold text-[#5b21b6]">
                     {value}
                   </p>
-                  <h3 className="mt-2 text-[19px] font-extrabold leading-7 text-[#102c45]">
+                  <h3 className="mt-2 text-[19px] font-extrabold leading-7 text-[#3b0764]">
                     {title}
                   </h3>
                   <p className="mt-3 text-[13px] font-medium leading-6 text-[#667b8f]">
@@ -242,7 +242,7 @@ export function AwardsRecognitionsPage({
               </p>
               <h2
                 id="certificates-heading"
-                className="mt-3 text-[29px] font-extrabold tracking-[-0.03em] text-[#102c45] md:text-[39px]"
+                className="mt-3 text-[29px] font-extrabold tracking-[-0.03em] text-[#3b0764] md:text-[39px]"
               >
                 Certificates &amp; credentials
               </h2>
@@ -267,7 +267,7 @@ export function AwardsRecognitionsPage({
                   <span className="flex h-13 w-13 items-center justify-center rounded-2xl bg-[#e9f7f1] text-[#087d50]">
                     <Icon className="h-6 w-6" />
                   </span>
-                  <h3 className="mt-6 text-[19px] font-extrabold leading-7 text-[#102c45]">
+                  <h3 className="mt-6 text-[19px] font-extrabold leading-7 text-[#3b0764]">
                     {title}
                   </h3>
                   <p className="mt-3 text-[13px] font-medium leading-6 text-[#667b8f]">
@@ -284,7 +284,7 @@ export function AwardsRecognitionsPage({
       </section>
 
       <section className="px-4 py-12 md:px-6 lg:px-8">
-        <div className="mx-auto flex max-w-9xl flex-col items-start justify-between gap-5 rounded-3xl bg-[#102c45] p-7 text-white md:flex-row md:items-center md:p-9">
+        <div className="mx-auto flex max-w-9xl flex-col items-start justify-between gap-5 rounded-3xl bg-[#3b0764] p-7 text-white md:flex-row md:items-center md:p-9">
           <div>
             <h2 className="text-[23px] font-extrabold">
               Learn more about Fintaraa
@@ -296,7 +296,7 @@ export function AwardsRecognitionsPage({
           </div>
           <Link
             href="/about-us"
-            className="inline-flex h-11 items-center gap-2 rounded-full bg-white px-5 text-[12px] font-extrabold text-[#075cde] no-underline"
+            className="inline-flex h-11 items-center gap-2 rounded-full bg-white px-5 text-[12px] font-extrabold text-[#5b21b6] no-underline"
           >
             Visit About Us
             <ArrowRight className="h-4 w-4" />

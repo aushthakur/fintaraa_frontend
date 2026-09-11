@@ -17,7 +17,7 @@ const categories = [
     title: "Cashback",
     icon: Banknote,
     iconBg: "bg-[#e8f4ff]",
-    iconColor: "text-[#005ca8]",
+    iconColor: "text-[#4c1d95]",
   },
   {
     title: "Travel",
@@ -47,7 +47,7 @@ const categories = [
     title: "Beginners",
     icon: User,
     iconBg: "bg-[#e8f4ff]",
-    iconColor: "text-[#005ca8]",
+    iconColor: "text-[#4c1d95]",
   },
   {
     title: "Self-Employed",
@@ -89,7 +89,7 @@ export function ExploreCategories({
           <button
             type="button"
             onClick={onViewAll}
-            className="inline-flex shrink-0 items-center gap-1 whitespace-nowrap text-[12px] font-bold text-[#005ca8] hover:underline md:text-[13px]"
+            className="inline-flex shrink-0 items-center gap-1 whitespace-nowrap text-[12px] font-bold text-[#4c1d95] hover:underline md:text-[13px]"
           >
             View All Cards <span className="text-[14px]">→</span>
           </button>
@@ -115,7 +115,7 @@ export function ExploreCategories({
               }}
               className={`flex min-h-22 cursor-pointer items-center gap-2.5 rounded-xl border p-3 text-left transition-[border-color,background-color,box-shadow] duration-200 md:min-h-36.25 md:flex-col md:justify-center md:p-5 md:text-center ${
                 selectedCategories.includes(title)
-                  ? "border-[#005ca8] bg-[#f3f9ff] shadow-[0_8px_24px_rgba(0,92,168,0.12)]"
+                  ? "border-[#4c1d95] bg-[#f3f9ff] shadow-[0_8px_24px_rgba(0,92,168,0.12)]"
                   : "border-[#e3ebf3] bg-white shadow-[0_4px_12px_rgba(22,34,50,0.02)] hover:border-[#b9d7f0] hover:shadow-md"
               }`}
             >

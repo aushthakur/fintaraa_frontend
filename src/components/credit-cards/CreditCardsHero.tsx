@@ -16,10 +16,10 @@ import {
 import { AuthRedirectLink } from "@/components/auth/AuthRedirectLink";
 
 const inputClass =
-  "h-11 w-full rounded-xl border border-[#d8e4f0] bg-[#f8fbff] px-3 text-[13px] font-bold text-[#1f2937] outline-none transition placeholder:text-[#9aa8b8] focus:border-[#005ca8] focus:bg-white focus:ring-2 focus:ring-[#e4f1ff]";
+  "h-11 w-full rounded-xl border border-[#d8e4f0] bg-[#f8fbff] px-3 text-[13px] font-bold text-[#1f2937] outline-none transition placeholder:text-[#9aa8b8] focus:border-[#4c1d95] focus:bg-white focus:ring-2 focus:ring-[#e4f1ff]";
 
 const selectClass =
-  "h-11 w-full rounded-xl border border-[#d8e4f0] bg-[#f8fbff] px-3 text-[13px] font-bold text-[#1f2937] outline-none transition focus:border-[#005ca8] focus:bg-white focus:ring-2 focus:ring-[#e4f1ff]";
+  "h-11 w-full rounded-xl border border-[#d8e4f0] bg-[#f8fbff] px-3 text-[13px] font-bold text-[#1f2937] outline-none transition focus:border-[#4c1d95] focus:bg-white focus:ring-2 focus:ring-[#e4f1ff]";
 
 export type CreditCardRecommendation = {
   fullName: string;
@@ -138,7 +138,7 @@ export function CreditCardsHero({
             </div>
             <h1 className="mt-14 max-w-2xl text-[32px] font-extrabold leading-[1.14] text-[#111625] sm:mt-10 sm:text-[40px] lg:text-[48px]">
               Find the Best Credit
-              <span className="block text-[#005ca8]">
+              <span className="block text-[#4c1d95]">
                 Cards for Your Lifestyle
               </span>
             </h1>
@@ -167,7 +167,7 @@ export function CreditCardsHero({
           }}
           className="relative mx-auto w-full max-w-100 md:mx-0"
         >
-          <div className="absolute inset-0 block translate-x-2 translate-y-2 rounded-[18px] bg-[#00529c] sm:translate-x-3 sm:translate-y-3" />
+          <div className="absolute inset-0 block translate-x-2 translate-y-2 rounded-[18px] bg-[#4c1d95] sm:translate-x-3 sm:translate-y-3" />
 
           <div className="relative rounded-[18px] border border-[#d9dfe8] bg-white p-5 shadow-[0_10px_26px_rgba(0,92,168,0.12)] sm:p-6">
             <div className="flex items-start justify-between gap-3">
@@ -179,7 +179,7 @@ export function CreditCardsHero({
                   Get personalised suggestions from participating partners.
                 </p>
               </div>
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#eef8ff] text-[#005ca8]">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#eef8ff] text-[#4c1d95]">
                 <Gift className="h-5 w-5" />
               </span>
             </div>
@@ -207,8 +207,8 @@ export function CreditCardsHero({
                 <span className="text-[11px] font-extrabold uppercase tracking-[0.08em] text-[#475467]">
                   Mobile Number
                 </span>
-                <div className="flex h-11 overflow-hidden rounded-xl border border-[#d8e4f0] bg-[#f8fbff] transition focus-within:border-[#005ca8] focus-within:bg-white focus-within:ring-2 focus-within:ring-[#e4f1ff]">
-                  <span className="flex items-center border-r border-[#d8e4f0] bg-[#eef8ff] px-3 text-[13px] font-extrabold text-[#005ca8]">
+                <div className="flex h-11 overflow-hidden rounded-xl border border-[#d8e4f0] bg-[#f8fbff] transition focus-within:border-[#4c1d95] focus-within:bg-white focus-within:ring-2 focus-within:ring-[#e4f1ff]">
+                  <span className="flex items-center border-r border-[#d8e4f0] bg-[#eef8ff] px-3 text-[13px] font-extrabold text-[#4c1d95]">
                     +91
                   </span>
                   <div className="relative min-w-0 flex-1">

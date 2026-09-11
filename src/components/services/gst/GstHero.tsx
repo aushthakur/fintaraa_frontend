@@ -27,7 +27,7 @@ const trustBadges = [
     text: "CA-led guidance for registration, filing and document review.",
     icon: UserRound,
     badgeIcon: FileCheck2,
-    accent: "bg-[#e8f4ff] text-[#005ca8]",
+    accent: "bg-[#e8f4ff] text-[#4c1d95]",
   },
   {
     label: "100% Compliant",
@@ -172,7 +172,7 @@ export function GstHero() {
         </div>
 
         <div className="flex flex-col z-10 lg:pl-10">
-          <h1 className="max-w-xl text-[28px] font-extrabold leading-[1.15] tracking-[-0.02em] text-[#005ca8] sm:text-[34px] md:text-[38px] lg:text-[46px] xl:text-[52px]">
+          <h1 className="max-w-xl text-[28px] font-extrabold leading-[1.15] tracking-[-0.02em] text-[#4c1d95] sm:text-[34px] md:text-[38px] lg:text-[46px] xl:text-[52px]">
             GST Registration & <span className="block">GST Filing</span>
           </h1>
           <p className="mt-4 text-[15px] font-medium text-[#111827] sm:text-base md:text-[17px] lg:text-[19px]">
@@ -195,7 +195,7 @@ export function GstHero() {
           id="gst-service-form"
           className="relative mx-auto w-full max-w-140 scroll-mt-48"
         >
-          <div className="absolute -right-4 -top-4 h-full w-85 rounded-xl bg-[#005ca8] sm:w-95 md:w-105 lg:w-115" />
+          <div className="absolute -right-4 -top-4 h-full w-85 rounded-xl bg-[#4c1d95] sm:w-95 md:w-105 lg:w-115" />
           <div className="relative rounded-xl bg-white p-5 shadow-[0_18px_45px_rgba(16,24,40,0.12)] sm:p-6 md:p-7">
             <h2 className="text-base font-extrabold text-[#2a2f36] sm:text-lg md:text-[20px] lg:text-[22px]">
               Get Started with GST Services
@@ -219,7 +219,7 @@ export function GstHero() {
                     updateField("businessName", event.target.value)
                   }
                   placeholder="Enter registered or trade name"
-                  className="h-10 rounded-lg border border-[#d9dfe8] px-3 text-[13px] font-semibold outline-none placeholder:text-[#a0a7b2] focus:border-[#005ca8] sm:h-11 sm:text-sm"
+                  className="h-10 rounded-lg border border-[#d9dfe8] px-3 text-[13px] font-semibold outline-none placeholder:text-[#a0a7b2] focus:border-[#4c1d95] sm:h-11 sm:text-sm"
                 />
               </label>
               <label className="grid gap-1 sm:gap-1.5">
@@ -233,7 +233,7 @@ export function GstHero() {
                     updateField("mobile", event.target.value)
                   }
                   placeholder="Enter 10-digit mobile number"
-                  className="h-10 rounded-lg border border-[#d9dfe8] px-3 text-[13px] font-semibold outline-none placeholder:text-[#a0a7b2] focus:border-[#005ca8] sm:h-11 sm:text-sm"
+                  className="h-10 rounded-lg border border-[#d9dfe8] px-3 text-[13px] font-semibold outline-none placeholder:text-[#a0a7b2] focus:border-[#4c1d95] sm:h-11 sm:text-sm"
                 />
               </label>
               {[
@@ -260,7 +260,7 @@ export function GstHero() {
                     onChange={(event) =>
                       updateField(key as keyof typeof form, event.target.value)
                     }
-                    className="h-10 rounded-lg border border-[#d9dfe8] bg-white px-3 text-[13px] font-semibold text-[#475467] outline-none focus:border-[#005ca8] sm:h-11 sm:text-sm"
+                    className="h-10 rounded-lg border border-[#d9dfe8] bg-white px-3 text-[13px] font-semibold text-[#475467] outline-none focus:border-[#4c1d95] sm:h-11 sm:text-sm"
                   >
                     <option value="">{String(placeholder)}</option>
                     {(options as string[]).map((option) => (
@@ -341,7 +341,7 @@ export function GstHero() {
                       <h3 className="text-[16px] font-extrabold text-[#1f2937] md:text-[17px]">
                         {label}
                       </h3>
-                      <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#f3f8ff] text-[#005ca8]">
+                      <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#f3f8ff] text-[#4c1d95]">
                         <BadgeIcon className="h-3.5 w-3.5" />
                       </span>
                     </div>

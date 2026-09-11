@@ -261,14 +261,19 @@ export function LoanDetailPage({
         </LoanGuidePanel>
       ) : null}
 
-      {!showGuidePanel && showSection("emi_calculator") && (
-        <LoanEMICalculator page={page} />
-      )}
-      {!showGuidePanel &&
-        showSection("bank_comparison") &&
+      {(isOverviewTab || (!showGuidePanel && showSection("bank_comparison"))) &&
         page.loanTypeSlug !== "instant-loan" && (
-        <LoanBankComparison page={page} />
+        <div id="loan-bank-comparison">
+          <LoanBankComparison page={page} />
+        </div>
       )}
+
+      {(isOverviewTab || (!showGuidePanel && showSection("emi_calculator"))) && (
+        <div id="loan-emi-calculator">
+          <LoanEMICalculator page={page} />
+        </div>
+      )}
+
       {page.loanTypeSlug === "instant-loan" && (
         <LoanBankComparison
           page={page}

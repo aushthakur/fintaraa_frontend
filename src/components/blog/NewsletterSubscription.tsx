@@ -68,7 +68,7 @@ export function NewsletterSubscription() {
           <h4 className="text-sm font-bold text-[#000000] tracking-tight sm:text-[14px] md:text-[15px] lg:text-base">
             Enjoyed this article?
           </h4>
-          <h3 className="text-lg font-extrabold text-[#005ca8] tracking-tight sm:text-xl md:text-[20px] lg:text-2xl xl:text-[26px]">
+          <h3 className="text-lg font-extrabold text-[#4c1d95] tracking-tight sm:text-xl md:text-[20px] lg:text-2xl xl:text-[26px]">
             Subscribe to our Newsletter
           </h3>
           <p className="text-[11px] font-medium leading-relaxed text-[#8f9ca9] max-w-md sm:text-xs md:text-sm lg:text-[14px]">
@@ -98,7 +98,7 @@ export function NewsletterSubscription() {
                 }
               }}
               placeholder="Enter Email Address"
-              className="h-9 w-full rounded-md border border-[#cbd5e1] bg-white px-3 text-xs text-[#1a1d25] placeholder-[#a0aec0] shadow-2xs outline-none focus:border-[#005ca8] transition-colors sm:h-10 sm:text-[13px] md:text-sm"
+              className="h-9 w-full rounded-md border border-[#cbd5e1] bg-white px-3 text-xs text-[#1a1d25] placeholder-[#a0aec0] shadow-2xs outline-none focus:border-[#4c1d95] transition-colors sm:h-10 sm:text-[13px] md:text-sm"
               required
             />
           </div>

@@ -24,7 +24,7 @@ export function LogoutConfirmationModal({
         <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#fff7ed] text-[#f97316]">
           <AlertCircle className="h-8 w-8" />
         </div>
-        <p className="mt-5 text-[12px] font-extrabold uppercase tracking-[0.16em] text-[#195585]">
+        <p className="mt-5 text-[12px] font-extrabold uppercase tracking-[0.16em] text-[#3b0764]">
           Confirm sign out
         </p>
         <h3 className="mt-2 text-[28px] font-extrabold leading-tight text-[#07162d]">
@@ -39,7 +39,7 @@ export function LogoutConfirmationModal({
           <button
             type="button"
             onClick={onClose}
-            className="h-11 rounded-full bg-[#eef8ff] px-5 text-[13px] font-extrabold text-[#195585]"
+            className="h-11 rounded-full bg-[#eef8ff] px-5 text-[13px] font-extrabold text-[#3b0764]"
           >
             Stay logged in
           </button>

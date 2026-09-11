@@ -103,12 +103,12 @@ function LinkRow({
         <span key={item.key} className="inline">
           <Link
             href={item.href}
-            className="text-[#667085] no-underline transition hover:text-[#00529b]"
+            className="text-[#667085] no-underline transition hover:text-[#4c1d95]"
           >
             {item.label}
           </Link>
           {index < visible.length - 1 ? (
-            <span className="px-3 text-[18px] font-extrabold text-[#00529b]/45">
+            <span className="px-3 text-[18px] font-extrabold text-[#4c1d95]/45">
               |
             </span>
           ) : null}
@@ -117,7 +117,7 @@ function LinkRow({
       {hasMore ? (
         <>
           {visible.length ? (
-            <span className="px-3 text-[18px] font-extrabold text-[#00529b]/45">
+            <span className="px-3 text-[18px] font-extrabold text-[#4c1d95]/45">
               |
             </span>
           ) : null}
@@ -128,7 +128,7 @@ function LinkRow({
                 Math.min(current + step, cappedItems.length),
               )
             }
-            className="text-[15px] font-extrabold text-[#00529b] underline-offset-4 transition hover:underline"
+            className="text-[15px] font-extrabold text-[#4c1d95] underline-offset-4 transition hover:underline"
           >
             Show more ({cappedItems.length - visible.length})
           </button>
@@ -154,7 +154,7 @@ function DirectorySection({
   return (
     <div className="py-8">
       <div className="flex items-center justify-center gap-2">
-        <Icon className="h-4 w-4 text-[#00529b]" />
+        <Icon className="h-4 w-4 text-[#4c1d95]" />
         <h2 className="text-center text-[18px] font-extrabold uppercase tracking-[0.08em] text-[#3f4650] md:text-[20px]">
           {title}
         </h2>

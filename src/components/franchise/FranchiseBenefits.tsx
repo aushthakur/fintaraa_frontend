@@ -19,7 +19,7 @@ export function FranchiseBenefits() {
               key={title}
               className="flex items-start gap-4 rounded-xl border border-[#d9e2ec] bg-white p-4"
             >
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-[#e8f4ff] text-[#005ca8]">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-[#e8f4ff] text-[#4c1d95]">
                 <Icon className="h-5 w-5" />
               </span>
               <span>
@@ -88,7 +88,7 @@ export function FranchiseBenefits() {
                   key={benefit}
                   className="flex items-center gap-2 text-[13px] font-semibold text-[#344054]"
                 >
-                  <CircleCheck className="h-4 w-4 shrink-0 text-[#005ca8]" />
+                  <CircleCheck className="h-4 w-4 shrink-0 text-[#4c1d95]" />
                   {benefit}
                 </div>
               ))}

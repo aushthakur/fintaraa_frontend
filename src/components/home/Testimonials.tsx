@@ -172,7 +172,7 @@ export function Testimonials() {
 
   if (loading) {
     return (
-      <section className="overflow-hidden select-none bg-white px-4 py-16 md:px-6 lg:px-8">
+      <section className="relative overflow-hidden select-none bg-linear-to-b from-[#fafafa] to-white px-4 py-16 md:px-6 lg:px-8">
         <div className="mx-auto max-w-9xl">
           <div className="flex items-center justify-between gap-4">
             <h2 className="text-[26px] font-semibold tracking-tight text-[#111625] md:text-[32px]">
@@ -180,7 +180,7 @@ export function Testimonials() {
             </h2>
             <Link
               href="/testimonials"
-              className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-xl bg-[#075cde] px-5 text-[13px] font-semibold text-white no-underline transition hover:bg-[#064cb8]"
+              className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-xl bg-[#5b21b6] px-5 text-[13px] font-semibold text-white no-underline transition hover:bg-[#4c1d95]"
             >
               View All
               <ArrowRight className="h-4 w-4" />
@@ -200,18 +200,26 @@ export function Testimonials() {
   }
 
   return (
-    <section className="bg-white px-4 pt-16 md:px-6 lg:px-8 overflow-hidden select-none">
-      <div className="mx-auto max-w-9xl">
+    <section className="relative overflow-hidden select-none bg-[#fafafa] py-6 sm:py-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-4">
-          <h2 className="text-[26px] font-semibold text-[#111625] md:text-[32px] tracking-tight">
-            What Our Clients Say
-          </h2>
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="h-2 w-2 rounded-full bg-[#5b21b6]" />
+              <h2 className="text-[17px] font-semibold text-[#0f172a] sm:text-[20px]">
+                Customer Stories
+              </h2>
+            </div>
+            <p className="text-[12px] font-normal text-[#64748b]">
+              Real feedback from customers across India
+            </p>
+          </div>
           <Link
             href="/testimonials"
-            className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-xl bg-[#075cde] px-5 text-[13px] font-semibold text-white no-underline transition hover:bg-[#064cb8]"
+            className="inline-flex h-8.5 shrink-0 items-center justify-center gap-1.5 rounded-lg bg-[#5b21b6] px-3.5 text-[12px] font-medium text-white no-underline transition hover:bg-[#4c1d95]"
           >
             View All
-            <ArrowRight className="h-4 w-4" />
+            <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>
 
@@ -239,15 +247,15 @@ export function Testimonials() {
             {duplicatedTestimonials.map((item, index) => (
               <article
                 key={`testimonial-card-${item.slug}-${index}`}
-                className="w-80 shrink-0 rounded-xl border border-[#e2edf8] bg-white p-6 flex flex-col justify-start select-none sm:w-95 md:w-105"
+                className="w-80 shrink-0 rounded-2xl border border-white/60 bg-white/60 p-6 flex flex-col justify-start select-none shadow-[0_8px_30px_rgba(91,33,182,0.04)] backdrop-blur-xl sm:w-95 md:w-105"
               >
                 {/* Meta Layout Row */}
                 <div className="flex items-start justify-between gap-4 pointer-events-none">
                   <div className="min-w-0">
-                    <h3 className="text-[16px] font-bold text-[#07162d] leading-tight">
+                    <h3 className="text-[16px] font-semibold text-[#07162d] leading-tight">
                       {item.authorName || item.title}
                     </h3>
-                    <p className="text-[12px] font-bold text-[#8090a4] mt-0.5">
+                    <p className="text-[12px] font-medium text-[#8090a4] mt-0.5">
                       {item.location}
                     </p>
                   </div>

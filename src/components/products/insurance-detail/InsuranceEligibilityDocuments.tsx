@@ -141,11 +141,11 @@ export function InsuranceEligibilityDocuments({
                       onClick={() => setOpenIndex(isOpen ? null : index)}
                       className="w-full flex items-center justify-between text-left py-3.5 select-none group"
                     >
-                      <span className="text-[14px] font-bold text-[#00529b] transition-colors group-hover:text-[#00407a]">
+                      <span className="text-[14px] font-bold text-[#4c1d95] transition-colors group-hover:text-[#00407a]">
                         {item.question}
                       </span>
                       <ChevronDown
-                        className={`h-4 w-4 text-[#00529b] shrink-0 transition-transform duration-200 ${
+                        className={`h-4 w-4 text-[#4c1d95] shrink-0 transition-transform duration-200 ${
                           isOpen ? "rotate-180" : ""
                         }`}
                         strokeWidth={2.5}

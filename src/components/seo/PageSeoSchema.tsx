@@ -18,7 +18,6 @@ export function PageSeoSchema() {
 
   useEffect(() => {
     let active = true;
-    setSeo(null);
     const url = buildApiUrl(
       `/seo-metadata/resolve?pathname=${encodeURIComponent(pathname || "/")}`,
     );

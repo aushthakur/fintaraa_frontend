@@ -269,8 +269,8 @@ const getStatusMeta = (value?: string) => {
   }
   return {
     label,
-    badge: "bg-[#eaf4ff] text-[#005ca8]",
-    dot: "bg-[#147cc1]",
+    badge: "bg-[#eaf4ff] text-[#4c1d95]",
+    dot: "bg-[#7c3aed]",
   };
 };
 
@@ -467,7 +467,7 @@ const itemTypeMeta: Record<
   loan: {
     label: "Loan",
     icon: WalletCards,
-    tone: "bg-[#eaf4ff] text-[#005ca8]",
+    tone: "bg-[#eaf4ff] text-[#4c1d95]",
   },
   insurance: {
     label: "Insurance",
@@ -522,7 +522,7 @@ function TrackSearchField({
     <motion.label
       htmlFor={id}
       animate={{
-        borderColor: invalid ? "#d64545" : active ? "#147cc1" : "#d9e5f0",
+        borderColor: invalid ? "#d64545" : active ? "#7c3aed" : "#d9e5f0",
         backgroundColor: active ? "#ffffff" : "#f9fbfd",
       }}
       transition={{ duration: 0.2 }}
@@ -534,8 +534,8 @@ function TrackSearchField({
           invalid
             ? "bg-[#fff0f0] text-[#c33232]"
             : active
-              ? "bg-[#005ca8] text-white"
-              : "bg-[#eaf4ff] text-[#005ca8]",
+              ? "bg-[#4c1d95] text-white"
+              : "bg-[#eaf4ff] text-[#4c1d95]",
         )}
       >
         {icon}
@@ -544,7 +544,7 @@ function TrackSearchField({
         <span
           className={cx(
             "block text-[11px] font-extrabold uppercase text-[#667085] transition-colors",
-            active && "text-[#005ca8]",
+            active && "text-[#4c1d95]",
             invalid && "text-[#c33232]",
           )}
         >
@@ -575,7 +575,7 @@ function TrackSearchField({
       {active ? (
         <motion.span
           layoutId="application-search-active-line"
-          className="absolute bottom-0 left-3 right-3 h-0.5 bg-[#147cc1]"
+          className="absolute bottom-0 left-3 right-3 h-0.5 bg-[#7c3aed]"
           transition={{ type: "spring", stiffness: 420, damping: 34 }}
         />
       ) : null}
@@ -947,8 +947,8 @@ export function ApplicationStatusPage() {
             >
               <div>
                 <div className="flex items-center gap-3">
-                  <span className="h-0.75 w-8 bg-[#147cc1]" />
-                  <p className="text-[11px] font-extrabold uppercase text-[#005ca8] md:text-[12px]">
+                  <span className="h-0.75 w-8 bg-[#7c3aed]" />
+                  <p className="text-[11px] font-extrabold uppercase text-[#4c1d95] md:text-[12px]">
                     Secure request lookup
                   </p>
                 </div>
@@ -978,7 +978,7 @@ export function ApplicationStatusPage() {
                   </Link>
                   <Link
                     href="/partner/login?redirect=/application-status"
-                    className="inline-flex h-11 items-center justify-center gap-2 rounded-md bg-[#005ca8] px-5 text-[13px] font-extrabold text-white no-underline transition-colors hover:bg-[#004e8e]"
+                    className="inline-flex h-11 items-center justify-center gap-2 rounded-md bg-[#4c1d95] px-5 text-[13px] font-extrabold text-white no-underline transition-colors hover:bg-[#004e8e]"
                   >
                     Channel Partner login
                     <ArrowRight className="h-4 w-4" />
@@ -1006,7 +1006,7 @@ export function ApplicationStatusPage() {
             >
               <div className="flex flex-col gap-3 bg-[#f6faff] px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex items-center gap-3">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-md bg-[#e4f2ff] text-[#005ca8]">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-md bg-[#e4f2ff] text-[#4c1d95]">
                     <LockKeyhole className="h-5 w-5" />
                   </span>
                   <div>
@@ -1045,14 +1045,14 @@ export function ApplicationStatusPage() {
                           "relative flex h-11 shrink-0 items-center gap-2 overflow-hidden rounded-md px-3.5 text-[12px] font-extrabold transition-colors",
                           active
                             ? "text-white"
-                            : "bg-[#f4f7fa] text-[#5f6f82] hover:bg-[#eaf4ff] hover:text-[#005ca8]",
+                            : "bg-[#f4f7fa] text-[#5f6f82] hover:bg-[#eaf4ff] hover:text-[#4c1d95]",
                         )}
                         title={item.label}
                       >
                         {active ? (
                           <motion.span
                             layoutId="application-status-service-pill"
-                            className="absolute inset-0 bg-[#005ca8]"
+                            className="absolute inset-0 bg-[#4c1d95]"
                             transition={{
                               type: "spring",
                               stiffness: 420,
@@ -1120,7 +1120,7 @@ export function ApplicationStatusPage() {
                   whileTap={{ scale: 0.98 }}
                   type="submit"
                   disabled={loading}
-                  className="inline-flex min-h-20 items-center justify-center gap-2 rounded-md bg-[#005ca8] px-7 text-[13px] font-extrabold text-white transition-colors hover:bg-[#004e8e] disabled:cursor-not-allowed disabled:opacity-65 md:min-w-40"
+                  className="inline-flex min-h-20 items-center justify-center gap-2 rounded-md bg-[#4c1d95] px-7 text-[13px] font-extrabold text-white transition-colors hover:bg-[#004e8e] disabled:cursor-not-allowed disabled:opacity-65 md:min-w-40"
                 >
                   {loading ? (
                     <Loader2 className="h-4.5 w-4.5 animate-spin" />
@@ -1143,7 +1143,7 @@ export function ApplicationStatusPage() {
                 </p>
                 <Link
                   href="/support"
-                  className="inline-flex items-center gap-1.5 font-extrabold text-[#005ca8] no-underline"
+                  className="inline-flex items-center gap-1.5 font-extrabold text-[#4c1d95] no-underline"
                 >
                   <HelpCircle className="h-3.5 w-3.5" />
                   Need help finding your ID?
@@ -1168,7 +1168,7 @@ export function ApplicationStatusPage() {
 
             <div className="mt-11 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
               <div>
-                <p className="text-[11px] font-extrabold uppercase text-[#005ca8]">
+                <p className="text-[11px] font-extrabold uppercase text-[#4c1d95]">
                   Status overview
                 </p>
                 <h2 className="mt-2 text-[25px] font-extrabold text-[#07162d] md:text-[29px]">
@@ -1203,8 +1203,8 @@ export function ApplicationStatusPage() {
                       className={cx(
                         "relative flex h-10 shrink-0 items-center gap-2 overflow-hidden rounded px-3.5 text-[12px] font-extrabold transition-colors",
                         active
-                          ? "text-[#005ca8]"
-                          : "text-[#667085] hover:text-[#005ca8]",
+                          ? "text-[#4c1d95]"
+                          : "text-[#667085] hover:text-[#4c1d95]",
                       )}
                     >
                       {active ? (
@@ -1223,7 +1223,7 @@ export function ApplicationStatusPage() {
                         className={cx(
                           "relative z-10 min-w-5 rounded-full px-1.5 py-0.5 text-[10px]",
                           active
-                            ? "bg-[#eaf4ff] text-[#005ca8]"
+                            ? "bg-[#eaf4ff] text-[#4c1d95]"
                             : "bg-[#e5ebf1] text-[#667085]",
                         )}
                       >
@@ -1273,7 +1273,7 @@ export function ApplicationStatusPage() {
                             className={cx(
                               "group relative flex w-full items-start gap-4 px-5 py-5 text-left transition-colors",
                               index !== filtered.length - 1 &&
-                                "border-b border-[#edf2f6]",
+                                "border-b border-[#f5f3ff]",
                               active
                                 ? "bg-[#f5faff]"
                                 : "bg-white hover:bg-[#fafcfe]",
@@ -1282,7 +1282,7 @@ export function ApplicationStatusPage() {
                             {active ? (
                               <motion.span
                                 layoutId="selected-application-line"
-                                className="absolute bottom-3 left-0 top-3 w-1 bg-[#147cc1]"
+                                className="absolute bottom-3 left-0 top-3 w-1 bg-[#7c3aed]"
                                 transition={{
                                   type: "spring",
                                   stiffness: 420,
@@ -1337,8 +1337,8 @@ export function ApplicationStatusPage() {
                               className={cx(
                                 "mt-3 h-4 w-4 shrink-0 transition-colors",
                                 active
-                                  ? "text-[#147cc1]"
-                                  : "text-[#a9b5c2] group-hover:text-[#147cc1]",
+                                  ? "text-[#7c3aed]"
+                                  : "text-[#a9b5c2] group-hover:text-[#7c3aed]",
                               )}
                             />
                           </motion.button>
@@ -1358,7 +1358,7 @@ export function ApplicationStatusPage() {
                       <div className="bg-[#f6faff] px-5 py-5 md:px-6">
                         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                           <div className="min-w-0">
-                            <p className="text-[11px] font-extrabold uppercase text-[#005ca8]">
+                            <p className="text-[11px] font-extrabold uppercase text-[#4c1d95]">
                               Selected application
                             </p>
                             <h2 className="mt-2 text-[23px] font-extrabold leading-tight text-[#07162d] md:text-[27px]">
@@ -1374,7 +1374,7 @@ export function ApplicationStatusPage() {
                                   onClick={() =>
                                     copyReference(selected.queryId)
                                   }
-                                  className="flex h-7 w-7 shrink-0 items-center justify-center rounded text-[#005ca8] transition-colors hover:bg-[#e2f1ff]"
+                                  className="flex h-7 w-7 shrink-0 items-center justify-center rounded text-[#4c1d95] transition-colors hover:bg-[#e2f1ff]"
                                   aria-label="Copy application reference"
                                   title="Copy reference"
                                 >
@@ -1430,11 +1430,11 @@ export function ApplicationStatusPage() {
                             key={label}
                             className={cx(
                               "px-5 py-4 md:px-6",
-                              index < 2 && "border-b border-[#edf2f6]",
+                              index < 2 && "border-b border-[#f5f3ff]",
                               index >= 2 &&
-                                "border-b border-[#edf2f6] sm:border-b-0",
+                                "border-b border-[#f5f3ff] sm:border-b-0",
                               index % 2 === 0 &&
-                                "sm:border-r sm:border-[#edf2f6]",
+                                "sm:border-r sm:border-[#f5f3ff]",
                             )}
                           >
                             <dt className="text-[10px] font-extrabold uppercase text-[#8a98aa]">
@@ -1457,7 +1457,7 @@ export function ApplicationStatusPage() {
                               Latest stages reported for this application
                             </p>
                           </div>
-                          <FileSearch className="h-5 w-5 text-[#147cc1]" />
+                          <FileSearch className="h-5 w-5 text-[#7c3aed]" />
                         </div>
 
                         <div className="relative mt-6 grid gap-6">
@@ -1492,7 +1492,7 @@ export function ApplicationStatusPage() {
                                   className={cx(
                                     "absolute left-0 top-0 z-10 flex h-10 w-10 items-center justify-center rounded-full",
                                     isDone && "bg-[#12a66a] text-white",
-                                    isActive && "bg-[#147cc1] text-white",
+                                    isActive && "bg-[#7c3aed] text-white",
                                     isBlocked && "bg-[#d64545] text-white",
                                     !isDone &&
                                       !isActive &&
@@ -1512,7 +1512,7 @@ export function ApplicationStatusPage() {
                                         repeat: Infinity,
                                         ease: "easeOut",
                                       }}
-                                      className="absolute inset-0 rounded-full bg-[#147cc1]"
+                                      className="absolute inset-0 rounded-full bg-[#7c3aed]"
                                     />
                                   ) : null}
                                   <Icon className="relative z-10 h-4.5 w-4.5" />
@@ -1545,7 +1545,7 @@ export function ApplicationStatusPage() {
                                   </p>
                                 </div>
                                 {step.updatedBy ? (
-                                  <p className="text-[10px] font-extrabold uppercase text-[#147cc1]">
+                                  <p className="text-[10px] font-extrabold uppercase text-[#7c3aed]">
                                     Updated by {step.updatedBy}
                                   </p>
                                 ) : null}
@@ -1557,7 +1557,7 @@ export function ApplicationStatusPage() {
 
                       <div className="flex flex-col gap-3 bg-[#f8fbfd] px-5 py-4 sm:flex-row sm:items-center sm:justify-between md:px-6">
                         <div className="flex items-center gap-2 text-[#52657c]">
-                          <Landmark className="h-4 w-4 text-[#147cc1]" />
+                          <Landmark className="h-4 w-4 text-[#7c3aed]" />
                           <p className="text-[11px] font-semibold">
                             Final completion and timelines remain subject to
                             applicable verification and partner policy.
@@ -1565,7 +1565,7 @@ export function ApplicationStatusPage() {
                         </div>
                         <Link
                           href="/support"
-                          className="inline-flex shrink-0 items-center gap-1.5 text-[12px] font-extrabold text-[#005ca8] no-underline"
+                          className="inline-flex shrink-0 items-center gap-1.5 text-[12px] font-extrabold text-[#4c1d95] no-underline"
                         >
                           Contact support
                           <ChevronRight className="h-3.5 w-3.5" />
@@ -1582,7 +1582,7 @@ export function ApplicationStatusPage() {
                   className="grid overflow-hidden rounded-lg border border-[#dfe9f2] bg-[#f7fbff] lg:grid-cols-[1.15fr_0.85fr]"
                 >
                   <div className="px-6 py-9 md:px-9 md:py-11">
-                    <span className="flex h-14 w-14 items-center justify-center rounded-md bg-[#e3f1ff] text-[#005ca8]">
+                    <span className="flex h-14 w-14 items-center justify-center rounded-md bg-[#e3f1ff] text-[#4c1d95]">
                       <ClipboardList className="h-6 w-6" />
                     </span>
                     <h3 className="mt-5 text-[22px] font-extrabold text-[#07162d] md:text-[25px]">
@@ -1600,14 +1600,14 @@ export function ApplicationStatusPage() {
                         <button
                           type="button"
                           onClick={() => setTab("All")}
-                          className="inline-flex h-11 items-center justify-center rounded-md bg-[#005ca8] px-5 text-[13px] font-extrabold text-white"
+                          className="inline-flex h-11 items-center justify-center rounded-md bg-[#4c1d95] px-5 text-[13px] font-extrabold text-white"
                         >
                           View all records
                         </button>
                       ) : !viewerType ? (
                         <Link
                           href="/login?referrer=/application-status"
-                          className="inline-flex h-11 items-center justify-center gap-2 rounded-md bg-[#005ca8] px-5 text-[13px] font-extrabold text-white no-underline"
+                          className="inline-flex h-11 items-center justify-center gap-2 rounded-md bg-[#4c1d95] px-5 text-[13px] font-extrabold text-white no-underline"
                         >
                           Sign in to view applications
                           <ArrowRight className="h-4 w-4" />
@@ -1615,7 +1615,7 @@ export function ApplicationStatusPage() {
                       ) : null}
                       <Link
                         href="/products"
-                        className="inline-flex h-11 items-center justify-center rounded-md bg-white px-5 text-[13px] font-extrabold text-[#005ca8] no-underline"
+                        className="inline-flex h-11 items-center justify-center rounded-md bg-white px-5 text-[13px] font-extrabold text-[#4c1d95] no-underline"
                       >
                         Explore products
                       </Link>
@@ -1623,7 +1623,7 @@ export function ApplicationStatusPage() {
                   </div>
 
                   <div className="bg-white px-6 py-8 md:px-8">
-                    <p className="text-[11px] font-extrabold uppercase text-[#005ca8]">
+                    <p className="text-[11px] font-extrabold uppercase text-[#4c1d95]">
                       Where to find your details
                     </p>
                     <div className="mt-5 grid gap-5">
@@ -1645,7 +1645,7 @@ export function ApplicationStatusPage() {
                         },
                       ].map(({ icon: Icon, title, text }) => (
                         <div key={title} className="flex gap-3">
-                          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-[#eef6ff] text-[#147cc1]">
+                          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-[#eef6ff] text-[#7c3aed]">
                             <Icon className="h-4 w-4" />
                           </span>
                           <div>

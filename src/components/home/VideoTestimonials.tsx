@@ -9,15 +9,7 @@ import {
   useAnimationFrame,
   AnimatePresence,
 } from "framer-motion";
-import {
-  ArrowRight,
-  MapPin,
-  Play,
-  Quote,
-  ShieldCheck,
-  Star,
-  X,
-} from "lucide-react";
+import { ArrowRight, MapPin, Play, Star, X } from "lucide-react";
 import {
   fetchWebsiteKnowledge,
   type WebsiteKnowledgeItem,
@@ -36,11 +28,9 @@ const videoData: WebsiteKnowledgeItem[] = [
     authorName: "Deepika Kumari",
     category: "Home Loan",
     location: "Delhi",
-    summary:
-      "My ₹38L home loan options were compared clearly before I applied.",
+    summary: "My ₹38L home loan options were compared clearly before I applied.",
     coverImageUrl: "/assets/images/testimonials/video-1.jpg",
-    videoUrl:
-      "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+    videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
   },
   {
     slug: "arjun-mehta-video",
@@ -51,8 +41,7 @@ const videoData: WebsiteKnowledgeItem[] = [
     location: "Ahmedabad",
     summary: "I found a cashback card that matched my fuel and grocery spends.",
     coverImageUrl: "/assets/images/testimonials/video-2.jpg",
-    videoUrl:
-      "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+    videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
   },
   {
     slug: "neha-and-rahul-video",
@@ -61,11 +50,9 @@ const videoData: WebsiteKnowledgeItem[] = [
     authorName: "Neha & Rahul",
     category: "Home Loan",
     location: "Pune",
-    summary:
-      "Eligibility, EMI and document requirements were clear from day one.",
+    summary: "Eligibility, EMI and document requirements were clear from day one.",
     coverImageUrl: "/assets/images/testimonials/video-3.jpg",
-    videoUrl:
-      "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+    videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
   },
 ];
 
@@ -79,8 +66,7 @@ const normaliseVideoItems = (data: WebsiteKnowledgeItem[]) => {
   const source = data.length ? data : videoData;
   return source.slice(0, 12).map((item, index) => ({
     ...item,
-    coverImageUrl:
-      item.coverImageUrl || videoCovers[index % videoCovers.length],
+    coverImageUrl: item.coverImageUrl || videoCovers[index % videoCovers.length],
   }));
 };
 
@@ -92,25 +78,18 @@ export function VideoTestimonials() {
   const [loading, setLoading] = useState(true);
   const [isPaused, setIsPaused] = useState(false);
   const [trackWidth, setTrackWidth] = useState(0);
-  const [selectedVideo, setSelectedVideo] =
-    useState<WebsiteKnowledgeItem | null>(null);
+  const [selectedVideo, setSelectedVideo] = useState<WebsiteKnowledgeItem | null>(null);
 
   const x = useMotionValue(0);
-  const baseSpeed = 0.65;
+  const baseSpeed = 0.55;
 
   useEffect(() => {
     let mounted = true;
-    fetchWebsiteKnowledge({
-      type: "video",
-      sectionKey: "video_testimonials",
-      limit: 12,
-    })
+    fetchWebsiteKnowledge({ type: "video", sectionKey: "video_testimonials", limit: 12 })
       .then((data) => mounted && setItems(normaliseVideoItems(data)))
       .catch(() => mounted && setItems(videoData))
       .finally(() => mounted && setLoading(false));
-    return () => {
-      mounted = false;
-    };
+    return () => { mounted = false; };
   }, []);
 
   useEffect(() => {
@@ -119,9 +98,8 @@ export function VideoTestimonials() {
 
   const duplicatedVideos = [...items, ...items, ...items];
 
-  // Infinite carousel looping logic
   useAnimationFrame((_, delta) => {
-    if (isPaused || !trackWidth || selectedVideo) return; // Freeze carousel auto-scroll when modal is active
+    if (isPaused || !trackWidth || selectedVideo) return;
     const currentX = x.get();
     const newX = currentX - baseSpeed * (delta / 16);
     const loopThreshold = trackWidth / 3;
@@ -133,72 +111,70 @@ export function VideoTestimonials() {
   });
 
   return (
-    <section className="overflow-hidden select-none bg-white px-4 pt-12 md:px-6 lg:px-8">
-      <div className="mx-auto max-w-9xl">
-        <div className="mb-2 flex items-center justify-between gap-4">
-          <div className="max-w-2xl">
-            <h2 className="text-[24px] font-bold tracking-tight text-[#111625] md:text-[28px]">
-              Video Testimonials
+    <section className="relative overflow-hidden select-none bg-white py-12 sm:py-16">
+      <style>{`
+        @keyframes play-pulse {
+          0%, 100% { box-shadow: 0 0 0 0 rgba(100,36,199,0.4); }
+          50% { box-shadow: 0 0 0 14px rgba(100,36,199,0); }
+        }
+        .play-btn-pulse { animation: play-pulse 2.2s ease-in-out infinite; }
+        .video-card-thumb { transition: transform 0.5s cubic-bezier(0.4,0,0.2,1); }
+        .video-card:hover .video-card-thumb { transform: scale(1.06); }
+        .video-card:hover .play-ring { opacity: 1 !important; transform: scale(1) !important; }
+      `}</style>
+
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+
+        {/* Section header */}
+        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p style={{ fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "#7c3aed", fontWeight: 500, marginBottom: 6 }}>
+              Real stories
+            </p>
+            <h2 className="text-[22px] sm:text-[28px] font-semibold text-gray-900 tracking-tight leading-tight">
+              Customer Video Stories
             </h2>
-            {/* <p className="mt-2 max-w-2xl text-[14px] font-semibold leading-6 text-[#667085]">
-              Real journeys from customers who compared loans, cards, and
-              financial options with Fintaraa.
-            </p> */}
+            <p className="mt-1.5 text-[13px] text-gray-500 font-normal max-w-md">
+              Watch real borrowers share their financing journeys with Fintaraa.
+            </p>
+            <div style={{ marginTop: 10, height: 1, background: "linear-gradient(90deg, #7c3aed, rgba(124,58,237,0))", width: 160 }} />
           </div>
+
           <div className="flex shrink-0 items-center gap-2">
             <Link
               href="/video-testimonials"
-              className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-xl bg-[#075cde] px-5 text-[13px] font-bold leading-none text-white no-underline transition hover:bg-[#064cb8]"
+              className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-white px-4 py-2 text-[12.5px] font-medium text-gray-700 transition-all hover:border-[#6424C7] hover:text-[#6424C7] hover:shadow-sm"
             >
-              View All
-              <ArrowRight className="h-4 w-4" />
+              View All <ArrowRight className="h-3.5 w-3.5" />
             </Link>
             <CarouselNavigation
               label="video testimonials"
               disabled={loading || !trackWidth || Boolean(selectedVideo)}
               onPrevious={() =>
-                moveInfiniteCarousel({
-                  direction: "previous",
-                  track: trackRef.current,
-                  trackWidth,
-                  x,
-                  onPauseChange: setIsPaused,
-                })
+                moveInfiniteCarousel({ direction: "previous", track: trackRef.current, trackWidth, x, onPauseChange: setIsPaused })
               }
               onNext={() =>
-                moveInfiniteCarousel({
-                  direction: "next",
-                  track: trackRef.current,
-                  trackWidth,
-                  x,
-                  onPauseChange: setIsPaused,
-                })
+                moveInfiniteCarousel({ direction: "next", track: trackRef.current, trackWidth, x, onPauseChange: setIsPaused })
               }
             />
           </div>
         </div>
 
-        {/* Carousel Viewport Box */}
+        {/* Carousel viewport */}
         <div
           ref={containerRef}
-          className="relative w-full overflow-hidden py-2"
+          className="relative w-full overflow-hidden"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => !selectedVideo && setIsPaused(false)}
         >
+          {/* Edge fades */}
+          <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-16" style={{ background: "linear-gradient(to right, white, transparent)" }} />
+          <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-16" style={{ background: "linear-gradient(to left, white, transparent)" }} />
+
           {loading ? (
-            <div className="flex gap-6">
-              {Array.from({ length: 3 }).map((_, index) => (
-                <div
-                  key={index}
-                  className="h-[410px] w-[19rem] shrink-0 animate-pulse rounded-2xl border border-[#e2edf8] bg-white sm:w-[20.5rem] md:w-[23rem]"
-                >
-                  <div className="h-56 rounded-t-2xl bg-slate-100" />
-                  <div className="space-y-3 p-5">
-                    <div className="h-4 w-24 rounded bg-slate-100" />
-                    <div className="h-5 rounded bg-slate-100" />
-                    <div className="h-16 rounded bg-slate-100" />
-                  </div>
-                </div>
+            <div className="flex gap-5 py-2">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <div key={i} className="h-[380px] w-72 shrink-0 animate-pulse rounded-3xl bg-gray-100" />
               ))}
             </div>
           ) : (
@@ -206,146 +182,179 @@ export function VideoTestimonials() {
               ref={trackRef}
               style={{ x, touchAction: "pan-y" }}
               drag="x"
-              dragConstraints={{
-                left: -((trackWidth || 2400) * (2 / 3)),
-                right: 0,
-              }}
+              dragConstraints={{ left: -((trackWidth || 2400) * (2 / 3)), right: 0 }}
               dragElastic={0.05}
               onDragStart={() => setIsPaused(true)}
               onDragEnd={() => !selectedVideo && setIsPaused(false)}
-              className="flex w-max cursor-grab gap-6 active:cursor-grabbing"
+              className="flex w-max cursor-grab gap-5 py-2 active:cursor-grabbing"
             >
               {duplicatedVideos.map((item, index) => (
-                <button
-                  key={`video-card-${item.slug}-${index}`}
-                  type="button"
+                <VideoCard
+                  key={`vc-${item.slug}-${index}`}
+                  item={item}
                   onClick={() => {
                     setIsPaused(true);
-                    if (item.videoUrl || item.youtubeUrl) {
-                      setSelectedVideo(item);
-                    }
+                    if (item.videoUrl || item.youtubeUrl) setSelectedVideo(item);
                   }}
-                  className="group flex h-90 w-76 shrink-0 flex-col overflow-hidden rounded-2xl border border-[#dfeaf5] bg-white text-left no-underline outline-none transition-colors duration-300 hover:border-[#bcd3e8] sm:w-[20.5rem] md:w-[23rem]"
-                >
-                  <div className="pointer-events-none relative h-56 w-full overflow-hidden bg-slate-950">
-                    <Image
-                      src={item.coverImageUrl || "/assets/images/media1.png"}
-                      alt={item.authorName || item.title}
-                      fill
-                      unoptimized
-                      draggable={false}
-                      className="object-cover select-none transition duration-500 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/10 to-black/20" />
-
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white text-[#075cde] ring-8 ring-white/20 transition group-hover:scale-105">
-                        <Play className="ml-0.5 h-5 w-5 fill-current" />
-                      </span>
-                    </div>
-
-                    <div className="absolute bottom-4 left-4 right-4">
-                      <h3 className="text-[18px] font-extrabold leading-tight text-white">
-                        {item.authorName || item.title}
-                      </h3>
-                      {item.location ? (
-                        <p className="mt-1 inline-flex items-center gap-1.5 text-[12px] font-bold text-white/80">
-                          <MapPin className="h-3.5 w-3.5" />
-                          {item.location}
-                        </p>
-                      ) : null}
-                    </div>
-                  </div>
-
-                  <div className="pointer-events-none relative flex flex-1 flex-col justify-between p-5">
-                    <div>
-                      <div className="flex items-center justify-between gap-4">
-                        <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1.5">
-                          <span className="inline-flex items-center gap-1.5 text-[12px] font-extrabold uppercase tracking-[0.1em] text-[#98a2b3]">
-                            <Quote className="h-3.5 w-3.5 text-[#075cde]" />
-                            Story
-                          </span>
-                          <span className="inline-flex items-center gap-1.5 text-[12px] font-bold text-[#075cde]">
-                            <ShieldCheck className="h-3.5 w-3.5" />
-                            {item.category || "Customer Story"}
-                          </span>
-                        </div>
-                        <span className="flex shrink-0 items-center gap-0.5 text-[#f59e0b]">
-                          {Array.from({ length: 5 }).map((_, i) => (
-                            <Star
-                              key={i}
-                              className="h-3.5 w-3.5 fill-current stroke-current"
-                            />
-                          ))}
-                        </span>
-                      </div>
-                      <p className="mt-3 line-clamp-3 text-[14px] font-semibold leading-6 text-[#667085]">
-                        {item.summary ||
-                          "A Fintaraa customer shares how comparison and assisted guidance helped them choose confidently."}
-                        <span className="inline-flex absolute z-50 bottom-3 right-3 h-7 w-7 items-center justify-center rounded-full bg-[#075cde] text-white transition group-hover:translate-x-1 group-hover:bg-[#064cb8]">
-                          <ArrowRight className="h-4 w-4" />
-                        </span>
-                      </p>
-                    </div>
-
-                    {/* <div className="mt-5 flex items-center justify-end border-t border-[#edf2f7] pt-4">
-                      <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[#075cde] text-white transition group-hover:translate-x-1 group-hover:bg-[#064cb8]">
-                        <ArrowRight className="h-4 w-4" />
-                      </span>
-                    </div> */}
-                  </div>
-                </button>
+                />
               ))}
             </motion.div>
           )}
         </div>
-        {/* Dynamic Video Lightbox Modal Popup */}
-        <AnimatePresence>
-          {selectedVideo && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
-              onClick={() => {
-                setSelectedVideo(null);
-                setIsPaused(false);
-              }}
-            >
-              <motion.div
-                initial={{ scale: 0.95, y: 20 }}
-                animate={{ scale: 1, y: 0 }}
-                exit={{ scale: 0.95, y: 20 }}
-                transition={{ type: "spring", duration: 0.4 }}
-                className="relative w-full max-w-3xl overflow-hidden rounded-2xl border border-white/10 bg-zinc-950"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSelectedVideo(null);
-                    setIsPaused(false);
-                  }}
-                  className="absolute right-4 top-4 z-10 flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-black/60 text-white backdrop-blur-sm transition-colors hover:bg-black/90"
-                >
-                  <X className="h-4 w-4" />
-                </button>
-
-                <div className="flex aspect-video w-full items-center justify-center bg-black">
-                  <ManagedVideoPlayer
-                    src={selectedVideo.videoUrl}
-                    youtubeUrl={selectedVideo.youtubeUrl}
-                    title={selectedVideo.title}
-                    poster={selectedVideo.coverImageUrl}
-                    autoPlay
-                    className="h-full w-full object-contain"
-                  />
-                </div>
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
+
+      {/* Lightbox */}
+      <AnimatePresence>
+        {selectedVideo && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
+            onClick={() => { setSelectedVideo(null); setIsPaused(false); }}
+          >
+            <motion.div
+              initial={{ scale: 0.94, y: 24, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              exit={{ scale: 0.94, y: 24, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 28 }}
+              className="relative w-full max-w-3xl overflow-hidden rounded-3xl bg-zinc-950 shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Close */}
+              <button
+                type="button"
+                onClick={() => { setSelectedVideo(null); setIsPaused(false); }}
+                className="absolute right-4 top-4 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-black/60 text-white border border-white/10 backdrop-blur-sm transition hover:bg-black/90"
+              >
+                <X className="h-4 w-4" />
+              </button>
+
+              {/* Meta info bar */}
+              <div className="px-6 pt-5 pb-3 flex items-center gap-3">
+                <div className="h-8 w-8 rounded-full bg-gradient-to-br from-[#6424C7] to-[#9b5de5] flex items-center justify-center text-white text-[12px] font-semibold shrink-0">
+                  {(selectedVideo.authorName || selectedVideo.title).charAt(0)}
+                </div>
+                <div>
+                  <p className="text-[13px] font-semibold text-white leading-none">{selectedVideo.authorName || selectedVideo.title}</p>
+                  {selectedVideo.location && (
+                    <p className="text-[11px] text-white/50 mt-0.5 flex items-center gap-1">
+                      <MapPin className="h-3 w-3" />{selectedVideo.location}
+                    </p>
+                  )}
+                </div>
+                {selectedVideo.category && (
+                  <span className="ml-auto text-[11px] text-purple-300 border border-purple-800 rounded-full px-2.5 py-0.5">
+                    {selectedVideo.category}
+                  </span>
+                )}
+              </div>
+
+              <div className="flex aspect-video w-full items-center justify-center bg-black">
+                <ManagedVideoPlayer
+                  src={selectedVideo.videoUrl}
+                  youtubeUrl={selectedVideo.youtubeUrl}
+                  title={selectedVideo.title}
+                  poster={selectedVideo.coverImageUrl}
+                  autoPlay
+                  className="h-full w-full object-contain"
+                />
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
+  );
+}
+
+// ── Individual video card ──────────────────────────────────────────────────
+function VideoCard({
+  item,
+  onClick,
+}: {
+  item: WebsiteKnowledgeItem;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="video-card group shrink-0 w-[280px] sm:w-[300px] text-left outline-none rounded-3xl overflow-hidden bg-white border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300"
+    >
+      {/* Thumbnail */}
+      <div className="relative h-[200px] overflow-hidden bg-gray-900">
+        <Image
+          src={item.coverImageUrl || "/assets/images/media1.png"}
+          alt={item.authorName || item.title}
+          fill
+          unoptimized
+          draggable={false}
+          className="video-card-thumb object-cover select-none"
+        />
+
+        {/* Dark gradient */}
+        <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.1) 55%, transparent 100%)" }} />
+
+        {/* Play button */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <span
+            className="play-ring flex h-14 w-14 items-center justify-center rounded-full bg-white opacity-90 group-hover:opacity-100 transition-all duration-300"
+            style={{ boxShadow: "0 0 0 8px rgba(255,255,255,0.2)" }}
+          >
+            <span className="play-btn-pulse flex h-14 w-14 rounded-full items-center justify-center">
+              <Play className="h-5 w-5 fill-[#6424C7] text-[#6424C7] ml-0.5" />
+            </span>
+          </span>
+        </div>
+
+        {/* Name + location overlay */}
+        <div className="absolute bottom-0 left-0 right-0 px-4 pb-4">
+          <p className="text-[15px] font-semibold text-white leading-tight">
+            {item.authorName || item.title}
+          </p>
+          {item.location && (
+            <p className="mt-0.5 inline-flex items-center gap-1 text-[11px] text-white/75">
+              <MapPin className="h-3 w-3" />
+              {item.location}
+            </p>
+          )}
+        </div>
+      </div>
+
+      {/* Card body */}
+      <div className="p-4">
+        {/* Category + stars */}
+        <div className="flex items-center justify-between mb-3">
+          {item.category && (
+            <span
+              className="text-[10.5px] font-medium px-2.5 py-1 rounded-full"
+              style={{ background: "#f5f3ff", color: "#6424C7" }}
+            >
+              {item.category}
+            </span>
+          )}
+          <span className="flex items-center gap-0.5 ml-auto">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <Star key={i} className="h-3 w-3 fill-amber-400 text-amber-400" />
+            ))}
+          </span>
+        </div>
+
+        {/* Quote */}
+        <p className="text-[13px] text-gray-600 font-normal leading-relaxed line-clamp-2">
+          &ldquo;{item.summary || "A Fintaraa customer shares how comparison and guided assistance helped them choose confidently."}&rdquo;
+        </p>
+
+        {/* Watch CTA */}
+        <div className="mt-4 flex items-center gap-1.5 text-[12px] font-medium text-[#6424C7] group-hover:gap-2.5 transition-all duration-200">
+          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#f5f3ff] shrink-0">
+            <Play className="h-3 w-3 fill-[#6424C7] text-[#6424C7] ml-0.5" />
+          </span>
+          Watch story
+          <ArrowRight className="h-3.5 w-3.5 ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+        </div>
+      </div>
+    </button>
   );
 }

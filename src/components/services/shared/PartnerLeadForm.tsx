@@ -205,7 +205,7 @@ export function PartnerLeadForm({
             value={form.notes}
             onChange={(event) => updateField("notes", event.target.value)}
             placeholder="Share your preferred location, business profile, or partnership expectations"
-            className="min-h-24 rounded-xl border border-[#d7dfe9] bg-white px-3 py-3 text-[13px] font-semibold outline-none placeholder:text-[#98a2b3] focus:border-[#0d64bf]"
+            className="min-h-24 rounded-xl border border-[#d7dfe9] bg-white px-3 py-3 text-[13px] font-semibold outline-none placeholder:text-[#98a2b3] focus:border-[#6d28d9]"
           />
         </label>
         <WhatsAppConsent
@@ -273,7 +273,7 @@ function Field({
         value={value}
         placeholder={placeholder}
         onChange={(event) => onChange(event.target.value)}
-        className="h-11 rounded-xl border border-[#d7dfe9] bg-white px-3 text-[13px] font-semibold outline-none placeholder:text-[#98a2b3] focus:border-[#0d64bf]"
+        className="h-11 rounded-xl border border-[#d7dfe9] bg-white px-3 text-[13px] font-semibold outline-none placeholder:text-[#98a2b3] focus:border-[#6d28d9]"
       />
     </label>
   );
@@ -300,7 +300,7 @@ function SelectField({
       <select
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className="h-11 rounded-xl border border-[#d7dfe9] bg-white px-3 text-[13px] font-semibold text-[#475467] outline-none focus:border-[#0d64bf]"
+        className="h-11 rounded-xl border border-[#d7dfe9] bg-white px-3 text-[13px] font-semibold text-[#475467] outline-none focus:border-[#6d28d9]"
       >
         <option value="">{placeholder}</option>
         {options.map((option) => (

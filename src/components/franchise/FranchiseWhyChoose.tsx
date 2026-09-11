@@ -2,7 +2,7 @@ import { whyChooseItems } from "./franchiseData";
 
 export function FranchiseWhyChoose() {
   return (
-    <section className="bg-[#005ca8] px-4 py-8 text-white md:px-6 md:py-10 lg:px-8">
+    <section className="bg-[#4c1d95] px-4 py-8 text-white md:px-6 md:py-10 lg:px-8">
       <div className="mx-auto max-w-9xl">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div className="max-w-3xl">

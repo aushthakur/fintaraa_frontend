@@ -22,7 +22,7 @@ const factors = [
     title: "Payment history",
     desc: "Consistent EMI and card-bill payments support a healthier repayment record.",
     icon: History,
-    color: "text-[#075cde]",
+    color: "text-[#5b21b6]",
     surface: "bg-[#e7f2ff]",
   },
   {
@@ -61,7 +61,7 @@ const benefits = [
     title: "Know your credit health",
     text: "See where your current credit profile stands before applying.",
     icon: Target,
-    color: "text-[#075cde]",
+    color: "text-[#5b21b6]",
     surface: "bg-[#e7f2ff]",
   },
   {
@@ -102,11 +102,11 @@ export function CibilBenefitsFactors() {
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             >
-              <p className="flex items-center gap-2 text-[11px] font-bold uppercase text-[#075cde]">
+              <p className="flex items-center gap-2 text-[11px] font-bold uppercase text-[#5b21b6]">
                 <TrendingUp className="h-4 w-4" aria-hidden="true" />
                 Credit awareness
               </p>
-              <h2 className="mt-3 max-w-2xl text-[28px] font-bold leading-[1.16] text-[#102f49] sm:text-[34px]">
+              <h2 className="mt-3 max-w-2xl text-[28px] font-bold leading-[1.16] text-[#3b0764] sm:text-[34px]">
                 Why check your CIBIL score?
               </h2>
               <p className="mt-4 max-w-2xl text-[14px] font-medium leading-7 text-[#587287] md:text-[15px]">
@@ -171,7 +171,7 @@ export function CibilBenefitsFactors() {
                   </div>
                   <div className="min-w-0">
                     <div className="flex items-start justify-between gap-3 sm:mt-5">
-                      <h3 className="text-[16px] font-bold leading-snug text-[#102f49]">
+                      <h3 className="text-[16px] font-bold leading-snug text-[#3b0764]">
                         {item.title}
                       </h3>
                       <span className="text-[11px] font-bold text-[#8aa0af] sm:hidden">
@@ -198,10 +198,10 @@ export function CibilBenefitsFactors() {
               viewport={{ once: true, amount: 0.25 }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             >
-              <p className="text-[11px] font-bold uppercase text-[#075cde]">
+              <p className="text-[11px] font-bold uppercase text-[#5b21b6]">
                 Credit profile signals
               </p>
-              <h2 className="mt-3 text-[28px] font-bold leading-[1.16] text-[#102f49] sm:text-[34px]">
+              <h2 className="mt-3 text-[28px] font-bold leading-[1.16] text-[#3b0764] sm:text-[34px]">
                 What affects your score?
               </h2>
               <p className="mt-4 text-[14px] font-medium leading-7 text-[#587287]">
@@ -259,7 +259,7 @@ export function CibilBenefitsFactors() {
                     </span>
                     <div className="min-w-0">
                       <div className="flex items-center justify-between gap-3">
-                        <h3 className="text-[16px] font-bold text-[#102f49]">
+                        <h3 className="text-[16px] font-bold text-[#3b0764]">
                           {item.title}
                         </h3>
                         <span className="text-[10px] font-bold text-[#9aabb8]">
@@ -294,7 +294,7 @@ export function CibilBenefitsFactors() {
                 />
               </span>
               <div>
-                <h3 className="text-[18px] font-bold text-[#102f49]">
+                <h3 className="text-[18px] font-bold text-[#3b0764]">
                   Monitor your credit health with Fintaraa
                 </h3>
                 <p className="mt-1 text-[13px] font-medium leading-5 text-[#60788b]">
@@ -305,7 +305,7 @@ export function CibilBenefitsFactors() {
             <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
               <Link
                 href="/cibil-score/report"
-                className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-[#075cde] px-5 text-[13px] font-bold text-white no-underline hover:bg-[#064cb8] sm:w-auto"
+                className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-[#5b21b6] px-5 text-[13px] font-bold text-white no-underline hover:bg-[#4c1d95] sm:w-auto"
               >
                 Check my score
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />

@@ -374,7 +374,7 @@ export function DsaPortalWorkspace({ onShowLeads }: Props) {
       <WorkspaceNotice
         title="DSA workspace unavailable"
         body={loadError || "We could not load your DSA account."}
-        action={<button type="button" onClick={() => void loadWorkspace()} className="rounded-full bg-[#195585] px-5 py-2.5 text-[13px] font-extrabold text-white">Retry</button>}
+        action={<button type="button" onClick={() => void loadWorkspace()} className="rounded-full bg-[#3b0764] px-5 py-2.5 text-[13px] font-extrabold text-white">Retry</button>}
       />
     );
   }
@@ -393,8 +393,8 @@ export function DsaPortalWorkspace({ onShowLeads }: Props) {
         detail={`Profile completion: ${Number(profile.profileCompletion || 0)}%`}
         action={
           <div className="flex flex-wrap gap-2">
-            <Link href="/partner/profile/complete" className="rounded-full bg-[#195585] px-5 py-2.5 text-[13px] font-extrabold text-white no-underline">{rejected ? "Update and resubmit" : "Review profile"}</Link>
-            <button type="button" onClick={() => void loadWorkspace()} className="inline-flex items-center gap-2 rounded-full border border-[#cfe0ed] px-5 py-2.5 text-[13px] font-extrabold text-[#195585]"><RefreshCw className="h-4 w-4" />Refresh status</button>
+            <Link href="/partner/profile/complete" className="rounded-full bg-[#3b0764] px-5 py-2.5 text-[13px] font-extrabold text-white no-underline">{rejected ? "Update and resubmit" : "Review profile"}</Link>
+            <button type="button" onClick={() => void loadWorkspace()} className="inline-flex items-center gap-2 rounded-full border border-[#cfe0ed] px-5 py-2.5 text-[13px] font-extrabold text-[#3b0764]"><RefreshCw className="h-4 w-4" />Refresh status</button>
           </div>
         }
       />
@@ -411,7 +411,7 @@ export function DsaPortalWorkspace({ onShowLeads }: Props) {
           </div>
           <p className="mt-2 text-[13px] font-semibold text-[#667085]">Track applications, commissions, payouts, referrals, rank, and product learning in one place.</p>
         </div>
-        <button type="button" onClick={() => void loadWorkspace()} disabled={loading} className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-full border border-[#cfe0ed] bg-white px-4 text-[13px] font-extrabold text-[#195585] disabled:opacity-60"><RefreshCw className="h-4 w-4" />Refresh workspace</button>
+        <button type="button" onClick={() => void loadWorkspace()} disabled={loading} className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-full border border-[#cfe0ed] bg-white px-4 text-[13px] font-extrabold text-[#3b0764] disabled:opacity-60"><RefreshCw className="h-4 w-4" />Refresh workspace</button>
       </div>
 
       {loadError ? <Notice tone="error">{loadError}</Notice> : null}
@@ -426,7 +426,7 @@ export function DsaPortalWorkspace({ onShowLeads }: Props) {
               setActiveTab(key);
               setActionMessage("");
             }}
-            className={`inline-flex h-10 shrink-0 items-center gap-2 rounded-full px-4 text-[12px] font-extrabold transition ${activeTab === key ? "bg-[#195585] text-white" : "bg-[#edf6ff] text-[#344054] hover:text-[#195585]"}`}
+            className={`inline-flex h-10 shrink-0 items-center gap-2 rounded-full px-4 text-[12px] font-extrabold transition ${activeTab === key ? "bg-[#3b0764] text-white" : "bg-[#edf6ff] text-[#344054] hover:text-[#3b0764]"}`}
           >
             <Icon className="h-4 w-4" />
             {label}
@@ -440,7 +440,7 @@ export function DsaPortalWorkspace({ onShowLeads }: Props) {
             <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
               {dashboardCards.map(({ label, value, hint, icon: Icon }) => (
                 <div key={label} className="border border-[#e1edf8] bg-white p-4">
-                  <Icon className="h-5 w-5 text-[#195585]" />
+                  <Icon className="h-5 w-5 text-[#3b0764]" />
                   <p className="mt-4 text-[11px] font-extrabold uppercase tracking-[0.1em] text-[#667085]">{label}</p>
                   <p className="mt-2 text-[24px] font-extrabold text-[#07162d]">{value}</p>
                   <p className="mt-1 text-[12px] font-semibold text-[#667085]">{hint}</p>
@@ -467,7 +467,7 @@ export function DsaPortalWorkspace({ onShowLeads }: Props) {
                 <tbody>
                   {commissions.map((item, index) => {
                     const status = item.status || item.earningStatus;
-                    return <tr key={item.id || item._id || `${item.applicationId}-${index}`} className="border-t border-[#edf3f8] text-[13px] font-semibold text-[#344054]"><td className="p-3"><p className="font-extrabold text-[#07162d]">{item.customerName || "Customer"}</p><p className="mt-1 text-[11px] text-[#667085]">{item.applicationId || "-"}</p></td><td className="p-3">{titleCase(item.loanType || item.productType)}</td><td className="p-3">{formatINR(item.disbursedAmount)}</td><td className="p-3 font-extrabold text-[#195585]">{formatINR(item.commissionAmount)}</td><td className="p-3"><StatusBadge value={status} /></td><td className="p-3">{formatDate(item.paidAt || item.disbursedAt || item.createdAt)}</td></tr>;
+                    return <tr key={item.id || item._id || `${item.applicationId}-${index}`} className="border-t border-[#edf3f8] text-[13px] font-semibold text-[#344054]"><td className="p-3"><p className="font-extrabold text-[#07162d]">{item.customerName || "Customer"}</p><p className="mt-1 text-[11px] text-[#667085]">{item.applicationId || "-"}</p></td><td className="p-3">{titleCase(item.loanType || item.productType)}</td><td className="p-3">{formatINR(item.disbursedAmount)}</td><td className="p-3 font-extrabold text-[#3b0764]">{formatINR(item.commissionAmount)}</td><td className="p-3"><StatusBadge value={status} /></td><td className="p-3">{formatDate(item.paidAt || item.disbursedAt || item.createdAt)}</td></tr>;
                   })}
                 </tbody>
               </table>
@@ -488,11 +488,11 @@ export function DsaPortalWorkspace({ onShowLeads }: Props) {
           <div className="grid gap-5 xl:grid-cols-[0.78fr_1.22fr]">
             <DataPanel title="Request payout" description="The admin verifies and pays the request manually, then updates its status here.">
               <div className="mb-4 bg-[#f7fbff] p-4 text-[13px] font-semibold text-[#344054]">
-                <div className="flex items-center justify-between gap-3"><span>Saved destination</span><span className="font-extrabold text-[#195585]">{profile.payoutProfile?.maskedDestination || (isPrimaryDsa ? "Not configured" : "Managed by primary DSA")}</span></div>
+                <div className="flex items-center justify-between gap-3"><span>Saved destination</span><span className="font-extrabold text-[#3b0764]">{profile.payoutProfile?.maskedDestination || (isPrimaryDsa ? "Not configured" : "Managed by primary DSA")}</span></div>
                 {profile.payoutProfile?.method ? <div className="mt-2 flex items-center justify-between gap-3"><span>Method</span><span className="font-extrabold">{titleCase(profile.payoutProfile.method)}</span></div> : null}
               </div>
               {isPrimaryDsa && !showPayoutEditor ? (
-                <button type="button" onClick={() => setShowPayoutEditor(true)} className="mb-4 text-[12px] font-extrabold text-[#195585] underline underline-offset-4">{profile.hasPayoutProfile ? "Change payout destination" : "Set payout destination"}</button>
+                <button type="button" onClick={() => setShowPayoutEditor(true)} className="mb-4 text-[12px] font-extrabold text-[#3b0764] underline underline-offset-4">{profile.hasPayoutProfile ? "Change payout destination" : "Set payout destination"}</button>
               ) : isPrimaryDsa ? (
                 <form onSubmit={savePayoutProfile} className="mb-5 grid gap-3 border border-[#dbeaf6] p-4">
                   <p className="text-[12px] font-bold text-[#9a6700]">Changing payout details sends your DSA profile for admin re-approval.</p>
@@ -508,7 +508,7 @@ export function DsaPortalWorkspace({ onShowLeads }: Props) {
                       <label className="grid gap-1 text-[12px] font-extrabold text-[#344054]">Bank name (optional)<input value={bankName} onChange={(event) => setBankName(event.target.value)} className="h-11 border border-[#cfe0ed] px-3 outline-none" /></label>
                     </>
                   )}
-                  <div className="flex flex-wrap gap-2"><button type="submit" disabled={savingPayoutProfile} className="rounded-full bg-[#195585] px-4 py-2.5 text-[12px] font-extrabold text-white disabled:opacity-60">{savingPayoutProfile ? "Saving..." : "Save securely"}</button><button type="button" onClick={() => setShowPayoutEditor(false)} className="rounded-full border border-[#cfe0ed] px-4 py-2.5 text-[12px] font-extrabold text-[#344054]">Cancel</button></div>
+                  <div className="flex flex-wrap gap-2"><button type="submit" disabled={savingPayoutProfile} className="rounded-full bg-[#3b0764] px-4 py-2.5 text-[12px] font-extrabold text-white disabled:opacity-60">{savingPayoutProfile ? "Saving..." : "Save securely"}</button><button type="button" onClick={() => setShowPayoutEditor(false)} className="rounded-full border border-[#cfe0ed] px-4 py-2.5 text-[12px] font-extrabold text-[#344054]">Cancel</button></div>
                 </form>
               ) : null}
               {isPrimaryDsa ? <form onSubmit={submitPayout} className="grid gap-3">
@@ -520,7 +520,7 @@ export function DsaPortalWorkspace({ onShowLeads }: Props) {
             </DataPanel>
 
             <DataPanel title="Payout history" description="Follow each request from submission to admin approval and payment.">
-              {payouts.length ? <div className="grid gap-3">{payouts.map((item, index) => <div key={item.id || item._id || index} className="grid gap-3 bg-[#f7fbff] p-4 sm:grid-cols-[1fr_auto]"><div><div className="flex flex-wrap items-center gap-2"><p className="text-[16px] font-extrabold text-[#07162d]">{formatINR(item.amount)}</p><StatusBadge value={item.status} /></div><p className="mt-2 text-[12px] font-semibold text-[#667085]">{titleCase(item.method)}{item.destinationMasked ? ` | ${item.destinationMasked}` : ""} | Requested {formatDate(item.createdAt)}</p>{item.paymentReference ? <p className="mt-1 text-[12px] font-bold text-[#195585]">Reference: {item.paymentReference}</p> : null}{item.failureReason ? <p className="mt-1 text-[12px] font-bold text-[#b42318]">{item.failureReason}</p> : null}</div><p className="text-[12px] font-semibold text-[#667085]">Updated {formatDate(item.updatedAt)}</p></div>)}</div> : <EmptyState text="No payout requests submitted yet." />}
+              {payouts.length ? <div className="grid gap-3">{payouts.map((item, index) => <div key={item.id || item._id || index} className="grid gap-3 bg-[#f7fbff] p-4 sm:grid-cols-[1fr_auto]"><div><div className="flex flex-wrap items-center gap-2"><p className="text-[16px] font-extrabold text-[#07162d]">{formatINR(item.amount)}</p><StatusBadge value={item.status} /></div><p className="mt-2 text-[12px] font-semibold text-[#667085]">{titleCase(item.method)}{item.destinationMasked ? ` | ${item.destinationMasked}` : ""} | Requested {formatDate(item.createdAt)}</p>{item.paymentReference ? <p className="mt-1 text-[12px] font-bold text-[#3b0764]">Reference: {item.paymentReference}</p> : null}{item.failureReason ? <p className="mt-1 text-[12px] font-bold text-[#b42318]">{item.failureReason}</p> : null}</div><p className="text-[12px] font-semibold text-[#667085]">Updated {formatDate(item.updatedAt)}</p></div>)}</div> : <EmptyState text="No payout requests submitted yet." />}
             </DataPanel>
           </div>
         </div>
@@ -530,8 +530,8 @@ export function DsaPortalWorkspace({ onShowLeads }: Props) {
         <DataPanel title="Lead sharing and referral link" description="Every application opened through this link is attributed to your DSA account.">
           {referral?.shareUrl ? (
             <div className="grid gap-5">
-              <div className="bg-[#f7fbff] p-5"><p className="text-[11px] font-extrabold uppercase tracking-[0.1em] text-[#667085]">Referral code</p><p className="mt-2 text-[28px] font-extrabold tracking-[0.08em] text-[#195585]">{referral.referralCode || profile.referralCode}</p><label className="mt-4 grid gap-2 text-[12px] font-extrabold text-[#344054]">Your attributed link<input readOnly value={referral.shareUrl} onFocus={(event) => event.currentTarget.select()} className="h-12 w-full border border-[#cfe0ed] bg-white px-3 font-semibold outline-none" /></label></div>
-              <div className="flex flex-wrap gap-2"><button type="button" onClick={() => void copyReferral()} className="inline-flex h-11 items-center gap-2 rounded-full bg-[#195585] px-5 text-[13px] font-extrabold text-white"><Copy className="h-4 w-4" />{copyLabel}</button><a href={safeExternalUrl(referral.whatsappUrl)} target="_blank" rel="noreferrer" className="inline-flex h-11 items-center gap-2 rounded-full bg-[#12b76a] px-5 text-[13px] font-extrabold text-white no-underline"><MessageCircle className="h-4 w-4" />WhatsApp</a><a href={`sms:?&body=${encodeURIComponent(referral.smsText || referral.shareUrl)}`} className="inline-flex h-11 items-center gap-2 rounded-full border border-[#cfe0ed] px-5 text-[13px] font-extrabold text-[#195585] no-underline"><Send className="h-4 w-4" />SMS</a><button type="button" onClick={() => void shareReferral()} className="inline-flex h-11 items-center gap-2 rounded-full border border-[#cfe0ed] px-5 text-[13px] font-extrabold text-[#195585]"><Share2 className="h-4 w-4" />More</button></div>
+              <div className="bg-[#f7fbff] p-5"><p className="text-[11px] font-extrabold uppercase tracking-[0.1em] text-[#667085]">Referral code</p><p className="mt-2 text-[28px] font-extrabold tracking-[0.08em] text-[#3b0764]">{referral.referralCode || profile.referralCode}</p><label className="mt-4 grid gap-2 text-[12px] font-extrabold text-[#344054]">Your attributed link<input readOnly value={referral.shareUrl} onFocus={(event) => event.currentTarget.select()} className="h-12 w-full border border-[#cfe0ed] bg-white px-3 font-semibold outline-none" /></label></div>
+              <div className="flex flex-wrap gap-2"><button type="button" onClick={() => void copyReferral()} className="inline-flex h-11 items-center gap-2 rounded-full bg-[#3b0764] px-5 text-[13px] font-extrabold text-white"><Copy className="h-4 w-4" />{copyLabel}</button><a href={safeExternalUrl(referral.whatsappUrl)} target="_blank" rel="noreferrer" className="inline-flex h-11 items-center gap-2 rounded-full bg-[#12b76a] px-5 text-[13px] font-extrabold text-white no-underline"><MessageCircle className="h-4 w-4" />WhatsApp</a><a href={`sms:?&body=${encodeURIComponent(referral.smsText || referral.shareUrl)}`} className="inline-flex h-11 items-center gap-2 rounded-full border border-[#cfe0ed] px-5 text-[13px] font-extrabold text-[#3b0764] no-underline"><Send className="h-4 w-4" />SMS</a><button type="button" onClick={() => void shareReferral()} className="inline-flex h-11 items-center gap-2 rounded-full border border-[#cfe0ed] px-5 text-[13px] font-extrabold text-[#3b0764]"><Share2 className="h-4 w-4" />More</button></div>
               <p className="text-[12px] font-semibold leading-5 text-[#667085]">Share only this generated link or code. The backend records the DSA attribution when the customer starts and submits an application.</p>
             </div>
           ) : <EmptyState text="Referral link is unavailable. Refresh the workspace to retry." />}
@@ -540,14 +540,14 @@ export function DsaPortalWorkspace({ onShowLeads }: Props) {
 
       {activeTab === "leaderboard" ? (
         <DataPanel title="DSA performance leaderboard" description="Ranking combines disbursal performance and earned commission.">
-          <div className="mb-4 flex flex-wrap gap-2">{(["month", "quarter", "all"] as const).map((period) => <button key={period} type="button" disabled={leaderboardLoading} onClick={() => void changeLeaderboardPeriod(period)} className={`rounded-full px-4 py-2 text-[12px] font-extrabold ${leaderboardPeriod === period ? "bg-[#195585] text-white" : "bg-[#edf6ff] text-[#344054]"}`}>{period === "all" ? "All time" : titleCase(period)}</button>)}</div>
-          {leaderboardLoading ? <EmptyState text="Refreshing leaderboard..." /> : leaderboard.length ? <div className="grid gap-3">{leaderboard.map((item, index) => { const current = item.isCurrentDsa || item.isCurrentAgency; return <div key={item._id || item.agencyId || index} className={`grid gap-3 p-4 sm:grid-cols-[auto_1fr_repeat(3,auto)] sm:items-center ${current ? "bg-[#eafaf2] ring-1 ring-[#9ee2bf]" : "bg-[#f7fbff]"}`}><div className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-[15px] font-extrabold text-[#195585]">{Number(item.rank || index + 1) <= 3 ? <Medal className="h-5 w-5" /> : `#${item.rank || index + 1}`}</div><div><p className="text-[14px] font-extrabold text-[#07162d]">{item.businessName || item.name || "DSA Partner"}{current ? " (You)" : ""}</p><p className="mt-1 text-[11px] font-semibold text-[#667085]">{item.agencyId || item.referralCode || "-"}</p></div><LeaderboardStat label="Applications" value={item.applications} /><LeaderboardStat label="Approval" value={`${Number(item.approvalRate || 0).toFixed(1)}%`} /><LeaderboardStat label="Revenue" value={formatINR(item.revenue || item.totalCommission)} /></div>; })}</div> : <EmptyState text="No ranked DSA performance is available for this period." />}
+          <div className="mb-4 flex flex-wrap gap-2">{(["month", "quarter", "all"] as const).map((period) => <button key={period} type="button" disabled={leaderboardLoading} onClick={() => void changeLeaderboardPeriod(period)} className={`rounded-full px-4 py-2 text-[12px] font-extrabold ${leaderboardPeriod === period ? "bg-[#3b0764] text-white" : "bg-[#edf6ff] text-[#344054]"}`}>{period === "all" ? "All time" : titleCase(period)}</button>)}</div>
+          {leaderboardLoading ? <EmptyState text="Refreshing leaderboard..." /> : leaderboard.length ? <div className="grid gap-3">{leaderboard.map((item, index) => { const current = item.isCurrentDsa || item.isCurrentAgency; return <div key={item._id || item.agencyId || index} className={`grid gap-3 p-4 sm:grid-cols-[auto_1fr_repeat(3,auto)] sm:items-center ${current ? "bg-[#eafaf2] ring-1 ring-[#9ee2bf]" : "bg-[#f7fbff]"}`}><div className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-[15px] font-extrabold text-[#3b0764]">{Number(item.rank || index + 1) <= 3 ? <Medal className="h-5 w-5" /> : `#${item.rank || index + 1}`}</div><div><p className="text-[14px] font-extrabold text-[#07162d]">{item.businessName || item.name || "DSA Partner"}{current ? " (You)" : ""}</p><p className="mt-1 text-[11px] font-semibold text-[#667085]">{item.agencyId || item.referralCode || "-"}</p></div><LeaderboardStat label="Applications" value={item.applications} /><LeaderboardStat label="Approval" value={`${Number(item.approvalRate || 0).toFixed(1)}%`} /><LeaderboardStat label="Revenue" value={formatINR(item.revenue || item.totalCommission)} /></div>; })}</div> : <EmptyState text="No ranked DSA performance is available for this period." />}
         </DataPanel>
       ) : null}
 
       {activeTab === "training" ? (
         <DataPanel title="Training and product knowledge" description="Use approved guides, PDFs, and videos to improve product understanding and lead quality.">
-          {training.length ? <div className="grid gap-4 md:grid-cols-2">{training.map((item, index) => { const resourceUrl = safeExternalUrl(item.url || item.documentUrl || item.videoUrl || item.youtubeUrl); return <article key={item.id || item._id || item.slug || index} className="border border-[#e1edf8] bg-white p-5"><div className="flex items-start justify-between gap-3"><div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#edf6ff] text-[#195585]"><BookOpen className="h-5 w-5" /></div><span className="rounded-full bg-[#f7fbff] px-3 py-1 text-[11px] font-extrabold text-[#667085]">{titleCase(item.type || item.trainingType)}</span></div><h3 className="mt-4 text-[17px] font-extrabold text-[#07162d]">{item.title || "Training resource"}</h3><p className="mt-2 line-clamp-3 text-[13px] font-semibold leading-5 text-[#667085]">{item.description || item.summary || "Open this resource for product guidance."}</p>{resourceUrl ? <a href={resourceUrl} target="_blank" rel="noreferrer" className="mt-4 inline-flex items-center gap-2 text-[13px] font-extrabold text-[#195585] no-underline">Open resource <ExternalLink className="h-4 w-4" /></a> : <p className="mt-4 text-[12px] font-semibold text-[#9a6700]">Resource file is being prepared.</p>}</article>; })}</div> : <EmptyState text="No training materials have been published yet." />}
+          {training.length ? <div className="grid gap-4 md:grid-cols-2">{training.map((item, index) => { const resourceUrl = safeExternalUrl(item.url || item.documentUrl || item.videoUrl || item.youtubeUrl); return <article key={item.id || item._id || item.slug || index} className="border border-[#e1edf8] bg-white p-5"><div className="flex items-start justify-between gap-3"><div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#edf6ff] text-[#3b0764]"><BookOpen className="h-5 w-5" /></div><span className="rounded-full bg-[#f7fbff] px-3 py-1 text-[11px] font-extrabold text-[#667085]">{titleCase(item.type || item.trainingType)}</span></div><h3 className="mt-4 text-[17px] font-extrabold text-[#07162d]">{item.title || "Training resource"}</h3><p className="mt-2 line-clamp-3 text-[13px] font-semibold leading-5 text-[#667085]">{item.description || item.summary || "Open this resource for product guidance."}</p>{resourceUrl ? <a href={resourceUrl} target="_blank" rel="noreferrer" className="mt-4 inline-flex items-center gap-2 text-[13px] font-extrabold text-[#3b0764] no-underline">Open resource <ExternalLink className="h-4 w-4" /></a> : <p className="mt-4 text-[12px] font-semibold text-[#9a6700]">Resource file is being prepared.</p>}</article>; })}</div> : <EmptyState text="No training materials have been published yet." />}
         </DataPanel>
       ) : null}
     </div>
@@ -563,7 +563,7 @@ function EmptyState({ text }: { text: string }) {
 }
 
 function Notice({ children, tone = "info" }: { children: React.ReactNode; tone?: "info" | "error" }) {
-  return <div className={`p-4 text-[13px] font-semibold ${tone === "error" ? "bg-[#fff0ee] text-[#b42318] ring-1 ring-[#ffd0ca]" : "bg-[#eef8ff] text-[#195585] ring-1 ring-[#cfe8fb]"}`}>{children}</div>;
+  return <div className={`p-4 text-[13px] font-semibold ${tone === "error" ? "bg-[#fff0ee] text-[#b42318] ring-1 ring-[#ffd0ca]" : "bg-[#eef8ff] text-[#3b0764] ring-1 ring-[#cfe8fb]"}`}>{children}</div>;
 }
 
 function StatusBadge({ value }: { value?: string }) {
@@ -579,9 +579,9 @@ function LeaderboardStat({ label, value }: { label: string; value?: number | str
 }
 
 function QuickAction({ icon, title, body, onClick }: { icon: React.ReactNode; title: string; body: string; onClick: () => void }) {
-  return <button type="button" onClick={onClick} className="flex items-start gap-3 border border-[#e1edf8] bg-white p-4 text-left transition hover:border-[#8ebce0]"><span className="text-[#195585]">{icon}</span><span><span className="block text-[14px] font-extrabold text-[#07162d]">{title}</span><span className="mt-1 block text-[12px] font-semibold leading-5 text-[#667085]">{body}</span></span></button>;
+  return <button type="button" onClick={onClick} className="flex items-start gap-3 border border-[#e1edf8] bg-white p-4 text-left transition hover:border-[#8ebce0]"><span className="text-[#3b0764]">{icon}</span><span><span className="block text-[14px] font-extrabold text-[#07162d]">{title}</span><span className="mt-1 block text-[12px] font-semibold leading-5 text-[#667085]">{body}</span></span></button>;
 }
 
 function WorkspaceNotice({ title, body, detail, action }: { title: string; body: string; detail?: string; action: React.ReactNode }) {
-  return <div className="border border-[#dbeaf6] bg-[#f7fbff] p-6"><div className="flex h-12 w-12 items-center justify-center rounded-full bg-white text-[#195585]"><Landmark className="h-6 w-6" /></div><h3 className="mt-4 text-[21px] font-extrabold text-[#07162d]">{title}</h3><p className="mt-2 max-w-2xl text-[13px] font-semibold leading-6 text-[#667085]">{body}</p>{detail ? <p className="mt-2 text-[12px] font-extrabold text-[#195585]">{detail}</p> : null}<div className="mt-5">{action}</div></div>;
+  return <div className="border border-[#dbeaf6] bg-[#f7fbff] p-6"><div className="flex h-12 w-12 items-center justify-center rounded-full bg-white text-[#3b0764]"><Landmark className="h-6 w-6" /></div><h3 className="mt-4 text-[21px] font-extrabold text-[#07162d]">{title}</h3><p className="mt-2 max-w-2xl text-[13px] font-semibold leading-6 text-[#667085]">{body}</p>{detail ? <p className="mt-2 text-[12px] font-extrabold text-[#3b0764]">{detail}</p> : null}<div className="mt-5">{action}</div></div>;
 }

@@ -267,12 +267,12 @@ export function ContactSupportPanel() {
               href={href}
               className="group flex gap-3 bg-linear-to-br from-[#f8fcff] to-white p-4 text-[#07162d] no-underline shadow-[0_10px_26px_rgba(25,85,133,0.05)]"
             >
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#eef8ff] text-[#195585]">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#eef8ff] text-[#3b0764]">
                 <Icon className="h-5 w-5" />
               </span>
               <span className="min-w-0">
                 <span className="block text-[14px] font-bold">{title}</span>
-                <span className="mt-1 block truncate text-[13px] font-semibold text-[#195585]">
+                <span className="mt-1 block truncate text-[13px] font-semibold text-[#3b0764]">
                   {value}
                 </span>
                 <span className="mt-1 block text-[12px] font-medium leading-5 text-[#667085]">
@@ -301,7 +301,7 @@ export function ContactSupportPanel() {
             onChange={(event) =>
               setForm((prev) => ({ ...prev, category: event.target.value }))
             }
-            className="h-11 border-0 border-b border-[#cfddea] bg-transparent text-[14px] font-semibold text-[#07162d] outline-none focus:border-[#195585]"
+            className="h-11 border-0 border-b border-[#cfddea] bg-transparent text-[14px] font-semibold text-[#07162d] outline-none focus:border-[#3b0764]"
           >
             {SUPPORT_TICKET_CATEGORIES.map((category, index) => (
               <option
@@ -318,7 +318,7 @@ export function ContactSupportPanel() {
               setForm((prev) => ({ ...prev, title: event.target.value }))
             }
             placeholder="Subject"
-            className="h-11 border-0 border-b border-[#cfddea] bg-transparent text-[14px] font-semibold text-[#07162d] outline-none placeholder:text-[#98a2b3] focus:border-[#195585]"
+            className="h-11 border-0 border-b border-[#cfddea] bg-transparent text-[14px] font-semibold text-[#07162d] outline-none placeholder:text-[#98a2b3] focus:border-[#3b0764]"
           />
           <textarea
             value={form.description}
@@ -327,7 +327,7 @@ export function ContactSupportPanel() {
             }
             placeholder="Describe your issue"
             rows={4}
-            className="resize-none border-0 border-b border-[#cfddea] bg-transparent py-3 text-[14px] font-medium leading-6 text-[#07162d] outline-none placeholder:text-[#98a2b3] focus:border-[#195585]"
+            className="resize-none border-0 border-b border-[#cfddea] bg-transparent py-3 text-[14px] font-medium leading-6 text-[#07162d] outline-none placeholder:text-[#98a2b3] focus:border-[#3b0764]"
           />
           <WhatsAppConsent
             checked={whatsappConsent}
@@ -344,7 +344,7 @@ export function ContactSupportPanel() {
           <button
             type="submit"
             disabled={submitting}
-            className="inline-flex h-10 w-fit items-center gap-2 rounded-full bg-[#195585] px-5 text-[13px] font-semibold text-white disabled:opacity-60"
+            className="inline-flex h-10 w-fit items-center gap-2 rounded-full bg-[#3b0764] px-5 text-[13px] font-semibold text-white disabled:opacity-60"
           >
             <MessageCircle className="h-4 w-4" />
             {submitting ? "Submitting..." : "Submit ticket"}
@@ -443,7 +443,7 @@ export function FaqPanel() {
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Search FAQs"
-            className="h-11 w-full border-0 border-b border-[#cfddea] bg-transparent pl-7 text-[14px] font-semibold text-[#07162d] outline-none placeholder:text-[#98a2b3] focus:border-[#195585]"
+            className="h-11 w-full border-0 border-b border-[#cfddea] bg-transparent pl-7 text-[14px] font-semibold text-[#07162d] outline-none placeholder:text-[#98a2b3] focus:border-[#3b0764]"
           />
         </label>
         <div className="flex gap-2 overflow-x-auto">
@@ -454,8 +454,8 @@ export function FaqPanel() {
               onClick={() => setActiveCategory(category)}
               className={`shrink-0 rounded-full px-4 py-2 text-[12px] font-semibold ${
                 activeCategory === category
-                  ? "bg-[#195585] text-white"
-                  : "bg-[#eef8ff] text-[#195585]"
+                  ? "bg-[#3b0764] text-white"
+                  : "bg-[#eef8ff] text-[#3b0764]"
               }`}
             >
               {category}
@@ -476,7 +476,7 @@ export function FaqPanel() {
             >
               <span className="flex items-start justify-between gap-4">
                 <span>
-                  <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#195585]">
+                  <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#3b0764]">
                     {faq.categoryName || "General"}
                   </span>
                   <span className="mt-2 block text-[16px] font-semibold text-[#07162d]">
@@ -484,7 +484,7 @@ export function FaqPanel() {
                   </span>
                 </span>
                 <ChevronDown
-                  className={`mt-1 h-5 w-5 shrink-0 text-[#195585] transition ${
+                  className={`mt-1 h-5 w-5 shrink-0 text-[#3b0764] transition ${
                     open ? "rotate-180" : ""
                   }`}
                 />
@@ -621,7 +621,7 @@ export function KnowledgeCenterPanel() {
                 <button
                   type="button"
                   onClick={() => setActiveType(section.type)}
-                  className="shrink-0 text-[12px] font-extrabold text-[#195585]"
+                  className="shrink-0 text-[12px] font-extrabold text-[#3b0764]"
                 >
                   View all
                 </button>
@@ -702,7 +702,7 @@ export function KnowledgeCenterPanel() {
               <div key={section.type}>
                 <div className="flex flex-col gap-3 border-b border-[#e4edf5] pb-4 sm:flex-row sm:items-end sm:justify-between">
                   <div>
-                    <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#195585]">
+                    <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#3b0764]">
                       Knowledge hub
                     </p>
                     <h3 className="mt-1 text-[24px] font-extrabold text-[#07162d]">
@@ -760,7 +760,7 @@ export function KnowledgeCenterPanel() {
                             {formatDate(item.publishedAt)}
                           </p>
                         </div>
-                        <ArrowUpRight className="hidden h-5 w-5 shrink-0 text-[#195585] sm:block" />
+                        <ArrowUpRight className="hidden h-5 w-5 shrink-0 text-[#3b0764] sm:block" />
                       </div>
                     );
 
@@ -815,7 +815,7 @@ export function PoliciesPanel() {
                 {policy.text}
               </span>
             </span>
-            <ArrowUpRight className="h-5 w-5 shrink-0 text-[#195585] transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            <ArrowUpRight className="h-5 w-5 shrink-0 text-[#3b0764] transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </Link>
         ))}
       </div>
@@ -858,14 +858,14 @@ export function LogoutPanel() {
           <button
             type="button"
             onClick={() => setConfirmOpen(true)}
-            className="inline-flex h-10 items-center gap-2 rounded-full bg-[#195585] px-5 text-[13px] font-semibold text-white"
+            className="inline-flex h-10 items-center gap-2 rounded-full bg-[#3b0764] px-5 text-[13px] font-semibold text-white"
           >
             <LogOut className="h-4 w-4" />
             Logout
           </button>
           <Link
             href="/account/profile/edit-profile"
-            className="inline-flex h-10 items-center rounded-full bg-[#eef8ff] px-5 text-[13px] font-semibold text-[#195585] no-underline"
+            className="inline-flex h-10 items-center rounded-full bg-[#eef8ff] px-5 text-[13px] font-semibold text-[#3b0764] no-underline"
           >
             Back to profile
           </Link>
@@ -893,7 +893,7 @@ function HelpHero({
   text: string;
 }) {
   return (
-    <section className="grid gap-4 bg-linear-to-br from-[#07162d] via-[#195585] to-[#0f766e] p-4 text-white md:grid-cols-[1fr_auto] md:items-end">
+    <section className="grid gap-4 bg-linear-to-br from-[#07162d] via-[#3b0764] to-[#0f766e] p-4 text-white md:grid-cols-[1fr_auto] md:items-end">
       <div>
         <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/80">
           <Icon className="h-3.5 w-3.5 text-[#7ee3a2]" />

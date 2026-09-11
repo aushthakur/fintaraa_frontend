@@ -39,11 +39,11 @@ export function CibilReportSocial() {
           >
             <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <p className="inline-flex items-center gap-2 text-[12px] font-extrabold text-[#075cde]">
+                <p className="inline-flex items-center gap-2 text-[12px] font-extrabold text-[#5b21b6]">
                   <Search className="h-4 w-4" aria-hidden="true" />
                   Explore more
                 </p>
-                <h2 className="mt-3 text-[24px] font-extrabold text-[#102f49] sm:text-[28px]">
+                <h2 className="mt-3 text-[24px] font-extrabold text-[#3b0764] sm:text-[28px]">
                   Popular financial journeys
                 </h2>
               </div>
@@ -57,7 +57,7 @@ export function CibilReportSocial() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="inline-flex min-h-9 items-center gap-1.5 rounded-md border border-[#cddfe9] bg-white px-3 py-2 text-[11px] font-bold text-[#526e82] no-underline transition-colors hover:border-[#8ebbd3] hover:text-[#075cde]"
+                  className="inline-flex min-h-9 items-center gap-1.5 rounded-md border border-[#cddfe9] bg-white px-3 py-2 text-[11px] font-bold text-[#526e82] no-underline transition-colors hover:border-[#8ebbd3] hover:text-[#5b21b6]"
                 >
                   {item.label}
                   <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />

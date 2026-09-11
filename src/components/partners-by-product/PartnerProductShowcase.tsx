@@ -235,7 +235,7 @@ function LogoTile({
               className="max-h-12 w-auto max-w-32 object-contain mix-blend-multiply"
             />
           ) : (
-            <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#eaf4ff] text-[13px] font-extrabold text-[#075cde]">
+            <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#eaf4ff] text-[13px] font-extrabold text-[#5b21b6]">
               {record.partner.name
                 .split(/\s+/)
                 .slice(0, 2)
@@ -251,7 +251,7 @@ function LogoTile({
       </div>
 
       <div className="mt-4 flex-1">
-        <h3 className="line-clamp-1 text-[15px] font-extrabold text-[#17354d] transition group-hover:text-[#075cde]">
+        <h3 className="line-clamp-1 text-[15px] font-extrabold text-[#3b0764] transition group-hover:text-[#5b21b6]">
           {record.partner.name}
         </h3>
         <p className="mt-1 line-clamp-2 min-h-10 text-[11px] font-medium leading-5 text-[#718598]">
@@ -267,12 +267,12 @@ function LogoTile({
         </p>
       </div>
 
-      <div className="mt-4 flex items-center justify-between border-t border-[#edf2f6] pt-3">
+      <div className="mt-4 flex items-center justify-between border-t border-[#f5f3ff] pt-3">
         <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-[#61748f]">
           <Layers3 className="h-3.5 w-3.5" />
           {count > 0 ? `${count} ${count === 1 ? "product" : "products"}` : "Explore"}
         </span>
-        <ArrowRight className="h-4 w-4 text-[#075cde] transition-transform group-hover:translate-x-1" />
+        <ArrowRight className="h-4 w-4 text-[#5b21b6] transition-transform group-hover:translate-x-1" />
       </div>
     </Link>
   );
@@ -387,7 +387,7 @@ export function PartnerProductShowcase({
       <div className="mx-auto max-w-9xl">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-[#075cde]">
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-[#5b21b6]">
               Product network
             </p>
             <h2 className="mt-2 text-[26px] font-extrabold tracking-[-0.03em] text-[#111827] sm:text-[34px]">
@@ -401,7 +401,7 @@ export function PartnerProductShowcase({
 
           <Link
             href="/partners"
-            className="inline-flex h-10 w-fit items-center gap-2 rounded-xl border border-[#bdd7eb] bg-white px-4 text-[12px] font-bold text-[#075cde] no-underline transition hover:border-[#075cde]"
+            className="inline-flex h-10 w-fit items-center gap-2 rounded-xl border border-[#bdd7eb] bg-white px-4 text-[12px] font-bold text-[#5b21b6] no-underline transition hover:border-[#5b21b6]"
           >
             Full directory
             <ArrowRight className="h-4 w-4" />
@@ -422,8 +422,8 @@ export function PartnerProductShowcase({
                 onClick={() => setActiveTab(tab.key)}
                 className={`inline-flex h-10 shrink-0 items-center gap-2 rounded-xl border px-4 text-[12px] font-bold transition-colors ${
                   isActive
-                    ? "border-[#075cde] bg-[#075cde] text-white"
-                    : "border-[#d5e3ee] bg-white text-[#52657d] hover:border-[#8fbadc] hover:text-[#075cde]"
+                    ? "border-[#5b21b6] bg-[#5b21b6] text-white"
+                    : "border-[#d5e3ee] bg-white text-[#52657d] hover:border-[#8fbadc] hover:text-[#5b21b6]"
                 }`}
               >
                 {tab.label}

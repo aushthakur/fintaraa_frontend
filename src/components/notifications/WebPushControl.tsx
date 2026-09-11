@@ -88,11 +88,11 @@ export function WebPushControl() {
   return (
     <div className="mb-4 flex flex-col gap-3 rounded-2xl border border-[#dbeaf7] bg-[#f6fbff] p-4 sm:flex-row sm:items-center sm:justify-between">
       <div className="flex items-start gap-3">
-        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#195585] text-white">
+        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#3b0764] text-white">
           <BellRing className="h-5 w-5" />
         </span>
         <div>
-          <p className="text-[14px] font-extrabold text-[#102c45]">
+          <p className="text-[14px] font-extrabold text-[#3b0764]">
             Browser push notifications
           </p>
           <p className="mt-1 text-[12px] font-semibold leading-5 text-[#6c8192]">
@@ -111,7 +111,7 @@ export function WebPushControl() {
         type="button"
         onClick={toggle}
         disabled={loading || state.permission === "denied"}
-        className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-xl bg-[#195585] px-4 text-[12px] font-extrabold text-white disabled:cursor-not-allowed disabled:opacity-50"
+        className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-xl bg-[#3b0764] px-4 text-[12px] font-extrabold text-white disabled:cursor-not-allowed disabled:opacity-50"
       >
         {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
         {state.subscribed ? "Disable push" : "Enable push"}

@@ -446,7 +446,7 @@ function SectionTop({
             {isBankSection(title) ? (
               <>
                 Get Instant Loan in 5 Minutes from{" "}
-                <span className="text-[#075cde]">
+                <span className="text-[#5b21b6]">
                   30+ Trusted Banks & NBFCs
                 </span>
               </>
@@ -465,7 +465,7 @@ function SectionTop({
         {ctaLabel && href ? (
           <Link
             href={href}
-            className="inline-flex h-9 shrink-0 items-center justify-center gap-1 rounded-lg bg-[#e9f2ff] px-3 text-[12px] font-bold leading-none text-[#075cde] no-underline transition hover:bg-[#d9eaff] sm:h-10 sm:gap-2 sm:bg-[#075cde] sm:px-4 sm:text-[13px] sm:text-white sm:hover:bg-[#064cb8]"
+            className="inline-flex h-9 shrink-0 items-center justify-center gap-1 rounded-lg bg-[#ede9fe] px-3 text-[12px] font-bold leading-none text-[#5b21b6] no-underline transition hover:bg-[#d9eaff] sm:h-10 sm:gap-2 sm:bg-[#5b21b6] sm:px-4 sm:text-[13px] sm:text-white sm:hover:bg-[#4c1d95]"
           >
             <span className="hidden sm:inline">{ctaLabel}</span>
             <span className="sm:hidden">View</span>
@@ -536,7 +536,7 @@ function BankOfferCard({ product }: { product: ProductItem }) {
   return (
     <Link
       href={product.href || productHref(product.title)}
-      className="group flex h-full min-h-60 flex-col justify-between rounded-xl border border-[#e2edf8] bg-white px-3 py-4 no-underline transition-colors duration-300 hover:border-[#bcd8f4]"
+      className="group flex h-full min-h-60 flex-col justify-between rounded-2xl border border-white/60 bg-white/60 p-4 shadow-[0_8px_30px_rgba(91,33,182,0.04)] backdrop-blur-xl no-underline transition-all duration-500 hover:-translate-y-1 hover:border-[#ddd6fe] hover:bg-white/90 hover:shadow-[0_20px_40px_rgba(91,33,182,0.12)]"
     >
       <div>
         <div className="flex h-16 items-center justify-center">
@@ -559,14 +559,14 @@ function BankOfferCard({ product }: { product: ProductItem }) {
             <span className="block text-[10px] tracking-wide text-[#8090a4]">
               ROI Starts from
             </span>
-            <span className="text-[18px] font-bold text-[#075cde]">
+            <span className="text-[18px] font-bold text-[#5b21b6]">
               {details.rate}
             </span>
           </div>
           <div className="space-y-1">
             {[details.perk, details.amount].map((item) => (
               <div key={item} className="flex items-center gap-2">
-                <CheckCircle2 className="h-4 w-4 shrink-0 text-[#075cde]" />
+                <CheckCircle2 className="h-4 w-4 shrink-0 text-[#5b21b6]" />
                 <span className="text-xs line-clamp-1">{item}</span>
               </div>
             ))}
@@ -587,11 +587,11 @@ function InformativeCard({ product }: { product: ProductItem }) {
   return (
     <Link
       href={product.href || productHref(product.title)}
-      className="group flex h-full min-h-48 flex-col justify-between rounded-xl border border-[#dceaf7] bg-white p-4 no-underline transition-colors duration-300 hover:border-[#bcd8f4]"
+      className="group flex h-full min-h-48 flex-col justify-between rounded-2xl border border-white/60 bg-white/60 p-5 shadow-[0_8px_30px_rgba(91,33,182,0.04)] backdrop-blur-xl no-underline transition-all duration-500 hover:-translate-y-1 hover:border-[#ddd6fe] hover:bg-white/90 hover:shadow-[0_20px_40px_rgba(91,33,182,0.12)]"
     >
       <div className="flex min-h-0 flex-1 flex-col">
         <div className="flex items-start gap-3">
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#e9f2ff] text-[#075cde]">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#ede9fe] text-[#5b21b6]">
             {Icon ? (
               <Icon className="h-4 w-4" />
             ) : (
@@ -609,7 +609,7 @@ function InformativeCard({ product }: { product: ProductItem }) {
           <p className="text-[10px] font-bold uppercase tracking-wide text-[#8090a4]">
             Starting from
           </p>
-          <p className="mt-1 text-[15px] font-bold leading-none text-[#075cde]">
+          <p className="mt-1 text-[15px] font-bold leading-none text-[#5b21b6]">
             {meta.rate || product.text}
           </p>
         </div>
@@ -619,7 +619,7 @@ function InformativeCard({ product }: { product: ProductItem }) {
           <span>{meta.hint || "Eligibility guidance before applying"}</span>
         </p>
         <p className="mt-2 flex items-start gap-1.5 text-[13px] leading-5 text-[#61748f]">
-          <CheckCircle2 className="h-4 w-4 shrink-0 text-[#075cde]" />
+          <CheckCircle2 className="h-4 w-4 shrink-0 text-[#5b21b6]" />
           <span>
             {meta.detail || "Compare eligibility, documents and next steps."}
           </span>
@@ -649,7 +649,7 @@ export function ImageProductCard({
   return (
     <Link
       href={product.href || productHref(product.title)}
-      className="group flex h-full flex-col overflow-hidden rounded-xl border border-[#e2edf8] bg-white no-underline transition-colors duration-300 hover:border-[#bcd8f4]"
+      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-white/60 bg-white/60 shadow-[0_8px_30px_rgba(91,33,182,0.04)] backdrop-blur-xl no-underline transition-all duration-500 hover:-translate-y-1 hover:border-[#ddd6fe] hover:bg-white/90 hover:shadow-[0_20px_40px_rgba(91,33,182,0.12)]"
     >
       <div className="relative aspect-[1.45/1] bg-white">
         {meta.image ? (
@@ -664,7 +664,7 @@ export function ImageProductCard({
         ) : null}
         <div className="absolute inset-0 bg-linear-to-t from-[#07162d]/60 via-transparent to-transparent" />
         {!hideIcon ? (
-          <span className="absolute bottom-3 left-3 flex h-10 w-10 items-center justify-center rounded-xl bg-white text-[#075cde]">
+          <span className="absolute bottom-3 left-3 flex h-10 w-10 items-center justify-center rounded-xl bg-white text-[#5b21b6]">
             {Icon ? (
               <Icon className="h-4 w-4" />
             ) : (
@@ -675,7 +675,7 @@ export function ImageProductCard({
       </div>
       <div className="flex flex-1 flex-col p-3 sm:p-4">
         {!hideContentBadge ? (
-          <p className="mb-2 inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wide text-[#075cde]">
+          <p className="mb-2 inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wide text-[#5b21b6]">
             <CheckCircle2 className="h-3.5 w-3.5" />
             {meta.badge || "Featured"}
           </p>
@@ -685,7 +685,7 @@ export function ImageProductCard({
             {product.title}
           </h3>
           {statusBadge ? (
-            <span className="hidden shrink-0 rounded-full bg-[#e9f2ff] px-2 py-1 text-[9px] font-extrabold uppercase tracking-[0.08em] text-[#075cde] sm:inline-flex">
+            <span className="hidden shrink-0 rounded-full bg-[#ede9fe] px-2 py-1 text-[9px] font-extrabold uppercase tracking-[0.08em] text-[#5b21b6] sm:inline-flex">
               {statusBadge}
             </span>
           ) : null}
@@ -711,7 +711,7 @@ export function ServiceWorkflowCard({ product }: { product: ProductItem }) {
   return (
     <Link
       href={product.href || productHref(product.title)}
-      className="group grid h-full min-h-32 overflow-hidden rounded-xl border border-[#e2edf8] bg-white no-underline transition-colors duration-300 hover:border-[#bcd8f4] xl:grid-cols-[96px_minmax(0,1fr)]"
+      className="group grid h-full min-h-32 overflow-hidden rounded-2xl border border-white/60 bg-white/60 shadow-[0_8px_30px_rgba(91,33,182,0.04)] backdrop-blur-xl no-underline transition-all duration-500 hover:-translate-y-1 hover:border-[#ddd6fe] hover:bg-white/90 hover:shadow-[0_20px_40px_rgba(91,33,182,0.12)] xl:grid-cols-[96px_minmax(0,1fr)]"
     >
       <div className="relative h-28 bg-white sm:h-auto">
         {meta.image ? (
@@ -752,7 +752,7 @@ export function ProductExplorer({
 
   return (
     <section
-      className={`bg-white px-4 md:px-6 lg:px-8 ${
+      className={`relative overflow-hidden bg-linear-to-b from-white to-[#f5f3ff] px-4 md:px-6 lg:px-8 ${
         compactSpacing ? "py-5 md:py-7" : "py-6 md:py-8"
       }`}
     >

@@ -307,7 +307,7 @@ export function ServiceRequestTracker({
             <p className="text-[12px] font-extrabold uppercase tracking-wide text-[#13a653]">
               Track Status
             </p>
-            <h2 className="mt-1 text-[24px] font-extrabold tracking-[-0.01em] text-[#005ca8] md:text-[28px]">
+            <h2 className="mt-1 text-[24px] font-extrabold tracking-[-0.01em] text-[#4c1d95] md:text-[28px]">
               {title}
             </h2>
             <p className="mt-2 text-[14px] font-semibold leading-6 text-[#667085] md:text-[15px]">
@@ -315,7 +315,7 @@ export function ServiceRequestTracker({
             </p>
             <Link
               href="/login"
-              className="mt-4 inline-flex h-10 items-center justify-center rounded-full bg-[#075cde] px-5 text-[13px] font-extrabold text-white no-underline transition hover:bg-[#064cb8]"
+              className="mt-4 inline-flex h-10 items-center justify-center rounded-full bg-[#5b21b6] px-5 text-[13px] font-extrabold text-white no-underline transition hover:bg-[#4c1d95]"
             >
               Login
             </Link>
@@ -331,13 +331,13 @@ export function ServiceRequestTracker({
       className="scroll-mt-24 px-4 py-7 md:px-6 md:py-8 lg:px-8"
     >
       <div className="mobile-safe-container grid gap-5">
-        <div className="w-full max-w-full overflow-hidden rounded-2xl border border-[#d7e5f3] bg-white p-4 shadow-[0_14px_38px_rgba(16,24,40,0.05)] sm:p-5 md:p-7">
+        <div className="w-full max-w-full overflow-hidden rounded-2xl border border-[#e9d5ff] bg-white p-4 shadow-[0_14px_38px_rgba(16,24,40,0.05)] sm:p-5 md:p-7">
           <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
             <div>
               <p className="text-[12px] font-extrabold uppercase tracking-wide text-[#13a653]">
                 Track Status
               </p>
-              <h2 className="mt-1 text-[21px] font-extrabold leading-tight tracking-[-0.01em] text-[#005ca8] sm:text-[24px] md:text-[28px]">
+              <h2 className="mt-1 text-[21px] font-extrabold leading-tight tracking-[-0.01em] text-[#4c1d95] sm:text-[24px] md:text-[28px]">
                 {title}
               </h2>
               <p className="mt-2 max-w-full text-[13px] font-semibold leading-6 text-[#667085] sm:max-w-2xl sm:text-[14px] md:text-[15px]">
@@ -358,7 +358,7 @@ export function ServiceRequestTracker({
                   value={mobile}
                   onChange={(event) => setMobile(event.target.value)}
                   placeholder="Enter Mobile Number"
-                  className="h-11 rounded-lg border border-[#dce3eb] px-3 text-[13px] font-semibold outline-none placeholder:text-[#a0a7b2] focus:border-[#005ca8] md:text-sm"
+                  className="h-11 rounded-lg border border-[#dce3eb] px-3 text-[13px] font-semibold outline-none placeholder:text-[#a0a7b2] focus:border-[#4c1d95] md:text-sm"
                 />
               </label>
               <label className="grid gap-1.5">
@@ -369,13 +369,13 @@ export function ServiceRequestTracker({
                   value={queryId}
                   onChange={(event) => setQueryId(event.target.value)}
                   placeholder="e.g. FIN2607310001"
-                  className="h-11 rounded-lg border border-[#dce3eb] px-3 text-[13px] font-semibold uppercase outline-none placeholder:normal-case placeholder:text-[#a0a7b2] focus:border-[#005ca8] md:text-sm"
+                  className="h-11 rounded-lg border border-[#dce3eb] px-3 text-[13px] font-semibold uppercase outline-none placeholder:normal-case placeholder:text-[#a0a7b2] focus:border-[#4c1d95] md:text-sm"
                 />
               </label>
               <button
                 type="submit"
                 disabled={loading}
-                className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full border-2 border-[#075cde] px-7 text-[13px] font-extrabold text-[#075cde] transition hover:bg-[#075cde] hover:text-white disabled:cursor-not-allowed disabled:opacity-70 md:w-auto"
+                className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full border-2 border-[#5b21b6] px-7 text-[13px] font-extrabold text-[#5b21b6] transition hover:bg-[#5b21b6] hover:text-white disabled:cursor-not-allowed disabled:opacity-70 md:w-auto"
               >
                 {loading ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
@@ -396,7 +396,7 @@ export function ServiceRequestTracker({
 
         <PremiumServiceTimeline title={title} activeStep={activeStep} />
 
-        <div className="w-full max-w-full overflow-hidden rounded-2xl border border-[#d7e5f3] bg-white p-4 shadow-[0_14px_38px_rgba(16,24,40,0.04)] sm:p-5 md:p-6">
+        <div className="w-full max-w-full overflow-hidden rounded-2xl border border-[#e9d5ff] bg-white p-4 shadow-[0_14px_38px_rgba(16,24,40,0.04)] sm:p-5 md:p-6">
           <div className="flex flex-col justify-between gap-3 md:flex-row md:items-center">
             <div>
               <h3 className="text-[18px] font-extrabold text-[#1f2937]">
@@ -407,7 +407,7 @@ export function ServiceRequestTracker({
                 remarks below.
               </p>
             </div>
-            <span className="rounded-full bg-[#eef7ff] px-4 py-2 text-[13px] font-extrabold text-[#005ca8]">
+            <span className="rounded-full bg-[#eef7ff] px-4 py-2 text-[13px] font-extrabold text-[#4c1d95]">
               {requests.length} {requests.length === 1 ? "Request" : "Requests"}
             </span>
           </div>
@@ -440,7 +440,7 @@ export function ServiceRequestTracker({
                         onClick={() => setSelectedId(request._id)}
                         className={`cursor-pointer border-b border-[#eef1f5] text-[13.5px] font-semibold transition ${
                           selected
-                            ? "bg-[#eef7ff] text-[#005ca8]"
+                            ? "bg-[#eef7ff] text-[#4c1d95]"
                             : "text-[#667085] hover:bg-[#f8fbff]"
                         }`}
                       >
@@ -472,7 +472,7 @@ export function ServiceRequestTracker({
           ) : (
             <div className="mt-4 rounded-xl bg-[#f8fbff] px-4 py-8 text-center">
               <div className="mx-auto flex max-w-sm flex-col items-center">
-                <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#e8f4ff] text-[#005ca8]">
+                <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#e8f4ff] text-[#4c1d95]">
                   <FileSearch className="h-5 w-5" />
                 </span>
                 <p className="mt-4 text-[15px] font-extrabold text-[#1f2937]">

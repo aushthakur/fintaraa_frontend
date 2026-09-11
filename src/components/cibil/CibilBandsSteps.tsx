@@ -56,7 +56,7 @@ const steps = [
     text: "Use the mobile number linked to your active financial accounts.",
     icon: Smartphone,
     surface: "bg-[#e7f2ff]",
-    color: "text-[#075cde]",
+    color: "text-[#5b21b6]",
   },
   {
     number: "02",
@@ -90,11 +90,11 @@ export function CibilBandsSteps() {
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
             >
-              <p className="flex items-center gap-2 text-[11px] font-bold uppercase text-[#075cde]">
+              <p className="flex items-center gap-2 text-[11px] font-bold uppercase text-[#5b21b6]">
                 <Gauge className="h-4 w-4" aria-hidden="true" />
                 Credit score basics
               </p>
-              <h2 className="mt-3 max-w-xl text-[28px] font-bold leading-[1.16] text-[#102f49] sm:text-[34px]">
+              <h2 className="mt-3 max-w-xl text-[28px] font-bold leading-[1.16] text-[#3b0764] sm:text-[34px]">
                 Understanding CIBIL Score
               </h2>
               <p className="mt-4 max-w-xl text-[14px] font-medium leading-7 text-[#587287] md:text-[15px]">
@@ -175,7 +175,7 @@ export function CibilBandsSteps() {
                 <div className={`h-1.5 w-full ${item.bar}`} />
                 <div className="p-4 sm:p-5">
                   <div className="flex items-center justify-between gap-3">
-                    <p className="text-[17px] font-bold text-[#102f49]">
+                    <p className="text-[17px] font-bold text-[#3b0764]">
                       {item.range}
                     </p>
                     <span className={`text-[11px] font-bold uppercase ${item.accent}`}>
@@ -196,10 +196,10 @@ export function CibilBandsSteps() {
         <div className="mx-auto max-w-9xl">
           <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
             <div className="max-w-2xl">
-              <p className="text-[11px] font-bold uppercase text-[#075cde]">
+              <p className="text-[11px] font-bold uppercase text-[#5b21b6]">
                 Simple and secure
               </p>
-              <h2 className="mt-3 text-[28px] font-bold leading-[1.16] text-[#102f49] sm:text-[34px]">
+              <h2 className="mt-3 text-[28px] font-bold leading-[1.16] text-[#3b0764] sm:text-[34px]">
                 Check your CIBIL score in 3 easy steps
               </h2>
               <p className="mt-3 text-[14px] font-medium leading-6 text-[#5c7487] md:text-[15px]">
@@ -233,14 +233,14 @@ export function CibilBandsSteps() {
                     className="relative rounded-lg border border-[#d9e7f0] bg-white p-4"
                   >
                     <div className="flex items-center gap-3">
-                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-[#d6e6f0] bg-white text-[13px] font-bold text-[#075cde]">
+                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-[#d6e6f0] bg-white text-[13px] font-bold text-[#5b21b6]">
                         {item.number}
                       </span>
                       <div className="min-w-0 flex-1">
                         <p className={`text-[9px] font-bold uppercase ${item.color}`}>
                           {item.eyebrow}
                         </p>
-                        <h3 className="mt-1 text-[15px] font-bold leading-snug text-[#102f49]">
+                        <h3 className="mt-1 text-[15px] font-bold leading-snug text-[#3b0764]">
                           {item.title}
                         </h3>
                       </div>
@@ -279,7 +279,7 @@ export function CibilBandsSteps() {
             <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
               <Link
                 href="/cibil-score/report"
-                className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-[#075cde] px-6 text-[14px] font-bold text-white no-underline transition-colors hover:bg-[#064cb8] sm:w-auto"
+                className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-[#5b21b6] px-6 text-[14px] font-bold text-white no-underline transition-colors hover:bg-[#4c1d95] sm:w-auto"
               >
                 Get free credit score
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />

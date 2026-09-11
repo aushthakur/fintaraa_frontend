@@ -34,6 +34,35 @@ import {
   LogOut,
   PencilLine,
   PhoneCall,
+  Home,
+  Banknote,
+  Building2,
+  Car,
+  Bike,
+  Truck,
+  HeartPulse,
+  Activity,
+  Users,
+  PiggyBank,
+  Calculator,
+  Gauge,
+  Gift,
+  Sun,
+  Briefcase,
+  GraduationCap,
+  Stethoscope,
+  Coins,
+  Shield,
+  Store,
+  Factory,
+  TrendingUp,
+  CheckCircle2,
+  HelpCircle,
+  Newspaper,
+  KeyRound,
+  Headphones,
+  Plane,
+  Fuel,
 } from "lucide-react";
 import {
   clearAuthSession,
@@ -67,6 +96,11 @@ type NavLink = {
   label: string;
   href: string;
   description?: string;
+  badge?: string;
+  badgeColor?: "purple" | "emerald" | "amber" | "blue" | "rose";
+  icon?: LucideIcon;
+  iconBg?: string;
+  iconColor?: string;
 };
 
 type NavSection = {
@@ -75,15 +109,305 @@ type NavSection = {
   links: NavLink[];
 };
 
+type NavPromo = {
+  title: string;
+  subtitle: string;
+  description: string;
+  ctaText: string;
+  ctaHref: string;
+  icon: LucideIcon;
+  features: string[];
+};
+
 type NavItem = NavLink & {
   sections?: NavSection[];
+  highlightBadge?: string;
+  promo?: NavPromo;
+};
+
+const PRODUCT_META: Record<
+  string,
+  {
+    icon: LucideIcon;
+    badge?: string;
+    badgeColor?: "purple" | "emerald" | "amber" | "blue" | "rose";
+    description: string;
+    iconBg?: string;
+    iconColor?: string;
+  }
+> = {
+  "personal-loan": {
+    icon: Banknote,
+    badge: "INSTANT",
+    badgeColor: "purple",
+    description: "Up to ₹40L • In 5 mins",
+    iconBg: "bg-purple-100",
+    iconColor: "text-[#4c1d95]",
+  },
+  "home-loan": {
+    icon: Home,
+    badge: "FROM 7.10%",
+    badgeColor: "purple",
+    description: "Up to ₹5 Cr • Lowest EMI",
+    iconBg: "bg-indigo-100",
+    iconColor: "text-indigo-700",
+  },
+  "business-loan": {
+    icon: Briefcase,
+    badge: "NO COLLATERAL",
+    badgeColor: "amber",
+    description: "Growth Capital • Up to ₹1 Cr",
+    iconBg: "bg-amber-100",
+    iconColor: "text-amber-700",
+  },
+  "doctor-loan": {
+    icon: Stethoscope,
+    badge: "PRIORITY",
+    badgeColor: "rose",
+    description: "Tailored credit for doctors",
+    iconBg: "bg-rose-100",
+    iconColor: "text-rose-700",
+  },
+  "ca-loan": {
+    icon: GraduationCap,
+    badge: "EXCLUSIVE",
+    badgeColor: "purple",
+    description: "Pre-approved credit for CAs",
+    iconBg: "bg-purple-100",
+    iconColor: "text-[#5b21b6]",
+  },
+  "car-loan": {
+    icon: Car,
+    badge: "UP TO 100%",
+    badgeColor: "emerald",
+    description: "New & pre-owned vehicles",
+    iconBg: "bg-emerald-100",
+    iconColor: "text-emerald-700",
+  },
+  "loan-against-property": {
+    icon: Building2,
+    badge: "HIGH VALUE",
+    badgeColor: "blue",
+    description: "Unlock property value",
+    iconBg: "bg-blue-100",
+    iconColor: "text-blue-700",
+  },
+  "balance-transfer-top-up-loan": {
+    icon: TrendingUp,
+    badge: "SAVE EMI",
+    badgeColor: "emerald",
+    description: "Lower interest & top up",
+    iconBg: "bg-emerald-100",
+    iconColor: "text-emerald-700",
+  },
+  "top-up-loan": {
+    icon: Coins,
+    description: "Quick extra funds on loan",
+    iconBg: "bg-purple-100",
+    iconColor: "text-[#4c1d95]",
+  },
+  "education-loan": {
+    icon: GraduationCap,
+    badge: "LOW RATE",
+    badgeColor: "blue",
+    description: "Studies in India & abroad",
+    iconBg: "bg-blue-100",
+    iconColor: "text-blue-700",
+  },
+  "solar-loan": {
+    icon: Sun,
+    badge: "SUBSIDY",
+    badgeColor: "amber",
+    description: "Rooftop solar finance",
+    iconBg: "bg-amber-100",
+    iconColor: "text-amber-700",
+  },
+  "agriculture-loan": {
+    icon: Coins,
+    description: "Kisan credit & agri-capital",
+    iconBg: "bg-emerald-100",
+    iconColor: "text-emerald-700",
+  },
+  "used-car-loan": {
+    icon: Car,
+    description: "Pre-owned car financing",
+    iconBg: "bg-indigo-100",
+    iconColor: "text-indigo-700",
+  },
+  "vehicle-loan": {
+    icon: Truck,
+    description: "Commercial & heavy vehicles",
+    iconBg: "bg-slate-100",
+    iconColor: "text-slate-700",
+  },
+  "loan-against-car": {
+    icon: Car,
+    description: "Quick liquidity against car",
+    iconBg: "bg-purple-100",
+    iconColor: "text-[#4c1d95]",
+  },
+  "loan-against-car-value": {
+    icon: Car,
+    description: "High LTV loan against car",
+    iconBg: "bg-purple-100",
+    iconColor: "text-[#4c1d95]",
+  },
+  // Insurance
+  "health-insurance": {
+    icon: HeartPulse,
+    badge: "CASHLESS",
+    badgeColor: "emerald",
+    description: "10,000+ cashless hospitals",
+    iconBg: "bg-emerald-100",
+    iconColor: "text-emerald-700",
+  },
+  "life-insurance": {
+    icon: ShieldCheck,
+    badge: "UP TO ₹2 CR",
+    badgeColor: "purple",
+    description: "Secure your family's future",
+    iconBg: "bg-purple-100",
+    iconColor: "text-[#4c1d95]",
+  },
+  "term-insurance": {
+    icon: ShieldCheck,
+    badge: "HIGH COVER",
+    badgeColor: "blue",
+    description: "Pure protection at low cost",
+    iconBg: "bg-blue-100",
+    iconColor: "text-blue-700",
+  },
+  "group-insurance": {
+    icon: Users,
+    description: "Corporate team & employee cover",
+    iconBg: "bg-indigo-100",
+    iconColor: "text-indigo-700",
+  },
+  "personal-accident-insurance": {
+    icon: Activity,
+    description: "Disability & accidental payout",
+    iconBg: "bg-rose-100",
+    iconColor: "text-rose-700",
+  },
+  "critical-illness-insurance": {
+    icon: Activity,
+    badge: "LUMP SUM",
+    badgeColor: "rose",
+    description: "32+ major critical illnesses",
+    iconBg: "bg-rose-100",
+    iconColor: "text-rose-700",
+  },
+  "retirement-plan": {
+    icon: PiggyBank,
+    description: "Guaranteed lifelong pension",
+    iconBg: "bg-amber-100",
+    iconColor: "text-amber-700",
+  },
+  "car-insurance": {
+    icon: Car,
+    badge: "ZERO DEP",
+    badgeColor: "emerald",
+    description: "Instant policy in 2 mins",
+    iconBg: "bg-emerald-100",
+    iconColor: "text-emerald-700",
+  },
+  "bike-insurance": {
+    icon: Bike,
+    badge: "INSTANT",
+    badgeColor: "blue",
+    description: "Two wheeler comprehensive",
+    iconBg: "bg-blue-100",
+    iconColor: "text-blue-700",
+  },
+  "vehicle-insurance": {
+    icon: Truck,
+    description: "Commercial fleet & transport",
+    iconBg: "bg-slate-100",
+    iconColor: "text-slate-700",
+  },
+  "travel-insurance": {
+    icon: Plane,
+    badge: "GLOBAL",
+    badgeColor: "purple",
+    description: "Overseas trip & medical",
+    iconBg: "bg-purple-100",
+    iconColor: "text-[#4c1d95]",
+  },
+  "home-insurance": {
+    icon: Home,
+    description: "Protection against fire & theft",
+    iconBg: "bg-indigo-100",
+    iconColor: "text-indigo-700",
+  },
+  "property-insurance": {
+    icon: Building2,
+    description: "Commercial premise & asset",
+    iconBg: "bg-blue-100",
+    iconColor: "text-blue-700",
+  },
+  "shop-insurance": {
+    icon: Store,
+    badge: "ALL-IN-ONE",
+    badgeColor: "amber",
+    description: "Stock, burglary & shopkeeper",
+    iconBg: "bg-amber-100",
+    iconColor: "text-amber-700",
+  },
+  "stock-insurance": {
+    icon: Factory,
+    description: "Inventory & raw materials",
+    iconBg: "bg-slate-100",
+    iconColor: "text-slate-700",
+  },
+  "machinery-insurance": {
+    icon: Factory,
+    description: "Plant breakdown & repairs",
+    iconBg: "bg-slate-100",
+    iconColor: "text-slate-700",
+  },
+};
+
+const getProductMeta = (slug: string, name: string) => {
+  if (PRODUCT_META[slug]) return PRODUCT_META[slug];
+  const lower = name.toLowerCase();
+  if (lower.includes("loan")) {
+    return {
+      icon: Banknote,
+      description: "Fast disbursal & easy EMI",
+      iconBg: "bg-purple-100",
+      iconColor: "text-[#4c1d95]",
+    };
+  }
+  if (lower.includes("insurance")) {
+    return {
+      icon: Shield,
+      description: "Complete financial shield",
+      iconBg: "bg-emerald-100",
+      iconColor: "text-emerald-700",
+    };
+  }
+  return {
+    icon: Coins,
+    description: "Tailored financial solution",
+    iconBg: "bg-indigo-100",
+    iconColor: "text-indigo-700",
+  };
 };
 
 const productLinks = (products: ProductCatalogItem[]): NavLink[] =>
-  products.map((product) => ({
-    label: product.name,
-    href: productHref(product.slug),
-  }));
+  products.map((product) => {
+    const meta = getProductMeta(product.slug, product.name);
+    return {
+      label: product.name,
+      href: productHref(product.slug),
+      description: meta.description,
+      badge: meta.badge,
+      badgeColor: meta.badgeColor,
+      icon: meta.icon,
+      iconBg: meta.iconBg,
+      iconColor: meta.iconColor,
+    };
+  });
 
 const groupedSection = (
   products: ProductCatalogItem[],
@@ -106,20 +430,20 @@ const buildLoanSections = (products: ProductCatalogItem[]): NavSection[] => [
   groupedSection(
     products,
     "secured",
-    "Home & Secured",
-    "Property and asset-backed loan options.",
+    "Home & Property",
+    "Asset-backed loans with lowest rates.",
   ),
   groupedSection(
     products,
     "business",
-    "Business & Industry",
-    "Capital for operations, assets and expansion.",
+    "Business & MSME",
+    "Capital for operations, assets & growth.",
   ),
   groupedSection(
     products,
     "vehicle",
-    "Vehicle Finance",
-    "New, used and vehicle-backed options.",
+    "Vehicle & Wheels",
+    "New, used & commercial auto finance.",
   ),
 ];
 
@@ -129,20 +453,20 @@ const buildInsuranceSections = (
   groupedSection(
     products,
     "life-health",
-    "Life, Health & Future",
-    "Protection for health, income and long-term goals.",
+    "Life & Health",
+    "Protection for health, life & family.",
   ),
   groupedSection(
     products,
     "motor",
     "Motor & Travel",
-    "Cover vehicles, journeys and travel risks.",
+    "Cover for vehicles, trips & journeys.",
   ),
   groupedSection(
     products,
     "property",
     "Property & Business",
-    "Protection for premises, stock and machinery.",
+    "Fire, stock, shop & machinery cover.",
   ),
 ];
 
@@ -151,125 +475,430 @@ const createNavItems = (
   insurance: ProductCatalogItem[],
 ) =>
   [
-    { label: "CIBIL Score", href: "/cibil-score" },
     {
       label: "Loans",
       href: "/products?category=Loans",
+      promo: {
+        title: "Loans Marketplace",
+        subtitle: "India's Smart Lending Hub",
+        description:
+          "Compare 30+ regulated banks and NBFCs with zero impact on credit score. Get fast-tracked approval.",
+        ctaText: "Explore All Loans",
+        ctaHref: "/products?category=Loans",
+        icon: Banknote,
+        features: [
+          "Zero impact on CIBIL score",
+          "Lowest rates starting from 7.10%",
+          "Instant pre-approved offers",
+        ],
+      },
       sections: buildLoanSections(loans),
-    },
-    {
-      label: "Insurance",
-      href: "/products?category=Insurance",
-      sections: buildInsuranceSections(insurance),
     },
     {
       label: "Credit Cards",
       href: "/credit-cards",
+      promo: {
+        title: "Credit Cards Hub",
+        subtitle: "50+ Cards from Top Banks",
+        description:
+          "Find best cards for airport lounge access, accelerated rewards, dining perks, and lifetime zero fee.",
+        ctaText: "Compare All Cards",
+        ctaHref: "/credit-cards",
+        icon: CreditCard,
+        features: [
+          "Lifetime free card options",
+          "Free airport lounge access",
+          "Up to 5% direct cashback",
+        ],
+      },
       sections: [
         {
-          title: "Explore Cards",
-          subtitle: "Compare cards by rewards, cashback, and usage.",
+          title: "Popular Categories",
+          subtitle: "Cards matching your spending patterns.",
           links: [
             {
-              label: "Compare Credit Cards",
+              label: "Compare All Cards",
               href: "/credit-cards",
-              description: "Find cards by fee, rewards, and usage.",
+              description: "Browse 50+ cards by perks & fees",
+              badge: "POPULAR",
+              badgeColor: "purple",
+              icon: CreditCard,
+              iconBg: "bg-purple-100",
+              iconColor: "text-[#4c1d95]",
             },
             {
-              label: "Offers & Rewards",
-              href: "/offers",
-              description: "Cashback and exclusive bank offers.",
+              label: "Best Rewards Cards",
+              href: "/credit-cards",
+              description: "Accelerated reward points on spends",
+              badge: "HIGH REWARD",
+              badgeColor: "emerald",
+              icon: Gift,
+              iconBg: "bg-emerald-100",
+              iconColor: "text-emerald-700",
             },
+            {
+              label: "Cashback Cards",
+              href: "/credit-cards",
+              description: "Direct cash value back on bills",
+              badge: "HIGH SAVINGS",
+              badgeColor: "amber",
+              icon: Coins,
+              iconBg: "bg-amber-100",
+              iconColor: "text-amber-700",
+            },
+            {
+              label: "Travel & Lounge Cards",
+              href: "/credit-cards",
+              description: "Miles & complimentary lounge passes",
+              badge: "LOUNGE PASS",
+              badgeColor: "blue",
+              icon: Plane,
+              iconBg: "bg-blue-100",
+              iconColor: "text-blue-700",
+            },
+            {
+              label: "Fuel Surcharge Cards",
+              href: "/credit-cards",
+              description: "Save on petrol & diesel expenses",
+              icon: Fuel,
+              iconBg: "bg-rose-100",
+              iconColor: "text-rose-700",
+            },
+          ],
+        },
+        {
+          title: "Bank Credit Cards",
+          subtitle: "Official cards from premier lenders.",
+          links: [
+            {
+              label: "HDFC Credit Cards",
+              href: "/banks/hdfc-bank/credit-card",
+              description: "Millennia, Regalia & Diners cards",
+              badge: "TOP RATED",
+              badgeColor: "purple",
+              icon: Landmark,
+              iconBg: "bg-purple-100",
+              iconColor: "text-[#4c1d95]",
+            },
+            {
+              label: "SBI Credit Cards",
+              href: "/banks/sbi/credit-card",
+              description: "Cashback, SimplyCLICK & PRIME",
+              badge: "HIGH APPROVAL",
+              badgeColor: "emerald",
+              icon: Landmark,
+              iconBg: "bg-emerald-100",
+              iconColor: "text-emerald-700",
+            },
+            {
+              label: "ICICI Credit Cards",
+              href: "/banks/icici-bank/credit-card",
+              description: "Amazon Pay, Coral & Rubyx cards",
+              icon: Landmark,
+              iconBg: "bg-blue-100",
+              iconColor: "text-blue-700",
+            },
+          ],
+        },
+        {
+          title: "Card Tools & Check",
+          subtitle: "Instant checks before applying.",
+          links: [
             {
               label: "Check Card Eligibility",
               href: buildLoginRedirectHref({
                 redirectTo: "/credit-cards",
                 product: "credit-card",
               }),
-              description: "Check eligible card offers quickly.",
-            },
-          ],
-        },
-        {
-          title: "Bank Cards",
-          subtitle: "Bank-wise card pages.",
-          links: [
-            {
-              label: "HDFC Credit Cards",
-              href: "/banks/hdfc-bank/credit-card",
-              description: "Explore HDFC card options.",
+              description: "Pre-qualified bank offers in 2 mins",
+              badge: "INSTANT",
+              badgeColor: "purple",
+              icon: CheckCircle2,
+              iconBg: "bg-purple-100",
+              iconColor: "text-[#4c1d95]",
             },
             {
-              label: "SBI Credit Cards",
-              href: "/banks/sbi/credit-card",
-              description: "Explore SBI card options.",
-            },
-            {
-              label: "ICICI Credit Cards",
-              href: "/banks/icici-bank/credit-card",
-              description: "Explore ICICI card options.",
+              label: "Free Credit Score",
+              href: "/cibil-score",
+              description: "Bureau check with zero score impact",
+              badge: "FREE",
+              badgeColor: "emerald",
+              icon: Gauge,
+              iconBg: "bg-emerald-100",
+              iconColor: "text-emerald-700",
             },
           ],
         },
       ],
     },
     {
-      label: "Track Application",
-      href: "/application-status",
+      label: "Insurance",
+      href: "/products?category=Insurance",
+      promo: {
+        title: "Insurance Shield",
+        subtitle: "Complete Family Protection",
+        description:
+          "Compare quotes from India's leading insurers with 100% cashless claims, zero paperwork, and expert guidance.",
+        ctaText: "Explore All Insurance",
+        ctaHref: "/products?category=Insurance",
+        icon: ShieldCheck,
+        features: [
+          "10,000+ Cashless network hospitals",
+          "Dedicated claims assistance desk",
+          "Save up to ₹75,000 under 80D",
+        ],
+      },
+      sections: buildInsuranceSections(insurance),
     },
     {
-      label: "Contact Us",
-      href: "/contact-us",
+      label: "Credit Score",
+      href: "/cibil-score",
+      highlightBadge: "Instant",
     },
     {
-      label: "Partner Zone",
-      href: "/franchise",
+      label: "Financial Tools",
+      href: "#calculators",
+      promo: {
+        title: "Financial Tools",
+        subtitle: "Calculate & Plan Smarter",
+        description:
+          "Interactive calculators, loan affordability estimators, and expert compliance services in one place.",
+        ctaText: "Try All Calculators",
+        ctaHref: "#calculators",
+        icon: Calculator,
+        features: [
+          "Zero cost interactive tools",
+          "Precise tenure & EMI forecasts",
+          "Bank-ready project reports",
+        ],
+      },
       sections: [
         {
-          title: "Partner With Us",
-          subtitle: "Business and earning opportunities.",
+          title: "Smart Calculators",
+          subtitle: "Estimate monthly budget & payments.",
           links: [
             {
-              label: "Channel Partner Login",
-              href: "/partner/login",
-              description: "Login to manage partner profile and leads.",
+              label: "EMI Calculator",
+              href: "#calculators",
+              description: "Calculate monthly installments for any loan",
+              badge: "POPULAR",
+              badgeColor: "purple",
+              icon: Calculator,
+              iconBg: "bg-purple-100",
+              iconColor: "text-[#4c1d95]",
             },
             {
-              label: "Become Partner",
-              href: "/franchise",
-              description: "Start a partner or franchise journey.",
+              label: "Home Loan Calculator",
+              href: "#calculators",
+              description: "Plan tenure, interest & amortization",
+              icon: Home,
+              iconBg: "bg-indigo-100",
+              iconColor: "text-indigo-700",
             },
             {
-              label: "Become DSA",
-              href: "/become-dsa",
-              description: "Earn commissions as a DSA partner.",
+              label: "Personal Loan Calculator",
+              href: "#calculators",
+              description: "Estimate monthly budget for personal credit",
+              icon: Banknote,
+              iconBg: "bg-blue-100",
+              iconColor: "text-blue-700",
             },
             {
-              label: "Refer & Earn",
-              href: "/refer-and-earn",
-              description: "Refer users and track rewards.",
+              label: "Eligibility Calculator",
+              href: "#calculators",
+              description: "Check maximum loan amount you qualify for",
+              badge: "SMART",
+              badgeColor: "emerald",
+              icon: CheckCircle2,
+              iconBg: "bg-emerald-100",
+              iconColor: "text-emerald-700",
             },
           ],
         },
         {
-          title: "Company",
-          subtitle: "Work with Fintaraa and get support.",
+          title: "Compliance & Advisory",
+          subtitle: "Tax filing & bank project reports.",
+          links: [
+            {
+              label: "Check CIBIL Score",
+              href: "/cibil-score",
+              description: "Free authorized credit bureau report",
+              badge: "FREE",
+              badgeColor: "emerald",
+              icon: Gauge,
+              iconBg: "bg-emerald-100",
+              iconColor: "text-emerald-700",
+            },
+            {
+              label: "ITR Filing",
+              href: "/itr-filing",
+              description: "Assisted income tax return filing by CAs",
+              badge: "ASSISTED",
+              badgeColor: "purple",
+              icon: FileText,
+              iconBg: "bg-purple-100",
+              iconColor: "text-[#4c1d95]",
+            },
+            {
+              label: "Project Report",
+              href: "/project-report",
+              description: "Bank-ready loan project & CMA reports",
+              badge: "BANK READY",
+              badgeColor: "amber",
+              icon: BriefcaseBusiness,
+              iconBg: "bg-amber-100",
+              iconColor: "text-amber-700",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      label: "Resources",
+      href: "/blog",
+      promo: {
+        title: "Knowledge Hub",
+        subtitle: "Smarter Borrowing Guides",
+        description:
+          "Read expert financial blogs, track your ongoing application, and find answers to common borrowing questions.",
+        ctaText: "Read Financial Blogs",
+        ctaHref: "/blog",
+        icon: Newspaper,
+        features: [
+          "Weekly credit & tax tips",
+          "Step-by-step borrowing guides",
+          "Real-time application tracking",
+        ],
+      },
+      sections: [
+        {
+          title: "Insights & Guides",
+          subtitle: "Knowledge to make smarter financial choices.",
+          links: [
+            {
+              label: "Financial Blogs & Insights",
+              href: "/blog",
+              description: "Guides on loans, scores & tax savings",
+              badge: "NEW",
+              badgeColor: "purple",
+              icon: Newspaper,
+              iconBg: "bg-purple-100",
+              iconColor: "text-[#4c1d95]",
+            },
+            {
+              label: "Media & Press",
+              href: "/press-release",
+              description: "Latest announcements & news coverage",
+              icon: Newspaper,
+              iconBg: "bg-blue-100",
+              iconColor: "text-blue-700",
+            },
+            {
+              label: "Track Application",
+              href: "/application-status",
+              description: "Check live status of your submitted request",
+              badge: "LIVE STATUS",
+              badgeColor: "emerald",
+              icon: Search,
+              iconBg: "bg-emerald-100",
+              iconColor: "text-emerald-700",
+            },
+            {
+              label: "Frequently Asked Questions",
+              href: "/faqs",
+              description: "Answers to common borrowing queries",
+              icon: HelpCircle,
+              iconBg: "bg-slate-100",
+              iconColor: "text-slate-700",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      label: "Partner Zone",
+      href: "/franchise",
+      promo: {
+        title: "Partner Ecosystem",
+        subtitle: "Earn with Fintaraa",
+        description:
+          "Join 10,000+ active partners. Earn highest market commissions, access dedicated desk support, and scale faster.",
+        ctaText: "Partner Login",
+        ctaHref: "/partner/login",
+        icon: Briefcase,
+        features: [
+          "High payout commissions",
+          "Real-time CRM & lead tracking",
+          "Dedicated Relationship Manager",
+        ],
+      },
+      sections: [
+        {
+          title: "Partner Programs",
+          subtitle: "Opportunities to partner and grow earnings.",
+          links: [
+            {
+              label: "Channel Partner Login",
+              href: "/partner/login",
+              description: "Login to manage partner profile & leads",
+              badge: "PORTAL",
+              badgeColor: "purple",
+              icon: KeyRound,
+              iconBg: "bg-purple-100",
+              iconColor: "text-[#4c1d95]",
+            },
+            {
+              label: "Become Partner",
+              href: "/franchise",
+              description: "Start a partner or franchise journey",
+              badge: "HIGH GROWTH",
+              badgeColor: "emerald",
+              icon: Store,
+              iconBg: "bg-emerald-100",
+              iconColor: "text-emerald-700",
+            },
+            {
+              label: "Become DSA",
+              href: "/become-dsa",
+              description: "Earn attractive commissions on loan files",
+              badge: "HIGH COMMISSIONS",
+              badgeColor: "amber",
+              icon: Briefcase,
+              iconBg: "bg-amber-100",
+              iconColor: "text-amber-700",
+            },
+            {
+              label: "Refer & Earn",
+              href: "/refer-and-earn",
+              description: "Refer users and track cash rewards",
+              badge: "REWARDS",
+              badgeColor: "rose",
+              icon: Gift,
+              iconBg: "bg-rose-100",
+              iconColor: "text-rose-700",
+            },
+          ],
+        },
+        {
+          title: "Company & Support",
+          subtitle: "Connect with Fintaraa team.",
           links: [
             {
               label: "Careers",
               href: "/careers",
-              description: "Explore open roles at Fintaraa.",
+              description: "Explore open roles and join our team",
+              icon: Users,
+              iconBg: "bg-indigo-100",
+              iconColor: "text-indigo-700",
             },
-            // {
-            //   label: "Partner Support",
-            //   href: "/support",
-            //   description: "Get help for partner journeys.",
-            // },
-            // {
-            //   label: "Contact Us",
-            //   href: "/contact-us",
-            //   description: "Connect with our team.",
-            // },
+            {
+              label: "Contact Us",
+              href: "/contact-us",
+              description: "Get in touch with our support team",
+              icon: Headphones,
+              iconBg: "bg-blue-100",
+              iconColor: "text-blue-700",
+            },
           ],
         },
       ],
@@ -561,7 +1190,7 @@ const searchNavEntries = (query: string) => {
 };
 
 const underlineClass =
-  "relative after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-full after:origin-left after:scale-x-0 after:bg-[#195585] after:transition-transform after:duration-300 after:ease-out hover:after:scale-x-100";
+  "relative after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-full after:origin-left after:scale-x-0 after:bg-[#3b0764] after:transition-transform after:duration-300 after:ease-out hover:after:scale-x-100";
 
 const hrefPath = (href: string) => href.split("?")[0];
 
@@ -742,19 +1371,19 @@ export default function Navbar() {
       ref={headerRef}
       className="sticky top-0 z-50 overflow-x-clip border-b border-[#e5eef8] bg-white/95 backdrop-blur"
     >
-      <div className="bg-[#002B4D] px-3 text-white min-[380px]:px-4 md:px-6 lg:pl-8 lg:pr-10">
-        <div className="mx-auto flex min-h-8 max-w-9xl items-center justify-between gap-2 py-1.5 text-[8.5px] font-semibold min-[360px]:text-[9.5px] sm:gap-3 sm:py-2 sm:text-[11px]">
+      <div className="bg-[#4c1d95] px-3 text-white min-[380px]:px-4 md:px-6 lg:px-8">
+        <div className="mx-auto flex min-h-8.5 max-w-[92rem] items-center justify-between gap-2 py-1.5 text-[9px] font-medium min-[360px]:text-[10px] sm:gap-3 sm:py-2 sm:text-[11.5px]">
           <div className="flex min-w-0 items-center gap-1.5 leading-4 sm:gap-2">
             <a
               href={CALL_PHONE.href}
               aria-label={`Call customer care at ${CALL_PHONE.display}`}
               className="flex items-center gap-1 whitespace-nowrap text-white/95 no-underline transition hover:text-white sm:hidden"
             >
-              <PhoneCall className="h-3.5 w-3.5 shrink-0 text-[#8fc7ff]" />
+              <PhoneCall className="h-3.5 w-3.5 shrink-0 text-[#c4b5fd]" />
               <span>{CALL_PHONE.national}</span>
             </a>
-            <ShieldCheck className="hidden h-4 w-4 shrink-0 text-[#8fc7ff] sm:block" />
-            <span className="hidden sm:inline">
+            <ShieldCheck className="hidden h-4 w-4 shrink-0 text-[#c4b5fd] sm:block" />
+            <span className="hidden text-purple-100 sm:inline">
               Compare offers from regulated banks, NBFCs and insurers with
               secure assisted applications.
             </span>
@@ -762,16 +1391,16 @@ export default function Navbar() {
           <div className="flex shrink-0 items-center gap-4">
             <a
               href="mailto:customercare@fintaraa.com"
-              className="flex items-center gap-1 text-white/90 no-underline transition hover:text-white sm:gap-1.5"
+              className="flex items-center gap-1 text-purple-100 no-underline transition hover:text-white sm:gap-1.5"
             >
-              <Mail className="h-3 w-3 shrink-0 sm:h-3.5 sm:w-3.5" />
+              <Mail className="h-3 w-3 shrink-0 text-[#c4b5fd] sm:h-3.5 sm:w-3.5" />
               <span className="min-[380px]:hidden">Support</span>
               <span className="hidden min-[380px]:inline">
                 customercare@fintaraa.com
               </span>
             </a>
-            <span className="hidden items-center gap-1.5 text-white/80 lg:flex">
-              <Clock3 className="h-3.5 w-3.5" />
+            <span className="hidden items-center gap-1.5 text-purple-200/90 lg:flex">
+              <Clock3 className="h-3.5 w-3.5 text-[#c4b5fd]" />
               Mon–Sat, 10:00 AM–7:00 PM
             </span>
           </div>
@@ -781,7 +1410,7 @@ export default function Navbar() {
       <nav
         aria-busy={!hydrated}
         data-hydrated={hydrated ? "true" : "false"}
-        className={`mobile-site-nav mx-auto flex h-15 w-full max-w-9xl items-center justify-between gap-1 px-3 min-[360px]:h-16 min-[360px]:gap-2 min-[360px]:px-4 md:h-18 md:px-6 xl:px-6 2xl:px-8 ${
+        className={`mobile-site-nav mx-auto flex h-16 w-full max-w-[92rem] items-center justify-between gap-1.5 px-3 sm:px-6 2xl:px-8 ${
           hydrated ? "" : "pointer-events-none"
         }`}
       >
@@ -789,19 +1418,19 @@ export default function Navbar() {
           href="/"
           aria-label="Fintaraa home"
           onClick={closeMobileNavigation}
-          className="shrink-0"
+          className="shrink-0 transition-opacity hover:opacity-90"
         >
           <Image
             priority
-            width={134}
-            height={41}
+            width={280}
+            height={85}
             alt="Fintaraa"
-            className="h-auto w-14 min-[360px]:w-16"
+            className="h-auto w-28 min-[360px]:w-32 sm:w-34 xl:w-36"
             src="/assets/logo/logo.png"
           />
         </Link>
 
-        <div className="hidden min-w-0 flex-1 items-center justify-center gap-2 xl:flex min-[1380px]:gap-4 2xl:gap-6">
+        <div className="hidden min-w-0 flex-1 items-center justify-center gap-1 xl:flex min-[1300px]:gap-2 min-[1420px]:gap-3 min-[1540px]:gap-4.5 px-1">
           {navItems.map((item, index) => (
             <DesktopNavItem
               key={`${item.label}:${pathname}`}
@@ -812,7 +1441,7 @@ export default function Navbar() {
           ))}
         </div>
 
-        <div className="hidden shrink-0 items-center gap-1.5 xl:flex min-[1380px]:gap-2 2xl:gap-3">
+        <div className="hidden shrink-0 items-center gap-1.5 xl:flex min-[1380px]:gap-2 2xl:gap-2.5">
           <NavbarSearch />
 
           <Link
@@ -824,11 +1453,11 @@ export default function Navbar() {
                   })
             }
             aria-label="Notifications"
-            className="relative inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#f4f7fb] text-[#344054] no-underline transition hover:bg-[#eaf2fb] hover:text-[#075cde] 2xl:h-11 2xl:w-11"
+            className="relative inline-flex h-9.5 w-9.5 items-center justify-center rounded-full border border-slate-200/80 bg-slate-100 text-slate-700 no-underline transition hover:border-purple-200 hover:bg-purple-50 hover:text-[#4c1d95] min-[1380px]:h-10 min-[1380px]:w-10 2xl:h-10.5 2xl:w-10.5"
           >
-            <Bell className="h-4.5 w-4.5" />
+            <Bell className="h-4 w-4 min-[1380px]:h-4.5 min-[1380px]:w-4.5" />
             {unreadNotifications ? (
-              <span className="absolute -right-0.5 -top-0.5 inline-flex h-4.5 min-w-4.5 items-center justify-center rounded-full bg-[#f04438] px-1 text-[9px] font-extrabold leading-none text-white ring-2 ring-white">
+              <span className="absolute -right-0.5 -top-0.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-[#f04438] px-1 text-[8.5px] font-extrabold leading-none text-white ring-2 ring-white">
                 {unreadNotifications > 9 ? "9+" : unreadNotifications}
               </span>
             ) : null}
@@ -855,7 +1484,7 @@ export default function Navbar() {
             }
             aria-label="Notifications"
             onClick={closeMobileNavigation}
-            className="relative inline-flex h-9 w-9 shrink-0 items-center justify-center text-[#344054] no-underline transition active:bg-[#eaf2fb] active:text-[#075cde] min-[360px]:h-10 min-[360px]:w-10"
+            className="relative inline-flex h-9 w-9 shrink-0 items-center justify-center text-[#344054] no-underline transition active:bg-[#eaf2fb] active:text-[#5b21b6] min-[360px]:h-10 min-[360px]:w-10"
           >
             <Bell className="h-4 w-4" aria-hidden="true" />
             {unreadNotifications ? (
@@ -868,7 +1497,7 @@ export default function Navbar() {
             href={loggedIn ? profileHref : "/login"}
             aria-label={loggedIn ? "Open account" : "Login"}
             onClick={closeMobileNavigation}
-            className="inline-flex h-9 shrink-0 items-center justify-center gap-1 rounded-md border border-[#075cde] px-1.5 text-[10px] font-bold text-[#075cde] no-underline transition active:bg-[#eef5ff] min-[360px]:h-10 min-[360px]:px-2 min-[360px]:text-[11px]"
+            className="inline-flex h-9 shrink-0 items-center justify-center gap-1 rounded-md border border-[#5b21b6] px-1.5 text-[10px] font-bold text-[#5b21b6] no-underline transition active:bg-[#eef5ff] min-[360px]:h-10 min-[360px]:px-2 min-[360px]:text-[11px]"
           >
             <UserRound className="h-4 w-4 shrink-0" aria-hidden="true" />
             <span>{loggedIn ? "Account" : "Login"}</span>
@@ -932,8 +1561,8 @@ export default function Navbar() {
                       }
                       className={`flex min-h-11 w-full items-center justify-between gap-3 px-3 py-2.5 text-left text-[13px] font-bold transition min-[380px]:px-3.5 ${
                         sectionOpen
-                          ? "bg-[#eef7ff] text-[#075cde]"
-                          : "text-[#17354d] active:bg-[#f4f8fc]"
+                          ? "bg-[#eef7ff] text-[#5b21b6]"
+                          : "text-[#3b0764] active:bg-[#f4f8fc]"
                       }`}
                     >
                       {item.label}
@@ -947,7 +1576,7 @@ export default function Navbar() {
                     <Link
                       href={item.href}
                       onClick={closeMobileNavigation}
-                      className="flex min-h-11 items-center justify-between px-3 py-2.5 text-[13px] font-bold text-[#17354d] no-underline transition active:bg-[#f4f8fc] active:text-[#075cde] min-[380px]:px-3.5"
+                      className="flex min-h-11 items-center justify-between px-3 py-2.5 text-[13px] font-bold text-[#3b0764] no-underline transition active:bg-[#f4f8fc] active:text-[#5b21b6] min-[380px]:px-3.5"
                     >
                       {item.label}
                       <ArrowRight className="h-3.5 w-3.5 shrink-0 text-[#9aabba]" />
@@ -961,7 +1590,7 @@ export default function Navbar() {
                       <Link
                         href={item.href}
                         onClick={closeMobileNavigation}
-                        className="flex min-h-10 w-full items-center justify-between rounded-lg bg-[linear-gradient(135deg,#195585,#0878c9)] px-3 text-[12px] font-bold text-white no-underline shadow-[0_8px_20px_rgba(25,85,133,0.16)]"
+                        className="flex min-h-10 w-full items-center justify-between rounded-lg bg-[linear-gradient(135deg,#3b0764,#6d28d9)] px-3 text-[12px] font-bold text-white no-underline shadow-[0_8px_20px_rgba(25,85,133,0.16)]"
                       >
                         Explore all {item.label}
                         <ArrowRight className="h-3.5 w-3.5" />
@@ -972,25 +1601,46 @@ export default function Navbar() {
                             key={section.title}
                             className="rounded-xl border border-[#e0eaf2] bg-white p-2.5"
                           >
-                            <p className="px-1 text-[10px] font-extrabold uppercase tracking-[0.11em] text-[#195585]">
+                            <p className="px-1 text-[10px] font-extrabold uppercase tracking-[0.11em] text-[#3b0764]">
                               {section.title}
                             </p>
                             <div className="mt-1.5 grid gap-0.5 min-[380px]:grid-cols-2 min-[680px]:grid-cols-1">
-                              {section.links.map((link) => (
-                                <Link
-                                  key={`${item.label}-${link.href}-${link.label}`}
-                                  href={link.href}
-                                  onClick={closeMobileNavigation}
-                                  className="flex min-h-9 min-w-0 flex-col justify-center rounded-lg px-2.5 py-1.5 text-[12px] font-semibold leading-4 text-[#526b80] no-underline transition active:bg-[#edf6ff] active:text-[#075cde]"
-                                >
-                                  <span>{link.label}</span>
-                                  {!hideDescriptions && link.description ? (
-                                    <span className="mt-0.5 hidden line-clamp-1 text-[10px] font-medium leading-4 text-[#8b99a8] min-[380px]:block">
-                                      {link.description}
+                              {section.links.map((link) => {
+                                const Icon = link.icon || Banknote;
+                                return (
+                                  <Link
+                                    key={`${item.label}-${link.href}-${link.label}`}
+                                    href={link.href}
+                                    onClick={closeMobileNavigation}
+                                    className="flex min-h-10 min-w-0 items-center gap-2 rounded-lg p-1.5 text-slate-800 no-underline transition active:bg-purple-50"
+                                  >
+                                    <span
+                                      className={`flex h-7.5 w-7.5 shrink-0 items-center justify-center rounded-lg ${
+                                        link.iconBg || "bg-purple-100"
+                                      } ${link.iconColor || "text-[#4c1d95]"}`}
+                                    >
+                                      <Icon className="h-3.5 w-3.5" />
                                     </span>
-                                  ) : null}
-                                </Link>
-                              ))}
+                                    <span className="min-w-0 flex-1">
+                                      <span className="flex items-center gap-1">
+                                        <span className="truncate text-[11.5px] font-bold text-slate-900">
+                                          {link.label}
+                                        </span>
+                                        {link.badge ? (
+                                          <span className="shrink-0 rounded bg-purple-100 px-1 py-0.2 text-[7.5px] font-extrabold uppercase text-[#4c1d95]">
+                                            {link.badge}
+                                          </span>
+                                        ) : null}
+                                      </span>
+                                      {link.description ? (
+                                        <span className="mt-0.2 line-clamp-1 text-[9.5px] font-medium text-slate-500">
+                                          {link.description}
+                                        </span>
+                                      ) : null}
+                                    </span>
+                                  </Link>
+                                );
+                              })}
                             </div>
                           </div>
                         ))}
@@ -1136,7 +1786,7 @@ function NavbarSearch({
                 <div className="flex items-center gap-2.5">
                   <form
                     onSubmit={handleSubmit}
-                    className="flex h-12 min-w-0 flex-1 items-center gap-3 rounded-xl border border-[#a9c5d8] bg-[#f8fbfd] px-3 transition focus-within:border-[#075cde] focus-within:bg-white focus-within:ring-3 focus-within:ring-[#075cde]/10 sm:px-4"
+                    className="flex h-12 min-w-0 flex-1 items-center gap-3 rounded-xl border border-[#a9c5d8] bg-[#f8fbfd] px-3 transition focus-within:border-[#5b21b6] focus-within:bg-white focus-within:ring-3 focus-within:ring-[#5b21b6]/10 sm:px-4"
                   >
                     <Search
                       className="h-4.5 w-4.5 shrink-0 text-[#315c79]"
@@ -1150,7 +1800,7 @@ function NavbarSearch({
                       aria-label="Search loans, cards, insurance and services"
                       placeholder="Search loans, cards, insurance or services"
                       onChange={(event) => setQuery(event.target.value)}
-                      className="min-w-0 flex-1 bg-transparent text-[13px] font-semibold text-[#102f49] outline-none placeholder:font-medium placeholder:text-[#8da0af] sm:text-[14px]"
+                      className="min-w-0 flex-1 bg-transparent text-[13px] font-semibold text-[#3b0764] outline-none placeholder:font-medium placeholder:text-[#8da0af] sm:text-[14px]"
                     />
                     {trimmedQuery ? (
                       <button
@@ -1158,7 +1808,7 @@ function NavbarSearch({
                         aria-label="Clear search"
                         title="Clear search"
                         onClick={() => setQuery("")}
-                        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-[#7890a2] transition hover:bg-[#e9f3fa] hover:text-[#075cde]"
+                        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-[#7890a2] transition hover:bg-[#e9f3fa] hover:text-[#5b21b6]"
                       >
                         <X className="h-4 w-4" aria-hidden="true" />
                       </button>
@@ -1167,7 +1817,7 @@ function NavbarSearch({
                       type="submit"
                       aria-label="Open first search result"
                       title="Search"
-                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#075cde] text-white transition hover:bg-[#064cb8]"
+                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#5b21b6] text-white transition hover:bg-[#4c1d95]"
                     >
                       <ArrowRight className="h-4 w-4" aria-hidden="true" />
                     </button>
@@ -1178,7 +1828,7 @@ function NavbarSearch({
                     onClick={closeSearch}
                     aria-label="Close search"
                     title="Close search"
-                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[#d4e2eb] text-[#527189] transition hover:border-[#8ebbd3] hover:bg-[#f4f9fc] hover:text-[#075cde]"
+                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[#d4e2eb] text-[#527189] transition hover:border-[#8ebbd3] hover:bg-[#f4f9fc] hover:text-[#5b21b6]"
                   >
                     <X className="h-5 w-5" aria-hidden="true" />
                   </button>
@@ -1201,7 +1851,7 @@ function NavbarSearch({
                                 key={`${item.label}-${item.href}`}
                                 type="button"
                                 onClick={() => navigateTo(item.href)}
-                                className="rounded-full bg-[#f0f4f7] px-3 py-1.5 text-[11px] font-semibold text-[#52697b] transition hover:bg-[#e4f0fa] hover:text-[#075cde]"
+                                className="rounded-full bg-[#f0f4f7] px-3 py-1.5 text-[11px] font-semibold text-[#52697b] transition hover:bg-[#e4f0fa] hover:text-[#5b21b6]"
                               >
                                 {item.label}
                               </button>
@@ -1235,7 +1885,7 @@ function NavbarSearch({
                                   className="h-11 w-11 shrink-0 rounded-lg object-cover"
                                 />
                                 <span className="min-w-0">
-                                  <span className="block text-[11px] font-bold leading-4 text-[#17334a] group-hover:text-[#075cde]">
+                                  <span className="block text-[11px] font-bold leading-4 text-[#17334a] group-hover:text-[#5b21b6]">
                                     {item.label}
                                   </span>
                                   <span className="mt-0.5 block text-[10px] font-bold text-[#e04747]">
@@ -1273,7 +1923,7 @@ function NavbarSearch({
                                   className="h-11 w-11 shrink-0 rounded-lg object-cover"
                                 />
                                 <span className="min-w-0">
-                                  <span className="block text-[11px] font-bold leading-4 text-[#17334a] group-hover:text-[#075cde]">
+                                  <span className="block text-[11px] font-bold leading-4 text-[#17334a] group-hover:text-[#5b21b6]">
                                     {item.label}
                                   </span>
                                   <span className="mt-0.5 block text-[10px] font-bold text-[#e04747]">
@@ -1299,7 +1949,7 @@ function NavbarSearch({
                               Best matches for “{trimmedQuery}”
                             </p>
                           </div>
-                          <span className="shrink-0 rounded-full bg-[#e8f3fb] px-2.5 py-1 text-[10px] font-bold text-[#075cde]">
+                          <span className="shrink-0 rounded-full bg-[#e8f3fb] px-2.5 py-1 text-[10px] font-bold text-[#5b21b6]">
                             {results.length} found
                           </span>
                         </div>
@@ -1325,7 +1975,7 @@ function NavbarSearch({
                                       className="h-11 w-11 shrink-0 rounded-lg object-cover"
                                     />
                                   ) : (
-                                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-[#e9f3fa] text-[#075cde]">
+                                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-[#e9f3fa] text-[#5b21b6]">
                                       <Icon
                                         className="h-4.5 w-4.5"
                                         aria-hidden="true"
@@ -1333,7 +1983,7 @@ function NavbarSearch({
                                     </span>
                                   )}
                                   <span className="min-w-0 flex-1">
-                                    <span className="block truncate text-[11px] font-bold text-[#17334a] group-hover:text-[#075cde]">
+                                    <span className="block truncate text-[11px] font-bold text-[#17334a] group-hover:text-[#5b21b6]">
                                       {item.label}
                                     </span>
                                     <span className="mt-0.5 block truncate text-[10px] font-semibold text-[#7890a2]">
@@ -1341,7 +1991,7 @@ function NavbarSearch({
                                     </span>
                                   </span>
                                   <ArrowRight
-                                    className="h-3.5 w-3.5 shrink-0 text-[#9aaeba] transition-transform group-hover:translate-x-0.5 group-hover:text-[#075cde]"
+                                    className="h-3.5 w-3.5 shrink-0 text-[#9aaeba] transition-transform group-hover:translate-x-0.5 group-hover:text-[#5b21b6]"
                                     aria-hidden="true"
                                   />
                                 </button>
@@ -1354,7 +2004,7 @@ function NavbarSearch({
                               <Search className="h-5 w-5" aria-hidden="true" />
                             </span>
                             <div>
-                              <p className="text-[12px] font-bold text-[#102f49]">
+                              <p className="text-[12px] font-bold text-[#3b0764]">
                                 No matching destination
                               </p>
                               <p className="mt-1 text-[10px] font-medium text-[#7890a2]">
@@ -1393,7 +2043,7 @@ function NavbarSearch({
                         <button
                           type="button"
                           onClick={() => navigateTo("/products")}
-                          className="mt-3 inline-flex items-center gap-2 rounded-full border border-[#075cde] px-3.5 py-2 text-[10px] font-bold text-[#075cde] transition hover:bg-[#075cde] hover:text-white"
+                          className="mt-3 inline-flex items-center gap-2 rounded-full border border-[#5b21b6] px-3.5 py-2 text-[10px] font-bold text-[#5b21b6] transition hover:bg-[#5b21b6] hover:text-white"
                         >
                           Explore Products
                           <ArrowRight className="h-3.5 w-3.5" />
@@ -1418,21 +2068,77 @@ function NavbarSearch({
         aria-expanded={open}
         aria-haspopup="dialog"
         aria-label={compact ? "Open site search" : undefined}
-        className={`flex items-center text-[#344054] transition-colors hover:bg-[#eaf2fb] hover:text-[#075cde] ${
+        className={`flex items-center transition-all duration-150 ${
           compact
-            ? "h-9 w-9 justify-center rounded-md min-[360px]:h-10 min-[360px]:w-10"
+            ? "h-9 w-9 justify-center rounded-full bg-slate-100 text-slate-600 hover:bg-purple-50 hover:text-[#4c1d95] min-[360px]:h-10 min-[360px]:w-10"
             : mobile
-              ? "h-11 w-full gap-2 rounded-lg px-3 text-[13px] font-semibold"
-              : "h-10 w-44 gap-2 rounded-lg px-3 text-[12px] font-semibold min-[1380px]:w-52 min-[1380px]:text-[13px] 2xl:h-11 2xl:w-60"
+              ? "h-11 w-full gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 text-[13px] font-medium text-slate-500"
+              : "h-9.5 w-36 gap-2 rounded-full border border-slate-200/90 bg-slate-50/90 px-3 text-[12px] font-medium text-slate-500 hover:border-purple-300 hover:bg-purple-50/30 hover:text-[#4c1d95] min-[1360px]:w-44 min-[1480px]:w-52 min-[1480px]:text-[12.5px] 2xl:h-10 2xl:w-56"
         }`}
       >
-        <Search className="h-4 w-4 shrink-0" aria-hidden="true" />
+        <Search className="h-4 w-4 shrink-0 text-slate-400" aria-hidden="true" />
         {!compact ? (
-          <span className="truncate text-[#7890a2]">Search Fintaraa</span>
+          <span className="truncate text-slate-500 font-medium">Search Fintaraa</span>
         ) : null}
       </button>
       {mounted ? createPortal(searchPanel, document.body) : null}
     </>
+  );
+}
+
+function DropdownProductCard({
+  link,
+  onNavigate,
+}: {
+  link: NavLink;
+  onNavigate: () => void;
+}) {
+  const Icon = link.icon || Banknote;
+  const badgeColorClass =
+    link.badgeColor === "emerald"
+      ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+      : link.badgeColor === "amber"
+        ? "bg-amber-50 text-amber-700 border-amber-200"
+        : link.badgeColor === "blue"
+          ? "bg-blue-50 text-blue-700 border-blue-200"
+          : link.badgeColor === "rose"
+            ? "bg-rose-50 text-rose-700 border-rose-200"
+            : "bg-purple-50 text-[#4c1d95] border-purple-200";
+
+  return (
+    <Link
+      href={link.href}
+      onClick={onNavigate}
+      className="group/item relative flex items-center gap-2.5 rounded-xl border border-transparent p-2 text-slate-800 no-underline transition-all duration-150 hover:border-purple-200/80 hover:bg-purple-50/70 hover:shadow-2xs"
+    >
+      <span
+        className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl transition-transform duration-200 group-hover/item:scale-105 ${
+          link.iconBg || "bg-purple-100"
+        } ${link.iconColor || "text-[#4c1d95]"}`}
+      >
+        <Icon className="h-4.5 w-4.5" />
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="flex items-center gap-1.5">
+          <span className="block truncate text-[12.5px] font-bold leading-tight text-slate-900 group-hover/item:text-[#4c1d95]">
+            {link.label}
+          </span>
+          {link.badge ? (
+            <span
+              className={`shrink-0 rounded-md border px-1.5 py-0.2 text-[8px] font-extrabold uppercase tracking-wider ${badgeColorClass}`}
+            >
+              {link.badge}
+            </span>
+          ) : null}
+        </span>
+        {link.description ? (
+          <span className="mt-0.5 block truncate text-[10.5px] font-medium leading-tight text-slate-500 group-hover/item:text-slate-600">
+            {link.description}
+          </span>
+        ) : null}
+      </span>
+      <ArrowRight className="h-3.5 w-3.5 shrink-0 text-[#4c1d95] opacity-0 -translate-x-1 transition-all duration-150 group-hover/item:translate-x-0 group-hover/item:opacity-100" />
+    </Link>
   );
 }
 
@@ -1446,9 +2152,35 @@ function DesktopNavItem({
   pathname: string;
 }) {
   const [open, setOpen] = useState(false);
-  const closeDropdown = () => setOpen(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const handleMouseEnter = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+    setOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => {
+      setOpen(false);
+    }, 160);
+  };
+
+  const closeDropdown = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    setOpen(false);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
+
   const active = (() => {
-    // Loans and Insurance both use href="/products" — differentiate by product type
     if (hrefPath(item.href) === "/products") {
       if (pathname === "/products") return true;
       const slug = pathname.split("/")[2];
@@ -1473,8 +2205,8 @@ function DesktopNavItem({
     return (
       <div
         className="relative"
-        onMouseEnter={() => setOpen(true)}
-        onMouseLeave={closeDropdown}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
         onFocusCapture={() => setOpen(true)}
         onBlurCapture={(event) => {
           if (
@@ -1498,21 +2230,25 @@ function DesktopNavItem({
           aria-haspopup="menu"
           aria-expanded={open}
           onClick={closeDropdown}
-          className={`${underlineClass} flex items-center gap-1 whitespace-nowrap text-[12px] font-semibold no-underline transition min-[1380px]:text-[14px] 2xl:text-[15px] ${
+          className={`flex items-center gap-1 whitespace-nowrap px-1 py-1.5 text-[12px] font-semibold no-underline transition min-[1300px]:text-[12.5px] min-[1420px]:text-[13.5px] 2xl:text-[14px] ${
             active
-              ? "text-[#195585] after:scale-x-100"
-              : "text-[#101828] hover:text-[#195585]"
+              ? "text-[#4c1d95]"
+              : "text-slate-800 hover:text-[#4c1d95]"
           }`}
         >
-          {item.label}
+          <span>{item.label}</span>
           <ChevronDown
-            className={`h-3.5 w-3.5 transition ${open ? "rotate-180" : ""}`}
+            className={`h-3 w-3 text-slate-400 transition-transform duration-200 min-[1380px]:h-3.5 min-[1380px]:w-3.5 ${
+              open ? "rotate-180 text-[#4c1d95]" : ""
+            }`}
           />
         </Link>
         <MegaDropdown
           align={align}
           item={item}
           open={open}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
           onNavigate={closeDropdown}
         />
       </div>
@@ -1522,13 +2258,18 @@ function DesktopNavItem({
   return (
     <Link
       href={item.href}
-      className={`${underlineClass} flex items-center gap-1 whitespace-nowrap text-[12px] font-semibold no-underline transition min-[1380px]:text-[14px] 2xl:text-[15px] ${
+      className={`flex items-center gap-1 whitespace-nowrap px-1 py-1.5 text-[12px] font-semibold no-underline transition min-[1300px]:text-[12.5px] min-[1420px]:text-[13.5px] 2xl:text-[14px] ${
         active
-          ? "text-[#195585] after:scale-x-100"
-          : "text-[#101828] hover:text-[#195585]"
+          ? "text-[#4c1d95]"
+          : "text-slate-800 hover:text-[#4c1d95]"
       }`}
     >
-      {item.label}
+      <span>{item.label}</span>
+      {item.highlightBadge ? (
+        <span className="rounded-full bg-purple-100 px-1.5 py-0.2 text-[8px] font-extrabold uppercase tracking-wide text-[#4c1d95] ring-1 ring-purple-200">
+          {item.highlightBadge}
+        </span>
+      ) : null}
     </Link>
   );
 }
@@ -1537,11 +2278,15 @@ function MegaDropdown({
   align,
   item,
   open,
+  onMouseEnter,
+  onMouseLeave,
   onNavigate,
 }: {
   align: "left" | "right";
   item: NavItem;
   open: boolean;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
   onNavigate: () => void;
 }) {
   const sections = item.sections || [];
@@ -1556,100 +2301,151 @@ function MegaDropdown({
         align={align}
         item={item}
         open={open}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
         onNavigate={onNavigate}
       />
     );
   }
 
-  const hideDescriptions = item.label === "Loans" || item.label === "Insurance";
   const dropdownMaxWidthClass =
     sections.length >= 4
-      ? "max-w-[78rem]"
+      ? "max-w-[80rem]"
       : sections.length === 3
-        ? "max-w-[58rem]"
-        : "max-w-[52rem]";
+        ? "max-w-[66rem]"
+        : sections.length === 2
+          ? "max-w-[54rem]"
+          : "max-w-[42rem]";
+
   const columnCount =
     sections.length >= 4
-      ? "xl:grid-cols-[0.78fr_repeat(4,minmax(0,1fr))]"
+      ? "xl:grid-cols-[250px_repeat(4,minmax(0,1fr))]"
       : sections.length === 3
-        ? "xl:grid-cols-[0.8fr_1fr_1fr_1fr]"
+        ? "xl:grid-cols-[250px_repeat(3,minmax(0,1fr))]"
         : sections.length === 2
-          ? "xl:grid-cols-[0.8fr_1fr_1fr]"
-          : "xl:grid-cols-[0.8fr_1fr]";
+          ? "xl:grid-cols-[250px_repeat(2,minmax(0,1fr))]"
+          : "xl:grid-cols-[250px_1fr]";
+
+  const PromoIcon = item.promo?.icon || Sparkles;
 
   return (
     <div
       data-nav-dropdown={item.label}
       data-state={open ? "open" : "closed"}
       aria-hidden={!open}
-      className={`fixed left-1/2 top-[calc(var(--site-header-height,6.5rem)-2.5rem)] z-50 w-[calc(100vw-2rem)] -translate-x-1/2 pt-10 transition duration-200 ${dropdownMaxWidthClass} ${
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      className={`fixed left-1/2 top-[var(--site-header-height,5.5rem)] z-50 w-[calc(100vw-2rem)] -translate-x-1/2 transition-all duration-200 before:absolute before:-top-3.5 before:left-0 before:right-0 before:h-4 before:content-[''] ${dropdownMaxWidthClass} ${
         open
           ? "pointer-events-auto translate-y-0 opacity-100"
-          : "pointer-events-none translate-y-1 opacity-0"
+          : "pointer-events-none -translate-y-2 opacity-0"
       }`}
     >
-      <div className="overflow-hidden rounded-xl border border-[#d9e9f6] bg-white shadow-[0_24px_60px_rgba(7,22,45,0.18)]">
-        <div className={`grid min-w-0 gap-0 ${columnCount}`}>
-          <div className="min-w-0 bg-[linear-gradient(145deg,#195585,#0f6fba)] p-4 text-white">
-            <div className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-white/12">
-              <Sparkles className="h-5 w-5 text-[#8fc7ff]" />
+      <div className="overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-[0_25px_60px_-15px_rgba(76,29,149,0.22),0_0_1px_1px_rgba(0,0,0,0.04)]">
+        <div className={`grid min-w-0 ${columnCount}`}>
+          {/* Left Brand / Promo Banner */}
+          <div className="relative flex flex-col justify-between overflow-hidden bg-gradient-to-br from-[#2e1065] via-[#3b0764] to-[#4c1d95] p-5 text-white">
+            <div className="pointer-events-none absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-purple-500/15 blur-2xl" />
+            <div className="pointer-events-none absolute -left-10 -top-10 h-32 w-32 rounded-full bg-white/10 blur-xl" />
+
+            <div className="relative z-10">
+              <div className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-white/20 bg-white/15 text-[#c4b5fd] shadow-inner backdrop-blur-sm">
+                <PromoIcon className="h-5 w-5" />
+              </div>
+              <p className="mt-4 text-[11px] font-extrabold uppercase tracking-widest text-[#c4b5fd]">
+                {item.promo?.subtitle || "Fintaraa Services"}
+              </p>
+              <h3 className="mt-1 text-[19px] font-extrabold leading-tight text-white">
+                {item.promo?.title || item.label}
+              </h3>
+              <p className="mt-2 text-[11.5px] font-normal leading-relaxed text-purple-200/90">
+                {item.promo?.description ||
+                  "Compare rates, check pre-approved eligibility, and apply with dedicated assisted support."}
+              </p>
+
+              {item.promo?.features?.length ? (
+                <div className="mt-4 space-y-1.5 border-t border-white/15 pt-3">
+                  {item.promo.features.map((feature) => (
+                    <div
+                      key={feature}
+                      className="flex items-center gap-1.5 text-[11px] font-medium text-purple-100"
+                    >
+                      <ShieldCheck className="h-3.5 w-3.5 shrink-0 text-[#a78bfa]" />
+                      <span>{feature}</span>
+                    </div>
+                  ))}
+                </div>
+              ) : null}
             </div>
-            <h3 className="mt-5 text-[20px] font-semibold leading-tight">
-              {item.label}
-            </h3>
-            <p className="mt-3 text-xs text-white/76">
-              Compare options, check eligibility, and continue with assisted
-              Fintaraa support.
-            </p>
-            <Link
-              href={item.href}
-              onClick={onNavigate}
-              className="mt-6 inline-flex h-10 whitespace-nowrap items-center gap-2 rounded-full bg-white px-4 text-[13px] font-semibold text-[#195585] no-underline"
-            >
-              Explore
-              <ArrowRight className="h-4 w-4" />
-            </Link>
+
+            <div className="relative z-10 mt-5 pt-2">
+              <Link
+                href={item.promo?.ctaHref || item.href}
+                onClick={onNavigate}
+                className="group/cta inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-4 py-2 text-[12px] font-bold text-[#3b0764] no-underline shadow-sm transition-all hover:bg-purple-50 hover:shadow"
+              >
+                <span>{item.promo?.ctaText || `Explore ${item.label}`}</span>
+                <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover/cta:translate-x-0.5" />
+              </Link>
+            </div>
           </div>
 
+          {/* Section Columns */}
           {sections.map((section) => (
             <div
               key={section.title}
               data-nav-section={section.title}
-              className="min-w-0 overflow-hidden border-l border-[#edf3f8] px-3 py-4"
+              className="flex min-w-0 flex-col border-l border-slate-100 p-4"
             >
-              <p className="wrap-break-word text-[12px] font-semibold uppercase leading-5 tracking-[0.14em] text-[#195585]">
-                {section.title}
-              </p>
-              {!hideDescriptions && section.subtitle ? (
-                <p className="mt-1 text-[12px] font-semibold leading-5 text-[#667085]">
-                  {section.subtitle}
+              <div className="border-b border-purple-50 pb-2">
+                <p className="text-[11px] font-extrabold uppercase tracking-wider text-[#4c1d95]">
+                  {section.title}
                 </p>
-              ) : null}
-              <div className="mt-2 grid gap-1.5">
+                {section.subtitle ? (
+                  <p className="mt-0.5 line-clamp-1 text-[10.5px] font-medium text-slate-500">
+                    {section.subtitle}
+                  </p>
+                ) : null}
+              </div>
+              <div className="mt-2.5 grid gap-1">
                 {section.links.map((link) => (
-                  <Link
+                  <DropdownProductCard
                     key={`${section.title}-${link.href}-${link.label}`}
-                    href={link.href}
-                    onClick={onNavigate}
-                    className={`group/item relative block min-w-0 overflow-hidden rounded-lg px-2 text-[#07162d] no-underline transition after:absolute after:bottom-0 after:left-2 after:right-2 after:h-0.5 after:origin-left after:scale-x-0 after:bg-[#195585] after:transition-transform after:duration-300 after:ease-out hover:after:scale-x-100 ${
-                      hideDescriptions ? "py-1.5" : "py-2"
-                    }`}
-                  >
-                    <span className="block min-w-0 max-w-full">
-                      <span className="block max-w-full wrap-break-word text-[13px] font-semibold leading-5 whitespace-normal group-hover/item:text-[#195585]">
-                        {link.label}
-                      </span>
-                      {!hideDescriptions && link.description ? (
-                        <span className="mt-0.5 line-clamp-1 block text-[11px] font-semibold text-[#667085]">
-                          {link.description}
-                        </span>
-                      ) : null}
-                    </span>
-                  </Link>
+                    link={link}
+                    onNavigate={onNavigate}
+                  />
                 ))}
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Bottom Helper Strip */}
+        <div className="flex items-center justify-between border-t border-purple-100/80 bg-gradient-to-r from-purple-50/70 via-white to-purple-50/70 px-5 py-2.5">
+          <div className="flex items-center gap-2 text-[11.5px] font-medium text-slate-700">
+            <PhoneCall className="h-3.5 w-3.5 text-[#4c1d95]" />
+            <span>
+              Need personalized assistance? Talk to an expert:{" "}
+              <a
+                href={CALL_PHONE.href}
+                className="font-bold text-[#4c1d95] hover:underline"
+              >
+                {CALL_PHONE.national}
+              </a>
+              <span className="hidden text-slate-400 sm:inline">
+                {" "}
+                (Mon–Sat, 10 AM–7 PM)
+              </span>
+            </span>
+          </div>
+          <Link
+            href="/cibil-score"
+            onClick={onNavigate}
+            className="hidden items-center gap-1 text-[11px] font-bold text-[#4c1d95] hover:underline sm:inline-flex"
+          >
+            Check CIBIL Score Free
+            <ArrowRight className="h-3 w-3" />
+          </Link>
         </div>
       </div>
     </div>
@@ -1659,16 +2455,18 @@ function MegaDropdown({
 function CompactDropdown({
   item,
   open,
+  onMouseEnter,
+  onMouseLeave,
   onNavigate,
 }: {
   align: "left" | "right";
   item: NavItem;
   open: boolean;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
   onNavigate: () => void;
 }) {
   const section = item.sections?.[0];
-  const hideDescriptions = item.label === "Loans" || item.label === "Insurance";
-
   if (!section) return null;
 
   return (
@@ -1676,34 +2474,32 @@ function CompactDropdown({
       data-nav-dropdown={item.label}
       data-state={open ? "open" : "closed"}
       aria-hidden={!open}
-      className={`fixed left-1/2 top-[calc(var(--site-header-height,6.5rem)-2.5rem)] z-50 w-[calc(100vw-2rem)] max-w-96 -translate-x-1/2 pt-10 transition duration-200 ${
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      className={`fixed left-1/2 top-[var(--site-header-height,5.5rem)] z-50 w-[calc(100vw-2rem)] max-w-sm -translate-x-1/2 transition-all duration-200 before:absolute before:-top-3.5 before:left-0 before:right-0 before:h-4 before:content-[''] ${
         open
           ? "pointer-events-auto translate-y-0 opacity-100"
-          : "pointer-events-none translate-y-1 opacity-0"
+          : "pointer-events-none -translate-y-2 opacity-0"
       }`}
     >
-      <div className="rounded-xl border border-[#d9e9f6] bg-white p-3 shadow-[0_24px_60px_rgba(7,22,45,0.18)]">
-        <div className="grid gap-1">
+      <div className="overflow-hidden rounded-2xl border border-slate-200/90 bg-white p-3 shadow-[0_25px_60px_-15px_rgba(76,29,149,0.22)]">
+        <div className="border-b border-purple-50 px-2 pb-2">
+          <p className="text-[11px] font-extrabold uppercase tracking-wider text-[#4c1d95]">
+            {section.title}
+          </p>
+          {section.subtitle ? (
+            <p className="mt-0.5 text-[10.5px] font-medium text-slate-500">
+              {section.subtitle}
+            </p>
+          ) : null}
+        </div>
+        <div className="mt-2 grid gap-1">
           {section.links.map((link) => (
-            <Link
+            <DropdownProductCard
               key={`${section.title}-${link.href}-${link.label}`}
-              href={link.href}
-              onClick={onNavigate}
-              className={`group/item relative block rounded-lg px-2 text-[#07162d] no-underline transition after:absolute after:bottom-0 after:left-2 after:right-2 after:h-0.5 after:origin-left after:scale-x-0 after:bg-[#195585] after:transition-transform after:duration-300 after:ease-out hover:after:scale-x-100 ${
-                hideDescriptions ? "py-1.5" : "py-2"
-              }`}
-            >
-              <span className="block min-w-0 max-w-full">
-                <span className="block max-w-full wrap-break-word text-[13px] font-semibold leading-5 whitespace-normal group-hover/item:text-[#195585]">
-                  {link.label}
-                </span>
-                {!hideDescriptions && link.description ? (
-                  <span className="mt-0.5 line-clamp-1 block text-[11px] font-semibold text-[#667085]">
-                    {link.description}
-                  </span>
-                ) : null}
-              </span>
-            </Link>
+              link={link}
+              onNavigate={onNavigate}
+            />
           ))}
         </div>
       </div>
@@ -1761,9 +2557,9 @@ function AuthButton({
           <Link
             href="/login"
             onClick={onClick}
-            className="flex items-center gap-3 rounded-xl border border-[#d8e5ef] bg-white p-3 text-[#17354d] no-underline transition active:bg-[#edf6ff]"
+            className="flex items-center gap-3 rounded-xl border border-[#d8e5ef] bg-white p-3 text-[#3b0764] no-underline transition active:bg-[#edf6ff]"
           >
-            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#e9f3ff] text-[#075cde]">
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#e9f3ff] text-[#5b21b6]">
               <UserRound className="h-5 w-5" />
             </span>
             <span className="min-w-0 text-left">
@@ -1774,12 +2570,12 @@ function AuthButton({
                 Applications, offers and profile
               </span>
             </span>
-            <ArrowRight className="ml-auto h-4 w-4 shrink-0 text-[#075cde]" />
+            <ArrowRight className="ml-auto h-4 w-4 shrink-0 text-[#5b21b6]" />
           </Link>
           <Link
             href="/partner/login"
             onClick={onClick}
-            className="flex items-center gap-3 rounded-xl border border-[#d8e5ef] bg-white p-3 text-[#17354d] no-underline transition active:bg-[#f0fbf5]"
+            className="flex items-center gap-3 rounded-xl border border-[#d8e5ef] bg-white p-3 text-[#3b0764] no-underline transition active:bg-[#f0fbf5]"
           >
             <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#eaf8f0] text-[#13a653]">
               <BriefcaseBusiness className="h-5 w-5" />
@@ -1813,7 +2609,7 @@ function AuthButton({
       <>
         <div className="overflow-hidden rounded-2xl border border-[#d9e8f4] bg-white">
           <div className="flex items-center gap-3 border-b border-[#e5edf3] bg-[#f4f9fd] p-3">
-            <span className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-linear-to-br from-[#195585] to-[#075cde] text-[11px] font-extrabold text-white">
+            <span className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-linear-to-br from-[#3b0764] to-[#5b21b6] text-[11px] font-extrabold text-white">
               {avatar ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
@@ -1826,7 +2622,7 @@ function AuthButton({
               )}
             </span>
             <span className="min-w-0">
-              <span className="block truncate text-[13px] font-extrabold text-[#17354d]">
+              <span className="block truncate text-[13px] font-extrabold text-[#3b0764]">
                 {name}
               </span>
               <span className="text-[11px] font-semibold text-[#718397]">
@@ -1840,7 +2636,7 @@ function AuthButton({
               onClick={onClick}
               className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-[13px] font-bold text-[#31516b] no-underline active:bg-[#edf6ff]"
             >
-              <LayoutDashboard className="h-4.5 w-4.5 text-[#075cde]" />
+              <LayoutDashboard className="h-4.5 w-4.5 text-[#5b21b6]" />
               {partnerSession ? "Partner Dashboard" : "Account Dashboard"}
             </Link>
             <Link
@@ -1848,7 +2644,7 @@ function AuthButton({
               onClick={onClick}
               className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-[13px] font-bold text-[#31516b] no-underline active:bg-[#edf6ff]"
             >
-              <PencilLine className="h-4.5 w-4.5 text-[#075cde]" />
+              <PencilLine className="h-4.5 w-4.5 text-[#5b21b6]" />
               Edit Profile
             </Link>
             <Link
@@ -1856,7 +2652,7 @@ function AuthButton({
               onClick={onClick}
               className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-[13px] font-bold text-[#31516b] no-underline active:bg-[#edf6ff]"
             >
-              <Bell className="h-4.5 w-4.5 text-[#075cde]" />
+              <Bell className="h-4.5 w-4.5 text-[#5b21b6]" />
               Notifications
             </Link>
             <button
@@ -1884,15 +2680,15 @@ function AuthButton({
         <button
           type="button"
           aria-haspopup="menu"
-          className={`inline-flex h-10 items-center rounded-full text-sm transition 2xl:h-11 ${
+          className={`inline-flex h-10 items-center rounded-full text-sm transition-all duration-150 2xl:h-10.5 ${
             loggedIn
-              ? "gap-2 bg-[#eef8ff] pl-1.5 pr-3 font-semibold text-[#195585] ring-1 ring-[#d5ebfb] hover:bg-[#e5f4ff]"
-              : "gap-2 border border-[#075cde] px-4 font-medium text-[#075cde] hover:bg-[#eef5ff]"
+              ? "gap-2 bg-purple-50 pl-1.5 pr-3.5 font-semibold text-[#4c1d95] ring-1 ring-purple-200/80 hover:bg-purple-100/70"
+              : "gap-2 border-1.5 border-[#5b21b6] bg-white px-4 font-semibold text-[#5b21b6] hover:bg-purple-50/80 hover:border-[#4c1d95]"
           }`}
         >
           {loggedIn ? (
             <>
-              <span className="relative flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-linear-to-br from-[#195585] to-[#075cde] text-[11px] font-extrabold text-white 2xl:h-9 2xl:w-9 2xl:text-[12px]">
+              <span className="relative flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-linear-to-br from-[#3b0764] to-[#5b21b6] text-[11px] font-extrabold text-white 2xl:h-8.5 2xl:w-8.5">
                 {avatar ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
@@ -1910,11 +2706,11 @@ function AuthButton({
             </>
           ) : (
             <>
-              <UserRound className="h-4 w-4" />
-              Login
+              <UserRound className="h-4 w-4 shrink-0" />
+              <span>Login</span>
             </>
           )}
-          <ChevronDown className="h-3.5 w-3.5 transition-transform group-hover/auth:rotate-180 group-focus-within/auth:rotate-180" />
+          <ChevronDown className="h-3.5 w-3.5 shrink-0 transition-transform duration-200 group-hover/auth:rotate-180 group-focus-within/auth:rotate-180" />
         </button>
 
         <div className="pointer-events-none absolute right-0 top-full z-60 w-82 translate-y-1 pt-3 opacity-0 transition duration-180 group-hover/auth:pointer-events-auto group-hover/auth:translate-y-0 group-hover/auth:opacity-100 group-focus-within/auth:pointer-events-auto group-focus-within/auth:translate-y-0 group-focus-within/auth:opacity-100">
@@ -1925,7 +2721,7 @@ function AuthButton({
             {loggedIn ? (
               <>
                 <div className="mx-1 mb-1 flex items-center gap-3 rounded-xl bg-[#f3f8fc] px-3 py-3">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#e5f1fb] text-[#075cde]">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#e5f1fb] text-[#5b21b6]">
                     {partnerSession ? (
                       <BriefcaseBusiness className="h-4.5 w-4.5" />
                     ) : (
@@ -1933,7 +2729,7 @@ function AuthButton({
                     )}
                   </span>
                   <span className="min-w-0">
-                    <span className="block truncate text-[13px] font-extrabold text-[#17354d]">
+                    <span className="block truncate text-[13px] font-extrabold text-[#3b0764]">
                       {name}
                     </span>
                     <span className="text-[10px] font-bold uppercase tracking-widest text-[#718397]">
@@ -1944,9 +2740,9 @@ function AuthButton({
                 <Link
                   href={dashboardHref}
                   role="menuitem"
-                  className="group/item flex items-center gap-3 rounded-xl px-3 py-3 text-[#31516b] no-underline transition hover:bg-[#f3f8fc] hover:text-[#075cde]"
+                  className="group/item flex items-center gap-3 rounded-xl px-3 py-3 text-[#31516b] no-underline transition hover:bg-[#f3f8fc] hover:text-[#5b21b6]"
                 >
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#e9f3ff] text-[#075cde]">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#e9f3ff] text-[#5b21b6]">
                     <LayoutDashboard className="h-4.5 w-4.5" />
                   </span>
                   <span className="min-w-0 flex-1">
@@ -1966,7 +2762,7 @@ function AuthButton({
                 <Link
                   href={editProfileHref}
                   role="menuitem"
-                  className="group/item flex items-center gap-3 rounded-xl px-3 py-3 text-[#31516b] no-underline transition hover:bg-[#f3f8fc] hover:text-[#075cde]"
+                  className="group/item flex items-center gap-3 rounded-xl px-3 py-3 text-[#31516b] no-underline transition hover:bg-[#f3f8fc] hover:text-[#5b21b6]"
                 >
                   <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#eaf8f0] text-[#13a653]">
                     <PencilLine className="h-4.5 w-4.5" />
@@ -1984,7 +2780,7 @@ function AuthButton({
                 <Link
                   href={notificationsHref}
                   role="menuitem"
-                  className="group/item flex items-center gap-3 rounded-xl px-3 py-3 text-[#31516b] no-underline transition hover:bg-[#f3f8fc] hover:text-[#075cde]"
+                  className="group/item flex items-center gap-3 rounded-xl px-3 py-3 text-[#31516b] no-underline transition hover:bg-[#f3f8fc] hover:text-[#5b21b6]"
                 >
                   <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#fff4e8] text-[#e37712]">
                     <Bell className="h-4.5 w-4.5" />
@@ -2018,16 +2814,16 @@ function AuthButton({
                   <p className="text-[10px] font-extrabold uppercase tracking-[0.13em] text-[#7b8ea0]">
                     Continue to Fintaraa
                   </p>
-                  <p className="mt-1 text-[13px] font-extrabold text-[#17354d]">
+                  <p className="mt-1 text-[13px] font-extrabold text-[#3b0764]">
                     Choose how you want to login
                   </p>
                 </div>
                 <Link
                   href="/login"
                   role="menuitem"
-                  className="group/item flex items-center gap-3 rounded-xl px-3 py-3 text-[#31516b] no-underline transition hover:bg-[#f3f8fc] hover:text-[#075cde]"
+                  className="group/item flex items-center gap-3 rounded-xl px-3 py-3 text-[#31516b] no-underline transition hover:bg-[#f3f8fc] hover:text-[#5b21b6]"
                 >
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#e9f3ff] text-[#075cde]">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#e9f3ff] text-[#5b21b6]">
                     <UserRound className="h-5 w-5" />
                   </span>
                   <span className="min-w-0 flex-1">

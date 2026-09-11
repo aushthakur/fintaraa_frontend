@@ -607,7 +607,7 @@ function LocalDocumentButton({
         window.open(url, "_blank", "noopener,noreferrer");
         window.setTimeout(() => URL.revokeObjectURL(url), 60_000);
       }}
-      className="mt-0.5 inline-flex items-center gap-1 text-[9px] font-extrabold text-[#005ca8] no-underline hover:underline"
+      className="mt-0.5 inline-flex items-center gap-1 text-[9px] font-extrabold text-[#4c1d95] no-underline hover:underline"
     >
       <Eye className="h-3 w-3" aria-hidden="true" />
       View Document{suffix}
@@ -968,7 +968,7 @@ export function LoanDocumentUploader({
             aria-label="Select document type"
             value={documentToAdd}
             onChange={(event) => setDocumentToAdd(event.target.value)}
-            className="h-10 min-w-0 flex-1 rounded-lg border border-[#cddff0] bg-white px-3 text-[11px] font-bold text-[#344054] outline-none focus:border-[#005ca8] focus:ring-2 focus:ring-[#e5f1ff]"
+            className="h-10 min-w-0 flex-1 rounded-lg border border-[#cddff0] bg-white px-3 text-[11px] font-bold text-[#344054] outline-none focus:border-[#4c1d95] focus:ring-2 focus:ring-[#e5f1ff]"
           >
             <option value="">Select document type</option>
             {catalogOptions.map(({ id, document }) => {
@@ -992,7 +992,7 @@ export function LoanDocumentUploader({
             type="button"
             disabled={!documentToAdd || catalogLoading}
             onClick={addDocument}
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-[#005ca8] px-4 text-[10px] font-extrabold text-white disabled:cursor-not-allowed disabled:opacity-50"
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-[#4c1d95] px-4 text-[10px] font-extrabold text-white disabled:cursor-not-allowed disabled:opacity-50"
           >
             <Plus className="h-4 w-4" aria-hidden="true" />
             Add Document
@@ -1049,7 +1049,7 @@ export function LoanDocumentUploader({
                   className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${
                     hasDocument
                       ? "bg-emerald-100 text-emerald-700"
-                      : "bg-[#edf5ff] text-[#005ca8]"
+                      : "bg-[#edf5ff] text-[#4c1d95]"
                   }`}
                 >
                   {hasDocument ? (
@@ -1129,7 +1129,7 @@ export function LoanDocumentUploader({
               ) : null}
 
               <div className="mt-3">
-                <label className="inline-flex min-h-9 w-full cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#9fc7e9] bg-white px-3 text-[10px] font-extrabold text-[#005ca8] transition hover:border-[#005ca8] hover:bg-[#f7fbff]">
+                <label className="inline-flex min-h-9 w-full cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#9fc7e9] bg-white px-3 text-[10px] font-extrabold text-[#4c1d95] transition hover:border-[#4c1d95] hover:bg-[#f7fbff]">
                   <UploadCloud className="h-4 w-4" aria-hidden="true" />
                   {hasDocument ? "Replace file" : "Choose file"}
                   <input
@@ -1163,7 +1163,7 @@ export function LoanDocumentUploader({
                         event.target.checked,
                       )
                     }
-                    className="h-3.5 w-3.5 accent-[#005ca8]"
+                    className="h-3.5 w-3.5 accent-[#4c1d95]"
                   />
                   Password-protected document
                 </label>
@@ -1182,7 +1182,7 @@ export function LoanDocumentUploader({
                     onChange={(event) =>
                       setDocumentPassword(document.key, event.target.value)
                     }
-                    className="h-9 rounded-lg border border-[#cddff0] bg-white px-3 text-[11px] font-semibold text-[#344054] outline-none focus:border-[#005ca8] focus:ring-2 focus:ring-[#e5f1ff]"
+                    className="h-9 rounded-lg border border-[#cddff0] bg-white px-3 text-[11px] font-semibold text-[#344054] outline-none focus:border-[#4c1d95] focus:ring-2 focus:ring-[#e5f1ff]"
                   />
                 </label>
               ) : null}

@@ -32,9 +32,9 @@ const metricTones: Record<CibilMetricIcon, string> = {
   payment: "bg-[#e9f8ef] text-[#168447]",
   utilization: "bg-[#fff4dd] text-[#a15c00]",
   enquiries: "bg-[#f0ecff] text-[#6548c7]",
-  accounts: "bg-[#e8f3fb] text-[#075cde]",
+  accounts: "bg-[#e8f3fb] text-[#5b21b6]",
   age: "bg-[#e7f7f6] text-[#087f77]",
-  "active-loans": "bg-[#e8f3fb] text-[#075cde]",
+  "active-loans": "bg-[#e8f3fb] text-[#5b21b6]",
   "closed-loans": "bg-[#e9f8ef] text-[#168447]",
   "credit-cards": "bg-[#f0ecff] text-[#6548c7]",
 };
@@ -43,7 +43,7 @@ const scoreBand = (score: number) => {
   if (!score) return { label: "Not fetched", tone: "text-[#667f91]" };
   if (score < 650) return { label: "Needs attention", tone: "text-[#c2413a]" };
   if (score < 700) return { label: "Fair", tone: "text-[#a15c00]" };
-  if (score < 750) return { label: "Good", tone: "text-[#075cde]" };
+  if (score < 750) return { label: "Good", tone: "text-[#5b21b6]" };
   return { label: "Excellent", tone: "text-[#168447]" };
 };
 
@@ -69,7 +69,7 @@ export function CibilReportHero({
             className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between"
           >
             <div>
-              <h1 className="mt-4 text-[31px] font-extrabold leading-tight text-[#102f49] sm:text-[36px] lg:text-[40px]">
+              <h1 className="mt-4 text-[31px] font-extrabold leading-tight text-[#3b0764] sm:text-[36px] lg:text-[40px]">
                 Your {data.scoreBureauLabel} credit report
               </h1>
               <p className="mt-3 max-w-2xl text-[14px] font-medium leading-7 text-[#58758a] sm:text-[15px]">
@@ -85,14 +85,14 @@ export function CibilReportHero({
             <div className="flex flex-wrap gap-x-5 gap-y-2 text-[11px] font-bold text-[#526e82]">
               <span className="inline-flex items-center gap-2">
                 <Database
-                  className="h-4 w-4 text-[#075cde]"
+                  className="h-4 w-4 text-[#5b21b6]"
                   aria-hidden="true"
                 />
                 {data.sourceLabel}
               </span>
               <span className="inline-flex items-center gap-2">
                 <CalendarClock
-                  className="h-4 w-4 text-[#075cde]"
+                  className="h-4 w-4 text-[#5b21b6]"
                   aria-hidden="true"
                 />
                 Updated {data.scoreDateLabel}
@@ -120,10 +120,10 @@ export function CibilReportHero({
             >
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <p className="text-[12px] font-extrabold text-[#075cde]">
+                  <p className="text-[12px] font-extrabold text-[#5b21b6]">
                     {data.scoreBureauLabel}
                   </p>
-                  <h2 className="mt-1 text-[20px] font-extrabold text-[#102f49]">
+                  <h2 className="mt-1 text-[20px] font-extrabold text-[#3b0764]">
                     Current credit score
                   </h2>
                 </div>
@@ -160,7 +160,7 @@ export function CibilReportHero({
                 type="button"
                 onClick={onDownloadReport}
                 disabled={downloadingReport || !data.reportAvailable}
-                className="mt-4 inline-flex h-11 w-full items-center justify-center gap-2 rounded-md bg-[#075cde] px-4 text-[13px] font-extrabold text-white transition-colors hover:bg-[#064cb8] disabled:cursor-not-allowed disabled:opacity-60"
+                className="mt-4 inline-flex h-11 w-full items-center justify-center gap-2 rounded-md bg-[#5b21b6] px-4 text-[13px] font-extrabold text-white transition-colors hover:bg-[#4c1d95] disabled:cursor-not-allowed disabled:opacity-60"
               >
                 <ArrowDownToLine className="h-4 w-4" aria-hidden="true" />
                 {downloadingReport
@@ -181,10 +181,10 @@ export function CibilReportHero({
             >
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <p className="text-[12px] font-extrabold text-[#075cde]">
+                  <p className="text-[12px] font-extrabold text-[#5b21b6]">
                     At-a-glance factors
                   </p>
-                  <h2 className="mt-1 text-[20px] font-extrabold text-[#102f49]">
+                  <h2 className="mt-1 text-[20px] font-extrabold text-[#3b0764]">
                     Quick report summary
                   </h2>
                 </div>
@@ -216,7 +216,7 @@ export function CibilReportHero({
                           </p>
                         </div>
                       </div>
-                      <span className="max-w-30 text-right text-[14px] font-extrabold text-[#102f49] sm:text-[15px]">
+                      <span className="max-w-30 text-right text-[14px] font-extrabold text-[#3b0764] sm:text-[15px]">
                         {row.value}
                       </span>
                     </div>
@@ -238,7 +238,7 @@ export function CibilReportHero({
                   onClick={onDownloadReport}
                   disabled={downloadingReport || !data.reportAvailable}
                   title="Download detailed CIBIL report"
-                  className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-md border border-[#a9cde0] px-3.5 text-[11px] font-extrabold text-[#075cde] transition-colors hover:border-[#075cde] hover:bg-[#f0f7fc] disabled:cursor-not-allowed disabled:opacity-60"
+                  className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-md border border-[#a9cde0] px-3.5 text-[11px] font-extrabold text-[#5b21b6] transition-colors hover:border-[#5b21b6] hover:bg-[#f0f7fc] disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   <ArrowDownToLine className="h-4 w-4" aria-hidden="true" />
                   Full report

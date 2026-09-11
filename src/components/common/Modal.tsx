@@ -42,7 +42,7 @@ export default function Modal({
             type="button"
             aria-label="Close modal"
             onClick={onClose}
-            className="absolute right-4 top-4 z-20 flex h-9 w-9 items-center justify-center rounded-full bg-[#eef8ff] text-[#195585] transition hover:bg-[#195585] hover:text-white"
+            className="absolute right-4 top-4 z-20 flex h-9 w-9 items-center justify-center rounded-full bg-[#eef8ff] text-[#3b0764] transition hover:bg-[#3b0764] hover:text-white"
           >
             <X className="h-4 w-4" />
           </button>

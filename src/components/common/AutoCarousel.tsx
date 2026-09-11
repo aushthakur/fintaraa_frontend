@@ -43,7 +43,7 @@ export function AutoCarousel({
     : className.includes("credit-card-carousel")
       ? "top-1/2 max-sm:top-[26%]"
       : "top-1/2";
-  const navigationButtonClassName = `absolute z-20 h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-[#cfe0ee] bg-white/95 text-[#075cde] shadow-[0_10px_28px_rgba(7,22,45,0.16)] backdrop-blur transition hover:border-[#075cde] hover:bg-[#075cde] hover:text-white disabled:cursor-not-allowed disabled:opacity-40 md:h-11 md:w-11 ${navigationPosition} ${navigationVisibility}`;
+  const navigationButtonClassName = `absolute z-20 h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-[#cfe0ee] bg-white/95 text-[#5b21b6] shadow-[0_10px_28px_rgba(7,22,45,0.16)] backdrop-blur transition hover:border-[#5b21b6] hover:bg-[#5b21b6] hover:text-white disabled:cursor-not-allowed disabled:opacity-40 md:h-11 md:w-11 ${navigationPosition} ${navigationVisibility}`;
 
   return (
     <div

@@ -29,7 +29,7 @@ export function WhyChooseFintaraa() {
               key={`${label}-${index}`}
               className="flex min-h-16 items-center rounded-2xl border border-white/10 bg-white p-4 shadow-xs transition-transform hover:-translate-y-0.5"
             >
-              <span className="text-[13px] font-bold text-[#005ca8] leading-tight select-none">
+              <span className="text-[13px] font-bold text-[#4c1d95] leading-tight select-none">
                 {label}
               </span>
             </div>

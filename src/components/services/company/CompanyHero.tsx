@@ -212,7 +212,7 @@ export function CompanyHero() {
         </div>
 
         <div className="relative mx-auto w-full max-w-md self-start">
-          <div className="absolute -right-2 -top-2 h-full w-full rounded-2xl bg-[#005ca8] sm:-right-7 sm:-top-7" />
+          <div className="absolute -right-2 -top-2 h-full w-full rounded-2xl bg-[#4c1d95] sm:-right-7 sm:-top-7" />
           <div className="relative overflow-hidden rounded-2xl bg-white p-4 shadow-[0_18px_45px_rgba(16,24,40,0.14)] sm:p-6 md:p-8">
             <h2 className="text-[22px] font-bold text-[#1f2937]">
               Tell Us Your Requirements
@@ -235,7 +235,7 @@ export function CompanyHero() {
                   value={form.name}
                   onChange={(event) => updateField("name", event.target.value)}
                   placeholder="Enter full name"
-                  className="h-12 rounded-lg border border-[#d9dfe8] px-4 text-[13px] font-medium outline-none placeholder:text-[#a0a7b2] focus:border-[#005ca8]"
+                  className="h-12 rounded-lg border border-[#d9dfe8] px-4 text-[13px] font-medium outline-none placeholder:text-[#a0a7b2] focus:border-[#4c1d95]"
                 />
               </label>
               <div className="grid gap-4 sm:grid-cols-2">
@@ -250,7 +250,7 @@ export function CompanyHero() {
                       updateField("mobile", event.target.value)
                     }
                     placeholder="9876543210"
-                    className="h-12 rounded-lg border border-[#d9dfe8] px-4 text-[13px] font-medium outline-none placeholder:text-[#a0a7b2] focus:border-[#005ca8]"
+                    className="h-12 rounded-lg border border-[#d9dfe8] px-4 text-[13px] font-medium outline-none placeholder:text-[#a0a7b2] focus:border-[#4c1d95]"
                   />
                 </label>
                 <label className="grid gap-2">
@@ -264,7 +264,7 @@ export function CompanyHero() {
                       updateField("email", event.target.value)
                     }
                     placeholder="name@example.com"
-                    className="h-12 rounded-lg border border-[#d9dfe8] px-4 text-[13px] font-medium outline-none placeholder:text-[#a0a7b2] focus:border-[#005ca8]"
+                    className="h-12 rounded-lg border border-[#d9dfe8] px-4 text-[13px] font-medium outline-none placeholder:text-[#a0a7b2] focus:border-[#4c1d95]"
                   />
                 </label>
               </div>
@@ -278,7 +278,7 @@ export function CompanyHero() {
                     onChange={(event) =>
                       updateField("businessType", event.target.value)
                     }
-                    className="h-12 rounded-lg border border-[#d9dfe8] bg-white px-4 text-[13px] font-medium text-[#475467] outline-none focus:border-[#005ca8]"
+                    className="h-12 rounded-lg border border-[#d9dfe8] bg-white px-4 text-[13px] font-medium text-[#475467] outline-none focus:border-[#4c1d95]"
                   >
                     <option value="">Select business type</option>
                     {businessTypes.map((item) => (
@@ -297,7 +297,7 @@ export function CompanyHero() {
                     onChange={(event) =>
                       updateField("serviceRequired", event.target.value)
                     }
-                    className="h-12 rounded-lg border border-[#d9dfe8] bg-white px-4 text-[13px] font-medium text-[#475467] outline-none focus:border-[#005ca8]"
+                    className="h-12 rounded-lg border border-[#d9dfe8] bg-white px-4 text-[13px] font-medium text-[#475467] outline-none focus:border-[#4c1d95]"
                   >
                     <option value="">Select service</option>
                     {serviceOptions.map((item) => (
@@ -318,7 +318,7 @@ export function CompanyHero() {
                     updateField("briefRequirements", event.target.value)
                   }
                   placeholder="Tell us what you want to register or file"
-                  className="min-h-24 rounded-lg border border-[#d9dfe8] px-4 py-3 text-[13px] font-medium outline-none placeholder:text-[#a0a7b2] focus:border-[#005ca8]"
+                  className="min-h-24 rounded-lg border border-[#d9dfe8] px-4 py-3 text-[13px] font-medium outline-none placeholder:text-[#a0a7b2] focus:border-[#4c1d95]"
                 />
               </label>
               <WhatsAppConsent

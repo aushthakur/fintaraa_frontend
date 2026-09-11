@@ -22,7 +22,7 @@ function DataTable({
       </p>
       <div className="mt-5 overflow-x-auto">
         <table className="w-full min-w-105 border-collapse text-[13px]">
-          <thead className="border-b border-[#dce3eb] text-[#005ca8]">
+          <thead className="border-b border-[#dce3eb] text-[#4c1d95]">
             <tr>
               {headers.map((header) => (
                 <th key={header} className="pb-3 text-left font-extrabold">
@@ -69,7 +69,7 @@ export function FranchiseModel() {
             {franchiseSteps.map((step, index) => (
               <div key={step.title} className="relative text-center">
                 <span className="mx-auto flex h-13.5 w-13.5 items-center justify-center rounded-xl bg-[#EEF6FF]">
-                  <ShieldCheck className="h-10 w-10 text-[#005CA8]" />
+                  <ShieldCheck className="h-10 w-10 text-[#4c1d95]" />
                 </span>
                 {index < franchiseSteps.length - 1 ? (
                   <ArrowRight
@@ -79,7 +79,7 @@ export function FranchiseModel() {
   top-2.5
   h-8.5
   w-8.5
-  text-[#005CA8]
+  text-[#4c1d95]
   "
                   />
                 ) : null}

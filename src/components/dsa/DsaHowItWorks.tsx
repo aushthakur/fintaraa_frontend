@@ -13,11 +13,11 @@ export function DsaHowItWorks() {
           {dsaSteps.map((step, index) => (
             <div key={step.title} className="relative">
               {index < dsaSteps.length - 1 ? (
-                <ArrowRight className="absolute right-[-22px] top-6 hidden h-8 w-8 text-[#0d64bf] lg:block" />
+                <ArrowRight className="absolute right-[-22px] top-6 hidden h-8 w-8 text-[#6d28d9] lg:block" />
               ) : null}
               <div className="rounded-[22px] bg-white px-2 py-2">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#edf5ff] text-[#0d64bf]">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#edf5ff] text-[#6d28d9]">
                     <ShieldCheck className="h-6 w-6" />
                   </div>
                   <div className="h-px flex-1 bg-[#dfe8f3] lg:hidden" />

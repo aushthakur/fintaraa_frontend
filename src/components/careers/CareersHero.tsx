@@ -15,7 +15,7 @@ export function CareersHero() {
           <h1 className="max-w-xl text-[34px] font-extrabold leading-[1.04] tracking-[-0.05em] text-[#2b2f38] md:text-[46px] lg:text-[58px]">
             Grow Your Career
             <span className="block">
-              Make a <span className="text-[#0d64bf]">Real Impact</span>
+              Make a <span className="text-[#6d28d9]">Real Impact</span>
             </span>
           </h1>
           <p className="mt-5 max-w-2xl text-[14px] font-medium leading-7 text-[#8b95a3] md:text-[15px]">
@@ -58,7 +58,7 @@ export function CareersHero() {
             key={title}
             className="flex items-center gap-3 rounded-xl bg-white px-4 py-2 shadow-[0_2px_10px_rgba(0,0,0,0.05)]"
           >
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#edf5ff] text-[#0d64bf]">
+            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#edf5ff] text-[#6d28d9]">
               <Icon className="h-4 w-4" />
             </span>
             <p className="text-[13px] font-semibold text-[#2b2f38]">{title}</p>

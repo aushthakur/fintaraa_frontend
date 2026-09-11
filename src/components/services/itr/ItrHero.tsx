@@ -175,7 +175,7 @@ export function ItrHero() {
           id="itr-filing-service-form"
           className="relative mx-auto w-full max-w-140 scroll-mt-48"
         >
-          <div className="absolute -right-7 -top-7 h-full w-85 rounded-2xl bg-[#005ca8] sm:w-95 md:w-105 lg:w-115" />
+          <div className="absolute -right-7 -top-7 h-full w-85 rounded-2xl bg-[#4c1d95] sm:w-95 md:w-105 lg:w-115" />
           <div className="relative rounded-2xl bg-white p-5 shadow-[0_18px_45px_rgba(16,24,40,0.14)] sm:p-6 md:p-8">
             <h2 className="text-lg font-bold text-[#1f2937] sm:text-xl md:text-[22px] lg:text-[24px]">
               Get Started with ITR Filing
@@ -195,7 +195,7 @@ export function ItrHero() {
                   value={form.name}
                   onChange={(event) => updateField("name", event.target.value)}
                   placeholder="Enter full name as per PAN"
-                  className="h-10 rounded-lg border border-[#d9dfe8] px-3 text-[13px] font-medium outline-none placeholder:text-[#a0a7b2] focus:border-[#005ca8] sm:h-11 sm:text-sm md:h-12"
+                  className="h-10 rounded-lg border border-[#d9dfe8] px-3 text-[13px] font-medium outline-none placeholder:text-[#a0a7b2] focus:border-[#4c1d95] sm:h-11 sm:text-sm md:h-12"
                 />
               </label>
               <label className="grid gap-1.5 sm:gap-2">
@@ -207,7 +207,7 @@ export function ItrHero() {
                   value={form.mobile}
                   onChange={(event) => updateField("mobile", event.target.value)}
                   placeholder="Enter 10-digit mobile number"
-                  className="h-10 rounded-lg border border-[#d9dfe8] px-3 text-[13px] font-medium outline-none placeholder:text-[#a0a7b2] focus:border-[#005ca8] sm:h-11 sm:text-sm md:h-12"
+                  className="h-10 rounded-lg border border-[#d9dfe8] px-3 text-[13px] font-medium outline-none placeholder:text-[#a0a7b2] focus:border-[#4c1d95] sm:h-11 sm:text-sm md:h-12"
                 />
               </label>
               {[
@@ -223,7 +223,7 @@ export function ItrHero() {
                     onChange={(event) =>
                       updateField(key as keyof typeof form, event.target.value)
                     }
-                    className="h-10 rounded-lg border border-[#d9dfe8] bg-white px-3 text-[13px] font-medium text-[#475467] outline-none focus:border-[#005ca8] sm:h-11 sm:text-sm md:h-12"
+                    className="h-10 rounded-lg border border-[#d9dfe8] bg-white px-3 text-[13px] font-medium text-[#475467] outline-none focus:border-[#4c1d95] sm:h-11 sm:text-sm md:h-12"
                   >
                     <option value="">{String(placeholder)}</option>
                     {(options as string[]).map((option) => (

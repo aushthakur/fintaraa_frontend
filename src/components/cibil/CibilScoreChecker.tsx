@@ -24,7 +24,7 @@ import { fetchUserCibil, type UserCibilResponse } from "@/services/cibil";
 type Step = "phone" | "otp" | "details" | "score";
 
 const inputClass =
-  "h-10 w-full rounded-lg border border-[#d7e4f2] bg-white px-3 text-[13px] font-bold text-[#111827] outline-none transition placeholder:text-[#9aa8b8] focus:border-[#00529c] focus:ring-2 focus:ring-[#e4f1ff] disabled:bg-slate-50 disabled:text-slate-500 sm:h-11";
+  "h-10 w-full rounded-lg border border-[#d7e4f2] bg-white px-3 text-[13px] font-bold text-[#111827] outline-none transition placeholder:text-[#9aa8b8] focus:border-[#4c1d95] focus:ring-2 focus:ring-[#e4f1ff] disabled:bg-slate-50 disabled:text-slate-500 sm:h-11";
 
 const normalizePhone = (value: string) => value.replace(/\D/g, "").slice(-10);
 const normalizePan = (value: string) =>
@@ -77,7 +77,7 @@ function CreditReportTermsCopy() {
       privacy policy.{" "}
       <Link
         href="/terms-and-conditions"
-        className="font-semibold text-[#00529c] hover:underline"
+        className="font-semibold text-[#4c1d95] hover:underline"
       >
         More
       </Link>
@@ -371,7 +371,7 @@ export function CibilScoreChecker() {
 
   return (
     <div className="mx-auto w-full max-w-120 overflow-hidden rounded-b-lg border border-gray-200/80 bg-white shadow-[0_10px_24px_rgba(0,0,0,0.035)] lg:mx-0">
-      <div className="bg-[#00529c] px-4 py-2.5 text-center">
+      <div className="bg-[#4c1d95] px-4 py-2.5 text-center">
         <p className="text-[12px] font-normal tracking-wide text-white">
           Check free credit score{" "}
           <span className="font-extrabold">with live CIBIL fetch</span>
@@ -469,7 +469,7 @@ export function CibilScoreChecker() {
               <button
                 type="button"
                 onClick={() => setStep("phone")}
-                className="text-[12px] font-extrabold text-[#00529c]"
+                className="text-[12px] font-extrabold text-[#4c1d95]"
               >
                 Change mobile
               </button>
@@ -478,7 +478,7 @@ export function CibilScoreChecker() {
                   type="button"
                   onClick={() => void handleResendOtp()}
                   disabled={loading}
-                  className="text-[12px] font-extrabold text-[#00529c] disabled:opacity-60"
+                  className="text-[12px] font-extrabold text-[#4c1d95] disabled:opacity-60"
                 >
                   Resend OTP
                 </button>
@@ -501,7 +501,7 @@ export function CibilScoreChecker() {
               <div className="rounded-2xl border border-[#e2e8f0] bg-[#f8fbff] px-4 py-3">
                 <div className="flex items-center justify-between gap-4">
                   <div className="min-w-0">
-                    <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#00529c]">
+                    <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#4c1d95]">
                       CIBIL Score
                     </p>
                     <p className="mt-1 text-[11px] font-bold leading-snug text-[#667085]">
@@ -585,7 +585,7 @@ export function CibilScoreChecker() {
               {score ? (
                 <Link
                   href="/cibil-score/report"
-                  className="flex h-11 w-full items-center justify-center gap-2 rounded-full border border-[#00529c] bg-white text-[14px] font-bold text-[#00529c] no-underline transition-colors hover:bg-[#eef8ff]"
+                  className="flex h-11 w-full items-center justify-center gap-2 rounded-full border border-[#4c1d95] bg-white text-[14px] font-bold text-[#4c1d95] no-underline transition-colors hover:bg-[#eef8ff]"
                 >
                   <FileText className="h-4 w-4" />
                   View Full Report
@@ -596,7 +596,7 @@ export function CibilScoreChecker() {
         ) : null}
 
         {message ? (
-          <p className="mt-4 text-[12px] font-bold text-[#00529c]">{message}</p>
+          <p className="mt-4 text-[12px] font-bold text-[#4c1d95]">{message}</p>
         ) : null}
         {error ? (
           <p className="mt-4 text-[12px] font-bold text-red-600">{error}</p>

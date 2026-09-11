@@ -55,7 +55,7 @@ export function BankDirectorySection({
 
   return (
     <section className="bg-white pb-16">
-      <div className="overflow-hidden bg-[linear-gradient(135deg,#071f3e_0%,#075cde_58%,#07965a_135%)] px-4 py-12 text-white md:px-6 md:py-16 lg:px-8">
+      <div className="overflow-hidden bg-[linear-gradient(135deg,#071f3e_0%,#5b21b6_58%,#07965a_135%)] px-4 py-12 text-white md:px-6 md:py-16 lg:px-8">
         <div className="mx-auto grid max-w-9xl gap-9 lg:grid-cols-[1.35fr_0.65fr] lg:items-center">
           <div>
             <h1 className="mt-3 max-w-4xl text-[34px] font-extrabold leading-[1.08] tracking-[-0.035em] sm:text-[44px] lg:text-[54px]">
@@ -70,7 +70,7 @@ export function BankDirectorySection({
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
                 href="/products"
-                className="inline-flex h-12 items-center gap-2 rounded-full bg-white px-6 text-[13px] font-extrabold text-[#075cde] no-underline transition hover:bg-[#eef7ff]"
+                className="inline-flex h-12 items-center gap-2 rounded-full bg-white px-6 text-[13px] font-extrabold text-[#5b21b6] no-underline transition hover:bg-[#eef7ff]"
               >
                 Compare all products
                 <ArrowRight className="h-4 w-4" />
@@ -109,7 +109,7 @@ export function BankDirectorySection({
       <div className="mx-auto max-w-9xl px-4 pt-11 md:px-6 lg:px-8">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className="text-[12px] font-extrabold uppercase tracking-[0.18em] text-[#005ca8]">
+            <p className="text-[12px] font-extrabold uppercase tracking-[0.18em] text-[#4c1d95]">
               Explore by bank
             </p>
             <h2 className="mt-2 text-[28px] font-extrabold tracking-tight text-[#07162d] md:text-[38px]">
@@ -155,7 +155,7 @@ export function BankDirectorySection({
 
                 <div className="mt-3 flex items-center justify-between gap-3 rounded-xl bg-[#f7fafc] px-3.5 py-3">
                   <div className="flex items-center gap-2">
-                    <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#e8f3fb] text-[#075cde]">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#e8f3fb] text-[#5b21b6]">
                       <BadgeIndianRupee className="h-4 w-4" />
                     </span>
                     <p className="text-[10px] font-bold text-[#7890a2]">
@@ -173,13 +173,13 @@ export function BankDirectorySection({
                   {bank.products.slice(0, 2).map((product) => (
                     <span
                       key={product}
-                      className="rounded-full border border-[#dce8f1] bg-[#f8fbfd] px-2.5 py-1 text-[10px] font-bold text-[#4f6f88]"
+                      className="rounded-full border border-[#e9d5ff] bg-[#f8fbfd] px-2.5 py-1 text-[10px] font-bold text-[#4f6f88]"
                     >
                       {product}
                     </span>
                   ))}
                   {bank.products.length > 2 ? (
-                    <span className="rounded-full bg-[#edf6fc] px-2.5 py-1 text-[10px] font-extrabold text-[#075cde]">
+                    <span className="rounded-full bg-[#edf6fc] px-2.5 py-1 text-[10px] font-extrabold text-[#5b21b6]">
                       +{bank.products.length - 2}
                     </span>
                   ) : null}
@@ -187,7 +187,7 @@ export function BankDirectorySection({
 
                 <Link
                   href={`/banks/${bank.slug}`}
-                  className="mt-4 inline-flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-[#075cde] px-4 text-[11px] font-extrabold text-white no-underline transition hover:bg-[#064fbf]"
+                  className="mt-4 inline-flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-[#5b21b6] px-4 text-[11px] font-extrabold text-white no-underline transition hover:bg-[#064fbf]"
                 >
                   Explore partner
                   <ArrowRight className="h-3.5 w-3.5" />
@@ -201,10 +201,10 @@ export function BankDirectorySection({
           <div className="mt-12 rounded-3xl bg-[#f5f9fd] p-6 md:p-9">
             <div className="grid gap-7 lg:grid-cols-[0.75fr_1.25fr] lg:items-start">
               <div>
-                <span className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-[#075cde] shadow-sm">
+                <span className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-[#5b21b6] shadow-sm">
                   <Sparkles className="h-5 w-5" />
                 </span>
-                <h3 className="mt-4 text-[24px] font-extrabold text-[#102c45]">
+                <h3 className="mt-4 text-[24px] font-extrabold text-[#3b0764]">
                   How to use this directory
                 </h3>
                 <p className="mt-3 text-[13px] font-medium leading-6 text-[#61748f]">
@@ -233,7 +233,7 @@ export function BankDirectorySection({
                     className="rounded-2xl border border-[#dfebf5] bg-white p-5"
                   >
                     <CheckCircle2 className="h-5 w-5 text-[#0b9b58]" />
-                    <h4 className="mt-3 text-[14px] font-extrabold text-[#102c45]">
+                    <h4 className="mt-3 text-[14px] font-extrabold text-[#3b0764]">
                       {title}
                     </h4>
                     <p className="mt-2 text-[12px] font-medium leading-5 text-[#718399]">
@@ -253,7 +253,7 @@ export function BankDirectorySection({
                   <Link
                     key={product.slug}
                     href={`/banks/hdfc-bank/${product.slug}`}
-                    className="rounded-full border border-[#d6e4f0] bg-white px-3.5 py-2 text-[11px] font-bold text-[#355c7d] no-underline transition hover:border-[#9bc4e8] hover:text-[#075cde]"
+                    className="rounded-full border border-[#d6e4f0] bg-white px-3.5 py-2 text-[11px] font-bold text-[#355c7d] no-underline transition hover:border-[#9bc4e8] hover:text-[#5b21b6]"
                   >
                     {product.name}
                   </Link>

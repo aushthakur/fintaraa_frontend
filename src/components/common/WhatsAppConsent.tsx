@@ -20,7 +20,7 @@ export function WhatsAppConsent({
           type="checkbox"
           checked={checked}
           onChange={(event) => onChange(event.target.checked)}
-          className="mt-0.5 h-4 w-4 shrink-0 rounded border-[#b8c7d8] text-[#005ca8] focus:ring-[#005ca8]"
+          className="mt-0.5 h-4 w-4 shrink-0 rounded border-[#b8c7d8] text-[#4c1d95] focus:ring-[#4c1d95]"
         />
         <span className="min-w-0 wrap-break-word text-[12px] font-semibold leading-5 text-[#475467]">
           {WHATSAPP_CONSENT_TEXT}

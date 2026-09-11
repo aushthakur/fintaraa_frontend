@@ -82,7 +82,7 @@ export function InsuranceClaimsProcess({
                 <div className="flex flex-col items-center px-2 lg:col-span-1">
                   
                   {/* Icon Node Badge */}
-                  <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[#005ca8] text-white shadow-[0_4px_12px_rgba(0,92,168,0.2)]">
+                  <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[#4c1d95] text-white shadow-[0_4px_12px_rgba(0,92,168,0.2)]">
                     <IconComponent className="h-6 w-6" strokeWidth={2} />
                   </div>
 

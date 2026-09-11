@@ -74,7 +74,7 @@ function FeedbackField({
           value={value}
           placeholder={placeholder}
           onChange={(event) => onChange(event.target.value)}
-          className="h-11 w-full rounded-xl border border-[#d8e3ed] bg-white pl-10 pr-3 text-[13px] font-semibold text-[#172033] outline-none transition placeholder:font-medium placeholder:text-[#9aa8b6] focus:border-[#075cde] focus:ring-3 focus:ring-[#075cde]/10"
+          className="h-11 w-full rounded-xl border border-[#d8e3ed] bg-white pl-10 pr-3 text-[13px] font-semibold text-[#172033] outline-none transition placeholder:font-medium placeholder:text-[#9aa8b6] focus:border-[#5b21b6] focus:ring-3 focus:ring-[#5b21b6]/10"
         />
       </span>
     </label>
@@ -172,10 +172,10 @@ export function FeedbackPage() {
     <main className="bg-white px-4 py-10 md:px-6 md:py-12 lg:px-8">
       <div className="mx-auto grid max-w-9xl items-start gap-9 lg:grid-cols-[0.86fr_1.14fr] lg:gap-14">
         <section className="lg:sticky lg:top-32">
-          <p className="text-[11px] font-extrabold uppercase tracking-[0.15em] text-[#075cde]">
+          <p className="text-[11px] font-extrabold uppercase tracking-[0.15em] text-[#5b21b6]">
             Share Feedback
           </p>
-          <h1 className="mt-3 max-w-xl text-[34px] font-extrabold leading-[1.08] tracking-[-0.03em] text-[#102c45] sm:text-[42px] md:text-[48px]">
+          <h1 className="mt-3 max-w-xl text-[34px] font-extrabold leading-[1.08] tracking-[-0.03em] text-[#3b0764] sm:text-[42px] md:text-[48px]">
             Help us make Fintaraa better
           </h1>
           <p className="mt-4 max-w-xl text-[14px] font-medium leading-7 text-[#657b8e] md:text-[16px]">
@@ -257,7 +257,7 @@ export function FeedbackPage() {
               <select
                 value={form.category}
                 onChange={(event) => updateField("category", event.target.value)}
-                className="h-11 rounded-xl border border-[#d8e3ed] bg-white px-3 text-[13px] font-semibold text-[#53687a] outline-none focus:border-[#075cde] focus:ring-3 focus:ring-[#075cde]/10"
+                className="h-11 rounded-xl border border-[#d8e3ed] bg-white px-3 text-[13px] font-semibold text-[#53687a] outline-none focus:border-[#5b21b6] focus:ring-3 focus:ring-[#5b21b6]/10"
               >
                 <option value="">Select a category</option>
                 {categories.map((category) => (
@@ -283,7 +283,7 @@ export function FeedbackPage() {
                       setSuccess(false);
                     }}
                     aria-label={`Rate ${value} out of 5`}
-                    className="rounded-lg p-1.5 text-[#d0d9e2] transition hover:scale-105 hover:text-[#f4ad21] focus:outline-none focus:ring-2 focus:ring-[#075cde]/25"
+                    className="rounded-lg p-1.5 text-[#d0d9e2] transition hover:scale-105 hover:text-[#f4ad21] focus:outline-none focus:ring-2 focus:ring-[#5b21b6]/25"
                   >
                     <Star
                       className={`h-7 w-7 ${value <= rating ? "fill-[#f4ad21] text-[#f4ad21]" : ""}`}
@@ -310,7 +310,7 @@ export function FeedbackPage() {
                   value={form.message}
                   placeholder="Share your experience or suggestion"
                   onChange={(event) => updateField("message", event.target.value)}
-                  className="min-h-32 w-full resize-none rounded-xl border border-[#d8e3ed] bg-white py-3 pl-10 pr-3 text-[13px] font-semibold leading-6 text-[#172033] outline-none transition placeholder:font-medium placeholder:text-[#9aa8b6] focus:border-[#075cde] focus:ring-3 focus:ring-[#075cde]/10"
+                  className="min-h-32 w-full resize-none rounded-xl border border-[#d8e3ed] bg-white py-3 pl-10 pr-3 text-[13px] font-semibold leading-6 text-[#172033] outline-none transition placeholder:font-medium placeholder:text-[#9aa8b6] focus:border-[#5b21b6] focus:ring-3 focus:ring-[#5b21b6]/10"
                 />
               </span>
             </label>

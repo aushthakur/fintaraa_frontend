@@ -101,7 +101,7 @@ function LinkRow({
         <span key={item.key}>
           <Link
             href={item.href}
-            className="text-[#7f8995] no-underline transition hover:text-[#00529b]"
+            className="text-[#7f8995] no-underline transition hover:text-[#4c1d95]"
           >
             {item.label}
           </Link>
@@ -135,7 +135,7 @@ function DirectorySection({
   return (
     <div className="py-8">
       <div className="flex items-center justify-center gap-2">
-        <Icon className="h-4 w-4 text-[#00529b]" />
+        <Icon className="h-4 w-4 text-[#4c1d95]" />
         <h2 className="text-center text-[18px] font-extrabold uppercase tracking-[0.08em] text-[#3f4650] md:text-[20px]">
           {title}
         </h2>

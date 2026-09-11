@@ -16,7 +16,7 @@ export default function PartnerNotificationsPage() {
       <div className="mx-auto mb-4 max-w-5xl">
         <Link
           href="/partner/profile"
-          className="inline-flex items-center gap-2 text-[12px] font-extrabold text-[#195585] no-underline hover:underline"
+          className="inline-flex items-center gap-2 text-[12px] font-extrabold text-[#3b0764] no-underline hover:underline"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to partner dashboard

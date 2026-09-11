@@ -78,13 +78,13 @@ export function LoanTabs({
 
   return (
     <section
-      className="sticky z-[49] w-full border-y border-[#d8e6f0] bg-[#eaf4ff]/95 px-4 py-3 antialiased backdrop-blur sm:px-6 lg:px-8"
+      className="sticky z-30 w-full border-y border-slate-200 bg-white/95 px-4 py-2.5 antialiased backdrop-blur-md shadow-2xs sm:px-6 lg:px-8"
       style={{ top: "var(--site-header-height, 8.25rem)" }}
     >
       <div
         role="tablist"
         aria-label="Loan information sections"
-        className="mx-auto flex max-w-9xl items-center gap-2 overflow-x-auto py-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="mx-auto flex max-w-7xl items-center gap-2 overflow-x-auto py-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {tabs.map((tab) => {
           const isSelected = active?.key === tab.key;
@@ -95,10 +95,10 @@ export function LoanTabs({
               role="tab"
               aria-selected={isSelected}
               onClick={() => onTabChange(tab.key)}
-              className={`h-10 shrink-0 rounded-full px-4 text-[11px] font-extrabold transition sm:px-5 sm:text-[12px] ${
+              className={`h-9 shrink-0 rounded-full px-4 text-[12px] font-bold transition-all cursor-pointer ${
                 isSelected
-                  ? "bg-[#075cde] text-white"
-                  : "border border-[#d6e3ec] bg-white text-[#36546b] hover:border-[#8db9d6] hover:text-[#075cde]"
+                  ? "bg-[#5b21b6] text-white shadow-xs"
+                  : "bg-slate-100 text-slate-700 hover:bg-slate-200 hover:text-slate-900"
               }`}
             >
               <span className="sm:hidden">{shortLabel(tab.label)}</span>
@@ -132,18 +132,18 @@ export function LoanGuidePanel({
   if (!active) return null;
 
   return (
-    <section className="bg-[#f7fafc] pb-10 md:pb-14">
-      <div className="mx-auto grid max-w-9xl items-start gap-5 px-4 pt-7 sm:px-6 md:pt-9 lg:grid-cols-[245px_minmax(0,1fr)] lg:px-8">
+    <section className="bg-slate-50/70 pb-12 md:pb-16 border-b border-slate-200">
+      <div className="mx-auto grid max-w-7xl items-start gap-6 px-4 pt-8 sm:px-6 md:pt-10 lg:grid-cols-[250px_minmax(0,1fr)] lg:px-8">
         <aside
-          className="hidden rounded-2xl border border-[#dce7ef] bg-white p-3 lg:sticky lg:block"
-          style={{ top: "calc(var(--site-header-height, 8.25rem) + 5.25rem)" }}
+          className="hidden rounded-2xl border border-slate-200 bg-white p-3.5 lg:sticky lg:block shadow-xs"
+          style={{ top: "calc(var(--site-header-height, 8.25rem) + 4.5rem)" }}
         >
-          <div className="px-3 pb-3 pt-2">
-            <p className="text-[10px] font-extrabold uppercase tracking-[0.13em] text-[#7890a2]">
-              Quick links
+          <div className="px-3 pb-3 pt-1">
+            <p className="text-[10px] font-extrabold uppercase tracking-widest text-[#5b21b6]">
+              Product Guide
             </p>
-            <h2 className="mt-1 text-[16px] font-extrabold text-[#17354d]">
-              {productName} Guide
+            <h2 className="mt-1 text-[16px] font-extrabold text-slate-900">
+              {productName}
             </h2>
           </div>
           <nav aria-label={`${productName} guide sections`} className="grid gap-1">
@@ -154,16 +154,16 @@ export function LoanGuidePanel({
                   key={tab.key}
                   type="button"
                   onClick={() => onTabChange(tab.key)}
-                  className={`flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-left text-[11px] font-bold leading-4 transition ${
+                  className={`flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-[12px] font-bold leading-5 transition-colors cursor-pointer ${
                     selected
-                      ? "bg-[#e9f3ff] text-[#075cde]"
-                      : "text-[#526b80] hover:bg-[#f5f8fa] hover:text-[#075cde]"
+                      ? "bg-purple-50 text-[#5b21b6]"
+                      : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
                   }`}
                 >
                   <LoanTabIcon tab={tab} className="h-4 w-4 shrink-0" />
                   <span className="min-w-0 flex-1">{tab.label}</span>
                   <ArrowRight
-                    className={`h-3.5 w-3.5 shrink-0 ${selected ? "opacity-100" : "opacity-0"}`}
+                    className={`h-3 w-3 shrink-0 ${selected ? "opacity-100" : "opacity-0"}`}
                   />
                 </button>
               );
@@ -172,27 +172,27 @@ export function LoanGuidePanel({
           <AuthRedirectLink
             href={applyHref}
             productSlug={productSlug}
-            className="mt-3 flex h-10 items-center justify-center gap-2 rounded-xl bg-[#13a653] px-3 text-[11px] font-extrabold text-white no-underline transition hover:bg-[#0f8f45]"
+            className="mt-4 flex h-10 items-center justify-center gap-2 rounded-xl bg-[#5b21b6] px-3 text-[12px] font-bold text-white no-underline shadow-xs transition hover:bg-[#4c1d95]"
           >
             Apply for {productName}
             <ArrowRight className="h-3.5 w-3.5" />
           </AuthRedirectLink>
         </aside>
 
-        <article className="min-w-0 rounded-2xl border border-[#dce7ef] bg-white p-5 sm:p-7 md:p-8">
-          <div className="flex items-start gap-4 border-b border-[#e5edf3] pb-5">
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#e9f3ff] text-[#075cde]">
+        <article className="min-w-0 rounded-2xl border border-slate-200 bg-white p-5 sm:p-7 md:p-8 shadow-xs">
+          <div className="flex items-start gap-4 border-b border-slate-100 pb-5">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-purple-100 text-[#5b21b6]">
               <LoanTabIcon tab={active} className="h-5 w-5" />
             </span>
             <div>
-              <p className="text-[10px] font-extrabold uppercase tracking-[0.13em] text-[#075cde]">
+              <p className="text-[11px] font-extrabold uppercase tracking-widest text-[#5b21b6]">
                 {active.eyebrow || `${productName} guide`}
               </p>
-              <h2 className="mt-1 text-[23px] font-extrabold leading-tight tracking-[-0.02em] text-[#17354d] sm:text-[28px]">
+              <h2 className="mt-1 text-[22px] font-extrabold leading-tight tracking-tight text-slate-900 sm:text-[26px]">
                 {guideTitle(active.title)}
               </h2>
               {active.description ? (
-                <p className="mt-2 text-[13px] font-medium leading-6 text-[#718598] sm:text-[14px]">
+                <p className="mt-2 text-[13.5px] font-medium leading-relaxed text-slate-600">
                   {active.description}
                 </p>
               ) : null}
@@ -201,11 +201,9 @@ export function LoanGuidePanel({
 
           <div className="mt-6">{children}</div>
 
-          <div className="mt-7 border-t border-[#e5edf3] pt-5">
-            <p className="text-[10px] font-medium leading-5 text-[#8295a5]">
-              Information is indicative. Eligibility, pricing, approval and the
-              final document checklist are determined by the selected lending
-              partner after profile and document verification.
+          <div className="mt-8 border-t border-slate-100 pt-4">
+            <p className="text-[11px] font-medium leading-relaxed text-slate-400">
+              *Information is indicative. Interest rates, loan sanction amounts, and approval are subject to bank and NBFC underwriting norms and credit evaluation.
             </p>
           </div>
         </article>

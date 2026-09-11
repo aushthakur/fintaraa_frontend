@@ -21,7 +21,7 @@ export function LoanFeaturesSection({
                 key={item}
                 className="rounded-md border border-[#e1e7ef] bg-white p-4"
               >
-                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#e8f4ff] text-[#005ca8]">
+                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#e8f4ff] text-[#4c1d95]">
                   <Icon className="h-4.5 w-4.5" />
                 </span>
                 <p className="mt-3 text-[12px] font-bold leading-5 text-[#344054]">

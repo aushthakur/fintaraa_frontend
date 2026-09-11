@@ -33,7 +33,7 @@ export function ServiceRequestProgress({
   if (loading) {
     return (
       <div className="rounded-2xl border border-[#dce9f7] bg-white p-5 shadow-[0_10px_30px_rgba(16,24,40,0.05)]">
-        <div className="flex items-center gap-2 text-[14px] font-bold text-[#005ca8]">
+        <div className="flex items-center gap-2 text-[14px] font-bold text-[#4c1d95]">
           <Loader2 className="h-4 w-4 animate-spin" />
           Loading latest progress...
         </div>
@@ -50,7 +50,7 @@ export function ServiceRequestProgress({
     <div className="rounded-2xl border border-[#dce9f7] bg-white p-5 shadow-[0_10px_30px_rgba(16,24,40,0.05)] md:p-6">
       <div className="flex flex-col justify-between gap-4 md:flex-row md:items-start">
         <div>
-          <p className="text-[13px] font-extrabold uppercase tracking-wide text-[#005ca8]">
+          <p className="text-[13px] font-extrabold uppercase tracking-wide text-[#4c1d95]">
             Progress
           </p>
           <h3 className="mt-1 text-[20px] font-extrabold text-[#1f2937]">
@@ -64,7 +64,7 @@ export function ServiceRequestProgress({
         {showQueryId ? (
           <div
             data-service-query-id={request.queryId}
-            className="rounded-xl bg-[#eef7ff] px-4 py-3 text-[13px] font-bold text-[#005ca8]"
+            className="rounded-xl bg-[#eef7ff] px-4 py-3 text-[13px] font-bold text-[#4c1d95]"
           >
             Query ID: {request.queryId}
           </div>
@@ -116,7 +116,7 @@ export function ServiceRequestProgress({
       {latestFollowUps.length ? (
         <div className="mt-6 rounded-xl border border-[#e5edf6] bg-[#f8fbff] p-4">
           <div className="flex items-center gap-2 text-[14px] font-extrabold text-[#1f2937]">
-            <CalendarClock className="h-4 w-4 text-[#005ca8]" />
+            <CalendarClock className="h-4 w-4 text-[#4c1d95]" />
             Latest follow-up updates
           </div>
           <div className="mt-3 grid gap-2">
@@ -129,7 +129,7 @@ export function ServiceRequestProgress({
                   <p className="text-[13px] font-extrabold text-[#344054]">
                     {formatDate(followUp.scheduledAt)}
                   </p>
-                  <span className="rounded-full bg-[#eef7ff] px-2.5 py-1 text-[11px] font-extrabold capitalize text-[#005ca8]">
+                  <span className="rounded-full bg-[#eef7ff] px-2.5 py-1 text-[11px] font-extrabold capitalize text-[#4c1d95]">
                     {followUp.status}
                   </span>
                 </div>
@@ -156,7 +156,7 @@ export function ServiceRequestProgress({
                   completed
                     ? "bg-[#1cb45c] text-white"
                     : active
-                      ? "bg-[#005ca8] text-white"
+                      ? "bg-[#4c1d95] text-white"
                       : "bg-[#e8eef5] text-[#98a2b3]"
                 }`}
               >

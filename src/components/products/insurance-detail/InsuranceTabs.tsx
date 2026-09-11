@@ -99,8 +99,8 @@ export function InsuranceTabs({
               onClick={() => onTabChange(tab.key)}
               className={`h-10 shrink-0 rounded-full px-4 text-[11px] font-extrabold transition sm:px-5 sm:text-[12px] ${
                 selected
-                  ? "bg-[#075cde] text-white"
-                  : "border border-[#d6e3ec] bg-white text-[#36546b] hover:border-[#8db9d6] hover:text-[#075cde]"
+                  ? "bg-[#5b21b6] text-white"
+                  : "border border-[#d6e3ec] bg-white text-[#36546b] hover:border-[#8db9d6] hover:text-[#5b21b6]"
               }`}
             >
               <span className="sm:hidden">{shortLabel(tab.label)}</span>
@@ -144,7 +144,7 @@ export function InsuranceGuidePanel({
             <p className="text-[10px] font-extrabold uppercase tracking-[0.13em] text-[#7890a2]">
               Quick links
             </p>
-            <h2 className="mt-1 text-[16px] font-extrabold text-[#17354d]">
+            <h2 className="mt-1 text-[16px] font-extrabold text-[#3b0764]">
               {productName} Guide
             </h2>
           </div>
@@ -162,8 +162,8 @@ export function InsuranceGuidePanel({
                   onClick={() => onTabChange(tab.key)}
                   className={`flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-left text-[11px] font-bold leading-4 transition ${
                     selected
-                      ? "bg-[#e9f3ff] text-[#075cde]"
-                      : "text-[#526b80] hover:bg-[#f5f8fa] hover:text-[#075cde]"
+                      ? "bg-[#e9f3ff] text-[#5b21b6]"
+                      : "text-[#526b80] hover:bg-[#f5f8fa] hover:text-[#5b21b6]"
                   }`}
                 >
                   <InsuranceTabIcon
@@ -193,14 +193,14 @@ export function InsuranceGuidePanel({
 
         <article className="min-w-0 rounded-2xl border border-[#dce7ef] bg-white p-5 sm:p-7 md:p-8">
           <div className="flex items-start gap-4 border-b border-[#e5edf3] pb-5">
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#e9f3ff] text-[#075cde]">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#e9f3ff] text-[#5b21b6]">
               <InsuranceTabIcon tab={active} className="h-5 w-5" />
             </span>
             <div>
-              <p className="text-[10px] font-extrabold uppercase tracking-[0.13em] text-[#075cde]">
+              <p className="text-[10px] font-extrabold uppercase tracking-[0.13em] text-[#5b21b6]">
                 {active.label} guide
               </p>
-              <h2 className="mt-1 text-[23px] font-extrabold leading-tight tracking-[-0.02em] text-[#17354d] sm:text-[28px]">
+              <h2 className="mt-1 text-[23px] font-extrabold leading-tight tracking-[-0.02em] text-[#3b0764] sm:text-[28px]">
                 {guideTitle(active.title)}
               </h2>
               {active.description ? (

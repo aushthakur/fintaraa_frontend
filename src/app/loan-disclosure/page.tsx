@@ -26,7 +26,7 @@ const sections = [
   {
     kicker: "01",
     title: "Fintaraa's role in your loan journey",
-    accent: "text-[#195585]",
+    accent: "text-[#3b0764]",
     body: [
       "Fintaraa is a financial services marketplace that helps customers discover, compare, and apply for loan products offered by RBI-registered banks and NBFCs.",
       "Fintaraa is not a lender and does not disburse loans directly. We operate as a facilitator / Direct Selling Agent (DSA), helping customers submit applications and understand next steps with partner financial institutions.",
@@ -83,15 +83,15 @@ export async function generateMetadata(): Promise<Metadata> {
 export default function LoanDisclosurePage() {
   return (
     <main className="bg-white">
-      <section className="relative overflow-hidden bg-[#f5fbff] px-4 py-16 md:px-6 lg:px-8">
-        <div className="absolute inset-x-0 top-0 h-1 bg-linear-to-r from-[#195585] via-[#12b76a] to-[#f97316]" />
+      <section className="relative overflow-hidden bg-[#faf5ff] px-4 py-16 md:px-6 lg:px-8">
+        <div className="absolute inset-x-0 top-0 h-1 bg-linear-to-r from-[#3b0764] via-[#12b76a] to-[#f97316]" />
         <div className="pointer-events-none absolute right-32 top-32 h-96 w-96 rounded-full bg-[#12b76a]/14 blur-3xl" />
-        <div className="pointer-events-none absolute bottom-40 left-32 h-112 w-md rounded-full bg-[#195585]/14 blur-3xl" />
+        <div className="pointer-events-none absolute bottom-40 left-32 h-112 w-md rounded-full bg-[#3b0764]/14 blur-3xl" />
 
         <div className="relative mx-auto max-w-9xl">
           <div className="grid gap-10 lg:grid-cols-[1fr_26rem] lg:items-end">
             <div>
-              <div className="inline-flex items-center gap-2 rounded-full bg-[#195585] px-4 py-2 text-[12px] font-extrabold uppercase tracking-[0.16em] text-white">
+              <div className="inline-flex items-center gap-2 rounded-full bg-[#3b0764] px-4 py-2 text-[12px] font-extrabold uppercase tracking-[0.16em] text-white">
                 <ShieldCheck className="h-4 w-4" />
                 Loan Transparency
               </div>
@@ -105,7 +105,7 @@ export default function LoanDisclosurePage() {
               </p>
             </div>
 
-            <div className="bg-[#195585] p-7 text-white">
+            <div className="bg-[#3b0764] p-7 text-white">
               <AlertCircle className="h-8 w-8 text-[#7ee3a2]" />
               <p className="mt-5 text-[26px] font-extrabold leading-tight">
                 Fintaraa facilitates. Lending decisions rest with regulated
@@ -121,8 +121,8 @@ export default function LoanDisclosurePage() {
 
           <div className="mt-12 grid gap-6 md:grid-cols-4">
             {summary.map(({ label, value, icon: Icon }) => (
-              <div key={label} className="border-t-2 border-[#195585] pt-5">
-                <Icon className="h-6 w-6 text-[#195585]" />
+              <div key={label} className="border-t-2 border-[#3b0764] pt-5">
+                <Icon className="h-6 w-6 text-[#3b0764]" />
                 <p className="mt-4 text-[12px] font-extrabold uppercase tracking-[0.16em] text-[#667085]">
                   {label}
                 </p>
@@ -170,7 +170,7 @@ export default function LoanDisclosurePage() {
             ))}
           </div>
 
-          <section className="mt-8 bg-linear-to-r from-[#195585] via-[#1375de] to-[#12b76a] p-8 text-white md:p-10">
+          <section className="mt-8 bg-linear-to-r from-[#3b0764] via-[#1375de] to-[#12b76a] p-8 text-white md:p-10">
             <div className="grid gap-6 md:grid-cols-[1fr_auto] md:items-center">
               <div>
                 <h2 className="text-[32px] font-extrabold tracking-[-0.01em]">
@@ -184,7 +184,7 @@ export default function LoanDisclosurePage() {
               </div>
               <a
                 href="mailto:customercare@fintaraa.com"
-                className="inline-flex h-12 items-center justify-center rounded-full bg-white px-6 text-[14px] font-extrabold text-[#195585] no-underline"
+                className="inline-flex h-12 items-center justify-center rounded-full bg-white px-6 text-[14px] font-extrabold text-[#3b0764] no-underline"
               >
                 customercare@fintaraa.com
               </a>

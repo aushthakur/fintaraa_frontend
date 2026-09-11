@@ -67,7 +67,7 @@ export function FeaturedArticleSection({ article }: FeaturedArticleProps) {
             {/* Top Row Block Elements */}
             <div className="space-y-3.5">
               {/* Category Pill Badge Tag */}
-              <span className="inline-flex items-center justify-center bg-white text-[#005ca8] text-[12px] font-bold px-4 py-1.5 rounded-full shadow-2xs border border-[#e1ecf8]">
+              <span className="inline-flex items-center justify-center bg-white text-[#4c1d95] text-[12px] font-bold px-4 py-1.5 rounded-full shadow-2xs border border-[#e1ecf8]">
                 {data.category}
               </span>
 
@@ -113,7 +113,7 @@ export function FeaturedArticleSection({ article }: FeaturedArticleProps) {
               {/* Solid Click Action Trigger */}
               <Link
                 href={`/blog/${data.slug}`}
-                className="text-[13.5px] font-bold text-[#005ca8] hover:underline whitespace-nowrap self-end ml-auto sm:ml-0"
+                className="text-[13.5px] font-bold text-[#4c1d95] hover:underline whitespace-nowrap self-end ml-auto sm:ml-0"
               >
                 Read more
               </Link>

@@ -44,7 +44,7 @@ export function BlogHeroSection() {
         <div className="space-y-6">
           <h1 className="max-w-xl text-[38px] font-extrabold leading-[1.15] tracking-tight text-[#2d3142] md:text-[46px]">
             Financial Insights, <br />
-            Market <span className="text-[#005ca8]">Trends & Money</span> <br />
+            Market <span className="text-[#4c1d95]">Trends & Money</span> <br />
             Management Tips
           </h1>
 
@@ -56,7 +56,7 @@ export function BlogHeroSection() {
 
           {/* Precision Match Mock Search Component */}
           <div className="max-w-md pt-2">
-            <div className="flex h-12 w-full items-center overflow-hidden rounded-xl border border-[#e1ecf8] bg-[#edf4fe] transition-colors focus-within:border-[#005ca8]">
+            <div className="flex h-12 w-full items-center overflow-hidden rounded-xl border border-[#e1ecf8] bg-[#edf4fe] transition-colors focus-within:border-[#4c1d95]">
               <div className="flex w-full items-center gap-1.5 px-4 text-[13px] font-medium text-[#7d8893]">
                 <span>Search</span>
                 {/* Accent Highlighted "blog" Token */}
@@ -69,7 +69,7 @@ export function BlogHeroSection() {
               {/* Square Deep Blue Icon CTA Button */}
               <button
                 type="button"
-                className="flex h-full w-14 shrink-0 items-center justify-center bg-[#005ca8] text-white transition-colors hover:bg-[#004a87]"
+                className="flex h-full w-14 shrink-0 items-center justify-center bg-[#4c1d95] text-white transition-colors hover:bg-[#004a87]"
               >
                 <Search className="h-4 w-4 stroke-[2.5]" />
               </button>

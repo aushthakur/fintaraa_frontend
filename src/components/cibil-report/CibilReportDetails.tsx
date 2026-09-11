@@ -34,9 +34,9 @@ const metricTones: Record<CibilMetricIcon, string> = {
   payment: "bg-[#e9f8ef] text-[#168447]",
   utilization: "bg-[#fff4dd] text-[#a15c00]",
   enquiries: "bg-[#f0ecff] text-[#6548c7]",
-  accounts: "bg-[#e8f3fb] text-[#075cde]",
+  accounts: "bg-[#e8f3fb] text-[#5b21b6]",
   age: "bg-[#e7f7f6] text-[#087f77]",
-  "active-loans": "bg-[#e8f3fb] text-[#075cde]",
+  "active-loans": "bg-[#e8f3fb] text-[#5b21b6]",
   "closed-loans": "bg-[#e9f8ef] text-[#168447]",
   "credit-cards": "bg-[#f0ecff] text-[#6548c7]",
 };
@@ -59,7 +59,7 @@ const sectionMeta: Record<
   "Account Summary": {
     icon: Layers3,
     tone: "from-[#eef7fd] to-white",
-    iconTone: "bg-[#dceffa] text-[#075cde]",
+    iconTone: "bg-[#dceffa] text-[#5b21b6]",
   },
   "Loan Summary": {
     icon: Landmark,
@@ -91,7 +91,7 @@ export function CibilReportDetails({ data }: { data: CibilReportViewData }) {
             className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between"
           >
             <div>
-              <h2 className="mt-3 text-[27px] font-extrabold leading-tight tracking-[-0.02em] text-[#102f49] sm:text-[32px]">
+              <h2 className="mt-3 text-[27px] font-extrabold leading-tight tracking-[-0.02em] text-[#3b0764] sm:text-[32px]">
                 Credit profile breakdown
               </h2>
               <p className="mt-2 max-w-2xl text-[14px] font-medium leading-6 text-[#667f91]">
@@ -132,7 +132,7 @@ export function CibilReportDetails({ data }: { data: CibilReportViewData }) {
                   <p className="mt-4 text-[10px] font-extrabold uppercase leading-4 tracking-[0.08em] text-[#667f91]">
                     {item.label}
                   </p>
-                  <p className="mt-1.5 text-[22px] font-extrabold tracking-[-0.02em] text-[#102f49]">
+                  <p className="mt-1.5 text-[22px] font-extrabold tracking-[-0.02em] text-[#3b0764]">
                     {item.value}
                   </p>
                   <p className="mt-auto pt-2 text-[10px] font-semibold leading-4 text-[#8ca0af]">
@@ -148,7 +148,7 @@ export function CibilReportDetails({ data }: { data: CibilReportViewData }) {
               const meta = sectionMeta[section.title] || {
                 icon: FileCheck2,
                 tone: "from-[#f4f8fb] to-white",
-                iconTone: "bg-[#e8f3fb] text-[#075cde]",
+                iconTone: "bg-[#e8f3fb] text-[#5b21b6]",
               };
               const SectionIcon = meta.icon;
               return (

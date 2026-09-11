@@ -88,16 +88,16 @@ function PremiumSelect({
         type="button"
         onClick={() => setOpen((current) => !current)}
         className={`mt-1 flex h-11 w-full items-center gap-3 rounded-xl border bg-white px-3 text-left text-[13px] font-semibold transition ${
-          open ? "border-[#075cde]" : "border-[#d7e5f3] hover:border-[#075cde]"
+          open ? "border-[#5b21b6]" : "border-[#e9d5ff] hover:border-[#5b21b6]"
         }`}
       >
-        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#e9f2ff] text-[#075cde]">
+        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#ede9fe] text-[#5b21b6]">
           <Icon className="h-4 w-4" />
         </span>
         <span className="min-w-0 flex-1 truncate text-[#2f3a4a]">{value}</span>
         <ChevronDown
           className={`h-4 w-4 shrink-0 text-[#667085] transition ${
-            open ? "rotate-180 text-[#075cde]" : ""
+            open ? "rotate-180 text-[#5b21b6]" : ""
           }`}
         />
       </button>
@@ -116,8 +116,8 @@ function PremiumSelect({
                 }}
                 className={`flex h-10 w-full items-center justify-between rounded-lg px-3 text-left text-[13px] font-semibold transition ${
                   selected
-                    ? "bg-[#e9f2ff] text-[#075cde]"
-                    : "text-[#344054] hover:bg-[#f8fcff] hover:text-[#075cde]"
+                    ? "bg-[#ede9fe] text-[#5b21b6]"
+                    : "text-[#344054] hover:bg-[#f8fcff] hover:text-[#5b21b6]"
                 }`}
               >
                 <span>{option}</span>
@@ -176,13 +176,13 @@ export function EligibilitySection() {
       className="bg-white px-4 py-12 md:px-6 lg:px-8"
     >
       <div className="mx-auto grid max-w-9xl overflow-hidden rounded-2xl bg-[#f7fbff] lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
-        <div className="relative flex flex-col justify-end overflow-hidden bg-[#e9f2ff] px-5 pt-7 sm:px-8 lg:min-h-130 lg:px-10">
+        <div className="relative flex flex-col justify-end overflow-hidden bg-[#ede9fe] px-5 pt-7 sm:px-8 lg:min-h-130 lg:px-10">
           <div className="relative z-10">
             <div className="flex flex-wrap gap-2">
               {["RBI Registered", "ISO 27001 Certified"].map((item) => (
                 <span
                   key={item}
-                  className="inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-wide text-[#075cde]"
+                  className="inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-wide text-[#5b21b6]"
                 >
                   <BadgeCheck className="h-3.5 w-3.5" />
                   {item}
@@ -191,7 +191,7 @@ export function EligibilitySection() {
             </div>
             <h2 className="mt-5 max-w-lg text-[30px] font-bold leading-tight tracking-tight text-[#07162d] sm:text-[40px]">
               Check Your Eligibility in{" "}
-              <span className="text-[#075cde]">30 Seconds</span>
+              <span className="text-[#5b21b6]">30 Seconds</span>
             </h2>
             <p className="mt-4 max-w-md text-[15px] font-medium leading-7 text-[#52657d]">
               Get matched with loan, insurance and card offers from trusted
@@ -217,7 +217,7 @@ export function EligibilitySection() {
                   key={title}
                   className="flex items-start gap-3 rounded-xl bg-white/90 p-3"
                 >
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#e9f2ff] text-[#075cde]">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#ede9fe] text-[#5b21b6]">
                     <ShieldCheck className="h-5 w-5" />
                   </span>
                   <span>
@@ -291,7 +291,7 @@ export function EligibilitySection() {
             <div className="relative mt-6">
               <div className="absolute left-0 right-0 top-4 h-1 rounded-full bg-[#e4edf5]" />
               <div
-                className="absolute left-0 top-4 h-1 rounded-full bg-[#075cde] transition-all duration-500"
+                className="absolute left-0 top-4 h-1 rounded-full bg-[#5b21b6] transition-all duration-500"
                 style={{
                   width: `${(activeStep / (stepperItems.length - 1)) * 100}%`,
                 }}
@@ -305,9 +305,9 @@ export function EligibilitySection() {
                       <span
                         className={`mx-auto flex h-9 w-9 items-center justify-center rounded-full border-2 text-[12px] font-bold ${
                           complete
-                            ? "border-[#075cde] bg-[#075cde] text-white"
+                            ? "border-[#5b21b6] bg-[#5b21b6] text-white"
                             : active
-                              ? "border-[#d9ebff] bg-[#075cde] text-white"
+                              ? "border-[#d9ebff] bg-[#5b21b6] text-white"
                               : "border-[#e4edf5] bg-white text-[#98a2b3]"
                         }`}
                       >
@@ -338,8 +338,8 @@ export function EligibilitySection() {
                       onClick={() => setSelectedProduct(label)}
                       className={`flex h-11 items-center justify-center gap-2 rounded-xl border px-2 text-[12px] font-semibold transition ${
                         selectedProduct === label
-                          ? "border-[#075cde] bg-[#075cde] text-white"
-                          : "border-[#d7e5f3] bg-white text-[#344054] hover:border-[#075cde]"
+                          ? "border-[#5b21b6] bg-[#5b21b6] text-white"
+                          : "border-[#e9d5ff] bg-white text-[#344054] hover:border-[#5b21b6]"
                       }`}
                     >
                       <Icon className="h-4 w-4" />
@@ -365,9 +365,9 @@ export function EligibilitySection() {
                   step={50000}
                   value={amount}
                   onChange={(event) => setAmount(Number(event.target.value))}
-                  className="mt-3 h-2 w-full cursor-pointer appearance-none rounded-full accent-[#075cde]"
+                  className="mt-3 h-2 w-full cursor-pointer appearance-none rounded-full accent-[#5b21b6]"
                   style={{
-                    background: `linear-gradient(to right, #075cde 0%, #075cde ${((amount - 50000) / (5000000 - 50000)) * 100}%, #e2e8f0 ${((amount - 50000) / (5000000 - 50000)) * 100}%, #e2e8f0 100%)`,
+                    background: `linear-gradient(to right, #5b21b6 0%, #5b21b6 ${((amount - 50000) / (5000000 - 50000)) * 100}%, #e2e8f0 ${((amount - 50000) / (5000000 - 50000)) * 100}%, #e2e8f0 100%)`,
                   }}
                 />
                 <div className="mt-1 flex justify-between text-[11px] font-bold text-[#8090a4]">
@@ -382,8 +382,8 @@ export function EligibilitySection() {
                       onClick={() => setAmount(item.value)}
                       className={`h-10 rounded-lg border text-[12px] font-semibold transition ${
                         amount === item.value
-                          ? "border-[#075cde] bg-[#075cde] text-white"
-                          : "border-[#d7e5f3] bg-white text-[#344054] hover:border-[#075cde]"
+                          ? "border-[#5b21b6] bg-[#5b21b6] text-white"
+                          : "border-[#e9d5ff] bg-white text-[#344054] hover:border-[#5b21b6]"
                       }`}
                     >
                       {item.label}
@@ -421,8 +421,8 @@ export function EligibilitySection() {
                   <span className="text-[13px] font-semibold text-[#344054]">
                     Monthly Salary / Income
                   </span>
-                  <span className="mt-1 flex h-11 w-full items-center gap-3 rounded-xl border border-[#d7e5f3] bg-white px-3 transition hover:border-[#075cde] focus-within:border-[#075cde]">
-                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#e9f2ff] text-[#075cde]">
+                  <span className="mt-1 flex h-11 w-full items-center gap-3 rounded-xl border border-[#e9d5ff] bg-white px-3 transition hover:border-[#5b21b6] focus-within:border-[#5b21b6]">
+                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#ede9fe] text-[#5b21b6]">
                       <IndianRupee className="h-4 w-4" />
                     </span>
                     <input
@@ -442,8 +442,8 @@ export function EligibilitySection() {
                   <span className="text-[13px] font-semibold text-[#344054]">
                     CIBIL Score
                   </span>
-                  <span className="mt-1 flex h-11 w-full items-center gap-3 rounded-xl border border-[#d7e5f3] bg-white px-3 transition hover:border-[#075cde]">
-                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#e9f2ff] text-[#075cde]">
+                  <span className="mt-1 flex h-11 w-full items-center gap-3 rounded-xl border border-[#e9d5ff] bg-white px-3 transition hover:border-[#5b21b6]">
+                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#ede9fe] text-[#5b21b6]">
                       <Gauge className="h-4 w-4" />
                     </span>
                     <input
@@ -470,7 +470,7 @@ export function EligibilitySection() {
                 </div>
                 <Link
                   href={continueHref}
-                  className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#075cde] px-6 text-[15px] font-semibold text-white no-underline transition hover:bg-[#064cb8]"
+                  className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#5b21b6] px-6 text-[15px] font-semibold text-white no-underline transition hover:bg-[#4c1d95]"
                 >
                   {continueLabel}
                   <ArrowRight className="h-4 w-4" />

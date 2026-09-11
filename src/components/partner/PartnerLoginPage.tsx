@@ -213,7 +213,7 @@ export function PartnerLoginPage({
           <div className="max-w-3xl">
             <h1 className="mt-8 text-[42px] font-bold leading-[0.98] tracking-[-0.03em] text-[#07162d] md:text-[54px]">
               Unlock your
-              <span className="block text-[#195585]">partner account</span>
+              <span className="block text-[#3b0764]">partner account</span>
             </h1>
             <p className="mt-7 max-w-2xl text-[18px] leading-8 text-[#5d6b7c]">
               Access your Fintaraa partner profile, complete agency KYC, and
@@ -342,7 +342,7 @@ export function PartnerLoginPage({
                       setStep("details");
                       setMessage("");
                     }}
-                    className="text-[13px] font-extrabold text-[#195585]"
+                    className="text-[13px] font-extrabold text-[#3b0764]"
                   >
                     Change details
                   </button>
@@ -351,7 +351,7 @@ export function PartnerLoginPage({
                       type="button"
                       onClick={resendOtp}
                       disabled={loading}
-                      className="text-[13px] font-extrabold text-[#195585] disabled:opacity-60"
+                      className="text-[13px] font-extrabold text-[#3b0764] disabled:opacity-60"
                     >
                       Resend OTP
                     </button>
@@ -372,7 +372,7 @@ export function PartnerLoginPage({
                   <button
                     type="button"
                     onClick={() => switchMode("register")}
-                    className="font-extrabold text-[#195585]"
+                    className="font-extrabold text-[#3b0764]"
                   >
                     Create partner account
                   </button>
@@ -383,7 +383,7 @@ export function PartnerLoginPage({
                   <button
                     type="button"
                     onClick={() => switchMode("login")}
-                    className="font-extrabold text-[#195585]"
+                    className="font-extrabold text-[#3b0764]"
                   >
                     Login with OTP
                   </button>
@@ -391,7 +391,7 @@ export function PartnerLoginPage({
               )}
               <p>
                 Looking for customer login?{" "}
-                <Link href="/login" className="font-extrabold text-[#195585]">
+                <Link href="/login" className="font-extrabold text-[#3b0764]">
                   Login here
                 </Link>
               </p>
@@ -422,7 +422,7 @@ function PartnerAuthField({
 }) {
   return (
     <label className="group relative block pt-2">
-      <span className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#667085] transition-colors duration-300 group-focus-within:text-[#195585]">
+      <span className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#667085] transition-colors duration-300 group-focus-within:text-[#3b0764]">
         {label}
       </span>
       <div className="relative mt-1 flex items-center gap-2">
@@ -435,7 +435,7 @@ function PartnerAuthField({
           className="peer h-12 w-full border-0 border-b border-[#cfddea] bg-transparent px-0 text-[15px] font-semibold text-[#07162d] outline-none transition-all duration-300 placeholder:text-[#98a2b3] placeholder:font-semibold focus:border-transparent focus:placeholder:text-[#c8d5e1]"
           placeholder={placeholder}
         />
-        <span className="pointer-events-none absolute bottom-0 left-0 h-0.5 w-full origin-left scale-x-0 bg-linear-to-r from-[#195585] via-[#12b76a] to-[#1375de] transition-transform duration-300 ease-out peer-focus:scale-x-100" />
+        <span className="pointer-events-none absolute bottom-0 left-0 h-0.5 w-full origin-left scale-x-0 bg-linear-to-r from-[#3b0764] via-[#12b76a] to-[#1375de] transition-transform duration-300 ease-out peer-focus:scale-x-100" />
       </div>
     </label>
   );
@@ -459,7 +459,7 @@ function PartnerConsentRow({
       <span
         className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center border ${
           checked
-            ? "border-[#195585] bg-[#195585] text-white"
+            ? "border-[#3b0764] bg-[#3b0764] text-white"
             : "border-[#cfddea] bg-white text-transparent"
         }`}
       >
@@ -484,7 +484,7 @@ function PartnerSubmitBlock({
   return (
     <div className="pt-2">
       {message ? (
-        <p className="mb-3 text-[13px] font-semibold leading-6 text-[#195585]">
+        <p className="mb-3 text-[13px] font-semibold leading-6 text-[#3b0764]">
           {message}
         </p>
       ) : null}
@@ -492,13 +492,13 @@ function PartnerSubmitBlock({
         <button
           type="submit"
           disabled={loading}
-          className="inline-flex h-14 w-full shrink-0 items-center justify-center gap-3 rounded-full bg-[#195585] px-6 text-[15px] font-extrabold text-white transition hover:bg-[#12476f] disabled:opacity-60"
+          className="inline-flex h-14 w-full shrink-0 items-center justify-center gap-3 rounded-full bg-[#3b0764] px-6 text-[15px] font-extrabold text-white transition hover:bg-[#12476f] disabled:opacity-60"
         >
           {loading ? "Please wait..." : buttonText}
           {!loading ? <ArrowRight className="h-4 w-4" /> : null}
         </button>
         <p className="text-center text-[13px] font-semibold leading-6 text-[#667085]">
-          <LockKeyhole className="mr-2 inline h-4 w-4 align-[-3px] text-[#195585]" />
+          <LockKeyhole className="mr-2 inline h-4 w-4 align-[-3px] text-[#3b0764]" />
           Your partner information is safe and secure.
         </p>
       </div>

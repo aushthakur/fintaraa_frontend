@@ -76,7 +76,7 @@ export function ItrDeadline() {
           </p>
           <a
             href="#itr-filing-status"
-            className="inline-flex h-10 items-center justify-center rounded-full border border-[#075cde] px-4 text-[13px] font-bold text-[#075cde] no-underline transition hover:bg-[#075cde] hover:text-white"
+            className="inline-flex h-10 items-center justify-center rounded-full border border-[#5b21b6] px-4 text-[13px] font-bold text-[#5b21b6] no-underline transition hover:bg-[#5b21b6] hover:text-white"
           >
             Track ITR Filing Status
           </a>

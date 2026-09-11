@@ -213,10 +213,10 @@ export function FaqPage() {
       />
       <section className="mx-auto max-w-5xl">
         <div className="text-center">
-          <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#075cde]">
+          <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#5b21b6]">
             Help Center
           </p>
-          <h1 className="mt-3 text-[34px] font-extrabold tracking-[-0.03em] text-[#102c45] sm:text-[42px] md:text-[48px]">
+          <h1 className="mt-3 text-[34px] font-extrabold tracking-[-0.03em] text-[#3b0764] sm:text-[42px] md:text-[48px]">
             Frequently Asked Questions
           </h1>
           <p className="mx-auto mt-3 max-w-2xl text-[14px] font-medium leading-7 text-[#657b8e] md:text-[15px]">
@@ -242,8 +242,8 @@ export function FaqPage() {
                 onClick={() => setActiveId(category.id)}
                 className={`inline-flex h-10 shrink-0 items-center gap-2 rounded-full px-4 text-[12px] font-extrabold transition ${
                   selected
-                    ? "bg-[#075cde] text-white"
-                    : "border border-[#d7e3ec] bg-white text-[#52687c] hover:border-[#9dbbd1] hover:text-[#075cde]"
+                    ? "bg-[#5b21b6] text-white"
+                    : "border border-[#d7e3ec] bg-white text-[#52687c] hover:border-[#9dbbd1] hover:text-[#5b21b6]"
                 }`}
               >
                 <Icon className="h-4 w-4" />
@@ -254,7 +254,7 @@ export function FaqPage() {
         </div>
 
         <div className="mt-7" key={activeCategory.id} role="tabpanel">
-          <h2 className="text-[20px] font-extrabold text-[#17354d] md:text-[23px]">
+          <h2 className="text-[20px] font-extrabold text-[#3b0764] md:text-[23px]">
             {activeCategory.label}
           </h2>
           <div className="mt-3 divide-y divide-[#e1e9ef] border-y border-[#e1e9ef]">
@@ -262,7 +262,7 @@ export function FaqPage() {
               <details key={item.question} className="group" open={index === 0}>
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-5 text-[14px] font-extrabold leading-6 text-[#172f45] marker:content-none sm:text-[15px]">
                   {item.question}
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#eef6fc] text-[#075cde] transition group-open:rotate-180">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#eef6fc] text-[#5b21b6] transition group-open:rotate-180">
                     <ChevronDown className="h-4 w-4" />
                   </span>
                 </summary>

@@ -43,7 +43,7 @@ export function ServiceStatusCard({
                 </span>
                 <input
                   placeholder="Enter Mobile Number"
-                  className="h-10 rounded-lg border border-[#dce3eb] px-3 text-[12px] font-semibold outline-none placeholder:text-[#a0a7b2] focus:border-[#005ca8]"
+                  className="h-10 rounded-lg border border-[#dce3eb] px-3 text-[12px] font-semibold outline-none placeholder:text-[#a0a7b2] focus:border-[#4c1d95]"
                 />
               </label>
               <label className="grid gap-1.5">
@@ -52,7 +52,7 @@ export function ServiceStatusCard({
                 </span>
                 <input
                   placeholder="Enter Inquiry ID"
-                  className="h-10 rounded-lg border border-[#dce3eb] px-3 text-[12px] font-semibold outline-none placeholder:text-[#a0a7b2] focus:border-[#005ca8]"
+                  className="h-10 rounded-lg border border-[#dce3eb] px-3 text-[12px] font-semibold outline-none placeholder:text-[#a0a7b2] focus:border-[#4c1d95]"
                 />
               </label>
               <button

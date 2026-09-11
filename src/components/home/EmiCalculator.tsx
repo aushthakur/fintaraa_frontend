@@ -1179,7 +1179,7 @@ function SliderCard({
 
   return (
     <div
-      className={`min-w-0 overflow-hidden border border-[#e2edf8] bg-white ${
+      className={`min-w-0 overflow-hidden border border-white/60 bg-white/60 backdrop-blur-xl shadow-[0_8px_30px_rgba(91,33,182,0.04)] ${
         compactMobile
           ? "rounded-lg p-2 sm:rounded-xl sm:p-3"
           : "rounded-xl p-3 sm:p-4"
@@ -1192,7 +1192,7 @@ function SliderCard({
       >
         <div className="min-w-0">
           <h4
-            className={`font-bold uppercase tracking-wider text-[#344054] ${
+            className={`font-semibold uppercase tracking-wider text-[#344054] ${
               compactMobile ? "text-[9px] sm:text-[12px]" : "text-[12px]"
             }`}
           >
@@ -1210,14 +1210,14 @@ function SliderCard({
         </div>
 
         <div
-          className={`flex w-full min-w-0 max-w-full items-center justify-between overflow-hidden border border-[#d7e5f3] bg-[#fbfdff] px-2.5 sm:px-3 ${
+          className={`flex w-full min-w-0 max-w-full items-center justify-between overflow-hidden border border-[#e9d5ff] bg-[#fbfdff] px-2.5 sm:px-3 ${
             compactMobile
               ? "h-8 rounded-lg sm:h-10 sm:w-36 sm:rounded-xl"
               : "h-11 rounded-xl sm:w-44"
           }`}
         >
           {prefix ? (
-            <span className="text-[14px] font-bold text-[#07162d]">
+            <span className="text-[14px] font-semibold text-[#07162d]">
               {prefix}
             </span>
           ) : null}
@@ -1229,12 +1229,12 @@ function SliderCard({
             onFocus={(event) => event.currentTarget.select()}
             onChange={(event) => updateDraft(event.target.value)}
             onBlur={commitDraft}
-            className={`w-full min-w-0 border-0 bg-transparent text-right font-bold text-[#07162d] outline-none focus:ring-0 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none ${
+            className={`w-full min-w-0 border-0 bg-transparent text-right font-semibold text-[#07162d] outline-none focus:ring-0 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none ${
               compactMobile ? "text-[12px] sm:text-[15px]" : "text-[15px]"
             }`}
           />
           {suffix ? (
-            <span className="ml-1 shrink-0 text-[13px] font-bold text-[#075cde]">
+            <span className="ml-1 shrink-0 text-[13px] font-semibold text-[#5b21b6]">
               {suffix}
             </span>
           ) : null}
@@ -1387,17 +1387,17 @@ export function EmiCalculator({
   };
 
   const applyButtonClasses = compactHomeMobile
-    ? "mt-2 flex h-9 w-full items-center justify-center gap-2 rounded-lg bg-[#075cde] text-[12px] font-semibold text-white no-underline transition hover:bg-[#064cb8] sm:mt-3 sm:h-10 sm:rounded-xl sm:text-[13px]"
-    : "mt-6 flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#075cde] text-[15px] font-semibold text-white no-underline transition hover:bg-[#064cb8]";
+    ? "mt-2 flex h-9 w-full items-center justify-center gap-2 rounded-lg bg-[#5b21b6] text-[12px] font-semibold text-white no-underline transition hover:bg-[#4c1d95] sm:mt-3 sm:h-10 sm:rounded-xl sm:text-[13px]"
+    : "mt-6 flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#5b21b6] text-[15px] font-semibold text-white no-underline transition hover:bg-[#4c1d95]";
 
   return (
     <section
-      className={`overflow-x-hidden bg-white px-4 md:px-6 lg:px-8 ${
+      className={`relative overflow-x-hidden bg-linear-to-b from-[#fafafa] to-white px-4 md:px-6 lg:px-8 ${
         compactHomeMobile ? "py-4 sm:py-8" : "py-12"
       }`}
     >
       <div
-        className={`mx-auto w-full max-w-9xl overflow-hidden rounded-2xl bg-[#f7fbff] ${
+        className={`mx-auto w-full max-w-9xl overflow-hidden rounded-3xl bg-linear-to-b from-white to-[#f5f3ff] shadow-[0_20px_60px_rgba(91,33,182,0.05)] border border-white/50 ${
           compactHomeMobile ? "p-3 sm:p-5 lg:p-6" : "p-4 sm:p-6 lg:p-8"
         }`}
       >
@@ -1408,16 +1408,16 @@ export function EmiCalculator({
         >
           <div className="max-w-3xl">
             <h2
-              className={`break-words font-bold leading-[1.16] text-[#07162d] sm:text-[34px] ${
+              className={`break-words font-semibold leading-[1.16] text-[#07162d] sm:text-[34px] ${
                 compactHomeMobile ? "text-[21px]" : "text-[28px]"
               }`}
             >
               Calculate Your{" "}
-              <span className="text-[#075cde]">{activeLoanLabel}</span> EMI
+              <span className="text-[#5b21b6]">{activeLoanLabel}</span> EMI
             </h2>
           </div>
           <span
-            className={`w-fit shrink-0 items-center gap-2 rounded-lg bg-white px-3 py-2 text-[12px] font-semibold text-[#075cde] ${
+            className={`w-fit shrink-0 items-center gap-2 rounded-lg bg-white px-3 py-2 text-[12px] font-semibold text-[#5b21b6] ${
               compactHomeMobile ? "hidden sm:inline-flex" : "inline-flex"
             }`}
           >
@@ -1449,8 +1449,8 @@ export function EmiCalculator({
                       : "px-5 py-2.5 text-[13px]"
                   } ${
                     isSelected
-                      ? "border-[#075cde] bg-white text-[#075cde]"
-                      : "border-[#dceaf7] bg-white text-[#52657d] hover:border-[#075cde]"
+                      ? "border-[#5b21b6] bg-white text-[#5b21b6]"
+                      : "border-[#dceaf7] bg-white text-[#52657d] hover:border-[#5b21b6]"
                   }`}
                 >
                   {config.label}
@@ -1461,7 +1461,7 @@ export function EmiCalculator({
         ) : null}
 
         {/* <div className="mt-4 rounded-xl bg-white px-5 py-4">
-          <p className="text-[14px] font-bold text-[#07162d]">
+          <p className="text-[14px] font-semibold text-[#07162d]">
             Adjust & Calculate
           </p>
           <p className="mt-1 text-[13px] font-semibold leading-6 text-[#61748f]">
@@ -1510,14 +1510,14 @@ export function EmiCalculator({
                       index > 0 ? "border-l border-[#dce9f4]" : ""
                     }`}
                   >
-                    <dt className="flex items-center gap-1.5 text-[9px] font-bold uppercase leading-4 text-[#8090a4] sm:text-[10px]">
+                    <dt className="flex items-center gap-1.5 text-[9px] font-semibold uppercase leading-4 text-[#8090a4] sm:text-[10px]">
                       <Icon
-                        className="h-3.5 w-3.5 shrink-0 text-[#075cde]"
+                        className="h-3.5 w-3.5 shrink-0 text-[#5b21b6]"
                         aria-hidden="true"
                       />
                       <span className="line-clamp-2">{label}</span>
                     </dt>
-                    <dd className="mt-1.5 wrap-break-word text-[12px] font-bold leading-4 text-[#07162d] sm:text-[13px]">
+                    <dd className="mt-1.5 wrap-break-word text-[12px] font-semibold leading-4 text-[#07162d] sm:text-[13px]">
                       {value}
                     </dd>
                   </div>
@@ -1546,14 +1546,14 @@ export function EmiCalculator({
             <button
               type="button"
               onClick={handleDownloadBreakup}
-              className={`mt-auto w-full items-center justify-center gap-2 border border-[#dceaf7] bg-white font-semibold text-[#07162d] transition-colors hover:border-[#075cde] hover:bg-[#f2f7ff] ${
+              className={`mt-auto w-full items-center justify-center gap-2 border border-[#dceaf7] bg-white font-semibold text-[#07162d] transition-colors hover:border-[#5b21b6] hover:bg-[#f2f7ff] ${
                 compactHomeMobile
                   ? "flex h-10 rounded-lg text-[12px] sm:mb-[13px] sm:h-10 sm:rounded-xl sm:text-[13px]"
                   : "flex h-12 rounded-xl text-[13px] sm:text-[14px]"
               }`}
             >
               Download {activeLoanLabel} Breakup PDF
-              <Download className="ml-1 h-4 w-4 text-[#075cde]" />
+              <Download className="ml-1 h-4 w-4 text-[#5b21b6]" />
             </button>
           </motion.div>
 
@@ -1562,7 +1562,7 @@ export function EmiCalculator({
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-            className={`flex min-w-0 flex-col overflow-hidden border border-[#e2edf8] bg-white ${
+            className={`flex min-w-0 flex-col overflow-hidden border border-white/60 bg-white/60 backdrop-blur-xl shadow-[0_8px_30px_rgba(91,33,182,0.04)] ${
               compactHomeMobile ? "rounded-lg sm:rounded-xl" : "rounded-xl"
             }`}
           >
@@ -1574,7 +1574,7 @@ export function EmiCalculator({
               }`}
             >
               <span
-                className={`font-bold text-[#07162d] ${
+                className={`font-semibold text-[#07162d] ${
                   compactHomeMobile ? "text-[12px] sm:text-[15px]" : "text-[15px]"
                 }`}
               >
@@ -1628,14 +1628,14 @@ export function EmiCalculator({
                     }`}
                   >
                     <p
-                      className={`font-bold uppercase tracking-wider text-[#8090a4] ${
+                      className={`font-semibold uppercase tracking-wider text-[#8090a4] ${
                         compactHomeMobile ? "text-[7px] sm:text-[9px]" : "text-[9px]"
                       }`}
                     >
                       {badge.label}
                     </p>
                     <p
-                      className={`mt-1 block truncate font-bold tracking-tight text-[#07162d] ${
+                      className={`mt-1 block truncate font-semibold tracking-tight text-[#07162d] ${
                         compactHomeMobile ? "text-[10px] sm:text-[14px]" : "text-[14px]"
                       }`}
                     >
@@ -1666,7 +1666,7 @@ export function EmiCalculator({
                         : "h-48 w-48 sm:h-52 sm:w-52"
                     }`}
                     style={{
-                      background: `conic-gradient(#075cde 0% ${principalPercent}%, #12b76a ${principalPercent}% 100%)`,
+                      background: `conic-gradient(#5b21b6 0% ${principalPercent}%, #12b76a ${principalPercent}% 100%)`,
                     }}
                   >
                     <div
@@ -1677,14 +1677,14 @@ export function EmiCalculator({
                       }`}
                     >
                       <span
-                        className={`font-bold uppercase tracking-wider text-[#8090a4] ${
+                        className={`font-semibold uppercase tracking-wider text-[#8090a4] ${
                           compactHomeMobile ? "text-[8px]" : "text-[10px]"
                         }`}
                       >
                         {compactHomeMobile ? "Loan breakup" : "Total Amount"}
                       </span>
                       <p
-                        className={`mt-0.5 font-bold tracking-tight text-[#07162d] ${
+                        className={`mt-0.5 font-semibold tracking-tight text-[#07162d] ${
                           compactHomeMobile ? "text-[12px]" : "text-[18px]"
                         }`}
                       >
@@ -1710,15 +1710,15 @@ export function EmiCalculator({
                         : ""
                     }`}
                   >
-                    <span className="mt-1 h-3 w-3 shrink-0 rounded-full bg-[#075cde]" />
+                    <span className="mt-1 h-3 w-3 shrink-0 rounded-full bg-[#5b21b6]" />
                     <div>
-                      <p className="text-[12px] font-bold text-[#8090a4]">
+                      <p className="text-[12px] font-semibold text-[#8090a4]">
                         {computedMetrics.principalLabel}
                       </p>
-                      <p className="text-[15px] font-bold text-[#07162d]">
+                      <p className="text-[15px] font-semibold text-[#07162d]">
                         {formatCurrencyIndian(computedMetrics.principal)}
                       </p>
-                      <span className="text-[11px] font-bold text-[#075cde]">
+                      <span className="text-[11px] font-semibold text-[#5b21b6]">
                         ({principalPercent.toFixed(1)}%)
                       </span>
                     </div>
@@ -1733,13 +1733,13 @@ export function EmiCalculator({
                   >
                     <span className="mt-1 h-3 w-3 shrink-0 rounded-full bg-lime-500" />
                     <div>
-                      <p className="text-[12px] font-bold text-[#8090a4]">
+                      <p className="text-[12px] font-semibold text-[#8090a4]">
                         Total Interest
                       </p>
-                      <p className="text-[15px] font-bold text-[#07162d]">
+                      <p className="text-[15px] font-semibold text-[#07162d]">
                         {formatCurrencyIndian(computedMetrics.totalInterest)}
                       </p>
-                      <span className="text-[11px] font-bold text-[#0f7a4d]">
+                      <span className="text-[11px] font-semibold text-[#0f7a4d]">
                         ({interestPercent.toFixed(1)}%)
                       </span>
                     </div>
@@ -1758,7 +1758,7 @@ export function EmiCalculator({
                   {computedMetrics.extraMetrics.map((metric) => (
                     <div
                       key={metric.label}
-                      className="flex items-center justify-between gap-4 text-[12px] font-bold"
+                      className="flex items-center justify-between gap-4 text-[12px] font-semibold"
                     >
                       <span className="text-[#61748f]">{metric.label}</span>
                       <span className="text-[#07162d]">
@@ -1805,7 +1805,7 @@ export function EmiCalculator({
               </div>
 
               <div
-                className={`mt-4 gap-2 text-[11px] font-bold text-[#61748f] sm:grid-cols-3 ${
+                className={`mt-4 gap-2 text-[11px] font-semibold text-[#61748f] sm:grid-cols-3 ${
                   compactHomeMobile ? "hidden" : "grid"
                 }`}
               >
@@ -1820,7 +1820,7 @@ export function EmiCalculator({
                       key={label as string}
                       className="flex items-center justify-center gap-1.5 rounded-lg bg-white px-2 py-2"
                     >
-                      <SafeIcon className="h-3.5 w-3.5 text-[#075cde]" />
+                      <SafeIcon className="h-3.5 w-3.5 text-[#5b21b6]" />
                       {label as string}
                     </span>
                   );

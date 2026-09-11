@@ -34,7 +34,7 @@ export function PremiumServiceTimeline({
       <div className="pointer-events-none absolute -right-20 -top-24 h-56 w-56 rounded-full bg-[#cbe8ff]/50 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-28 left-[34%] h-52 w-52 rounded-full bg-[#dff7eb]/45 blur-3xl" />
 
-      <h3 className="relative text-[21px] font-extrabold leading-tight tracking-[-0.02em] text-[#075cab] sm:text-[24px] md:text-[28px]">
+      <h3 className="relative text-[21px] font-extrabold leading-tight tracking-[-0.02em] text-[#5b21b6] sm:text-[24px] md:text-[28px]">
         {title}
       </h3>
 
@@ -58,7 +58,7 @@ export function PremiumServiceTimeline({
                   <div className="absolute left-1/2 top-5 h-1.5 w-full overflow-hidden rounded-full bg-[#dceefe] md:top-6">
                     {connectorCompleted ? (
                       <span
-                        className="service-tracker-line-fill absolute inset-y-0 left-0 w-full overflow-hidden rounded-full bg-[linear-gradient(90deg,#075cde_0%,#08a8df_55%,#15b962_100%)]"
+                        className="service-tracker-line-fill absolute inset-y-0 left-0 w-full overflow-hidden rounded-full bg-[linear-gradient(90deg,#5b21b6_0%,#08a8df_55%,#15b962_100%)]"
                         style={{ animationDelay: `${index * 210 + 120}ms` }}
                       />
                     ) : null}
@@ -72,9 +72,9 @@ export function PremiumServiceTimeline({
                   <span
                     className={`relative flex h-full w-full items-center justify-center rounded-full border text-[13px] font-extrabold transition-colors sm:text-sm md:text-[15px] ${
                       completed
-                        ? "service-tracker-node-complete border-white/70 bg-[linear-gradient(145deg,#075cde_0%,#087fd8_55%,#12af65_135%)] text-white shadow-[0_8px_22px_rgba(7,92,222,0.28)]"
+                        ? "service-tracker-node-complete border-white/70 bg-[linear-gradient(145deg,#5b21b6_0%,#087fd8_55%,#12af65_135%)] text-white shadow-[0_8px_22px_rgba(91,33,182,0.28)]"
                         : active
-                          ? "service-tracker-node-active border-white/80 bg-[linear-gradient(145deg,#075cde_0%,#087fd8_100%)] text-white shadow-[0_8px_26px_rgba(7,92,222,0.38)]"
+                          ? "service-tracker-node-active border-white/80 bg-[linear-gradient(145deg,#5b21b6_0%,#087fd8_100%)] text-white shadow-[0_8px_26px_rgba(91,33,182,0.38)]"
                           : "border-[#c9e0f3] bg-white text-[#4b79a2] shadow-[0_5px_14px_rgba(35,92,139,0.09)]"
                     }`}
                     style={{
@@ -97,7 +97,7 @@ export function PremiumServiceTimeline({
 
                 <p
                   className={`mt-3 px-1 text-[11px] font-extrabold leading-[1.35] sm:text-[12px] md:mt-4 md:text-[13px] ${
-                    completed || active ? "text-[#075cab]" : "text-[#52687c]"
+                    completed || active ? "text-[#5b21b6]" : "text-[#52687c]"
                   }`}
                 >
                   {label}

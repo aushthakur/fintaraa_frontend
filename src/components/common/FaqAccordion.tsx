@@ -113,7 +113,7 @@ export function FaqAccordion({
       ) : null}
       <section className="mx-auto w-full max-w-5xl px-4 py-14 text-[#111827] antialiased md:px-6 md:py-16">
         <div className="mx-auto max-w-3xl text-center">
-          <span className="inline-flex items-center gap-2 rounded-full bg-[#eef7ff] px-4 py-2 text-[12px] font-extrabold uppercase tracking-[0.16em] text-[#005ca8]">
+          <span className="inline-flex items-center gap-2 rounded-full bg-[#eef7ff] px-4 py-2 text-[12px] font-extrabold uppercase tracking-[0.16em] text-[#4c1d95]">
             <BadgeHelp className="h-4 w-4" strokeWidth={2.4} />
             Help Center
           </span>
@@ -140,7 +140,7 @@ export function FaqAccordion({
                       className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition ${
                         isOpen
                           ? "bg-[#e8f8ef] text-[#13a653]"
-                          : "bg-[#eef7ff] text-[#005ca8] group-hover:bg-[#dceeff]"
+                          : "bg-[#eef7ff] text-[#4c1d95] group-hover:bg-[#dceeff]"
                       }`}
                     >
                       {isOpen ? (
@@ -150,13 +150,13 @@ export function FaqAccordion({
                       )}
                     </span>
                     <span className="min-w-0">
-                      <span className="block text-[15px] font-extrabold leading-6 text-[#172033] transition-colors group-hover:text-[#005ca8] md:text-[16px]">
+                      <span className="block text-[15px] font-extrabold leading-6 text-[#172033] transition-colors group-hover:text-[#4c1d95] md:text-[16px]">
                         {faq.question}
                       </span>
                     </span>
                   </span>
                   <span
-                    className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#f8fbff] text-[#005ca8] transition-transform duration-300 ${
+                    className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#f8fbff] text-[#4c1d95] transition-transform duration-300 ${
                       isOpen ? "rotate-180" : ""
                     }`}
                   >

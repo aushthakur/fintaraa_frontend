@@ -33,7 +33,7 @@ export function DsaHero() {
         <div className="relative z-10 col-span-2 max-w-2xl">
           <h1 className="max-w-xl text-[28px] font-extrabold leading-[1.03] tracking-[-0.05em] text-[#33393f] md:text-[40px] xl:text-[46px]">
             Become a Fintaraa
-            <span className="block text-[#0d64bf]">DSA Partner</span>
+            <span className="block text-[#6d28d9]">DSA Partner</span>
             <span className="block">& Earn High Commissions</span>
           </h1>
           <p className="mt-5 max-w-lg text-[14px] font-medium leading-7 text-[#6f7681] md:text-[15px]">
@@ -63,7 +63,7 @@ export function DsaHero() {
                 key={label}
                 className="flex items-center gap-3 rounded-2xl border border-[#dde7f2] bg-white px-4 py-3 shadow-[0_8px_24px_rgba(16,24,40,0.04)]"
               >
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#edf5ff] text-[#0d64bf]">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#edf5ff] text-[#6d28d9]">
                   <Icon className="h-5 w-5" />
                 </div>
                 <div>
@@ -96,7 +96,7 @@ export function DsaHero() {
               key={label}
               className={`absolute z-10 flex items-center gap-2 rounded-[14px] border border-[#edf1f6] bg-white px-3 py-2 shadow-[0_10px_30px_rgba(16,24,40,0.08)] ${className}`}
             >
-              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#eef5ff] text-[#0d64bf]">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#eef5ff] text-[#6d28d9]">
                 <Icon className="h-4 w-4" />
               </span>
               <span className="text-[10px] font-bold leading-4 text-[#20252d]">

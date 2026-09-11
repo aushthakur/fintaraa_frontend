@@ -66,7 +66,7 @@ export function SupportTicketForm({
       onSubmit={submit}
       className="bg-white p-5 sm:p-7"
     >
-      <div className="inline-flex items-center gap-2 rounded-full bg-[#eef8ff] px-3 py-1 text-[11px] font-extrabold uppercase tracking-[0.14em] text-[#195585]">
+      <div className="inline-flex items-center gap-2 rounded-full bg-[#eef8ff] px-3 py-1 text-[11px] font-extrabold uppercase tracking-[0.14em] text-[#3b0764]">
         <Sparkles className="h-3.5 w-3.5" />
         New ticket
       </div>
@@ -87,7 +87,7 @@ export function SupportTicketForm({
         />
 
         <label className="group block pt-2">
-          <span className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#667085] transition group-focus-within:text-[#195585]">
+          <span className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#667085] transition group-focus-within:text-[#3b0764]">
             Category
           </span>
           <select
@@ -95,7 +95,7 @@ export function SupportTicketForm({
             onChange={(event) =>
               setForm((prev) => ({ ...prev, category: event.target.value }))
             }
-            className="mt-1 h-12 w-full border-0 border-b border-[#cfddea] bg-transparent text-[15px] font-semibold text-[#07162d] outline-none focus:border-[#195585]"
+            className="mt-1 h-12 w-full border-0 border-b border-[#cfddea] bg-transparent text-[15px] font-semibold text-[#07162d] outline-none focus:border-[#3b0764]"
           >
             {SUPPORT_TICKET_CATEGORIES.map((category, index) => (
               <option
@@ -109,7 +109,7 @@ export function SupportTicketForm({
         </label>
 
         <label className="group relative block pt-2">
-          <span className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#667085] transition-colors duration-300 group-focus-within:text-[#195585]">
+          <span className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#667085] transition-colors duration-300 group-focus-within:text-[#3b0764]">
             Description
           </span>
           <div className="relative mt-1">
@@ -125,7 +125,7 @@ export function SupportTicketForm({
               className="peer w-full resize-none border-0 border-b border-[#cfddea] bg-transparent px-0 py-3 text-[15px] font-semibold leading-7 text-[#07162d] outline-none placeholder:text-[#98a2b3] focus:placeholder:text-[#c8d5e1]"
               placeholder="Describe the issue, application ID, product, and expected help"
             />
-            <span className="pointer-events-none absolute bottom-0 left-0 h-0.5 w-full origin-left scale-x-0 bg-linear-to-r from-[#195585] via-[#12b76a] to-[#1375de] transition-transform duration-300 ease-out peer-focus:scale-x-100" />
+            <span className="pointer-events-none absolute bottom-0 left-0 h-0.5 w-full origin-left scale-x-0 bg-linear-to-r from-[#3b0764] via-[#12b76a] to-[#1375de] transition-transform duration-300 ease-out peer-focus:scale-x-100" />
           </div>
         </label>
       </div>
@@ -154,7 +154,7 @@ export function SupportTicketForm({
         <button
           type="submit"
           disabled={submitting}
-          className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-full bg-white px-5 text-[13px] font-extrabold text-[#195585] disabled:opacity-60"
+          className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-full bg-white px-5 text-[13px] font-extrabold text-[#3b0764] disabled:opacity-60"
         >
           {submitting ? (
             <MessageCircle className="h-4 w-4" />
@@ -181,7 +181,7 @@ function BottomField({
 }) {
   return (
     <label className="group relative block pt-2">
-      <span className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#667085] transition-colors duration-300 group-focus-within:text-[#195585]">
+      <span className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#667085] transition-colors duration-300 group-focus-within:text-[#3b0764]">
         {label}
       </span>
       <div className="relative mt-1">
@@ -191,7 +191,7 @@ function BottomField({
           className="peer h-12 w-full border-0 border-b border-[#cfddea] bg-transparent px-0 text-[15px] font-semibold text-[#07162d] outline-none placeholder:text-[#98a2b3] focus:placeholder:text-[#c8d5e1]"
           placeholder={placeholder}
         />
-        <span className="pointer-events-none absolute bottom-0 left-0 h-0.5 w-full origin-left scale-x-0 bg-linear-to-r from-[#195585] via-[#12b76a] to-[#1375de] transition-transform duration-300 ease-out peer-focus:scale-x-100" />
+        <span className="pointer-events-none absolute bottom-0 left-0 h-0.5 w-full origin-left scale-x-0 bg-linear-to-r from-[#3b0764] via-[#12b76a] to-[#1375de] transition-transform duration-300 ease-out peer-focus:scale-x-100" />
       </div>
     </label>
   );

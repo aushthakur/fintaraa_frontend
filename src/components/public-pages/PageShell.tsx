@@ -15,7 +15,7 @@ export function PageShell({
 }: PageShellProps) {
   return (
     <main className="bg-white">
-      <section className="border-b border-[#d9e8f4] bg-[#f5fbff] px-4 py-10 md:px-6 md:py-12 lg:px-8 lg:py-14">
+      <section className="border-b border-[#d9e8f4] bg-[#faf5ff] px-4 py-10 md:px-6 md:py-12 lg:px-8 lg:py-14">
         <div className="mx-auto max-w-9xl">
           <div className="max-w-3xl">
             <h1 className="text-[30px] font-extrabold leading-[1.12] tracking-tight text-[#07162d] md:text-[46px] lg:text-[54px]">
@@ -42,7 +42,7 @@ export function PremiumCard({
   href?: string;
 }) {
   const content = (
-    <div className="h-full rounded-xl border border-[#d9e8f4] bg-white p-4 transition hover:border-[#9fc7ef] hover:shadow-[0_18px_48px_rgba(7,92,222,0.08)] md:p-5">
+    <div className="h-full rounded-xl border border-[#d9e8f4] bg-white p-4 transition hover:border-[#9fc7ef] hover:shadow-[0_18px_48px_rgba(91,33,182,0.08)] md:p-5">
       <h3 className="text-[20px] font-extrabold leading-tight text-[#07162d] md:text-[22px]">
         {title}
       </h3>
@@ -50,7 +50,7 @@ export function PremiumCard({
         {text}
       </p>
       {href && (
-        <div className="mt-5 flex items-center gap-2 text-[13px] font-extrabold text-[#075cde]">
+        <div className="mt-5 flex items-center gap-2 text-[13px] font-extrabold text-[#5b21b6]">
           Open <ArrowRight className="h-4 w-4" />
         </div>
       )}
@@ -83,7 +83,7 @@ export function Field({
       <input
         type={type}
         placeholder={placeholder}
-        className="mt-2 h-12 w-full rounded-xl border border-[#c9dced] bg-white px-4 text-[14px] outline-none transition focus:border-[#075cde] focus:ring-2 focus:ring-[#075cde]/10"
+        className="mt-2 h-12 w-full rounded-xl border border-[#c9dced] bg-white px-4 text-[14px] outline-none transition focus:border-[#5b21b6] focus:ring-2 focus:ring-[#5b21b6]/10"
       />
     </label>
   );

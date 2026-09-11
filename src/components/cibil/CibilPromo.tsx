@@ -18,7 +18,7 @@ const features = [
     desc: "Consent-led access with protected account information.",
     icon: LockKeyhole,
     surface: "bg-[#e7f2ff]",
-    color: "text-[#075cde]",
+    color: "text-[#5b21b6]",
   },
   {
     title: "Instant result",
@@ -54,11 +54,11 @@ export function CibilPromo() {
             viewport={{ once: true, amount: 0.25 }}
             transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
           >
-            <p className="flex items-center gap-2 text-[11px] font-bold uppercase text-[#075cde]">
+            <p className="flex items-center gap-2 text-[11px] font-bold uppercase text-[#5b21b6]">
               <BadgeCheck className="h-4 w-4" aria-hidden="true" />
               Credit health, simplified
             </p>
-            <h2 className="mt-3 max-w-2xl text-[28px] font-bold leading-[1.16] text-[#102f49] sm:text-[34px]">
+            <h2 className="mt-3 max-w-2xl text-[28px] font-bold leading-[1.16] text-[#3b0764] sm:text-[34px]">
               Turn your credit score into clearer financial decisions
             </h2>
             <p className="mt-4 max-w-2xl text-[14px] font-medium leading-7 text-[#587287] md:text-[15px]">
@@ -88,7 +88,7 @@ export function CibilPromo() {
                       <Icon className="h-4.5 w-4.5" aria-hidden="true" />
                     </span>
                     <div>
-                      <h3 className="text-[14px] font-bold text-[#102f49]">
+                      <h3 className="text-[14px] font-bold text-[#3b0764]">
                         {item.title}
                       </h3>
                       <p className="mt-1 text-[11px] font-medium leading-5 text-[#60788b]">
@@ -104,7 +104,7 @@ export function CibilPromo() {
               <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
                 <Link
                   href="/cibil-score/report"
-                  className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-[#075cde] px-6 text-[14px] font-bold text-white no-underline transition-colors hover:bg-[#064cb8] sm:w-auto"
+                  className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-[#5b21b6] px-6 text-[14px] font-bold text-white no-underline transition-colors hover:bg-[#4c1d95] sm:w-auto"
                 >
                   Check my CIBIL score
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />

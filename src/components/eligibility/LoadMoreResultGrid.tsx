@@ -38,7 +38,7 @@ export function LoadMoreResultGrid({
                 Math.min(current + increment, items.length),
               )
             }
-            className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-[#bfd7ed] bg-white px-6 text-[13px] font-extrabold text-[#00529b] transition-colors hover:border-[#00529b] hover:bg-[#f4f9ff]"
+            className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-[#bfd7ed] bg-white px-6 text-[13px] font-extrabold text-[#4c1d95] transition-colors hover:border-[#4c1d95] hover:bg-[#f4f9ff]"
           >
             Load {nextCount} more
             <ChevronDown className="h-4 w-4" />

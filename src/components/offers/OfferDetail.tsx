@@ -31,7 +31,7 @@ export function OfferDetail() {
                 priority
               />
 
-              <span className="absolute right-40 top-1 rounded-[7px] border border-[#d6dce6] bg-white px-4 py-1.5 text-[12px] font-medium text-[#0d64bf] shadow-[0_3px_10px_rgba(16,24,40,0.06)]">
+              <span className="absolute right-40 top-1 rounded-[7px] border border-[#d6dce6] bg-white px-4 py-1.5 text-[12px] font-medium text-[#6d28d9] shadow-[0_3px_10px_rgba(16,24,40,0.06)]">
                 Exclusive Offer
               </span>
 
@@ -65,7 +65,7 @@ export function OfferDetail() {
               key={String(label)}
               className="flex items-center gap-4 rounded-xl border border-[#d7dfe8] bg-white p-5"
             >
-              <span className="flex h-16 w-16 items-center justify-center rounded bg-[#e8f4ff] text-[#005ca8]">
+              <span className="flex h-16 w-16 items-center justify-center rounded bg-[#e8f4ff] text-[#4c1d95]">
                 <Icon className="h-7 w-7" />
               </span>
               <span>
@@ -88,7 +88,7 @@ export function OfferDetail() {
                     key={row}
                     className="flex items-center gap-2 text-[13px] font-semibold text-[#8b95a3]"
                   >
-                    <CircleCheck className="h-4 w-4 text-[#005ca8]" />
+                    <CircleCheck className="h-4 w-4 text-[#4c1d95]" />
                     {row}
                   </p>
                 ))}
@@ -105,7 +105,7 @@ export function OfferDetail() {
         </div>
 
         <div className="mt-6 flex flex-col gap-4 rounded-xl border border-[#b5d9f6] bg-[#e8f4ff] p-5 md:flex-row md:items-center md:justify-between">
-          <p className="text-[12px] font-semibold text-[#005ca8]">
+          <p className="text-[12px] font-semibold text-[#4c1d95]">
             Cashback will be credited within 7 working days after successful
             disbursement of the loan.
           </p>
@@ -127,7 +127,7 @@ export function OfferDetail() {
               className="object-contain"
             />
           </div>
-          <h2 className="text-[36px] font-extrabold leading-tight text-[#005ca8]">
+          <h2 className="text-[36px] font-extrabold leading-tight text-[#4c1d95]">
             Get Cashback in your Fintaraa Wallet or UPI
             <span className="mt-3 block text-[18px] font-semibold text-[#111827]">
               Easy, Fast & Hassle-free

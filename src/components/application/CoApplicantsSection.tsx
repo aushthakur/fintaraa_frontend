@@ -68,7 +68,7 @@ const emptyApplicant = (): CoApplicant => ({
 });
 
 const inputClass =
-  "h-11 w-full rounded-xl border border-[#dce9f7] bg-white px-3 text-[13px] font-semibold text-[#111827] outline-none transition placeholder:text-[#9aa8b8] focus:border-[#005ca8] focus:ring-2 focus:ring-[#e5f1ff]";
+  "h-11 w-full rounded-xl border border-[#dce9f7] bg-white px-3 text-[13px] font-semibold text-[#111827] outline-none transition placeholder:text-[#9aa8b8] focus:border-[#4c1d95] focus:ring-2 focus:ring-[#e5f1ff]";
 
 const isValidPan = (value?: string) =>
   /^[A-Z]{5}[0-9]{4}[A-Z]$/.test(
@@ -325,7 +325,7 @@ export function CoApplicantsSection({
           <button
             type="button"
             onClick={addApplicant}
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-full bg-[#0b4c7a] px-4 text-[12px] font-extrabold text-white shadow-sm transition hover:bg-[#083d62]"
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-full bg-[#3b0764] px-4 text-[12px] font-extrabold text-white shadow-sm transition hover:bg-[#083d62]"
           >
             <Plus className="h-4 w-4" />
             Add co-applicant
@@ -345,7 +345,7 @@ export function CoApplicantsSection({
           <button
             type="button"
             onClick={addApplicant}
-            className="mt-4 inline-flex h-10 items-center justify-center gap-2 rounded-full bg-[#0b4c7a] px-4 text-[12px] font-extrabold text-white"
+            className="mt-4 inline-flex h-10 items-center justify-center gap-2 rounded-full bg-[#3b0764] px-4 text-[12px] font-extrabold text-white"
           >
             <Plus className="h-4 w-4" />
             Add first co-applicant
@@ -380,7 +380,7 @@ export function CoApplicantsSection({
                       type="button"
                       disabled={fetchingCibilIndex === index}
                       onClick={() => fetchCibilForApplicant(index)}
-                      className="inline-flex h-9 items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 text-[11px] font-extrabold text-slate-700 transition hover:border-[#0b4c7a] hover:text-[#0b4c7a] disabled:cursor-not-allowed disabled:opacity-70"
+                      className="inline-flex h-9 items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 text-[11px] font-extrabold text-slate-700 transition hover:border-[#3b0764] hover:text-[#3b0764] disabled:cursor-not-allowed disabled:opacity-70"
                     >
                       {fetchingCibilIndex === index ? (
                         <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -396,7 +396,7 @@ export function CoApplicantsSection({
                         href={pdfLink}
                         target="_blank"
                         rel="noreferrer"
-                        className="inline-flex h-9 items-center gap-2 rounded-full bg-[#e8f2fb] px-3 text-[11px] font-extrabold text-[#0b4c7a] no-underline"
+                        className="inline-flex h-9 items-center gap-2 rounded-full bg-[#e8f2fb] px-3 text-[11px] font-extrabold text-[#3b0764] no-underline"
                       >
                         <Download className="h-3.5 w-3.5" />
                         PDF
@@ -511,7 +511,7 @@ export function CoApplicantsSection({
                             current === index ? null : index,
                           )
                         }
-                        className="inline-flex h-9 items-center gap-2 rounded-full border border-slate-300 bg-white px-4 text-[11px] font-extrabold text-slate-700 transition hover:border-[#0b4c7a] hover:text-[#0b4c7a]"
+                        className="inline-flex h-9 items-center gap-2 rounded-full border border-slate-300 bg-white px-4 text-[11px] font-extrabold text-slate-700 transition hover:border-[#3b0764] hover:text-[#3b0764]"
                       >
                         <Plus className="h-3.5 w-3.5" />
                         Select
@@ -538,7 +538,7 @@ export function CoApplicantsSection({
                                 <button
                                   type="button"
                                   onClick={() => selectAllExtraDocuments(index)}
-                                  className="text-[#0b4c7a] hover:underline"
+                                  className="text-[#3b0764] hover:underline"
                                 >
                                   All
                                 </button>
@@ -581,7 +581,7 @@ export function CoApplicantsSection({
                                         onChange={() =>
                                           toggleExtraDocument(index, doc)
                                         }
-                                        className="h-4 w-4 rounded border-slate-300 accent-[#0b4c7a]"
+                                        className="h-4 w-4 rounded border-slate-300 accent-[#3b0764]"
                                       />
                                       <span className="text-sm font-semibold text-slate-700">
                                         {doc.label}
@@ -621,7 +621,7 @@ export function CoApplicantsSection({
                           <div className="flex gap-3">
                             <div className="flex h-18 w-18 shrink-0 items-center justify-center rounded-xl border border-[#e2e8f0] bg-[#f8fafc] text-[#64748b]">
                               {hasFile ? (
-                                <FileText className="h-6 w-6 text-[#0b4c7a]" />
+                                <FileText className="h-6 w-6 text-[#3b0764]" />
                               ) : (
                                 <UploadCloud className="h-6 w-6" />
                               )}
@@ -646,7 +646,7 @@ export function CoApplicantsSection({
                             </div>
                           </div>
                           <div className="mt-3 flex flex-wrap gap-2">
-                            <label className="inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-full bg-[#075cde] px-3 text-[11px] font-extrabold text-white">
+                            <label className="inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-full bg-[#5b21b6] px-3 text-[11px] font-extrabold text-white">
                               <Camera className="h-3.5 w-3.5" aria-hidden="true" />
                               Take photo
                               <input
@@ -663,7 +663,7 @@ export function CoApplicantsSection({
                                 }
                               />
                             </label>
-                            <label className="inline-flex h-9 cursor-pointer items-center rounded-full bg-[#0b4c7a] px-3 text-[11px] font-extrabold text-white">
+                            <label className="inline-flex h-9 cursor-pointer items-center rounded-full bg-[#3b0764] px-3 text-[11px] font-extrabold text-white">
                               {hasFile ? "Replace file" : "Browse files"}
                               <input
                                 type="file"
@@ -713,7 +713,7 @@ export function CoApplicantsSection({
                         <div className="flex gap-3">
                           <div className="flex h-18 w-18 shrink-0 items-center justify-center rounded-xl border border-[#e2e8f0] bg-[#f8fafc] text-[#64748b]">
                             {doc.files?.length ? (
-                              <FileText className="h-6 w-6 text-[#0b4c7a]" />
+                              <FileText className="h-6 w-6 text-[#3b0764]" />
                             ) : (
                               <UploadCloud className="h-6 w-6" />
                             )}
@@ -756,7 +756,7 @@ export function CoApplicantsSection({
                           </div>
                         ) : null}
                         <div className="mt-3 flex flex-wrap gap-2">
-                          <label className="inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-full bg-[#075cde] px-3 text-[11px] font-extrabold text-white">
+                          <label className="inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-full bg-[#5b21b6] px-3 text-[11px] font-extrabold text-white">
                             <Camera className="h-3.5 w-3.5" aria-hidden="true" />
                             Take photo
                             <input
@@ -773,7 +773,7 @@ export function CoApplicantsSection({
                               }
                             />
                           </label>
-                          <label className="inline-flex h-9 cursor-pointer items-center rounded-full bg-[#0b4c7a] px-3 text-[11px] font-extrabold text-white">
+                          <label className="inline-flex h-9 cursor-pointer items-center rounded-full bg-[#3b0764] px-3 text-[11px] font-extrabold text-white">
                             {doc.files?.length ? "Add more files" : "Browse files"}
                             <input
                               type="file"
@@ -820,7 +820,7 @@ export function CoApplicantsSection({
           <button
             type="button"
             onClick={addApplicant}
-            className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-[#bfdbfe] bg-white px-4 text-[12px] font-extrabold text-[#0b4c7a]"
+            className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-[#ddd6fe] bg-white px-4 text-[12px] font-extrabold text-[#3b0764]"
           >
             <Plus className="h-4 w-4" />
             Add co-applicant

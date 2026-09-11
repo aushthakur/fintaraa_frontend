@@ -63,11 +63,11 @@ export function CibilReportCompare({
         >
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="inline-flex items-center gap-2 text-[12px] font-extrabold text-[#075cde]">
+              <p className="inline-flex items-center gap-2 text-[12px] font-extrabold text-[#5b21b6]">
                 <Database className="h-4 w-4" aria-hidden="true" />
                 Bureau overview
               </p>
-              <h2 className="mt-3 text-[26px] font-extrabold leading-tight text-[#102f49] sm:text-[30px]">
+              <h2 className="mt-3 text-[26px] font-extrabold leading-tight text-[#3b0764] sm:text-[30px]">
                 Compare your bureau scores
               </h2>
               <p className="mt-2 max-w-2xl text-[14px] font-medium leading-6 text-[#667f91]">
@@ -76,7 +76,7 @@ export function CibilReportCompare({
               </p>
             </div>
             <span className="inline-flex w-fit items-center gap-2 rounded-md bg-[#edf6fc] px-3 py-2 text-[11px] font-bold text-[#526e82]">
-              <ShieldCheck className="h-4 w-4 text-[#075cde]" aria-hidden="true" />
+              <ShieldCheck className="h-4 w-4 text-[#5b21b6]" aria-hidden="true" />
               {connectedBureaus} of 4 sources available
             </span>
           </div>
@@ -111,7 +111,7 @@ export function CibilReportCompare({
                         <td key={bureau.key} className="px-4 py-4 text-center">
                           <span
                             className={`text-[17px] font-extrabold ${
-                              score ? "text-[#102f49]" : "text-[#a0aeb8]"
+                              score ? "text-[#3b0764]" : "text-[#a0aeb8]"
                             }`}
                           >
                             {score || "Not available"}
@@ -143,7 +143,7 @@ export function CibilReportCompare({
 
             <div className="flex flex-col gap-4 border-t border-[#dfe9ef] bg-[#fbfdfe] px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-start gap-3">
-                <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-[#e8f3fb] text-[#075cde]">
+                <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-[#e8f3fb] text-[#5b21b6]">
                   <Info className="h-4 w-4" aria-hidden="true" />
                 </span>
                 <div>
@@ -159,7 +159,7 @@ export function CibilReportCompare({
                 type="button"
                 onClick={onDownloadReport}
                 disabled={downloadingReport || !data.reportAvailable}
-                className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-md bg-[#075cde] px-4 text-[11px] font-extrabold text-white transition-colors hover:bg-[#064cb8] disabled:cursor-not-allowed disabled:opacity-60"
+                className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-md bg-[#5b21b6] px-4 text-[11px] font-extrabold text-white transition-colors hover:bg-[#4c1d95] disabled:cursor-not-allowed disabled:opacity-60"
               >
                 <Download className="h-4 w-4" aria-hidden="true" />
                 {downloadingReport ? "Preparing..." : "Download report"}

@@ -14,7 +14,7 @@ export function CreditArticlesFaq() {
             </h2>
             <Link
               href="/blog"
-              className="text-[12px] font-extrabold text-[#005ca8] no-underline"
+              className="text-[12px] font-extrabold text-[#4c1d95] no-underline"
             >
               Explore All Articles →
             </Link>
@@ -25,13 +25,13 @@ export function CreditArticlesFaq() {
                 key={title}
                 className="rounded border border-[#d7dfe8] bg-white p-6"
               >
-                <FileText className="h-6 w-6 text-[#005ca8]" />
+                <FileText className="h-6 w-6 text-[#4c1d95]" />
                 <h3 className="mt-8 min-h-12 text-[13px] font-extrabold leading-5">
                   {title}
                 </h3>
                 <Link
                   href="/blog"
-                  className="mt-6 block text-[12px] font-extrabold text-[#005ca8] no-underline"
+                  className="mt-6 block text-[12px] font-extrabold text-[#4c1d95] no-underline"
                 >
                   Read More →
                 </Link>

@@ -15,7 +15,7 @@ export function LoanTestimonials() {
               className="border-t border-[#dfe5ec] pt-5 text-left"
             >
               <div className="flex items-center gap-3">
-                <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#e8f4ff] text-[#005ca8]">
+                <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#e8f4ff] text-[#4c1d95]">
                   <UserRound className="h-5 w-5" />
                 </span>
                 <span>

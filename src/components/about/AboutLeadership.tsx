@@ -20,7 +20,7 @@ export function AboutLeadership() {
   });
 
   return (
-    <section className="overflow-hidden bg-[#f5fbff] px-4 py-16 md:px-6 md:py-20 lg:px-8">
+    <section className="overflow-hidden bg-[#faf5ff] px-4 py-16 md:px-6 md:py-20 lg:px-8">
       <div className="mx-auto grid max-w-9xl gap-12 lg:grid-cols-[0.76fr_1.24fr] lg:items-center lg:gap-16">
         <motion.div {...reveal()} className="relative min-h-125 sm:min-h-155">
           <span
@@ -42,13 +42,13 @@ export function AboutLeadership() {
               className="object-cover object-top"
             />
           </motion.div>
-          <p className="absolute bottom-5 right-0 text-[10px] font-extrabold uppercase text-[#075cde] [writing-mode:vertical-rl]">
+          <p className="absolute bottom-5 right-0 text-[10px] font-extrabold uppercase text-[#5b21b6] [writing-mode:vertical-rl]">
             Founder &amp; CEO / Fintaraa
           </p>
         </motion.div>
 
         <motion.div {...reveal(0.08)}>
-          <p className="text-[12px] font-extrabold uppercase tracking-[0.16em] text-[#075cde]">
+          <p className="text-[12px] font-extrabold uppercase tracking-[0.16em] text-[#5b21b6]">
             Leadership
           </p>
           <h2 className="mt-3 text-[30px] font-extrabold leading-[1.2] text-[#0b1f3a] md:text-[35px] lg:text-[38px]">
@@ -64,7 +64,7 @@ export function AboutLeadership() {
             <h3 className="text-[22px] font-extrabold text-[#0b1f3a]">
               Kunal Mehndiratta
             </h3>
-            <p className="mt-2 text-[14px] font-extrabold leading-6 text-[#075cde] md:text-[15px]">
+            <p className="mt-2 text-[14px] font-extrabold leading-6 text-[#5b21b6] md:text-[15px]">
               Founder &amp; CEO, {COMPANY_NAME} (Fintaraa)
             </p>
             <p className="mt-4 max-w-3xl text-[15px] font-medium leading-8 text-[#5d6b7f] md:text-[16px]">

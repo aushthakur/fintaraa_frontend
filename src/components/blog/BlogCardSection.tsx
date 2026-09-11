@@ -131,12 +131,12 @@ export function BlogCardSection({
                   <div className="flex flex-1 flex-col justify-between gap-5 p-5 sm:p-6">
                     <div>
                       <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[12px] font-bold text-[#667085]">
-                        <span className="inline-flex items-center gap-1.5 text-[#075cde]">
+                        <span className="inline-flex items-center gap-1.5 text-[#5b21b6]">
                           <CategoryIcon className="h-3.5 w-3.5" />
                           {cardCategory}
                         </span>
                         <span className="inline-flex items-center gap-1.5">
-                          <CalendarDays className="h-3.5 w-3.5 text-[#195585]" />
+                          <CalendarDays className="h-3.5 w-3.5 text-[#3b0764]" />
                           {publishedDate}
                         </span>
                         <span className="inline-flex items-center gap-1.5">
@@ -145,7 +145,7 @@ export function BlogCardSection({
                         </span>
                       </div>
 
-                      <h3 className="mt-4 line-clamp-2 text-[19px] font-extrabold leading-tight tracking-tight text-[#111625] transition group-hover:text-[#005ca8]">
+                      <h3 className="mt-4 line-clamp-2 text-[19px] font-extrabold leading-tight tracking-tight text-[#111625] transition group-hover:text-[#4c1d95]">
                         {post.title}
                       </h3>
 
@@ -167,7 +167,7 @@ export function BlogCardSection({
                               className="object-cover"
                             />
                           ) : (
-                            <UserRound className="m-2 h-6 w-6 text-[#195585]" />
+                            <UserRound className="m-2 h-6 w-6 text-[#3b0764]" />
                           )}
                         </div>
                         <div className="min-w-0">
@@ -180,7 +180,7 @@ export function BlogCardSection({
                         </div>
                       </div>
 
-                      <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#005ca8] text-white transition group-hover:translate-x-1 group-hover:bg-[#064cb8]">
+                      <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#4c1d95] text-white transition group-hover:translate-x-1 group-hover:bg-[#4c1d95]">
                         <ArrowRight className="h-4 w-4" />
                       </span>
                     </div>
@@ -192,7 +192,7 @@ export function BlogCardSection({
           </div>
         ) : (
           <div className="rounded-2xl border border-dashed border-[#bfd3e5] bg-[#f7fbff] px-5 py-12 text-center">
-            <BookOpenText className="mx-auto h-7 w-7 text-[#075cde]" />
+            <BookOpenText className="mx-auto h-7 w-7 text-[#5b21b6]" />
             <p className="mt-3 text-[14px] font-bold text-[#526b80]">
               {emptyMessage}
             </p>
@@ -203,7 +203,7 @@ export function BlogCardSection({
           <div className="mt-8 flex justify-center">
             <Link
               href="/blog/all"
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#075cde] px-6 text-[14px] font-bold text-white no-underline transition hover:bg-[#064cb8]"
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#5b21b6] px-6 text-[14px] font-bold text-white no-underline transition hover:bg-[#4c1d95]"
             >
               View all
               <ArrowRight className="h-4 w-4" />

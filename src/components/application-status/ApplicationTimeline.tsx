@@ -41,7 +41,7 @@ export function ApplicationTimeline() {
               >
                 <span
                   className={`absolute left-0 top-0 flex h-12 w-12 items-center justify-center rounded-full text-[20px] font-extrabold text-white ${
-                    done ? "bg-[#005ca8]" : "bg-[#dff0ff]"
+                    done ? "bg-[#4c1d95]" : "bg-[#dff0ff]"
                   }`}
                 >
                   {index + 1}
@@ -70,7 +70,7 @@ export function ApplicationTimeline() {
           </div>
         </div>
         <div className="mt-8 flex flex-col gap-4 rounded-xl border border-[#b5d9f6] bg-[#e8f4ff] p-6 md:flex-row md:items-center md:justify-between">
-          <p className="flex items-center gap-4 text-[14px] font-semibold text-[#005ca8]">
+          <p className="flex items-center gap-4 text-[14px] font-semibold text-[#4c1d95]">
             <Info className="h-5 w-5 shrink-0" />
             You will receive SMS, WhatsApp & push notifications on your
             registered mobile number at every status update.

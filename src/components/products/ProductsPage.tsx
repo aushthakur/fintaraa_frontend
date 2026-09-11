@@ -448,7 +448,7 @@ export function ProductsPage() {
   return (
     <main className="bg-white">
       <section className="relative overflow-hidden px-4 py-6 md:px-6 md:py-8 lg:px-8">
-        {/* <div className="absolute inset-0 bg-[radial-gradient(circle_at_14%_18%,rgba(25,85,133,0.10),transparent_24%),radial-gradient(circle_at_88%_8%,rgba(18,183,106,0.12),transparent_22%),linear-gradient(180deg,#f5fbff_0%,#ffffff_72%)]" /> */}
+        {/* <div className="absolute inset-0 bg-[radial-gradient(circle_at_14%_18%,rgba(25,85,133,0.10),transparent_24%),radial-gradient(circle_at_88%_8%,rgba(18,183,106,0.12),transparent_22%),linear-gradient(180deg,#faf5ff_0%,#ffffff_72%)]" /> */}
         <div className="relative mx-auto max-w-9xl">
           <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
             <div className="min-w-0 shrink-0">
@@ -491,7 +491,7 @@ export function ProductsPage() {
                   value={query}
                   onChange={(event) => setQuery(event.target.value)}
                   placeholder="Search personal loan, cashback cards, health insurance..."
-                  className="h-11 w-full rounded-xl border border-[#dbe7f2] bg-white pl-9 pr-4 text-[13px] font-semibold text-[#07162d] outline-none placeholder:text-[#98a2b3] focus:border-[#195585]"
+                  className="h-11 w-full rounded-xl border border-[#dbe7f2] bg-white pl-9 pr-4 text-[13px] font-semibold text-[#07162d] outline-none placeholder:text-[#98a2b3] focus:border-[#3b0764]"
                 />
               </label>
 
@@ -500,7 +500,7 @@ export function ProductsPage() {
                   type="button"
                   onClick={() => setFiltersOpen((current) => !current)}
                   aria-expanded={filtersOpen}
-                  className="inline-flex h-10 shrink-0 items-center gap-2 rounded-xl bg-[#eef8ff] px-3 text-[12px] font-extrabold text-[#195585] transition hover:bg-[#e1f2ff]"
+                  className="inline-flex h-10 shrink-0 items-center gap-2 rounded-xl bg-[#eef8ff] px-3 text-[12px] font-extrabold text-[#3b0764] transition hover:bg-[#e1f2ff]"
                 >
                   <SlidersHorizontal className="h-4 w-4" />
                   Filter
@@ -517,8 +517,8 @@ export function ProductsPage() {
                       onClick={() => setCategory(item)}
                       className={`h-10 shrink-0 rounded-xl px-3.5 text-[12px] font-extrabold transition ${
                         category === item
-                          ? "bg-[#195585] text-white"
-                          : "bg-[#f3faff] text-[#195585] hover:bg-[#e7f4ff]"
+                          ? "bg-[#3b0764] text-white"
+                          : "bg-[#f3faff] text-[#3b0764] hover:bg-[#e7f4ff]"
                       }`}
                     >
                       {categoryLabel(item)}
@@ -545,7 +545,7 @@ export function ProductsPage() {
                       {section.subtitle}
                     </p> */}
                   </div>
-                  <span className="w-fit rounded-full bg-[#e9f2ff] px-4 py-2 text-[12px] font-extrabold text-[#075cde]">
+                  <span className="w-fit rounded-full bg-[#ede9fe] px-4 py-2 text-[12px] font-extrabold text-[#5b21b6]">
                     {section.products.length} products
                   </span>
                 </div>
@@ -581,7 +581,7 @@ export function ProductsPage() {
             ))
           ) : (
             <div className="bg-[#f8fcff] p-10 text-center ring-1 ring-[#e4edf5]">
-              <Search className="mx-auto h-8 w-8 text-[#195585]" />
+              <Search className="mx-auto h-8 w-8 text-[#3b0764]" />
               <h2 className="mt-4 text-[24px] font-extrabold text-[#07162d]">
                 No products found
               </h2>
@@ -594,7 +594,7 @@ export function ProductsPage() {
                   setQuery("");
                   setCategory("All");
                 }}
-                className="mt-5 rounded-full bg-[#195585] px-5 py-3 text-[13px] font-extrabold text-white"
+                className="mt-5 rounded-full bg-[#3b0764] px-5 py-3 text-[13px] font-extrabold text-white"
               >
                 Clear search
               </button>

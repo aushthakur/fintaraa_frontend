@@ -216,7 +216,7 @@ export function StatementsLettersPanel() {
 
   return (
     <div className="grid gap-5">
-      <section className="grid gap-4 bg-linear-to-br from-[#07162d] via-[#195585] to-[#0f766e] p-4 text-white lg:grid-cols-[1fr_0.78fr] lg:items-end">
+      <section className="grid gap-4 bg-linear-to-br from-[#07162d] via-[#3b0764] to-[#0f766e] p-4 text-white lg:grid-cols-[1fr_0.78fr] lg:items-end">
         <div>
           <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-white/80">
             <ShieldCheck className="h-3.5 w-3.5 text-[#7ee3a2]" />
@@ -254,7 +254,7 @@ export function StatementsLettersPanel() {
           </div>
           <button
             type="button"
-            className="inline-flex h-9 w-fit items-center gap-2 rounded-full bg-[#195585] px-4 text-[12px] font-semibold text-white"
+            className="inline-flex h-9 w-fit items-center gap-2 rounded-full bg-[#3b0764] px-4 text-[12px] font-semibold text-white"
             onClick={saveFolder}
           >
             <Plus className="h-4 w-4" />
@@ -267,7 +267,7 @@ export function StatementsLettersPanel() {
             value={folderDraftName}
             onChange={(event) => setFolderDraftName(event.target.value)}
             placeholder="Folder name"
-            className="h-11 border-0 border-b border-[#cfddea] bg-transparent text-[14px] font-semibold text-[#07162d] outline-none placeholder:text-[#98a2b3] focus:border-[#195585]"
+            className="h-11 border-0 border-b border-[#cfddea] bg-transparent text-[14px] font-semibold text-[#07162d] outline-none placeholder:text-[#98a2b3] focus:border-[#3b0764]"
           />
           <div className="flex gap-2 overflow-x-auto">
             {themeOptions.map((option) => {
@@ -337,7 +337,7 @@ export function StatementsLettersPanel() {
                 <div className="mt-3 flex gap-2">
                   <button
                     type="button"
-                    className="inline-flex h-8 items-center gap-2 rounded-full bg-[#eef8ff] px-3 text-[12px] font-semibold text-[#195585]"
+                    className="inline-flex h-8 items-center gap-2 rounded-full bg-[#eef8ff] px-3 text-[12px] font-semibold text-[#3b0764]"
                     onClick={() => {
                       setEditingFolder(folder);
                       setFolderDraftName(folder.name);
@@ -397,7 +397,7 @@ export function StatementsLettersPanel() {
                     handleStatementUpload(item, event.target.files?.[0])
                   }
                 />
-                <FileText className="h-6 w-6 text-[#195585]" />
+                <FileText className="h-6 w-6 text-[#3b0764]" />
                 <h5 className="mt-3 min-h-9 text-[14px] font-semibold leading-5 text-[#07162d]">
                   {item.label}
                 </h5>
@@ -406,7 +406,7 @@ export function StatementsLettersPanel() {
                     ? `${latest.title} · ${formatDate(latest.issuedOn)}`
                     : "No file uploaded yet."}
                 </p>
-                <span className="mt-3 inline-flex h-8 items-center gap-2 rounded-full bg-[#195585] px-3 text-[12px] font-semibold text-white">
+                <span className="mt-3 inline-flex h-8 items-center gap-2 rounded-full bg-[#3b0764] px-3 text-[12px] font-semibold text-white">
                   <UploadCloud className="h-3.5 w-3.5" />
                   {uploading ? "Uploading..." : latest ? "Replace" : "Upload"}
                 </span>
@@ -425,7 +425,7 @@ export function StatementsLettersPanel() {
         <div className="grid gap-3">
           {orderedGroupKeys.map((key) => (
             <div key={key} className="grid gap-3">
-              <h5 className="text-[12px] font-semibold uppercase tracking-[0.14em] text-[#195585]">
+              <h5 className="text-[12px] font-semibold uppercase tracking-[0.14em] text-[#3b0764]">
                 {labelByType.get(key) || "Other Documents"}
               </h5>
               {groupedStatements[key].map((item) => (
@@ -434,7 +434,7 @@ export function StatementsLettersPanel() {
                   className="flex flex-col gap-3 bg-white p-3.5 shadow-[0_8px_22px_rgba(25,85,133,0.045)] md:flex-row md:items-center md:justify-between"
                 >
                   <div className="flex gap-3">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#eef8ff] text-[#195585]">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#eef8ff] text-[#3b0764]">
                       <Download className="h-5 w-5" />
                     </div>
                     <div>
@@ -452,7 +452,7 @@ export function StatementsLettersPanel() {
                     href={item.url || "#"}
                     target={item.url ? "_blank" : undefined}
                     rel={item.url ? "noreferrer" : undefined}
-                    className="inline-flex h-9 items-center justify-center gap-2 rounded-full bg-[#195585] px-4 text-[12px] font-semibold text-white no-underline"
+                    className="inline-flex h-9 items-center justify-center gap-2 rounded-full bg-[#3b0764] px-4 text-[12px] font-semibold text-white no-underline"
                   >
                     <Download className="h-4 w-4" />
                     Download
@@ -475,7 +475,7 @@ export function StatementsLettersPanel() {
 
 function StatusRow({ text }: { text: string }) {
   return (
-    <div className="flex items-center gap-3 bg-[#f8fcff] p-3.5 text-[13px] font-semibold text-[#195585]">
+    <div className="flex items-center gap-3 bg-[#f8fcff] p-3.5 text-[13px] font-semibold text-[#3b0764]">
       <Folder className="h-4 w-4" />
       {text}
     </div>

@@ -63,11 +63,11 @@ export function CibilMonitoringTips({
             >
               <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                 <div>
-                  <p className="inline-flex items-center gap-2 rounded-full bg-[#edf6fc] px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.1em] text-[#075cde]">
+                  <p className="inline-flex items-center gap-2 rounded-full bg-[#edf6fc] px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.1em] text-[#5b21b6]">
                     <LineChartIcon className="h-3.5 w-3.5" aria-hidden="true" />
                     Score monitoring
                   </p>
-                  <h2 className="mt-4 text-[24px] font-extrabold tracking-[-0.02em] text-[#102f49] sm:text-[28px]">
+                  <h2 className="mt-4 text-[24px] font-extrabold tracking-[-0.02em] text-[#3b0764] sm:text-[28px]">
                     Credit score history
                   </h2>
                   <p className="mt-2 text-[12px] font-medium text-[#7890a2]">
@@ -122,17 +122,17 @@ export function CibilMonitoringTips({
                       <Line
                         type="monotone"
                         dataKey="score"
-                        stroke="#075cde"
+                        stroke="#5b21b6"
                         strokeWidth={2.5}
-                        dot={{ r: 4, fill: "#ffffff", stroke: "#075cde", strokeWidth: 2 }}
-                        activeDot={{ r: 5, fill: "#075cde" }}
+                        dot={{ r: 4, fill: "#ffffff", stroke: "#5b21b6", strokeWidth: 2 }}
+                        activeDot={{ r: 5, fill: "#5b21b6" }}
                       />
                     </LineChart>
                   </ResponsiveContainer>
                 </div>
               ) : (
                 <div className="mt-7 flex min-h-72 flex-col items-center justify-center rounded-xl border border-dashed border-[#c9dce7] bg-[#f8fbfd] px-5 text-center">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#e8f3fb] text-[#075cde]">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#e8f3fb] text-[#5b21b6]">
                     <LineChartIcon className="h-5 w-5" aria-hidden="true" />
                   </span>
                   <p className="mt-3 text-[13px] font-extrabold text-[#254e69]">
@@ -147,7 +147,7 @@ export function CibilMonitoringTips({
               <div className="mt-5 flex items-start gap-3 rounded-xl border border-[#d8e7ef] bg-[#f3f9fc] px-4 py-3.5">
                 <TrendIcon
                   className={`mt-0.5 h-4 w-4 shrink-0 ${
-                    trendDown ? "text-[#b4232d]" : "text-[#075cde]"
+                    trendDown ? "text-[#b4232d]" : "text-[#5b21b6]"
                   }`}
                   aria-hidden="true"
                 />
@@ -179,16 +179,16 @@ export function CibilMonitoringTips({
                   className="object-cover transition duration-500 group-hover:scale-[1.025]"
                 />
                 <div
-                  className="absolute inset-x-0 bottom-0 h-20 bg-linear-to-t from-[#102f49]/45 to-transparent"
+                  className="absolute inset-x-0 bottom-0 h-20 bg-linear-to-t from-[#3b0764]/45 to-transparent"
                   aria-hidden="true"
                 />
               </div>
               <div className="p-5 sm:p-6">
-                <p className="inline-flex items-center gap-2 rounded-full bg-[#edf6fc] px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.08em] text-[#075cde]">
+                <p className="inline-flex items-center gap-2 rounded-full bg-[#edf6fc] px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.08em] text-[#5b21b6]">
                   <BookOpenCheck className="h-4 w-4" aria-hidden="true" />
                   Expert guide
                 </p>
-                <h2 className="mt-4 text-[21px] font-extrabold leading-7 tracking-[-0.01em] text-[#102f49]">
+                <h2 className="mt-4 text-[21px] font-extrabold leading-7 tracking-[-0.01em] text-[#3b0764]">
                   Practical steps to improve your CIBIL score
                 </h2>
                 <p className="mt-2 text-[12px] font-medium leading-6 text-[#667f91]">
@@ -197,7 +197,7 @@ export function CibilMonitoringTips({
                 </p>
                 <Link
                   href="/blog/improve-cibil-score-practical-steps"
-                  className="mt-5 inline-flex h-10 items-center gap-2 rounded-lg bg-[#075cde] px-4 text-[11px] font-extrabold text-white no-underline transition-colors hover:bg-[#064cb8]"
+                  className="mt-5 inline-flex h-10 items-center gap-2 rounded-lg bg-[#5b21b6] px-4 text-[11px] font-extrabold text-white no-underline transition-colors hover:bg-[#4c1d95]"
                 >
                   Read the improvement guide
                   <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
@@ -215,11 +215,11 @@ export function CibilMonitoringTips({
           >
             <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <p className="inline-flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-[0.1em] text-[#075cde]">
+                <p className="inline-flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-[0.1em] text-[#5b21b6]">
                   <CheckCircle2 className="h-4 w-4" aria-hidden="true" />
                   Based on your report factors
                 </p>
-                <h2 className="mt-3 text-[24px] font-extrabold tracking-[-0.02em] text-[#102f49] sm:text-[28px]">
+                <h2 className="mt-3 text-[24px] font-extrabold tracking-[-0.02em] text-[#3b0764] sm:text-[28px]">
                   Personalized improvement priorities
                 </h2>
               </div>
@@ -238,7 +238,7 @@ export function CibilMonitoringTips({
                   key={`${index}-${recommendation}`}
                   className="flex items-start gap-4 rounded-xl border border-[#dce8ef] bg-white p-4 shadow-[0_5px_15px_rgba(30,74,102,0.035)]"
                 >
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#e8f3fb] text-[#075cde]">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#e8f3fb] text-[#5b21b6]">
                     <CheckCircle2 className="h-4 w-4" aria-hidden="true" />
                   </span>
                   <div>

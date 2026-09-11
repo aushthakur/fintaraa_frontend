@@ -58,7 +58,7 @@ export function BankHeroSection({ page }: { page: BankSeoPageData }) {
                   />
                 </div>
               ) : (
-                <span className="text-[20px] font-extrabold text-[#005ca8]">
+                <span className="text-[20px] font-extrabold text-[#4c1d95]">
                   {page.bankName}
                 </span>
               )}
@@ -70,10 +70,10 @@ export function BankHeroSection({ page }: { page: BankSeoPageData }) {
             {/* Split Title Stack & Dynamic Context Badges */}
             <div className="flex flex-col gap-1.5 w-full">
               <div className="flex items-center gap-3 flex-wrap">
-                <h1 className="text-[36px] md:text-[46px] font-extrabold leading-[1.1] text-[#005ca8] tracking-tight">
+                <h1 className="text-[36px] md:text-[46px] font-extrabold leading-[1.1] text-[#4c1d95] tracking-tight">
                   {page.title || `${page.bankName} ${page.productName}`}
                 </h1>
-                <span className="bg-[#eaf3fc] text-[#005ca8] text-[11px] font-bold px-3 py-1 rounded-full whitespace-nowrap self-start mt-2">
+                <span className="bg-[#eaf3fc] text-[#4c1d95] text-[11px] font-bold px-3 py-1 rounded-full whitespace-nowrap self-start mt-2">
                   Trusted Partner
                 </span>
               </div>
@@ -95,7 +95,7 @@ export function BankHeroSection({ page }: { page: BankSeoPageData }) {
                   key={`${stat.label}-${index}`}
                   className="flex items-start gap-2.5"
                 >
-                  <Icon className="h-5 w-5 text-[#005ca8] mt-0.5 shrink-0" />
+                  <Icon className="h-5 w-5 text-[#4c1d95] mt-0.5 shrink-0" />
                   <div>
                     <h4 className="text-[13px] font-bold text-[#1a1d24]">
                       {stat.label}

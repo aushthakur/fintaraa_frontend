@@ -45,38 +45,38 @@ export function LoanEligibilityCriteria({
       className={
         embedded
           ? ""
-          : "border border-[#e2edf8] bg-[#fbfdff] p-5 sm:p-6"
+          : "rounded-2xl border border-slate-200 bg-white p-6 md:p-8 shadow-xs"
       }
     >
       {!embedded ? (
-        <div className="max-w-3xl">
-        <p className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#00529b]">
-          Applicant fit
-        </p>
-        <h2 className="mt-2 text-[24px] font-extrabold text-[#111827]">
-          Eligibility <span className="text-[#13a653]">Criteria</span>
-        </h2>
-        <p className="mt-3 text-[14px] font-semibold leading-7 text-[#2f3744]">
-          Eligibility depends on profile quality, income, documents, credit
-          history, and partner policy.
-        </p>
+        <div className="max-w-3xl mb-6">
+          <p className="text-xs font-extrabold uppercase tracking-wider text-[#5b21b6]">
+            Applicant fit
+          </p>
+          <h2 className="mt-1.5 text-2xl font-extrabold text-slate-900">
+            Eligibility <span className="text-[#5b21b6]">Criteria</span>
+          </h2>
+          <p className="mt-2 text-sm font-medium leading-relaxed text-slate-600">
+            Eligibility depends on profile quality, income, documents, credit
+            history, and partner policy.
+          </p>
         </div>
       ) : null}
 
-      <div className={`${embedded ? "" : "mt-5"} grid gap-3 md:grid-cols-2`}>
+      <div className={`${embedded ? "" : "mt-6"} grid gap-3.5 sm:grid-cols-2`}>
         {eligibilityItems.map(({ title, description, icon: Icon }) => (
           <div
             key={title}
-            className="flex gap-3 rounded-2xl border border-[#dfe8ef] bg-white p-4"
+            className="flex items-start gap-3.5 rounded-2xl border border-slate-200/90 bg-white p-4.5 shadow-2xs transition-all hover:border-purple-200 hover:shadow-xs"
           >
-            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#e9f6ff] text-[#00529b]">
-              <Icon className="h-4.5 w-4.5" />
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-purple-50 text-[#5b21b6] border border-purple-100/60">
+              <Icon className="h-5 w-5" />
             </span>
             <div>
-              <h3 className="text-[14px] font-extrabold text-[#111827]">
+              <h3 className="text-sm font-bold text-slate-900">
                 {title}
               </h3>
-              <p className="mt-1 text-[13px] font-semibold leading-6 text-[#596579]">
+              <p className="mt-1 text-xs sm:text-[13px] font-medium leading-relaxed text-slate-500">
                 {description}
               </p>
             </div>

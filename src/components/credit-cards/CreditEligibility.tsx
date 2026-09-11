@@ -36,7 +36,7 @@ const initialForm = {
 };
 
 const fieldClass =
-  "h-11 w-full rounded-lg border border-[#e2eaf2] bg-[#fafcfe] px-4 text-[13px] font-semibold text-[#2d3142] outline-none transition-colors placeholder:text-[#b0bac9] focus:border-[#005ca8] focus:bg-white focus:ring-2 focus:ring-[#e5f2ff]";
+  "h-11 w-full rounded-lg border border-[#e2eaf2] bg-[#fafcfe] px-4 text-[13px] font-semibold text-[#2d3142] outline-none transition-colors placeholder:text-[#b0bac9] focus:border-[#4c1d95] focus:bg-white focus:ring-2 focus:ring-[#e5f2ff]";
 
 const formatIncome = (value: string) => {
   const digits = value.replace(/\D/g, "").slice(0, 9);
@@ -117,7 +117,7 @@ export function CreditEligibility({
       <div className="mx-auto grid max-w-9xl gap-10 pt-6 lg:grid-cols-[1.1fr_1fr] lg:items-start">
         <div className="flex h-full flex-col justify-between">
           <div>
-            <h2 className="text-[30px] font-bold leading-[1.16] text-[#005ca8] md:text-[38px]">
+            <h2 className="text-[30px] font-bold leading-[1.16] text-[#4c1d95] md:text-[38px]">
               Check your <br />
               <span className="text-[#05437a]">credit card eligibility</span>
             </h2>
@@ -141,7 +141,7 @@ export function CreditEligibility({
                 ],
               ].map(([title, text]) => (
                 <div key={title} className="flex items-start gap-3.5">
-                  <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 border-[#005ca8] text-[#005ca8]">
+                  <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 border-[#4c1d95] text-[#4c1d95]">
                     <Check className="h-3.5 w-3.5" />
                   </span>
                   <div>
@@ -184,7 +184,7 @@ export function CreditEligibility({
                         : ""
                     }`}
                   >
-                    <ItemIcon className="h-5 w-5 shrink-0 text-[#005ca8]" />
+                    <ItemIcon className="h-5 w-5 shrink-0 text-[#4c1d95]" />
                     <div>
                       <div className="font-bold text-[#2d3142]">
                         {String(title)}
@@ -201,7 +201,7 @@ export function CreditEligibility({
         </div>
 
         <div className="relative mt-6 w-full max-w-lg justify-self-center pb-5 pr-5 lg:mt-0 lg:justify-self-end">
-          <div className="absolute inset-0 translate-x-5 translate-y-5 rounded-2xl bg-[#00529c]" />
+          <div className="absolute inset-0 translate-x-5 translate-y-5 rounded-2xl bg-[#4c1d95]" />
           <div className="relative z-10 min-h-125 rounded-2xl border border-[#e8eff6] bg-white p-6 shadow-[0_14px_36px_rgba(0,82,156,0.12)] sm:p-8">
             <div className="mb-7 flex items-center justify-between">
               {[1, 2, 3, 4].map((item, index) => (
@@ -211,7 +211,7 @@ export function CreditEligibility({
                 >
                   <motion.span
                     animate={{
-                      backgroundColor: item <= step ? "#005ca8" : "#e1f0ff",
+                      backgroundColor: item <= step ? "#4c1d95" : "#e1f0ff",
                       scale: item === step ? 1.08 : 1,
                     }}
                     className={`relative z-10 flex h-9 w-9 items-center justify-center rounded-full text-[13px] font-bold ${
@@ -225,7 +225,7 @@ export function CreditEligibility({
                       <motion.span
                         initial={false}
                         animate={{ width: item < step ? "100%" : "0%" }}
-                        className="absolute inset-y-0 left-0 bg-[#005ca8]"
+                        className="absolute inset-y-0 left-0 bg-[#4c1d95]"
                       />
                     </span>
                   ) : null}
@@ -262,8 +262,8 @@ export function CreditEligibility({
                         />
                       </Field>
                       <Field label="Mobile Number">
-                        <div className="flex h-11 overflow-hidden rounded-lg border border-[#e2eaf2] bg-[#fafcfe] focus-within:border-[#005ca8] focus-within:ring-2 focus-within:ring-[#e5f2ff]">
-                          <span className="flex items-center border-r border-[#e2eaf2] bg-[#eef5fc] px-4 text-[13px] font-bold text-[#005ca8]">
+                        <div className="flex h-11 overflow-hidden rounded-lg border border-[#e2eaf2] bg-[#fafcfe] focus-within:border-[#4c1d95] focus-within:ring-2 focus-within:ring-[#e5f2ff]">
+                          <span className="flex items-center border-r border-[#e2eaf2] bg-[#eef5fc] px-4 text-[13px] font-bold text-[#4c1d95]">
                             +91
                           </span>
                           <input
@@ -326,7 +326,7 @@ export function CreditEligibility({
                       </Field>
                       <Field label="Monthly Income">
                         <div className="relative">
-                          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[13px] font-bold text-[#005ca8]">
+                          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[13px] font-bold text-[#4c1d95]">
                             ₹
                           </span>
                           <input
@@ -486,7 +486,7 @@ export function CreditEligibility({
 function StepHeading({ title, subtitle }: { title: string; subtitle: string }) {
   return (
     <div className="mb-5">
-      <h3 className="inline-block border-b-2 border-[#005ca8] pb-1 text-[20px] font-bold text-[#1a1d24]">
+      <h3 className="inline-block border-b-2 border-[#4c1d95] pb-1 text-[20px] font-bold text-[#1a1d24]">
         {title}
       </h3>
       <p className="mt-2 text-[12px] font-medium text-[#7c8b9e]">{subtitle}</p>

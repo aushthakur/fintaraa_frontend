@@ -32,8 +32,8 @@ export function StatusHero({
       title: "Total records",
       value: formatCount(totalApplications),
       icon: ClipboardList,
-      tone: "bg-[#e4f2ff] text-[#005ca8]",
-      accent: "bg-[#147cc1]",
+      tone: "bg-[#e4f2ff] text-[#4c1d95]",
+      accent: "bg-[#7c3aed]",
     },
     {
       title: "In progress",
@@ -62,7 +62,7 @@ export function StatusHero({
     <section className="relative overflow-hidden bg-[#f5f9fd] px-4 py-8 md:px-6 md:py-10 lg:px-8">
       <span
         aria-hidden="true"
-        className="absolute left-0 top-10 h-24 w-1.5 bg-[#147cc1]"
+        className="absolute left-0 top-10 h-24 w-1.5 bg-[#7c3aed]"
       />
       <div className="mx-auto grid max-w-9xl gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
         <motion.div
@@ -71,8 +71,8 @@ export function StatusHero({
           transition={{ duration: 0.7, ease }}
         >
           <div className="flex items-center gap-3">
-            <span className="h-0.75 w-8 bg-[#147cc1]" />
-            <p className="text-[11px] font-extrabold uppercase text-[#005ca8] md:text-[12px]">
+            <span className="h-0.75 w-8 bg-[#7c3aed]" />
+            <p className="text-[11px] font-extrabold uppercase text-[#4c1d95] md:text-[12px]">
               {contextLabel}
             </p>
           </div>
@@ -89,7 +89,7 @@ export function StatusHero({
               Secure account-linked data
             </p>
             <p className="flex items-center gap-2 text-[11px] font-bold text-[#52657c]">
-              <BadgeCheck className="h-4 w-4 text-[#147cc1]" />
+              <BadgeCheck className="h-4 w-4 text-[#7c3aed]" />
               Status from Fintaraa systems
             </p>
           </div>

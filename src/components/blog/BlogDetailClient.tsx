@@ -95,7 +95,7 @@ export function BlogDetailClient({ slug }: { slug: string }) {
         <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-10">
           <div className="space-y-8">
             <div className="space-y-4">
-              <span className="block text-[13px] font-bold tracking-wide text-[#005ca8]">
+              <span className="block text-[13px] font-bold tracking-wide text-[#4c1d95]">
                 {post.category || "Financial Planning"}
               </span>
               <h1 className="text-[32px] font-extrabold leading-[1.15] tracking-tight text-black md:text-[42px]">
@@ -216,7 +216,7 @@ export function BlogDetailClient({ slug }: { slug: string }) {
                   name="q"
                   aria-label="Search blog articles"
                   placeholder="Search guides and insights"
-                  className="h-11 w-full rounded-xl border border-[#dce7ef] bg-[#f8fbfd] pl-10 pr-3 text-[12px] font-semibold text-[#17354d] outline-none transition placeholder:text-[#98a6b3] focus:border-[#075cde] focus:bg-white"
+                  className="h-11 w-full rounded-xl border border-[#dce7ef] bg-[#f8fbfd] pl-10 pr-3 text-[12px] font-semibold text-[#3b0764] outline-none transition placeholder:text-[#98a6b3] focus:border-[#5b21b6] focus:bg-white"
                 />
               </form>
             </section>
@@ -230,7 +230,7 @@ export function BlogDetailClient({ slug }: { slug: string }) {
                   <Link
                     key={category}
                     href={`/blog?category=${encodeURIComponent(category)}`}
-                    className="group flex items-center justify-between gap-3 rounded-xl px-3 py-2.5 text-[12px] font-bold text-[#526b80] no-underline transition hover:bg-[#eef6ff] hover:text-[#075cde]"
+                    className="group flex items-center justify-between gap-3 rounded-xl px-3 py-2.5 text-[12px] font-bold text-[#526b80] no-underline transition hover:bg-[#eef6ff] hover:text-[#5b21b6]"
                   >
                     <span>{category}</span>
                     <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-0.5" />

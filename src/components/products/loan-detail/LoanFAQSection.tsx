@@ -14,22 +14,24 @@ export function LoanFAQSection({
 }) {
   if (faqs?.length) {
     const content = (
-      <div className="divide-y divide-[#e2eaf0] overflow-hidden rounded-2xl border border-[#dce7ef] bg-white">
+      <div className="divide-y divide-slate-100 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xs">
         {faqs.map((faq, index) => (
           <details
             key={`${faq.question}-${index}`}
-            className="group px-4 py-4 sm:px-5"
+            className="group p-4 sm:p-5 transition-colors hover:bg-slate-50/40"
             open={index === 0}
           >
-            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-[13px] font-extrabold text-[#17354d] marker:content-none sm:text-[14px]">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm sm:text-[15px] font-bold text-slate-900 marker:content-none transition-colors group-hover:text-[#5b21b6]">
               {faq.question}
-              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#edf5fb] text-[#075cde] transition group-open:rotate-45">
+              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-purple-50 text-[#5b21b6] text-sm font-bold border border-purple-100/70 transition-transform duration-200 group-open:rotate-45">
                 +
               </span>
             </summary>
-            <p className="mt-3 text-[12px] font-medium leading-6 text-[#657d90] sm:text-[13px]">
-              {faq.answer}
-            </p>
+            <div className="mt-3 rounded-xl bg-purple-50/30 p-3.5 border border-purple-100/40">
+              <p className="text-xs sm:text-[13.5px] font-medium leading-relaxed text-slate-600">
+                {faq.answer}
+              </p>
+            </div>
           </details>
         ))}
       </div>
@@ -40,10 +42,15 @@ export function LoanFAQSection({
     return (
       <section className="bg-white px-4 py-12 md:px-6 lg:px-8">
         <div className="mx-auto max-w-5xl">
-          <h2 className="text-[24px] font-extrabold tracking-tight text-[#07162d]">
-            {title || "Frequently Asked Questions"}
-          </h2>
-          <div className="mt-5">{content}</div>
+          <div className="mb-6">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-purple-50 px-3.5 py-1 text-xs font-bold text-[#5b21b6] border border-purple-100 mb-2">
+              Got Questions?
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
+              {title || "Frequently Asked Questions"}
+            </h2>
+          </div>
+          <div>{content}</div>
         </div>
       </section>
     );

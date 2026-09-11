@@ -115,7 +115,7 @@ export function BankProductOfferCard({
             unoptimized={isExternalHref(product.image)}
           />
         ) : (
-          <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#eef6ff] text-[#00529b]">
+          <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#eef6ff] text-[#4c1d95]">
             {isCreditCard ? (
               <CreditCard className="h-5 w-5" />
             ) : (
@@ -124,7 +124,7 @@ export function BankProductOfferCard({
           </span>
         )}
         <div className="min-w-0">
-          <p className="truncate text-[11px] font-extrabold uppercase tracking-wide text-[#00529b]">
+          <p className="truncate text-[11px] font-extrabold uppercase tracking-wide text-[#4c1d95]">
             {product.bankName || "Partner bank"}
           </p>
           <h3 className="mt-1 line-clamp-2 text-[17px] font-extrabold leading-6 text-[#07162d]">
@@ -145,7 +145,7 @@ export function BankProductOfferCard({
               key={detail.label}
               className="min-w-0 rounded-xl bg-[#f7fbff] px-2.5 py-3"
             >
-              <Icon className="h-4 w-4 text-[#00529b]" />
+              <Icon className="h-4 w-4 text-[#4c1d95]" />
               <dt className="mt-2 truncate text-[9px] font-extrabold uppercase tracking-wide text-[#8a94a6]">
                 {detail.label}
               </dt>
@@ -178,7 +178,7 @@ export function BankProductOfferCard({
           <Link
             href={detailHref}
             onClick={() => trackClick("detail")}
-            className="inline-flex h-10 items-center justify-center rounded-full border border-[#bfd7ed] bg-white px-3 text-[12px] font-extrabold text-[#00529b] no-underline"
+            className="inline-flex h-10 items-center justify-center rounded-full border border-[#bfd7ed] bg-white px-3 text-[12px] font-extrabold text-[#4c1d95] no-underline"
           >
             View Details
           </Link>

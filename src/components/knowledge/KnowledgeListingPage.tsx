@@ -224,7 +224,7 @@ function VideoTestimonialListingCard({
         />
         <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/10 to-black/20" />
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white text-[#075cde] ring-8 ring-white/20 transition group-hover:scale-105">
+          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white text-[#5b21b6] ring-8 ring-white/20 transition group-hover:scale-105">
             <Play className="ml-0.5 h-5 w-5 fill-current" />
           </span>
         </div>
@@ -246,10 +246,10 @@ function VideoTestimonialListingCard({
           <div className="flex items-center justify-between gap-4">
             <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1.5">
               <span className="inline-flex items-center gap-1.5 text-[12px] font-extrabold uppercase tracking-widest text-[#98a2b3]">
-                <Quote className="h-3.5 w-3.5 text-[#075cde]" />
+                <Quote className="h-3.5 w-3.5 text-[#5b21b6]" />
                 Story
               </span>
-              <span className="inline-flex items-center gap-1.5 text-[12px] font-bold text-[#075cde]">
+              <span className="inline-flex items-center gap-1.5 text-[12px] font-bold text-[#5b21b6]">
                 <ShieldCheck className="h-3.5 w-3.5" />
                 {item.category || "Customer Story"}
               </span>
@@ -264,7 +264,7 @@ function VideoTestimonialListingCard({
               "A Fintaraa customer shares how comparison and assisted guidance helped them choose confidently."}
           </p>
         </div>
-        <span className="absolute bottom-3 right-3 inline-flex h-7 w-7 items-center justify-center rounded-full bg-[#075cde] text-white transition group-hover:translate-x-1 group-hover:bg-[#064cb8]">
+        <span className="absolute bottom-3 right-3 inline-flex h-7 w-7 items-center justify-center rounded-full bg-[#5b21b6] text-white transition group-hover:translate-x-1 group-hover:bg-[#4c1d95]">
           <ArrowRight className="h-4 w-4" />
         </span>
       </div>
@@ -288,7 +288,7 @@ function ListingSearch({
         value={value}
         onChange={(event) => onChange(event.target.value)}
         placeholder="Search stories"
-        className="ml-2 w-full bg-transparent text-[13px] font-semibold text-[#17354d] outline-none placeholder:text-[#98a2b3]"
+        className="ml-2 w-full bg-transparent text-[13px] font-semibold text-[#3b0764] outline-none placeholder:text-[#98a2b3]"
       />
     </label>
   );
@@ -432,7 +432,7 @@ export function KnowledgeListingPage({
             </div>
             <div className="rounded-2xl border border-[#dce9f7] bg-white p-5 shadow-[0_14px_38px_rgba(16,24,40,0.05)]">
               <div className="flex items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#e8f4ff] text-[#005ca8]">
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#e8f4ff] text-[#4c1d95]">
                   <Filter className="h-5 w-5" />
                 </div>
                 <div>
@@ -485,7 +485,7 @@ export function KnowledgeListingPage({
                 onClick={() => selectCategory("all")}
                 className={`shrink-0 rounded-full border px-4 py-2 text-[12px] font-extrabold ${
                   category === "all"
-                    ? "border-[#005ca8] bg-[#005ca8] text-white"
+                    ? "border-[#4c1d95] bg-[#4c1d95] text-white"
                     : "border-[#dce9f7] bg-white text-[#536273]"
                 }`}
               >
@@ -498,7 +498,7 @@ export function KnowledgeListingPage({
                   onClick={() => selectCategory(item)}
                   className={`shrink-0 rounded-full border px-4 py-2 text-[12px] font-extrabold ${
                     category === item
-                      ? "border-[#005ca8] bg-[#005ca8] text-white"
+                      ? "border-[#4c1d95] bg-[#4c1d95] text-white"
                       : "border-[#dce9f7] bg-white text-[#536273]"
                   }`}
                 >
@@ -595,7 +595,7 @@ export function KnowledgeListingPage({
                           className="object-cover"
                         />
                         <div className="absolute inset-0 bg-linear-to-t from-[#07162d]/55 via-transparent to-transparent" />
-                        <span className="absolute left-4 top-4 rounded-full bg-white px-3 py-1 text-[11px] font-extrabold text-[#005ca8]">
+                        <span className="absolute left-4 top-4 rounded-full bg-white px-3 py-1 text-[11px] font-extrabold text-[#4c1d95]">
                           {item.category || config.detailLabel}
                         </span>
                       </div>
@@ -621,7 +621,7 @@ export function KnowledgeListingPage({
                             {item.tags.slice(0, 3).map((tag) => (
                               <span
                                 key={`${item.slug}-${tag}`}
-                                className="rounded-full bg-[#eef6ff] px-3 py-1 text-[11px] font-extrabold text-[#005ca8]"
+                                className="rounded-full bg-[#eef6ff] px-3 py-1 text-[11px] font-extrabold text-[#4c1d95]"
                               >
                                 {tag}
                               </span>
@@ -632,7 +632,7 @@ export function KnowledgeListingPage({
 
                       <Link
                         href={`${config.hrefRoot}/${item.slug}`}
-                        className="mt-5 inline-flex h-10 w-fit items-center justify-center gap-2 rounded-full bg-[#005ca8] px-5 text-[12px] font-extrabold text-white no-underline transition hover:bg-[#004b87]"
+                        className="mt-5 inline-flex h-10 w-fit items-center justify-center gap-2 rounded-full bg-[#4c1d95] px-5 text-[12px] font-extrabold text-white no-underline transition hover:bg-[#004b87]"
                       >
                         {item.buttonLabel || config.primaryAction}
                         <ArrowRight className="h-4 w-4" />
@@ -650,7 +650,7 @@ export function KnowledgeListingPage({
               className="mt-8 flex h-12 items-center justify-center"
               aria-label="Loading more customer stories"
             >
-              <span className="h-6 w-6 animate-spin rounded-full border-2 border-[#dce9f7] border-t-[#075cde]" />
+              <span className="h-6 w-6 animate-spin rounded-full border-2 border-[#dce9f7] border-t-[#5b21b6]" />
             </div>
           ) : null}
 

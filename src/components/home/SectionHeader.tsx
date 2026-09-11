@@ -24,7 +24,7 @@ export function SectionHeader({
       {action && (
         <Link
           href="/products"
-          className="inline-flex h-9 shrink-0 items-center justify-center rounded-lg bg-[#e9f2ff] px-3 text-[12px] font-bold leading-none text-[#075cde] no-underline transition hover:bg-[#d9eaff] md:bg-transparent md:px-0"
+          className="inline-flex h-9 shrink-0 items-center justify-center rounded-lg bg-[#ede9fe] px-3 text-[12px] font-bold leading-none text-[#5b21b6] no-underline transition hover:bg-[#d9eaff] md:bg-transparent md:px-0"
         >
           {action}
         </Link>

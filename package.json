@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3002",
+    "start": "next dev -p 3002",
     "build": "next build",
-    "start": "next start",
+    "start:prod": "next start -p 3002",
     "lint": "eslint",
     "generate:insurance-banners": "node scripts/generateInsuranceBannerAssets.mjs",
     "test:e2e:insurance-banners": "playwright test tests/insurance-banners.spec.ts"

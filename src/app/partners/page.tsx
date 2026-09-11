@@ -85,7 +85,7 @@ export default async function PartnersPage() {
 
   return (
     <PageMotionProvider>
-      <main className="bg-white text-[#102c45]">
+      <main className="bg-white text-[#3b0764]">
         <section className="relative overflow-hidden border-b border-[#dfebf4] bg-linear-to-br from-white via-[#f7fbff] to-[#eef7ff] px-4 py-10 sm:px-6 md:py-14 lg:px-8">
           <div className="pointer-events-none absolute -right-28 -top-32 h-96 w-96 rounded-full bg-[#dceeff]/65 blur-3xl" />
           <div className="relative mx-auto grid max-w-9xl gap-8 lg:grid-cols-[minmax(0,1fr)_390px] lg:items-center">
@@ -100,14 +100,14 @@ export default async function PartnersPage() {
               <div className="mt-6 flex flex-wrap gap-3">
                 <a
                   href="#partner-directory"
-                  className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#075cde] px-5 text-[12px] font-extrabold text-white no-underline transition hover:bg-[#064cb8]"
+                  className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#5b21b6] px-5 text-[12px] font-extrabold text-white no-underline transition hover:bg-[#4c1d95]"
                 >
                   View partners
                   <ArrowRight className="h-4 w-4" />
                 </a>
                 <Link
                   href="/products"
-                  className="inline-flex h-11 items-center justify-center rounded-xl border border-[#c9dce9] bg-white px-5 text-[12px] font-extrabold text-[#075cde] no-underline transition hover:border-[#8db9d6]"
+                  className="inline-flex h-11 items-center justify-center rounded-xl border border-[#c9dce9] bg-white px-5 text-[12px] font-extrabold text-[#5b21b6] no-underline transition hover:border-[#8db9d6]"
                 >
                   Explore products
                 </Link>
@@ -125,7 +125,7 @@ export default async function PartnersPage() {
                       key={stat.label}
                       className="rounded-xl bg-[#f5f9fc] p-4"
                     >
-                      <p className="text-[24px] font-extrabold text-[#075cde]">
+                      <p className="text-[24px] font-extrabold text-[#5b21b6]">
                         {stat.value}
                       </p>
                       <p className="mt-1 text-[11px] font-bold leading-4 text-[#61748f]">
@@ -155,7 +155,7 @@ export default async function PartnersPage() {
           <div className="mx-auto max-w-9xl">
             <SectionReveal>
               <div className="max-w-2xl">
-                <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-[#075cde]">
+                <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-[#5b21b6]">
                   Partner standards
                 </p>
                 <h2 className="mt-2 text-[28px] font-extrabold tracking-[-0.02em] text-[#07162d] md:text-[34px]">
@@ -167,10 +167,10 @@ export default async function PartnersPage() {
               {standards.map(({ title, text, icon: Icon }, index) => (
                 <SectionReveal key={title} delay={index * 0.06} distance={14}>
                   <article className="h-full rounded-2xl border border-[#dce7ef] bg-white p-5">
-                    <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#e9f3ff] text-[#075cde]">
+                    <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#e9f3ff] text-[#5b21b6]">
                       <Icon className="h-5 w-5" />
                     </span>
-                    <h3 className="mt-4 text-[17px] font-extrabold text-[#17354d]">
+                    <h3 className="mt-4 text-[17px] font-extrabold text-[#3b0764]">
                       {title}
                     </h3>
                     <p className="mt-2 text-[12px] font-medium leading-6 text-[#718598]">
@@ -194,14 +194,14 @@ export default async function PartnersPage() {
               {journey.map(({ label, text, icon: Icon }, index) => (
                 <SectionReveal key={label} delay={index * 0.05} distance={12}>
                   <article className="flex h-full gap-3 rounded-2xl border border-[#e2ebf2] bg-white p-4">
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#eef7ff] text-[#075cde]">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#eef7ff] text-[#5b21b6]">
                       <Icon className="h-4.5 w-4.5" />
                     </span>
                     <div>
                       <p className="text-[9px] font-extrabold uppercase tracking-[0.12em] text-[#98a6b3]">
                         Step {index + 1}
                       </p>
-                      <h3 className="mt-0.5 text-[14px] font-extrabold text-[#17354d]">
+                      <h3 className="mt-0.5 text-[14px] font-extrabold text-[#3b0764]">
                         {label}
                       </h3>
                       <p className="mt-1 text-[11px] font-medium leading-5 text-[#718598]">

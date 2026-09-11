@@ -31,7 +31,7 @@ export default function Image() {
             gap: 18,
             fontSize: 28,
             fontWeight: 800,
-            color: "#005ca8",
+            color: "#4c1d95",
           }}
         >
           <div
@@ -39,7 +39,7 @@ export default function Image() {
               width: 56,
               height: 56,
               borderRadius: 16,
-              background: "#005ca8",
+              background: "#4c1d95",
               color: "white",
               display: "flex",
               alignItems: "center",
@@ -99,7 +99,7 @@ export default function Image() {
             alignItems: "center",
             fontSize: 24,
             fontWeight: 800,
-            color: "#005ca8",
+            color: "#4c1d95",
           }}
         >
           <span>fintaraa.com</span>

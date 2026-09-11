@@ -17,7 +17,7 @@ export function DsaOfferings() {
               className="rounded-[18px] border border-[#e3eaf3] bg-white p-5"
             >
               <div className="flex items-start gap-3">
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#edf5ff] text-[#0d64bf]">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#edf5ff] text-[#6d28d9]">
                   <Icon className="h-5 w-5" />
                 </span>
                 <div>

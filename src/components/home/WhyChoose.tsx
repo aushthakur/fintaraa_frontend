@@ -1,88 +1,81 @@
-const reasons = [
-  {
-    title: "Expert Legal Guidance",
-    text: "Get assistance from experienced experts who clarify every detail and help you make confident loan decisions.",
-    points: ["Legal support at every stage", "Documentation made easy"],
-  },
-  {
-    title: "Transparent Process",
-    text: "Clear, simple and transparent process with no hidden fees or surprises. Know what you pay and why.",
-    points: ["No hidden charges", "Full clarity from start to finish"],
-  },
-  {
-    title: "Compliance-led Process",
-    text: "All loans are processed through trusted partner guidelines and industry best practices for complete security.",
-    points: ["RBI compliant partners", "Secure and verified loan process"],
-  },
-  {
-    title: "End to End Support",
-    text: "Our support team is with you from application to disbursal and after that whenever help is needed.",
-    points: ["Real human support", "Quick response every time"],
-  },
-  {
-    title: "Affordable & Competitive Pricing",
-    text: "Best-in-class services at competitive pricing so you get maximum value from each financial decision.",
-    points: ["Lowest processing fee options", "Best loan options, always"],
-  },
-];
+"use client";
+
+import { ShieldCheck, UsersRound, Clock, Star, Landmark } from "lucide-react";
 
 const stats = [
-  { value: "2M+", label: "Happy customers" },
-  { value: "30+", label: "Partner banks & NBFCs" },
-  { value: "₹50,000 Cr+", label: "Processed successfully" },
-  { value: "24-48 hrs", label: "Average approval time" },
-  { value: "4.8/5", label: "Customer rating" },
+  { value: "2M+", label: "Happy Customers", icon: UsersRound },
+  { value: "30+", label: "Partner Banks & NBFCs", icon: Landmark },
+  { value: "₹50,000 Cr+", label: "Processed Successfully", icon: ShieldCheck },
+  { value: "24-48 hrs", label: "Average Approval Time", icon: Clock },
+  { value: "4.8 / 5", label: "Customer Rating", icon: Star },
+];
+
+const pillars = [
+  {
+    title: "100% Transparent",
+    text: "Zero hidden charges. Clear comparison of fees, interest rates & EMIs across all lenders.",
+  },
+  {
+    title: "RBI Compliant Partners",
+    text: "Every loan and card offer is powered by registered banks and RBI-regulated NBFCs.",
+  },
+  {
+    title: "Fast Digital Processing",
+    text: "Minimal paperwork with assisted digital verification for rapid disbursals.",
+  },
+  {
+    title: "Dedicated Loan Experts",
+    text: "Experienced loan advisors to guide you through documentation and loan approval.",
+  },
 ];
 
 export function WhyChoose() {
   return (
-    <section className="bg-white px-4 md:px-6 lg:px-8">
-      <div className="mx-auto max-w-9xl overflow-hidden rounded-2xl bg-[#f7fbff] p-4 sm:p-6">
-        <h2 className="mt-3 max-w-3xl text-[28px] font-bold leading-tight tracking-tight text-[#07162d] sm:text-[34px]">
-          Why Choose <span className="text-[#075cde]">Fintaraa?</span>
-        </h2>
+    <section
+      className="bg-[#fafafa] py-6 sm:py-8"
+      aria-label="Why Choose Fintaraa"
+    >
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center gap-2">
+          <span className="h-2 w-2 rounded-full bg-[#5b21b6]" />
+          <h2 className="text-[17px] font-semibold text-[#0f172a] sm:text-[20px]">
+            Why Choose Fintaraa
+          </h2>
+        </div>
+        <p className="text-[12px] font-normal text-[#64748b]">
+          India&apos;s trusted marketplace for loans, cards, insurance and financial solutions
+        </p>
 
-        <div
-          role="region"
-          aria-label="Why choose Fintaraa"
-          className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-5"
-        >
-          {reasons.map(({ title, text, points }) => (
-            <article
-              key={title}
-              className="h-full rounded-xl border border-[#e2edf8] bg-white p-4"
+        {/* Compact Numerical Stats Row */}
+        <div className="mt-3.5 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
+          {stats.map(({ value, label, icon: Icon }) => (
+            <div
+              key={label}
+              className="flex flex-col items-center justify-center rounded-xl border border-gray-200 bg-white p-3 text-center shadow-2xs last:col-span-2 sm:last:col-span-1"
             >
-              <h3 className="text-[15px] font-bold leading-snug text-[#07162d]">
-                {title}
-              </h3>
-              <p className="mt-2 line-clamp-3 text-[12px] font-semibold leading-5 text-[#61748f]">
-                {text}
+              <Icon className="h-4 w-4 text-[#5b21b6]" />
+              <p className="mt-1 text-[16px] font-semibold text-[#0f172a] sm:text-[18px]">
+                {value}
               </p>
-              <div className="mt-3 grid gap-2">
-                {points.slice(0, 1).map((point) => (
-                  <span
-                    key={point}
-                    className="text-[12px] font-semibold text-[#0f7a4d]"
-                  >
-                    {point}
-                  </span>
-                ))}
-              </div>
-            </article>
+              <p className="mt-0.5 text-[11px] font-normal text-[#64748b]">
+                {label}
+              </p>
+            </div>
           ))}
         </div>
 
-        <div className="mt-6 grid grid-cols-2 gap-3 rounded-xl bg-white p-3 sm:grid-cols-3 lg:grid-cols-5">
-          {stats.map(({ value, label }) => (
+        {/* 4 Trust Pillars */}
+        <div className="mt-3 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-4">
+          {pillars.map((pillar) => (
             <div
-              key={label}
-              className="rounded-xl px-2 py-3 text-center lg:p-4"
+              key={pillar.title}
+              className="rounded-xl border border-gray-200/80 bg-white p-3 shadow-2xs"
             >
-              <p className="text-sm font-bold leading-none text-[#075cde] lg:text-[20px]">
-                {value}
-              </p>
-              <p className="mt-2 text-[10px] font-semibold text-[#61748f] lg:text-[12px]">
-                {label}
+              <h3 className="text-[12.5px] font-semibold text-[#0f172a]">
+                {pillar.title}
+              </h3>
+              <p className="mt-1 text-[11px] leading-relaxed text-[#64748b]">
+                {pillar.text}
               </p>
             </div>
           ))}

@@ -162,7 +162,7 @@ function ProductCardArtwork({
         compact ? "p-4" : "p-5 sm:p-6"
       }`}
     >
-      <span className="absolute inset-y-0 right-0 w-[38%] bg-[#0878c9]" />
+      <span className="absolute inset-y-0 right-0 w-[38%] bg-[#6d28d9]" />
       <span className="absolute -right-7 top-0 h-full w-24 -skew-x-12 bg-[#00a6ce]" />
       <span className="absolute bottom-0 left-0 h-[22%] w-[72%] bg-[#d3f1f8]" />
       <span className="absolute bottom-[22%] left-0 h-1 w-[56%] bg-[#f2b84b]" />
@@ -520,7 +520,7 @@ export function CreditCardDetailScreen({
             <div className="mx-auto aspect-[1.586] w-full max-w-md animate-pulse rounded-lg bg-[#d7ebf7]" />
           </div>
         </section>
-        <div className="flex min-h-40 items-center justify-center text-sm font-semibold text-[#0878c9]">
+        <div className="flex min-h-40 items-center justify-center text-sm font-semibold text-[#6d28d9]">
           <Loader2 className="mr-2 h-5 w-5 animate-spin" aria-hidden="true" />
           Loading card details
         </div>
@@ -532,7 +532,7 @@ export function CreditCardDetailScreen({
     return (
       <main className="bg-white px-4 py-16 text-[#082b4c] md:px-6 md:py-24">
         <div className="mx-auto max-w-2xl text-center">
-          <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-lg bg-[#edf7fd] text-[#0878c9]">
+          <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-lg bg-[#edf7fd] text-[#6d28d9]">
             <CreditCard className="h-6 w-6" aria-hidden="true" />
           </span>
           <h1 className="mt-5 text-2xl font-bold md:text-3xl">
@@ -545,7 +545,7 @@ export function CreditCardDetailScreen({
             <button
               type="button"
               onClick={() => setRetryCount((count) => count + 1)}
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-[#0878c9] px-5 text-sm font-bold text-white transition-colors hover:bg-[#0568af]"
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-[#6d28d9] px-5 text-sm font-bold text-white transition-colors hover:bg-[#0568af]"
             >
               <RefreshCw className="h-4 w-4" aria-hidden="true" />
               Try again
@@ -628,7 +628,7 @@ export function CreditCardDetailScreen({
 
   return (
     <MotionConfig reducedMotion="user">
-      <main className="bg-white pb-20 text-[#102f49] lg:pb-0">
+      <main className="bg-white pb-20 text-[#3b0764] lg:pb-0">
         <section
           id="overview"
           className="relative overflow-hidden bg-[#f1f8fd]"
@@ -677,7 +677,7 @@ export function CreditCardDetailScreen({
                   onClick={handleApply}
                   whileHover={{ y: -2 }}
                   whileTap={{ scale: 0.98 }}
-                  className="inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-[#0878c9] px-6 text-sm font-bold text-white transition-colors hover:bg-[#0568af]"
+                  className="inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-[#6d28d9] px-6 text-sm font-bold text-white transition-colors hover:bg-[#0568af]"
                 >
                   Apply now
                   <ExternalLink className="h-4 w-4" aria-hidden="true" />
@@ -744,7 +744,7 @@ export function CreditCardDetailScreen({
                 }`}
               >
                 <Icon
-                  className="h-5 w-5 shrink-0 text-[#0878c9]"
+                  className="h-5 w-5 shrink-0 text-[#6d28d9]"
                   aria-hidden="true"
                 />
                 <div className="min-w-0">
@@ -779,8 +779,8 @@ export function CreditCardDetailScreen({
                   }}
                   className={`flex h-10 shrink-0 items-center justify-center rounded-full px-4 text-[11px] font-extrabold no-underline transition sm:px-5 sm:text-[12px] ${
                     selected
-                      ? "bg-[#075cde] text-white"
-                      : "border border-[#d6e3ec] bg-white text-[#36546b] hover:border-[#8db9d6] hover:text-[#075cde]"
+                      ? "bg-[#5b21b6] text-white"
+                      : "border border-[#d6e3ec] bg-white text-[#36546b] hover:border-[#8db9d6] hover:text-[#5b21b6]"
                   }`}
                 >
                   <span className="sm:hidden">{tab.shortLabel}</span>
@@ -848,7 +848,7 @@ export function CreditCardDetailScreen({
                     index % 2 === 0 ? "md:border-r md:pl-0" : "md:pr-0"
                   }`}
                 >
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#e8f5fc] text-[#0878c9]">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#e8f5fc] text-[#6d28d9]">
                     <Icon className="h-5 w-5" aria-hidden="true" />
                   </span>
                   <div className="min-w-0">
@@ -888,7 +888,7 @@ export function CreditCardDetailScreen({
                           pathname || buildCreditCardEligibilityPath(card),
                         product: slugifyCreditCardValue(card.name),
                       })}
-                      className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-lg bg-[#0878c9] px-5 text-sm font-bold text-white no-underline transition-colors hover:bg-[#0568af]"
+                      className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-lg bg-[#6d28d9] px-5 text-sm font-bold text-white no-underline transition-colors hover:bg-[#0568af]"
                     >
                       <LockKeyhole className="h-4 w-4" aria-hidden="true" />
                       Login to check
@@ -897,7 +897,7 @@ export function CreditCardDetailScreen({
                 </div>
 
                 {!authResolved ? (
-                  <div className="mt-7 flex items-center gap-2 text-sm font-semibold text-[#0878c9]">
+                  <div className="mt-7 flex items-center gap-2 text-sm font-semibold text-[#6d28d9]">
                     <Loader2
                       className="h-4 w-4 animate-spin"
                       aria-hidden="true"
@@ -911,7 +911,7 @@ export function CreditCardDetailScreen({
                     available below.
                   </p>
                 ) : eligibilityLoading ? (
-                  <div className="mt-7 flex items-center gap-2 text-sm font-semibold text-[#0878c9]">
+                  <div className="mt-7 flex items-center gap-2 text-sm font-semibold text-[#6d28d9]">
                     <Loader2
                       className="h-5 w-5 animate-spin"
                       aria-hidden="true"
@@ -925,7 +925,7 @@ export function CreditCardDetailScreen({
                         <p className="text-sm font-semibold text-[#557086]">
                           Profile match
                         </p>
-                        <p className="mt-1 text-[38px] font-bold leading-none text-[#0878c9]">
+                        <p className="mt-1 text-[38px] font-bold leading-none text-[#6d28d9]">
                           {eligibility.score}%
                         </p>
                         <p
@@ -1041,7 +1041,7 @@ export function CreditCardDetailScreen({
                           key={item}
                           className="flex gap-2 text-xs leading-5 text-[#667f91]"
                         >
-                          <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-[#0878c9]" />
+                          <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-[#6d28d9]" />
                           <span>{item}</span>
                         </li>
                       ))}
@@ -1051,7 +1051,7 @@ export function CreditCardDetailScreen({
               </div>
 
               <div className="lg:border-l lg:border-[#cfe3ef] lg:pl-10">
-                <div className="flex items-center gap-2 text-[#0878c9]">
+                <div className="flex items-center gap-2 text-[#6d28d9]">
                   <Clock3 className="h-5 w-5" aria-hidden="true" />
                   <h3 className="text-lg font-bold text-[#0a3556]">
                     Application profile
@@ -1077,7 +1077,7 @@ export function CreditCardDetailScreen({
                 {mode !== "eligibility" ? (
                   <Link
                     href={buildCreditCardEligibilityPath(card)}
-                    className="mt-7 inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-[#0878c9] px-5 text-sm font-bold text-white no-underline transition-colors hover:bg-[#0568af]"
+                    className="mt-7 inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-[#6d28d9] px-5 text-sm font-bold text-white no-underline transition-colors hover:bg-[#0568af]"
                   >
                     <ShieldCheck className="h-4 w-4" aria-hidden="true" />
                     Check my eligibility
@@ -1127,7 +1127,7 @@ export function CreditCardDetailScreen({
             </div>
 
             <div>
-              <p className="text-xs font-bold uppercase text-[#0878c9]">
+              <p className="text-xs font-bold uppercase text-[#6d28d9]">
                 Important information
               </p>
               <h2 className="mt-2 text-2xl font-bold text-[#082b4c] md:text-[30px]">
@@ -1139,7 +1139,7 @@ export function CreditCardDetailScreen({
                     key={item}
                     className="grid grid-cols-[32px_minmax(0,1fr)] gap-3 border-b border-[#dceaf4] py-5"
                   >
-                    <span className="text-sm font-bold text-[#0878c9]">
+                    <span className="text-sm font-bold text-[#6d28d9]">
                       {String(index + 1).padStart(2, "0")}
                     </span>
                     <span className="text-sm leading-6 text-[#536f84]">
@@ -1175,7 +1175,7 @@ export function CreditCardDetailScreen({
                     <summary className="flex cursor-pointer list-none items-center justify-between gap-5 py-5 text-left text-sm font-bold leading-6 text-[#0a3556] marker:content-none">
                       <span>{faq.question}</span>
                       <ChevronDown
-                        className="h-5 w-5 shrink-0 text-[#0878c9] transition-transform group-open:rotate-180"
+                        className="h-5 w-5 shrink-0 text-[#6d28d9] transition-transform group-open:rotate-180"
                         aria-hidden="true"
                       />
                     </summary>
@@ -1204,7 +1204,7 @@ export function CreditCardDetailScreen({
                 />
                 <Link
                   href={buildCreditCardTypePath(card.bankName, card.cardType)}
-                  className="inline-flex items-center gap-2 text-sm font-bold text-[#0878c9] no-underline hover:text-[#055b9b]"
+                  className="inline-flex items-center gap-2 text-sm font-bold text-[#6d28d9] no-underline hover:text-[#055b9b]"
                 >
                   View all cards
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -1231,7 +1231,7 @@ export function CreditCardDetailScreen({
                             {formatCurrency(item.annualFee)}
                           </span>
                         </div>
-                        <span className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-[#0878c9]">
+                        <span className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-[#6d28d9]">
                           View details
                           <ArrowRight
                             className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1"
@@ -1250,7 +1250,7 @@ export function CreditCardDetailScreen({
         <section className="border-y border-[#cde4f0] bg-[#eaf6fc] px-4 py-10 md:px-6 md:py-12">
           <div className="mx-auto flex max-w-9xl flex-col justify-between gap-6 md:flex-row md:items-center">
             <div>
-              <p className="text-xs font-bold uppercase text-[#0878c9]">
+              <p className="text-xs font-bold uppercase text-[#6d28d9]">
                 Continue with the issuer
               </p>
               <h2 className="mt-2 text-2xl font-bold leading-tight text-[#082b4c] md:text-[28px]">
@@ -1266,7 +1266,7 @@ export function CreditCardDetailScreen({
               onClick={handleApply}
               whileHover={{ y: -2 }}
               whileTap={{ scale: 0.98 }}
-              className="inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-lg bg-[#0878c9] px-6 text-sm font-bold text-white transition-colors hover:bg-[#0568af]"
+              className="inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-lg bg-[#6d28d9] px-6 text-sm font-bold text-white transition-colors hover:bg-[#0568af]"
             >
               Apply now
               <ExternalLink className="h-4 w-4" aria-hidden="true" />
@@ -1285,7 +1285,7 @@ export function CreditCardDetailScreen({
             <button
               type="button"
               onClick={handleApply}
-              className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-lg bg-[#0878c9] px-5 text-sm font-bold text-white"
+              className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-lg bg-[#6d28d9] px-5 text-sm font-bold text-white"
             >
               Apply now
               <ExternalLink className="h-4 w-4" aria-hidden="true" />

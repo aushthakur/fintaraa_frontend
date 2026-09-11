@@ -48,16 +48,16 @@ export function CustomerAuthGuard({
           role="status"
           className="flex max-w-sm flex-col items-center rounded-3xl border border-[#dce7f1] bg-white px-8 py-9 text-center shadow-[0_18px_50px_rgba(16,44,69,0.08)]"
         >
-          <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#eaf3ff] text-[#075cde]">
+          <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#eaf3ff] text-[#5b21b6]">
             <LockKeyhole className="h-5 w-5" />
           </span>
-          <p className="mt-4 text-[17px] font-extrabold text-[#102c45]">
+          <p className="mt-4 text-[17px] font-extrabold text-[#3b0764]">
             Secure account area
           </p>
           <p className="mt-2 text-[13px] font-medium leading-6 text-[#667b8f]">
             Redirecting you to login before opening your profile.
           </p>
-          <Loader2 className="mt-4 h-5 w-5 animate-spin text-[#075cde]" />
+          <Loader2 className="mt-4 h-5 w-5 animate-spin text-[#5b21b6]" />
         </div>
       </main>
     );

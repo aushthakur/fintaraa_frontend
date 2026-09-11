@@ -127,7 +127,7 @@ export function FinancialToolsPage() {
         <div className="mx-auto max-w-9xl">
           <div className="grid items-center gap-7 lg:grid-cols-[minmax(0,1fr)_28rem] lg:gap-10">
             <div className="relative z-10">
-              <h1 className="mt-4 max-w-3xl text-[34px] font-extrabold leading-tight tracking-[-0.03em] text-[#102c45] sm:text-[42px] md:text-[48px]">
+              <h1 className="mt-4 max-w-3xl text-[34px] font-extrabold leading-tight tracking-[-0.03em] text-[#3b0764] sm:text-[42px] md:text-[48px]">
                 Make clearer financial decisions
               </h1>
               <p className="mt-3 max-w-2xl text-[14px] font-medium leading-7 text-[#637b8e] md:text-[15px]">
@@ -135,12 +135,12 @@ export function FinancialToolsPage() {
                 credit utilisation before applying.
               </p>
               <div className="mt-5 flex flex-wrap gap-2.5">
-                <span className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-2 text-[11px] font-extrabold text-[#17354d] ring-1 ring-[#dce9f3]">
+                <span className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-2 text-[11px] font-extrabold text-[#3b0764] ring-1 ring-[#dce9f3]">
                   <ShieldCheck className="h-4 w-4 text-[#13a653]" />
                   No login required
                 </span>
-                <span className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-2 text-[11px] font-extrabold text-[#17354d] ring-1 ring-[#dce9f3]">
-                  <Gauge className="h-4 w-4 text-[#075cab]" />
+                <span className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-2 text-[11px] font-extrabold text-[#3b0764] ring-1 ring-[#dce9f3]">
+                  <Gauge className="h-4 w-4 text-[#5b21b6]" />
                   Instant indicative results
                 </span>
               </div>
@@ -151,7 +151,7 @@ export function FinancialToolsPage() {
 
             <div className="relative mx-auto flex h-62 w-full max-w-md items-end justify-center sm:h-72 lg:h-76">
               <div className="absolute inset-x-6 bottom-3 top-8 rounded-[36px] bg-linear-to-br from-[#e7f2ff] via-white to-[#e9fbf2]" />
-              <div className="absolute left-3 top-5 flex h-11 w-11 items-center justify-center rounded-2xl bg-white/95 text-[#075cab] ring-1 ring-[#d9e8f4]">
+              <div className="absolute left-3 top-5 flex h-11 w-11 items-center justify-center rounded-2xl bg-white/95 text-[#5b21b6] ring-1 ring-[#d9e8f4]">
                 <IndianRupee className="h-5 w-5" />
               </div>
               <div className="absolute right-2 top-12 z-20 hidden items-center gap-2 rounded-full bg-white/95 px-3 py-2 text-[10px] font-extrabold text-[#087443] ring-1 ring-[#d9e8f4] sm:flex">
@@ -166,7 +166,7 @@ export function FinancialToolsPage() {
                 priority
                 className="relative z-10 h-full w-full object-contain object-bottom"
               />
-              <div className="absolute bottom-3 left-3 z-20 rounded-xl bg-[#102c45] px-3 py-2 text-white">
+              <div className="absolute bottom-3 left-3 z-20 rounded-xl bg-[#3b0764] px-3 py-2 text-white">
                 <p className="text-[9px] font-bold uppercase tracking-[0.12em] text-white/65">
                   Plan before you apply
                 </p>
@@ -190,21 +190,21 @@ export function FinancialToolsPage() {
                 aria-pressed={activeTool === key}
                 className={`flex items-center gap-3 rounded-xl border px-4 py-4 text-left transition ${
                   activeTool === key
-                    ? "border-[#075cab] bg-[#eef7ff] shadow-[0_8px_24px_rgba(7,92,171,0.1)]"
+                    ? "border-[#5b21b6] bg-[#eef7ff] shadow-[0_8px_24px_rgba(7,92,171,0.1)]"
                     : "border-[#dfe8ef] bg-white hover:border-[#b8d4e9]"
                 }`}
               >
                 <span
                   className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${
                     activeTool === key
-                      ? "bg-[#075cab] text-white"
+                      ? "bg-[#5b21b6] text-white"
                       : "bg-[#edf3f7] text-[#587386]"
                   }`}
                 >
                   <Icon className="h-4.5 w-4.5" />
                 </span>
                 <span>
-                  <span className="block text-[13px] font-extrabold text-[#17354d]">
+                  <span className="block text-[13px] font-extrabold text-[#3b0764]">
                     {label}
                   </span>
                   <span className="mt-0.5 block text-[10px] font-semibold text-[#758999]">
@@ -224,7 +224,7 @@ export function FinancialToolsPage() {
           <div className="mt-8">
             <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-end">
               <div>
-                <h2 className="text-[22px] font-extrabold text-[#102c45]">
+                <h2 className="text-[22px] font-extrabold text-[#3b0764]">
                   More useful tools
                 </h2>
                 <p className="mt-1 text-[12px] font-medium text-[#718596]">
@@ -234,7 +234,7 @@ export function FinancialToolsPage() {
               </div>
               <Link
                 href="/products"
-                className="text-[12px] font-extrabold text-[#075cab] no-underline hover:underline"
+                className="text-[12px] font-extrabold text-[#5b21b6] no-underline hover:underline"
               >
                 Explore financial products →
               </Link>
@@ -266,20 +266,20 @@ export function FinancialToolsPage() {
                         sizes="(max-width: 767px) 100vw, 33vw"
                         className={`transition duration-500 group-hover:scale-[1.03] ${imageClassName}`}
                       />
-                      <span className="absolute bottom-3 left-3 flex h-9 w-9 items-center justify-center rounded-xl bg-white/95 text-[#075cab] ring-1 ring-[#dce9f3] backdrop-blur-sm">
+                      <span className="absolute bottom-3 left-3 flex h-9 w-9 items-center justify-center rounded-xl bg-white/95 text-[#5b21b6] ring-1 ring-[#dce9f3] backdrop-blur-sm">
                         <Icon className="h-4.5 w-4.5" />
                       </span>
                     </span>
                     <span className="flex items-start gap-3 p-4 sm:p-5">
                       <span className="min-w-0 flex-1">
-                        <span className="block text-[14px] font-extrabold text-[#17354d]">
+                        <span className="block text-[14px] font-extrabold text-[#3b0764]">
                           {title}
                         </span>
                         <span className="mt-1 block text-[11px] font-medium leading-5 text-[#718596]">
                           {text}
                         </span>
                       </span>
-                      <ArrowRight className="mt-1 h-4 w-4 shrink-0 text-[#9bb0be] transition group-hover:translate-x-0.5 group-hover:text-[#075cab]" />
+                      <ArrowRight className="mt-1 h-4 w-4 shrink-0 text-[#9bb0be] transition group-hover:translate-x-0.5 group-hover:text-[#5b21b6]" />
                     </span>
                   </Link>
                 ),
@@ -519,7 +519,7 @@ function UtilisationCalculator() {
           />
           <Link
             href="/cibil-score"
-            className="mt-5 inline-flex h-11 w-full items-center justify-center gap-2 rounded-full border border-[#bcd9ee] bg-[#f4faff] px-5 text-[12px] font-extrabold text-[#075cab] no-underline hover:bg-[#eaf5ff]"
+            className="mt-5 inline-flex h-11 w-full items-center justify-center gap-2 rounded-full border border-[#bcd9ee] bg-[#f4faff] px-5 text-[12px] font-extrabold text-[#5b21b6] no-underline hover:bg-[#eaf5ff]"
           >
             Check CIBIL score <ArrowRight className="h-4 w-4" />
           </Link>
@@ -548,7 +548,7 @@ function CalculatorLayout({
         <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-[#1686df]">
           {eyebrow}
         </p>
-        <h2 className="mt-2 text-[24px] font-extrabold leading-tight text-[#102c45] sm:text-[28px]">
+        <h2 className="mt-2 text-[24px] font-extrabold leading-tight text-[#3b0764] sm:text-[28px]">
           {title}
         </h2>
         <p className="mt-2 text-[12px] font-medium leading-5 text-[#718596]">
@@ -556,7 +556,7 @@ function CalculatorLayout({
         </p>
         <div className="mt-6 grid gap-4 sm:grid-cols-2">{fields}</div>
       </div>
-      <aside className="rounded-2xl bg-linear-to-br from-[#0c426d] to-[#075cab] p-5 text-white sm:p-6">
+      <aside className="rounded-2xl bg-linear-to-br from-[#0c426d] to-[#5b21b6] p-5 text-white sm:p-6">
         <div className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.12em] text-white/70">
           <Landmark className="h-4 w-4" />
           Indicative result
@@ -580,12 +580,12 @@ function MoneyField({
     <label className="grid gap-1.5">
       <span className="text-[11px] font-extrabold text-[#526b7d]">{label}</span>
       <span className="relative">
-        <IndianRupee className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#075cab]" />
+        <IndianRupee className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#5b21b6]" />
         <input
           value={value}
           inputMode="numeric"
           onChange={(event) => onChange(formatNumberInput(event.target.value))}
-          className="h-11 w-full rounded-xl border border-[#d8e4ed] bg-[#fbfdff] pl-9 pr-3 text-[13px] font-extrabold text-[#17354d] outline-none focus:border-[#1686df] focus:ring-2 focus:ring-[#e6f3ff]"
+          className="h-11 w-full rounded-xl border border-[#d8e4ed] bg-[#fbfdff] pl-9 pr-3 text-[13px] font-extrabold text-[#3b0764] outline-none focus:border-[#1686df] focus:ring-2 focus:ring-[#e6f3ff]"
         />
       </span>
     </label>
@@ -619,7 +619,7 @@ function NumberField({
               .slice(0, 6);
             onChange(clean);
           }}
-          className="h-11 w-full rounded-xl border border-[#d8e4ed] bg-[#fbfdff] px-3 pr-18 text-[13px] font-extrabold text-[#17354d] outline-none focus:border-[#1686df] focus:ring-2 focus:ring-[#e6f3ff]"
+          className="h-11 w-full rounded-xl border border-[#d8e4ed] bg-[#fbfdff] px-3 pr-18 text-[13px] font-extrabold text-[#3b0764] outline-none focus:border-[#1686df] focus:ring-2 focus:ring-[#e6f3ff]"
         />
         <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-bold text-[#8294a2]">
           {suffix}
@@ -646,7 +646,7 @@ function SelectField({
       <select
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className="h-11 rounded-xl border border-[#d8e4ed] bg-[#fbfdff] px-3 text-[13px] font-extrabold text-[#17354d] outline-none focus:border-[#1686df] focus:ring-2 focus:ring-[#e6f3ff]"
+        className="h-11 rounded-xl border border-[#d8e4ed] bg-[#fbfdff] px-3 text-[13px] font-extrabold text-[#3b0764] outline-none focus:border-[#1686df] focus:ring-2 focus:ring-[#e6f3ff]"
       >
         {options.map((option) => (
           <option key={option.value} value={option.value}>

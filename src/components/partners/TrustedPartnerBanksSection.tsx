@@ -113,7 +113,7 @@ function PartnerLogoTile({
         ) : (
           <span
             aria-hidden="true"
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-[#eaf4ff] text-[13px] font-extrabold text-[#075cde]"
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-[#eaf4ff] text-[13px] font-extrabold text-[#5b21b6]"
           >
             {partner.name
               .split(/\s+/)
@@ -125,7 +125,7 @@ function PartnerLogoTile({
         )}
         {!compact ? (
           <span className="text-center">
-            <span className="line-clamp-1 block text-[12px] font-semibold text-[#344054] transition group-hover:text-[#00529b]">
+            <span className="line-clamp-1 block text-[12px] font-semibold text-[#344054] transition group-hover:text-[#4c1d95]">
               {partner.name}
             </span>
             <span className="mt-1 block text-[9px] font-bold uppercase tracking-[0.1em] text-[#8a9bad]">
@@ -345,7 +345,7 @@ export function TrustedPartnerBanksSection({
             {showViewAllAction && viewAllHref ? (
               <Link
                 href={viewAllHref}
-                className="inline-flex h-9 shrink-0 items-center justify-center gap-1 rounded-lg bg-[#e9f2ff] px-3 text-[12px] font-semibold leading-none text-[#075cde] no-underline transition-colors hover:bg-[#d9eaff] lg:hidden"
+                className="inline-flex h-9 shrink-0 items-center justify-center gap-1 rounded-lg bg-[#ede9fe] px-3 text-[12px] font-semibold leading-none text-[#5b21b6] no-underline transition-colors hover:bg-[#d9eaff] lg:hidden"
               >
                 View
                 <ArrowRight className="h-3.5 w-3.5" />
@@ -371,8 +371,8 @@ export function TrustedPartnerBanksSection({
                     }}
                     className={`inline-flex h-9 shrink-0 items-center gap-2 rounded-lg border px-3 text-[12px] font-semibold leading-none transition-all md:h-10 md:px-4 md:text-[13px] ${
                       isActive
-                        ? "border-[#075cde] bg-[#075cde] text-white"
-                        : "border-[#dceaf7] bg-white text-[#52657d] hover:border-[#075cde] hover:text-[#075cde]"
+                        ? "border-[#5b21b6] bg-[#5b21b6] text-white"
+                        : "border-[#dceaf7] bg-white text-[#52657d] hover:border-[#5b21b6] hover:text-[#5b21b6]"
                     }`}
                   >
                     <span className="sm:hidden">
@@ -399,7 +399,7 @@ export function TrustedPartnerBanksSection({
               viewAllHref ? (
                 <Link
                   href={viewAllHref}
-                  className="hidden h-10 items-center gap-1 rounded-xl px-2 text-[15px] font-semibold text-[#075cde] no-underline transition-colors hover:text-[#064cb8] lg:inline-flex"
+                  className="hidden h-10 items-center gap-1 rounded-xl px-2 text-[15px] font-semibold text-[#5b21b6] no-underline transition-colors hover:text-[#4c1d95] lg:inline-flex"
                 >
                   View all Partners
                   <ArrowRight className="h-4 w-4" />
@@ -408,7 +408,7 @@ export function TrustedPartnerBanksSection({
                 <button
                   type="button"
                   onClick={handleViewAll}
-                  className="inline-flex h-10 items-center gap-1 rounded-xl px-2 text-[13px] font-semibold text-[#075cde] transition-colors hover:text-[#064cb8]"
+                  className="inline-flex h-10 items-center gap-1 rounded-xl px-2 text-[13px] font-semibold text-[#5b21b6] transition-colors hover:text-[#4c1d95]"
                 >
                   {showAll ? "Show less" : "View all Partners"}
                   {showAll ? (

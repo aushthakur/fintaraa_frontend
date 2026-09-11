@@ -28,7 +28,7 @@ export function BankTabContentSection({
       <div className="mx-auto max-w-9xl">
         <div className="rounded-2xl border border-[#e3ebf3] bg-white p-5 shadow-[0_12px_34px_rgba(16,24,40,0.04)] md:p-8">
           <div className="max-w-3xl">
-            <p className="text-[12px] font-extrabold uppercase tracking-[0.16em] text-[#005ca8]">
+            <p className="text-[12px] font-extrabold uppercase tracking-[0.16em] text-[#4c1d95]">
               {tab.label}
             </p>
             <h2 className="mt-2 text-[24px] font-extrabold tracking-tight text-[#07162d] md:text-[30px]">
@@ -95,7 +95,7 @@ export function BankTabContentSection({
 
           {tab.key.includes("review") || hasContent ? null : (
             <div className="mt-7 flex gap-3 rounded-xl bg-[#f8fbff] p-5 text-[13px] font-semibold leading-6 text-[#667085]">
-              <HelpCircle className="mt-0.5 h-5 w-5 shrink-0 text-[#005ca8]" />
+              <HelpCircle className="mt-0.5 h-5 w-5 shrink-0 text-[#4c1d95]" />
               <span>
                 Details for this section will appear here after they are added
                 in admin.

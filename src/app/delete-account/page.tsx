@@ -53,7 +53,7 @@ export default function DeleteAccountPage() {
     <main className="bg-white">
       <section className="border-b border-[#e3ebf2] px-4 py-10 md:px-6 md:py-12 lg:px-8">
         <div className="mx-auto max-w-9xl">
-          <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#195585]">
+          <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#3b0764]">
             Account Deletion
           </p>
           <div className="mt-3 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
@@ -69,7 +69,7 @@ export default function DeleteAccountPage() {
             </div>
             <a
               href={requestMailHref}
-              className="inline-flex h-11 w-fit shrink-0 items-center justify-center gap-2 rounded-full bg-[#195585] px-5 text-[13px] font-extrabold text-white no-underline transition hover:bg-[#0f4771]"
+              className="inline-flex h-11 w-fit shrink-0 items-center justify-center gap-2 rounded-full bg-[#3b0764] px-5 text-[13px] font-extrabold text-white no-underline transition hover:bg-[#0f4771]"
             >
               <Mail className="h-4 w-4" />
               Email deletion request
@@ -83,7 +83,7 @@ export default function DeleteAccountPage() {
           <div>
             <section className="border-b border-[#e4edf5] pb-10">
               <div className="flex items-center gap-3">
-                <FileCheck2 className="h-6 w-6 text-[#195585]" />
+                <FileCheck2 className="h-6 w-6 text-[#3b0764]" />
                 <h2 className="text-[30px] font-extrabold tracking-[-0.01em] text-[#07162d]">
                   How to request deletion
                 </h2>
@@ -94,7 +94,7 @@ export default function DeleteAccountPage() {
                     key={step}
                     className="grid gap-4 border border-[#e4edf5] bg-white p-5 md:grid-cols-[3rem_1fr]"
                   >
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#eef7ff] text-[14px] font-extrabold text-[#195585]">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#eef7ff] text-[14px] font-extrabold text-[#3b0764]">
                       {String(index + 1).padStart(2, "0")}
                     </div>
                     <p className="text-[16px] font-semibold leading-8 text-[#475467]">
@@ -147,7 +147,7 @@ export default function DeleteAccountPage() {
 
             <section className="border-t border-[#e4edf5] pt-10">
               <div className="flex items-center gap-3">
-                <ShieldCheck className="h-6 w-6 text-[#195585]" />
+                <ShieldCheck className="h-6 w-6 text-[#3b0764]" />
                 <h2 className="text-[30px] font-extrabold tracking-[-0.01em] text-[#07162d]">
                   Permissions and data access
                 </h2>
@@ -162,15 +162,15 @@ export default function DeleteAccountPage() {
               </p>
               <Link
                 href="/privacy-policy#data-deletion"
-                className="mt-6 inline-flex h-11 items-center justify-center rounded-full border border-[#195585] px-5 text-[13px] font-extrabold text-[#195585] no-underline"
+                className="mt-6 inline-flex h-11 items-center justify-center rounded-full border border-[#3b0764] px-5 text-[13px] font-extrabold text-[#3b0764] no-underline"
               >
                 View Privacy Policy deletion section
               </Link>
             </section>
           </div>
 
-          <aside className="h-fit border border-[#d9e8f4] bg-[#f5fbff] p-6 lg:sticky lg:top-32">
-            <Clock className="h-8 w-8 text-[#195585]" />
+          <aside className="h-fit border border-[#d9e8f4] bg-[#faf5ff] p-6 lg:sticky lg:top-32">
+            <Clock className="h-8 w-8 text-[#3b0764]" />
             <h2 className="mt-4 text-[24px] font-extrabold leading-tight text-[#07162d]">
               Processing timeline
             </h2>
@@ -185,7 +185,7 @@ export default function DeleteAccountPage() {
               </p>
               <a
                 href={`mailto:${supportEmail}`}
-                className="mt-2 block break-all text-[18px] font-extrabold text-[#195585] no-underline"
+                className="mt-2 block break-all text-[18px] font-extrabold text-[#3b0764] no-underline"
               >
                 {supportEmail}
               </a>

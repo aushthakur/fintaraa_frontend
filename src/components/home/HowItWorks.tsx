@@ -46,7 +46,7 @@ export function HowItWorks() {
     <section className="bg-linear-to-b from-white via-[#f8fcff] to-white px-4 py-18 md:px-6 lg:px-8">
       <div className="mx-auto max-w-9xl">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-[12px] font-extrabold uppercase tracking-[0.18em] text-[#195585]">
+          <p className="text-[12px] font-extrabold uppercase tracking-[0.18em] text-[#3b0764]">
             Simple guided flow
           </p>
           <h2 className="mt-3 text-[34px] font-extrabold leading-tight text-[#07162d] md:text-[44px]">
@@ -92,7 +92,7 @@ export function HowItWorks() {
                     {step.points.map((point) => (
                       <span
                         key={point}
-                        className="rounded-full bg-[#f1f8ff] px-3 py-1 text-[11px] font-extrabold text-[#195585]"
+                        className="rounded-full bg-[#f1f8ff] px-3 py-1 text-[11px] font-extrabold text-[#3b0764]"
                       >
                         {point}
                       </span>
@@ -100,7 +100,7 @@ export function HowItWorks() {
                   </div>
 
                   {index < workflowSteps.length - 1 ? (
-                    <span className="absolute -right-4 top-15 z-10 hidden h-8 w-8 items-center justify-center rounded-full border border-[#dbe8f2] bg-white text-[#195585] shadow-sm xl:flex">
+                    <span className="absolute -right-4 top-15 z-10 hidden h-8 w-8 items-center justify-center rounded-full border border-[#dbe8f2] bg-white text-[#3b0764] shadow-sm xl:flex">
                       <ArrowRight className="h-4 w-4" />
                     </span>
                   ) : null}

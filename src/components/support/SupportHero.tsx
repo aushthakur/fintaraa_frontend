@@ -8,7 +8,7 @@ import {
 
 export function SupportHero() {
   return (
-    <section className="relative overflow-hidden bg-linear-to-r from-[#06141F] to-[#195585] px-4 py-12 text-white md:px-6 lg:px-8">
+    <section className="relative overflow-hidden bg-linear-to-r from-[#06141F] to-[#3b0764] px-4 py-12 text-white md:px-6 lg:px-8">
       <div className="absolute -right-16 top-8 h-56 w-56 rounded-full border border-white/10 blog-orbit" />
       <div className="absolute -bottom-24 left-16 h-72 w-72 rounded-full border border-white/10 blog-orbit-reverse" />
       <div className="relative mx-auto grid max-w-9xl gap-8 lg:grid-cols-[1fr_0.78fr] lg:items-center">

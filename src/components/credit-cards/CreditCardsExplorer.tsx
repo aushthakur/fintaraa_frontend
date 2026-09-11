@@ -213,7 +213,7 @@ function FilterGroup({
                 type="checkbox"
                 checked={selected.includes(option)}
                 onChange={() => onToggle(option)}
-                className="rounded border-[#cbd5e1] text-[#005ca8] focus:ring-0"
+                className="rounded border-[#cbd5e1] text-[#4c1d95] focus:ring-0"
               />
               <span>{option}</span>
             </label>
@@ -684,7 +684,7 @@ export function CreditCardsExplorer({
         <div className="flex items-center gap-2">
           <span className="text-[14px] font-bold text-[#1a1d25]">Filters</span>
           {activeFilterCount ? (
-            <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-[#005ca8] px-1.5 text-[10px] font-extrabold text-white">
+            <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-[#4c1d95] px-1.5 text-[10px] font-extrabold text-white">
               {activeFilterCount}
             </span>
           ) : null}
@@ -693,7 +693,7 @@ export function CreditCardsExplorer({
           <button
             type="button"
             onClick={clearFilters}
-            className="text-[12px] font-medium text-[#7a869a] hover:text-[#005ca8]"
+            className="text-[12px] font-medium text-[#7a869a] hover:text-[#4c1d95]"
           >
             Clear All
           </button>
@@ -748,7 +748,7 @@ export function CreditCardsExplorer({
                     onChange={() =>
                       toggleSelected(bank, selectedBanks, setSelectedBanks)
                     }
-                    className="rounded border-[#cbd5e1] text-[#005ca8] focus:ring-0"
+                    className="rounded border-[#cbd5e1] text-[#4c1d95] focus:ring-0"
                   />
                   <span>{bank}</span>
                 </label>
@@ -820,7 +820,7 @@ export function CreditCardsExplorer({
           type="checkbox"
           checked={loungeOnly}
           onChange={(event) => setLoungeOnly(event.target.checked)}
-          className="rounded border-[#cbd5e1] text-[#005ca8] focus:ring-0"
+          className="rounded border-[#cbd5e1] text-[#4c1d95] focus:ring-0"
         />
         <span>Lounge Access</span>
       </label>
@@ -829,7 +829,7 @@ export function CreditCardsExplorer({
           type="checkbox"
           checked={featuredOnly}
           onChange={(event) => setFeaturedOnly(event.target.checked)}
-          className="rounded border-[#cbd5e1] text-[#005ca8] focus:ring-0"
+          className="rounded border-[#cbd5e1] text-[#4c1d95] focus:ring-0"
         />
         <span>Featured Cards</span>
       </label>
@@ -838,7 +838,7 @@ export function CreditCardsExplorer({
           type="checkbox"
           checked={welcomeBenefitsOnly}
           onChange={(event) => setWelcomeBenefitsOnly(event.target.checked)}
-          className="rounded border-[#cbd5e1] text-[#005ca8] focus:ring-0"
+          className="rounded border-[#cbd5e1] text-[#4c1d95] focus:ring-0"
         />
         <span>Welcome Benefits</span>
       </label>
@@ -880,7 +880,7 @@ export function CreditCardsExplorer({
               <button
                 type="button"
                 onClick={() => setFiltersOpen(false)}
-                className="h-11 w-full rounded-xl bg-[#005ca8] text-[13px] font-extrabold text-white shadow-[0_10px_24px_rgba(0,92,168,0.22)]"
+                className="h-11 w-full rounded-xl bg-[#4c1d95] text-[13px] font-extrabold text-white shadow-[0_10px_24px_rgba(0,92,168,0.22)]"
               >
                 Show {sortedCards.length} Cards
               </button>
@@ -910,7 +910,7 @@ export function CreditCardsExplorer({
               }
               aria-expanded={desktopFiltersOpen}
               onClick={() => setDesktopFiltersOpen((current) => !current)}
-              className={`flex items-center justify-center border border-[#c9dceb] bg-white text-[#005ca8] shadow-[0_6px_16px_rgba(0,82,156,0.16)] transition hover:bg-[#eef7ff] ${
+              className={`flex items-center justify-center border border-[#c9dceb] bg-white text-[#4c1d95] shadow-[0_6px_16px_rgba(0,82,156,0.16)] transition hover:bg-[#eef7ff] ${
                 desktopFiltersOpen
                   ? "absolute -right-3 top-4 h-7 w-7 rounded-full"
                   : "h-10 w-full rounded-lg"
@@ -938,7 +938,7 @@ export function CreditCardsExplorer({
                   <button
                     type="button"
                     onClick={onClearRecommendation}
-                    className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[11px] font-extrabold text-[#005ca8] ring-1 ring-[#cfe5f7]"
+                    className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[11px] font-extrabold text-[#4c1d95] ring-1 ring-[#cfe5f7]"
                   >
                     ₹{recommendation.monthlyIncome.toLocaleString("en-IN")}{" "}
                     income
@@ -953,7 +953,7 @@ export function CreditCardsExplorer({
                     key={category}
                     type="button"
                     onClick={() => toggleCategory(category)}
-                    className="inline-flex items-center gap-1.5 rounded-full bg-[#005ca8] px-3 py-1.5 text-[11px] font-extrabold text-white"
+                    className="inline-flex items-center gap-1.5 rounded-full bg-[#4c1d95] px-3 py-1.5 text-[11px] font-extrabold text-white"
                   >
                     {category}
                     <X className="h-3 w-3" />
@@ -971,12 +971,12 @@ export function CreditCardsExplorer({
                 <button
                   type="button"
                   onClick={() => setFiltersOpen(true)}
-                  className="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-lg border border-[#cbd5e1] bg-white px-3 text-[12px] font-extrabold text-[#005ca8] shadow-xs lg:hidden"
+                  className="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-lg border border-[#cbd5e1] bg-white px-3 text-[12px] font-extrabold text-[#4c1d95] shadow-xs lg:hidden"
                 >
                   <SlidersHorizontal className="h-3.5 w-3.5" />
                   <span>Filters</span>
                   {activeFilterCount ? (
-                    <span className="inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-[#005ca8] px-1 text-[9px] font-extrabold text-white">
+                    <span className="inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-[#4c1d95] px-1 text-[9px] font-extrabold text-white">
                       {activeFilterCount}
                     </span>
                   ) : null}
@@ -989,7 +989,7 @@ export function CreditCardsExplorer({
                   <select
                     value={sortBy}
                     onChange={(event) => setSortBy(event.target.value)}
-                    className="h-9 appearance-none rounded-lg border border-[#cbd5e1] bg-white py-1.5 pl-3 pr-8 text-[12px] font-bold outline-none focus:border-[#005ca8]"
+                    className="h-9 appearance-none rounded-lg border border-[#cbd5e1] bg-white py-1.5 pl-3 pr-8 text-[12px] font-bold outline-none focus:border-[#4c1d95]"
                   >
                     <option value="priority">Priority</option>
                     <option value="fee-low">Annual fee: Low to high</option>
@@ -1045,7 +1045,7 @@ export function CreditCardsExplorer({
                                   className="h-6 w-auto max-w-24 object-contain"
                                 />
                               ) : null}
-                              <span className="text-[12px] font-extrabold text-[#005ca8]">
+                              <span className="text-[12px] font-extrabold text-[#4c1d95]">
                                 {card.bankName}
                               </span>
                             </div>
@@ -1054,7 +1054,7 @@ export function CreditCardsExplorer({
                                 type="checkbox"
                                 checked={compareIds.includes(cardId)}
                                 onChange={() => toggleCompare(cardId)}
-                                className="rounded border-[#cbd5e1] text-[#005ca8] focus:ring-0"
+                                className="rounded border-[#cbd5e1] text-[#4c1d95] focus:ring-0"
                               />
                               <span>Compare</span>
                             </label>
@@ -1136,7 +1136,7 @@ export function CreditCardsExplorer({
                           </div>
 
                           <div className="mb-4 text-left">
-                            <div className="text-[12px] font-bold text-[#005ca8]">
+                            <div className="text-[12px] font-bold text-[#4c1d95]">
                               {card.welcomeBenefits ||
                                 "Welcome benefits available"}
                             </div>
@@ -1150,14 +1150,14 @@ export function CreditCardsExplorer({
                               <button
                                 type="button"
                                 onClick={() => handleDetails(card)}
-                                className="rounded-lg border border-[#005ca8] bg-white py-2 text-[12px] font-bold text-[#005ca8] transition-colors hover:bg-[#f4f9ff]"
+                                className="rounded-lg border border-[#4c1d95] bg-white py-2 text-[12px] font-bold text-[#4c1d95] transition-colors hover:bg-[#f4f9ff]"
                               >
                                 View Details
                               </button>
                               <button
                                 type="button"
                                 onClick={() => handleApply(card)}
-                                className="rounded-lg bg-[#005ca8] py-2 text-center text-[12px] font-bold text-white shadow-xs transition-colors hover:bg-[#004b87]"
+                                className="rounded-lg bg-[#4c1d95] py-2 text-center text-[12px] font-bold text-white shadow-xs transition-colors hover:bg-[#004b87]"
                               >
                                 Apply Now
                               </button>
@@ -1165,7 +1165,7 @@ export function CreditCardsExplorer({
                             <button
                               type="button"
                               onClick={() => handleEligibility(card)}
-                              className="block w-full pt-1 text-center text-[11px] font-bold text-[#005ca8] hover:underline"
+                              className="block w-full pt-1 text-center text-[11px] font-bold text-[#4c1d95] hover:underline"
                             >
                               View Eligibility
                             </button>
@@ -1191,7 +1191,7 @@ export function CreditCardsExplorer({
             <div className="flex flex-col items-stretch justify-between gap-4 rounded-xl border border-[#e2edf6] bg-white p-4 shadow-xs md:flex-row md:items-center">
               <div className="flex flex-wrap items-center gap-4">
                 <div>
-                  <span className="text-[14px] font-bold text-[#005ca8]">
+                  <span className="text-[14px] font-bold text-[#4c1d95]">
                     {compareIds.length}/3 Cards Selected
                   </span>
                 </div>
@@ -1217,7 +1217,7 @@ export function CreditCardsExplorer({
                 type="button"
                 disabled={compareCards.length < 2}
                 onClick={() => setCompareOpen(true)}
-                className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#005ca8] px-6 py-2.5 text-[13px] font-bold text-white transition-colors hover:bg-[#004b87] disabled:cursor-not-allowed disabled:bg-[#9db9d1] md:w-auto"
+                className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#4c1d95] px-6 py-2.5 text-[13px] font-bold text-white transition-colors hover:bg-[#004b87] disabled:cursor-not-allowed disabled:bg-[#9db9d1] md:w-auto"
               >
                 <span>Compare Now</span>
                 <ExternalLink className="h-3.5 w-3.5" />
@@ -1260,7 +1260,7 @@ export function CreditCardsExplorer({
           <div className="max-h-[92vh] w-full max-w-6xl overflow-hidden rounded-2xl bg-white shadow-[0_28px_80px_rgba(15,23,42,0.28)]">
             <div className="flex flex-col gap-3 border-b border-[#e2edf6] px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <p className="text-[11px] font-extrabold uppercase tracking-wide text-[#005ca8]">
+                <p className="text-[11px] font-extrabold uppercase tracking-wide text-[#4c1d95]">
                   Credit Card Comparison
                 </p>
                 <h3 className="mt-1 text-[20px] font-extrabold text-[#1a1d25]">
@@ -1300,7 +1300,7 @@ export function CreditCardsExplorer({
                           className="h-6 w-auto max-w-20 object-contain"
                         />
                       ) : null}
-                      <span className="text-[11px] font-extrabold text-[#005ca8]">
+                      <span className="text-[11px] font-extrabold text-[#4c1d95]">
                         {card.bankName}
                       </span>
                     </div>

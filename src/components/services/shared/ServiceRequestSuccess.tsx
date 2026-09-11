@@ -42,7 +42,7 @@ export function ServiceRequestSuccess({
 
       <div className="grid gap-3 px-5 py-4 md:grid-cols-3 md:px-6">
         <div className="flex items-start gap-3 rounded-xl bg-[#f8fbff] p-3">
-          <ClipboardCheck className="mt-0.5 h-5 w-5 shrink-0 text-[#005ca8]" />
+          <ClipboardCheck className="mt-0.5 h-5 w-5 shrink-0 text-[#4c1d95]" />
           <div>
             <p className="text-[13px] font-extrabold text-[#1f2937]">
               Current Stage
@@ -53,7 +53,7 @@ export function ServiceRequestSuccess({
           </div>
         </div>
         <div className="flex items-start gap-3 rounded-xl bg-[#f8fbff] p-3">
-          <Clock3 className="mt-0.5 h-5 w-5 shrink-0 text-[#005ca8]" />
+          <Clock3 className="mt-0.5 h-5 w-5 shrink-0 text-[#4c1d95]" />
           <div>
             <p className="text-[13px] font-extrabold text-[#1f2937]">
               What happens next?

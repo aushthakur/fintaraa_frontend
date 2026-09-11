@@ -13,7 +13,7 @@ export function CareersCulture() {
               key={title}
               className="rounded-xl border border-[#d9e1ea] bg-white px-4 py-5 text-center shadow-[0_4px_14px_rgba(16,24,40,0.03)]"
             >
-              <span className="mx-auto flex h-11 w-11 items-center justify-center rounded-xl bg-[#edf5ff] text-[#0d64bf]">
+              <span className="mx-auto flex h-11 w-11 items-center justify-center rounded-xl bg-[#edf5ff] text-[#6d28d9]">
                 <Icon className="h-6 w-6" />
               </span>
               <h3 className="mt-5 text-[13px] font-extrabold text-[#2b2f38]">
