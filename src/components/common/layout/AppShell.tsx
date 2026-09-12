@@ -7,6 +7,7 @@ import { SiteBreadcrumbs } from "@/components/common/layout/SiteBreadcrumbs";
 import { MobileActionBar } from "@/components/common/layout/MobileActionBar";
 import { ResponsiveTableEnhancer } from "@/components/common/layout/ResponsiveTableEnhancer";
 import { PageSeoSchema } from "@/components/seo/PageSeoSchema";
+import { PersonalLoanRateTicker } from "@/components/common/layout/PersonalLoanRateTicker";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -50,6 +51,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </div>
         {!hideFooter && <Footer />}
       </div>
+      <PersonalLoanRateTicker />
       {!hideFooter && <MobileActionBar />}
     </>
   );

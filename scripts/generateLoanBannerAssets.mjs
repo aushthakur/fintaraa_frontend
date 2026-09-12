@@ -99,7 +99,7 @@ const desktopOverlay = (profile, slide) => {
     ? "Check eligibility, prepare documents and compare partner options through one secure guided journey."
     : profile.description;
   const benefits = isAssisted
-    ? ["30+ lending partners", "Secure profile", "Human assistance"]
+    ? ["50+ lending partners", "Secure profile", "Human assistance"]
     : profile.benefits;
   const titleLines = wrapText(title, 29);
   const titleY = 139;

@@ -41,7 +41,7 @@ export function HomePage() {
           <SmartActionBar />
         </SectionReveal>
 
-        {/* 3.5. Bank Partners Showcase: Live rates marquee from 30+ banks */}
+        {/* 3.5. Bank Partners Showcase: Live rates marquee from 50+ banks */}
         <SectionReveal>
           <BankPartnersShowcase />
         </SectionReveal>

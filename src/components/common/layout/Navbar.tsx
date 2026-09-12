@@ -71,6 +71,7 @@ import {
 } from "@/hooks/authStorage";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { useProductCatalog } from "@/hooks/useProductCatalog";
+import { useTypewriter } from "@/hooks/useTypewriter";
 import { AUTH_CHANGED_EVENT } from "@/lib/authEvents";
 import {
   isLoanProduct,
@@ -482,7 +483,7 @@ const createNavItems = (
         title: "Loans Marketplace",
         subtitle: "India's Smart Lending Hub",
         description:
-          "Compare 30+ regulated banks and NBFCs with zero impact on credit score. Get fast-tracked approval.",
+          "Compare 50+ regulated banks and NBFCs with zero impact on credit score. Get fast-tracked approval.",
         ctaText: "Explore All Loans",
         ctaHref: "/products?category=Loans",
         icon: Banknote,
@@ -1366,6 +1367,52 @@ export default function Navbar() {
     };
   }, []);
 
+  const isHomePage = pathname === "/";
+  const [heroInView, setHeroInView] = useState(isHomePage);
+
+  useEffect(() => {
+    if (!isHomePage) {
+      setHeroInView(false);
+      return;
+    }
+
+    const checkHeroVisibility = () => {
+      const hero = document.getElementById("hero-section");
+      if (!hero) {
+        setHeroInView(window.scrollY < 380);
+        return;
+      }
+      const rect = hero.getBoundingClientRect();
+      setHeroInView(rect.bottom > 90 && rect.top < window.innerHeight);
+    };
+
+    checkHeroVisibility();
+
+    window.addEventListener("scroll", checkHeroVisibility, { passive: true });
+    window.addEventListener("resize", checkHeroVisibility, { passive: true });
+
+    let observer: IntersectionObserver | null = null;
+    const hero = document.getElementById("hero-section");
+    if (hero && typeof IntersectionObserver !== "undefined") {
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          const rect = entry.boundingClientRect;
+          setHeroInView(rect.bottom > 90 && rect.top < window.innerHeight);
+        },
+        { rootMargin: "-80px 0px 0px 0px", threshold: [0, 0.1, 0.5] },
+      );
+      observer.observe(hero);
+    }
+
+    return () => {
+      window.removeEventListener("scroll", checkHeroVisibility);
+      window.removeEventListener("resize", checkHeroVisibility);
+      observer?.disconnect();
+    };
+  }, [isHomePage, pathname]);
+
+  const hideNavbarSearch = isHomePage && heroInView;
+
   return (
     <header
       ref={headerRef}
@@ -1442,7 +1489,15 @@ export default function Navbar() {
         </div>
 
         <div className="hidden shrink-0 items-center gap-1.5 xl:flex min-[1380px]:gap-2 2xl:gap-2.5">
-          <NavbarSearch />
+          <div
+            className={`transition-all duration-300 ease-in-out ${
+              hideNavbarSearch
+                ? "max-w-0 opacity-0 pointer-events-none -translate-x-2 overflow-hidden"
+                : "max-w-[280px] opacity-100 translate-x-0"
+            }`}
+          >
+            <NavbarSearch />
+          </div>
 
           <Link
             href={
@@ -1473,7 +1528,15 @@ export default function Navbar() {
         </div>
 
         <div className="ml-auto flex items-center gap-0.5 min-[360px]:gap-1 xl:hidden">
-          <NavbarSearch compact onOpen={closeMobileNavigation} />
+          <div
+            className={`transition-all duration-300 ease-in-out ${
+              hideNavbarSearch
+                ? "max-w-0 opacity-0 pointer-events-none overflow-hidden"
+                : "max-w-[44px] opacity-100"
+            }`}
+          >
+            <NavbarSearch compact onOpen={closeMobileNavigation} />
+          </div>
           <Link
             href={
               loggedIn
@@ -1684,6 +1747,7 @@ function NavbarSearch({
   const [open, setOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const dialogRef = useRef<HTMLElement | null>(null);
+  const typingPlaceholder = useTypewriter();
   const mounted = useSyncExternalStore(
     subscribeToClient,
     getClientSnapshot,
@@ -1798,7 +1862,7 @@ function NavbarSearch({
                       type="text"
                       inputMode="search"
                       aria-label="Search loans, cards, insurance and services"
-                      placeholder="Search loans, cards, insurance or services"
+                      placeholder={typingPlaceholder || "Search loans, cards, insurance or services"}
                       onChange={(event) => setQuery(event.target.value)}
                       className="min-w-0 flex-1 bg-transparent text-[13px] font-semibold text-[#3b0764] outline-none placeholder:font-medium placeholder:text-[#8da0af] sm:text-[14px]"
                     />
@@ -2078,7 +2142,7 @@ function NavbarSearch({
       >
         <Search className="h-4 w-4 shrink-0 text-slate-400" aria-hidden="true" />
         {!compact ? (
-          <span className="truncate text-slate-500 font-medium">Search Fintaraa</span>
+          <span className="truncate text-slate-500 font-medium">{typingPlaceholder || "Search Fintaraa"}</span>
         ) : null}
       </button>
       {mounted ? createPortal(searchPanel, document.body) : null}

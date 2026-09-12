@@ -51,7 +51,7 @@ export function FranchiseHero() {
             </span>
           </h1>
           <p className="mt-4 max-w-xl text-[13px] font-semibold leading-7 text-[#667085]">
-            Partner with 30+ leading banks and NBFCs. Refer loans, credit cards
+            Partner with 50+ leading banks and NBFCs. Refer loans, credit cards
             and insurance products and earn attractive commissions on every
             successful approval.
           </p>
@@ -84,7 +84,7 @@ export function FranchiseHero() {
           {/* Floating badge chips visible in Figma */}
           {/* <div className="absolute right-4 top-4 flex flex-col gap-2">
             <span className="rounded-full bg-white px-3 py-1.5 text-[11px] font-extrabold text-[#4c1d95] shadow-md">
-              30+ Bank Tie-ups
+              50+ Bank Tie-ups
             </span>
             <span className="rounded-full bg-white px-3 py-1.5 text-[11px] font-extrabold text-[#4c1d95] shadow-md">
               High Commissions

@@ -68,7 +68,7 @@ export const franchiseBenefits = [
     icon: UserCheck,
   },
   {
-    title: "30+ Bank & NBFC",
+    title: "50+ Bank & NBFC",
     text: "Tie-ups with leading banks & NBFCs",
     icon: Landmark,
   },
@@ -149,7 +149,7 @@ export const franchiseFaqs = [
 ];
 
 export const partnerBenefits = [
-  "30+ Bank & NBFC Partnerships",
+  "50+ Bank & NBFC Partnerships",
   "Attractive & Timely Commissions",
   "End-to-end Training & Support",
   "Advanced Partner Dashboard",

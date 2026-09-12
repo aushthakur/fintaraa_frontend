@@ -4,7 +4,7 @@ import { AnimatedCounter } from "@/components/common/AnimatedCounter";
 const stats = [
   { value: "5M+", label: "Happy Users", icon: FileText },
   { value: "100+", label: "Credit Cards", icon: Landmark },
-  { value: "30+", label: "Banking Partners", icon: Banknote },
+  { value: "50+", label: "Banking Partners", icon: Banknote },
   { value: "24x7", label: "Support", icon: Headphones },
 ];
 

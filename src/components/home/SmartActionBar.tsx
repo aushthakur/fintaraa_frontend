@@ -122,7 +122,7 @@ const quickServices: SmartAction[] = [
   {
     id: "action-compare-loans",
     title: "Compare Loans",
-    subtitle: "30+ Top Partner Banks",
+    subtitle: "50+ Top Partner Banks",
     badge: "Lowest ROI",
     badgeColor: "bg-sky-50 text-sky-700 border-sky-200/70",
     href: "#loans",

@@ -6,7 +6,7 @@ import Image from "next/image";
 
 // const heroBadges = [
 //   {
-//     label: "30+ Bank Tie-ups",
+//     label: "50+ Bank Tie-ups",
 //     icon: Building2,
 //     className: "left-4 top-24 md:left-0",
 //   },
@@ -37,7 +37,7 @@ export function DsaHero() {
             <span className="block">& Earn High Commissions</span>
           </h1>
           <p className="mt-5 max-w-lg text-[14px] font-medium leading-7 text-[#6f7681] md:text-[15px]">
-            Partner with 30+ leading banks and NBFCs. Refer loans, credit cards
+            Partner with 50+ leading banks and NBFCs. Refer loans, credit cards
             and insurance products and earn attractive commissions on every
             successful approval.
           </p>

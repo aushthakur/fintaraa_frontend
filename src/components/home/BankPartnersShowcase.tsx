@@ -77,7 +77,7 @@ export function BankPartnersShowcase() {
               <p style={{ fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "#7c3aed", fontWeight: 500 }}>Live rates</p>
             </div>
             <h2 className="text-[22px] sm:text-[28px] font-semibold text-gray-900 tracking-tight leading-tight">
-              Get Instant Loan from <span style={{ color: "#6424C7" }}>30+ Trusted Banks</span> &amp; NBFCs
+              Get Instant Loan from <span style={{ color: "#6424C7" }}>50+ Trusted Banks</span> &amp; NBFCs
             </h2>
             <p className="mt-1.5 text-[13px] text-gray-500 font-normal">Compare live rates. Apply in 5 minutes. No paperwork.</p>
             <div style={{ marginTop: 10, height: 1, background: "linear-gradient(90deg, #7c3aed, rgba(124,58,237,0))", width: 160 }} />
@@ -101,7 +101,7 @@ export function BankPartnersShowcase() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-8">
         <div className="rounded-2xl border border-gray-100 bg-[#faf5ff] px-6 py-4 grid grid-cols-2 sm:grid-cols-4 gap-4">
           {[
-            { value: "30+", label: "Partner Banks & NBFCs" },
+            { value: "50+", label: "Partner Banks & NBFCs" },
             { value: "5 Min", label: "Loan Approval Time" },
             { value: "₹0", label: "Processing Fee (select banks)" },
             { value: "8.35%", label: "Starting Interest Rate" },

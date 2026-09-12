@@ -4,7 +4,7 @@ import { ShieldCheck, UsersRound, Clock, Star, Landmark } from "lucide-react";
 
 const stats = [
   { value: "2M+", label: "Happy Customers", icon: UsersRound },
-  { value: "30+", label: "Partner Banks & NBFCs", icon: Landmark },
+  { value: "50+", label: "Partner Banks & NBFCs", icon: Landmark },
   { value: "₹50,000 Cr+", label: "Processed Successfully", icon: ShieldCheck },
   { value: "24-48 hrs", label: "Average Approval Time", icon: Clock },
   { value: "4.8 / 5", label: "Customer Rating", icon: Star },

@@ -26,7 +26,7 @@ test.describe("Why Fintaraa sections", () => {
       await expectNoVisualIcons(section);
       await expect(section).toContainText("2M+");
       await expect(section).toContainText("Happy customers");
-      await expect(section).toContainText("30+");
+      await expect(section).toContainText("50+");
       await expect(section).toContainText("Partner banks & NBFCs");
       await expect(section).toContainText("₹50,000 Cr+");
       await expect(section).toContainText("Processed successfully");
@@ -68,7 +68,7 @@ test.describe("Why Fintaraa sections", () => {
     const benefitGrid = heading.locator("xpath=following-sibling::div[1]");
 
     await expectNoVisualIcons(benefitGrid);
-    await expect(benefitGrid).not.toContainText("30+ Bank Tie-ups");
+    await expect(benefitGrid).not.toContainText("50+ Bank Tie-ups");
     await expect(benefitGrid).toContainText("Bank & NBFC Tie-ups");
   });
 

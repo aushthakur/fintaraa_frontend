@@ -11,7 +11,7 @@ const displayStats = [
     icon: FileText,
   },
   {
-    value: "30+",
+    value: "50+",
     label: "Partner Banks",
     sub: "RBI Regulated",
     icon: Building2,

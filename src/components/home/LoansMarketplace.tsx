@@ -213,7 +213,7 @@ export function LoansMarketplace() {
               </span>
             </h2>
             <p className="mt-1.5 text-[13px] sm:text-[14px] font-light text-[#64748b] max-w-xl leading-relaxed">
-              Explore tailored loan solutions from 30+ top banks with live rates, maximum loan limits &amp; instant approval.
+              Explore tailored loan solutions from 50+ top banks with live rates, maximum loan limits &amp; instant approval.
             </p>
           </div>
 
@@ -318,7 +318,7 @@ export function LoansMarketplace() {
                     </div>
                     <div className="inline-flex items-center gap-1.5 rounded-full bg-slate-50 px-3 py-0.5 text-[10.5px] font-normal text-slate-600 border border-slate-200/80 shadow-2xs">
                       <ShieldCheck className="h-3 w-3 text-emerald-600" />
-                      <span>30+ Partner Banks</span>
+                      <span>50+ Partner Banks</span>
                     </div>
                   </div>
                 </motion.div>

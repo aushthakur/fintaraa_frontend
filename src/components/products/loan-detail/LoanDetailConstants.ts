@@ -9,7 +9,7 @@ import {
 
 export const loanStats = [
   ["24-Hours", "Processing Time"],
-  ["30+", "Bank & NBFC Partners"],
+  ["50+", "Bank & NBFC Partners"],
   ["100%", "Digital Assistance"],
   ["₹50,00,000", "Maximum Loan Amount"],
 ];

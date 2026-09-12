@@ -184,7 +184,7 @@ export function LoanHeroSection({ page }: { page: LoanSeoPageData }) {
             {/* Eyebrow Badge */}
             <div className="inline-flex items-center gap-2 rounded-full bg-purple-50 border border-purple-200/80 px-3.5 py-1 text-xs font-bold text-[#5b21b6] mb-4">
               <Sparkles className="h-3.5 w-3.5 text-[#5b21b6]" />
-              <span>Instant Online Disbursal • 30+ Partner Banks</span>
+              <span>Instant Online Disbursal • 50+ Partner Banks</span>
             </div>
 
             {/* Main Headline */}
@@ -244,7 +244,7 @@ export function LoanHeroSection({ page }: { page: LoanSeoPageData }) {
             <div className="mt-6 flex flex-wrap items-center gap-4 text-xs font-semibold text-slate-500">
               <span className="flex items-center gap-1.5">
                 <BadgeCheck className="h-4 w-4 text-[#5b21b6]" />
-                30+ Regulated Lenders
+                50+ Regulated Lenders
               </span>
               <span className="flex items-center gap-1.5">
                 <UsersRound className="h-4 w-4 text-[#5b21b6]" />

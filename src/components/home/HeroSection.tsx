@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import { loanProductDirectory } from "@/data/bankDirectory";
 import { productHref } from "@/lib/productRouting";
+import { useTypewriter } from "@/hooks/useTypewriter";
 
 // Rotating services for the hero headline
 const rotatingServices = [
@@ -170,6 +171,7 @@ export function HeroSection() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
+  const typingPlaceholder = useTypewriter();
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -241,6 +243,7 @@ export function HeroSection() {
 
   return (
     <section
+      id="hero-section"
       className="hero-section relative overflow-hidden bg-white pt-4 pb-2 sm:pt-6 sm:pb-3 lg:pt-7 lg:pb-3"
       aria-label="Fintaraa Hero"
     >
@@ -272,13 +275,18 @@ export function HeroSection() {
 
             {/* Supporting text from original Fintaraa copy */}
             <p className="mt-3 max-w-lg text-[13.5px] font-medium leading-relaxed text-[#64748b] sm:text-[14.5px]">
-              One secure check. Multiple trusted offers from 30+ banks &amp; NBFCs. Zero impact on your CIBIL score.
+              One secure check. Multiple trusted offers from 50+ Banks &amp; NBFCs. Zero impact on your CIBIL score.
             </p>
 
-            {/* FINANCIAL PRODUCT SEARCH ENGINE (Desktop & Tablet only, hidden on mobile view) */}
-            <div ref={searchRef} className="relative mt-5 max-w-md lg:max-w-lg hidden md:block">
-              <div className="relative flex items-center">
-                <Search className="pointer-events-none absolute left-3.5 h-4 w-4 text-[#64748b]" />
+            {/* FINANCIAL PRODUCT SEARCH ENGINE - Highlighted with Glow, Capsule Design, and Live Typing Placeholder */}
+            <div ref={searchRef} className="relative mt-5 w-full max-w-lg">
+              {/* Glowing Interactive Search Container */}
+              <div className="group relative flex items-center rounded-2xl border-2 border-purple-200/90 bg-white p-1.5 shadow-[0_6px_24px_rgba(91,33,182,0.08)] transition-all duration-300 hover:border-[#7c3aed] hover:shadow-[0_10px_32px_rgba(91,33,182,0.15)] focus-within:border-[#6d28d9] focus-within:ring-4 focus-within:ring-[#6d28d9]/15 focus-within:shadow-[0_12px_40px_rgba(109,40,217,0.22)]">
+                {/* Search Icon Badge */}
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#6d28d9] to-[#7c3aed] text-white shadow-sm transition-transform duration-200 group-hover:scale-105">
+                  <Search className="h-4.5 w-4.5" />
+                </div>
+
                 <input
                   type="text"
                   value={searchQuery}
@@ -287,9 +295,17 @@ export function HeroSection() {
                     setIsSearchOpen(true);
                   }}
                   onFocus={() => setIsSearchOpen(true)}
-                  placeholder="Search loans, cards, insurance & tools..."
-                  className="h-11 w-full rounded-none border-0 border-b border-slate-300/50 bg-transparent pl-10 pr-9 text-[13px] font-semibold text-[#0f172a] placeholder:text-[#94a3b8] transition-colors focus:border-b-[#5b21b6] focus:outline-none focus:ring-0 sm:h-12 sm:text-[14px]"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && searchResults.length > 0) {
+                      e.preventDefault();
+                      setIsSearchOpen(false);
+                      window.location.href = searchResults[0].href;
+                    }
+                  }}
+                  placeholder={typingPlaceholder || "Search loans, cards, insurance & tools..."}
+                  className="h-10 w-full min-w-0 bg-transparent px-3 text-[13px] sm:text-[14px] font-semibold text-[#0f172a] placeholder:text-[#94a3b8] focus:outline-none"
                 />
+
                 {searchQuery ? (
                   <button
                     type="button"
@@ -297,57 +313,69 @@ export function HeroSection() {
                       setSearchQuery("");
                       setIsSearchOpen(false);
                     }}
-                    className="absolute right-3 text-gray-400 hover:text-gray-600"
+                    className="mr-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors"
+                    aria-label="Clear search"
                   >
                     <X className="h-4 w-4" />
                   </button>
-                ) : (
-                  <span className="pointer-events-none absolute right-3 hidden rounded bg-gray-100 px-1.5 py-0.5 text-[10px] font-bold text-gray-400 sm:inline">
-                    🔍
-                  </span>
-                )}
+                ) : null}
+
+                <button
+                  type="button"
+                  onClick={() => setIsSearchOpen(true)}
+                  className="shrink-0 inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#5b21b6] via-[#6d28d9] to-[#7c3aed] px-3.5 sm:px-4 py-2 text-[12px] sm:text-[12.5px] font-bold text-white shadow-xs hover:opacity-95 active:scale-95 transition-all"
+                >
+                  <span>Search</span>
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </button>
               </div>
 
               {/* Search Engine Dropdown with categorized suggestions */}
               {isSearchOpen && (
-                <div className="absolute left-0 right-0 top-full z-50 mt-1.5 max-h-80 overflow-y-auto rounded-xl border border-gray-200 bg-white p-2 shadow-xl">
-                  <div className="flex items-center justify-between px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-[#94a3b8]">
+                <div className="absolute left-0 right-0 top-full z-50 mt-2 max-h-84 overflow-y-auto rounded-2xl border border-purple-100 bg-white/98 p-2.5 shadow-2xl backdrop-blur-md">
+                  <div className="flex items-center justify-between px-2.5 py-1.5 text-[11px] font-extrabold uppercase tracking-wider text-[#7c3aed] border-b border-gray-100 mb-1">
                     <span>{searchQuery ? "Matching Results" : "Quick Suggestions"}</span>
                     <span>Direct Link</span>
                   </div>
-                  <div className="mt-1 divide-y divide-gray-100">
-                    {searchResults.map((item) => (
-                      <Link
-                        key={item.name}
-                        href={item.href}
-                        onClick={() => setIsSearchOpen(false)}
-                        className="flex items-center justify-between rounded-lg p-2 text-left transition hover:bg-[#f5f3ff]"
-                      >
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <span className="text-[13px] font-bold text-[#0f172a]">
-                              {item.name}
-                            </span>
-                            <span className="rounded bg-gray-100 px-1.5 py-0.5 text-[9.5px] font-bold text-[#475569]">
-                              {item.category}
-                            </span>
+                  <div className="divide-y divide-gray-100">
+                    {searchResults.length > 0 ? (
+                      searchResults.map((item) => (
+                        <Link
+                          key={item.name}
+                          href={item.href}
+                          onClick={() => setIsSearchOpen(false)}
+                          className="flex items-center justify-between rounded-xl p-2.5 text-left transition-colors hover:bg-[#f5f3ff] group"
+                        >
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <span className="text-[13px] font-bold text-[#0f172a] group-hover:text-[#6d28d9] transition-colors">
+                                {item.name}
+                              </span>
+                              <span className="rounded-full bg-purple-50 border border-purple-200/60 px-2 py-0.5 text-[9.5px] font-bold text-[#6d28d9]">
+                                {item.category}
+                              </span>
+                            </div>
+                            <p className="text-[11px] text-[#64748b] mt-0.5">{item.sub}</p>
                           </div>
-                          <p className="text-[11px] text-[#64748b]">{item.sub}</p>
-                        </div>
-                        <ArrowRight className="h-3.5 w-3.5 text-[#5b21b6]" />
-                      </Link>
-                    ))}
+                          <ArrowRight className="h-3.5 w-3.5 text-[#7c3aed] transition-transform group-hover:translate-x-1" />
+                        </Link>
+                      ))
+                    ) : (
+                      <div className="p-4 text-center text-sm text-gray-500">
+                        No matches found for &quot;{searchQuery}&quot;. Try loans, cards, or insurance.
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
             </div>
 
-            {/* Quick Services shortcut chips (Desktop & Tablet) */}
-            <div className="mt-3.5 hidden md:flex flex-wrap items-center gap-1.5 text-[11px] sm:text-[11.5px]">
-              <span className="font-semibold text-[#64748b]">Quick Services:</span>
+            {/* Quick Services shortcut chips */}
+            <div className="mt-3.5 flex flex-wrap items-center gap-1.5 text-[11px] sm:text-[11.5px]">
+              <span className="font-semibold text-[#64748b]">Popular:</span>
               <Link
                 href="/credit-cards"
-                className="rounded-full bg-purple-50 px-2.5 py-0.5 font-semibold text-[#5b21b6] hover:bg-purple-100 transition-colors"
+                className="rounded-full bg-purple-50 px-2.5 py-0.5 font-semibold text-[#5b21b6] hover:bg-purple-100 transition-colors border border-purple-200/50"
               >
                 Quick Card Apply
               </Link>

@@ -248,7 +248,7 @@ export const AppDownloadBanner = () => {
               </h2>
 
               <p className="mt-3 text-sm sm:text-[15px] font-medium leading-relaxed text-slate-600 max-w-md">
-                Monitor your live CIBIL score, compare 30+ lenders, manage loan EMIs, and receive custom pre-approved offers directly from your phone.
+                Monitor your live CIBIL score, compare 50+ lenders, manage loan EMIs, and receive custom pre-approved offers directly from your phone.
               </p>
 
               <div className="mt-5 flex flex-wrap items-center gap-4 text-xs font-semibold text-slate-500">
@@ -369,7 +369,7 @@ export default function Footer() {
               />
             </div>
             <p className="text-xs sm:text-[13.5px] font-medium leading-relaxed text-slate-600">
-              India’s smart borrowing &amp; financial marketplace. Compare 30+ RBI-licensed banks and NBFCs for personal, business, and home loans with zero impact on your CIBIL score.
+              India’s smart borrowing &amp; financial marketplace. Compare 50+ RBI-licensed banks and NBFCs for personal, business, and home loans with zero impact on your CIBIL score.
             </p>
           </div>
 
@@ -590,7 +590,7 @@ export default function Footer() {
       </div>
 
       {/* ── Bottom Legal & Social Bar ── */}
-      <div className="border-t border-slate-200 bg-slate-50 pb-24 pt-5 sm:py-5">
+      <div className="border-t border-slate-200 bg-slate-50 pb-24 pt-5 sm:pt-5 sm:pb-16">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 sm:flex-row sm:px-6 lg:px-8">
           {/* Copyright */}
           <p className="text-xs text-slate-500 text-center sm:text-left">

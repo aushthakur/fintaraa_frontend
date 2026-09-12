@@ -134,7 +134,7 @@ export function MobileActionBar() {
     <aside
       aria-label="WhatsApp Advisor"
       className={`fixed z-50 right-3 sm:right-6 md:right-8 flex flex-col items-end pointer-events-auto ${
-        hasCardApplyBar ? "bottom-20 lg:bottom-8" : "bottom-4 sm:bottom-6"
+        hasCardApplyBar ? "bottom-24 lg:bottom-16" : "bottom-14 sm:bottom-16"
       }`}
     >
       {/* ── 1. FLOATING SPEECH BUBBLE (Visible when chat is closed) ── */}

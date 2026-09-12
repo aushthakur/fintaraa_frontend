@@ -447,7 +447,7 @@ function SectionTop({
               <>
                 Get Instant Loan in 5 Minutes from{" "}
                 <span className="text-[#5b21b6]">
-                  30+ Trusted Banks & NBFCs
+                  50+ Trusted Banks & NBFCs
                 </span>
               </>
             ) : (
