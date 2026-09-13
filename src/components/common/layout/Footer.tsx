@@ -360,10 +360,10 @@ export default function Footer() {
             {/* Logo */}
             <div className="flex items-center">
               <Image
-                src="/assets/logo/logo.png"
+                src="/assets/logo/fintaraa-brand-logo.png"
                 alt="Fintaraa Logo"
-                width={150}
-                height={38}
+                width={160}
+                height={48}
                 className="h-9 w-auto object-contain"
                 unoptimized
               />

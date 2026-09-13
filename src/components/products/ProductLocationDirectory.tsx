@@ -85,7 +85,7 @@ const makeTitle = (
 function LinkRow({
   items,
   maxItems = 120,
-  step = 10,
+  step = 12,
 }: {
   items: DirectoryItem[];
   maxItems?: number;
@@ -98,41 +98,28 @@ function LinkRow({
   const hasMore = visible.length < cappedItems.length;
 
   return (
-    <div className="mx-auto mt-4 max-w-8xl text-center text-[15px] font-semibold leading-8 text-[#8b95a3] md:text-[16px] md:leading-9">
-      {visible.map((item, index) => (
-        <span key={item.key} className="inline">
-          <Link
-            href={item.href}
-            className="text-[#667085] no-underline transition hover:text-[#4c1d95]"
-          >
-            {item.label}
-          </Link>
-          {index < visible.length - 1 ? (
-            <span className="px-3 text-[18px] font-extrabold text-[#4c1d95]/45">
-              |
-            </span>
-          ) : null}
-        </span>
+    <div className="mx-auto max-w-6xl flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
+      {visible.map((item) => (
+        <Link
+          key={item.key}
+          href={item.href}
+          className="inline-flex items-center rounded-lg bg-white border border-slate-200/90 px-2.5 py-1 text-[11px] sm:text-[11.5px] font-medium text-slate-600 shadow-2xs transition-all duration-200 hover:border-purple-300 hover:text-[#6424C7] hover:bg-purple-50/50 hover:shadow-xs no-underline cursor-pointer"
+        >
+          {item.label}
+        </Link>
       ))}
       {hasMore ? (
-        <>
-          {visible.length ? (
-            <span className="px-3 text-[18px] font-extrabold text-[#4c1d95]/45">
-              |
-            </span>
-          ) : null}
-          <button
-            type="button"
-            onClick={() =>
-              setVisibleCount((current) =>
-                Math.min(current + step, cappedItems.length),
-              )
-            }
-            className="text-[15px] font-extrabold text-[#4c1d95] underline-offset-4 transition hover:underline"
-          >
-            Show more ({cappedItems.length - visible.length})
-          </button>
-        </>
+        <button
+          type="button"
+          onClick={() =>
+            setVisibleCount((current) =>
+              Math.min(current + step, cappedItems.length),
+            )
+          }
+          className="inline-flex items-center rounded-lg bg-purple-50 border border-purple-200 px-2.5 py-1 text-[11px] sm:text-[11.5px] font-bold text-[#6424C7] shadow-2xs transition-all duration-200 hover:bg-purple-100 hover:border-purple-300 cursor-pointer"
+        >
+          + Show more ({cappedItems.length - visible.length})
+        </button>
       ) : null}
     </div>
   );
@@ -152,12 +139,14 @@ function DirectorySection({
   if (!items.length) return null;
 
   return (
-    <div className="py-8">
-      <div className="flex items-center justify-center gap-2">
-        <Icon className="h-4 w-4 text-[#4c1d95]" />
-        <h2 className="text-center text-[18px] font-extrabold uppercase tracking-[0.08em] text-[#3f4650] md:text-[20px]">
+    <div className="py-4 sm:py-5">
+      <div className="flex items-center justify-center gap-1.5 mb-3">
+        <div className="flex h-5 w-5 items-center justify-center rounded-md bg-purple-100/70 text-[#6424C7]">
+          <Icon className="h-3 w-3" />
+        </div>
+        <h3 className="text-center text-[12.5px] sm:text-[13.5px] font-bold uppercase tracking-wider text-slate-700">
           {title}
-        </h2>
+        </h3>
       </div>
       <LinkRow items={items} maxItems={maxItems} />
     </div>
@@ -271,8 +260,8 @@ export function ProductLocationDirectory({
   const titlePrefix = `${productName} Locations`;
 
   return (
-    <section className="bg-[#fbfcfd] px-4 py-8 md:px-6 lg:px-8">
-      <div className="mx-auto max-w-9xl divide-y divide-[#edf1f4]">
+    <section className="bg-slate-50/70 border-t border-slate-200/70 px-4 py-6 md:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl divide-y divide-slate-200/60">
         {!hasState ? (
           <>
             <DirectorySection

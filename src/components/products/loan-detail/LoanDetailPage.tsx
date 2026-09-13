@@ -6,10 +6,11 @@ import { LoanStatsBar } from "./LoanStatsBar";
 import { LoanFAQSection } from "./LoanFAQSection";
 import { LoanHeroSection } from "./LoanHeroSection";
 import { LoanOtherProducts } from "./LoanOtherProducts";
-import { LoanEMICalculator } from "./LoanEMICalculator";
 import { LoanBankComparison } from "./LoanBankComparison";
 import { Testimonials } from "@/components/home/Testimonials";
-import { CreditScoreBanner } from "@/components/home/CreditScoreBanner";
+import { CreditScoreSection } from "@/components/home/CreditScoreSection";
+import { LoanUseCasesSection } from "./LoanUseCasesSection";
+import { LoanProcessRoadmap } from "./LoanProcessRoadmap";
 import { LoanFeaturesBenefits } from "./LoanFeaturesBenefits";
 import { ProductLocationDirectory } from "../ProductLocationDirectory";
 import { ProductRelatedBlogs } from "../ProductRelatedBlogs";
@@ -22,7 +23,6 @@ import { LoanVerificationSteps } from "./LoanVerificationSteps";
 import { LoanEligibilityCriteria } from "./LoanEligibilityCriteria";
 import { AppDownloadBanner } from "@/components/common/layout/Footer";
 import { getApplyHref } from "@/components/application/flowRegistry";
-import { ProductDetailPopupBanner } from "@/components/products/ProductDetailPopupBanner";
 import type { BankProductLender } from "@/services/bankSeoPages";
 import {
   PRODUCT_SECTION_NAVIGATION_EVENT,
@@ -216,12 +216,6 @@ export function LoanDetailPage({
 
   return (
     <main className="overflow-visible bg-white text-[#1f2329]">
-      <ProductDetailPopupBanner
-        category="loan"
-        productName={page.loanType}
-        productSlug={page.loanTypeSlug}
-        applyHref={applyHref}
-      />
       <LoanHeroSection page={page} />
       <LoanStatsBar />
       <LoanTabs
@@ -268,10 +262,18 @@ export function LoanDetailPage({
         </div>
       )}
 
-      {(isOverviewTab || (!showGuidePanel && showSection("emi_calculator"))) && (
-        <div id="loan-emi-calculator">
-          <LoanEMICalculator page={page} />
-        </div>
+      {/* Marketing showcase sections for Personal Loan and core loan pages */}
+      {isOverviewTab && (
+        <>
+          <LoanUseCasesSection
+            productSlug={page.loanTypeSlug}
+            applyHref={applyHref}
+          />
+          <LoanProcessRoadmap
+            productName={page.loanType}
+            applyHref={applyHref}
+          />
+        </>
       )}
 
       {page.loanTypeSlug === "instant-loan" && (
@@ -283,7 +285,9 @@ export function LoanDetailPage({
           description="Compare indicative lender terms, open the bank details, and apply through Fintaraa."
         />
       )}
-      <CreditScoreBanner />
+
+      {/* Revamped Credit Score (CIBIL) Section matching Homepage */}
+      <CreditScoreSection />
 
       {!showGuidePanel && showSection("other_products") && (
         <LoanOtherProducts />

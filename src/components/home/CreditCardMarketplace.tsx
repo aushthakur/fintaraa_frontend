@@ -138,25 +138,24 @@ const filterTabs = [
   { id: "fuel", label: "Fuel", icon: Fuel },
 ];
 
-/* Compute fan transform for a card at `index` given `activeIndex` */
 function getFanStyle(index: number, total: number, activeIndex: number, isMobile: boolean) {
   const offset = index - activeIndex;
   const absOffset = Math.abs(offset);
   if (isMobile) {
     return {
-      x: offset * 65,
-      y: absOffset * 8,
-      rotate: offset * 3.5,
-      scale: Math.max(0.72, 1 - absOffset * 0.12),
+      x: offset * 68,
+      y: absOffset * 4,
+      rotate: offset * 3,
+      scale: Math.max(0.75, 1 - absOffset * 0.12),
       zIndex: total - absOffset,
       opacity: absOffset > 1 ? 0 : 1 - absOffset * 0.18,
     };
   }
   return {
     x: offset * 210,
-    y: absOffset * absOffset * 18,
-    rotate: offset * 5.5,
-    scale: 1 - absOffset * 0.08,
+    y: absOffset * 8,
+    rotate: offset * 4.5,
+    scale: 1 - absOffset * 0.07,
     zIndex: total - absOffset,
     opacity: 1 - absOffset * 0.14,
   };
@@ -260,12 +259,12 @@ export function CreditCardMarketplace() {
         <div className="mt-10 sm:mt-14 flex flex-col items-center w-full overflow-hidden">
           {/* Stage */}
           <div
-            className="relative flex items-end justify-center h-[215px] sm:h-[360px] w-full overflow-hidden"
+            className="relative flex items-end justify-center h-[260px] sm:h-[390px] md:h-[410px] w-full"
           >
             {/* Stage glow / reflection surface */}
             <div
               aria-hidden="true"
-              className="absolute bottom-0 left-1/2 -translate-x-1/2 rounded-[50%]"
+              className="absolute bottom-2 sm:bottom-4 left-1/2 -translate-x-1/2 rounded-[50%]"
               style={{
                 width: isMobile ? 360 : 860,
                 height: 36,
@@ -301,7 +300,7 @@ export function CreditCardMarketplace() {
                       setIsPaused(false);
                       setHoveredCard(null);
                     }}
-                    className="absolute bottom-0 focus:outline-none cursor-pointer"
+                    className="absolute bottom-6 sm:bottom-10 md:bottom-12 focus:outline-none cursor-pointer"
                     style={{
                       transformOrigin: "bottom center",
                       zIndex: isHovered ? 60 : zIndex,
@@ -321,11 +320,11 @@ export function CreditCardMarketplace() {
                   >
                     {/* Card image container */}
                     <div
-                      className="relative w-[260px] h-[162px] min-[400px]:w-[285px] min-[400px]:h-[178px] sm:w-[400px] sm:h-[250px] rounded-2xl overflow-hidden"
+                      className="relative w-[260px] h-[146px] min-[400px]:w-[290px] min-[400px]:h-[163px] sm:w-[400px] sm:h-[225px] rounded-2xl overflow-hidden bg-slate-900"
                       style={{
                         boxShadow: isActive
-                          ? `0 26px 65px -12px ${card.glowColor}, 0 12px 36px rgba(0,0,0,0.20)`
-                          : "0 12px 36px rgba(0,0,0,0.15)",
+                          ? `0 24px 60px -10px ${card.glowColor}, 0 12px 30px rgba(0,0,0,0.22)`
+                          : "0 10px 30px rgba(0,0,0,0.16)",
                       }}
                     >
                       <Image
@@ -334,7 +333,7 @@ export function CreditCardMarketplace() {
                         fill
                         unoptimized
                         className="object-cover"
-                        sizes="(max-width: 640px) 280px, 400px"
+                        sizes="(max-width: 640px) 290px, 400px"
                       />
                     </div>
                   </motion.button>
@@ -347,7 +346,7 @@ export function CreditCardMarketplace() {
               type="button"
               onClick={() => canGoPrev && setActiveCard((p) => p - 1)}
               aria-label="Previous card"
-              className={`absolute left-1 sm:left-8 top-1/2 -translate-y-6 z-50 flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border bg-white shadow-md transition-all duration-200 ${
+              className={`absolute left-1 sm:left-6 md:left-8 top-[46%] -translate-y-1/2 z-50 flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border bg-white shadow-md transition-all duration-200 ${
                 canGoPrev
                   ? "border-gray-200 hover:border-[#6424C7]/50 hover:shadow-[0_0_14px_rgba(100,36,199,0.2)] cursor-pointer"
                   : "border-gray-100 opacity-30 cursor-not-allowed"
@@ -359,7 +358,7 @@ export function CreditCardMarketplace() {
               type="button"
               onClick={() => canGoNext && setActiveCard((p) => p + 1)}
               aria-label="Next card"
-              className={`absolute right-1 sm:right-8 top-1/2 -translate-y-6 z-50 flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border bg-white shadow-md transition-all duration-200 ${
+              className={`absolute right-1 sm:right-6 md:right-8 top-[46%] -translate-y-1/2 z-50 flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border bg-white shadow-md transition-all duration-200 ${
                 canGoNext
                   ? "border-gray-200 hover:border-[#6424C7]/50 hover:shadow-[0_0_14px_rgba(100,36,199,0.2)] cursor-pointer"
                   : "border-gray-100 opacity-30 cursor-not-allowed"
@@ -409,7 +408,7 @@ export function CreditCardMarketplace() {
                   <div className="flex flex-col gap-4 p-4 sm:flex-row sm:items-center sm:gap-6 sm:p-6">
                     {/* Card thumbnail */}
                     <div
-                      className="relative shrink-0 self-center w-[150px] h-[94px] sm:w-[210px] sm:h-[130px] rounded-xl overflow-hidden"
+                      className="relative shrink-0 self-center w-[156px] h-[88px] sm:w-[210px] sm:h-[118px] rounded-xl overflow-hidden bg-slate-900"
                       style={{
                         boxShadow: `0 10px 30px -6px ${activeCardData.glowColor}, 0 4px 14px rgba(0,0,0,0.12)`,
                       }}

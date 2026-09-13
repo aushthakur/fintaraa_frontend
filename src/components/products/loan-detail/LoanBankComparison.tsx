@@ -45,10 +45,6 @@ export function LoanBankComparison({
       
       {/* SECTION TITLE & DESCRIPTION BLOCK */}
       <div className="mb-8">
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-purple-50 px-3.5 py-1 text-xs font-bold text-[#5b21b6] border border-purple-100 mb-2.5">
-          <Star className="h-3 w-3 fill-[#5b21b6] text-[#5b21b6]" />
-          Verified Bank Partners
-        </span>
         <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
           {title}
         </h2>

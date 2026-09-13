@@ -200,25 +200,23 @@ export function Testimonials() {
   }
 
   return (
-    <section className="relative overflow-hidden select-none bg-[#fafafa] py-6 sm:py-8">
+    <section className="relative overflow-hidden select-none bg-[#fafbfe] py-12 sm:py-16">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
           <div>
-            <div className="flex items-center gap-2">
-              <span className="h-2 w-2 rounded-full bg-[#5b21b6]" />
-              <h2 className="text-[17px] font-semibold text-[#0f172a] sm:text-[20px]">
-                Customer Stories
-              </h2>
-            </div>
-            <p className="text-[12px] font-normal text-[#64748b]">
-              Real feedback from customers across India
+            <h2 className="text-2xl sm:text-3xl lg:text-[36px] font-semibold text-gray-900 tracking-tight leading-tight">
+              Customer <span style={{ color: "#6424C7" }}>Stories</span>
+            </h2>
+            <p className="mt-2 text-[14px] sm:text-[15px] font-normal text-gray-500 leading-relaxed">
+              Real feedback &amp; financial journeys from customers across India
             </p>
           </div>
           <Link
             href="/testimonials"
-            className="inline-flex h-8.5 shrink-0 items-center justify-center gap-1.5 rounded-lg bg-[#5b21b6] px-3.5 text-[12px] font-medium text-white no-underline transition hover:bg-[#4c1d95]"
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-full px-5 text-[12.5px] font-medium text-white transition-all shadow-sm hover:shadow-md hover:scale-[1.02] shrink-0"
+            style={{ background: "linear-gradient(135deg, #6424C7, #9b5de5)" }}
           >
-            View All
+            View All Stories
             <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>

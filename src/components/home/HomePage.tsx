@@ -8,7 +8,6 @@ import { LoansMarketplace } from "./LoansMarketplace";
 import { CreditCardMarketplace } from "./CreditCardMarketplace";
 import { CreditScoreSection } from "./CreditScoreSection";
 import { InsuranceMarketplace } from "./InsuranceMarketplace";
-import { FinancialCalculatorsSection } from "./FinancialCalculatorsSection";
 import { LoanRatesShowcase } from "./LoanRatesShowcase";
 import { PartnersStrip } from "./PartnersStrip";
 import { WhyChoose } from "./WhyChoose";
@@ -66,10 +65,8 @@ export function HomePage() {
           <InsuranceMarketplace />
         </SectionReveal>
 
-        {/* 8. Financial Calculators: "Make smarter financial decisions" with interactive sliders */}
-        <SectionReveal>
-          <FinancialCalculatorsSection />
-        </SectionReveal>
+        {/* 8. Financial Calculators: Accessible via left-docked floating button & modal */}
+        <div id="calculators" className="scroll-mt-24" />
 
         {/* 9. Loan Rates Showcase: "Home Loans from 7.10%* Only with Fintaraa" */}
         <SectionReveal>

@@ -9,7 +9,11 @@ import {
   Store,
   Plane,
   ArrowRight,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, A11y, Autoplay } from "swiper/modules";
 
 interface InsuranceItem {
   id: string;
@@ -89,7 +93,7 @@ export function InsuranceMarketplace() {
   return (
     <section
       id="insurance"
-      className="scroll-mt-20"
+      className="scroll-mt-20 overflow-hidden"
       aria-label="Protect What Matters"
       style={{
         background: "#ffffff",
@@ -111,6 +115,7 @@ export function InsuranceMarketplace() {
           gap: 10px;
           position: relative;
           overflow: hidden;
+          height: 100%;
           transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
         }
         .ins-card::before {
@@ -157,7 +162,8 @@ export function InsuranceMarketplace() {
           color: var(--card-accent);
           text-decoration: none;
           transition: gap 0.2s ease;
-          margin-top: 2px;
+          margin-top: auto;
+          padding-top: 4px;
         }
         .ins-cta:hover { gap: 10px; }
         .ins-view-all:hover {
@@ -167,9 +173,6 @@ export function InsuranceMarketplace() {
       `}</style>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" style={{ position: "relative" }}>
-
-
-
         {/* Section Header */}
         <div style={{
           display: "flex",
@@ -177,7 +180,7 @@ export function InsuranceMarketplace() {
           justifyContent: "space-between",
           flexWrap: "wrap",
           gap: 16,
-          marginBottom: 36,
+          marginBottom: 28,
           position: "relative",
           zIndex: 1,
         }}>
@@ -218,110 +221,160 @@ export function InsuranceMarketplace() {
             }} />
           </div>
 
-          <Link
-            href="/products?category=Insurance"
-            className="ins-view-all"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 6,
-              fontSize: 12.5,
-              fontWeight: 500,
-              color: "#5b21b6",
-              textDecoration: "none",
-              border: "1px solid rgba(91,33,182,0.25)",
-              borderRadius: 100,
-              padding: "7px 16px",
-              background: "rgba(91,33,182,0.06)",
-              transition: "all 0.2s ease",
-              whiteSpace: "nowrap",
-              flexShrink: 0,
-            }}
-          >
-            View all plans <ArrowRight style={{ width: 13, height: 13 }} />
-          </Link>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <Link
+              href="/products?category=Insurance"
+              className="ins-view-all"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 6,
+                fontSize: 12.5,
+                fontWeight: 500,
+                color: "#5b21b6",
+                textDecoration: "none",
+                border: "1px solid rgba(91,33,182,0.25)",
+                borderRadius: 100,
+                padding: "7px 16px",
+                background: "rgba(91,33,182,0.06)",
+                transition: "all 0.2s ease",
+                whiteSpace: "nowrap",
+                flexShrink: 0,
+              }}
+            >
+              View all plans <ArrowRight style={{ width: 13, height: 13 }} />
+            </Link>
+
+            <button
+              type="button"
+              aria-label="Previous insurance plan"
+              className="ins-prev-btn inline-flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full border border-[#d9e6f2] bg-white text-[#5b21b6] shadow-[0_8px_20px_rgba(7,22,45,0.08)] transition hover:border-[#5b21b6] hover:bg-[#5b21b6] hover:text-white disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer"
+            >
+              <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5" />
+            </button>
+            <button
+              type="button"
+              aria-label="Next insurance plan"
+              className="ins-next-btn inline-flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full border border-[#d9e6f2] bg-white text-[#5b21b6] shadow-[0_8px_20px_rgba(7,22,45,0.08)] transition hover:border-[#5b21b6] hover:bg-[#5b21b6] hover:text-white disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer"
+            >
+              <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5" />
+            </button>
+          </div>
         </div>
 
-        {/* Cards Grid */}
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
-          gap: 16,
-          position: "relative",
-          zIndex: 1,
-        }}>
-          {insuranceList.map((item) => {
-            const Icon = item.icon;
-            return (
-              <div
-                key={item.id}
-                className="ins-card"
-                style={{
-                  "--card-accent": item.accentColor,
-                  "--card-glow": item.glowColor,
-                } as React.CSSProperties}
-              >
-                {/* Icon */}
-                <div
-                  className="ins-icon-wrap"
-                  style={{
-                    background: item.glowColor,
-                    border: `1.5px solid ${item.accentColor}33`,
-                  }}
-                >
-                  <Icon style={{ width: 22, height: 22, color: item.accentColor }} />
-                </div>
+        {/* Single Row Carousel */}
+        <div className="relative pt-1 pb-4">
+          <Swiper
+            modules={[Navigation, A11y, Autoplay]}
+            navigation={{
+              prevEl: ".ins-prev-btn",
+              nextEl: ".ins-next-btn",
+            }}
+            slidesPerView={1.15}
+            spaceBetween={14}
+            speed={600}
+            grabCursor
+            rewind
+            autoplay={{
+              delay: 3500,
+              disableOnInteraction: false,
+              pauseOnMouseEnter: true,
+            }}
+            breakpoints={{
+              640: {
+                slidesPerView: 2.2,
+                spaceBetween: 16,
+              },
+              768: {
+                slidesPerView: 2.8,
+                spaceBetween: 18,
+              },
+              1024: {
+                slidesPerView: 3.5,
+                spaceBetween: 20,
+              },
+              1280: {
+                slidesPerView: 4.2,
+                spaceBetween: 20,
+              },
+            }}
+            className="w-full"
+          >
+            {insuranceList.map((item) => {
+              const Icon = item.icon;
+              return (
+                <SwiperSlide key={item.id} className="h-auto! pb-2">
+                  <div
+                    className="ins-card"
+                    style={{
+                      "--card-accent": item.accentColor,
+                      "--card-glow": item.glowColor,
+                    } as React.CSSProperties}
+                  >
+                    {/* Icon */}
+                    <div
+                      className="ins-icon-wrap"
+                      style={{
+                        background: item.glowColor,
+                        border: `1.5px solid ${item.accentColor}33`,
+                      }}
+                    >
+                      <Icon style={{ width: 22, height: 22, color: item.accentColor }} />
+                    </div>
 
-                {/* Name + Metric */}
-                <div>
-                  <h3 style={{
-                    fontSize: 14,
-                    fontWeight: 600,
-                    color: "#0f172a",
-                    lineHeight: 1.3,
-                    letterSpacing: "-0.01em",
-                  }}>
-                    {item.name}
-                  </h3>
-                  <p style={{
-                    marginTop: 2,
-                    fontSize: 12,
-                    color: item.accentColor,
-                    fontWeight: 500,
-                    letterSpacing: "0.01em",
-                  }}>
-                    {item.metric}
-                  </p>
-                </div>
+                    {/* Name + Metric */}
+                    <div>
+                      <h3 style={{
+                        fontSize: 14,
+                        fontWeight: 600,
+                        color: "#0f172a",
+                        lineHeight: 1.3,
+                        letterSpacing: "-0.01em",
+                      }}>
+                        {item.name}
+                      </h3>
+                      <p style={{
+                        marginTop: 2,
+                        fontSize: 12,
+                        color: item.accentColor,
+                        fontWeight: 500,
+                        letterSpacing: "0.01em",
+                      }}>
+                        {item.metric}
+                      </p>
+                    </div>
 
-                {/* Separator */}
-                <div
-                  className="ins-separator"
-                  style={{ "--card-accent": item.accentColor } as React.CSSProperties}
-                />
+                    {/* Separator */}
+                    <div
+                      className="ins-separator"
+                      style={{ "--card-accent": item.accentColor } as React.CSSProperties}
+                    />
 
-                {/* Detail */}
-                <p style={{
-                  fontSize: 12,
-                  color: "#64748b",
-                  lineHeight: 1.65,
-                  fontWeight: 400,
-                }}>
-                  {item.detail}
-                </p>
+                    {/* Detail */}
+                    <p style={{
+                      fontSize: 12,
+                      color: "#64748b",
+                      lineHeight: 1.65,
+                      fontWeight: 400,
+                      flexGrow: 1,
+                    }}>
+                      {item.detail}
+                    </p>
 
-                {/* CTA */}
-                <Link
-                  href={item.href}
-                  className="ins-cta"
-                  style={{ "--card-accent": item.accentColor } as React.CSSProperties}
-                >
-                  Compare Plans
-                  <ArrowRight style={{ width: 13, height: 13 }} />
-                </Link>
-              </div>
-            );
-          })}
+                    {/* CTA */}
+                    <Link
+                      href={item.href}
+                      className="ins-cta"
+                      style={{ "--card-accent": item.accentColor } as React.CSSProperties}
+                    >
+                      Compare Plans
+                      <ArrowRight style={{ width: 13, height: 13 }} />
+                    </Link>
+                  </div>
+                </SwiperSlide>
+              );
+            })}
+          </Swiper>
         </div>
       </div>
     </section>

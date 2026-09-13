@@ -10,6 +10,7 @@ import {
   ShieldCheck,
   LockKeyhole,
   ChevronDown,
+  Check,
   X,
   CreditCard,
   BriefcaseBusiness,
@@ -99,36 +100,152 @@ function CompactSelect({
   value,
   options,
   icon: Icon,
+  align = "left",
+  fullWidthMenu = false,
+  isOpen,
+  onToggle,
+  onClose,
   onChange,
 }: {
   label: string;
   value: string;
   options: string[];
   icon: LucideIcon;
+  align?: "left" | "right";
+  fullWidthMenu?: boolean;
+  isOpen: boolean;
+  onToggle: () => void;
+  onClose: () => void;
   onChange: (value: string) => void;
 }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    function handleClickOutside(e: MouseEvent | TouchEvent) {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(e.target as Node)
+      ) {
+        onClose();
+      }
+    }
+
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside);
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen, onClose]);
+
+  // Auto-scroll selected item into view when opened
+  useEffect(() => {
+    if (isOpen && listRef.current) {
+      const activeEl = listRef.current.querySelector<HTMLElement>(
+        "[data-selected='true']",
+      );
+      if (activeEl) {
+        activeEl.scrollIntoView({ block: "nearest" });
+      }
+    }
+  }, [isOpen]);
+
   return (
-    <label className="block">
+    <div
+      ref={containerRef}
+      className={`relative block w-full min-w-0 ${isOpen ? "z-30" : "z-10"}`}
+    >
       <span className="text-[11px] font-bold text-[#475569]">{label}</span>
-      <span className="relative mt-1 flex h-10 w-full items-center gap-2 rounded-xl bg-[#f8fafc] hover:bg-[#f1f5f9] px-2.5 transition-all focus-within:bg-white focus-within:ring-2 focus-within:ring-[#5b21b6]/20">
+      <button
+        type="button"
+        onClick={onToggle}
+        aria-haspopup="listbox"
+        aria-expanded={isOpen}
+        className={`relative mt-1 flex h-10 w-full items-center gap-1.5 sm:gap-2 rounded-xl px-2.5 text-left transition-all duration-150 outline-none cursor-pointer ${
+          isOpen
+            ? "bg-white ring-2 ring-[#5b21b6]/25 border border-[#7c3aed]/40 shadow-xs"
+            : "bg-[#f8fafc] hover:bg-[#f1f5f9] border border-transparent"
+        }`}
+      >
         <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-purple-100/70 text-[#5b21b6]">
           <Icon className="h-3.5 w-3.5" />
         </span>
-        <select
-          value={value}
-          onChange={(event) => onChange(event.target.value)}
-          className="min-w-0 flex-1 appearance-none bg-transparent pr-5 text-[12px] font-bold text-[#0f172a] outline-none cursor-pointer"
-          aria-label={label}
-        >
-          {options.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
-        <ChevronDown className="pointer-events-none absolute right-2.5 h-3.5 w-3.5 text-[#94a3b8]" />
-      </span>
-    </label>
+        <span className="min-w-0 flex-1 truncate text-[12px] font-bold text-[#0f172a]">
+          {value}
+        </span>
+        <ChevronDown
+          className={`h-3.5 w-3.5 shrink-0 text-[#94a3b8] transition-transform duration-200 ${
+            isOpen ? "rotate-180 text-[#5b21b6]" : ""
+          }`}
+        />
+      </button>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            ref={listRef}
+            role="listbox"
+            tabIndex={-1}
+            initial={{ opacity: 0, y: -4, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -4, scale: 0.98 }}
+            transition={{ duration: 0.15, ease: [0.16, 1, 0.3, 1] }}
+            className={`absolute top-full mt-1.5 z-50 max-h-52 sm:max-h-56 overflow-y-auto rounded-2xl border border-purple-100/90 bg-white/98 p-1 shadow-[0_14px_36px_rgba(76,29,149,0.18),0_2px_8px_rgba(15,23,42,0.06)] backdrop-blur-md ${
+              fullWidthMenu
+                ? "left-0 right-0 w-full"
+                : align === "right"
+                  ? "right-0 min-w-full w-max max-w-[calc(100vw-2.5rem)] sm:max-w-[240px]"
+                  : "left-0 min-w-full w-max max-w-[calc(100vw-2.5rem)] sm:max-w-[270px]"
+            }`}
+            style={{
+              scrollbarWidth: "thin",
+              scrollbarColor: "#ddd6fe transparent",
+            }}
+          >
+            <div className="grid gap-0.5">
+              {options.map((option) => {
+                const selected = option === value;
+                return (
+                  <button
+                    key={option}
+                    type="button"
+                    role="option"
+                    aria-selected={selected}
+                    data-selected={selected}
+                    onClick={() => {
+                      onChange(option);
+                      onClose();
+                    }}
+                    className={`group flex items-center justify-between gap-2 rounded-xl px-2.5 py-2 text-left text-[12px] transition-all cursor-pointer ${
+                      selected
+                        ? "bg-gradient-to-r from-purple-50 to-purple-100/60 font-bold text-[#5b21b6]"
+                        : "font-semibold text-slate-700 hover:bg-[#f8fafc] hover:text-[#5b21b6]"
+                    }`}
+                  >
+                    <span className="truncate">{option}</span>
+                    {selected ? (
+                      <Check className="h-3.5 w-3.5 shrink-0 text-[#5b21b6]" />
+                    ) : null}
+                  </button>
+                );
+              })}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
 
@@ -205,6 +322,7 @@ export function HeroSection() {
   const [insuranceNeed, setInsuranceNeed] = useState(insuranceNeedOptions[0]);
   const [cardType, setCardType] = useState(cardTypeOptions[0]);
   const [cibilScore, setCibilScore] = useState(720);
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
   // ORIGINAL SUBMISSION LOGIC AND QUERY PARAMETERS (preserved 100%)
   const continueHref = useMemo(() => {
@@ -459,7 +577,10 @@ export function HeroSection() {
                       <button
                         key={label}
                         type="button"
-                        onClick={() => setSelectedProduct(label)}
+                        onClick={() => {
+                          setSelectedProduct(label);
+                          setActiveDropdown(null);
+                        }}
                         className={`flex h-8.5 items-center justify-center gap-1.5 rounded-lg text-[11.5px] font-bold transition-all duration-200 cursor-pointer ${
                           active
                             ? "bg-white text-[#5b21b6] shadow-xs"
@@ -501,12 +622,20 @@ export function HeroSection() {
                       </label>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-2.5">
+                    <div className="grid grid-cols-1 min-[340px]:grid-cols-2 gap-2 sm:gap-2.5 relative z-20">
                       <CompactSelect
                         label="Loan Type"
                         value={purpose}
                         options={loanTypeOptions}
                         icon={UserRound}
+                        align="left"
+                        isOpen={activeDropdown === "loanType"}
+                        onToggle={() =>
+                          setActiveDropdown((prev) =>
+                            prev === "loanType" ? null : "loanType"
+                          )
+                        }
+                        onClose={() => setActiveDropdown(null)}
                         onChange={setPurpose}
                       />
                       <CompactSelect
@@ -514,16 +643,32 @@ export function HeroSection() {
                         value={tenure}
                         options={tenureOptions}
                         icon={CalendarDays}
+                        align="right"
+                        isOpen={activeDropdown === "tenure"}
+                        onToggle={() =>
+                          setActiveDropdown((prev) =>
+                            prev === "tenure" ? null : "tenure"
+                          )
+                        }
+                        onClose={() => setActiveDropdown(null)}
                         onChange={setTenure}
                       />
                     </div>
 
-                    <div className="grid grid-cols-2 gap-2.5">
+                    <div className="grid grid-cols-1 min-[340px]:grid-cols-2 gap-2 sm:gap-2.5 relative z-10">
                       <CompactSelect
                         label="Employment"
                         value={salaryType}
                         options={salaryOptions}
                         icon={BriefcaseBusiness}
+                        align="left"
+                        isOpen={activeDropdown === "salaryType"}
+                        onToggle={() =>
+                          setActiveDropdown((prev) =>
+                            prev === "salaryType" ? null : "salaryType"
+                          )
+                        }
+                        onClose={() => setActiveDropdown(null)}
                         onChange={setSalaryType}
                       />
                       <label className="block">
@@ -547,7 +692,7 @@ export function HeroSection() {
                       </label>
                     </div>
 
-                    <div>
+                    <div className="relative z-0">
                       <label className="block">
                         <div className="flex items-center justify-between text-[11px]">
                           <span className="font-bold text-[#475569]">CIBIL Score</span>
@@ -571,12 +716,20 @@ export function HeroSection() {
                     </div>
                   </>
                 ) : selectedProduct === "Insurance" ? (
-                  <div className="grid gap-2.5">
+                  <div className="grid gap-2.5 relative z-10">
                     <CompactSelect
                       label="Insurance Type"
                       value={insuranceType}
                       options={insuranceTypeOptions}
                       icon={Umbrella}
+                      fullWidthMenu
+                      isOpen={activeDropdown === "insuranceType"}
+                      onToggle={() =>
+                        setActiveDropdown((prev) =>
+                          prev === "insuranceType" ? null : "insuranceType"
+                        )
+                      }
+                      onClose={() => setActiveDropdown(null)}
                       onChange={setInsuranceType}
                     />
                     <CompactSelect
@@ -584,6 +737,14 @@ export function HeroSection() {
                       value={insuranceNeed}
                       options={insuranceNeedOptions}
                       icon={ShieldCheck}
+                      fullWidthMenu
+                      isOpen={activeDropdown === "insuranceNeed"}
+                      onToggle={() =>
+                        setActiveDropdown((prev) =>
+                          prev === "insuranceNeed" ? null : "insuranceNeed"
+                        )
+                      }
+                      onClose={() => setActiveDropdown(null)}
                       onChange={setInsuranceNeed}
                     />
                     <p className="rounded-xl bg-[#f8fafc] p-2.5 text-[11.5px] font-medium text-[#64748b]">
@@ -591,12 +752,20 @@ export function HeroSection() {
                     </p>
                   </div>
                 ) : (
-                  <div className="grid gap-2.5">
+                  <div className="grid gap-2.5 relative z-10">
                     <CompactSelect
                       label="Card Preference"
                       value={cardType}
                       options={cardTypeOptions}
                       icon={CreditCard}
+                      fullWidthMenu
+                      isOpen={activeDropdown === "cardType"}
+                      onToggle={() =>
+                        setActiveDropdown((prev) =>
+                          prev === "cardType" ? null : "cardType"
+                        )
+                      }
+                      onClose={() => setActiveDropdown(null)}
                       onChange={setCardType}
                     />
                     <p className="rounded-xl bg-[#f8fafc] p-2.5 text-[11.5px] font-medium text-[#64748b]">

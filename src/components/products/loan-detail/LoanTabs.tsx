@@ -12,7 +12,6 @@ import {
   Star,
   UserCheck,
 } from "lucide-react";
-import { AuthRedirectLink } from "@/components/auth/AuthRedirectLink";
 import type { LoanSeoTab } from "@/services/loanSeoPages";
 
 function LoanTabIcon({
@@ -133,52 +132,7 @@ export function LoanGuidePanel({
 
   return (
     <section className="bg-slate-50/70 pb-12 md:pb-16 border-b border-slate-200">
-      <div className="mx-auto grid max-w-7xl items-start gap-6 px-4 pt-8 sm:px-6 md:pt-10 lg:grid-cols-[250px_minmax(0,1fr)] lg:px-8">
-        <aside
-          className="hidden rounded-2xl border border-slate-200 bg-white p-3.5 lg:sticky lg:block shadow-xs"
-          style={{ top: "calc(var(--site-header-height, 8.25rem) + 4.5rem)" }}
-        >
-          <div className="px-3 pb-3 pt-1">
-            <p className="text-[10px] font-extrabold uppercase tracking-widest text-[#5b21b6]">
-              Product Guide
-            </p>
-            <h2 className="mt-1 text-[16px] font-extrabold text-slate-900">
-              {productName}
-            </h2>
-          </div>
-          <nav aria-label={`${productName} guide sections`} className="grid gap-1">
-            {tabs.map((tab) => {
-              const selected = tab.key === activeTab;
-              return (
-                <button
-                  key={tab.key}
-                  type="button"
-                  onClick={() => onTabChange(tab.key)}
-                  className={`flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-[12px] font-bold leading-5 transition-colors cursor-pointer ${
-                    selected
-                      ? "bg-purple-50 text-[#5b21b6]"
-                      : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-                  }`}
-                >
-                  <LoanTabIcon tab={tab} className="h-4 w-4 shrink-0" />
-                  <span className="min-w-0 flex-1">{tab.label}</span>
-                  <ArrowRight
-                    className={`h-3 w-3 shrink-0 ${selected ? "opacity-100" : "opacity-0"}`}
-                  />
-                </button>
-              );
-            })}
-          </nav>
-          <AuthRedirectLink
-            href={applyHref}
-            productSlug={productSlug}
-            className="mt-4 flex h-10 items-center justify-center gap-2 rounded-xl bg-[#5b21b6] px-3 text-[12px] font-bold text-white no-underline shadow-xs transition hover:bg-[#4c1d95]"
-          >
-            Apply for {productName}
-            <ArrowRight className="h-3.5 w-3.5" />
-          </AuthRedirectLink>
-        </aside>
-
+      <div className="mx-auto max-w-7xl px-4 pt-8 sm:px-6 md:pt-10 lg:px-8">
         <article className="min-w-0 rounded-2xl border border-slate-200 bg-white p-5 sm:p-7 md:p-8 shadow-xs">
           <div className="flex items-start gap-4 border-b border-slate-100 pb-5">
             <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-purple-100 text-[#5b21b6]">

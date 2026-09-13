@@ -32,7 +32,7 @@ const bankData: Record<string, { name: string; logo: string; min: string; max: s
     { name: "Punjab & Sind Bank", logo: "/assets/banks/Punjab-&-Sind-Bank.png", min: "7.10", max: "10.50", slug: "punjab-sind-bank" },
     { name: "IDBI Bank", logo: "/assets/banks/IDBI-Bank.png", min: "7.10", max: "10.50", slug: "idbi-bank" },
     { name: "IndusInd Bank", logo: "/assets/banks/IndusInd-Bank.png", min: "7.10", max: "10.50", slug: "indusind-bank" },
-    { name: "Bajaj Finserv", logo: "/assets/banks/bajaj.png", min: "7.10", max: "10.50", slug: "bajaj-finserv" },
+    { name: "Bajaj Finserv", logo: "/assets/banks/bajaj-finserv.png", min: "7.10", max: "10.50", slug: "bajaj-finserv" },
     { name: "HDFC Bank", logo: "/assets/banks/HDFC-Bank.png", min: "7.15", max: "11.00", slug: "hdfc-bank" },
     { name: "ICICI Bank", logo: "/assets/banks/ICICI-Bank.png", min: "7.20", max: "11.50", slug: "icici-bank" },
     { name: "SBI", logo: "/assets/banks/State-Bank-of-India.png", min: "7.10", max: "10.75", slug: "sbi" },
@@ -44,7 +44,7 @@ const bankData: Record<string, { name: string; logo: string; min: string; max: s
     { name: "Axis Bank", logo: "/assets/banks/axis-bank.png", min: "10.49", max: "22.00", slug: "axis-bank" },
     { name: "Kotak Bank", logo: "/assets/banks/Kotak-Mahindra-Bank.png", min: "10.99", max: "24.00", slug: "kotak-bank" },
     { name: "IndusInd Bank", logo: "/assets/banks/IndusInd-Bank.png", min: "10.49", max: "26.00", slug: "indusind-bank" },
-    { name: "Bajaj Finserv", logo: "/assets/banks/bajaj.png", min: "11.00", max: "35.00", slug: "bajaj-finserv" },
+    { name: "Bajaj Finserv", logo: "/assets/banks/bajaj-finserv.png", min: "11.00", max: "35.00", slug: "bajaj-finserv" },
     { name: "Federal Bank", logo: "/assets/banks/Federal-Bank.png", min: "11.49", max: "17.99", slug: "federal-bank" },
     { name: "Punjab National Bank", logo: "/assets/banks/Punjab-National-Bank.png", min: "11.75", max: "16.50", slug: "pnb" },
     { name: "IDFC First", logo: "/assets/banks/idfc.png", min: "10.49", max: "23.00", slug: "idfc-first" },
@@ -80,7 +80,7 @@ const bankData: Record<string, { name: string; logo: string; min: string; max: s
     { name: "ICICI Bank", logo: "/assets/banks/ICICI-Bank.png", min: "10.85", max: "19.00", slug: "icici-bank" },
     { name: "Axis Bank", logo: "/assets/banks/axis-bank.png", min: "11.00", max: "20.00", slug: "axis-bank" },
     { name: "Kotak Bank", logo: "/assets/banks/Kotak-Mahindra-Bank.png", min: "14.00", max: "26.00", slug: "kotak-bank" },
-    { name: "Bajaj Finserv", logo: "/assets/banks/bajaj.png", min: "9.75", max: "30.00", slug: "bajaj-finserv" },
+    { name: "Bajaj Finserv", logo: "/assets/banks/bajaj-finserv.png", min: "9.75", max: "30.00", slug: "bajaj-finserv" },
     { name: "IndusInd Bank", logo: "/assets/banks/IndusInd-Bank.png", min: "10.49", max: "22.00", slug: "indusind-bank" },
     { name: "IDFC First", logo: "/assets/banks/idfc.png", min: "10.50", max: "24.00", slug: "idfc-first" },
   ],
@@ -181,47 +181,53 @@ export function LoanRatesShowcase() {
 
         {/* Bank cards grid */}
         {banks.length > 0 ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-3 sm:gap-4 lg:gap-5.5">
             {banks.map((bank) => (
               <Link
                 key={bank.slug}
                 href={`/lenders/${bank.slug}`}
-                className="group flex flex-col items-center rounded-2xl border border-gray-100 bg-white p-4 transition-all duration-200 hover:border-purple-200 hover:shadow-md hover:-translate-y-1"
+                className="group relative flex flex-col justify-between rounded-2xl border border-gray-200/90 bg-white p-3.5 sm:p-5.5 transition-all duration-300 hover:border-[#6424C7]/40 hover:shadow-[0_14px_35px_-10px_rgba(100,36,199,0.18)] hover:-translate-y-1.5"
               >
-                {/* Logo */}
-                <div className="relative h-10 w-full mb-3">
-                  <Image
-                    src={bank.logo}
-                    alt={bank.name}
-                    fill
-                    className="object-contain"
-                    sizes="120px"
-                  />
-                </div>
-
-                {/* Name */}
-                <p className="text-center text-[11.5px] font-medium text-[#6424C7] mb-3 leading-tight group-hover:text-[#5b21b6] transition-colors">
-                  {bank.name}
-                </p>
-
-                {/* Rate row */}
-                <div className="w-full flex justify-between mb-3">
-                  <div className="text-center flex-1">
-                    <p className="text-[9px] text-gray-400 uppercase tracking-wide mb-0.5">Min</p>
-                    <p className="text-[14px] font-semibold text-gray-900">{bank.min}%</p>
+                <div>
+                  {/* Big Bank Logo */}
+                  <div className="relative h-14 sm:h-18 lg:h-20 w-full mb-2.5 sm:mb-3.5 flex items-center justify-center">
+                    <Image
+                      src={bank.logo}
+                      alt={bank.name}
+                      fill
+                      className="object-contain p-1 transition-transform duration-300 group-hover:scale-105"
+                      sizes="(max-width: 640px) 160px, 240px"
+                    />
                   </div>
-                  <div className="w-px bg-gray-100 mx-1" />
-                  <div className="text-center flex-1">
-                    <p className="text-[9px] text-gray-400 uppercase tracking-wide mb-0.5">Max</p>
-                    <p className="text-[14px] font-semibold text-gray-900">{bank.max}%</p>
+
+                  {/* Bank Name */}
+                  <h3 className="text-center text-[12px] sm:text-[13.5px] lg:text-[14px] font-semibold text-gray-800 mb-2.5 sm:mb-3.5 leading-snug line-clamp-1 group-hover:text-[#6424C7] transition-colors">
+                    {bank.name}
+                  </h3>
+
+                  {/* Rate row */}
+                  <div className="w-full rounded-xl bg-gray-50/90 border border-gray-100/90 py-2 px-1.5 sm:py-2.5 sm:px-3 flex items-center justify-around mb-3 sm:mb-4">
+                    <div className="text-center flex-1">
+                      <p className="text-[9px] sm:text-[10px] text-gray-400 font-semibold uppercase tracking-wider mb-0.5">Min</p>
+                      <p className="text-[13.5px] sm:text-[16px] lg:text-[17px] font-bold text-gray-900 leading-none">
+                        {bank.min}<span className="text-[10px] sm:text-[11px] font-semibold text-gray-500">%</span>
+                      </p>
+                    </div>
+                    <div className="h-6 sm:h-7 w-px bg-gray-200" />
+                    <div className="text-center flex-1">
+                      <p className="text-[9px] sm:text-[10px] text-gray-400 font-semibold uppercase tracking-wider mb-0.5">Max</p>
+                      <p className="text-[13.5px] sm:text-[16px] lg:text-[17px] font-bold text-gray-900 leading-none">
+                        {bank.max}<span className="text-[10px] sm:text-[11px] font-semibold text-gray-500">%</span>
+                      </p>
+                    </div>
                   </div>
                 </div>
 
                 {/* Apply button */}
                 <span
-                  className="inline-flex w-full items-center justify-center gap-1 rounded-lg border border-[#6424C7] py-1.5 text-[11px] font-medium text-[#6424C7] transition-all group-hover:bg-[#6424C7] group-hover:text-white"
+                  className="inline-flex w-full items-center justify-center gap-1 rounded-xl border border-[#6424C7] py-2 sm:py-2.5 text-[11.5px] sm:text-[12.5px] font-semibold text-[#6424C7] transition-all duration-200 group-hover:bg-[#6424C7] group-hover:text-white group-hover:shadow-[0_4px_14px_rgba(100,36,199,0.25)]"
                 >
-                  Apply Now <ArrowRight className="h-3 w-3" />
+                  Apply Now <ArrowRight className="h-3 sm:h-3.5 w-3 sm:w-3.5 transition-transform duration-200 group-hover:translate-x-1" />
                 </span>
               </Link>
             ))}

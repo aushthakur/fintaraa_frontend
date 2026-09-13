@@ -13,7 +13,6 @@ import {
 import { createPortal } from "react-dom";
 import { usePathname, useRouter } from "next/navigation";
 import { AnimatePresence, motion, MotionConfig } from "framer-motion";
-import type { LucideIcon } from "lucide-react";
 import {
   X,
   Bell,
@@ -34,35 +33,7 @@ import {
   LogOut,
   PencilLine,
   PhoneCall,
-  Home,
-  Banknote,
-  Building2,
-  Car,
-  Bike,
-  Truck,
-  HeartPulse,
-  Activity,
-  Users,
-  PiggyBank,
-  Calculator,
-  Gauge,
-  Gift,
-  Sun,
-  Briefcase,
-  GraduationCap,
-  Stethoscope,
-  Coins,
-  Shield,
-  Store,
-  Factory,
-  TrendingUp,
-  CheckCircle2,
-  HelpCircle,
-  Newspaper,
-  KeyRound,
-  Headphones,
-  Plane,
-  Fuel,
+  type LucideIcon,
 } from "lucide-react";
 import {
   clearAuthSession,
@@ -99,9 +70,6 @@ type NavLink = {
   description?: string;
   badge?: string;
   badgeColor?: "purple" | "emerald" | "amber" | "blue" | "rose";
-  icon?: LucideIcon;
-  iconBg?: string;
-  iconColor?: string;
 };
 
 type NavSection = {
@@ -116,297 +84,179 @@ type NavPromo = {
   description: string;
   ctaText: string;
   ctaHref: string;
-  icon: LucideIcon;
-  features: string[];
+  features?: string[];
 };
 
 type NavItem = NavLink & {
   sections?: NavSection[];
   highlightBadge?: string;
   promo?: NavPromo;
+  assetSection?: NavSection;
 };
 
-const PRODUCT_META: Record<
+const PRODUCT_INFO: Record<
   string,
   {
-    icon: LucideIcon;
     badge?: string;
     badgeColor?: "purple" | "emerald" | "amber" | "blue" | "rose";
     description: string;
-    iconBg?: string;
-    iconColor?: string;
   }
 > = {
   "personal-loan": {
-    icon: Banknote,
     badge: "INSTANT",
     badgeColor: "purple",
-    description: "Up to ₹40L • In 5 mins",
-    iconBg: "bg-purple-100",
-    iconColor: "text-[#4c1d95]",
+    description: "Up to ₹40L • Instant in 5 mins",
   },
   "home-loan": {
-    icon: Home,
     badge: "FROM 7.10%",
     badgeColor: "purple",
     description: "Up to ₹5 Cr • Lowest EMI",
-    iconBg: "bg-indigo-100",
-    iconColor: "text-indigo-700",
   },
   "business-loan": {
-    icon: Briefcase,
     badge: "NO COLLATERAL",
     badgeColor: "amber",
-    description: "Growth Capital • Up to ₹1 Cr",
-    iconBg: "bg-amber-100",
-    iconColor: "text-amber-700",
+    description: "Working capital up to ₹1 Cr",
   },
   "doctor-loan": {
-    icon: Stethoscope,
     badge: "PRIORITY",
     badgeColor: "rose",
-    description: "Tailored credit for doctors",
-    iconBg: "bg-rose-100",
-    iconColor: "text-rose-700",
+    description: "Tailored credit for clinics & doctors",
   },
   "ca-loan": {
-    icon: GraduationCap,
     badge: "EXCLUSIVE",
     badgeColor: "purple",
-    description: "Pre-approved credit for CAs",
-    iconBg: "bg-purple-100",
-    iconColor: "text-[#5b21b6]",
+    description: "Pre-approved limits for CAs",
   },
   "car-loan": {
-    icon: Car,
     badge: "UP TO 100%",
     badgeColor: "emerald",
-    description: "New & pre-owned vehicles",
-    iconBg: "bg-emerald-100",
-    iconColor: "text-emerald-700",
+    description: "New vehicles with max funding",
   },
   "loan-against-property": {
-    icon: Building2,
     badge: "HIGH VALUE",
     badgeColor: "blue",
-    description: "Unlock property value",
-    iconBg: "bg-blue-100",
-    iconColor: "text-blue-700",
+    description: "Unlock property equity value",
   },
   "balance-transfer-top-up-loan": {
-    icon: TrendingUp,
     badge: "SAVE EMI",
     badgeColor: "emerald",
-    description: "Lower interest & top up",
-    iconBg: "bg-emerald-100",
-    iconColor: "text-emerald-700",
+    description: "Lower interest rate & top-up cash",
   },
   "top-up-loan": {
-    icon: Coins,
-    description: "Quick extra funds on loan",
-    iconBg: "bg-purple-100",
-    iconColor: "text-[#4c1d95]",
+    description: "Quick extra funds on existing loan",
   },
   "education-loan": {
-    icon: GraduationCap,
     badge: "LOW RATE",
     badgeColor: "blue",
-    description: "Studies in India & abroad",
-    iconBg: "bg-blue-100",
-    iconColor: "text-blue-700",
+    description: "Studies in India & overseas",
   },
   "solar-loan": {
-    icon: Sun,
     badge: "SUBSIDY",
     badgeColor: "amber",
-    description: "Rooftop solar finance",
-    iconBg: "bg-amber-100",
-    iconColor: "text-amber-700",
+    description: "Rooftop solar financing & subsidy",
   },
   "agriculture-loan": {
-    icon: Coins,
-    description: "Kisan credit & agri-capital",
-    iconBg: "bg-emerald-100",
-    iconColor: "text-emerald-700",
+    description: "Kisan credit & agri infrastructure",
   },
   "used-car-loan": {
-    icon: Car,
     description: "Pre-owned car financing",
-    iconBg: "bg-indigo-100",
-    iconColor: "text-indigo-700",
   },
   "vehicle-loan": {
-    icon: Truck,
-    description: "Commercial & heavy vehicles",
-    iconBg: "bg-slate-100",
-    iconColor: "text-slate-700",
+    description: "Commercial fleets & heavy trucks",
   },
   "loan-against-car": {
-    icon: Car,
-    description: "Quick liquidity against car",
-    iconBg: "bg-purple-100",
-    iconColor: "text-[#4c1d95]",
+    description: "Quick liquidity against registered car",
   },
   "loan-against-car-value": {
-    icon: Car,
-    description: "High LTV loan against car",
-    iconBg: "bg-purple-100",
-    iconColor: "text-[#4c1d95]",
+    description: "High LTV loan against car value",
   },
-  // Insurance
   "health-insurance": {
-    icon: HeartPulse,
     badge: "CASHLESS",
     badgeColor: "emerald",
-    description: "10,000+ cashless hospitals",
-    iconBg: "bg-emerald-100",
-    iconColor: "text-emerald-700",
+    description: "10,000+ cashless network hospitals",
   },
   "life-insurance": {
-    icon: ShieldCheck,
     badge: "UP TO ₹2 CR",
     badgeColor: "purple",
-    description: "Secure your family's future",
-    iconBg: "bg-purple-100",
-    iconColor: "text-[#4c1d95]",
+    description: "Guaranteed future for your family",
   },
   "term-insurance": {
-    icon: ShieldCheck,
     badge: "HIGH COVER",
     badgeColor: "blue",
-    description: "Pure protection at low cost",
-    iconBg: "bg-blue-100",
-    iconColor: "text-blue-700",
+    description: "Pure protection at lowest cost",
   },
   "group-insurance": {
-    icon: Users,
-    description: "Corporate team & employee cover",
-    iconBg: "bg-indigo-100",
-    iconColor: "text-indigo-700",
+    description: "Corporate team & employee health",
   },
   "personal-accident-insurance": {
-    icon: Activity,
-    description: "Disability & accidental payout",
-    iconBg: "bg-rose-100",
-    iconColor: "text-rose-700",
+    description: "Accident payout & disability support",
   },
   "critical-illness-insurance": {
-    icon: Activity,
     badge: "LUMP SUM",
     badgeColor: "rose",
-    description: "32+ major critical illnesses",
-    iconBg: "bg-rose-100",
-    iconColor: "text-rose-700",
+    description: "32+ major critical illnesses covered",
   },
   "retirement-plan": {
-    icon: PiggyBank,
-    description: "Guaranteed lifelong pension",
-    iconBg: "bg-amber-100",
-    iconColor: "text-amber-700",
+    description: "Lifelong guaranteed monthly pension",
   },
   "car-insurance": {
-    icon: Car,
     badge: "ZERO DEP",
     badgeColor: "emerald",
-    description: "Instant policy in 2 mins",
-    iconBg: "bg-emerald-100",
-    iconColor: "text-emerald-700",
+    description: "Instant policy with zero depreciation",
   },
   "bike-insurance": {
-    icon: Bike,
     badge: "INSTANT",
     badgeColor: "blue",
-    description: "Two wheeler comprehensive",
-    iconBg: "bg-blue-100",
-    iconColor: "text-blue-700",
+    description: "Two-wheeler comprehensive protection",
   },
   "vehicle-insurance": {
-    icon: Truck,
-    description: "Commercial fleet & transport",
-    iconBg: "bg-slate-100",
-    iconColor: "text-slate-700",
+    description: "Commercial fleet & transport cover",
   },
   "travel-insurance": {
-    icon: Plane,
     badge: "GLOBAL",
     badgeColor: "purple",
-    description: "Overseas trip & medical",
-    iconBg: "bg-purple-100",
-    iconColor: "text-[#4c1d95]",
+    description: "Overseas trip & medical emergency",
   },
   "home-insurance": {
-    icon: Home,
-    description: "Protection against fire & theft",
-    iconBg: "bg-indigo-100",
-    iconColor: "text-indigo-700",
+    description: "Protection against fire, theft & storm",
   },
   "property-insurance": {
-    icon: Building2,
-    description: "Commercial premise & asset",
-    iconBg: "bg-blue-100",
-    iconColor: "text-blue-700",
+    description: "Commercial premise & asset coverage",
   },
   "shop-insurance": {
-    icon: Store,
     badge: "ALL-IN-ONE",
     badgeColor: "amber",
-    description: "Stock, burglary & shopkeeper",
-    iconBg: "bg-amber-100",
-    iconColor: "text-amber-700",
+    description: "All-in-one shopkeeper & burglary cover",
   },
   "stock-insurance": {
-    icon: Factory,
-    description: "Inventory & raw materials",
-    iconBg: "bg-slate-100",
-    iconColor: "text-slate-700",
+    description: "Inventory, raw materials & goods",
   },
   "machinery-insurance": {
-    icon: Factory,
-    description: "Plant breakdown & repairs",
-    iconBg: "bg-slate-100",
-    iconColor: "text-slate-700",
+    description: "Plant breakdown & repair protection",
   },
 };
 
-const getProductMeta = (slug: string, name: string) => {
-  if (PRODUCT_META[slug]) return PRODUCT_META[slug];
+const getProductInfo = (slug: string, name: string) => {
+  if (PRODUCT_INFO[slug]) return PRODUCT_INFO[slug];
   const lower = name.toLowerCase();
   if (lower.includes("loan")) {
-    return {
-      icon: Banknote,
-      description: "Fast disbursal & easy EMI",
-      iconBg: "bg-purple-100",
-      iconColor: "text-[#4c1d95]",
-    };
+    return { description: "Fast disbursal & flexible EMI options" };
   }
   if (lower.includes("insurance")) {
-    return {
-      icon: Shield,
-      description: "Complete financial shield",
-      iconBg: "bg-emerald-100",
-      iconColor: "text-emerald-700",
-    };
+    return { description: "Comprehensive cover & claims assistance" };
   }
-  return {
-    icon: Coins,
-    description: "Tailored financial solution",
-    iconBg: "bg-indigo-100",
-    iconColor: "text-indigo-700",
-  };
+  return { description: "Tailored financial solution" };
 };
 
 const productLinks = (products: ProductCatalogItem[]): NavLink[] =>
   products.map((product) => {
-    const meta = getProductMeta(product.slug, product.name);
+    const info = getProductInfo(product.slug, product.name);
     return {
       label: product.name,
       href: productHref(product.slug),
-      description: meta.description,
-      badge: meta.badge,
-      badgeColor: meta.badgeColor,
-      icon: meta.icon,
-      iconBg: meta.iconBg,
-      iconColor: meta.iconColor,
+      description: info.description,
+      badge: info.badge,
+      badgeColor: info.badgeColor,
     };
   });
 
@@ -421,32 +271,191 @@ const groupedSection = (
   links: productLinks(products.filter((product) => product.group === group)),
 });
 
-const buildLoanSections = (products: ProductCatalogItem[]): NavSection[] => [
-  groupedSection(
-    products,
-    "personal",
-    "Personal & Purpose",
-    "Flexible finance for personal milestones.",
-  ),
-  groupedSection(
-    products,
-    "secured",
-    "Home & Property",
-    "Asset-backed loans with lowest rates.",
-  ),
-  groupedSection(
-    products,
-    "business",
-    "Business & MSME",
-    "Capital for operations, assets & growth.",
-  ),
-  groupedSection(
-    products,
-    "vehicle",
-    "Vehicle & Wheels",
-    "New, used & commercial auto finance.",
-  ),
+const buildLoanSections = (): NavSection[] => [
+  {
+    title: "Personal & Education",
+    subtitle: "Instant credit & education loans",
+    links: [
+      {
+        label: "Personal Loan",
+        href: "/products/personal-loan",
+        description: "Up to ₹40L · Quick approval",
+        badge: "POPULAR",
+        badgeColor: "purple",
+      },
+      {
+        label: "Instant Personal Loan",
+        href: "/products/instant-loan",
+        description: "Fast digital application & disbursal",
+      },
+      {
+        label: "Education Loan",
+        href: "/products/education-loan",
+        description: "Study in India or overseas",
+      },
+      {
+        label: "Renovation Loan",
+        href: "/products/renovation-loan",
+        description: "Finance your home improvements",
+      },
+      {
+        label: "Wedding Loan",
+        href: "/products/personal-loan",
+        description: "Flexible finance for wedding expenses",
+      },
+      {
+        label: "Medical Loan",
+        href: "/products/personal-loan",
+        description: "Finance planned medical expenses",
+      },
+    ],
+  },
+  {
+    title: "Home & Property",
+    subtitle: "Housing & asset-backed loans",
+    links: [
+      {
+        label: "Home Loan",
+        href: "/products/home-loan",
+        description: "Competitive rates · Flexible tenure",
+        badge: "FROM 7.10%",
+        badgeColor: "purple",
+      },
+      {
+        label: "Balance Transfer & Top-Up",
+        href: "/products/balance-transfer-top-up-loan",
+        description: "Reduce EMI or unlock additional funds",
+        badge: "SAVE EMI",
+        badgeColor: "emerald",
+      },
+      {
+        label: "Loan Against Property",
+        href: "/products/loan-against-property",
+        description: "Unlock liquidity from your property",
+        badge: "HIGH VALUE",
+        badgeColor: "blue",
+      },
+      {
+        label: "Construction Loan",
+        href: "/products/construction-loan",
+        description: "Finance residential construction",
+      },
+      {
+        label: "Plot / Land Loan",
+        href: "/products/home-loan",
+        description: "Finance eligible plot purchases",
+      },
+      {
+        label: "Commercial Property Loan",
+        href: "/products/commercial-purchases-loan",
+        description: "Finance commercial property needs",
+      },
+    ],
+  },
+  {
+    title: "Business & Professional",
+    subtitle: "Growth capital & commercial credit",
+    links: [
+      {
+        label: "Business Loan",
+        href: "/products/business-loan",
+        description: "Growth capital for your business",
+        badge: "NO COLLATERAL",
+        badgeColor: "amber",
+      },
+      {
+        label: "MSME Loan",
+        href: "/products/business-loan",
+        description: "Funding solutions for growing enterprises",
+      },
+      {
+        label: "Working Capital Loan",
+        href: "/products/working-capital-loan",
+        description: "Manage day-to-day cash flow",
+      },
+      {
+        label: "Machinery Loan",
+        href: "/products/machinery-loan",
+        description: "Finance equipment & machinery",
+      },
+      {
+        label: "OD / Overdraft Loan",
+        href: "/products/od-loan",
+        description: "Flexible access to business funds",
+      },
+      {
+        label: "DOD Loan",
+        href: "/products/dod-loan",
+        description: "Flexible business credit facility",
+      },
+      {
+        label: "Agriculture Loan",
+        href: "/products/agriculture-loan",
+        description: "Finance farming & agri infrastructure",
+      },
+    ],
+  },
+  {
+    title: "Vehicle Loans",
+    subtitle: "Auto loans & vehicle finance",
+    links: [
+      {
+        label: "Car Loan",
+        href: "/products/car-loan",
+        description: "Finance your new car",
+        badge: "UP TO 100%",
+        badgeColor: "emerald",
+      },
+      {
+        label: "Used Car Loan",
+        href: "/products/used-car-loan",
+        description: "Finance a pre-owned car",
+      },
+      {
+        label: "Two-Wheeler Loan",
+        href: "/products/two-wheeler-loan",
+        description: "Quick two-wheeler financing",
+      },
+      {
+        label: "Commercial Vehicle Loan",
+        href: "/products/vehicle-loan",
+        description: "Finance commercial vehicles",
+      },
+      {
+        label: "Loan Against Car",
+        href: "/products/loan-against-car",
+        description: "Unlock liquidity against your car",
+      },
+    ],
+  },
 ];
+
+const buildLoanAssetSection = (): NavSection => ({
+  title: "Loans Against Assets",
+  subtitle: "Liquidity backed by financial & physical assets",
+  links: [
+    {
+      label: "Gold Loan",
+      href: "/products/gold-loan",
+      description: "Instant cash against gold",
+    },
+    {
+      label: "Loan Against Securities",
+      href: "/products/loan-against-security",
+      description: "Shares, bonds & debentures",
+    },
+    {
+      label: "Loan Against FD",
+      href: "/products/loan-against-security",
+      description: "Liquidity against fixed deposits",
+    },
+    {
+      label: "Loan Against Mutual Funds",
+      href: "/products/loan-against-security",
+      description: "Digital loan against MF units",
+    },
+  ],
+});
 
 const buildInsuranceSections = (
   products: ProductCatalogItem[],
@@ -455,456 +464,424 @@ const buildInsuranceSections = (
     products,
     "life-health",
     "Life & Health",
-    "Protection for health, life & family.",
+    "Protection for health, life & family",
   ),
   groupedSection(
     products,
     "motor",
     "Motor & Travel",
-    "Cover for vehicles, trips & journeys.",
+    "Cover for vehicles, trips & journeys",
   ),
   groupedSection(
     products,
     "property",
     "Property & Business",
-    "Fire, stock, shop & machinery cover.",
+    "Commercial, shop, stock & property cover",
   ),
 ];
 
 const createNavItems = (
   loans: ProductCatalogItem[],
   insurance: ProductCatalogItem[],
-) =>
-  [
-    {
-      label: "Loans",
-      href: "/products?category=Loans",
-      promo: {
-        title: "Loans Marketplace",
-        subtitle: "India's Smart Lending Hub",
-        description:
-          "Compare 50+ regulated banks and NBFCs with zero impact on credit score. Get fast-tracked approval.",
-        ctaText: "Explore All Loans",
-        ctaHref: "/products?category=Loans",
-        icon: Banknote,
-        features: [
-          "Zero impact on CIBIL score",
-          "Lowest rates starting from 7.10%",
-          "Instant pre-approved offers",
-        ],
-      },
-      sections: buildLoanSections(loans),
-    },
-    {
-      label: "Credit Cards",
-      href: "/credit-cards",
-      promo: {
-        title: "Credit Cards Hub",
-        subtitle: "50+ Cards from Top Banks",
-        description:
-          "Find best cards for airport lounge access, accelerated rewards, dining perks, and lifetime zero fee.",
-        ctaText: "Compare All Cards",
-        ctaHref: "/credit-cards",
-        icon: CreditCard,
-        features: [
-          "Lifetime free card options",
-          "Free airport lounge access",
-          "Up to 5% direct cashback",
-        ],
-      },
-      sections: [
-        {
-          title: "Popular Categories",
-          subtitle: "Cards matching your spending patterns.",
-          links: [
-            {
-              label: "Compare All Cards",
-              href: "/credit-cards",
-              description: "Browse 50+ cards by perks & fees",
-              badge: "POPULAR",
-              badgeColor: "purple",
-              icon: CreditCard,
-              iconBg: "bg-purple-100",
-              iconColor: "text-[#4c1d95]",
-            },
-            {
-              label: "Best Rewards Cards",
-              href: "/credit-cards",
-              description: "Accelerated reward points on spends",
-              badge: "HIGH REWARD",
-              badgeColor: "emerald",
-              icon: Gift,
-              iconBg: "bg-emerald-100",
-              iconColor: "text-emerald-700",
-            },
-            {
-              label: "Cashback Cards",
-              href: "/credit-cards",
-              description: "Direct cash value back on bills",
-              badge: "HIGH SAVINGS",
-              badgeColor: "amber",
-              icon: Coins,
-              iconBg: "bg-amber-100",
-              iconColor: "text-amber-700",
-            },
-            {
-              label: "Travel & Lounge Cards",
-              href: "/credit-cards",
-              description: "Miles & complimentary lounge passes",
-              badge: "LOUNGE PASS",
-              badgeColor: "blue",
-              icon: Plane,
-              iconBg: "bg-blue-100",
-              iconColor: "text-blue-700",
-            },
-            {
-              label: "Fuel Surcharge Cards",
-              href: "/credit-cards",
-              description: "Save on petrol & diesel expenses",
-              icon: Fuel,
-              iconBg: "bg-rose-100",
-              iconColor: "text-rose-700",
-            },
-          ],
-        },
-        {
-          title: "Bank Credit Cards",
-          subtitle: "Official cards from premier lenders.",
-          links: [
-            {
-              label: "HDFC Credit Cards",
-              href: "/banks/hdfc-bank/credit-card",
-              description: "Millennia, Regalia & Diners cards",
-              badge: "TOP RATED",
-              badgeColor: "purple",
-              icon: Landmark,
-              iconBg: "bg-purple-100",
-              iconColor: "text-[#4c1d95]",
-            },
-            {
-              label: "SBI Credit Cards",
-              href: "/banks/sbi/credit-card",
-              description: "Cashback, SimplyCLICK & PRIME",
-              badge: "HIGH APPROVAL",
-              badgeColor: "emerald",
-              icon: Landmark,
-              iconBg: "bg-emerald-100",
-              iconColor: "text-emerald-700",
-            },
-            {
-              label: "ICICI Credit Cards",
-              href: "/banks/icici-bank/credit-card",
-              description: "Amazon Pay, Coral & Rubyx cards",
-              icon: Landmark,
-              iconBg: "bg-blue-100",
-              iconColor: "text-blue-700",
-            },
-          ],
-        },
-        {
-          title: "Card Tools & Check",
-          subtitle: "Instant checks before applying.",
-          links: [
-            {
-              label: "Check Card Eligibility",
-              href: buildLoginRedirectHref({
-                redirectTo: "/credit-cards",
-                product: "credit-card",
-              }),
-              description: "Pre-qualified bank offers in 2 mins",
-              badge: "INSTANT",
-              badgeColor: "purple",
-              icon: CheckCircle2,
-              iconBg: "bg-purple-100",
-              iconColor: "text-[#4c1d95]",
-            },
-            {
-              label: "Free Credit Score",
-              href: "/cibil-score",
-              description: "Bureau check with zero score impact",
-              badge: "FREE",
-              badgeColor: "emerald",
-              icon: Gauge,
-              iconBg: "bg-emerald-100",
-              iconColor: "text-emerald-700",
-            },
-          ],
-        },
+): NavItem[] => [
+  {
+    label: "Loans",
+    href: "/products?category=Loans",
+    promo: {
+      subtitle: "INDIA'S SMART LENDING HUB",
+      title: "Loans Marketplace",
+      description:
+        "Compare offers from 50+ regulated banks & NBFCs with one application.",
+      ctaText: "Explore All Loans",
+      ctaHref: "/products?category=Loans",
+      features: [
+        "Zero impact on CIBIL score",
+        "Competitive interest rates",
+        "Quick eligibility check",
       ],
     },
-    {
-      label: "Insurance",
-      href: "/products?category=Insurance",
-      promo: {
-        title: "Insurance Shield",
-        subtitle: "Complete Family Protection",
-        description:
-          "Compare quotes from India's leading insurers with 100% cashless claims, zero paperwork, and expert guidance.",
-        ctaText: "Explore All Insurance",
-        ctaHref: "/products?category=Insurance",
-        icon: ShieldCheck,
-        features: [
-          "10,000+ Cashless network hospitals",
-          "Dedicated claims assistance desk",
-          "Save up to ₹75,000 under 80D",
-        ],
-      },
-      sections: buildInsuranceSections(insurance),
-    },
-    {
-      label: "Credit Score",
-      href: "/cibil-score",
-      highlightBadge: "Instant",
-    },
-    {
-      label: "Financial Tools",
-      href: "#calculators",
-      promo: {
-        title: "Financial Tools",
-        subtitle: "Calculate & Plan Smarter",
-        description:
-          "Interactive calculators, loan affordability estimators, and expert compliance services in one place.",
-        ctaText: "Try All Calculators",
-        ctaHref: "#calculators",
-        icon: Calculator,
-        features: [
-          "Zero cost interactive tools",
-          "Precise tenure & EMI forecasts",
-          "Bank-ready project reports",
-        ],
-      },
-      sections: [
-        {
-          title: "Smart Calculators",
-          subtitle: "Estimate monthly budget & payments.",
-          links: [
-            {
-              label: "EMI Calculator",
-              href: "#calculators",
-              description: "Calculate monthly installments for any loan",
-              badge: "POPULAR",
-              badgeColor: "purple",
-              icon: Calculator,
-              iconBg: "bg-purple-100",
-              iconColor: "text-[#4c1d95]",
-            },
-            {
-              label: "Home Loan Calculator",
-              href: "#calculators",
-              description: "Plan tenure, interest & amortization",
-              icon: Home,
-              iconBg: "bg-indigo-100",
-              iconColor: "text-indigo-700",
-            },
-            {
-              label: "Personal Loan Calculator",
-              href: "#calculators",
-              description: "Estimate monthly budget for personal credit",
-              icon: Banknote,
-              iconBg: "bg-blue-100",
-              iconColor: "text-blue-700",
-            },
-            {
-              label: "Eligibility Calculator",
-              href: "#calculators",
-              description: "Check maximum loan amount you qualify for",
-              badge: "SMART",
-              badgeColor: "emerald",
-              icon: CheckCircle2,
-              iconBg: "bg-emerald-100",
-              iconColor: "text-emerald-700",
-            },
-          ],
-        },
-        {
-          title: "Compliance & Advisory",
-          subtitle: "Tax filing & bank project reports.",
-          links: [
-            {
-              label: "Check CIBIL Score",
-              href: "/cibil-score",
-              description: "Free authorized credit bureau report",
-              badge: "FREE",
-              badgeColor: "emerald",
-              icon: Gauge,
-              iconBg: "bg-emerald-100",
-              iconColor: "text-emerald-700",
-            },
-            {
-              label: "ITR Filing",
-              href: "/itr-filing",
-              description: "Assisted income tax return filing by CAs",
-              badge: "ASSISTED",
-              badgeColor: "purple",
-              icon: FileText,
-              iconBg: "bg-purple-100",
-              iconColor: "text-[#4c1d95]",
-            },
-            {
-              label: "Project Report",
-              href: "/project-report",
-              description: "Bank-ready loan project & CMA reports",
-              badge: "BANK READY",
-              badgeColor: "amber",
-              icon: BriefcaseBusiness,
-              iconBg: "bg-amber-100",
-              iconColor: "text-amber-700",
-            },
-          ],
-        },
+    sections: buildLoanSections(),
+    assetSection: buildLoanAssetSection(),
+  },
+  {
+    label: "Credit Cards",
+    href: "/credit-cards",
+    promo: {
+      title: "Credit Cards Hub",
+      subtitle: "50+ Cards from Top Banks",
+      description:
+        "Find best cards for airport lounge access, accelerated rewards, dining perks, and lifetime zero fee.",
+      ctaText: "Compare All Cards",
+      ctaHref: "/credit-cards",
+      features: [
+        "Lifetime free card options",
+        "Free airport lounge access",
+        "Up to 5% direct cashback",
       ],
     },
-    {
-      label: "Resources",
-      href: "/blog",
-      promo: {
-        title: "Knowledge Hub",
-        subtitle: "Smarter Borrowing Guides",
-        description:
-          "Read expert financial blogs, track your ongoing application, and find answers to common borrowing questions.",
-        ctaText: "Read Financial Blogs",
-        ctaHref: "/blog",
-        icon: Newspaper,
-        features: [
-          "Weekly credit & tax tips",
-          "Step-by-step borrowing guides",
-          "Real-time application tracking",
+    sections: [
+      {
+        title: "Popular Benefits",
+        subtitle: "Cards matching your spending patterns",
+        links: [
+          {
+            label: "Compare All Cards",
+            href: "/credit-cards",
+            description: "Browse 50+ cards by perks & fees",
+            badge: "POPULAR",
+            badgeColor: "purple",
+          },
+          {
+            label: "Best Rewards Cards",
+            href: "/credit-cards",
+            description: "Accelerated reward points on shopping",
+            badge: "HIGH REWARD",
+            badgeColor: "emerald",
+          },
+          {
+            label: "Cashback Cards",
+            href: "/credit-cards",
+            description: "Direct cash back on monthly bills",
+            badge: "HIGH SAVINGS",
+            badgeColor: "amber",
+          },
+          {
+            label: "Travel & Lounge Cards",
+            href: "/credit-cards",
+            description: "Domestic & international lounge passes",
+            badge: "LOUNGE PASS",
+            badgeColor: "blue",
+          },
+          {
+            label: "Fuel Surcharge Cards",
+            href: "/credit-cards",
+            description: "Save on petrol & diesel spends",
+          },
         ],
       },
-      sections: [
-        {
-          title: "Insights & Guides",
-          subtitle: "Knowledge to make smarter financial choices.",
-          links: [
-            {
-              label: "Financial Blogs & Insights",
-              href: "/blog",
-              description: "Guides on loans, scores & tax savings",
-              badge: "NEW",
-              badgeColor: "purple",
-              icon: Newspaper,
-              iconBg: "bg-purple-100",
-              iconColor: "text-[#4c1d95]",
-            },
-            {
-              label: "Media & Press",
-              href: "/press-release",
-              description: "Latest announcements & news coverage",
-              icon: Newspaper,
-              iconBg: "bg-blue-100",
-              iconColor: "text-blue-700",
-            },
-            {
-              label: "Track Application",
-              href: "/application-status",
-              description: "Check live status of your submitted request",
-              badge: "LIVE STATUS",
-              badgeColor: "emerald",
-              icon: Search,
-              iconBg: "bg-emerald-100",
-              iconColor: "text-emerald-700",
-            },
-            {
-              label: "Frequently Asked Questions",
-              href: "/faqs",
-              description: "Answers to common borrowing queries",
-              icon: HelpCircle,
-              iconBg: "bg-slate-100",
-              iconColor: "text-slate-700",
-            },
-          ],
-        },
-      ],
-    },
-    {
-      label: "Partner Zone",
-      href: "/franchise",
-      promo: {
-        title: "Partner Ecosystem",
-        subtitle: "Earn with Fintaraa",
-        description:
-          "Join 10,000+ active partners. Earn highest market commissions, access dedicated desk support, and scale faster.",
-        ctaText: "Partner Login",
-        ctaHref: "/partner/login",
-        icon: Briefcase,
-        features: [
-          "High payout commissions",
-          "Real-time CRM & lead tracking",
-          "Dedicated Relationship Manager",
+      {
+        title: "Top Bank Cards",
+        subtitle: "Official cards from premier lenders",
+        links: [
+          {
+            label: "HDFC Credit Cards",
+            href: "/banks/hdfc-bank/credit-card",
+            description: "Millennia, Regalia & Diners cards",
+            badge: "TOP RATED",
+            badgeColor: "purple",
+          },
+          {
+            label: "SBI Credit Cards",
+            href: "/banks/sbi/credit-card",
+            description: "Cashback, SimplyCLICK & PRIME",
+            badge: "HIGH APPROVAL",
+            badgeColor: "emerald",
+          },
+          {
+            label: "ICICI Credit Cards",
+            href: "/banks/icici-bank/credit-card",
+            description: "Amazon Pay, Coral & Rubyx cards",
+          },
         ],
       },
-      sections: [
-        {
-          title: "Partner Programs",
-          subtitle: "Opportunities to partner and grow earnings.",
-          links: [
-            {
-              label: "Channel Partner Login",
-              href: "/partner/login",
-              description: "Login to manage partner profile & leads",
-              badge: "PORTAL",
-              badgeColor: "purple",
-              icon: KeyRound,
-              iconBg: "bg-purple-100",
-              iconColor: "text-[#4c1d95]",
-            },
-            {
-              label: "Become Partner",
-              href: "/franchise",
-              description: "Start a partner or franchise journey",
-              badge: "HIGH GROWTH",
-              badgeColor: "emerald",
-              icon: Store,
-              iconBg: "bg-emerald-100",
-              iconColor: "text-emerald-700",
-            },
-            {
-              label: "Become DSA",
-              href: "/become-dsa",
-              description: "Earn attractive commissions on loan files",
-              badge: "HIGH COMMISSIONS",
-              badgeColor: "amber",
-              icon: Briefcase,
-              iconBg: "bg-amber-100",
-              iconColor: "text-amber-700",
-            },
-            {
-              label: "Refer & Earn",
-              href: "/refer-and-earn",
-              description: "Refer users and track cash rewards",
-              badge: "REWARDS",
-              badgeColor: "rose",
-              icon: Gift,
-              iconBg: "bg-rose-100",
-              iconColor: "text-rose-700",
-            },
-          ],
-        },
-        {
-          title: "Company & Support",
-          subtitle: "Connect with Fintaraa team.",
-          links: [
-            {
-              label: "Careers",
-              href: "/careers",
-              description: "Explore open roles and join our team",
-              icon: Users,
-              iconBg: "bg-indigo-100",
-              iconColor: "text-indigo-700",
-            },
-            {
-              label: "Contact Us",
-              href: "/contact-us",
-              description: "Get in touch with our support team",
-              icon: Headphones,
-              iconBg: "bg-blue-100",
-              iconColor: "text-blue-700",
-            },
-          ],
-        },
+      {
+        title: "Card Tools & Check",
+        subtitle: "Instant checks before applying",
+        links: [
+          {
+            label: "Check Card Eligibility",
+            href: buildLoginRedirectHref({
+              redirectTo: "/credit-cards",
+              product: "credit-card",
+            }),
+            description: "Pre-qualified bank offers in 2 mins",
+            badge: "INSTANT",
+            badgeColor: "purple",
+          },
+          {
+            label: "Free Credit Score",
+            href: "/cibil-score",
+            description: "Bureau check with zero score impact",
+            badge: "FREE",
+            badgeColor: "emerald",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    label: "Insurance",
+    href: "/products?category=Insurance",
+    promo: {
+      title: "Insurance Shield",
+      subtitle: "Complete Family Protection",
+      description:
+        "Compare quotes from India's leading insurers with 100% cashless claims, zero paperwork, and expert guidance.",
+      ctaText: "Explore All Insurance",
+      ctaHref: "/products?category=Insurance",
+      features: [
+        "10,000+ Cashless network hospitals",
+        "Dedicated claims assistance desk",
+        "Save up to ₹75,000 under 80D",
       ],
     },
-  ] satisfies NavItem[];
+    sections: buildInsuranceSections(insurance),
+  },
+  {
+    label: "Services",
+    href: "/itr-filing",
+    promo: {
+      title: "Business & Tax Desk",
+      subtitle: "CA-Assisted Compliance",
+      description:
+        "Fast-track company registration, ITR filing, GST compliance, and bank-ready CMA project reports.",
+      ctaText: "Explore Services",
+      ctaHref: "/itr-filing",
+      features: [
+        "Qualified CA & legal team",
+        "100% digital & paperless process",
+        "Fast turnaround & status tracking",
+      ],
+    },
+    sections: [
+      {
+        title: "Tax & Compliance",
+        subtitle: "Assisted returns & corporate filings",
+        links: [
+          {
+            label: "ITR Filing",
+            href: "/itr-filing",
+            description: "Assisted income tax return filing by CAs",
+            badge: "ASSISTED",
+            badgeColor: "purple",
+          },
+          {
+            label: "Tax Compliance",
+            href: "/tax-compliance",
+            description: "Corporate tax planning, TDS & audit",
+          },
+          {
+            label: "ROC Filing",
+            href: "/roc-filing",
+            description: "Company filings with Ministry of Corporate Affairs",
+          },
+          {
+            label: "Annual Compliance",
+            href: "/annual-compliance",
+            description: "Year-round compliance package for businesses",
+            badge: "POPULAR",
+            badgeColor: "emerald",
+          },
+        ],
+      },
+      {
+        title: "Business Registrations",
+        subtitle: "Incorporate & register entities",
+        links: [
+          {
+            label: "GST Registration",
+            href: "/gst-registration",
+            description: "New GSTIN registration & modifications",
+            badge: "FAST TRACK",
+            badgeColor: "blue",
+          },
+          {
+            label: "Company Registration",
+            href: "/company-registration",
+            description: "Pvt Ltd, LLP, OPC & Partnership setup",
+            badge: "POPULAR",
+            badgeColor: "purple",
+          },
+          {
+            label: "MSME Registration",
+            href: "/msme-registration",
+            description: "Udyam certificate for govt subsidies & loans",
+            badge: "SUBSIDY",
+            badgeColor: "amber",
+          },
+        ],
+      },
+      {
+        title: "Financial Advisory",
+        subtitle: "Bank reports & project planning",
+        links: [
+          {
+            label: "Project Report",
+            href: "/project-report",
+            description: "Bank-ready loan project & CMA reports",
+            badge: "BANK READY",
+            badgeColor: "amber",
+          },
+          {
+            label: "Check CIBIL Score",
+            href: "/cibil-score",
+            description: "Free authorized credit bureau report",
+            badge: "FREE",
+            badgeColor: "emerald",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    label: "Credit Score",
+    href: "/cibil-score",
+    highlightBadge: "Free",
+  },
+  {
+    label: "Tools",
+    href: "/tools",
+    promo: {
+      title: "Financial Toolkit",
+      subtitle: "Calculators & Tracking",
+      description:
+        "Interactive calculators, loan affordability estimators, live tracking, and expert financial guides in one place.",
+      ctaText: "Try All Tools",
+      ctaHref: "/tools",
+      features: [
+        "Zero-cost interactive calculators",
+        "Precise tenure & EMI forecasts",
+        "Live application tracker",
+      ],
+    },
+    sections: [
+      {
+        title: "Smart Calculators",
+        subtitle: "Estimate monthly budget & payments",
+        links: [
+          {
+            label: "EMI Calculator",
+            href: "/tools#calculators",
+            description: "Calculate monthly installments for any loan",
+            badge: "POPULAR",
+            badgeColor: "purple",
+          },
+          {
+            label: "Home Loan Calculator",
+            href: "/tools#calculators",
+            description: "Plan tenure, interest & amortization",
+          },
+          {
+            label: "Personal Loan Calculator",
+            href: "/tools#calculators",
+            description: "Estimate monthly budget for personal credit",
+          },
+          {
+            label: "Eligibility Calculator",
+            href: "/tools#calculators",
+            description: "Check maximum loan amount you qualify for",
+            badge: "SMART",
+            badgeColor: "emerald",
+          },
+        ],
+      },
+      {
+        title: "Tracking & Knowledge",
+        subtitle: "Status tracking & smart guides",
+        links: [
+          {
+            label: "Track Application",
+            href: "/application-status",
+            description: "Check live status of your submitted request",
+            badge: "LIVE STATUS",
+            badgeColor: "emerald",
+          },
+          {
+            label: "Financial Blogs & Insights",
+            href: "/blog",
+            description: "Guides on loans, credit scores & tax savings",
+            badge: "NEW",
+            badgeColor: "purple",
+          },
+          {
+            label: "Frequently Asked Questions",
+            href: "/faqs",
+            description: "Answers to common borrowing queries",
+          },
+          {
+            label: "Media & Press",
+            href: "/press-release",
+            description: "Latest announcements & news coverage",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    label: "Partner",
+    href: "/franchise",
+    promo: {
+      title: "Partner Ecosystem",
+      subtitle: "Earn with Fintaraa",
+      description:
+        "Join 10,000+ active partners. Earn highest market commissions, access dedicated desk support, and scale faster.",
+      ctaText: "Partner Login",
+      ctaHref: "/partner/login",
+      features: [
+        "High payout commissions",
+        "Real-time CRM & lead tracking",
+        "Dedicated Relationship Manager",
+      ],
+    },
+    sections: [
+      {
+        title: "Partner Programs",
+        subtitle: "Grow your business & earnings",
+        links: [
+          {
+            label: "Channel Partner Login",
+            href: "/partner/login",
+            description: "Login to manage partner profile & leads",
+            badge: "PORTAL",
+            badgeColor: "purple",
+          },
+          {
+            label: "Become Partner / Franchise",
+            href: "/franchise",
+            description: "Start a branded partner or franchise journey",
+            badge: "HIGH GROWTH",
+            badgeColor: "emerald",
+          },
+          {
+            label: "Become DSA",
+            href: "/become-dsa",
+            description: "Earn attractive commissions on loan files",
+            badge: "HIGH PAYOUT",
+            badgeColor: "amber",
+          },
+          {
+            label: "Refer & Earn",
+            href: "/refer-and-earn",
+            description: "Refer users and track cash rewards",
+            badge: "REWARDS",
+            badgeColor: "rose",
+          },
+        ],
+      },
+      {
+        title: "Company & Support",
+        subtitle: "Connect with Fintaraa team",
+        links: [
+          {
+            label: "About Us",
+            href: "/about-us",
+            description: "Our story, leadership & partner network",
+          },
+          {
+            label: "Careers",
+            href: "/careers",
+            description: "Explore open roles and join our team",
+          },
+          {
+            label: "Contact Us",
+            href: "/contact-us",
+            description: "Get in touch with our support team",
+          },
+        ],
+      },
+    ],
+  },
+];
 
 const defaultNavItems = createNavItems(
   loanProductCatalog,
@@ -1241,9 +1218,13 @@ export default function Navbar() {
   );
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileOpenLabel, setMobileOpenLabel] = useState<string | null>(null);
+  const [mobileSubOpenTitle, setMobileSubOpenTitle] = useState<string | null>(
+    null,
+  );
   const closeMobileNavigation = () => {
     setMenuOpen(false);
     setMobileOpenLabel(null);
+    setMobileSubOpenTitle(null);
   };
   const [partnerProfile, setPartnerProfile] =
     useState<NavbarAuthProfile | null>(null);
@@ -1469,15 +1450,15 @@ export default function Navbar() {
         >
           <Image
             priority
-            width={280}
-            height={85}
+            width={877}
+            height={271}
             alt="Fintaraa"
-            className="h-auto w-28 min-[360px]:w-32 sm:w-34 xl:w-36"
-            src="/assets/logo/logo.png"
+            className="h-auto w-[132px] min-[360px]:w-[146px] sm:w-[162px] xl:w-[178px]"
+            src="/assets/logo/fintaraa-brand-logo.png"
           />
         </Link>
 
-        <div className="hidden min-w-0 flex-1 items-center justify-center gap-1 xl:flex min-[1300px]:gap-2 min-[1420px]:gap-3 min-[1540px]:gap-4.5 px-1">
+        <div className="hidden min-w-0 flex-1 items-center justify-center gap-1 xl:flex min-[1340px]:gap-2 min-[1440px]:gap-3 min-[1560px]:gap-4 px-2">
           {navItems.map((item, index) => (
             <DesktopNavItem
               key={`${item.label}:${pathname}`}
@@ -1488,12 +1469,12 @@ export default function Navbar() {
           ))}
         </div>
 
-        <div className="hidden shrink-0 items-center gap-1.5 xl:flex min-[1380px]:gap-2 2xl:gap-2.5">
+        <div className="hidden shrink-0 items-center gap-2 xl:flex min-[1380px]:gap-2.5 2xl:gap-3">
           <div
             className={`transition-all duration-300 ease-in-out ${
               hideNavbarSearch
                 ? "max-w-0 opacity-0 pointer-events-none -translate-x-2 overflow-hidden"
-                : "max-w-[280px] opacity-100 translate-x-0"
+                : "max-w-[200px] min-[1380px]:max-w-[240px] 2xl:max-w-[280px] opacity-100 translate-x-0"
             }`}
           >
             <NavbarSearch />
@@ -1617,11 +1598,12 @@ export default function Navbar() {
                       type="button"
                       aria-expanded={sectionOpen}
                       aria-controls={`mobile-nav-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
-                      onClick={() =>
+                      onClick={() => {
                         setMobileOpenLabel((current) =>
                           current === item.label ? null : item.label,
-                        )
-                      }
+                        );
+                        setMobileSubOpenTitle(null);
+                      }}
                       className={`flex min-h-11 w-full items-center justify-between gap-3 px-3 py-2.5 text-left text-[13px] font-bold transition min-[380px]:px-3.5 ${
                         sectionOpen
                           ? "bg-[#eef7ff] text-[#5b21b6]"
@@ -1653,60 +1635,84 @@ export default function Navbar() {
                       <Link
                         href={item.href}
                         onClick={closeMobileNavigation}
-                        className="flex min-h-10 w-full items-center justify-between rounded-lg bg-[linear-gradient(135deg,#3b0764,#6d28d9)] px-3 text-[12px] font-bold text-white no-underline shadow-[0_8px_20px_rgba(25,85,133,0.16)]"
+                        className="mb-2.5 flex min-h-10 w-full items-center justify-between rounded-lg bg-[linear-gradient(135deg,#3b0764,#6d28d9)] px-3 text-[12px] font-bold text-white no-underline shadow-[0_8px_20px_rgba(25,85,133,0.16)]"
                       >
                         Explore all {item.label}
                         <ArrowRight className="h-3.5 w-3.5" />
                       </Link>
-                      <div className="mt-2.5 grid gap-2 min-[680px]:grid-cols-2">
-                        {item.sections.map((section) => (
-                          <div
-                            key={section.title}
-                            className="rounded-xl border border-[#e0eaf2] bg-white p-2.5"
-                          >
-                            <p className="px-1 text-[10px] font-extrabold uppercase tracking-[0.11em] text-[#3b0764]">
-                              {section.title}
-                            </p>
-                            <div className="mt-1.5 grid gap-0.5 min-[380px]:grid-cols-2 min-[680px]:grid-cols-1">
-                              {section.links.map((link) => {
-                                const Icon = link.icon || Banknote;
-                                return (
-                                  <Link
-                                    key={`${item.label}-${link.href}-${link.label}`}
-                                    href={link.href}
-                                    onClick={closeMobileNavigation}
-                                    className="flex min-h-10 min-w-0 items-center gap-2 rounded-lg p-1.5 text-slate-800 no-underline transition active:bg-purple-50"
-                                  >
-                                    <span
-                                      className={`flex h-7.5 w-7.5 shrink-0 items-center justify-center rounded-lg ${
-                                        link.iconBg || "bg-purple-100"
-                                      } ${link.iconColor || "text-[#4c1d95]"}`}
+                      <div className="grid gap-2">
+                        {[
+                          ...item.sections,
+                          ...(item.assetSection ? [item.assetSection] : []),
+                        ].map((section) => {
+                          const isSubOpen =
+                            mobileSubOpenTitle === section.title;
+                          return (
+                            <div
+                              key={section.title}
+                              className="overflow-hidden rounded-xl border border-[#e0eaf2] bg-white transition-shadow duration-150"
+                            >
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  setMobileSubOpenTitle(
+                                    isSubOpen ? null : section.title,
+                                  )
+                                }
+                                aria-expanded={isSubOpen}
+                                className="flex min-h-10 w-full items-center justify-between px-3 py-2.5 text-left transition hover:bg-slate-50"
+                              >
+                                <div>
+                                  <p className="text-[11px] font-extrabold uppercase tracking-wider text-[#3b0764]">
+                                    {section.title}
+                                  </p>
+                                  {section.subtitle ? (
+                                    <p className="text-[9.5px] text-slate-400">
+                                      {section.subtitle}
+                                    </p>
+                                  ) : null}
+                                </div>
+                                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#edf4fa] text-[#526b80]">
+                                  <ChevronDown
+                                    className={`h-3.5 w-3.5 transition-transform duration-200 ${
+                                      isSubOpen
+                                        ? "rotate-180 text-[#5b21b6]"
+                                        : ""
+                                    }`}
+                                  />
+                                </span>
+                              </button>
+                              {isSubOpen ? (
+                                <div className="border-t border-slate-100 bg-[#fbfcfe] p-2 grid gap-1 min-[420px]:grid-cols-2">
+                                  {section.links.map((link) => (
+                                    <Link
+                                      key={`${section.title}-${link.href}-${link.label}`}
+                                      href={link.href}
+                                      onClick={closeMobileNavigation}
+                                      className="flex flex-col justify-center rounded-lg border border-slate-100/90 bg-white p-2 text-slate-800 no-underline transition active:bg-purple-50 hover:bg-purple-50/50"
                                     >
-                                      <Icon className="h-3.5 w-3.5" />
-                                    </span>
-                                    <span className="min-w-0 flex-1">
-                                      <span className="flex items-center gap-1">
-                                        <span className="truncate text-[11.5px] font-bold text-slate-900">
+                                      <div className="flex items-start justify-between gap-1.5 min-w-0">
+                                        <span className="truncate text-[12px] font-bold text-slate-900">
                                           {link.label}
                                         </span>
                                         {link.badge ? (
-                                          <span className="shrink-0 rounded bg-purple-100 px-1 py-0.2 text-[7.5px] font-extrabold uppercase text-[#4c1d95]">
+                                          <span className="shrink-0 whitespace-nowrap rounded bg-purple-100 px-1.5 py-0.5 text-[7.5px] font-extrabold uppercase text-[#4c1d95]">
                                             {link.badge}
                                           </span>
                                         ) : null}
-                                      </span>
+                                      </div>
                                       {link.description ? (
-                                        <span className="mt-0.2 line-clamp-1 text-[9.5px] font-medium text-slate-500">
+                                        <span className="mt-0.5 line-clamp-1 text-[9.5px] font-medium text-slate-500">
                                           {link.description}
                                         </span>
                                       ) : null}
-                                    </span>
-                                  </Link>
-                                );
-                              })}
+                                    </Link>
+                                  ))}
+                                </div>
+                              ) : null}
                             </div>
-                          </div>
-                        ))}
+                          );
+                        })}
                       </div>
                     </div>
                   ) : null}
@@ -2157,7 +2163,6 @@ function DropdownProductCard({
   link: NavLink;
   onNavigate: () => void;
 }) {
-  const Icon = link.icon || Banknote;
   const badgeColorClass =
     link.badgeColor === "emerald"
       ? "bg-emerald-50 text-emerald-700 border-emerald-200"
@@ -2173,35 +2178,25 @@ function DropdownProductCard({
     <Link
       href={link.href}
       onClick={onNavigate}
-      className="group/item relative flex items-center gap-2.5 rounded-xl border border-transparent p-2 text-slate-800 no-underline transition-all duration-150 hover:border-purple-200/80 hover:bg-purple-50/70 hover:shadow-2xs"
+      className="group/item relative flex flex-col justify-center rounded-lg px-2.5 py-1.5 no-underline transition-all duration-150 hover:bg-purple-50/70"
     >
-      <span
-        className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl transition-transform duration-200 group-hover/item:scale-105 ${
-          link.iconBg || "bg-purple-100"
-        } ${link.iconColor || "text-[#4c1d95]"}`}
-      >
-        <Icon className="h-4.5 w-4.5" />
-      </span>
-      <span className="min-w-0 flex-1">
-        <span className="flex items-center gap-1.5">
-          <span className="block truncate text-[12.5px] font-bold leading-tight text-slate-900 group-hover/item:text-[#4c1d95]">
-            {link.label}
-          </span>
-          {link.badge ? (
-            <span
-              className={`shrink-0 rounded-md border px-1.5 py-0.2 text-[8px] font-extrabold uppercase tracking-wider ${badgeColorClass}`}
-            >
-              {link.badge}
-            </span>
-          ) : null}
+      <div className="flex items-start justify-between gap-2 min-w-0">
+        <span className="min-w-0 flex-1 truncate text-[12px] font-semibold text-slate-800 group-hover/item:text-[#4c1d95]">
+          {link.label}
         </span>
-        {link.description ? (
-          <span className="mt-0.5 block truncate text-[10.5px] font-medium leading-tight text-slate-500 group-hover/item:text-slate-600">
-            {link.description}
+        {link.badge ? (
+          <span
+            className={`shrink-0 whitespace-nowrap rounded-full px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wide border leading-none ${badgeColorClass}`}
+          >
+            {link.badge}
           </span>
         ) : null}
-      </span>
-      <ArrowRight className="h-3.5 w-3.5 shrink-0 text-[#4c1d95] opacity-0 -translate-x-1 transition-all duration-150 group-hover/item:translate-x-0 group-hover/item:opacity-100" />
+      </div>
+      {link.description ? (
+        <span className="mt-0.5 block truncate text-[9.5px] font-normal text-slate-500 group-hover/item:text-slate-600">
+          {link.description}
+        </span>
+      ) : null}
     </Link>
   );
 }
@@ -2261,14 +2256,15 @@ function DesktopNavItem({
       pathname.startsWith(`${hrefPath(item.href)}/`) ||
       item.sections?.some((section) =>
         section.links.some((link) => pathname === hrefPath(link.href)),
-      )
+      ) ||
+      item.assetSection?.links.some((link) => pathname === hrefPath(link.href))
     );
   })();
 
   if (item.sections?.length) {
     return (
       <div
-        className="relative"
+        className="relative shrink-0"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onFocusCapture={() => setOpen(true)}
@@ -2294,15 +2290,15 @@ function DesktopNavItem({
           aria-haspopup="menu"
           aria-expanded={open}
           onClick={closeDropdown}
-          className={`flex items-center gap-1 whitespace-nowrap px-1 py-1.5 text-[12px] font-semibold no-underline transition min-[1300px]:text-[12.5px] min-[1420px]:text-[13.5px] 2xl:text-[14px] ${
+          className={`flex items-center gap-1 whitespace-nowrap px-2 py-1.5 text-[12.5px] font-semibold no-underline transition min-[1340px]:text-[13px] min-[1460px]:text-[13.5px] 2xl:text-[14px] ${
             active
-              ? "text-[#4c1d95]"
-              : "text-slate-800 hover:text-[#4c1d95]"
+              ? "text-[#4c1d95] font-bold"
+              : "text-slate-700 hover:text-[#4c1d95]"
           }`}
         >
           <span>{item.label}</span>
           <ChevronDown
-            className={`h-3 w-3 text-slate-400 transition-transform duration-200 min-[1380px]:h-3.5 min-[1380px]:w-3.5 ${
+            className={`h-3 w-3 text-slate-400 transition-transform duration-200 ${
               open ? "rotate-180 text-[#4c1d95]" : ""
             }`}
           />
@@ -2322,15 +2318,15 @@ function DesktopNavItem({
   return (
     <Link
       href={item.href}
-      className={`flex items-center gap-1 whitespace-nowrap px-1 py-1.5 text-[12px] font-semibold no-underline transition min-[1300px]:text-[12.5px] min-[1420px]:text-[13.5px] 2xl:text-[14px] ${
+      className={`flex items-center gap-1 whitespace-nowrap px-2 py-1.5 text-[12.5px] font-semibold no-underline transition min-[1340px]:text-[13px] min-[1460px]:text-[13.5px] 2xl:text-[14px] ${
         active
-          ? "text-[#4c1d95]"
-          : "text-slate-800 hover:text-[#4c1d95]"
+          ? "text-[#4c1d95] font-bold"
+          : "text-slate-700 hover:text-[#4c1d95]"
       }`}
     >
       <span>{item.label}</span>
       {item.highlightBadge ? (
-        <span className="rounded-full bg-purple-100 px-1.5 py-0.2 text-[8px] font-extrabold uppercase tracking-wide text-[#4c1d95] ring-1 ring-purple-200">
+        <span className="rounded-full bg-emerald-50 border border-emerald-200 px-1.5 py-0.2 text-[8px] font-extrabold uppercase tracking-wide text-emerald-700">
           {item.highlightBadge}
         </span>
       ) : null}
@@ -2354,43 +2350,20 @@ function MegaDropdown({
   onNavigate: () => void;
 }) {
   const sections = item.sections || [];
-  const totalLinks = sections.reduce(
-    (count, section) => count + section.links.length,
-    0,
-  );
-  const compact = sections.length <= 1 && totalLinks <= 4;
-  if (compact) {
-    return (
-      <CompactDropdown
-        align={align}
-        item={item}
-        open={open}
-        onMouseEnter={onMouseEnter}
-        onMouseLeave={onMouseLeave}
-        onNavigate={onNavigate}
-      />
-    );
-  }
 
   const dropdownMaxWidthClass =
     sections.length >= 4
-      ? "max-w-[80rem]"
+      ? "max-w-[74rem]"
       : sections.length === 3
-        ? "max-w-[66rem]"
-        : sections.length === 2
-          ? "max-w-[54rem]"
-          : "max-w-[42rem]";
+        ? "max-w-[62rem]"
+        : "max-w-[48rem]";
 
-  const columnCount =
+  const gridColsClass =
     sections.length >= 4
-      ? "xl:grid-cols-[250px_repeat(4,minmax(0,1fr))]"
+      ? "xl:grid-cols-[180px_repeat(4,minmax(0,1fr))]"
       : sections.length === 3
-        ? "xl:grid-cols-[250px_repeat(3,minmax(0,1fr))]"
-        : sections.length === 2
-          ? "xl:grid-cols-[250px_repeat(2,minmax(0,1fr))]"
-          : "xl:grid-cols-[250px_1fr]";
-
-  const PromoIcon = item.promo?.icon || Sparkles;
+        ? "xl:grid-cols-[180px_repeat(3,minmax(0,1fr))]"
+        : "xl:grid-cols-[180px_repeat(2,minmax(0,1fr))]";
 
   return (
     <div
@@ -2399,42 +2372,39 @@ function MegaDropdown({
       aria-hidden={!open}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      className={`fixed left-1/2 top-[var(--site-header-height,5.5rem)] z-50 w-[calc(100vw-2rem)] -translate-x-1/2 transition-all duration-200 before:absolute before:-top-3.5 before:left-0 before:right-0 before:h-4 before:content-[''] ${dropdownMaxWidthClass} ${
+      className={`fixed left-1/2 top-[var(--site-header-height,4rem)] z-50 w-[min(1180px,calc(100vw-3rem))] -translate-x-1/2 transition-all duration-200 before:absolute before:-top-3.5 before:left-0 before:right-0 before:h-4 before:content-[''] ${dropdownMaxWidthClass} ${
         open
           ? "pointer-events-auto translate-y-0 opacity-100"
           : "pointer-events-none -translate-y-2 opacity-0"
       }`}
     >
-      <div className="overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-[0_25px_60px_-15px_rgba(76,29,149,0.22),0_0_1px_1px_rgba(0,0,0,0.04)]">
-        <div className={`grid min-w-0 ${columnCount}`}>
+      <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_25px_60px_-15px_rgba(76,29,149,0.2),0_0_1px_1px_rgba(0,0,0,0.03)]">
+        <div className={`grid min-w-0 ${gridColsClass}`}>
           {/* Left Brand / Promo Banner */}
-          <div className="relative flex flex-col justify-between overflow-hidden bg-gradient-to-br from-[#2e1065] via-[#3b0764] to-[#4c1d95] p-5 text-white">
-            <div className="pointer-events-none absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-purple-500/15 blur-2xl" />
-            <div className="pointer-events-none absolute -left-10 -top-10 h-32 w-32 rounded-full bg-white/10 blur-xl" />
+          <div className="relative flex flex-col justify-between overflow-hidden bg-gradient-to-br from-[#2e1065] via-[#3b0764] to-[#4c1d95] p-4 text-white">
+            <div className="pointer-events-none absolute -bottom-10 -right-10 h-36 w-36 rounded-full bg-purple-500/15 blur-2xl" />
+            <div className="pointer-events-none absolute -left-10 -top-10 h-28 w-28 rounded-full bg-white/10 blur-xl" />
 
             <div className="relative z-10">
-              <div className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-white/20 bg-white/15 text-[#c4b5fd] shadow-inner backdrop-blur-sm">
-                <PromoIcon className="h-5 w-5" />
-              </div>
-              <p className="mt-4 text-[11px] font-extrabold uppercase tracking-widest text-[#c4b5fd]">
+              <p className="text-[9px] font-extrabold uppercase tracking-widest text-[#c4b5fd]">
                 {item.promo?.subtitle || "Fintaraa Services"}
               </p>
-              <h3 className="mt-1 text-[19px] font-extrabold leading-tight text-white">
+              <h3 className="mt-1 text-[16px] font-extrabold leading-snug text-white">
                 {item.promo?.title || item.label}
               </h3>
-              <p className="mt-2 text-[11.5px] font-normal leading-relaxed text-purple-200/90">
+              <p className="mt-2 text-[10.5px] font-normal leading-relaxed text-purple-200/90">
                 {item.promo?.description ||
-                  "Compare rates, check pre-approved eligibility, and apply with dedicated assisted support."}
+                  "Compare verified rates, check eligibility in minutes, and apply with assisted desk guidance."}
               </p>
 
               {item.promo?.features?.length ? (
-                <div className="mt-4 space-y-1.5 border-t border-white/15 pt-3">
+                <div className="mt-3.5 space-y-1.5 border-t border-white/15 pt-3">
                   {item.promo.features.map((feature) => (
                     <div
                       key={feature}
-                      className="flex items-center gap-1.5 text-[11px] font-medium text-purple-100"
+                      className="flex items-center gap-1.5 text-[10px] font-medium text-purple-100"
                     >
-                      <ShieldCheck className="h-3.5 w-3.5 shrink-0 text-[#a78bfa]" />
+                      <span className="text-[#a78bfa] font-bold">✓</span>
                       <span>{feature}</span>
                     </div>
                   ))}
@@ -2442,11 +2412,11 @@ function MegaDropdown({
               ) : null}
             </div>
 
-            <div className="relative z-10 mt-5 pt-2">
+            <div className="relative z-10 mt-4 pt-2">
               <Link
                 href={item.promo?.ctaHref || item.href}
                 onClick={onNavigate}
-                className="group/cta inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-4 py-2 text-[12px] font-bold text-[#3b0764] no-underline shadow-sm transition-all hover:bg-purple-50 hover:shadow"
+                className="group/cta inline-flex w-full items-center justify-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[11px] font-bold text-[#3b0764] no-underline shadow-xs transition-all hover:bg-purple-50 hover:shadow"
               >
                 <span>{item.promo?.ctaText || `Explore ${item.label}`}</span>
                 <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover/cta:translate-x-0.5" />
@@ -2459,19 +2429,19 @@ function MegaDropdown({
             <div
               key={section.title}
               data-nav-section={section.title}
-              className="flex min-w-0 flex-col border-l border-slate-100 p-4"
+              className="flex min-w-0 flex-col border-l border-slate-100 p-3"
             >
-              <div className="border-b border-purple-50 pb-2">
-                <p className="text-[11px] font-extrabold uppercase tracking-wider text-[#4c1d95]">
+              <div className="border-b border-slate-100 pb-2 mb-1.5 min-w-0">
+                <p className="truncate text-[11px] font-extrabold uppercase tracking-wider text-[#4c1d95]">
                   {section.title}
                 </p>
                 {section.subtitle ? (
-                  <p className="mt-0.5 line-clamp-1 text-[10.5px] font-medium text-slate-500">
+                  <p className="mt-0.5 truncate text-[9.5px] font-normal text-slate-400">
                     {section.subtitle}
                   </p>
                 ) : null}
               </div>
-              <div className="mt-2.5 grid gap-1">
+              <div className="grid gap-0.5">
                 {section.links.map((link) => (
                   <DropdownProductCard
                     key={`${section.title}-${link.href}-${link.label}`}
@@ -2484,9 +2454,39 @@ function MegaDropdown({
           ))}
         </div>
 
+        {/* Separate Loans Against Assets row */}
+        {item.assetSection ? (
+          <div className="border-t border-slate-100 bg-slate-50/70 px-4 py-2.5">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+              <div className="flex items-center gap-1.5 shrink-0 pr-3 border-r border-slate-200">
+                <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#4c1d95]">
+                  {item.assetSection.title}
+                </span>
+              </div>
+              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                {item.assetSection.links.map((asset) => (
+                  <Link
+                    key={asset.label}
+                    href={asset.href}
+                    onClick={onNavigate}
+                    className="group inline-flex items-center gap-1.5 rounded-lg border border-slate-200/90 bg-white px-2.5 py-1 text-[11px] font-semibold text-slate-700 no-underline shadow-xs transition-all hover:border-purple-300 hover:bg-purple-50/80 hover:text-[#4c1d95]"
+                  >
+                    <span>{asset.label}</span>
+                    {asset.badge ? (
+                      <span className="rounded-full bg-purple-100 px-1.5 py-0.2 text-[8px] font-bold text-[#4c1d95]">
+                        {asset.badge}
+                      </span>
+                    ) : null}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+        ) : null}
+
         {/* Bottom Helper Strip */}
-        <div className="flex items-center justify-between border-t border-purple-100/80 bg-gradient-to-r from-purple-50/70 via-white to-purple-50/70 px-5 py-2.5">
-          <div className="flex items-center gap-2 text-[11.5px] font-medium text-slate-700">
+        <div className="flex items-center justify-between border-t border-purple-100/80 bg-gradient-to-r from-purple-50/50 via-white to-purple-50/50 px-4 py-2">
+          <div className="flex items-center gap-1.5 text-[11px] font-medium text-slate-600">
             <PhoneCall className="h-3.5 w-3.5 text-[#4c1d95]" />
             <span>
               Need personalized assistance? Talk to an expert:{" "}
@@ -2510,61 +2510,6 @@ function MegaDropdown({
             Check CIBIL Score Free
             <ArrowRight className="h-3 w-3" />
           </Link>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function CompactDropdown({
-  item,
-  open,
-  onMouseEnter,
-  onMouseLeave,
-  onNavigate,
-}: {
-  align: "left" | "right";
-  item: NavItem;
-  open: boolean;
-  onMouseEnter?: () => void;
-  onMouseLeave?: () => void;
-  onNavigate: () => void;
-}) {
-  const section = item.sections?.[0];
-  if (!section) return null;
-
-  return (
-    <div
-      data-nav-dropdown={item.label}
-      data-state={open ? "open" : "closed"}
-      aria-hidden={!open}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
-      className={`fixed left-1/2 top-[var(--site-header-height,5.5rem)] z-50 w-[calc(100vw-2rem)] max-w-sm -translate-x-1/2 transition-all duration-200 before:absolute before:-top-3.5 before:left-0 before:right-0 before:h-4 before:content-[''] ${
-        open
-          ? "pointer-events-auto translate-y-0 opacity-100"
-          : "pointer-events-none -translate-y-2 opacity-0"
-      }`}
-    >
-      <div className="overflow-hidden rounded-2xl border border-slate-200/90 bg-white p-3 shadow-[0_25px_60px_-15px_rgba(76,29,149,0.22)]">
-        <div className="border-b border-purple-50 px-2 pb-2">
-          <p className="text-[11px] font-extrabold uppercase tracking-wider text-[#4c1d95]">
-            {section.title}
-          </p>
-          {section.subtitle ? (
-            <p className="mt-0.5 text-[10.5px] font-medium text-slate-500">
-              {section.subtitle}
-            </p>
-          ) : null}
-        </div>
-        <div className="mt-2 grid gap-1">
-          {section.links.map((link) => (
-            <DropdownProductCard
-              key={`${section.title}-${link.href}-${link.label}`}
-              link={link}
-              onNavigate={onNavigate}
-            />
-          ))}
         </div>
       </div>
     </div>

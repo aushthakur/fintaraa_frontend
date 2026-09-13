@@ -56,8 +56,8 @@ export function BankPartnersShowcase() {
       <style>{`
         @keyframes marquee-left { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         @keyframes marquee-right { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
-        .bank-marquee-left { animation: marquee-left 30s linear infinite; will-change: transform; }
-        .bank-marquee-right { animation: marquee-right 36s linear infinite; will-change: transform; }
+        .bank-marquee-left { animation: marquee-left 50s linear infinite; will-change: transform; }
+        .bank-marquee-right { animation: marquee-right 55s linear infinite; will-change: transform; }
         .bank-rows-wrap:hover .bank-marquee-left,
         .bank-rows-wrap:hover .bank-marquee-right { animation-play-state: paused; }
         .bank-pill { transition: all 0.25s cubic-bezier(0.4,0,0.2,1); }
