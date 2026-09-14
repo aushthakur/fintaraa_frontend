@@ -13,6 +13,7 @@ import {
   CircleHelp,
   BookOpen,
   Building2,
+  Sparkles,
 } from "lucide-react";
 import type { LoanSeoTab } from "@/services/loanSeoPages";
 
@@ -24,6 +25,7 @@ export interface NavSectionItem {
 }
 
 export const PERSONAL_LOAN_NAV_SECTIONS: NavSectionItem[] = [
+  { id: "ai-advisor", label: "AI Advisor", shortLabel: "AI Chat", icon: Sparkles },
   { id: "life-goals", label: "Overview", shortLabel: "Overview", icon: BookOpenCheck },
   { id: "features", label: "Features", shortLabel: "Features", icon: BadgeCheck },
   { id: "steps-to-apply", label: "Steps to Apply", shortLabel: "Process", icon: ListChecks },

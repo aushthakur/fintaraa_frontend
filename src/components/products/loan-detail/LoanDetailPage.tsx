@@ -16,6 +16,7 @@ import { LoanDocumentsRequired } from "./LoanDocumentsRequired";
 import { LoanEmiCalculatorSection } from "./LoanEmiCalculatorSection";
 import { LoanFeesChargesSection } from "./LoanFeesChargesSection";
 import { LoanSeoKnowledgeSection } from "./LoanSeoKnowledgeSection";
+import { LoanAiAdvisorChat } from "./LoanAiAdvisorChat";
 import { ProductLocationDirectory } from "../ProductLocationDirectory";
 import { ProductRelatedBlogs } from "../ProductRelatedBlogs";
 import { AppDownloadBanner } from "@/components/common/layout/Footer";
@@ -60,7 +61,13 @@ export function LoanDetailPage({
       {/* 1. Hero Section with Carousel and Live Amount/Company Estimator */}
       <LoanHeroSection page={page} />
 
-      {/* 2. Key Trust Metrics Bar */}
+      {/* 2. ChatGPT-Style Loan AI Advisor Interface (Directly below Hero) */}
+      <LoanAiAdvisorChat
+        productName={page.loanType}
+        applyHref={applyHref}
+      />
+
+      {/* 3. Key Trust Metrics Bar */}
       <LoanStatsBar />
 
       {/* 3. Sticky Subnav Tab Bar with Smooth Scroll Anchors */}
