@@ -317,7 +317,7 @@ export function LoanAiAdvisorChat({
       aria-label="Fintaraa Loan AI Assistant"
     >
       {/* Header with Title & Intro */}
-      <div className="max-w-2xl sm:max-w-3xl mb-6">
+      <div className="max-w-2xl sm:max-w-3xl mb-4 sm:mb-6">
         <div>
           <div className="flex items-center gap-2.5">
             <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900">
@@ -334,38 +334,14 @@ export function LoanAiAdvisorChat({
         </div>
       </div>
 
-      {/* Suggested Prompt Chips */}
-      <div className="mb-8 pr-2 sm:pr-28 md:pr-48">
-        <div className="flex items-center gap-1.5 text-xs font-bold text-slate-400 mb-2 select-none">
-          <HelpCircle className="h-3.5 w-3.5 text-[#6424C7]" />
-          <span>Popular Questions:</span>
-        </div>
-        <div className="flex flex-wrap items-center gap-2">
-          {INITIAL_SUGGESTION_CHIPS.map((chip) => (
-            <button
-              key={chip}
-              type="button"
-              onClick={(e) => {
-                // Prevent any default focus jumping that might trigger page scroll
-                e.preventDefault();
-                handleSendMessage(chip);
-              }}
-              className="rounded-full bg-slate-100 hover:bg-purple-50 hover:text-[#6424C7] hover:border-purple-200/80 border border-slate-200/70 px-3.5 py-1.5 text-xs font-semibold text-slate-700 transition-all cursor-pointer select-none active:scale-[0.98] shadow-2xs"
-            >
-              {chip}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Relative Wrapper with Girl Pointing Down Illustration at Top-Right */}
-      <div className="relative">
+      {/* Relative Wrapper with Enlarged Girl Pointing Down Illustration at Top-Right */}
+      <div className="relative mt-16 sm:mt-24 md:mt-28">
         
-        {/* Girl illustration perched on top right, pointing fingers down, positioned BEHIND the chat box */}
-        <div className="absolute -top-24 sm:-top-32 md:-top-40 right-2 sm:right-6 md:right-10 w-28 sm:w-36 md:w-48 pointer-events-none z-0 select-none">
+        {/* Enlarged Girl illustration perched on top right, pointing fingers down, positioned BEHIND the chat box */}
+        <div className="absolute -top-36 sm:-top-52 md:-top-64 lg:-top-72 right-2 sm:right-6 md:right-10 w-36 sm:w-56 md:w-68 lg:w-76 pointer-events-none z-0 select-none">
           <div className="relative">
             {/* Playful Floating Speech Bubble */}
-            <div className="absolute -top-6 sm:-top-8 -left-12 sm:-left-16 bg-white/95 backdrop-blur-md border border-purple-200/90 rounded-2xl px-3 py-1 text-[11px] font-black text-[#6424C7] shadow-md flex items-center gap-1.5 whitespace-nowrap animate-bounce [animation-duration:3s]">
+            <div className="absolute -top-7 sm:-top-9 -left-12 sm:-left-20 bg-white/95 backdrop-blur-md border border-purple-200/90 rounded-2xl px-3.5 py-1.5 text-xs sm:text-sm font-black text-[#6424C7] shadow-lg flex items-center gap-1.5 whitespace-nowrap animate-bounce [animation-duration:3s]">
               <span>Ask me anything! 👇</span>
             </div>
 
@@ -374,14 +350,14 @@ export function LoanAiAdvisorChat({
               alt="Fintaraa Loan Advisor pointing down to chat window"
               width={1145}
               height={1374}
-              className="w-full h-auto object-contain drop-shadow-[0_20px_35px_rgba(100,36,199,0.25)]"
+              className="w-full h-auto object-contain drop-shadow-[0_24px_40px_rgba(100,36,199,0.28)]"
               priority
             />
           </div>
         </div>
 
         {/* Enhanced ChatGPT-style Terminal Container (in front of girl image) */}
-        <div className="relative z-10 rounded-3xl border border-purple-200/80 bg-white shadow-[0_16px_48px_-12px_rgba(100,36,199,0.14)] overflow-hidden flex flex-col min-h-[460px] max-h-[640px]">
+        <div className="relative z-10 rounded-3xl border border-purple-200/80 bg-white shadow-[0_16px_48px_-12px_rgba(100,36,199,0.14)] overflow-hidden flex flex-col min-h-[480px] max-h-[660px]">
           
           {/* Top Control Bar */}
           <div className="flex items-center justify-between border-b border-slate-200/80 bg-slate-50/80 backdrop-blur-md px-5 py-3 select-none">
@@ -512,6 +488,27 @@ export function LoanAiAdvisorChat({
               );
             })}
 
+            {/* Quick Starters inside initial welcome state */}
+            {messages.length <= 1 && (
+              <div className="pl-11 sm:pl-13 mt-2">
+                <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2 select-none">
+                  Popular Questions to Ask:
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {INITIAL_SUGGESTION_CHIPS.slice(0, 4).map((chip) => (
+                    <button
+                      key={chip}
+                      type="button"
+                      onClick={() => handleSendMessage(chip)}
+                      className="text-left rounded-xl bg-purple-50/60 hover:bg-purple-100/70 hover:border-purple-300 border border-purple-100/80 p-2.5 text-xs font-semibold text-slate-700 hover:text-[#6424C7] transition-all cursor-pointer shadow-2xs active:scale-[0.98]"
+                    >
+                      &ldquo;{chip}&rdquo;
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Typing Indicator */}
             {isTyping && (
               <div className="flex items-center gap-3">
@@ -527,6 +524,25 @@ export function LoanAiAdvisorChat({
                 </div>
               </div>
             )}
+          </div>
+
+          {/* Popular Questions Strip INSIDE the Chatbox (Pinned above input) */}
+          <div className="border-t border-slate-100 bg-slate-50/80 px-3 sm:px-4 py-2 select-none">
+            <div className="flex items-center gap-1.5 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden py-0.5">
+              <span className="text-[11px] font-bold text-slate-400 shrink-0 select-none mr-1">
+                Suggestions:
+              </span>
+              {INITIAL_SUGGESTION_CHIPS.map((chip) => (
+                <button
+                  key={chip}
+                  type="button"
+                  onClick={() => handleSendMessage(chip)}
+                  className="shrink-0 rounded-full bg-white hover:bg-purple-50 hover:text-[#6424C7] border border-slate-200/90 px-3 py-1 text-xs font-semibold text-slate-700 transition-all cursor-pointer whitespace-nowrap shadow-2xs hover:border-purple-300 active:scale-95"
+                >
+                  {chip}
+                </button>
+              ))}
+            </div>
           </div>
 
           {/* Input Bar (ChatGPT Styled) */}
