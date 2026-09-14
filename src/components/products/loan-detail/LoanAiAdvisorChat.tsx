@@ -318,24 +318,19 @@ export function LoanAiAdvisorChat({
     >
       {/* Header with Title & Intro */}
       <div className="max-w-2xl sm:max-w-3xl mb-6">
-        <div className="flex items-center gap-2.5">
-          <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-tr from-[#6424C7] to-purple-500 text-white shadow-[0_8px_20px_rgba(100,36,199,0.28)]">
-            <Sparkles className="h-5 w-5" />
+        <div>
+          <div className="flex items-center gap-2.5">
+            <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900">
+              Ask Fintaraa AI About Loans
+            </h2>
+            <span className="flex items-center gap-1.5 text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-2.5 py-0.5 rounded-full select-none shadow-2xs">
+              <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>Online</span>
+            </span>
           </div>
-          <div>
-            <div className="flex items-center gap-2.5">
-              <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900">
-                Ask Fintaraa AI About Loans
-              </h2>
-              <span className="flex items-center gap-1.5 text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-2.5 py-0.5 rounded-full select-none shadow-2xs">
-                <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span>Online</span>
-              </span>
-            </div>
-            <p className="mt-1 text-xs sm:text-sm text-slate-600 font-medium leading-relaxed">
-              Ask anything without hesitation. Get instant, unbiased financial clarity on CIBIL thresholds, company categorization, tax deductions, and reducing vs flat rate traps.
-            </p>
-          </div>
+          <p className="mt-1 text-xs sm:text-sm text-slate-600 font-medium leading-relaxed">
+            Ask anything without hesitation. Get instant, unbiased financial clarity on CIBIL thresholds, company categorization, tax deductions, and reducing vs flat rate traps.
+          </p>
         </div>
       </div>
 
@@ -366,8 +361,8 @@ export function LoanAiAdvisorChat({
       {/* Relative Wrapper with Girl Pointing Down Illustration at Top-Right */}
       <div className="relative">
         
-        {/* Girl illustration perched on top right, pointing fingers down into the chat terminal */}
-        <div className="absolute -top-24 sm:-top-32 md:-top-40 right-2 sm:right-6 md:right-10 w-28 sm:w-36 md:w-48 pointer-events-none z-20 select-none">
+        {/* Girl illustration perched on top right, pointing fingers down, positioned BEHIND the chat box */}
+        <div className="absolute -top-24 sm:-top-32 md:-top-40 right-2 sm:right-6 md:right-10 w-28 sm:w-36 md:w-48 pointer-events-none z-0 select-none">
           <div className="relative">
             {/* Playful Floating Speech Bubble */}
             <div className="absolute -top-6 sm:-top-8 -left-12 sm:-left-16 bg-white/95 backdrop-blur-md border border-purple-200/90 rounded-2xl px-3 py-1 text-[11px] font-black text-[#6424C7] shadow-md flex items-center gap-1.5 whitespace-nowrap animate-bounce [animation-duration:3s]">
@@ -385,8 +380,8 @@ export function LoanAiAdvisorChat({
           </div>
         </div>
 
-        {/* Enhanced ChatGPT-style Terminal Container */}
-        <div className="relative rounded-3xl border border-purple-200/80 bg-white shadow-[0_16px_48px_-12px_rgba(100,36,199,0.14)] overflow-hidden flex flex-col min-h-[460px] max-h-[640px]">
+        {/* Enhanced ChatGPT-style Terminal Container (in front of girl image) */}
+        <div className="relative z-10 rounded-3xl border border-purple-200/80 bg-white shadow-[0_16px_48px_-12px_rgba(100,36,199,0.14)] overflow-hidden flex flex-col min-h-[460px] max-h-[640px]">
           
           {/* Top Control Bar */}
           <div className="flex items-center justify-between border-b border-slate-200/80 bg-slate-50/80 backdrop-blur-md px-5 py-3 select-none">
