@@ -9,6 +9,12 @@ import {
   ShieldCheck,
   Clock,
   Sparkles,
+  CheckCircle2,
+  LockKeyhole,
+  Building2,
+  Smartphone,
+  FileText,
+  BadgeCheck,
 } from "lucide-react";
 
 interface LoanProcessRoadmapProps {
@@ -16,36 +22,54 @@ interface LoanProcessRoadmapProps {
   applyHref?: string;
 }
 
-const steps = [
+const detailedSteps = [
   {
     step: "01",
-    title: "Check Pre-Approved Offers",
-    desc: "Share basic details (mobile, PAN & income) to view personalized loan quotes from 50+ lenders in under 2 minutes.",
-    icon: FileCheck,
-    tag: "2 Mins • Soft Check",
+    phase: "Step 1 • Discovery & Soft Check",
+    title: "Check Pre-Approved Eligibility & Compare 50+ Lenders",
+    duration: "Takes ~2 Minutes",
     accent: "#6424C7",
-    bg: "rgba(100,36,199,0.08)",
-    highlight: "Zero Impact on CIBIL Score",
+    headline: "Zero Bureau Impact • Instant Live Quotations",
+    desc: "Start by entering your mobile number, PAN, employment details (Salaried company tier or Self-Employed profession), and requested loan amount up to ₹1 Crore. Our intelligent underwriting engine initiates a secure, zero-impact soft credit bureau assessment that evaluates your profile across 50+ leading RBI-regulated banks and NBFCs without registering any hard inquiries on your CIBIL record.",
+    whatHappens: [
+      "Real-time matching against underwriting criteria of HDFC, ICICI, SBI, Axis, Kotak & premier NBFCs",
+      "Soft bureau check preserves your CIBIL score with zero score deductions",
+      "Instant display of personalized pre-sanctioned credit limits, exact reducing interest rates, and fee structures",
+      "Compare multiple matched lender options side-by-side before proceeding",
+    ],
+    proTip: "Ensure your mobile number is linked to your Aadhaar card to enable instant paperless OTP verification in the next stage.",
   },
   {
     step: "02",
-    title: "Compare & Pick Best Rate",
-    desc: "Compare interest rates starting from 10.49% p.a., transparent processing fees, and comfortable tenure options across top banks.",
-    icon: Scale,
-    tag: "Lowest Rates First",
+    phase: "Step 2 • Digital Verification",
+    title: "Complete 100% Paperless e-KYC & Income Verification",
+    duration: "Takes ~3 Minutes",
     accent: "#0ea5e9",
-    bg: "rgba(14,165,233,0.08)",
-    highlight: "Zero Hidden Markups",
+    headline: "DigiLocker Integration • Account Aggregator Speed",
+    desc: "Bypass physical document submissions, photocopies, and tedious branch visits. Verify your identity instantly using government-backed DigiLocker via Aadhaar OTP. Next, securely connect your primary salary or business bank account through the RBI-licensed Account Aggregator (AA) framework or encrypted NetBanking statement upload for real-time automated income verification.",
+    whatHappens: [
+      "Instant Aadhaar e-KYC verification in under 60 seconds with bank-grade 256-bit encryption",
+      "Automated salary credit & cash-flow analysis via RBI-regulated Account Aggregator",
+      "Zero physical paperwork, document couriers, or branch queues required",
+      "Dedicated Fintaraa loan officer assigned to fast-track lender compliance and exceptions",
+    ],
+    proTip: "Submitting the bank account where your salary is credited (rather than secondary savings accounts) ensures the highest approved loan limit.",
   },
   {
     step: "03",
-    title: "Instant e-KYC & Fast Disbursal",
-    desc: "Complete swift assisted digital verification and have funds credited directly into your verified bank account within 24 hours.",
-    icon: Zap,
-    tag: "Disbursal in 24 Hours",
+    phase: "Step 3 • e-Mandate & Disbursal",
+    title: "Authorize e-Mandate & Receive Direct Disbursal in 24 Hours",
+    duration: "Disbursal Within 24 Hours",
     accent: "#10b981",
-    bg: "rgba(16,185,129,0.08)",
-    highlight: "Direct Bank Transfer",
+    headline: "Direct NEFT/RTGS Transfer • Clear Repayment Schedule",
+    desc: "Once your digital verification is verified, review your formal loan sanction agreement detailing the monthly EMI, repayment schedule, interest rate, and terms. Set up a one-click digital NACH e-Mandate using your debit card or net banking for automated, hassle-free monthly repayments. The approved loan amount up to ₹1 Crore is credited directly into your savings account via instant NEFT/RTGS within 24 hours.",
+    whatHappens: [
+      "Digital agreement sign-off via Aadhaar e-Sign with legally binding validity",
+      "Hassle-free automated EMI auto-debit setup through NPCI e-Mandate",
+      "Direct electronic fund transfer (NEFT/RTGS) into your designated bank account",
+      "Immediate delivery of formal bank sanction letter, loan account number, and amortization schedule",
+    ],
+    proTip: "Keep a minimum buffer balance in your salary account on your designated EMI date to avoid ECS bounce charges and preserve your credit score.",
   },
 ];
 
@@ -55,94 +79,119 @@ export function LoanProcessRoadmap({
 }: LoanProcessRoadmapProps) {
   return (
     <section
-      id="loan-process-roadmap"
-      className="relative overflow-hidden bg-gradient-to-b from-white via-[#fafbfe] to-white py-14 sm:py-20"
+      id="steps-to-apply"
+      style={{
+        scrollMarginTop: "calc(var(--site-header-height, 8.25rem) + 4.5rem)",
+      }}
+      className="relative w-full bg-[#fbfbfe] py-16 sm:py-24 border-b border-gray-100"
       aria-label="How to get a personal loan in 3 steps"
     >
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-8 lg:px-12 xl:px-14">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-[40px] font-semibold tracking-tight text-gray-900 leading-tight">
+        <div className="max-w-3xl mb-16 sm:mb-20">
+          <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-extrabold tracking-tight text-gray-950 leading-[1.15]">
             Get Your {productName} in{" "}
-            <span style={{ color: "#6424C7" }}>3 Simple Steps</span>
+            <span className="bg-gradient-to-r from-[#6424C7] to-purple-600 bg-clip-text text-transparent">
+              3 Simple Steps
+            </span>
           </h2>
-          <p className="mt-3 text-[14.5px] sm:text-[16px] text-gray-500 font-normal max-w-xl mx-auto leading-relaxed">
-            100% digital, assisted paperwork, and guaranteed transparency at every stage of your borrowing journey.
+          <p className="mt-4 text-[15px] sm:text-[17px] text-gray-600 font-normal leading-relaxed">
+            Experience India&apos;s smoothest paperless borrowing process. Transparent terms, assisted digital e-KYC, and direct bank account disbursal up to ₹1 Crore within 24 hours.
           </p>
         </div>
 
-        {/* 3 Step Cards */}
-        <div className="relative grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-          {/* Subtle connecting line across desktop cards */}
-          <div
-            aria-hidden="true"
-            className="hidden md:block absolute top-1/3 left-1/6 right-1/6 h-0.5 bg-gradient-to-r from-purple-200 via-sky-200 to-emerald-200 -z-0"
-          />
-
-          {steps.map((item) => {
-            const Icon = item.icon;
+        {/* Detailed 3-Step Walkthrough (Editorial, Borderless, No Box Containers) */}
+        <div className="space-y-16 sm:space-y-20">
+          {detailedSteps.map((stepItem, index) => {
             return (
               <div
-                key={item.step}
-                className="group relative z-10 flex flex-col justify-between rounded-2xl border border-gray-200/80 bg-white p-6 sm:p-7 shadow-[0_2px_14px_rgba(0,0,0,0.03)] transition-all duration-300 hover:border-[#6424C7]/30 hover:shadow-[0_16px_36px_-8px_rgba(100,36,199,0.15)] hover:-translate-y-1.5"
+                key={stepItem.step}
+                className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 items-start"
               >
-                <div>
-                  {/* Step Badge & Icon */}
-                  <div className="flex items-center justify-between mb-5">
-                    <div
-                      className="flex h-12 w-12 items-center justify-center rounded-2xl transition-transform duration-300 group-hover:scale-110"
-                      style={{ backgroundColor: item.bg }}
-                    >
-                      <Icon className="h-6 w-6" style={{ color: item.accent }} />
-                    </div>
+                {/* Step Indicator & Header Column */}
+                <div className="lg:col-span-4 flex flex-col items-start">
+                  <div className="flex items-center gap-3">
                     <span
-                      className="text-[28px] font-extrabold tracking-tight opacity-30 group-hover:opacity-100 transition-opacity"
-                      style={{ color: item.accent }}
+                      className="flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-2xl text-xl sm:text-2xl font-black text-white shadow-lg"
+                      style={{
+                        background:
+                          index === 0
+                            ? "linear-gradient(135deg, #7c3aed 0%, #6424C7 100%)"
+                            : index === 1
+                            ? "linear-gradient(135deg, #0284c7 0%, #0369a1 100%)"
+                            : "linear-gradient(135deg, #059669 0%, #047857 100%)",
+                      }}
                     >
-                      {item.step}
+                      {stepItem.step}
                     </span>
+                    <div>
+                      <span className="block text-xs font-extrabold tracking-wider uppercase text-[#6424C7]">
+                        {stepItem.phase}
+                      </span>
+                      <span className="inline-flex items-center gap-1.5 text-xs font-bold text-gray-500 mt-0.5">
+                        <Clock className="h-3 w-3 text-gray-400" />
+                        {stepItem.duration}
+                      </span>
+                    </div>
                   </div>
 
-                  <span
-                    className="inline-block rounded-full px-2.5 py-0.5 text-[11px] font-semibold border mb-2.5"
-                    style={{
-                      backgroundColor: item.bg,
-                      color: item.accent,
-                      borderColor: `${item.accent}30`,
-                    }}
-                  >
-                    {item.tag}
-                  </span>
-
-                  <h3 className="text-[18px] font-semibold text-gray-900 group-hover:text-[#6424C7] transition-colors leading-snug">
-                    {item.title}
+                  <h3 className="mt-4 text-xl sm:text-2xl font-extrabold text-gray-950 leading-tight">
+                    {stepItem.title}
                   </h3>
 
-                  <p className="mt-2 text-[13px] leading-relaxed text-gray-500 font-normal">
-                    {item.desc}
-                  </p>
+                  <div className="mt-2 text-xs font-bold text-[#6424C7] bg-purple-50 px-2.5 py-1 rounded-lg inline-block">
+                    {stepItem.headline}
+                  </div>
                 </div>
 
-                {/* Highlight Chip */}
-                <div className="mt-6 pt-4 border-t border-gray-100 flex items-center gap-1.5 text-[12px] font-medium text-gray-600">
-                  <ShieldCheck className="h-4 w-4" style={{ color: item.accent }} />
-                  <span>{item.highlight}</span>
+                {/* Step Detailed Narrative Column */}
+                <div className="lg:col-span-8 flex flex-col justify-between">
+                  <p className="text-[14.5px] sm:text-[16px] text-gray-600 leading-relaxed font-normal">
+                    {stepItem.desc}
+                  </p>
+
+                  {/* Checklist of What Happens in this Step */}
+                  <div className="mt-5 space-y-2.5 bg-white rounded-2xl p-5 sm:p-6 border border-gray-100/90 shadow-2xs">
+                    <h4 className="text-xs font-extrabold uppercase tracking-wider text-gray-400 mb-2">
+                      Key Highlights &amp; Process Checklist
+                    </h4>
+                    {stepItem.whatHappens.map((item) => (
+                      <div key={item} className="flex items-start gap-3">
+                        <CheckCircle2 className="h-4.5 w-4.5 text-emerald-600 shrink-0 mt-0.5" />
+                        <span className="text-[13.5px] sm:text-[14px] text-gray-700 font-medium leading-relaxed">
+                          {item}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Pro Tip Callout */}
+                  <div className="mt-4 rounded-xl bg-slate-100/80 px-4 py-3 text-xs text-gray-600 font-medium">
+                    <span className="font-bold text-gray-900 mr-1">Pro Tip:</span>
+                    {stepItem.proTip}
+                  </div>
                 </div>
               </div>
             );
           })}
         </div>
 
-        {/* Bottom CTA Button */}
-        <div className="mt-10 sm:mt-12 text-center">
+        {/* Action Bar */}
+        <div className="mt-16 sm:mt-20 pt-8 border-t border-gray-200/80 flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div>
+            <h4 className="text-lg font-bold text-gray-950">
+              Ready to Check Your Pre-Approved Personal Loan Offers?
+            </h4>
+            <p className="text-xs text-gray-500 mt-1">
+              Takes only 2 minutes • 100% Free • Zero impact on your credit score
+            </p>
+          </div>
           <Link
             href={applyHref}
-            className="inline-flex items-center justify-center gap-2 rounded-xl px-8 py-3.5 text-[14px] font-semibold text-white shadow-md transition-all hover:shadow-lg hover:scale-[1.02]"
-            style={{ background: "linear-gradient(135deg, #6424C7, #9b5de5)" }}
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#6424C7] hover:bg-[#521eb0] text-white font-bold text-[14px] px-8 py-3.5 shadow-lg hover:shadow-xl transition-all hover:scale-[1.01] active:scale-98 shrink-0 cursor-pointer"
           >
-            <Sparkles className="h-4 w-4" />
-            <span>Start Your Instant 2-Minute Application</span>
-            <ArrowRight className="h-4 w-4" />
+            <span>Start Your 2-Min Application</span>
+            <ArrowRight className="h-4.5 w-4.5" />
           </Link>
         </div>
       </div>

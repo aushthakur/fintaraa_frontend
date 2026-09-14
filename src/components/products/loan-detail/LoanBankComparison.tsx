@@ -41,22 +41,28 @@ export function LoanBankComparison({
   const visibleRows = showAll || isExpanded ? rows : rows.slice(0, 5);
 
   return (
-    <section className="w-full max-w-7xl mx-auto bg-white px-4 py-12 antialiased text-slate-900 md:px-6 lg:px-8">
+    <section
+      id="bank-comparison"
+      style={{
+        scrollMarginTop: "calc(var(--site-header-height, 8.25rem) + 4.5rem)",
+      }}
+      className="w-full max-w-7xl mx-auto bg-white px-4 py-16 antialiased text-slate-900 md:px-6 lg:px-8 border-b border-slate-100"
+    >
       
       {/* SECTION TITLE & DESCRIPTION BLOCK */}
-      <div className="mb-8">
-        <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
+      <div className="max-w-3xl mb-12">
+        <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
           {title}
         </h2>
-        <p className="mt-1.5 text-sm font-medium text-slate-500">
+        <p className="mt-3 text-base text-slate-600 leading-relaxed">
           {description}
         </p>
       </div>
 
       {/* RESPONSIVE SCROLL-WRAPPER TABLE DOCK */}
-      <div className="w-full overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-xs">
+      <div className="w-full overflow-x-auto">
         <table className="w-full min-w-[700px] border-collapse bg-white text-left text-sm">
-          <thead className="bg-slate-50/90 text-slate-600 text-xs font-bold uppercase tracking-wider border-b border-slate-200 select-none">
+          <thead className="bg-slate-50/70 text-slate-600 text-xs font-bold uppercase tracking-wider border-b-2 border-slate-200 select-none">
             <tr>
               <th className="px-6 py-4 w-[24%]">Lender</th>
               <th className="px-6 py-4 w-[20%]">Interest Rate (p.a)</th>
@@ -89,7 +95,7 @@ export function LoanBankComparison({
                   key={row.name}
                   className="transition-colors hover:bg-purple-50/25"
                 >
-                {/* 1. LENDER LOGO & STAR RATINGS */}
+                {/* 1. LENDER LOGO */}
                 <td className="px-6 py-4.5">
                   <div className="flex items-center gap-3.5">
                     <Link
@@ -103,14 +109,6 @@ export function LoanBankComparison({
                         imageClassName="object-left object-contain"
                       />
                     </Link>
-                    <div className="flex items-center gap-1 rounded-md bg-amber-50 px-2 py-0.5 text-xs font-bold text-amber-700 border border-amber-200/60 select-none">
-                      <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
-                      <span>
-                        {"rating" in row && row.rating
-                          ? row.rating
-                          : "4.5"}
-                      </span>
-                    </div>
                   </div>
                 </td>
 

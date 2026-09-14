@@ -11,7 +11,7 @@ export const loanStats = [
   ["24-Hours", "Processing Time"],
   ["50+", "Bank & NBFC Partners"],
   ["100%", "Digital Assistance"],
-  ["₹50,00,000", "Maximum Loan Amount"],
+  ["Up to ₹1 Crore", "Maximum Loan Amount"],
 ];
 
 export const bankRows = [
@@ -20,8 +20,8 @@ export const bankRows = [
     logo: "/assets/banks/hdfc.png",
     rate: "10.75% p.a.",
     fee: "Up to 2%",
-    amount: "₹40 Lac",
-    tenure: "6 Years",
+    amount: "Up to ₹1 Cr",
+    tenure: "7 Years",
     rating: "4.5",
   },
   {
@@ -29,8 +29,8 @@ export const bankRows = [
     logo: "/assets/banks/icici.png",
     rate: "10.99% p.a.",
     fee: "Up to 2.5%",
-    amount: "₹50 Lac",
-    tenure: "6 Years",
+    amount: "Up to ₹1 Cr",
+    tenure: "7 Years",
     rating: "4.5",
   },
   {
@@ -38,7 +38,7 @@ export const bankRows = [
     logo: "/assets/banks/pnb.png",
     rate: "11.25% p.a.",
     fee: "Up to 1%",
-    amount: "₹20 Lac",
+    amount: "₹50 Lac",
     tenure: "5 Years",
     rating: "4.3",
   },
@@ -47,8 +47,8 @@ export const bankRows = [
     logo: "/assets/banks/sbi.png",
     rate: "11.45% p.a.",
     fee: "Up to 1.5%",
-    amount: "₹30 Lac",
-    tenure: "6 Years",
+    amount: "₹50 Lac",
+    tenure: "7 Years",
     rating: "4.4",
   },
   {
@@ -56,8 +56,8 @@ export const bankRows = [
     logo: "/assets/banks/kotak.png",
     rate: "11.99% p.a.",
     fee: "Up to 2%",
-    amount: "₹35 Lac",
-    tenure: "5 Years",
+    amount: "Up to ₹1 Cr",
+    tenure: "7 Years",
     rating: "4.2",
   },
 ];

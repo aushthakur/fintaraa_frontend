@@ -14,21 +14,21 @@ export function LoanFAQSection({
 }) {
   if (faqs?.length) {
     const content = (
-      <div className="divide-y divide-slate-100 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xs">
+      <div className="divide-y divide-slate-200">
         {faqs.map((faq, index) => (
           <details
             key={`${faq.question}-${index}`}
-            className="group p-4 sm:p-5 transition-colors hover:bg-slate-50/40"
+            className="group py-5 transition-colors"
             open={index === 0}
           >
-            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm sm:text-[15px] font-bold text-slate-900 marker:content-none transition-colors group-hover:text-[#5b21b6]">
-              {faq.question}
-              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-purple-50 text-[#5b21b6] text-sm font-bold border border-purple-100/70 transition-transform duration-200 group-open:rotate-45">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-base sm:text-lg font-bold text-slate-900 marker:content-none transition-colors group-hover:text-[#5b21b6]">
+              <span>{faq.question}</span>
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-purple-50 text-[#5b21b6] text-base font-bold transition-transform duration-200 group-open:rotate-45">
                 +
               </span>
             </summary>
-            <div className="mt-3 rounded-xl bg-purple-50/30 p-3.5 border border-purple-100/40">
-              <p className="text-xs sm:text-[13.5px] font-medium leading-relaxed text-slate-600">
+            <div className="mt-3 pr-12">
+              <p className="text-sm text-slate-600 leading-relaxed">
                 {faq.answer}
               </p>
             </div>
@@ -40,21 +40,35 @@ export function LoanFAQSection({
     if (embedded) return content;
 
     return (
-      <section className="bg-white px-4 py-12 md:px-6 lg:px-8">
-        <div className="mx-auto max-w-5xl">
-          <div className="mb-6">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-purple-50 px-3.5 py-1 text-xs font-bold text-[#5b21b6] border border-purple-100 mb-2">
-              Got Questions?
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
-              {title || "Frequently Asked Questions"}
-            </h2>
-          </div>
-          <div>{content}</div>
+      <section
+        id="faqs"
+        style={{
+          scrollMarginTop: "calc(var(--site-header-height, 8.25rem) + 4.5rem)",
+        }}
+        className="w-full max-w-7xl mx-auto px-4 py-16 antialiased text-slate-900 md:px-6 lg:px-8 border-b border-slate-100"
+      >
+        <div className="max-w-3xl mb-10">
+          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
+            {title || "Frequently Asked Questions"}
+          </h2>
+          <p className="mt-3 text-base text-slate-600 leading-relaxed">
+            Clear answers to common questions about personal loan eligibility, interest rates, documentation, and disbursement timelines.
+          </p>
         </div>
+        <div>{content}</div>
       </section>
     );
   }
 
-  return <FaqAccordion lookupPathname={lookupPathname} />;
+  return (
+    <section
+      id="faqs"
+      style={{
+        scrollMarginTop: "calc(var(--site-header-height, 8.25rem) + 4.5rem)",
+      }}
+      className="w-full max-w-7xl mx-auto px-4 py-16 antialiased text-slate-900 md:px-6 lg:px-8 border-b border-slate-100"
+    >
+      <FaqAccordion lookupPathname={lookupPathname} />
+    </section>
+  );
 }

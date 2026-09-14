@@ -1,34 +1,30 @@
 "use client";
 
-import { LoanGuidePanel, LoanTabs } from "./LoanTabs";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
+import { LoanTabs } from "./LoanTabs";
 import { LoanStatsBar } from "./LoanStatsBar";
 import { LoanFAQSection } from "./LoanFAQSection";
 import { LoanHeroSection } from "./LoanHeroSection";
-import { LoanOtherProducts } from "./LoanOtherProducts";
 import { LoanBankComparison } from "./LoanBankComparison";
 import { Testimonials } from "@/components/home/Testimonials";
 import { CreditScoreSection } from "@/components/home/CreditScoreSection";
 import { LoanUseCasesSection } from "./LoanUseCasesSection";
 import { LoanProcessRoadmap } from "./LoanProcessRoadmap";
 import { LoanFeaturesBenefits } from "./LoanFeaturesBenefits";
+import { LoanEligibilityCriteria } from "./LoanEligibilityCriteria";
+import { LoanDocumentsRequired } from "./LoanDocumentsRequired";
+import { LoanEmiCalculatorSection } from "./LoanEmiCalculatorSection";
+import { LoanFeesChargesSection } from "./LoanFeesChargesSection";
+import { LoanSeoKnowledgeSection } from "./LoanSeoKnowledgeSection";
 import { ProductLocationDirectory } from "../ProductLocationDirectory";
 import { ProductRelatedBlogs } from "../ProductRelatedBlogs";
+import { AppDownloadBanner } from "@/components/common/layout/Footer";
+import { getApplyHref } from "@/components/application/flowRegistry";
 import type {
   LoanSeoLocationPage,
   LoanSeoPageData,
 } from "@/services/loanSeoPages";
-import { LoanDocumentsRequired } from "./LoanDocumentsRequired";
-import { LoanVerificationSteps } from "./LoanVerificationSteps";
-import { LoanEligibilityCriteria } from "./LoanEligibilityCriteria";
-import { AppDownloadBanner } from "@/components/common/layout/Footer";
-import { getApplyHref } from "@/components/application/flowRegistry";
 import type { BankProductLender } from "@/services/bankSeoPages";
-import {
-  PRODUCT_SECTION_NAVIGATION_EVENT,
-  type ProductSectionNavigationDetail,
-  scrollToProductSection,
-} from "@/lib/productSectionNavigation";
 
 export function LoanDetailPage({
   page,
@@ -39,267 +35,118 @@ export function LoanDetailPage({
   locationPages?: LoanSeoLocationPage[];
   bankLenders?: BankProductLender[];
 }) {
-  const tabs = useMemo(
-    () => {
-      const activeTabs = (page.tabs || [])
-        .filter((tab) => tab.isActive !== false && tab.key !== "all_details")
-        .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
-      const hasApplySteps = activeTabs.some(
-        (tab) => tab.key === "steps_to_apply",
-      );
-      const tabsWithApplySteps = (
-        hasApplySteps
-          ? activeTabs
-          : [
-              ...activeTabs,
-              {
-                key: "steps_to_apply",
-                label: "Steps to Apply",
-                eyebrow: "Application process",
-                title: `Steps to apply for ${page.title}`,
-                description:
-                  "Follow the guided Fintaraa journey to share details, verify your mobile number, review matched options, and submit documents.",
-                bullets: [
-                  "Start with mobile number, PAN, income, and location details.",
-                  "Verify OTP and complete the secure assisted application flow.",
-                  "Review matched partner options before document submission.",
-                  "Upload requested documents and track follow-up with Fintaraa support.",
-                ],
-                filterKeys: [
-                  "steps_to_apply",
-                  "apply",
-                  "process",
-                  "verification",
-                ],
-                sortOrder: 4.5,
-                isActive: true,
-              },
-            ]
-      ).sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
-      return tabsWithApplySteps;
-    },
-    [page.tabs, page.title],
-  );
-  const [activeTab, setActiveTab] = useState(
-    tabs.find((tab) => tab.key === "overview")?.key ||
-      tabs[0]?.key ||
-      "overview",
-  );
-
-  useEffect(() => {
-    const matchingSectionTab = (sectionId: string) => {
-      const matches = (tab: (typeof tabs)[number], terms: string[]) => {
-        const identity = [tab.key, tab.label, ...(tab.filterKeys || [])]
-          .filter(Boolean)
-          .join(" ")
-          .toLowerCase();
-        return terms.some((term) => identity.includes(term));
-      };
-
-      if (sectionId === "loan-documents") {
-        return tabs.find((tab) => matches(tab, ["document", "kyc"]));
-      }
-      if (sectionId === "loan-emi-calculator") {
-        return tabs.find((tab) =>
-          matches(tab, [
-            "emi",
-            "calculator",
-            "repayment",
-            "rate",
-            "fee",
-            "charge",
-          ]),
-        );
-      }
-      return undefined;
-    };
-
-    const selectHashTab = () => {
-      const hashKey = window.location.hash.replace(/^#/, "");
-      const directTab = tabs.find((tab) => tab.key === hashKey);
-      const sectionTab = matchingSectionTab(hashKey);
-      const nextTab = directTab || sectionTab;
-      if (nextTab) setActiveTab(nextTab.key);
-      if (sectionTab) scrollToProductSection(`#${hashKey}`);
-    };
-    const selectSectionTab = (event: Event) => {
-      const { sectionId } = (
-        event as CustomEvent<ProductSectionNavigationDetail>
-      ).detail;
-      const sectionTab = matchingSectionTab(sectionId);
-      if (sectionTab) setActiveTab(sectionTab.key);
-    };
-
-    selectHashTab();
-    window.addEventListener("hashchange", selectHashTab);
-    window.addEventListener(
-      PRODUCT_SECTION_NAVIGATION_EVENT,
-      selectSectionTab,
-    );
-    return () => {
-      window.removeEventListener("hashchange", selectHashTab);
-      window.removeEventListener(
-        PRODUCT_SECTION_NAVIGATION_EVENT,
-        selectSectionTab,
-      );
-    };
-  }, [tabs]);
-  const active = tabs.find((tab) => tab.key === activeTab) || tabs[0];
-  const isOverviewTab = active?.key === "overview";
-
-  const tabIdentity = [
-    active?.key,
-    active?.label,
-    ...(active?.filterKeys || []),
-  ]
-    .filter(Boolean)
-    .join(" ")
-    .toLowerCase();
-
-  const sections = (() => {
-    if (isOverviewTab) {
-      return ["benefits"];
-    }
-    if (tabIdentity.includes("feature")) return ["benefits"];
-    if (tabIdentity.includes("eligib")) return ["eligibility"];
-    if (tabIdentity.includes("document")) return ["documents"];
-    if (tabIdentity.includes("review")) return ["testimonials"];
-    if (
-      tabIdentity.includes("fee") ||
-      tabIdentity.includes("emi") ||
-      tabIdentity.includes("rate") ||
-      tabIdentity.includes("repayment")
-    ) {
-      return ["emi_calculator", "bank_comparison"];
-    }
-    if (
-      tabIdentity.includes("apply") ||
-      tabIdentity.includes("process") ||
-      tabIdentity.includes("verification")
-    ) {
-      return ["verification"];
-    }
-    if (tabIdentity.includes("faq") || tabIdentity.includes("question")) {
-      return ["faq"];
-    }
-    if (tabIdentity.includes("product") || tabIdentity.includes("other")) {
-      return ["other_products"];
-    }
-    if (tabIdentity.includes("review") || tabIdentity.includes("testimonial")) {
-      return ["testimonials"];
-    }
-    return ["benefits"];
-  })();
-
-  const showSection = (section: string) => sections.includes(section);
-  const showGuidePanel = [
-    "benefits",
-    "eligibility",
-    "documents",
-    "verification",
-    "faq",
-  ].some(showSection);
-  const faqItems =
-    active?.faqs?.length ? active.faqs : tabs.flatMap((tab) => tab.faqs || []);
-  const faqTitle =
-    tabs.find((tab) => tab.key === "faqs")?.title ||
-    `FAQs about ${page.loanType}`;
   const applyHref = getApplyHref({
     category: "loan",
     productSlug: page.loanTypeSlug,
     referrer: page.canonicalPath || `/products/${page.loanTypeSlug}`,
   });
-  const handleTabChange = (key: string) => {
-    setActiveTab(key);
-    window.history.replaceState(null, "", `#${key}`);
-  };
+
+  // Extract all FAQs across tabs
+  const faqItems = useMemo(() => {
+    const allFaqs = (page.tabs || []).flatMap((tab) => tab.faqs || []);
+    // Deduplicate by question
+    const seen = new Set<string>();
+    return allFaqs.filter((faq) => {
+      if (!faq.question || seen.has(faq.question)) return false;
+      seen.add(faq.question);
+      return true;
+    });
+  }, [page.tabs]);
+
+  const faqTitle = `Frequently Asked Questions About ${page.loanType}`;
 
   return (
     <main className="overflow-visible bg-white text-[#1f2329]">
+      {/* 1. Hero Section with Carousel and Live Amount/Company Estimator */}
       <LoanHeroSection page={page} />
+
+      {/* 2. Key Trust Metrics Bar */}
       <LoanStatsBar />
-      <LoanTabs
-        tabs={tabs}
-        activeTab={activeTab}
-        onTabChange={handleTabChange}
+
+      {/* 3. Sticky Subnav Tab Bar with Smooth Scroll Anchors */}
+      <LoanTabs />
+
+      {/* 4. Overview / Life Goals: Detailed one-by-one with imagery (Borderless) */}
+      <LoanUseCasesSection
+        productSlug={page.loanTypeSlug}
+        applyHref={applyHref}
       />
 
-      {showGuidePanel ? (
-        <LoanGuidePanel
-          tabs={tabs}
-          activeTab={activeTab}
-          onTabChange={handleTabChange}
-          productName={page.loanType}
-          productSlug={page.loanTypeSlug}
-          applyHref={applyHref}
-        >
-          {showSection("benefits") && (
-            <LoanFeaturesBenefits page={page} active={active} embedded />
-          )}
-          {showSection("eligibility") && (
-            <LoanEligibilityCriteria embedded />
-          )}
-          {showSection("documents") && (
-            <LoanDocumentsRequired page={page} embedded />
-          )}
-          {showSection("verification") && (
-            <LoanVerificationSteps page={page} embedded />
-          )}
-          {showSection("faq") && (
-            <LoanFAQSection
-              faqs={faqItems}
-              title={faqTitle}
-              embedded
-            />
-          )}
-        </LoanGuidePanel>
-      ) : null}
+      {/* 5. Features & Key Benefits up to ₹1 Crore (Borderless) */}
+      <LoanFeaturesBenefits page={page} />
 
-      {(isOverviewTab || (!showGuidePanel && showSection("bank_comparison"))) &&
-        page.loanTypeSlug !== "instant-loan" && (
-        <div id="loan-bank-comparison">
-          <LoanBankComparison page={page} />
-        </div>
-      )}
+      {/* 6. Steps to Apply: 3-Step Guided Roadmap (Borderless) */}
+      <LoanProcessRoadmap
+        productName={page.loanType}
+        applyHref={applyHref}
+      />
 
-      {/* Marketing showcase sections for Personal Loan and core loan pages */}
-      {isOverviewTab && (
-        <>
-          <LoanUseCasesSection
-            productSlug={page.loanTypeSlug}
-            applyHref={applyHref}
-          />
-          <LoanProcessRoadmap
-            productName={page.loanType}
-            applyHref={applyHref}
-          />
-        </>
-      )}
+      {/* 7. Eligibility Criteria: Salaried vs Self-Employed & CIBIL Tiers (Borderless) */}
+      <LoanEligibilityCriteria />
 
-      {page.loanTypeSlug === "instant-loan" && (
-        <LoanBankComparison
-          page={page}
-          lenders={bankLenders}
-          showAll
-          title="Instant Loan Offers From All Partner Banks"
-          description="Compare indicative lender terms, open the bank details, and apply through Fintaraa."
-        />
-      )}
+      {/* 8. Documents Required: DigiLocker & Soft Copy Checklist (Borderless) */}
+      <LoanDocumentsRequired page={page} />
 
-      {/* Revamped Credit Score (CIBIL) Section matching Homepage */}
+      {/* 9. Interactive EMI Calculator & Reducing vs Flat Comparison (Borderless) */}
+      <LoanEmiCalculatorSection
+        productSlug={page.loanTypeSlug}
+        applyHref={applyHref}
+      />
+
+      {/* 10. Partner Bank Rates & Offers Comparison Table */}
+      <LoanBankComparison
+        page={page}
+        lenders={bankLenders}
+        showAll={page.loanTypeSlug === "instant-loan"}
+        title={
+          page.loanTypeSlug === "instant-loan"
+            ? "Instant Loan Offers From All Partner Banks"
+            : `Compare ${page.loanType} Offers Across Top Banks`
+        }
+        description="Transparent interest rates, processing fees, and maximum borrowing limits from leading RBI-approved institutions."
+      />
+
+      {/* 11. Fees & Charges Transparency Breakdown & RBI KFS (Borderless) */}
+      <LoanFeesChargesSection page={page} />
+
+      {/* 12. Free Credit Score (CIBIL) Checker */}
       <CreditScoreSection />
 
-      {!showGuidePanel && showSection("other_products") && (
-        <LoanOtherProducts />
-      )}
-      {!showGuidePanel && showSection("testimonials") && <Testimonials />}
+      {/* 13. High-Intent Google Search SEO Knowledge Base & Editorial Guide */}
+      <LoanSeoKnowledgeSection
+        productName={page.loanType}
+        productSlug={page.loanTypeSlug}
+        applyHref={applyHref}
+      />
+
+      {/* 14. Real Customer Reviews & Testimonials */}
+      <section
+        id="reviews"
+        style={{
+          scrollMarginTop: "calc(var(--site-header-height, 8.25rem) + 4.5rem)",
+        }}
+      >
+        <Testimonials />
+      </section>
+
+      {/* 15. Comprehensive FAQs */}
+      <LoanFAQSection
+        faqs={faqItems}
+        title={faqTitle}
+      />
+
+      {/* 16. Related Blogs & Financial Guides */}
       <ProductRelatedBlogs category="Loans" productName={page.loanType} />
+
+      {/* 17. City & Location Directory */}
       <ProductLocationDirectory
         productName={page.loanType}
         productSlug={page.loanTypeSlug}
         currentLocation={page.location}
         pages={locationPages}
       />
+
+      {/* 18. Mobile App Download Footer Banner */}
       <AppDownloadBanner />
     </main>
   );
