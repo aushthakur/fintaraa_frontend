@@ -336,11 +336,11 @@ export function LoanAiAdvisorChat({
       {/* Relative Wrapper with Girl Illustration and Speech Bubble on Left */}
       <div className="relative mt-8 sm:mt-12 md:mt-16">
         
-        {/* Girl illustration positioned slightly higher, BEHIND the chat box */}
-        <div className="absolute -top-14 sm:-top-22 md:-top-28 lg:-top-34 right-2 sm:right-6 md:right-10 w-36 sm:w-56 md:w-68 lg:w-76 pointer-events-none z-0 select-none">
+        {/* Girl illustration positioned a bit more up, BEHIND the chat box */}
+        <div className="absolute -top-20 sm:-top-28 md:-top-36 lg:-top-42 right-2 sm:right-6 md:right-10 w-36 sm:w-56 md:w-68 lg:w-76 pointer-events-none z-0 select-none">
           <div className="relative">
             {/* Speech Bubble on the Left Side of the Girl Image (maintained in place) */}
-            <div className="absolute top-12 sm:top-18 md:top-22 lg:top-24 -left-36 sm:-left-44 md:-left-48 bg-white/95 backdrop-blur-md border border-purple-200/90 rounded-2xl px-3.5 py-1.5 text-xs sm:text-sm font-normal text-[#6424C7] shadow-lg flex items-center gap-1.5 whitespace-nowrap animate-bounce [animation-duration:3s]">
+            <div className="absolute top-18 sm:top-24 md:top-30 lg:top-32 -left-36 sm:-left-44 md:-left-48 bg-white/95 backdrop-blur-md border border-purple-200/90 rounded-2xl px-3.5 py-1.5 text-xs sm:text-sm font-normal text-[#6424C7] shadow-lg flex items-center gap-1.5 whitespace-nowrap animate-bounce [animation-duration:3s]">
               <span>Ask me anything! 👉</span>
             </div>
 
