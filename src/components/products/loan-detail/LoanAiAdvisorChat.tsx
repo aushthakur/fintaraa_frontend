@@ -194,7 +194,7 @@ export function LoanAiAdvisorChat({
   const [inputQuery, setInputQuery] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
-  
+
   // Ref strictly for the internal chat log to prevent window scroll jumping
   const chatLogContainerRef = useRef<HTMLDivElement>(null);
 
@@ -320,12 +320,9 @@ export function LoanAiAdvisorChat({
         <div>
           <div className="flex items-center gap-2.5">
             <h2 className="text-2xl sm:text-3xl font-normal tracking-tight text-slate-900">
-              Ask Fintaraa AI About Loans
+              Ask Fintaraa AI About Personal Loans
             </h2>
-            <span className="flex items-center gap-1.5 text-[11px] font-normal text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-2.5 py-0.5 rounded-full select-none shadow-2xs">
-              <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span>Online</span>
-            </span>
+
           </div>
           <p className="mt-1 text-xs sm:text-sm text-slate-600 font-normal leading-relaxed">
             Ask anything without hesitation. Get instant, unbiased financial clarity on CIBIL thresholds, company categorization, tax deductions, and reducing vs flat rate traps.
@@ -335,7 +332,7 @@ export function LoanAiAdvisorChat({
 
       {/* Relative Wrapper with Girl Illustration and Speech Bubble on Left */}
       <div className="relative mt-12 sm:mt-16 md:mt-20 lg:mt-24">
-        
+
         {/* Girl illustration positioned a bit more up, BEHIND the chat box */}
         <div className="absolute -top-28 sm:-top-36 md:-top-48 lg:-top-56 right-2 sm:right-6 md:right-10 w-36 sm:w-56 md:w-68 lg:w-76 pointer-events-none z-0 select-none">
           <div className="relative">
@@ -357,7 +354,7 @@ export function LoanAiAdvisorChat({
 
         {/* Enhanced ChatGPT-style Terminal Container (in front of girl image) */}
         <div className="relative z-10 rounded-3xl border border-purple-200/80 bg-white shadow-[0_16px_48px_-12px_rgba(100,36,199,0.14)] overflow-hidden flex flex-col min-h-[480px] max-h-[660px]">
-          
+
           {/* Top Control Bar in Normal Font */}
           <div className="flex items-center justify-between border-b border-slate-200/80 bg-slate-50/80 backdrop-blur-md px-5 py-3 select-none">
             <div className="flex items-center gap-2">
@@ -389,9 +386,8 @@ export function LoanAiAdvisorChat({
               return (
                 <div
                   key={msg.id}
-                  className={`flex items-start gap-3 sm:gap-4 ${
-                    isAi ? "justify-start" : "justify-end"
-                  }`}
+                  className={`flex items-start gap-3 sm:gap-4 ${isAi ? "justify-start" : "justify-end"
+                    }`}
                 >
                   {/* AI Avatar */}
                   {isAi && (
@@ -402,11 +398,10 @@ export function LoanAiAdvisorChat({
 
                   {/* Bubble Container */}
                   <div
-                    className={`max-w-[88%] sm:max-w-[80%] rounded-2xl p-4 sm:p-5 text-sm leading-relaxed ${
-                      isAi
-                        ? "bg-white border border-slate-200/90 text-slate-800 shadow-2xs"
-                        : "bg-gradient-to-r from-[#6424C7] to-[#7c3aed] text-white shadow-md"
-                    }`}
+                    className={`max-w-[88%] sm:max-w-[80%] rounded-2xl p-4 sm:p-5 text-sm leading-relaxed ${isAi
+                      ? "bg-white border border-slate-200/90 text-slate-800 shadow-2xs"
+                      : "bg-gradient-to-r from-[#6424C7] to-[#7c3aed] text-white shadow-md"
+                      }`}
                   >
                     {/* Message Text in Normal Font */}
                     <div className="font-normal text-xs sm:text-sm">
@@ -563,11 +558,10 @@ export function LoanAiAdvisorChat({
               <button
                 type="submit"
                 disabled={!inputQuery.trim() || isTyping}
-                className={`flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-xl transition-all cursor-pointer ${
-                  inputQuery.trim() && !isTyping
-                    ? "bg-[#6424C7] text-white hover:bg-[#521eb0] shadow-sm active:scale-95 font-normal"
-                    : "bg-slate-200 text-slate-400 cursor-not-allowed font-normal"
-                }`}
+                className={`flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-xl transition-all cursor-pointer ${inputQuery.trim() && !isTyping
+                  ? "bg-[#6424C7] text-white hover:bg-[#521eb0] shadow-sm active:scale-95 font-normal"
+                  : "bg-slate-200 text-slate-400 cursor-not-allowed font-normal"
+                  }`}
               >
                 <Send className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               </button>
