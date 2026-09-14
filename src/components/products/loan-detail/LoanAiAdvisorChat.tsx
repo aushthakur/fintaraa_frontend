@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import Image from "next/image";
 import {
   Sparkles,
   Send,
@@ -10,14 +11,8 @@ import {
   Copy,
   Check,
   ArrowRight,
-  TrendingUp,
-  ShieldCheck,
-  Building2,
-  Percent,
-  FileCheck,
   HelpCircle,
 } from "lucide-react";
-import Link from "next/link";
 import { AuthRedirectLink } from "@/components/auth/AuthRedirectLink";
 
 interface ChatMessage {
@@ -200,14 +195,22 @@ export function LoanAiAdvisorChat({
   const [inputQuery, setInputQuery] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
-  const chatBottomRef = useRef<HTMLDivElement>(null);
+  
+  // Ref strictly for the internal chat log to prevent window scroll jumping
+  const chatLogContainerRef = useRef<HTMLDivElement>(null);
 
-  const scrollToBottom = () => {
-    chatBottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  // Scroll ONLY the inner chat log to the bottom, never the outer window
+  const scrollToInnerBottom = () => {
+    if (chatLogContainerRef.current) {
+      chatLogContainerRef.current.scrollTo({
+        top: chatLogContainerRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
   };
 
   useEffect(() => {
-    scrollToBottom();
+    scrollToInnerBottom();
   }, [messages, isTyping]);
 
   const findBestAnswer = (query: string): KnowledgeItem => {
@@ -310,230 +313,262 @@ export function LoanAiAdvisorChat({
       style={{
         scrollMarginTop: "calc(var(--site-header-height, 8.25rem) + 4.5rem)",
       }}
-      className="w-full max-w-7xl mx-auto px-4 py-12 antialiased text-slate-900 md:px-6 lg:px-8 border-b border-slate-100"
+      className="relative w-full max-w-7xl mx-auto px-4 pt-10 pb-16 antialiased text-slate-900 md:px-6 lg:px-8 border-b border-slate-100 overflow-visible"
       aria-label="Fintaraa Loan AI Assistant"
     >
-      {/* Header */}
-      <div className="max-w-3xl mb-8">
+      {/* Header with Title & Intro */}
+      <div className="max-w-2xl sm:max-w-3xl mb-6">
         <div className="flex items-center gap-2.5">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-[#6424C7] to-purple-500 text-white shadow-md">
-            <Sparkles className="h-4.5 w-4.5" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-tr from-[#6424C7] to-purple-500 text-white shadow-[0_8px_20px_rgba(100,36,199,0.28)]">
+            <Sparkles className="h-5 w-5" />
           </div>
           <div>
-            <div className="flex items-center gap-2">
-              <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
+            <div className="flex items-center gap-2.5">
+              <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900">
                 Ask Fintaraa AI About Loans
               </h2>
-              <span className="flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200/70 px-2 py-0.5 rounded-full select-none">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                <span>Instant AI</span>
+              <span className="flex items-center gap-1.5 text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-2.5 py-0.5 rounded-full select-none shadow-2xs">
+                <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span>Online</span>
               </span>
             </div>
-            <p className="mt-1 text-xs sm:text-sm text-slate-500 font-medium">
-              Ask anything without hesitation. Instant answers on CIBIL scores, company category rates, tax deductions, and eligibility.
+            <p className="mt-1 text-xs sm:text-sm text-slate-600 font-medium leading-relaxed">
+              Ask anything without hesitation. Get instant, unbiased financial clarity on CIBIL thresholds, company categorization, tax deductions, and reducing vs flat rate traps.
             </p>
           </div>
         </div>
       </div>
 
       {/* Suggested Prompt Chips */}
-      <div className="mb-6 flex flex-wrap items-center gap-2">
-        <span className="text-xs font-bold text-slate-400 select-none mr-1">
-          Popular Questions:
-        </span>
-        {INITIAL_SUGGESTION_CHIPS.map((chip) => (
-          <button
-            key={chip}
-            type="button"
-            onClick={() => handleSendMessage(chip)}
-            className="rounded-full bg-slate-100/90 hover:bg-purple-50 hover:text-[#6424C7] hover:border-purple-200 border border-transparent px-3.5 py-1.5 text-xs font-semibold text-slate-700 transition-all cursor-pointer select-none active:scale-[0.98]"
-          >
-            {chip}
-          </button>
-        ))}
+      <div className="mb-8 pr-2 sm:pr-28 md:pr-48">
+        <div className="flex items-center gap-1.5 text-xs font-bold text-slate-400 mb-2 select-none">
+          <HelpCircle className="h-3.5 w-3.5 text-[#6424C7]" />
+          <span>Popular Questions:</span>
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          {INITIAL_SUGGESTION_CHIPS.map((chip) => (
+            <button
+              key={chip}
+              type="button"
+              onClick={(e) => {
+                // Prevent any default focus jumping that might trigger page scroll
+                e.preventDefault();
+                handleSendMessage(chip);
+              }}
+              className="rounded-full bg-slate-100 hover:bg-purple-50 hover:text-[#6424C7] hover:border-purple-200/80 border border-slate-200/70 px-3.5 py-1.5 text-xs font-semibold text-slate-700 transition-all cursor-pointer select-none active:scale-[0.98] shadow-2xs"
+            >
+              {chip}
+            </button>
+          ))}
+        </div>
       </div>
 
-      {/* ChatGPT-style Terminal / Container */}
-      <div className="relative rounded-3xl border border-slate-200/90 bg-slate-50/50 shadow-sm overflow-hidden flex flex-col min-h-[460px] max-h-[640px]">
+      {/* Relative Wrapper with Girl Pointing Down Illustration at Top-Right */}
+      <div className="relative">
         
-        {/* Chat Control Bar */}
-        <div className="flex items-center justify-between border-b border-slate-200/80 bg-white/90 backdrop-blur-md px-5 py-3 select-none">
-          <div className="flex items-center gap-2">
-            <div className="h-2.5 w-2.5 rounded-full bg-emerald-500" />
-            <span className="text-xs font-bold text-slate-700">Fintaraa Loan Model v2.4</span>
-            <span className="text-[11px] text-slate-400 font-medium hidden sm:inline">
-              • Trained on RBI Fair Lending Norms
-            </span>
+        {/* Girl illustration perched on top right, pointing fingers down into the chat terminal */}
+        <div className="absolute -top-24 sm:-top-32 md:-top-40 right-2 sm:right-6 md:right-10 w-28 sm:w-36 md:w-48 pointer-events-none z-20 select-none">
+          <div className="relative">
+            {/* Playful Floating Speech Bubble */}
+            <div className="absolute -top-6 sm:-top-8 -left-12 sm:-left-16 bg-white/95 backdrop-blur-md border border-purple-200/90 rounded-2xl px-3 py-1 text-[11px] font-black text-[#6424C7] shadow-md flex items-center gap-1.5 whitespace-nowrap animate-bounce [animation-duration:3s]">
+              <span>Ask me anything! 👇</span>
+            </div>
+
+            <Image
+              src="/assets/hero/hero_girlmobileview.png"
+              alt="Fintaraa Loan Advisor pointing down to chat window"
+              width={1145}
+              height={1374}
+              className="w-full h-auto object-contain drop-shadow-[0_20px_35px_rgba(100,36,199,0.25)]"
+              priority
+            />
           </div>
-          <button
-            type="button"
-            onClick={handleReset}
-            className="flex items-center gap-1 text-xs font-semibold text-slate-500 hover:text-[#6424C7] transition-colors cursor-pointer"
-          >
-            <RotateCcw className="h-3.5 w-3.5" />
-            <span>Reset Chat</span>
-          </button>
         </div>
 
-        {/* Message Log */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 [scrollbar-width:thin]">
-          {messages.map((msg) => {
-            const isAi = msg.sender === "ai";
+        {/* Enhanced ChatGPT-style Terminal Container */}
+        <div className="relative rounded-3xl border border-purple-200/80 bg-white shadow-[0_16px_48px_-12px_rgba(100,36,199,0.14)] overflow-hidden flex flex-col min-h-[460px] max-h-[640px]">
+          
+          {/* Top Control Bar */}
+          <div className="flex items-center justify-between border-b border-slate-200/80 bg-slate-50/80 backdrop-blur-md px-5 py-3 select-none">
+            <div className="flex items-center gap-2">
+              <div className="h-2.5 w-2.5 rounded-full bg-emerald-500" />
+              <span className="text-xs font-bold text-slate-800">Fintaraa Loan Model v2.4</span>
+              <span className="text-[11px] text-slate-500 font-medium hidden sm:inline">
+                • Trained on RBI Fair Lending Norms &amp; 50+ Bank Policies
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={handleReset}
+              className="flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-[#6424C7] transition-colors cursor-pointer"
+            >
+              <RotateCcw className="h-3.5 w-3.5" />
+              <span>Reset Chat</span>
+            </button>
+          </div>
 
-            return (
-              <div
-                key={msg.id}
-                className={`flex items-start gap-3 sm:gap-4 ${
-                  isAi ? "justify-start" : "justify-end"
-                }`}
-              >
-                {/* AI Avatar */}
-                {isAi && (
-                  <div className="flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-tr from-[#6424C7] to-purple-600 text-white shadow-sm mt-0.5">
-                    <Bot className="h-4 w-4 sm:h-5 sm:w-5" />
-                  </div>
-                )}
+          {/* Internal Message Log (Only this container scrolls internally, NEVER the window) */}
+          <div
+            ref={chatLogContainerRef}
+            tabIndex={-1}
+            className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 [scrollbar-width:thin] focus:outline-none"
+          >
+            {messages.map((msg) => {
+              const isAi = msg.sender === "ai";
 
-                {/* Bubble Container */}
+              return (
                 <div
-                  className={`max-w-[85%] sm:max-w-[78%] rounded-2xl p-4 sm:p-5 text-sm leading-relaxed ${
-                    isAi
-                      ? "bg-white border border-slate-200/80 text-slate-800 shadow-2xs"
-                      : "bg-[#6424C7] text-white shadow-sm"
+                  key={msg.id}
+                  className={`flex items-start gap-3 sm:gap-4 ${
+                    isAi ? "justify-start" : "justify-end"
                   }`}
                 >
-                  {/* Message Text with simple bold parser */}
-                  <div className="font-normal text-xs sm:text-sm">
-                    {msg.text.split(/(\*\*.*?\*\*)/g).map((chunk, i) => {
-                      if (chunk.startsWith("**") && chunk.endsWith("**")) {
-                        return (
-                          <strong key={i} className="font-bold">
-                            {chunk.slice(2, -2)}
-                          </strong>
-                        );
-                      }
-                      return chunk;
-                    })}
-                  </div>
-
-                  {/* Structured Key Points (if present) */}
-                  {msg.keyPoints && msg.keyPoints.length > 0 && (
-                    <div className="mt-3.5 pt-3 border-t border-slate-100 space-y-1.5">
-                      {msg.keyPoints.map((point, pIdx) => (
-                        <div key={pIdx} className="flex items-start gap-2 text-xs text-slate-600">
-                          <span className="h-1.5 w-1.5 rounded-full bg-[#6424C7] shrink-0 mt-1.5" />
-                          <span>{point}</span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* Interactive Action & Copy Footer */}
+                  {/* AI Avatar */}
                   {isAi && (
-                    <div className="mt-4 pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3">
-                      {msg.ctaText && msg.ctaHref ? (
-                        <a
-                          href={msg.ctaHref}
-                          className="inline-flex items-center gap-1.5 text-xs font-bold text-[#6424C7] hover:text-[#521eb0] transition-colors"
-                        >
-                          <span>{msg.ctaText}</span>
-                          <ArrowRight className="h-3.5 w-3.5" />
-                        </a>
-                      ) : (
-                        <AuthRedirectLink
-                          href={applyHref}
-                          productSlug="personal-loan"
-                          className="inline-flex items-center gap-1.5 text-xs font-bold text-[#6424C7] hover:text-[#521eb0] transition-colors"
-                        >
-                          <span>Check Free Pre-Approved Offers</span>
-                          <ArrowRight className="h-3.5 w-3.5" />
-                        </AuthRedirectLink>
-                      )}
+                    <div className="flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-tr from-[#6424C7] to-purple-600 text-white shadow-sm mt-0.5">
+                      <Bot className="h-4 w-4 sm:h-5 sm:w-5" />
+                    </div>
+                  )}
 
-                      <button
-                        type="button"
-                        onClick={() => handleCopy(msg.text, msg.id)}
-                        className="flex items-center gap-1 text-[11px] font-semibold text-slate-400 hover:text-slate-600 transition-colors cursor-pointer select-none"
-                      >
-                        {copiedId === msg.id ? (
-                          <>
-                            <Check className="h-3 w-3 text-emerald-600" />
-                            <span className="text-emerald-600 font-bold">Copied</span>
-                          </>
+                  {/* Bubble Container */}
+                  <div
+                    className={`max-w-[88%] sm:max-w-[80%] rounded-2xl p-4 sm:p-5 text-sm leading-relaxed ${
+                      isAi
+                        ? "bg-white border border-slate-200/90 text-slate-800 shadow-2xs"
+                        : "bg-gradient-to-r from-[#6424C7] to-[#7c3aed] text-white shadow-md"
+                    }`}
+                  >
+                    {/* Message Text with simple bold parser */}
+                    <div className="font-normal text-xs sm:text-sm">
+                      {msg.text.split(/(\*\*.*?\*\*)/g).map((chunk, i) => {
+                        if (chunk.startsWith("**") && chunk.endsWith("**")) {
+                          return (
+                            <strong key={i} className="font-bold">
+                              {chunk.slice(2, -2)}
+                            </strong>
+                          );
+                        }
+                        return chunk;
+                      })}
+                    </div>
+
+                    {/* Structured Key Points (if present) */}
+                    {msg.keyPoints && msg.keyPoints.length > 0 && (
+                      <div className="mt-3.5 pt-3 border-t border-slate-100 space-y-1.5">
+                        {msg.keyPoints.map((point, pIdx) => (
+                          <div key={pIdx} className="flex items-start gap-2 text-xs text-slate-600">
+                            <span className="h-1.5 w-1.5 rounded-full bg-[#6424C7] shrink-0 mt-1.5" />
+                            <span>{point}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Interactive Action & Copy Footer */}
+                    {isAi && (
+                      <div className="mt-4 pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3">
+                        {msg.ctaText && msg.ctaHref ? (
+                          <a
+                            href={msg.ctaHref}
+                            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#6424C7] hover:text-[#521eb0] transition-colors"
+                          >
+                            <span>{msg.ctaText}</span>
+                            <ArrowRight className="h-3.5 w-3.5" />
+                          </a>
                         ) : (
-                          <>
-                            <Copy className="h-3 w-3" />
-                            <span>Copy</span>
-                          </>
+                          <AuthRedirectLink
+                            href={applyHref}
+                            productSlug="personal-loan"
+                            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#6424C7] hover:text-[#521eb0] transition-colors"
+                          >
+                            <span>Check Free Pre-Approved Offers</span>
+                            <ArrowRight className="h-3.5 w-3.5" />
+                          </AuthRedirectLink>
                         )}
-                      </button>
+
+                        <button
+                          type="button"
+                          onClick={() => handleCopy(msg.text, msg.id)}
+                          className="flex items-center gap-1 text-[11px] font-semibold text-slate-400 hover:text-slate-600 transition-colors cursor-pointer select-none"
+                        >
+                          {copiedId === msg.id ? (
+                            <>
+                              <Check className="h-3 w-3 text-emerald-600" />
+                              <span className="text-emerald-600 font-bold">Copied</span>
+                            </>
+                          ) : (
+                            <>
+                              <Copy className="h-3 w-3" />
+                              <span>Copy</span>
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* User Avatar */}
+                  {!isAi && (
+                    <div className="flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-xl bg-slate-200 text-slate-700 shadow-sm mt-0.5">
+                      <User className="h-4 w-4 sm:h-5 sm:w-5" />
                     </div>
                   )}
                 </div>
+              );
+            })}
 
-                {/* User Avatar */}
-                {!isAi && (
-                  <div className="flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-xl bg-slate-200 text-slate-700 shadow-sm mt-0.5">
-                    <User className="h-4 w-4 sm:h-5 sm:w-5" />
+            {/* Typing Indicator */}
+            {isTyping && (
+              <div className="flex items-center gap-3">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-gradient-to-tr from-[#6424C7] to-purple-600 text-white">
+                  <Bot className="h-4 w-4" />
+                </div>
+                <div className="rounded-2xl bg-white border border-slate-200/90 px-4 py-3 shadow-2xs">
+                  <div className="flex items-center gap-1.5">
+                    <span className="h-2 w-2 rounded-full bg-[#6424C7] animate-bounce [animation-delay:-0.3s]" />
+                    <span className="h-2 w-2 rounded-full bg-[#6424C7] animate-bounce [animation-delay:-0.15s]" />
+                    <span className="h-2 w-2 rounded-full bg-[#6424C7] animate-bounce" />
                   </div>
-                )}
-              </div>
-            );
-          })}
-
-          {/* Typing Indicator */}
-          {isTyping && (
-            <div className="flex items-center gap-3">
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-gradient-to-tr from-[#6424C7] to-purple-600 text-white">
-                <Bot className="h-4 w-4" />
-              </div>
-              <div className="rounded-2xl bg-white border border-slate-200/80 px-4 py-3 shadow-2xs">
-                <div className="flex items-center gap-1.5">
-                  <span className="h-2 w-2 rounded-full bg-[#6424C7] animate-bounce [animation-delay:-0.3s]" />
-                  <span className="h-2 w-2 rounded-full bg-[#6424C7] animate-bounce [animation-delay:-0.15s]" />
-                  <span className="h-2 w-2 rounded-full bg-[#6424C7] animate-bounce" />
                 </div>
               </div>
-            </div>
-          )}
-
-          <div ref={chatBottomRef} />
-        </div>
-
-        {/* Input Bar (ChatGPT Styled) */}
-        <div className="border-t border-slate-200/80 bg-white p-3 sm:p-4">
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleSendMessage(inputQuery);
-            }}
-            className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-slate-50/70 px-4 py-2 focus-within:border-[#6424C7] focus-within:bg-white focus-within:ring-2 focus-within:ring-purple-100 transition-all shadow-xs"
-          >
-            <Sparkles className="h-4 w-4 text-[#6424C7] shrink-0" />
-            <input
-              type="text"
-              value={inputQuery}
-              onChange={(e) => setInputQuery(e.target.value)}
-              placeholder="Ask any question about loans without hesitation (e.g. Can I get a loan with 680 CIBIL score?)..."
-              className="w-full bg-transparent text-xs sm:text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none"
-            />
-            <button
-              type="submit"
-              disabled={!inputQuery.trim() || isTyping}
-              className={`flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-xl transition-all cursor-pointer ${
-                inputQuery.trim() && !isTyping
-                  ? "bg-[#6424C7] text-white hover:bg-[#521eb0] shadow-sm"
-                  : "bg-slate-200 text-slate-400 cursor-not-allowed"
-              }`}
-            >
-              <Send className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-            </button>
-          </form>
-          <div className="mt-2 text-center text-[10.5px] text-slate-400 font-medium select-none">
-            Fintaraa AI provides informational financial insights. Actual loan terms are subject to institutional bank underwriting.
+            )}
           </div>
-        </div>
 
+          {/* Input Bar (ChatGPT Styled) */}
+          <div className="border-t border-slate-200/80 bg-white p-3 sm:p-4">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSendMessage(inputQuery);
+              }}
+              className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-slate-50/80 px-4 py-2.5 focus-within:border-[#6424C7] focus-within:bg-white focus-within:ring-2 focus-within:ring-purple-100 transition-all shadow-xs"
+            >
+              <Sparkles className="h-4 w-4 text-[#6424C7] shrink-0" />
+              <input
+                type="text"
+                value={inputQuery}
+                onChange={(e) => setInputQuery(e.target.value)}
+                placeholder="Ask any question about loans without hesitation (e.g. Can I get a loan with 680 CIBIL score?)..."
+                className="w-full bg-transparent text-xs sm:text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none"
+              />
+              <button
+                type="submit"
+                disabled={!inputQuery.trim() || isTyping}
+                className={`flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-xl transition-all cursor-pointer ${
+                  inputQuery.trim() && !isTyping
+                    ? "bg-[#6424C7] text-white hover:bg-[#521eb0] shadow-sm active:scale-95"
+                    : "bg-slate-200 text-slate-400 cursor-not-allowed"
+                }`}
+              >
+                <Send className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+              </button>
+            </form>
+            <div className="mt-2 text-center text-[10.5px] text-slate-400 font-medium select-none">
+              Fintaraa AI provides instant informational insights. Formal loan approvals are subject to bank underwriting.
+            </div>
+          </div>
+
+        </div>
       </div>
     </section>
   );
