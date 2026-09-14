@@ -8,7 +8,6 @@ import {
   X,
   Send,
   CheckCheck,
-  Sparkles,
   ShieldCheck,
 } from "lucide-react";
 import { isUserLoggedIn } from "@/hooks/authStorage";
@@ -61,7 +60,6 @@ export function MobileActionBar() {
   );
 
   const [isChatOpen, setIsChatOpen] = useState(false);
-  const [showBubble, setShowBubble] = useState(true);
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
@@ -137,60 +135,7 @@ export function MobileActionBar() {
         hasCardApplyBar ? "bottom-24 lg:bottom-16" : "bottom-14 sm:bottom-16"
       }`}
     >
-      {/* ── 1. FLOATING SPEECH BUBBLE (Visible when chat is closed) ── */}
-      <AnimatePresence>
-        {!isChatOpen && showBubble && (
-          <motion.div
-            initial={{ opacity: 1, y: 0, scale: 1 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 10, scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-            className="relative mb-2.5 max-w-[270px] sm:max-w-[290px] cursor-pointer"
-            onClick={() => setIsChatOpen(true)}
-          >
-            <div className="relative rounded-2xl bg-white p-3 pr-8 shadow-[0_8px_30px_rgba(0,0,0,0.18)] border border-slate-100 transition-all hover:shadow-[0_12px_36px_rgba(37,211,102,0.22)]">
-              {/* Dismiss button */}
-              <button
-                type="button"
-                aria-label="Dismiss message"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setShowBubble(false);
-                }}
-                className="absolute top-2 right-2 flex h-5 w-5 items-center justify-center rounded-full text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition"
-              >
-                <X className="h-3 w-3" />
-              </button>
-
-              <div className="flex items-start gap-2.5">
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#25D366]/15 text-[#128C4B]">
-                  <Sparkles className="h-4 w-4 fill-[#25D366] text-[#128C4B]" />
-                </span>
-                <div>
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-[#128C4B] flex items-center gap-1">
-                    <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#25D366] animate-ping" />
-                    Special Offer
-                  </p>
-                  <p className="mt-0.5 text-[12.5px] font-bold leading-snug text-slate-800">
-                    Hi, We have a personalized offer for you
-                  </p>
-                  <p className="mt-1 text-[11px] font-medium text-[#128C4B] flex items-center gap-1">
-                    Tap to chat &amp; claim →
-                  </p>
-                </div>
-              </div>
-
-              {/* Chat bubble pointer tail pointing to the floating button */}
-              <div
-                className="absolute -bottom-1.5 right-6 h-3 w-3 rotate-45 bg-white border-r border-b border-slate-100"
-                aria-hidden="true"
-              />
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* ── 2. INTERACTIVE CHAT WINDOW POPUP ── */}
+      {/* ── 1. INTERACTIVE CHAT WINDOW POPUP ── */}
       <AnimatePresence>
         {isChatOpen && (
           <motion.div
@@ -198,21 +143,21 @@ export function MobileActionBar() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ type: "spring", stiffness: 360, damping: 28 }}
-            className="mb-3 w-[340px] sm:w-[370px] max-w-[calc(100vw-24px)] rounded-2xl bg-white shadow-[0_20px_60px_rgba(0,0,0,0.30)] border border-slate-200 overflow-hidden flex flex-col"
+            className="mb-3 w-[340px] sm:w-[370px] max-w-[calc(100vw-24px)] rounded-2xl bg-white shadow-[0_20px_60px_rgba(0,0,0,0.30)] border border-slate-200 overflow-hidden flex flex-col font-normal"
             style={{ height: "470px", maxHeight: "78vh" }}
           >
             {/* Window Header */}
-            <div className="bg-[#075E54] px-4 py-3 text-white flex items-center justify-between">
+            <div className="bg-[#075E54] px-4 py-3 text-white flex items-center justify-between font-normal">
               <div className="flex items-center gap-2.5">
                 <div className="relative">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#075E54] font-black text-sm shadow-inner">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#075E54] font-normal text-sm shadow-inner">
                     F
                   </div>
                   <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full bg-[#25D366] ring-2 ring-[#075E54]" />
                 </div>
                 <div>
                   <div className="flex items-center gap-1.5">
-                    <h3 className="text-[14px] font-bold leading-tight">
+                    <h3 className="text-[14px] font-normal leading-tight">
                       Fintaraa Advisory
                     </h3>
                     <ShieldCheck className="h-3.5 w-3.5 text-[#25D366]" />
@@ -244,7 +189,7 @@ export function MobileActionBar() {
             >
               {/* Date pill */}
               <div className="flex justify-center">
-                <span className="rounded-md bg-white/90 px-2.5 py-0.5 text-[10px] font-semibold text-slate-500 shadow-xs uppercase tracking-wider">
+                <span className="rounded-md bg-white/90 px-2.5 py-0.5 text-[10px] font-normal text-slate-500 shadow-xs uppercase tracking-wider">
                   TODAY
                 </span>
               </div>
@@ -278,7 +223,7 @@ export function MobileActionBar() {
 
               {/* Quick Prompt Chips */}
               <div className="pt-2">
-                <p className="text-[10.5px] font-bold text-slate-500 mb-1.5">
+                <p className="text-[10.5px] font-normal text-slate-500 mb-1.5">
                   Frequently Asked:
                 </p>
                 <div className="flex flex-wrap gap-1.5">
@@ -287,7 +232,7 @@ export function MobileActionBar() {
                       key={opt}
                       type="button"
                       onClick={() => handleSendMessage(opt)}
-                      className="rounded-full bg-white border border-[#25D366]/40 px-2.5 py-1 text-[11px] font-semibold text-[#128C4B] hover:bg-[#25D366]/10 transition shadow-2xs cursor-pointer"
+                      className="rounded-full bg-white border border-[#25D366]/40 px-2.5 py-1 text-[11px] font-normal text-[#128C4B] hover:bg-[#25D366]/10 transition shadow-2xs cursor-pointer"
                     >
                       {opt}
                     </button>
@@ -331,24 +276,59 @@ export function MobileActionBar() {
         )}
       </AnimatePresence>
 
-      {/* ── 3. MAIN FLOATING WHATSAPP BUTTON ── */}
-      <button
+      {/* ── 2. MAIN FLOATING WHATSAPP BUTTON WITH CONTINUOUS POPUP TRANSITION ── */}
+      <motion.button
         type="button"
         onClick={() => setIsChatOpen((prev) => !prev)}
         aria-label={isChatOpen ? "Close WhatsApp Chat" : "Open WhatsApp Chat"}
         data-analytics-category="whatsapp"
         data-analytics-name="Floating WhatsApp Widget"
         data-analytics-placement="floating_contact"
-        className="group relative flex h-13 w-13 sm:h-14 sm:w-14 items-center justify-center rounded-full border-2 border-white bg-[linear-gradient(135deg,#25D366_0%,#128C4B_100%)] text-white shadow-[0_10px_32px_rgba(18,140,75,0.40)] transition hover:-translate-y-1 hover:shadow-[0_14px_38px_rgba(18,140,75,0.50)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1ebe5a] cursor-pointer"
+        animate={
+          isChatOpen
+            ? { scale: 1, y: 0 }
+            : {
+                scale: [1, 1.08, 1, 1.04, 1],
+                y: [0, -6, 0, -3, 0],
+              }
+        }
+        transition={
+          isChatOpen
+            ? { duration: 0.2 }
+            : {
+                duration: 2.8,
+                repeat: Infinity,
+                repeatType: "loop",
+                ease: "easeInOut",
+              }
+        }
+        whileHover={{ scale: 1.12, y: -2 }}
+        whileTap={{ scale: 0.92 }}
+        className="group relative flex h-13 w-13 sm:h-14 sm:w-14 items-center justify-center rounded-full border-2 border-white bg-[linear-gradient(135deg,#25D366_0%,#128C4B_100%)] text-white shadow-[0_10px_32px_rgba(18,140,75,0.40)] hover:shadow-[0_14px_38px_rgba(18,140,75,0.50)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1ebe5a] cursor-pointer"
       >
-        <span className="absolute -inset-1 -z-10 animate-pulse rounded-full bg-[#25D366]/35 blur-[3px] motion-reduce:animate-none" />
+        {!isChatOpen && (
+          <>
+            <span className="absolute -inset-1.5 -z-10 animate-ping rounded-full bg-[#25D366]/40 opacity-75 [animation-duration:2.4s]" />
+            <span className="absolute -inset-1 -z-10 animate-pulse rounded-full bg-[#25D366]/30 blur-[4px]" />
+          </>
+        )}
 
         {isChatOpen ? (
           <X className="h-6 w-6 transition-transform duration-200 group-hover:rotate-90" />
         ) : (
-          <MessageCircle className="h-6 w-6 sm:h-7 sm:w-7 transition-transform duration-200 group-hover:scale-110" />
+          <motion.div
+            animate={{ rotate: [0, -8, 8, -4, 4, 0] }}
+            transition={{
+              duration: 2.8,
+              repeat: Infinity,
+              repeatDelay: 0.8,
+              ease: "easeInOut",
+            }}
+          >
+            <MessageCircle className="h-6 w-6 sm:h-7 sm:w-7 transition-transform duration-200 group-hover:scale-110" />
+          </motion.div>
         )}
-      </button>
+      </motion.button>
     </aside>
   );
 }
