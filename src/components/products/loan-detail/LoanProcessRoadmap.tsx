@@ -89,9 +89,9 @@ export function LoanProcessRoadmap({
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="max-w-3xl mb-16 sm:mb-20">
-          <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-extrabold tracking-tight text-gray-950 leading-[1.15]">
+          <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-normal tracking-tight text-gray-950 leading-[1.15]">
             Get Your {productName} in{" "}
-            <span className="bg-gradient-to-r from-[#6424C7] to-purple-600 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-[#6424C7] to-purple-600 bg-clip-text text-transparent font-normal">
               3 Simple Steps
             </span>
           </h2>
@@ -112,7 +112,7 @@ export function LoanProcessRoadmap({
                 <div className="lg:col-span-4 flex flex-col items-start">
                   <div className="flex items-center gap-3">
                     <span
-                      className="flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-2xl text-xl sm:text-2xl font-black text-white shadow-lg"
+                      className="flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-2xl text-xl sm:text-2xl font-normal text-white shadow-lg"
                       style={{
                         background:
                           index === 0
@@ -125,21 +125,21 @@ export function LoanProcessRoadmap({
                       {stepItem.step}
                     </span>
                     <div>
-                      <span className="block text-xs font-extrabold tracking-wider uppercase text-[#6424C7]">
+                      <span className="block text-xs font-normal tracking-wider uppercase text-[#6424C7]">
                         {stepItem.phase}
                       </span>
-                      <span className="inline-flex items-center gap-1.5 text-xs font-bold text-gray-500 mt-0.5">
+                      <span className="inline-flex items-center gap-1.5 text-xs font-normal text-gray-500 mt-0.5">
                         <Clock className="h-3 w-3 text-gray-400" />
                         {stepItem.duration}
                       </span>
                     </div>
                   </div>
 
-                  <h3 className="mt-4 text-xl sm:text-2xl font-extrabold text-gray-950 leading-tight">
+                  <h3 className="mt-4 text-xl sm:text-2xl font-normal text-gray-950 leading-tight">
                     {stepItem.title}
                   </h3>
 
-                  <div className="mt-2 text-xs font-bold text-[#6424C7] bg-purple-50 px-2.5 py-1 rounded-lg inline-block">
+                  <div className="mt-2 text-xs font-normal text-[#6424C7] bg-purple-50 px-2.5 py-1 rounded-lg inline-block">
                     {stepItem.headline}
                   </div>
                 </div>
@@ -152,13 +152,13 @@ export function LoanProcessRoadmap({
 
                   {/* Checklist of What Happens in this Step */}
                   <div className="mt-5 space-y-2.5 bg-white rounded-2xl p-5 sm:p-6 border border-gray-100/90 shadow-2xs">
-                    <h4 className="text-xs font-extrabold uppercase tracking-wider text-gray-400 mb-2">
+                    <h4 className="text-xs font-normal uppercase tracking-wider text-gray-400 mb-2">
                       Key Highlights &amp; Process Checklist
                     </h4>
                     {stepItem.whatHappens.map((item) => (
                       <div key={item} className="flex items-start gap-3">
                         <CheckCircle2 className="h-4.5 w-4.5 text-emerald-600 shrink-0 mt-0.5" />
-                        <span className="text-[13.5px] sm:text-[14px] text-gray-700 font-medium leading-relaxed">
+                        <span className="text-[13.5px] sm:text-[14px] text-gray-700 font-normal leading-relaxed">
                           {item}
                         </span>
                       </div>
@@ -166,8 +166,8 @@ export function LoanProcessRoadmap({
                   </div>
 
                   {/* Pro Tip Callout */}
-                  <div className="mt-4 rounded-xl bg-slate-100/80 px-4 py-3 text-xs text-gray-600 font-medium">
-                    <span className="font-bold text-gray-900 mr-1">Pro Tip:</span>
+                  <div className="mt-4 rounded-xl bg-slate-100/80 px-4 py-3 text-xs text-gray-600 font-normal">
+                    <span className="font-normal text-gray-900 mr-1">Pro Tip:</span>
                     {stepItem.proTip}
                   </div>
                 </div>
@@ -179,16 +179,16 @@ export function LoanProcessRoadmap({
         {/* Action Bar */}
         <div className="mt-16 sm:mt-20 pt-8 border-t border-gray-200/80 flex flex-col sm:flex-row items-center justify-between gap-6">
           <div>
-            <h4 className="text-lg font-bold text-gray-950">
+            <h4 className="text-lg font-normal text-gray-950">
               Ready to Check Your Pre-Approved Personal Loan Offers?
             </h4>
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-gray-500 font-normal mt-1">
               Takes only 2 minutes • 100% Free • Zero impact on your credit score
             </p>
           </div>
           <Link
             href={applyHref}
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#6424C7] hover:bg-[#521eb0] text-white font-bold text-[14px] px-8 py-3.5 shadow-lg hover:shadow-xl transition-all hover:scale-[1.01] active:scale-98 shrink-0 cursor-pointer"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#6424C7] hover:bg-[#521eb0] text-white font-normal text-[14px] px-8 py-3.5 shadow-lg hover:shadow-xl transition-all hover:scale-[1.01] active:scale-98 shrink-0 cursor-pointer"
           >
             <span>Start Your 2-Min Application</span>
             <ArrowRight className="h-4.5 w-4.5" />

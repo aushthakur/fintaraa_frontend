@@ -26,13 +26,13 @@ export function CreditScoreSection() {
         <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#2e1065] via-[#3b0764] to-[#4c1d95] p-5 sm:p-7 text-white shadow-md">
           <div className="grid gap-6 lg:grid-cols-12 lg:items-center">
             {/* Left: 7 Cols */}
-            <div className="lg:col-span-7">
-              <div className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-2.5 py-0.5 text-[10.5px] font-medium uppercase tracking-wider text-[#ddd6fe]">
+            <div className="lg:col-span-7 font-normal">
+              <div className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-2.5 py-0.5 text-[10.5px] font-normal uppercase tracking-wider text-[#ddd6fe]">
                 <ShieldCheck className="h-3 w-3 text-[#a78bfa]" />
                 Official Bureau Partner Data
               </div>
 
-              <h2 className="mt-2.5 text-[22px] font-semibold leading-tight sm:text-[28px] md:text-[32px]">
+              <h2 className="mt-2.5 text-[22px] font-normal leading-tight sm:text-[28px] md:text-[32px]">
                 Know Your Credit Score.{" "}
                 <span className="text-[#c4b5fd]">
                   Know Your Financial Power.
@@ -44,11 +44,11 @@ export function CreditScoreSection() {
               </p>
 
               {/* Bureau Badges */}
-              <div className="mt-4 flex flex-wrap items-center gap-2">
+              <div className="mt-4 flex flex-wrap items-center gap-2 font-normal">
                 {bureauLogos.map((bureau) => (
                   <span
                     key={bureau.label}
-                    className="flex h-6.5 items-center rounded-md bg-white/95 px-2 text-[10px] font-semibold tracking-tight"
+                    className="flex h-6.5 items-center rounded-md bg-white/95 px-2 text-[10px] font-normal tracking-tight"
                   >
                     <span className={bureau.color}>{bureau.label}</span>
                   </span>
@@ -56,16 +56,16 @@ export function CreditScoreSection() {
               </div>
 
               {/* CTAs */}
-              <div className="mt-5 flex flex-wrap items-center gap-3">
+              <div className="mt-5 flex flex-wrap items-center gap-3 font-normal">
                 <Link
                   href="/cibil-score"
-                  className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-white px-5 text-[13px] font-medium text-[#4c1d95] shadow-sm transition hover:bg-[#f5f3ff] active:scale-[0.98]"
+                  className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-white px-5 text-[13px] font-normal text-[#4c1d95] shadow-sm transition hover:bg-[#f5f3ff] active:scale-[0.98]"
                 >
                   Check Credit Score
                   <ArrowRight className="h-3.5 w-3.5" />
                 </Link>
 
-                <div className="flex items-center gap-1.5 text-[12px] font-medium text-white/80">
+                <div className="flex items-center gap-1.5 text-[12px] font-normal text-white/80">
                   <Star className="h-3.5 w-3.5 fill-[#facc15] text-[#facc15]" />
                   <span>100% Free • No Impact on Score</span>
                 </div>

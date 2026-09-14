@@ -79,7 +79,7 @@ export function LoanOtherProducts() {
           </h2>
           <Link
             href="/products"
-            className="inline-flex shrink-0 items-center gap-1 text-[14px] font-bold text-[#5b21b6] no-underline transition-colors hover:text-[#4c1d95]"
+            className="inline-flex shrink-0 items-center gap-1 text-[14px] font-normal text-[#5b21b6] no-underline transition-colors hover:text-[#4c1d95]"
           >
             View All
             <span className="text-[15px] font-light">→</span>
@@ -103,7 +103,7 @@ export function LoanOtherProducts() {
                   className="h-12 w-12"
                 />
               </div>
-              <h3 className="mt-5 text-[14px] font-bold tracking-tight text-[#0f172a]">
+              <h3 className="mt-5 text-[14px] font-normal tracking-tight text-[#0f172a]">
                 {bank.title}
               </h3>
             </Link>

@@ -83,38 +83,38 @@ export function LoanFeesChargesSection({
     >
       {/* Header */}
       <div className="max-w-3xl mb-12">
-        <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
+        <h2 className="text-3xl sm:text-4xl font-normal tracking-tight text-slate-900">
           Fees &amp; Charges for <span className="text-[#5b21b6]">{page.loanType || "Personal Loan"}</span>
         </h2>
-        <p className="mt-3 text-base text-slate-600 leading-relaxed">
+        <p className="mt-3 text-base text-slate-600 leading-relaxed font-normal">
           At Fintaraa, transparency is our core promise. We ensure you receive a standardized Key Fact Statement (KFS) detailing every rupee charged, with zero hidden costs or undisclosed upfront deductions.
         </p>
       </div>
 
       {/* Borderless, Editorial Fee Table */}
       <div className="w-full overflow-x-auto">
-        <table className="w-full min-w-[720px] text-left border-collapse">
+        <table className="w-full min-w-[720px] text-left border-collapse font-normal">
           <thead>
-            <tr className="border-b-2 border-slate-200 text-xs font-bold uppercase tracking-wider text-slate-500">
-              <th className="py-4 pr-6 w-[25%]">Fee Category</th>
-              <th className="py-4 pr-6 w-[25%] text-[#5b21b6]">Standard Applicable Rate</th>
-              <th className="py-4 pr-6 w-[20%]">Frequency</th>
-              <th className="py-4 w-[30%]">Details &amp; Regulatory Terms</th>
+            <tr className="border-b-2 border-slate-200 text-xs font-normal uppercase tracking-wider text-slate-500">
+              <th className="py-4 pr-6 w-[25%] font-normal">Fee Category</th>
+              <th className="py-4 pr-6 w-[25%] text-[#5b21b6] font-normal">Standard Applicable Rate</th>
+              <th className="py-4 pr-6 w-[20%] font-normal">Frequency</th>
+              <th className="py-4 w-[30%] font-normal">Details &amp; Regulatory Terms</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100 text-sm">
+          <tbody className="divide-y divide-slate-100 text-sm font-normal">
             {feeItems.map((item) => (
               <tr key={item.feeName} className="hover:bg-purple-50/20 transition-colors">
-                <td className="py-5 pr-6 font-bold text-slate-900">
+                <td className="py-5 pr-6 font-normal text-slate-900">
                   {item.feeName}
                 </td>
-                <td className="py-5 pr-6 font-bold text-[#5b21b6]">
+                <td className="py-5 pr-6 font-normal text-[#5b21b6]">
                   {item.charge}
                 </td>
-                <td className="py-5 pr-6 font-medium text-slate-500 text-xs sm:text-sm">
+                <td className="py-5 pr-6 font-normal text-slate-500 text-xs sm:text-sm">
                   {item.frequency}
                 </td>
-                <td className="py-5 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                <td className="py-5 text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
                   {item.details}
                 </td>
               </tr>
@@ -124,16 +124,16 @@ export function LoanFeesChargesSection({
       </div>
 
       {/* RBI Regulatory Compliance Note & KFS (Key Fact Statement) */}
-      <div className="mt-12 pt-8 border-t border-slate-200 grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="mt-12 pt-8 border-t border-slate-200 grid grid-cols-1 md:grid-cols-2 gap-8 font-normal">
         <div className="flex items-start gap-4">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-purple-100 text-[#5b21b6]">
             <FileSpreadsheet className="h-5 w-5" />
           </div>
           <div>
-            <h4 className="text-base font-bold text-slate-900">
+            <h4 className="text-base font-normal text-slate-900">
               Mandatory Key Fact Statement (KFS)
             </h4>
-            <p className="mt-1.5 text-xs sm:text-sm text-slate-600 leading-relaxed">
+            <p className="mt-1.5 text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
               Every loan sanctioned through Fintaraa includes an RBI-mandated Key Fact Statement. It outlines your Annual Percentage Rate (APR), total interest over tenure, net disbursed amount, and explicit fee schedule before you sign.
             </p>
           </div>
@@ -144,10 +144,10 @@ export function LoanFeesChargesSection({
             <ShieldCheck className="h-5 w-5" />
           </div>
           <div>
-            <h4 className="text-base font-bold text-slate-900">
+            <h4 className="text-base font-normal text-slate-900">
               Fair Lending Practice Guarantee
             </h4>
-            <p className="mt-1.5 text-xs sm:text-sm text-slate-600 leading-relaxed">
+            <p className="mt-1.5 text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
               No usurious rates, surprise insurance bundling, or compounding penalty fees. We partner only with RBI-regulated Scheduled Commercial Banks and NBFCs adhering strictly to ethical digital lending guidelines.
             </p>
           </div>
@@ -155,7 +155,7 @@ export function LoanFeesChargesSection({
       </div>
 
       {/* Tips to Save on Fees */}
-      <div className="mt-8 pt-6 border-t border-slate-100 flex flex-wrap items-center gap-y-3 gap-x-8 text-xs text-slate-500 font-medium">
+      <div className="mt-8 pt-6 border-t border-slate-100 flex flex-wrap items-center gap-y-3 gap-x-8 text-xs text-slate-500 font-normal">
         <div className="flex items-center gap-1.5">
           <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
           <span>Keep sufficient balance on EMI due date to avoid NACH bounce fees</span>

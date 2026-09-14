@@ -204,7 +204,7 @@ export function Testimonials() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
           <div>
-            <h2 className="text-2xl sm:text-3xl lg:text-[36px] font-semibold text-gray-900 tracking-tight leading-tight">
+            <h2 className="text-2xl sm:text-3xl lg:text-[36px] font-normal text-gray-900 tracking-tight leading-tight">
               Customer <span style={{ color: "#6424C7" }}>Stories</span>
             </h2>
             <p className="mt-2 text-[14px] sm:text-[15px] font-normal text-gray-500 leading-relaxed">
@@ -213,7 +213,7 @@ export function Testimonials() {
           </div>
           <Link
             href="/testimonials"
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-full px-5 text-[12.5px] font-medium text-white transition-all shadow-sm hover:shadow-md hover:scale-[1.02] shrink-0"
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-full px-5 text-[12.5px] font-normal text-white transition-all shadow-sm hover:shadow-md hover:scale-[1.02] shrink-0"
             style={{ background: "linear-gradient(135deg, #6424C7, #9b5de5)" }}
           >
             View All Stories
@@ -224,7 +224,7 @@ export function Testimonials() {
         {/* Mask Carousel Viewport Container Frame */}
         <div
           ref={containerRef}
-          className="relative w-full overflow-hidden py-4"
+          className="relative w-full overflow-hidden py-4 font-normal"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
@@ -240,20 +240,20 @@ export function Testimonials() {
             dragElastic={0.05}
             onDragStart={() => setIsPaused(true)}
             onDragEnd={() => setIsPaused(false)}
-            className="flex gap-6 w-max cursor-grab active:cursor-grabbing"
+            className="flex gap-6 w-max cursor-grab active:cursor-grabbing font-normal"
           >
             {duplicatedTestimonials.map((item, index) => (
               <article
                 key={`testimonial-card-${item.slug}-${index}`}
-                className="w-80 shrink-0 rounded-2xl border border-white/60 bg-white/60 p-6 flex flex-col justify-start select-none shadow-[0_8px_30px_rgba(91,33,182,0.04)] backdrop-blur-xl sm:w-95 md:w-105"
+                className="w-80 shrink-0 rounded-2xl border border-white/60 bg-white/60 p-6 flex flex-col justify-start select-none shadow-[0_8px_30px_rgba(91,33,182,0.04)] backdrop-blur-xl sm:w-95 md:w-105 font-normal"
               >
                 {/* Meta Layout Row */}
-                <div className="flex items-start justify-between gap-4 pointer-events-none">
+                <div className="flex items-start justify-between gap-4 pointer-events-none font-normal">
                   <div className="min-w-0">
-                    <h3 className="text-[16px] font-semibold text-[#07162d] leading-tight">
+                    <h3 className="text-[16px] font-normal text-[#07162d] leading-tight">
                       {item.authorName || item.title}
                     </h3>
-                    <p className="text-[12px] font-medium text-[#8090a4] mt-0.5">
+                    <p className="text-[12px] font-normal text-[#8090a4] mt-0.5">
                       {item.location}
                     </p>
                   </div>
@@ -272,16 +272,16 @@ export function Testimonials() {
                 </div>
 
                 {/* Review Body */}
-                <p className="mt-5 text-[14px] font-semibold leading-relaxed text-[#52657d] whitespace-normal pointer-events-none">
+                <p className="mt-5 text-[14px] font-normal leading-relaxed text-[#52657d] whitespace-normal pointer-events-none">
                   {item.summary}
                 </p>
 
                 {item.tags?.length ? (
-                  <div className="mt-5 flex flex-wrap gap-2 pointer-events-none">
+                  <div className="mt-5 flex flex-wrap gap-2 pointer-events-none font-normal">
                     {item.tags.slice(0, 4).map((tag) => (
                       <span
                         key={tag}
-                        className="text-[11px] font-semibold text-[#087443]"
+                        className="text-[11px] font-normal text-[#087443]"
                       >
                         {tag}
                       </span>

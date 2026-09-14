@@ -580,13 +580,13 @@ export function LoanHeroSection({ page }: { page: LoanSeoPageData }) {
           </div>
 
           {/* ── Slide Header / Eyebrow Pill ── */}
-          <div className="relative z-10 flex items-center justify-between gap-2">
-            <div className="inline-flex items-center gap-2 rounded-full bg-white/20 backdrop-blur-md px-3.5 py-1.5 text-[12px] font-bold text-white border border-white/30 shadow-xs">
+          <div className="relative z-10 flex items-center justify-between gap-2 font-normal">
+            <div className="inline-flex items-center gap-2 rounded-full bg-white/20 backdrop-blur-md px-3.5 py-1.5 text-[12px] font-normal text-white border border-white/30 shadow-xs">
               <Sparkles className="h-3.5 w-3.5 text-yellow-300" />
               <span>{slides[currentSlide].badge}</span>
             </div>
 
-            <div className="flex items-center gap-1.5 rounded-full bg-black/40 backdrop-blur-md px-2.5 py-1 text-[11px] font-bold text-white/90 border border-white/15">
+            <div className="flex items-center gap-1.5 rounded-full bg-black/40 backdrop-blur-md px-2.5 py-1 text-[11px] font-normal text-white/90 border border-white/15">
               <span>{currentSlide + 1}</span>
               <span className="text-white/50">/</span>
               <span className="text-white/60">{slides.length}</span>
@@ -594,7 +594,7 @@ export function LoanHeroSection({ page }: { page: LoanSeoPageData }) {
           </div>
 
           {/* ── Slide Core Content ── */}
-          <div className="relative z-10 my-auto py-6 sm:py-8 max-w-2xl">
+          <div className="relative z-10 my-auto py-6 sm:py-8 max-w-2xl font-normal">
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentSlide}
@@ -604,7 +604,7 @@ export function LoanHeroSection({ page }: { page: LoanSeoPageData }) {
                 transition={{ duration: 0.4, ease: "easeOut" }}
               >
                 {/* Main Headline */}
-                <h1 className="text-2xl sm:text-3xl lg:text-[36px] font-extrabold tracking-tight leading-[1.18] drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
+                <h1 className="text-2xl sm:text-3xl lg:text-[36px] font-normal tracking-tight leading-[1.18] drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
                   {slides[currentSlide].title}{" "}
                   <span className="block mt-1 bg-gradient-to-r from-yellow-300 via-purple-200 to-white bg-clip-text text-transparent">
                     {slides[currentSlide].highlight}
@@ -621,7 +621,7 @@ export function LoanHeroSection({ page }: { page: LoanSeoPageData }) {
                   {slides[currentSlide].chips.map((chip) => (
                     <div
                       key={chip}
-                      className="flex items-center gap-1.5 rounded-xl bg-white/15 backdrop-blur-md px-3 py-1.5 text-[11.5px] sm:text-[12px] font-semibold text-white border border-white/20 shadow-2xs"
+                      className="flex items-center gap-1.5 rounded-xl bg-white/15 backdrop-blur-md px-3 py-1.5 text-[11.5px] sm:text-[12px] font-normal text-white border border-white/20 shadow-2xs"
                     >
                       <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 shrink-0" />
                       <span>{chip}</span>
@@ -630,10 +630,10 @@ export function LoanHeroSection({ page }: { page: LoanSeoPageData }) {
                 </div>
 
                 {/* ── CTA BUTTON WITH CONTINUOUS SHINE EFFECT ── */}
-                <div className="mt-7 flex flex-wrap items-center gap-4">
+                <div className="mt-7 flex flex-wrap items-center gap-4 font-normal">
                   <Link
                     href={applyHref}
-                    className="btn-continuous-shine inline-flex items-center justify-center gap-2.5 rounded-xl px-8 py-4 text-[14.5px] font-bold text-white shadow-xl transition-all duration-200 hover:scale-[1.02] hover:shadow-[0_12px_28px_rgba(100,36,199,0.55)] active:scale-98 cursor-pointer"
+                    className="btn-continuous-shine inline-flex items-center justify-center gap-2.5 rounded-xl px-8 py-4 text-[14.5px] font-normal text-white shadow-xl transition-all duration-200 hover:scale-[1.02] hover:shadow-[0_12px_28px_rgba(100,36,199,0.55)] active:scale-98 cursor-pointer"
                     style={{
                       background:
                         "linear-gradient(135deg, #8b5cf6 0%, #6424c7 50%, #4c1d95 100%)",
@@ -643,7 +643,7 @@ export function LoanHeroSection({ page }: { page: LoanSeoPageData }) {
                     <ArrowRight className="h-4.5 w-4.5 transition-transform duration-200 group-hover:translate-x-1" />
                   </Link>
 
-                  <div className="flex items-center gap-2 text-[12.5px] font-medium text-gray-300">
+                  <div className="flex items-center gap-2 text-[12.5px] font-normal text-gray-300">
                     <Clock className="h-4 w-4 text-purple-300" />
                     <span>Decision in 3 mins</span>
                   </div>
@@ -697,21 +697,21 @@ export function LoanHeroSection({ page }: { page: LoanSeoPageData }) {
             RIGHT: LOAN ESTIMATOR AS INTEGRATED PAGE INPUT (NOT A FORM)
             Clean, spacious, interactive direct page inputs + calculations
            ══════════════════════════════════════════════════════════════ */}
-        <div className="lg:col-span-5 flex flex-col justify-center py-6 sm:py-8 lg:py-10 px-4 sm:px-7 lg:px-9 xl:px-12 bg-gradient-to-br from-slate-50/80 via-white to-purple-50/30">
+        <div className="lg:col-span-5 flex flex-col justify-center py-6 sm:py-8 lg:py-10 px-4 sm:px-7 lg:px-9 xl:px-12 bg-gradient-to-br from-slate-50/80 via-white to-purple-50/30 font-normal">
           <div className="w-full max-w-[480px] mx-auto lg:mx-0">
             {/* Estimator Header Banner */}
             <div className="flex items-center justify-between border-b border-gray-200/80 pb-3 mb-3.5">
               <div>
-                <h2 className="text-[17px] sm:text-[19px] font-bold text-gray-950 leading-tight">
+                <h2 className="text-[17px] sm:text-[19px] font-normal text-gray-950 leading-tight">
                   Quick {page.loanType} Estimator
                 </h2>
                 <p className="text-[11px] sm:text-[11.5px] font-normal text-gray-500 mt-0.5">
                   Real-time installment preview
                 </p>
               </div>
-              <div className="shrink-0 whitespace-nowrap inline-flex items-center gap-1.5 rounded-full bg-purple-50 border border-purple-200/80 px-2.5 sm:px-3 py-1 text-[11px] sm:text-[11.5px] font-bold text-[#6424C7]">
+              <div className="shrink-0 whitespace-nowrap inline-flex items-center gap-1.5 rounded-full bg-purple-50 border border-purple-200/80 px-2.5 sm:px-3 py-1 text-[11px] sm:text-[11.5px] font-normal text-[#6424C7]">
                 <span className="h-1.5 w-1.5 rounded-full bg-[#6424C7] animate-pulse shrink-0" />
-                <span className="whitespace-nowrap">From {effectiveRate.toFixed(2)}%* p.a.</span>
+                <span className="whitespace-nowrap font-normal">From {effectiveRate.toFixed(2)}%* p.a.</span>
               </div>
             </div>
 
@@ -720,7 +720,7 @@ export function LoanHeroSection({ page }: { page: LoanSeoPageData }) {
               <button
                 type="button"
                 onClick={() => setEmploymentType("salaried")}
-                className={`flex-1 py-1.5 px-3 rounded-lg text-[12px] font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                className={`flex-1 py-1.5 px-3 rounded-lg text-[12px] font-normal transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                   employmentType === "salaried"
                     ? "bg-[#6424C7] text-white shadow-xs"
                     : "text-gray-600 hover:text-gray-900"
@@ -741,7 +741,7 @@ export function LoanHeroSection({ page }: { page: LoanSeoPageData }) {
               <button
                 type="button"
                 onClick={() => setEmploymentType("self-employed")}
-                className={`flex-1 py-1.5 px-3 rounded-lg text-[12px] font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                className={`flex-1 py-1.5 px-3 rounded-lg text-[12px] font-normal transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                   employmentType === "self-employed"
                     ? "bg-[#6424C7] text-white shadow-xs"
                     : "text-gray-600 hover:text-gray-900"
@@ -762,15 +762,15 @@ export function LoanHeroSection({ page }: { page: LoanSeoPageData }) {
             </div>
 
             {/* ── 1. Loan Amount: Direct Input Box (No badges, No scroller) ── */}
-            <div className="mb-2.5">
-              <div className="flex items-center justify-between mb-1 text-xs font-semibold text-gray-700">
+            <div className="mb-2.5 font-normal">
+              <div className="flex items-center justify-between mb-1 text-xs font-normal text-gray-700">
                 <label htmlFor="loan-amount-input">Required Loan Amount</label>
-                <span className="text-[11.5px] font-bold text-[#6424C7]">
+                <span className="text-[11.5px] font-normal text-[#6424C7]">
                   {fmtShort(amount)}
                 </span>
               </div>
               <div className="relative flex items-center rounded-xl border border-gray-200/90 bg-[#f8fafc] hover:bg-[#f1f5f9] focus-within:bg-white focus-within:border-[#6424C7] focus-within:ring-2 focus-within:ring-[#6424C7]/20 transition-all px-3 py-2">
-                <span className="text-gray-500 font-extrabold text-[15px] mr-2 select-none">
+                <span className="text-gray-500 font-normal text-[15px] mr-2 select-none">
                   ₹
                 </span>
                 <input
@@ -785,10 +785,10 @@ export function LoanHeroSection({ page }: { page: LoanSeoPageData }) {
                     if (e.key === "Enter") handleAmountBlur();
                   }}
                   placeholder="Enter amount, e.g. 5,00,000"
-                  className="w-full bg-transparent text-[14.5px] font-extrabold text-gray-900 outline-none tabular-nums placeholder:text-gray-400 placeholder:font-normal"
+                  className="w-full bg-transparent text-[14.5px] font-normal text-gray-900 outline-none tabular-nums placeholder:text-gray-400 placeholder:font-normal"
                   aria-label="Required Loan Amount"
                 />
-                <span className="text-[10.5px] text-gray-400 shrink-0 select-none">
+                <span className="text-[10.5px] text-gray-400 shrink-0 select-none font-normal">
                   Max {fmtShort(range.maxAmount)}
                 </span>
               </div>
@@ -796,8 +796,8 @@ export function LoanHeroSection({ page }: { page: LoanSeoPageData }) {
 
             {/* ── 2. Employment Details: Salaried (Company Tier Banks) vs Self-Employed ── */}
             {employmentType === "salaried" ? (
-              <div className="mb-2.5" ref={companyDropdownRef}>
-                <div className="flex items-center justify-between mb-1 text-xs font-semibold text-gray-700">
+              <div className="mb-2.5 font-normal" ref={companyDropdownRef}>
+                <div className="flex items-center justify-between mb-1 text-xs font-normal text-gray-700">
                   <span>Employer / Company</span>
                   {/* Category Pills */}
                   <div className="flex items-center gap-1">
@@ -807,7 +807,7 @@ export function LoanHeroSection({ page }: { page: LoanSeoPageData }) {
                         setSelectedCategory(1);
                         setCompanySearchQuery("Genpact India");
                       }}
-                      className={`rounded-md px-1.5 py-0.5 text-[9px] font-bold transition-all cursor-pointer ${
+                      className={`rounded-md px-1.5 py-0.5 text-[9px] font-normal transition-all cursor-pointer ${
                         selectedCategory === 1
                           ? "bg-emerald-600 text-white shadow-xs"
                           : "bg-gray-100 text-gray-600 hover:bg-emerald-50 hover:text-emerald-700"
@@ -822,7 +822,7 @@ export function LoanHeroSection({ page }: { page: LoanSeoPageData }) {
                         setSelectedCategory(2);
                         setCompanySearchQuery("Zomato Ltd");
                       }}
-                      className={`rounded-md px-1.5 py-0.5 text-[9px] font-bold transition-all cursor-pointer ${
+                      className={`rounded-md px-1.5 py-0.5 text-[9px] font-normal transition-all cursor-pointer ${
                         selectedCategory === 2
                           ? "bg-blue-600 text-white shadow-xs"
                           : "bg-gray-100 text-gray-600 hover:bg-blue-50 hover:text-blue-700"
@@ -837,7 +837,7 @@ export function LoanHeroSection({ page }: { page: LoanSeoPageData }) {
                         setSelectedCategory(3);
                         setCompanySearchQuery("Custom / Unlisted Company");
                       }}
-                      className={`rounded-md px-1.5 py-0.5 text-[9px] font-bold transition-all cursor-pointer ${
+                      className={`rounded-md px-1.5 py-0.5 text-[9px] font-normal transition-all cursor-pointer ${
                         selectedCategory === 3
                           ? "bg-amber-600 text-white shadow-xs"
                           : "bg-gray-100 text-gray-600 hover:bg-amber-50 hover:text-amber-700"
@@ -859,17 +859,17 @@ export function LoanHeroSection({ page }: { page: LoanSeoPageData }) {
                       onFocus={() => setIsCompanyDropdownOpen(true)}
                       onChange={(e) => handleCompanySearchChange(e.target.value)}
                       placeholder="Type company (e.g. Genpact, TCS, or custom employer)..."
-                      className="w-full bg-transparent text-[13px] font-bold text-gray-900 outline-none placeholder:text-gray-400 placeholder:font-normal"
+                      className="w-full bg-transparent text-[13px] font-normal text-gray-900 outline-none placeholder:text-gray-400 placeholder:font-normal"
                     />
                     <ChevronDown className="h-3.5 w-3.5 text-gray-400 ml-1 shrink-0" />
                   </div>
 
                   {/* Autocomplete dropdown */}
                   {isCompanyDropdownOpen && (
-                    <div className="absolute left-0 right-0 top-full mt-1 z-50 max-h-48 overflow-y-auto rounded-xl border border-purple-100 bg-white p-1 shadow-xl">
-                      <div className="px-2 py-1 text-[10px] font-extrabold uppercase tracking-wider text-gray-400 border-b border-gray-100 flex items-center justify-between">
+                    <div className="absolute left-0 right-0 top-full mt-1 z-50 max-h-48 overflow-y-auto rounded-xl border border-purple-100 bg-white p-1 shadow-xl font-normal">
+                      <div className="px-2 py-1 text-[10px] font-normal uppercase tracking-wider text-gray-400 border-b border-gray-100 flex items-center justify-between">
                         <span>Select Company &amp; Category</span>
-                        <span className="text-[9px] text-[#6424C7] font-semibold">
+                        <span className="text-[9px] text-[#6424C7] font-normal">
                           Determines Bank Availability
                         </span>
                       </div>
@@ -882,13 +882,13 @@ export function LoanHeroSection({ page }: { page: LoanSeoPageData }) {
                             setSelectedCategory(comp.category);
                             setIsCompanyDropdownOpen(false);
                           }}
-                          className="w-full flex items-center justify-between rounded-lg px-2.5 py-1.5 text-left text-[12px] hover:bg-purple-50 transition-colors cursor-pointer"
+                          className="w-full flex items-center justify-between rounded-lg px-2.5 py-1.5 text-left text-[12px] hover:bg-purple-50 transition-colors cursor-pointer font-normal"
                         >
-                          <span className="font-semibold text-gray-800 truncate">
+                          <span className="font-normal text-gray-800 truncate">
                             {comp.name}
                           </span>
                           <span
-                            className={`text-[9px] font-bold px-1.5 py-0.5 rounded shrink-0 ml-2 ${
+                            className={`text-[9px] font-normal px-1.5 py-0.5 rounded shrink-0 ml-2 ${
                               comp.category === 1
                                 ? "bg-emerald-50 text-emerald-700 border border-emerald-200/60"
                                 : comp.category === 2
@@ -910,7 +910,7 @@ export function LoanHeroSection({ page }: { page: LoanSeoPageData }) {
 
                 {/* Dynamic Banks List Based on Company Tier */}
                 <div
-                  className={`mt-2 rounded-xl border p-2 transition-all ${
+                  className={`mt-2 rounded-xl border p-2 transition-all font-normal ${
                     selectedCategory === 1
                       ? "bg-emerald-50/40 border-emerald-100"
                       : selectedCategory === 2
@@ -918,31 +918,31 @@ export function LoanHeroSection({ page }: { page: LoanSeoPageData }) {
                       : "bg-amber-50/50 border-amber-200/70"
                   }`}
                 >
-                  <div className="flex items-center justify-between text-[10.5px] font-semibold mb-1">
+                  <div className="flex items-center justify-between text-[10.5px] font-normal mb-1">
                     <div className="flex items-center gap-1.5 truncate">
                       {selectedCategory === 1 ? (
-                        <span className="inline-flex items-center gap-1 text-emerald-800 font-bold">
+                        <span className="inline-flex items-center gap-1 text-emerald-800 font-normal">
                           <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
                           All Banks Provide Loans Easily (Cat 1: Genpact / MNC)
                         </span>
                       ) : selectedCategory === 2 ? (
-                        <span className="inline-flex items-center gap-1 text-blue-800 font-bold">
+                        <span className="inline-flex items-center gap-1 text-blue-800 font-normal">
                           <CheckCircle2 className="h-3.5 w-3.5 text-blue-600 shrink-0" />
                           Most Top Banks &amp; NBFCs Approve (Cat 2: Growth)
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 text-amber-800 font-bold">
+                        <span className="inline-flex items-center gap-1 text-amber-800 font-normal">
                           <AlertCircle className="h-3.5 w-3.5 text-amber-600 shrink-0" />
                           Few Banks Only Provide Loan (Custom / Unlisted)
                         </span>
                       )}
                     </div>
-                    <span className="text-[#6424C7] font-bold shrink-0 ml-1">
+                    <span className="text-[#6424C7] font-normal shrink-0 ml-1">
                       {categoryConfig[selectedCategory].rate.toFixed(2)}%* p.a.
                     </span>
                   </div>
 
-                  <p className="text-[10px] text-gray-600 mb-1.5 leading-tight">
+                  <p className="text-[10px] text-gray-600 mb-1.5 leading-tight font-normal">
                     {categoryConfig[selectedCategory].approvalNote}
                   </p>
 
@@ -964,7 +964,7 @@ export function LoanHeroSection({ page }: { page: LoanSeoPageData }) {
                             className="object-contain"
                           />
                         </div>
-                        <span className="text-[9px] font-extrabold text-[#6424C7] mt-0.5 leading-none">
+                        <span className="text-[9px] font-normal text-[#6424C7] mt-0.5 leading-none">
                           {b.rate}
                         </span>
                       </div>
@@ -974,23 +974,23 @@ export function LoanHeroSection({ page }: { page: LoanSeoPageData }) {
               </div>
             ) : (
               /* ── Self-Employed Flow ── */
-              <div className="mb-2.5">
-                <div className="flex items-center justify-between mb-1 text-xs font-semibold text-gray-700">
+              <div className="mb-2.5 font-normal">
+                <div className="flex items-center justify-between mb-1 text-xs font-normal text-gray-700">
                   <span>Profession / Business Type</span>
-                  <span className="text-[10px] font-bold text-[#6424C7]">
+                  <span className="text-[10px] font-normal text-[#6424C7]">
                     ITR &amp; Banking Based
                   </span>
                 </div>
                 {/* 4 Profession Buttons */}
-                <div className="grid grid-cols-2 gap-1.5 mb-2">
+                <div className="grid grid-cols-2 gap-1.5 mb-2 font-normal">
                   {selfEmployedConfig.professions.map((prof) => (
                     <button
                       key={prof}
                       type="button"
                       onClick={() => setSelfEmployedProfession(prof)}
-                      className={`px-2 py-1.5 rounded-lg text-left text-[11px] font-semibold transition-all cursor-pointer border ${
+                      className={`px-2 py-1.5 rounded-lg text-left text-[11px] font-normal transition-all cursor-pointer border ${
                         selfEmployedProfession === prof
-                          ? "bg-purple-50 border-[#6424C7] text-[#6424C7] font-bold shadow-2xs"
+                          ? "bg-purple-50 border-[#6424C7] text-[#6424C7] shadow-2xs"
                           : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
                       }`}
                     >
@@ -1000,17 +1000,17 @@ export function LoanHeroSection({ page }: { page: LoanSeoPageData }) {
                 </div>
 
                 {/* Self-Employed Matched Banks */}
-                <div className="rounded-xl bg-purple-50/60 border border-purple-100 p-2">
-                  <div className="flex items-center justify-between text-[10.5px] font-semibold mb-1">
-                    <span className="text-gray-800 font-bold flex items-center gap-1">
+                <div className="rounded-xl bg-purple-50/60 border border-purple-100 p-2 font-normal">
+                  <div className="flex items-center justify-between text-[10.5px] font-normal mb-1">
+                    <span className="text-gray-800 font-normal flex items-center gap-1">
                       <Briefcase className="h-3 w-3 text-[#6424C7]" />
                       Self-Employed Loan Partners:
                     </span>
-                    <span className="text-[#6424C7] font-bold">
+                    <span className="text-[#6424C7] font-normal">
                       {selfEmployedConfig.rate.toFixed(2)}%* p.a.
                     </span>
                   </div>
-                  <p className="text-[10px] text-gray-600 mb-1.5 leading-tight">
+                  <p className="text-[10px] text-gray-600 mb-1.5 leading-tight font-normal">
                     {selfEmployedConfig.approvalNote}
                   </p>
                   <div className="grid grid-cols-4 gap-1.5">
@@ -1027,7 +1027,7 @@ export function LoanHeroSection({ page }: { page: LoanSeoPageData }) {
                             className="object-contain"
                           />
                         </div>
-                        <span className="text-[9px] font-extrabold text-[#6424C7] mt-0.5 leading-none">
+                        <span className="text-[9px] font-normal text-[#6424C7] mt-0.5 leading-none">
                           {b.rate}
                         </span>
                       </div>
@@ -1038,10 +1038,10 @@ export function LoanHeroSection({ page }: { page: LoanSeoPageData }) {
             )}
 
             {/* ── 3. Repayment Period (No scroller, only 1, 2, 3, 5, 7 Years options) ── */}
-            <div className="mb-2.5">
-              <div className="flex items-center justify-between text-xs font-semibold text-gray-700 mb-1">
+            <div className="mb-2.5 font-normal">
+              <div className="flex items-center justify-between text-xs font-normal text-gray-700 mb-1">
                 <span>Repayment Period</span>
-                <span className="text-[#6424C7] font-bold text-[11.5px]">
+                <span className="text-[#6424C7] font-normal text-[11.5px]">
                   {tenureYears} {tenureYears === 1 ? "Year" : "Years"} ({tenureYears * 12} Mos)
                 </span>
               </div>
@@ -1051,7 +1051,7 @@ export function LoanHeroSection({ page }: { page: LoanSeoPageData }) {
                     key={t}
                     type="button"
                     onClick={() => setTenureYears(t)}
-                    className={`py-1.5 rounded-xl text-center text-[11.5px] font-bold transition-all cursor-pointer ${
+                    className={`py-1.5 rounded-xl text-center text-[11.5px] font-normal transition-all cursor-pointer ${
                       tenureYears === t
                         ? "bg-[#6424C7] text-white shadow-xs scale-[1.02]"
                         : "bg-gray-100/90 text-gray-700 hover:bg-purple-50 hover:text-[#6424C7] border border-gray-200/80"
@@ -1064,13 +1064,13 @@ export function LoanHeroSection({ page }: { page: LoanSeoPageData }) {
             </div>
 
             {/* ── 4. Estimated Monthly EMI: Compact, tight, space-efficient ── */}
-            <div className="rounded-xl bg-gradient-to-r from-purple-50/70 via-slate-50 to-white border border-purple-100/90 p-2 sm:p-2.5 mb-2.5 shadow-2xs">
+            <div className="rounded-xl bg-gradient-to-r from-purple-50/70 via-slate-50 to-white border border-purple-100/90 p-2 sm:p-2.5 mb-2.5 shadow-2xs font-normal">
               <div className="flex items-center justify-between">
                 <div>
-                  <span className="text-[9px] font-extrabold uppercase tracking-wider text-gray-400">
+                  <span className="text-[9px] font-normal uppercase tracking-wider text-gray-400">
                     Estimated Monthly EMI
                   </span>
-                  <div className="text-[18px] sm:text-[20px] font-extrabold text-[#6424C7] tabular-nums leading-tight">
+                  <div className="text-[18px] sm:text-[20px] font-normal text-[#6424C7] tabular-nums leading-tight">
                     {fmtCurrency(emiCalc.emi)}
                     <span className="text-[10.5px] font-normal text-gray-500 ml-1">
                       /mo
@@ -1078,13 +1078,13 @@ export function LoanHeroSection({ page }: { page: LoanSeoPageData }) {
                   </div>
                 </div>
                 <div className="text-right">
-                  <span className="text-[9px] font-extrabold uppercase tracking-wider text-gray-400">
+                  <span className="text-[9px] font-normal uppercase tracking-wider text-gray-400">
                     Total Repayable
                   </span>
-                  <div className="text-[13px] font-bold text-gray-900 tabular-nums leading-tight">
+                  <div className="text-[13px] font-normal text-gray-900 tabular-nums leading-tight">
                     {fmtCurrency(emiCalc.total)}
                   </div>
-                  <span className="text-[9.5px] text-gray-500">
+                  <span className="text-[9.5px] text-gray-500 font-normal">
                     Interest: {fmtCurrency(emiCalc.interest)}
                   </span>
                 </div>
@@ -1109,7 +1109,7 @@ export function LoanHeroSection({ page }: { page: LoanSeoPageData }) {
                   ? companySearchQuery
                   : selfEmployedProfession
               )}&category=${employmentType === "salaried" ? selectedCategory : 0}`}
-              className="inline-flex w-full items-center justify-center gap-2 rounded-xl py-3 text-[14px] font-bold text-white shadow-md transition-all hover:shadow-lg hover:scale-[1.01] active:scale-98 no-underline cursor-pointer"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-xl py-3 text-[14px] font-normal text-white shadow-md transition-all hover:shadow-lg hover:scale-[1.01] active:scale-98 no-underline cursor-pointer"
               style={{
                 background:
                   "linear-gradient(135deg, #7c3aed 0%, #6424C7 50%, #4c1d95 100%)",
@@ -1119,7 +1119,7 @@ export function LoanHeroSection({ page }: { page: LoanSeoPageData }) {
               <ArrowRight className="h-4 w-4" />
             </Link>
 
-            <div className="mt-2 flex items-center justify-center gap-3 text-[10.5px] font-medium text-gray-500">
+            <div className="mt-2 flex items-center justify-center gap-3 text-[10.5px] font-normal text-gray-500">
               <span className="flex items-center gap-1">
                 <LockKeyhole className="h-3 w-3 text-emerald-600" />
                 100% Free

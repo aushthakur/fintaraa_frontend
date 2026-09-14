@@ -57,7 +57,7 @@ export function LoanDetailPage({
   const faqTitle = `Frequently Asked Questions About ${page.loanType}`;
 
   return (
-    <main className="overflow-visible bg-white text-[#1f2329]">
+    <main className="overflow-visible bg-white text-[#1f2329] font-normal">
       {/* 1. Hero Section with Carousel and Live Amount/Company Estimator */}
       <LoanHeroSection page={page} />
 

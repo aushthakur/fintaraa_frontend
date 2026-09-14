@@ -45,11 +45,11 @@ export function LoanStatsBar() {
                 <div className="flex h-11 w-11 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl bg-purple-50 text-[#6424C7] transition-transform duration-300 group-hover:scale-105 border border-purple-100/60">
                   <IconComponent className="h-5 w-5 sm:h-5.5 sm:w-5.5" strokeWidth={2} />
                 </div>
-                <div className="min-w-0">
-                  <div className="text-[18px] sm:text-[22px] font-bold text-gray-900 tracking-tight leading-tight tabular-nums">
+                <div className="min-w-0 font-normal">
+                  <div className="text-[18px] sm:text-[22px] font-normal text-gray-900 tracking-tight leading-tight tabular-nums">
                     <AnimatedCounter value={stat.value} />
                   </div>
-                  <p className="text-[12px] sm:text-[13px] font-semibold text-gray-800 leading-snug">
+                  <p className="text-[12px] sm:text-[13px] font-normal text-gray-800 leading-snug">
                     {stat.label}
                   </p>
                   <p className="text-[10.5px] sm:text-[11px] font-normal text-gray-400">

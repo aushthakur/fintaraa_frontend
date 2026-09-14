@@ -29,10 +29,10 @@ export function LoanDocumentsRequired({
     >
       {/* Header */}
       <div className="max-w-3xl mb-12">
-        <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
+        <h2 className="text-3xl sm:text-4xl font-normal tracking-tight text-slate-900">
           Documents Required for <span className="text-[#5b21b6]">{page.loanType || "Personal Loan"}</span>
         </h2>
-        <p className="mt-3 text-base text-slate-600 leading-relaxed">
+        <p className="mt-3 text-base text-slate-600 leading-relaxed font-normal">
           Enjoy 100% paperless approval through DigiLocker and RBI-regulated Account Aggregators. Keep soft copies ready or verify instantly with Aadhaar OTP without branch visits.
         </p>
       </div>
@@ -47,55 +47,55 @@ export function LoanDocumentsRequired({
               <Briefcase className="h-5 w-5" />
             </div>
             <div>
-              <h3 className="text-xl font-bold text-slate-900">For Salaried Applicants</h3>
-              <p className="text-xs text-slate-500 font-medium">MNCs, Listed Public Ltd, Pvt Ltd, and Government Employees</p>
+              <h3 className="text-xl font-normal text-slate-900">For Salaried Applicants</h3>
+              <p className="text-xs text-slate-500 font-normal">MNCs, Listed Public Ltd, Pvt Ltd, and Government Employees</p>
             </div>
           </div>
 
           <div className="mt-6 space-y-6">
             <div className="flex items-start gap-4">
-              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-purple-100 text-[#5b21b6] text-xs font-bold mt-0.5">
+              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-purple-100 text-[#5b21b6] text-xs font-normal mt-0.5">
                 1
               </span>
               <div>
-                <h4 className="text-sm font-bold text-slate-900">Proof of Identity & Address (KYC)</h4>
-                <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">
+                <h4 className="text-sm font-normal text-slate-900">Proof of Identity & Address (KYC)</h4>
+                <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed font-normal">
                   PAN Card (mandatory) along with Aadhaar Card (linked to active mobile number for e-KYC), Passport, or Voter ID.
                 </p>
               </div>
             </div>
 
             <div className="flex items-start gap-4">
-              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-purple-100 text-[#5b21b6] text-xs font-bold mt-0.5">
+              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-purple-100 text-[#5b21b6] text-xs font-normal mt-0.5">
                 2
               </span>
               <div>
-                <h4 className="text-sm font-bold text-slate-900">Proof of Income</h4>
-                <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">
+                <h4 className="text-sm font-normal text-slate-900">Proof of Income</h4>
+                <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed font-normal">
                   Latest 3 months salary slips reflecting employee name, basic pay, deductions, and employer name.
                 </p>
               </div>
             </div>
 
             <div className="flex items-start gap-4">
-              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-purple-100 text-[#5b21b6] text-xs font-bold mt-0.5">
+              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-purple-100 text-[#5b21b6] text-xs font-normal mt-0.5">
                 3
               </span>
               <div>
-                <h4 className="text-sm font-bold text-slate-900">Salary Account Bank Statements</h4>
-                <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">
+                <h4 className="text-sm font-normal text-slate-900">Salary Account Bank Statements</h4>
+                <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed font-normal">
                   Latest 3 to 6 months bank statement showing regular monthly salary credits. Easily authenticated in 10 seconds via Account Aggregator OTP.
                 </p>
               </div>
             </div>
 
             <div className="flex items-start gap-4">
-              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-purple-100 text-[#5b21b6] text-xs font-bold mt-0.5">
+              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-purple-100 text-[#5b21b6] text-xs font-normal mt-0.5">
                 4
               </span>
               <div>
-                <h4 className="text-sm font-bold text-slate-900">Employment Verification</h4>
-                <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">
+                <h4 className="text-sm font-normal text-slate-900">Employment Verification</h4>
+                <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed font-normal">
                   Company ID card, official work email OTP verification, or Form 16 (Part A & B) for the recent assessment year.
                 </p>
               </div>
@@ -110,55 +110,55 @@ export function LoanDocumentsRequired({
               <Building2 className="h-5 w-5" />
             </div>
             <div>
-              <h3 className="text-xl font-bold text-slate-900">For Self-Employed & Professionals</h3>
-              <p className="text-xs text-slate-500 font-medium">Business Owners, Doctors, CAs, Architects & Consultants</p>
+              <h3 className="text-xl font-normal text-slate-900">For Self-Employed & Professionals</h3>
+              <p className="text-xs text-slate-500 font-normal">Business Owners, Doctors, CAs, Architects & Consultants</p>
             </div>
           </div>
 
           <div className="mt-6 space-y-6">
             <div className="flex items-start gap-4">
-              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-purple-100 text-[#5b21b6] text-xs font-bold mt-0.5">
+              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-purple-100 text-[#5b21b6] text-xs font-normal mt-0.5">
                 1
               </span>
               <div>
-                <h4 className="text-sm font-bold text-slate-900">KYC & Business Address Proof</h4>
-                <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">
+                <h4 className="text-sm font-normal text-slate-900">KYC & Business Address Proof</h4>
+                <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed font-normal">
                   PAN Card of the applicant/firm, Aadhaar Card, Passport, and registered office utility bill or lease agreement.
                 </p>
               </div>
             </div>
 
             <div className="flex items-start gap-4">
-              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-purple-100 text-[#5b21b6] text-xs font-bold mt-0.5">
+              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-purple-100 text-[#5b21b6] text-xs font-normal mt-0.5">
                 2
               </span>
               <div>
-                <h4 className="text-sm font-bold text-slate-900">Income Tax Returns (ITR)</h4>
-                <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">
+                <h4 className="text-sm font-normal text-slate-900">Income Tax Returns (ITR)</h4>
+                <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed font-normal">
                   Last 2 assessment years filed ITR along with Computation of Income, verified balance sheet, and Profit & Loss account.
                 </p>
               </div>
             </div>
 
             <div className="flex items-start gap-4">
-              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-purple-100 text-[#5b21b6] text-xs font-bold mt-0.5">
+              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-purple-100 text-[#5b21b6] text-xs font-normal mt-0.5">
                 3
               </span>
               <div>
-                <h4 className="text-sm font-bold text-slate-900">Current & Savings Bank Statements</h4>
-                <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">
+                <h4 className="text-sm font-normal text-slate-900">Current & Savings Bank Statements</h4>
+                <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed font-normal">
                   Last 6 to 12 months operative bank statements showing consistent revenue turnover and healthy average monthly balance (AMB).
                 </p>
               </div>
             </div>
 
             <div className="flex items-start gap-4">
-              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-purple-100 text-[#5b21b6] text-xs font-bold mt-0.5">
+              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-purple-100 text-[#5b21b6] text-xs font-normal mt-0.5">
                 4
               </span>
               <div>
-                <h4 className="text-sm font-bold text-slate-900">Business Continuity & Proof</h4>
-                <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">
+                <h4 className="text-sm font-normal text-slate-900">Business Continuity & Proof</h4>
+                <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed font-normal">
                   GST Registration Certificate, MSME Udyam Registration, Shop & Establishment Certificate, or Partnership Deed / MoA.
                 </p>
               </div>
@@ -176,8 +176,8 @@ export function LoanDocumentsRequired({
               <Zap className="h-5 w-5" />
             </div>
             <div>
-              <h4 className="text-sm font-bold text-slate-900">DigiLocker Verification</h4>
-              <p className="mt-1 text-xs text-slate-600 leading-relaxed">
+              <h4 className="text-sm font-normal text-slate-900">DigiLocker Verification</h4>
+              <p className="mt-1 text-xs text-slate-600 leading-relaxed font-normal">
                 Connect your DigiLocker to auto-fetch verified Aadhaar and PAN documents in under 10 seconds.
               </p>
             </div>
@@ -188,8 +188,8 @@ export function LoanDocumentsRequired({
               <Lock className="h-5 w-5" />
             </div>
             <div>
-              <h4 className="text-sm font-bold text-slate-900">Account Aggregator (AA)</h4>
-              <p className="mt-1 text-xs text-slate-600 leading-relaxed">
+              <h4 className="text-sm font-normal text-slate-900">Account Aggregator (AA)</h4>
+              <p className="mt-1 text-xs text-slate-600 leading-relaxed font-normal">
                 RBI licensed network allows instant bank statement validation without uploading unencrypted PDF passwords.
               </p>
             </div>
@@ -200,8 +200,8 @@ export function LoanDocumentsRequired({
               <ShieldCheck className="h-5 w-5" />
             </div>
             <div>
-              <h4 className="text-sm font-bold text-slate-900">256-Bit Bank-Grade Privacy</h4>
-              <p className="mt-1 text-xs text-slate-600 leading-relaxed">
+              <h4 className="text-sm font-normal text-slate-900">256-Bit Bank-Grade Privacy</h4>
+              <p className="mt-1 text-xs text-slate-600 leading-relaxed font-normal">
                 Your financial information is transmitted via encrypted bank tunnels and never stored on third-party servers.
               </p>
             </div>
@@ -210,7 +210,7 @@ export function LoanDocumentsRequired({
       </div>
 
       {/* Document Tips */}
-      <div className="mt-12 pt-6 border-t border-slate-100 flex flex-wrap items-center gap-y-3 gap-x-8 text-xs text-slate-500 font-medium">
+      <div className="mt-12 pt-6 border-t border-slate-100 flex flex-wrap items-center gap-y-3 gap-x-8 text-xs text-slate-500 font-normal">
         <div className="flex items-center gap-1.5">
           <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
           <span>Keep your Aadhaar linked to your active mobile number for OTP</span>

@@ -59,7 +59,7 @@ export function LoanVerificationSteps({
                 <p className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
                   Step {index + 1}
                 </p>
-                <h3 className="mt-0.5 text-sm font-bold text-slate-900">
+                <h3 className="mt-0.5 text-sm font-normal text-slate-900">
                   {item.title}
                 </h3>
                 <p className="mt-1 text-xs font-medium leading-relaxed text-slate-500">
@@ -73,7 +73,7 @@ export function LoanVerificationSteps({
           <AuthRedirectLink
             href={applyHref}
             productSlug={page.loanTypeSlug}
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-[#5b21b6] px-5 text-xs font-bold text-white no-underline shadow-xs transition-all hover:bg-[#4c1d95] active:scale-[0.98]"
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-[#5b21b6] px-5 text-xs font-normal text-white no-underline shadow-xs transition-all hover:bg-[#4c1d95] active:scale-[0.98]"
           >
             Start {page.loanType} Application
             <ArrowRight className="h-3.5 w-3.5" />
@@ -90,7 +90,7 @@ export function LoanVerificationSteps({
         {/* LEFT CONTAINER: VERIFICATION STEPS MATRICES */}
         <div className="space-y-8">
           <div>
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-purple-50 px-3.5 py-1 text-xs font-bold text-[#5b21b6] border border-purple-100 mb-2.5">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-purple-50 px-3.5 py-1 text-xs font-normal text-[#5b21b6] border border-purple-100 mb-2.5">
               Quick 4-Step Process
             </span>
             <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
@@ -117,7 +117,7 @@ export function LoanVerificationSteps({
                   <span className="block text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
                     {item.stepNumber}
                   </span>
-                  <h4 className="text-sm font-bold text-slate-900">
+                  <h4 className="text-sm font-normal text-slate-900">
                     {item.title}
                   </h4>
                   <p className="text-xs font-medium text-slate-500 leading-relaxed">
@@ -133,7 +133,7 @@ export function LoanVerificationSteps({
             <AuthRedirectLink
               href={applyHref}
               productSlug={page.loanTypeSlug}
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#5b21b6] px-6 text-sm font-bold text-white transition-all hover:bg-[#4c1d95] active:scale-[0.98] no-underline shadow-xs hover:shadow-md"
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#5b21b6] px-6 text-sm font-normal text-white transition-all hover:bg-[#4c1d95] active:scale-[0.98] no-underline shadow-xs hover:shadow-md"
             >
               Apply for {page.loanType}
               <ArrowRight className="h-4 w-4" strokeWidth={2.5} />

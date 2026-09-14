@@ -120,7 +120,7 @@ export function LoanTabs({
               role="tab"
               aria-selected={isSelected}
               onClick={() => scrollToSection(section.id)}
-              className={`flex h-9 shrink-0 items-center gap-1.5 rounded-full px-3.5 sm:px-4 text-xs font-bold transition-all cursor-pointer select-none ${
+              className={`flex h-9 shrink-0 items-center gap-1.5 rounded-full px-3.5 sm:px-4 text-xs font-normal transition-all cursor-pointer select-none ${
                 isSelected
                   ? "bg-[#5b21b6] text-white shadow-xs"
                   : "bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900"

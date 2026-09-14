@@ -173,9 +173,9 @@ export function LoanUseCasesSection({
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Editorial Header */}
         <div className="max-w-3xl mb-16 sm:mb-20">
-          <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-extrabold tracking-tight text-gray-950 leading-[1.15]">
+          <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-normal tracking-tight text-gray-950 leading-[1.15]">
             Personal Loan for Every{" "}
-            <span className="bg-gradient-to-r from-[#6424C7] to-purple-600 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-[#6424C7] to-purple-600 bg-clip-text text-transparent font-normal">
               Life Goal
             </span>
           </h2>
@@ -216,18 +216,18 @@ export function LoanUseCasesSection({
                     {/* Floating quick specs strip on image bottom */}
                     <div className="absolute bottom-4 left-4 right-4 sm:bottom-5 sm:left-5 sm:right-5 flex items-center justify-between rounded-2xl bg-black/60 backdrop-blur-md border border-white/20 px-4 py-2.5 text-white select-none">
                       <div>
-                        <span className="block text-[10px] uppercase font-bold text-white/70 tracking-wider">
+                        <span className="block text-[10px] uppercase font-normal text-white/70 tracking-wider">
                           Max Amount
                         </span>
-                        <span className="text-sm sm:text-base font-extrabold text-white">
+                        <span className="text-sm sm:text-base font-normal text-white">
                           {uc.amount}
                         </span>
                       </div>
                       <div className="text-right">
-                        <span className="block text-[10px] uppercase font-bold text-white/70 tracking-wider">
+                        <span className="block text-[10px] uppercase font-normal text-white/70 tracking-wider">
                           Starting Rate
                         </span>
-                        <span className="text-sm sm:text-base font-extrabold text-yellow-300">
+                        <span className="text-sm sm:text-base font-normal text-yellow-300">
                           {uc.rate}
                         </span>
                       </div>
@@ -241,13 +241,13 @@ export function LoanUseCasesSection({
                     isEven ? "lg:order-1" : "lg:order-2"
                   }`}
                 >
-                  <div className="flex items-center gap-2 mb-2 text-xs font-bold uppercase tracking-widest text-[#6424C7]">
+                  <div className="flex items-center gap-2 mb-2 text-xs font-normal uppercase tracking-widest text-[#6424C7]">
                     <span>Life Goal {index + 1} of {useCasesDetailed.length}</span>
                     <span>•</span>
                     <span>{uc.title}</span>
                   </div>
 
-                  <h3 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-gray-950 leading-snug">
+                  <h3 className="text-2xl sm:text-3xl font-normal tracking-tight text-gray-950 leading-snug">
                     {uc.headline}
                   </h3>
 
@@ -260,7 +260,7 @@ export function LoanUseCasesSection({
                     {uc.benefits.map((benefit) => (
                       <div key={benefit} className="flex items-start gap-3">
                         <CheckCircle2 className="h-4.5 w-4.5 text-emerald-600 shrink-0 mt-0.5" />
-                        <span className="text-[13.5px] sm:text-[14px] text-gray-700 font-medium">
+                        <span className="text-[13.5px] sm:text-[14px] text-gray-700 font-normal">
                           {benefit}
                         </span>
                       </div>
@@ -271,12 +271,12 @@ export function LoanUseCasesSection({
                   <div className="mt-6 flex items-center gap-3">
                     <Link
                       href={`${applyHref}&usecase=${uc.id}`}
-                      className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-[#6424C7] hover:bg-[#521eb0] text-white font-bold text-xs px-4 py-2.5 shadow-sm transition-all active:scale-98"
+                      className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-[#6424C7] hover:bg-[#521eb0] text-white font-normal text-xs px-4 py-2.5 shadow-sm transition-all active:scale-98"
                     >
                       <span>Check Eligibility</span>
                       <ArrowRight className="h-3.5 w-3.5" />
                     </Link>
-                    <span className="text-xs text-gray-500 font-medium">
+                    <span className="text-xs text-gray-500 font-normal">
                       Instant Sanction in 24 Hrs
                     </span>
                   </div>

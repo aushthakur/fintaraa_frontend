@@ -92,9 +92,9 @@ export function LoanFeaturesBenefits({
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="max-w-3xl mb-16 sm:mb-20">
-          <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-extrabold tracking-tight text-gray-950 leading-[1.15]">
+          <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-normal tracking-tight text-gray-950 leading-[1.15]">
             Key Features &amp; Benefits of Our{" "}
-            <span className="bg-gradient-to-r from-[#6424C7] to-purple-600 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-[#6424C7] to-purple-600 bg-clip-text text-transparent font-normal">
               Personal Loan
             </span>
           </h2>
@@ -125,7 +125,7 @@ export function LoanFeaturesBenefits({
                     </div>
                   </div>
 
-                  <h3 className="text-lg font-bold text-gray-950 tracking-tight leading-snug">
+                  <h3 className="text-lg font-normal text-gray-950 tracking-tight leading-snug">
                     {feat.title}
                   </h3>
 
