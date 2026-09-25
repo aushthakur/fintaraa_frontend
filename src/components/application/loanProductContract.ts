@@ -171,6 +171,22 @@ export const requiredLoanProductContracts: LoanProductContract[] = [
     loanType: "commercial_purchases_loan",
   },
   {
+    name: "Wedding Loan",
+    slug: "wedding-loan",
+    group: "personal",
+    flowKey: "weddingLoan",
+    loanType: "wedding_loan",
+    aliases: ["marriage-loan", "wedding-finance"],
+  },
+  {
+    name: "Medical Loan",
+    slug: "medical-loan",
+    group: "personal",
+    flowKey: "medicalLoan",
+    loanType: "medical_loan",
+    aliases: ["healthcare-loan", "medical-emergency-loan"],
+  },
+  {
     name: "Credit Card",
     slug: "credit-card",
     group: "personal",

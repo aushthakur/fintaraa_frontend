@@ -40,9 +40,9 @@ const insuranceSlugToFlowKey: Record<string, string> = {
 };
 
 const assertRequiredLoanApplicationContracts = () => {
-  if (requiredLoanProductContracts.length !== 24) {
+  if (requiredLoanProductContracts.length !== 26) {
     throw new Error(
-      `Expected 24 required loan products, received ${requiredLoanProductContracts.length}`,
+      `Expected 26 required loan products, received ${requiredLoanProductContracts.length}`,
     );
   }
 

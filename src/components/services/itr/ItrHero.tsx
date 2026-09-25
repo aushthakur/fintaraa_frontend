@@ -154,11 +154,11 @@ export function ItrHero() {
 
       <div className="mobile-safe-container grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
         <div>
-          <h1 className="text-[28px] font-bold leading-tight tracking-[-0.02em] text-[#1a6bc6] sm:text-[34px] md:text-[40px] lg:text-[48px] xl:text-[54px]">
-            ITR Filing
+          <h1 className="text-[28px] font-light leading-tight tracking-tight text-[#111625] sm:text-[34px] md:text-[40px] lg:text-[48px] xl:text-[54px]">
+            ITR Filing <span className="text-[#5B21B6] font-normal block">& Tax Compliance</span>
           </h1>
-          <p className="mt-3 max-w-sm text-[15px] font-medium leading-6 text-[#1f2937] sm:text-base md:max-w-xl md:text-[17px] lg:text-[19px]">
-            File your Income Tax Return easily and stay 100% compliant
+          <p className="mt-3 max-w-sm text-[15px] font-light leading-relaxed text-slate-600 sm:text-base md:max-w-xl md:text-[17px]">
+            File your Income Tax Return easily with qualified CAs and stay 100% tax compliant.
           </p>
           <div className="relative mt-6 min-h-50 sm:min-h-65 md:min-h-75 lg:min-h-85 xl:min-h-95">
             <Image
@@ -175,9 +175,9 @@ export function ItrHero() {
           id="itr-filing-service-form"
           className="relative mx-auto w-full max-w-140 scroll-mt-48"
         >
-          <div className="absolute -right-7 -top-7 h-full w-85 rounded-2xl bg-[#4c1d95] sm:w-95 md:w-105 lg:w-115" />
+          <div className="absolute -right-7 -top-7 h-full w-85 rounded-2xl bg-[#5B21B6] sm:w-95 md:w-105 lg:w-115" />
           <div className="relative rounded-2xl bg-white p-5 shadow-[0_18px_45px_rgba(16,24,40,0.14)] sm:p-6 md:p-8">
-            <h2 className="text-lg font-bold text-[#1f2937] sm:text-xl md:text-[22px] lg:text-[24px]">
+            <h2 className="text-lg font-medium text-[#111625] sm:text-xl md:text-[22px] lg:text-[24px]">
               Get Started with ITR Filing
             </h2>
             <p className="mt-2 text-[13px] font-medium leading-6 text-[#8b95a3] sm:text-sm md:text-[15px]">

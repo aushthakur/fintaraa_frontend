@@ -52,58 +52,56 @@ export function CibilHero() {
             />
           </div>
           {/* Strict Typography Tracking Matching image_9fa052.png */}
-          <h1 className="text-3xl mt-8 md:mt-10 font-extrabold leading-[1.15] tracking-tight text-[#111625] sm:text-5xl md:text-6xl">
-            Check Free <span className="text-[#12b76a]">Credit Score</span>
-            <span className="block font-extrabold mt-0.5 text-[#111625]">
-              & CIBIL Report
+          <h1 className="text-3xl mt-8 md:mt-10 font-light leading-[1.12] tracking-tight text-[#111625] sm:text-5xl md:text-6xl">
+            Free <span className="text-[#5B21B6] font-normal">CIBIL Score</span>
+            <span className="block font-normal mt-0.5 text-[#111625]">
+              & Credit Health Report
             </span>
           </h1>
 
-          <p className="mt-3 max-w-lg text-[14px] md:text-[15px] font-medium leading-relaxed text-gray-500/90">
-            Get Instant access to your credit health report from CIBIL and
-            Experian, Accurate, fast and 100% free
+          <p className="mt-3 max-w-lg text-[14px] md:text-[15px] font-light leading-relaxed text-slate-500">
+            Check your credit bureau score online with instant report breakdown, key score factors, and credit improvement guidance.
           </p>
 
-          {/* Trust Value Badges Row Alignment */}
           <div className="mt-6 flex flex-wrap gap-x-6 gap-y-3 items-center">
             <div className="flex items-center gap-2">
-              <div className="text-blue-600 shrink-0">
+              <div className="text-[#5B21B6] shrink-0">
                 <BadgeCheck className="h-5 w-5 stroke-[1.5]" />
               </div>
               <div className="flex flex-col">
-                <span className="text-[13px] font-bold text-gray-800 leading-tight">
-                  100% Free
+                <span className="text-[13px] font-medium text-slate-800 leading-tight">
+                  100% Free Check
                 </span>
-                <span className="text-[11px] font-medium text-gray-400 mt-0.5">
-                  No hidden charges
+                <span className="text-[11px] font-light text-slate-400 mt-0.5">
+                  No CIBIL score impact
                 </span>
               </div>
             </div>
 
             <div className="flex items-center gap-3">
-              <div className="text-blue-600 shrink-0">
+              <div className="text-[#5B21B6] shrink-0">
                 <LockKeyhole className="h-5 w-5 stroke-[1.5]" />
               </div>
               <div className="flex flex-col">
-                <span className="text-[13px] font-bold text-gray-800 leading-tight">
-                  Secure & Safe
+                <span className="text-[13px] font-medium text-slate-800 leading-tight">
+                  Encrypted & Secure
                 </span>
-                <span className="text-[11px] font-medium text-gray-400 mt-0.5">
-                  Your Data is Protected
+                <span className="text-[11px] font-light text-slate-400 mt-0.5">
+                  256-bit SSL protection
                 </span>
               </div>
             </div>
 
             <div className="flex items-center gap-3">
-              <div className="text-blue-600 shrink-0">
+              <div className="text-[#5B21B6] shrink-0">
                 <Clock className="h-5 w-5 stroke-[1.5]" />
               </div>
               <div className="flex flex-col">
-                <span className="text-[13px] font-bold text-gray-800 leading-tight">
-                  Instant Result
+                <span className="text-[13px] font-medium text-slate-800 leading-tight">
+                  Instant Verification
                 </span>
-                <span className="text-[11px] font-medium text-gray-400 mt-0.5">
-                  Your Data is Protected
+                <span className="text-[11px] font-light text-slate-400 mt-0.5">
+                  Real-time bureau report
                 </span>
               </div>
             </div>

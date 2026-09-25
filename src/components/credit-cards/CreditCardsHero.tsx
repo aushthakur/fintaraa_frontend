@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import {
   AlertCircle,
+  ArrowRight,
   BriefcaseBusiness,
   CheckCircle2,
   Gift,
@@ -136,23 +137,22 @@ export function CreditCardsHero({
                 className="object-contain object-left"
               />
             </div>
-            <h1 className="mt-14 max-w-2xl text-[32px] font-extrabold leading-[1.14] text-[#111625] sm:mt-10 sm:text-[40px] lg:text-[48px]">
-              Find the Best Credit
-              <span className="block text-[#4c1d95]">
-                Cards for Your Lifestyle
+            <h1 className="mt-14 max-w-2xl text-[32px] font-light leading-[1.12] text-[#111625] sm:mt-10 sm:text-[40px] lg:text-[48px] tracking-tight">
+              Credit Cards Directory <br />
+              <span className="text-[#5B21B6] font-normal">
+                & Comparison Marketplace
               </span>
             </h1>
-            <p className="mt-3 max-w-lg text-[14px] md:text-[15px] font-medium leading-relaxed text-gray-500/90">
-              Find the perfect card for cashback, travel, fuel savings, rewards
-              and more from participating partner banks.
+            <p className="mt-3 max-w-lg text-[14px] md:text-[15px] font-light leading-relaxed text-gray-600">
+              Compare cards from top partner banks for cashback, airport lounge access, rewards points, and zero annual fee options.
             </p>
             <AuthRedirectLink
               href="/credit-cards"
               productSlug="credit-card"
-              className="mt-6 inline-flex h-12 items-center gap-2 rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-7 text-[14px] font-extrabold text-white no-underline"
+              className="mt-6 inline-flex h-12 items-center gap-2 rounded-xl bg-[#5B21B6] px-7 text-[14px] font-medium text-white no-underline transition hover:bg-[#4C1D95] shadow-sm"
             >
-              Apply for Credit Card
-              <Gift className="h-4 w-4" />
+              Compare Card Offers
+              <ArrowRight className="h-4 w-4" />
             </AuthRedirectLink>
           </div>
         </motion.div>

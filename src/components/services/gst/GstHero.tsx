@@ -172,18 +172,17 @@ export function GstHero() {
         </div>
 
         <div className="flex flex-col z-10 lg:pl-10">
-          <h1 className="max-w-xl text-[28px] font-extrabold leading-[1.15] tracking-[-0.02em] text-[#4c1d95] sm:text-[34px] md:text-[38px] lg:text-[46px] xl:text-[52px]">
-            GST Registration & <span className="block">GST Filing</span>
+          <h1 className="max-w-xl text-[28px] font-light leading-[1.15] tracking-tight text-[#111625] sm:text-[34px] md:text-[38px] lg:text-[46px] xl:text-[52px]">
+            GST Registration & <span className="text-[#5B21B6] font-normal block">GST Filing Services</span>
           </h1>
-          <p className="mt-4 text-[15px] font-medium text-[#111827] sm:text-base md:text-[17px] lg:text-[19px]">
-            Complete GST registration, filing and compliance with guided expert
-            support.
+          <p className="mt-4 text-[15px] font-light text-slate-600 sm:text-base md:text-[17px]">
+            Complete GST registration, monthly filing, and compliance with guided expert CA support.
           </p>
           <div className="relative mx-auto w-full mt-6 h-full">
             <Image
-              width={100}
+              width={320}
               unoptimized
-              height={100}
+              height={260}
               alt="GST services"
               src="/assets/services/gst-hero.png"
               className="object-contain w-4/5 mx-auto"
@@ -195,9 +194,9 @@ export function GstHero() {
           id="gst-service-form"
           className="relative mx-auto w-full max-w-140 scroll-mt-48"
         >
-          <div className="absolute -right-4 -top-4 h-full w-85 rounded-xl bg-[#4c1d95] sm:w-95 md:w-105 lg:w-115" />
+          <div className="absolute -right-4 -top-4 h-full w-85 rounded-xl bg-[#5B21B6] sm:w-95 md:w-105 lg:w-115" />
           <div className="relative rounded-xl bg-white p-5 shadow-[0_18px_45px_rgba(16,24,40,0.12)] sm:p-6 md:p-7">
-            <h2 className="text-base font-extrabold text-[#2a2f36] sm:text-lg md:text-[20px] lg:text-[22px]">
+            <h2 className="text-base font-medium text-[#111625] sm:text-lg md:text-[20px] lg:text-[22px]">
               Get Started with GST Services
             </h2>
             <p className="mt-1.5 text-[13px] font-semibold leading-6 text-[#8b95a3] sm:text-sm md:text-[15px]">

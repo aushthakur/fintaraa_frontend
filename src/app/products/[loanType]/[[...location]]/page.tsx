@@ -24,6 +24,8 @@ import { getBankProductLenders } from "@/services/bankSeoPages";
 import { InstantLoanMarketplacePage } from "@/components/products/instant-loan/InstantLoanMarketplacePage";
 import { EducationLoanPage } from "@/components/products/education-loan/EducationLoanPage";
 import { RenovationLoanPage } from "@/components/products/renovation-loan/RenovationLoanPage";
+import { WeddingLoanPage } from "@/components/products/wedding-loan/WeddingLoanPage";
+import { MedicalLoanPage } from "@/components/products/medical-loan/MedicalLoanPage";
 
 type PageProps = {
   params: Promise<{
@@ -133,7 +135,7 @@ export default async function ProductLoanPage({ params }: PageProps) {
   const [page, locationPages, bankLenders] = await Promise.all([
     getLoanSeoPage(productSlug, location),
     getLoanSeoLocationPages(productSlug),
-    productSlug === "instant-loan" || productSlug === "education-loan" || productSlug === "renovation-loan"
+    productSlug === "instant-loan" || productSlug === "education-loan" || productSlug === "renovation-loan" || productSlug === "wedding-loan" || productSlug === "marriage-loan" || productSlug === "medical-loan" || productSlug === "healthcare-loan"
       ? getBankProductLenders(productSlug)
       : Promise.resolve([]),
   ]);
@@ -198,6 +200,18 @@ export default async function ProductLoanPage({ params }: PageProps) {
         />
       ) : productSlug === "renovation-loan" ? (
         <RenovationLoanPage
+          page={page}
+          lenders={bankLenders}
+          locationPages={locationPages}
+        />
+      ) : productSlug === "wedding-loan" || productSlug === "marriage-loan" ? (
+        <WeddingLoanPage
+          page={page}
+          lenders={bankLenders}
+          locationPages={locationPages}
+        />
+      ) : productSlug === "medical-loan" || productSlug === "healthcare-loan" ? (
+        <MedicalLoanPage
           page={page}
           lenders={bankLenders}
           locationPages={locationPages}

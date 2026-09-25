@@ -1713,6 +1713,80 @@ export const formFlows: Record<string, FormFlow> = {
       },
     ],
   },
+  weddingLoan: {
+    title: 'Wedding Loan',
+    subtitle: 'Marriage celebration details',
+    description: 'Tell us about your wedding expense requirements.',
+    steps: [
+      {
+        key: 'details',
+        title: 'Wedding Details',
+        fields: [
+          {
+            key: 'loanAmount',
+            label: 'Required Loan Amount',
+            placeholder: 'e.g. 5,00,000',
+            type: 'number',
+            required: true,
+          },
+          {
+            key: 'weddingDate',
+            label: 'Estimated Wedding Date',
+            placeholder: 'DD/MM/YYYY',
+            type: 'text',
+          },
+          {
+            key: 'primaryExpense',
+            label: 'Primary Expense Category',
+            type: 'select',
+            options: [
+              { label: 'Venue & Catering', value: 'venue_catering' },
+              { label: 'Jewelry & Attire', value: 'jewelry_attire' },
+              { label: 'Photography & Decor', value: 'photography_decor' },
+              { label: 'All Celebration Expenses', value: 'all_expenses' },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  medicalLoan: {
+    title: 'Medical Loan',
+    subtitle: 'Healthcare emergency financing',
+    description: 'Share your healthcare expense requirement.',
+    steps: [
+      {
+        key: 'details',
+        title: 'Treatment Details',
+        fields: [
+          {
+            key: 'loanAmount',
+            label: 'Required Loan Amount',
+            placeholder: 'e.g. 3,00,000',
+            type: 'number',
+            required: true,
+          },
+          {
+            key: 'hospitalName',
+            label: 'Hospital / Clinic Name',
+            placeholder: 'Hospital name',
+            type: 'text',
+          },
+          {
+            key: 'treatmentCategory',
+            label: 'Treatment Category',
+            type: 'select',
+            options: [
+              { label: 'Emergency Surgery / ICU', value: 'emergency_surgery' },
+              { label: 'Specialty Care / Oncology', value: 'specialty_care' },
+              { label: 'Elective Care / Dental / Ortho', value: 'elective_care' },
+              { label: 'General Hospital Bill', value: 'general_hospital' },
+            ],
+          },
+        ],
+      },
+    ],
+  },
   workingCapitalLoan: {
     title: 'Working Capital Loan',
     subtitle: 'Cash-flow support',

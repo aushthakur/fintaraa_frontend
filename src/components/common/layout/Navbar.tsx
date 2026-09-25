@@ -273,20 +273,18 @@ const groupedSection = (
 
 const buildLoanSections = (): NavSection[] => [
   {
-    title: "Personal & Education",
-    subtitle: "Instant credit & education loans",
+    title: "Personal Loans",
+    subtitle: "",
     links: [
       {
         label: "Personal Loan",
         href: "/products/personal-loan",
-        description: "Up to ₹40L · Quick approval",
-        badge: "POPULAR",
-        badgeColor: "purple",
+        description: "Unsecured personal credit",
       },
       {
         label: "Instant Personal Loan",
         href: "/products/instant-loan",
-        description: "Fast digital application & disbursal",
+        description: "Fast digital application",
       },
       {
         label: "Education Loan",
@@ -296,135 +294,105 @@ const buildLoanSections = (): NavSection[] => [
       {
         label: "Renovation Loan",
         href: "/products/renovation-loan",
-        description: "Finance your home improvements",
+        description: "Home upgrade financing",
       },
       {
         label: "Wedding Loan",
-        href: "/products/personal-loan",
-        description: "Flexible finance for wedding expenses",
+        href: "/products/wedding-loan",
+        description: "Marriage celebration expenses",
       },
       {
         label: "Medical Loan",
-        href: "/products/personal-loan",
-        description: "Finance planned medical expenses",
+        href: "/products/medical-loan",
+        description: "Healthcare emergency support",
       },
     ],
   },
   {
     title: "Home & Property",
-    subtitle: "Housing & asset-backed loans",
+    subtitle: "",
     links: [
       {
         label: "Home Loan",
         href: "/products/home-loan",
-        description: "Competitive rates · Flexible tenure",
-        badge: "FROM 7.10%",
-        badgeColor: "purple",
+        description: "Housing purchase loan",
       },
       {
         label: "Balance Transfer & Top-Up",
         href: "/products/balance-transfer-top-up-loan",
-        description: "Reduce EMI or unlock additional funds",
-        badge: "SAVE EMI",
-        badgeColor: "emerald",
+        description: "Lower EMI & top-up funds",
       },
       {
         label: "Loan Against Property",
         href: "/products/loan-against-property",
-        description: "Unlock liquidity from your property",
-        badge: "HIGH VALUE",
-        badgeColor: "blue",
+        description: "Liquidity from property",
       },
       {
         label: "Construction Loan",
         href: "/products/construction-loan",
-        description: "Finance residential construction",
-      },
-      {
-        label: "Plot / Land Loan",
-        href: "/products/home-loan",
-        description: "Finance eligible plot purchases",
+        description: "Residential construction",
       },
       {
         label: "Commercial Property Loan",
         href: "/products/commercial-purchases-loan",
-        description: "Finance commercial property needs",
+        description: "Commercial property needs",
       },
     ],
   },
   {
-    title: "Business & Professional",
-    subtitle: "Growth capital & commercial credit",
+    title: "Business Loans",
+    subtitle: "",
     links: [
       {
         label: "Business Loan",
         href: "/products/business-loan",
-        description: "Growth capital for your business",
-        badge: "NO COLLATERAL",
-        badgeColor: "amber",
-      },
-      {
-        label: "MSME Loan",
-        href: "/products/business-loan",
-        description: "Funding solutions for growing enterprises",
+        description: "Commercial growth capital",
       },
       {
         label: "Working Capital Loan",
         href: "/products/working-capital-loan",
-        description: "Manage day-to-day cash flow",
+        description: "Day-to-day cash flow",
       },
       {
         label: "Machinery Loan",
         href: "/products/machinery-loan",
-        description: "Finance equipment & machinery",
+        description: "Equipment & machinery",
       },
       {
         label: "OD / Overdraft Loan",
         href: "/products/od-loan",
-        description: "Flexible access to business funds",
-      },
-      {
-        label: "DOD Loan",
-        href: "/products/dod-loan",
-        description: "Flexible business credit facility",
+        description: "Flexible credit limit",
       },
       {
         label: "Agriculture Loan",
         href: "/products/agriculture-loan",
-        description: "Finance farming & agri infrastructure",
+        description: "Farming infrastructure",
       },
     ],
   },
   {
     title: "Vehicle Loans",
-    subtitle: "Auto loans & vehicle finance",
+    subtitle: "",
     links: [
       {
         label: "Car Loan",
         href: "/products/car-loan",
-        description: "Finance your new car",
-        badge: "UP TO 100%",
-        badgeColor: "emerald",
+        description: "New car financing",
       },
       {
         label: "Used Car Loan",
         href: "/products/used-car-loan",
-        description: "Finance a pre-owned car",
+        description: "Pre-owned car financing",
       },
       {
         label: "Two-Wheeler Loan",
         href: "/products/two-wheeler-loan",
-        description: "Quick two-wheeler financing",
-      },
-      {
-        label: "Commercial Vehicle Loan",
-        href: "/products/vehicle-loan",
-        description: "Finance commercial vehicles",
+        description: "Two-wheeler financing",
       },
       {
         label: "Loan Against Car",
         href: "/products/loan-against-car",
-        description: "Unlock liquidity against your car",
+        description: "Liquidity against car",
       },
     ],
   },
