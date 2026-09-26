@@ -30,6 +30,9 @@ import { HomeLoanPage } from "@/components/products/home-loan/HomeLoanPage";
 import { BalanceTransferLoanPage } from "@/components/products/balance-transfer-loan/BalanceTransferLoanPage";
 import { LoanAgainstPropertyPage } from "@/components/products/loan-against-property/LoanAgainstPropertyPage";
 import { ConstructionLoanPage } from "@/components/products/construction-loan/ConstructionLoanPage";
+import { BusinessLoanPage } from "@/components/products/business-loan/BusinessLoanPage";
+import { VehicleLoanPage } from "@/components/products/vehicle-loan/VehicleLoanPage";
+import { GoldLoanPage } from "@/components/products/gold-loan/GoldLoanPage";
 
 type PageProps = {
   params: Promise<{
@@ -152,7 +155,23 @@ export default async function ProductLoanPage({ params }: PageProps) {
     productSlug === "balance-transfer-loan" ||
     productSlug === "loan-against-property" ||
     productSlug === "lap" ||
-    productSlug === "construction-loan"
+    productSlug === "construction-loan" ||
+    productSlug === "business-loan" ||
+    productSlug === "working-capital-loan" ||
+    productSlug === "od-loan" ||
+    productSlug === "dod-loan" ||
+    productSlug === "machinery-loan" ||
+    productSlug === "industrial-loan" ||
+    productSlug === "commercial-purchases-loan" ||
+    productSlug === "car-loan" ||
+    productSlug === "used-car-loan" ||
+    productSlug === "two-wheeler-loan" ||
+    productSlug === "loan-against-car" ||
+    productSlug === "loan-against-car-value" ||
+    productSlug === "gold-loan" ||
+    productSlug === "loan-against-security" ||
+    productSlug === "solar-loan" ||
+    productSlug === "agriculture-loan"
       ? getBankProductLenders(productSlug)
       : Promise.resolve([]),
   ]);
@@ -255,6 +274,37 @@ export default async function ProductLoanPage({ params }: PageProps) {
         />
       ) : productSlug === "construction-loan" ? (
         <ConstructionLoanPage
+          page={page}
+          lenders={bankLenders}
+          locationPages={locationPages}
+        />
+      ) : productSlug === "business-loan" ||
+        productSlug === "working-capital-loan" ||
+        productSlug === "od-loan" ||
+        productSlug === "dod-loan" ||
+        productSlug === "machinery-loan" ||
+        productSlug === "industrial-loan" ||
+        productSlug === "commercial-purchases-loan" ? (
+        <BusinessLoanPage
+          page={page}
+          lenders={bankLenders}
+          locationPages={locationPages}
+        />
+      ) : productSlug === "car-loan" ||
+        productSlug === "used-car-loan" ||
+        productSlug === "two-wheeler-loan" ||
+        productSlug === "loan-against-car" ||
+        productSlug === "loan-against-car-value" ? (
+        <VehicleLoanPage
+          page={page}
+          lenders={bankLenders}
+          locationPages={locationPages}
+        />
+      ) : productSlug === "gold-loan" ||
+        productSlug === "loan-against-security" ||
+        productSlug === "solar-loan" ||
+        productSlug === "agriculture-loan" ? (
+        <GoldLoanPage
           page={page}
           lenders={bankLenders}
           locationPages={locationPages}
