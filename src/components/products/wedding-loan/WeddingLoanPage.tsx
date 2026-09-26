@@ -34,7 +34,7 @@ import {
   Gem,
   Music,
 } from "lucide-react";
-import { FormEvent, InputHTMLAttributes, ReactNode, useMemo, useState } from "react";
+import { FormEvent, InputHTMLAttributes, ReactNode, useEffect, useMemo, useState } from "react";
 import { AuthRedirectLink } from "@/components/auth/AuthRedirectLink";
 import { getApplyHref } from "@/components/application/flowRegistry";
 import { WhatsAppConsent } from "@/components/common/WhatsAppConsent";
@@ -46,6 +46,36 @@ import { buildWebsiteConsentPayload } from "@/lib/formConsent";
 import { buildApiUrl } from "@/services/apiUrl";
 import type { LoanSeoLocationPage, LoanSeoPageData } from "@/services/loanSeoPages";
 import type { BankProductLender } from "@/services/bankSeoPages";
+
+const getBankLogoPath = (slug: string) => {
+  const s = (slug || "").toLowerCase();
+  if (s.includes("hdfc")) return "/assets/banks/HDFC-Bank.png";
+  if (s.includes("icici")) return "/assets/banks/ICICI-Bank.png";
+  if (s.includes("axis")) return "/assets/banks/axis-bank.png";
+  if (s.includes("sbi") || s.includes("state-bank")) return "/assets/banks/State-Bank-of-India.png";
+  if (s.includes("kotak")) return "/assets/banks/Kotak-Mahindra-Bank.png";
+  if (s.includes("bajaj")) return "/assets/banks/bajaj-finserv.png";
+  if (s.includes("baroda")) return "/assets/banks/Bank-of-Baroda.png";
+  if (s.includes("indusind")) return "/assets/banks/IndusInd-Bank.png";
+  if (s.includes("federal")) return "/assets/banks/Federal-Bank.png";
+  if (s.includes("pnb") || s.includes("punjab")) return "/assets/banks/Punjab-National-Bank.png";
+  return "/assets/banks/hdfc.png";
+};
+
+const weddingHeroSlides = [
+  {
+    image: "/images/loans/wedding_hero_banner_1.jpg",
+    title: "Luxury Wedding Venue & Mandap Decoration",
+    caption: "Finance premium banquet halls, palace venues, and grand decor",
+    badge: "Venue & Catering • Up to ₹50L",
+  },
+  {
+    image: "/images/loans/wedding_hero_banner_2.jpg",
+    title: "Bridal Gold Jewelry & Designer Attire",
+    caption: "Preserve family savings with instant 100% collateral-free credit",
+    badge: "Jewelry & Attire Financing",
+  },
+];
 
 const defaultWeddingLenders: BankProductLender[] = [
   {
@@ -218,6 +248,15 @@ export function WeddingLoanPage({
   const [lenderSearch, setLenderSearch] = useState("");
   const [docTab, setDocTab] = useState<"eligibility" | "documents">("eligibility");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [heroSlide, setHeroSlide] = useState(0);
+
+  // Slowly rotate cinematic wedding imagery while keeping hero copy and form fixed.
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setHeroSlide((current) => (current + 1) % weddingHeroSlides.length);
+    }, 6500);
+    return () => window.clearInterval(timer);
+  }, []);
 
   // Expense Planner Calculator state
   const [guestCount, setGuestCount] = useState(300);
@@ -338,102 +377,160 @@ export function WeddingLoanPage({
 
   return (
     <div className="bg-white text-[#192337] font-sans antialiased">
-      {/* ─── HERO SECTION: CONCEPTUAL WEDDING FINANCIAL PLANNING ─── */}
-      <section className="relative bg-gradient-to-b from-[#F7F3FF]/90 via-white to-slate-50/50 border-b border-purple-100/70 py-14 lg:py-20 overflow-hidden">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
-          <div className="grid lg:grid-cols-12 gap-10 items-center">
-            
-            {/* Left Column: Heading & Information */}
-            <div className="lg:col-span-6 space-y-6">
-              <span className="inline-flex items-center gap-2 rounded-full bg-purple-100/70 px-3.5 py-1 text-[11.5px] font-medium text-[#5B21B6]">
-                <Heart className="h-3.5 w-3.5 text-[#7C3AED]" />
-                Marriage Financial Options
-              </span>
-
-              <h1 className="text-[38px] sm:text-[50px] lg:text-[58px] leading-[1.08] font-light text-slate-900 tracking-tight">
-                Wedding Loan in India: <br />
-                <span className="text-[#5B21B6] font-normal">Compare Rates, Eligibility & Options</span>
-              </h1>
-
-              <p className="text-[15.5px] sm:text-[17.5px] text-[#64748B] font-light leading-relaxed max-w-xl">
-                Finance venue bookings, jewelry purchases, guest hospitality, catering, and event decor with flexible personal loans from top partner banks and NBFCs.
-              </p>
-
-              <div className="flex flex-wrap items-center gap-4 pt-2">
-                <button
-                  type="button"
-                  onClick={() => openFormWithDetails()}
-                  className="inline-flex h-13 items-center justify-center gap-2.5 rounded-xl bg-[#5B21B6] px-7 text-[14px] font-medium text-white transition hover:bg-[#4C1D95] shadow-lg shadow-purple-900/15 cursor-pointer"
-                >
-                  Check Wedding Loan Eligibility
-                  <ArrowRight className="h-4 w-4" />
-                </button>
-
-                <a
-                  href="#wedding-calculator"
-                  className="inline-flex h-13 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-6 text-[14px] font-medium text-slate-700 hover:border-purple-300 hover:text-[#5B21B6] transition no-underline"
-                >
-                  Estimate Wedding Budget
-                </a>
-              </div>
-
-              <div className="pt-2 flex items-center gap-2 text-[11.5px] text-slate-400 font-light">
-                <ShieldCheck className="h-4 w-4 text-purple-500 shrink-0" />
-                <span>Zero collateral required. Loan terms subject to applicant credit evaluation.</span>
-              </div>
+      {/* ─── CINEMATIC CONVERSION HERO: BACKGROUND CAROUSEL + FIXED COPY + FORM ─── */}
+      <section className="relative isolate overflow-hidden border-b border-purple-100 bg-slate-950">
+        {/* Full-bleed carousel. Images move; marketing content remains fixed. */}
+        <div className="absolute inset-0 -z-20">
+          {weddingHeroSlides.map((slide, idx) => (
+            <div
+              key={slide.image}
+              className={`absolute inset-0 transition-opacity duration-[1400ms] ease-out ${heroSlide === idx ? "opacity-100" : "opacity-0"}`}
+              aria-hidden={heroSlide !== idx}
+            >
+              <Image
+                src={slide.image}
+                alt={slide.title}
+                fill
+                priority={idx === 0}
+                unoptimized
+                sizes="100vw"
+                className={`object-cover object-center transition-transform duration-[9000ms] ease-out ${heroSlide === idx ? "scale-[1.07]" : "scale-100"}`}
+              />
             </div>
+          ))}
+        </div>
 
-            {/* Right Column: Conceptual Interactive Budget Distribution Card */}
-            <div className="lg:col-span-6">
-              <div className="rounded-3xl border border-purple-100 bg-white p-6 sm:p-8 shadow-[0_16px_40px_rgba(91,33,182,0.08)] space-y-6">
-                <div className="flex justify-between items-center border-b border-slate-100 pb-4">
-                  <div>
-                    <span className="text-[10.5px] uppercase tracking-wider text-purple-600 font-medium">Budget Breakdown View</span>
-                    <h2 className="text-[20px] font-medium text-slate-900 mt-0.5">Wedding Expense Distribution</h2>
-                  </div>
-                  <span className="rounded-xl bg-purple-50 px-3 py-1 text-[12px] font-medium text-[#5B21B6]">
-                    Up to ₹50 Lakhs
-                  </span>
-                </div>
+        {/* Readability treatment: strongest behind copy, softer behind the form. */}
+        <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(10,7,20,0.92)_0%,rgba(24,13,45,0.80)_35%,rgba(24,13,45,0.48)_62%,rgba(10,7,20,0.58)_100%)]" />
+        <div className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(15,8,28,0.18)_0%,rgba(15,8,28,0.08)_50%,rgba(15,8,28,0.72)_100%)]" />
+        <div className="absolute inset-x-0 bottom-0 -z-10 h-52 bg-gradient-to-t from-slate-950/80 to-transparent" />
 
-                <div className="space-y-4">
+        <div className="mx-auto max-w-7xl px-4 pb-8 pt-10 sm:px-6 lg:px-8 lg:pb-12 lg:pt-14">
+
+          <div className="grid min-h-[650px] items-center gap-8 lg:grid-cols-12 lg:gap-10">
+            {/* Fixed marketing copy over changing background */}
+            <div className="lg:col-span-6 lg:pr-10">
+              <div className="max-w-2xl">
+                <h1 className="text-[42px] font-extralight leading-[1.05] tracking-[-0.035em] text-white drop-shadow-sm sm:text-[56px] lg:text-[66px]">
+                  Your dream wedding,
+                  <span className="mt-1 block font-normal text-purple-200">funded without compromise.</span>
+                </h1>
+
+                {/* Feature list — replaces vague pill tags */}
+                <ul className="mt-7 space-y-3">
                   {[
-                    { label: "Venue & Catering", pct: 45, icon: <Utensils className="h-4 w-4 text-[#5B21B6]" />, value: "₹6.75 Lakhs" },
-                    { label: "Jewelry & Attire", pct: 25, icon: <Gem className="h-4 w-4 text-[#5B21B6]" />, value: "₹3.75 Lakhs" },
-                    { label: "Photography & Videography", pct: 15, icon: <Camera className="h-4 w-4 text-[#5B21B6]" />, value: "₹2.25 Lakhs" },
-                    { label: "Stage Decor & Music", pct: 15, icon: <Music className="h-4 w-4 text-[#5B21B6]" />, value: "₹2.25 Lakhs" },
-                  ].map((item, idx) => (
-                    <div key={idx} className="space-y-1.5">
-                      <div className="flex justify-between items-center text-[12.5px]">
-                        <span className="flex items-center gap-2 font-medium text-slate-700">
-                          {item.icon}
-                          {item.label}
-                        </span>
-                        <span className="font-medium text-slate-900">{item.value}</span>
-                      </div>
-                      <div className="h-2 rounded-full bg-purple-50 overflow-hidden">
-                        <div className="h-full bg-[#5B21B6] rounded-full" style={{ width: `${item.pct * 2}%` }} />
-                      </div>
-                    </div>
+                    { icon: BadgeCheck, text: "Compare offers from HDFC, ICICI, Axis, SBI, Kotak & more" },
+                    { icon: ShieldCheck, text: "100% collateral-free — no property or gold pledge required" },
+                    { icon: Clock,       text: "Disbursal in as little as 24–48 hours for pre-approved profiles" },
+                    { icon: Sparkles,    text: "Covers venue, catering, jewellery, decor, photography & travel" },
+                  ].map(({ icon: Icon, text }) => (
+                    <li key={text} className="flex items-start gap-3">
+                      <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-purple-500/25">
+                        <Icon className="h-3 w-3 text-purple-200" />
+                      </span>
+                      <span className="text-[13.5px] font-light leading-snug text-white/80">{text}</span>
+                    </li>
                   ))}
+                </ul>
+
+                {/* Stats row */}
+                <div className="mt-8 grid grid-cols-3 overflow-hidden rounded-2xl border border-white/12 bg-white/8 shadow-2xl shadow-black/20 backdrop-blur-xl">
+                  <div className="px-5 py-5">
+                    <p className="text-[28px] font-semibold tracking-tight text-white">₹50L</p>
+                    <p className="mt-1 text-[11px] font-light leading-snug text-white/50">Maximum loan<br/>amount available</p>
+                  </div>
+                  <div className="border-x border-white/10 px-5 py-5">
+                    <p className="text-[28px] font-semibold tracking-tight text-white">9.60%</p>
+                    <p className="mt-1 text-[11px] font-light leading-snug text-white/50">Lowest indicative<br/>rate per annum*</p>
+                  </div>
+                  <div className="px-5 py-5">
+                    <p className="text-[28px] font-semibold tracking-tight text-white">84 mo</p>
+                    <p className="mt-1 text-[11px] font-light leading-snug text-white/50">Maximum repayment<br/>tenure available</p>
+                  </div>
                 </div>
 
-                <div className="rounded-2xl bg-purple-50/70 p-4 flex justify-between items-center text-[13px]">
-                  <div>
-                    <span className="text-[11px] text-slate-500 font-light block">Sample Indicative EMI (4 Years @ 10.5%)</span>
-                    <span className="text-[18px] font-medium text-[#5B21B6]">₹38,540 / month</span>
+                {/* Carousel dots */}
+                <div className="mt-6 flex items-center gap-3">
+                  <div className="flex items-center gap-2">
+                    {weddingHeroSlides.map((slide, idx) => (
+                      <button
+                        key={slide.image}
+                        type="button"
+                        onClick={() => setHeroSlide(idx)}
+                        aria-label={`Show wedding scene ${idx + 1}`}
+                        className={`h-1.5 rounded-full transition-all duration-300 ${heroSlide === idx ? "w-8 bg-purple-300" : "w-2 bg-white/30 hover:bg-white/60"}`}
+                      />
+                    ))}
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => openFormWithDetails()}
-                    className="inline-flex h-9 items-center justify-center rounded-xl bg-[#5B21B6] px-4 text-[12px] font-medium text-white transition hover:bg-[#4C1D95] cursor-pointer"
-                  >
-                    Apply Now
-                  </button>
+                  <p className="text-[10.5px] text-white/35 font-light">*Indicative rate. Subject to lender evaluation.</p>
                 </div>
               </div>
             </div>
 
+            {/* High-contrast floating form */}
+            <div className="lg:col-span-6 lg:pl-5">
+              <div className="overflow-hidden rounded-[28px] border border-white/60 bg-white/95 shadow-[0_32px_90px_rgba(0,0,0,0.32)] backdrop-blur-xl">
+                <div className="flex items-start justify-between gap-4 border-b border-purple-100 bg-gradient-to-r from-[#5B21B6] to-[#7C3AED] px-5 py-5 text-white sm:px-7">
+                  <div>
+                    <span className="text-[10px] font-medium uppercase tracking-[0.16em] text-purple-200">Free eligibility check</span>
+                    <h2 className="mt-1 text-[23px] font-normal tracking-tight text-white">Find wedding loan options for your profile</h2>
+                    <p className="mt-1 text-[11.5px] font-light text-purple-100">A few details help us match relevant lender options.</p>
+                  </div>
+                  <div className="hidden rounded-2xl bg-white/10 px-3 py-2 text-center sm:block"><p className="text-[16px] font-medium">2 min</p><p className="text-[9px] text-purple-200">to complete</p></div>
+                </div>
+
+                <form onSubmit={handleSubmit} noValidate className="grid gap-3.5 p-5 sm:grid-cols-2 sm:p-6">
+                  <FormInput label="Full Name" value={leadForm.fullName} error={errors.fullName} icon={<User className="h-3.5 w-3.5" />} placeholder="Enter full name" onChange={(e) => updateField("fullName", e.target.value)} />
+                  <FormInput label="Mobile Number" value={leadForm.mobile} error={errors.mobile} icon={<Phone className="h-3.5 w-3.5" />} placeholder="10-digit mobile number" maxLength={14} onChange={(e) => updateField("mobile", e.target.value)} />
+                  <FormInput label="Email Address" value={leadForm.email} error={errors.email} icon={<Mail className="h-3.5 w-3.5" />} placeholder="name@example.com" onChange={(e) => updateField("email", e.target.value)} />
+                  <FormInput label="Current City" value={leadForm.city} error={errors.city} icon={<MapPin className="h-3.5 w-3.5" />} placeholder="Enter city" onChange={(e) => updateField("city", e.target.value)} />
+                  <FormSelect label="Wedding Expense" value={leadForm.expenseType} error={errors.expenseType} icon={<Heart className="h-3.5 w-3.5" />} placeholder="What do you want to finance?" options={weddingExpenseCategories} onChange={(v) => updateField("expenseType", v)} />
+                  <FormSelect label="Required Loan Amount" value={leadForm.weddingBudget} error={errors.weddingBudget} icon={<BadgeIndianRupee className="h-3.5 w-3.5" />} placeholder="Select amount range" options={budgetOptions} onChange={(v) => updateField("weddingBudget", v)} />
+                  <div className="sm:col-span-2"><FormSelect label="Employment Type" optional value={leadForm.employmentType} icon={<Building className="h-3.5 w-3.5" />} placeholder="Select employment status" options={employmentOptions} onChange={(v) => updateField("employmentType", v)} /></div>
+                  <div className="sm:col-span-2"><WhatsAppConsent checked={whatsappConsent} error={errors.whatsappConsent} onChange={(checked) => { setWhatsappConsent(checked); setErrors((c) => ({ ...c, whatsappConsent: undefined })); setSubmitError(""); setSubmitSuccess(""); }} /></div>
+                  <div className="sm:col-span-2" aria-live="polite">
+                    {submitError && <p className="flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 px-3 py-2.5 text-[11px] text-red-600"><AlertCircle className="mt-0.5 h-3.5 w-3.5 shrink-0" />{submitError}</p>}
+                    {submitSuccess && <p className="flex items-start gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2.5 text-[11px] text-emerald-700"><CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0" />{submitSuccess}</p>}
+                  </div>
+                  <div className="sm:col-span-2">
+                    <button type="submit" disabled={isSubmitting} className="inline-flex h-13 w-full items-center justify-center gap-2 rounded-xl bg-[#5B21B6] px-5 text-[14px] font-medium text-white shadow-lg shadow-purple-900/15 transition hover:bg-[#4C1D95] disabled:opacity-60">
+                      {isSubmitting ? <><Loader2 className="h-4 w-4 animate-spin" />Checking options...</> : <>Check My Eligibility <ArrowRight className="h-4 w-4" /></>}
+                    </button>
+                    <div className="mt-3 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[10px] text-slate-400">
+                      <span className="inline-flex items-center gap-1"><ShieldCheck className="h-3.5 w-3.5 text-emerald-500" /> Secure details</span><span>•</span><span>No collateral</span><span>•</span><span>No obligation</span>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom use-case rail */}
+        <div className="border-t border-white/10 bg-slate-950/60 backdrop-blur-xl">
+          <div className="mx-auto grid max-w-7xl grid-cols-2 px-4 sm:grid-cols-4 sm:px-6 lg:px-8">
+            {[
+              { Icon: Building2, title: "Venue & Catering",   desc: "Banquet halls, outdoor lawns, palace resorts & full catering contracts",   cat: "Venue Booking and Catering" },
+              { Icon: Gem,       title: "Jewellery & Attire",  desc: "Gold, diamond & kundan sets, designer lehengas, sherwanis & trousseau",     cat: "Jewelry and Bridal Apparel" },
+              { Icon: Camera,    title: "Photography & Decor", desc: "Cinematography, drone shoots, mandap decor, lighting & sound systems",      cat: "Photography and Videography" },
+              { Icon: Compass,   title: "Guests & Honeymoon",  desc: "Hotel inventory, outstation travel, car rentals & honeymoon packages",       cat: "Guest Accommodation and Travel" },
+            ].map(({ Icon, title, desc, cat }, idx) => (
+              <button
+                key={title}
+                type="button"
+                onClick={() => openFormWithDetails(cat)}
+                className={`group px-5 py-6 text-left text-white transition hover:bg-white/5 ${
+                  idx > 0 ? "border-l border-white/10" : ""
+                }`}
+              >
+                <div className="mb-3 flex h-8 w-8 items-center justify-center rounded-lg bg-purple-500/20">
+                  <Icon className="h-4 w-4 text-purple-300" />
+                </div>
+                <p className="text-[13px] font-medium text-white">{title}</p>
+                <p className="mt-1.5 text-[11px] font-light leading-relaxed text-white/45">{desc}</p>
+                <p className="mt-3 text-[10.5px] font-medium text-purple-300 transition group-hover:text-purple-200">Check eligibility →</p>
+              </button>
+            ))}
           </div>
         </div>
       </section>
@@ -699,10 +796,9 @@ export function WeddingLoanPage({
                       key={t}
                       type="button"
                       onClick={() => setVenueTier(t)}
-                      className={`py-2.5 px-3 rounded-xl text-[12.5px] font-medium border transition cursor-pointer ${
-                        venueTier === t
-                          ? "bg-[#5B21B6] text-white border-[#5B21B6]"
-                          : "bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100"
+                      className={`py-2.5 px-3 rounded-xl text-[12.5px] font-medium border transition cursor-pointer ${venueTier === t
+                        ? "bg-[#5B21B6] text-white border-[#5B21B6]"
+                        : "bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100"
                       }`}
                     >
                       {t}
@@ -771,7 +867,7 @@ export function WeddingLoanPage({
               <button
                 type="button"
                 onClick={() => {
-                  const bStr = weddingBudgetCalc.totalEstimate > 2000000 ? "Above ₹20 Lakhs" : weddingBudgetCalc.totalEstimate > 1000000 ? "₹10–20 Lakhs" : "₹5–10 Lakhs";
+                  const bStr = weddingBudgetCalc.totalEstimate > 2000000 ? "Above ₹35 Lakhs" : weddingBudgetCalc.totalEstimate > 1000000 ? "₹10–20 Lakhs" : "₹5–10 Lakhs";
                   openFormWithDetails(undefined, bStr);
                 }}
                 className="w-full inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-white text-[#5B21B6] font-medium text-[13.5px] hover:bg-purple-50 transition cursor-pointer shadow-md"
@@ -789,7 +885,7 @@ export function WeddingLoanPage({
       </section>
 
       {/* ─── SECTION 4: LENDER MARKETPLACE ─────────────────────────────── */}
-      <section className="py-14 lg:py-20 bg-slate-50/50 border-b border-slate-100">
+      <section id="compare-lenders" className="py-14 lg:py-20 bg-slate-50/50 border-b border-slate-100">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
             <div>
@@ -807,9 +903,15 @@ export function WeddingLoanPage({
                 className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[160px_1fr_1fr_1fr_1fr_auto] items-center gap-4 rounded-2xl border border-slate-200 bg-white px-5 py-4 transition hover:border-purple-300 hover:shadow-xs"
               >
                 <div className="flex items-center gap-3">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-purple-50 text-[13px] font-medium text-[#5B21B6]">
-                    {lender.bankName.split(/\s+/).slice(0, 2).map((w) => w[0]).join("")}
-                  </span>
+                  <div className="relative flex h-11 w-24 shrink-0 items-center justify-center rounded-xl border border-slate-200/80 bg-white p-1.5 shadow-xs">
+                    <Image
+                      src={getBankLogoPath(lender.bankSlug)}
+                      alt={lender.bankName}
+                      fill
+                      className="object-contain p-1"
+                      unoptimized
+                    />
+                  </div>
                   <span className="text-[12.5px] font-medium text-slate-800 leading-tight">{lender.bankName}</span>
                 </div>
 
@@ -914,10 +1016,9 @@ export function WeddingLoanPage({
             <button
               type="button"
               onClick={() => setDocTab("eligibility")}
-              className={`px-5 py-2.5 rounded-xl text-[13px] font-medium transition cursor-pointer ${
-                docTab === "eligibility"
-                  ? "bg-[#5B21B6] text-white"
-                  : "bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200"
+              className={`px-5 py-2.5 rounded-xl text-[13px] font-medium transition cursor-pointer ${docTab === "eligibility"
+                ? "bg-[#5B21B6] text-white"
+                : "bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200"
               }`}
             >
               Eligibility Criteria
@@ -925,10 +1026,9 @@ export function WeddingLoanPage({
             <button
               type="button"
               onClick={() => setDocTab("documents")}
-              className={`px-5 py-2.5 rounded-xl text-[13px] font-medium transition cursor-pointer ${
-                docTab === "documents"
-                  ? "bg-[#5B21B6] text-white"
-                  : "bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200"
+              className={`px-5 py-2.5 rounded-xl text-[13px] font-medium transition cursor-pointer ${docTab === "documents"
+                ? "bg-[#5B21B6] text-white"
+                : "bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200"
               }`}
             >
               Document Checklist
@@ -1031,7 +1131,7 @@ function FormInput({
       <span className="mb-1 block text-[11px] text-slate-600 font-light">
         {label}{!optional && <span className="text-red-500 ml-0.5">*</span>}
       </span>
-      <span className={`flex h-10 items-center rounded-xl border transition ${error ? "border-red-400 bg-red-50/50" : "border-slate-200 bg-slate-50/50 focus-within:border-[#5B21B6] focus-within:bg-white focus-within:ring-2 focus-within:ring-[#5B21B6]/10"}`}>
+      <span className={`flex h-11 items-center rounded-xl border transition ${error ? "border-red-400 bg-red-50/50" : "border-slate-200 bg-slate-50/50 focus-within:border-[#5B21B6] focus-within:bg-white focus-within:ring-2 focus-within:ring-[#5B21B6]/10"}`}>
         <span className="ml-3 shrink-0 text-slate-400">{icon}</span>
         <input
           {...props}
@@ -1068,7 +1168,7 @@ function FormSelect({
         {label}{!optional && <span className="text-red-500 ml-0.5">*</span>}
         {optional && <span className="ml-1 text-slate-400">(optional)</span>}
       </span>
-      <span className={`flex h-10 items-center rounded-xl border transition ${error ? "border-red-400 bg-red-50/50" : "border-slate-200 bg-slate-50/50 focus-within:border-[#5B21B6] focus-within:bg-white focus-within:ring-2 focus-within:ring-[#5B21B6]/10"}`}>
+      <span className={`flex h-11 items-center rounded-xl border transition ${error ? "border-red-400 bg-red-50/50" : "border-slate-200 bg-slate-50/50 focus-within:border-[#5B21B6] focus-within:bg-white focus-within:ring-2 focus-within:ring-[#5B21B6]/10"}`}>
         <span className="ml-3 shrink-0 text-slate-400">{icon}</span>
         <select
           value={value}

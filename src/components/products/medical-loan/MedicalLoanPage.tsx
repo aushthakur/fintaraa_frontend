@@ -45,6 +45,36 @@ import { buildApiUrl } from "@/services/apiUrl";
 import type { LoanSeoLocationPage, LoanSeoPageData } from "@/services/loanSeoPages";
 import type { BankProductLender } from "@/services/bankSeoPages";
 
+const getBankLogoPath = (slug: string) => {
+  const s = (slug || "").toLowerCase();
+  if (s.includes("hdfc")) return "/assets/banks/HDFC-Bank.png";
+  if (s.includes("icici")) return "/assets/banks/ICICI-Bank.png";
+  if (s.includes("axis")) return "/assets/banks/axis-bank.png";
+  if (s.includes("sbi") || s.includes("state-bank")) return "/assets/banks/State-Bank-of-India.png";
+  if (s.includes("kotak")) return "/assets/banks/Kotak-Mahindra-Bank.png";
+  if (s.includes("bajaj")) return "/assets/banks/bajaj-finserv.png";
+  if (s.includes("baroda")) return "/assets/banks/Bank-of-Baroda.png";
+  if (s.includes("indusind")) return "/assets/banks/IndusInd-Bank.png";
+  if (s.includes("federal")) return "/assets/banks/Federal-Bank.png";
+  if (s.includes("pnb") || s.includes("punjab")) return "/assets/banks/Punjab-National-Bank.png";
+  return "/assets/banks/hdfc.png";
+};
+
+const medicalHeroSlides = [
+  {
+    image: "/images/loans/medical_hero_banner_1.jpg",
+    title: "Modern Healthcare & Hospital Suite Financing",
+    caption: "Finance surgeries, ICU admissions, specialty procedures, and private hospital rooms",
+    badge: "Emergency Care • Up to ₹50L",
+  },
+  {
+    image: "/images/loans/doctor-loan.jpg",
+    title: "Specialty Clinical & Surgical Care",
+    caption: "Cover health insurance co-pay gaps, room rent caps, and non-payable medical items",
+    badge: "24-Hour Express Disbursal",
+  },
+];
+
 const defaultMedicalLenders: BankProductLender[] = [
   {
     bankName: "HDFC Bank Personal Loan for Medical Emergency",
@@ -212,6 +242,7 @@ export function MedicalLoanPage({
   const [lenderSearch, setLenderSearch] = useState("");
   const [docTab, setDocTab] = useState<"eligibility" | "documents">("eligibility");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [heroSlide, setHeroSlide] = useState(0);
 
   // Medical EMI & Expense state
   const [loanAmount, setLoanAmount] = useState(500000);
@@ -325,97 +356,158 @@ export function MedicalLoanPage({
 
   return (
     <div className="bg-white text-[#192337] font-sans antialiased">
-      {/* ─── HERO SECTION: CONCEPTUAL HEALTHCARE FINANCIAL ASSISTANCE ─── */}
-      <section className="relative bg-gradient-to-b from-teal-50/70 via-white to-slate-50/50 border-b border-teal-100/60 py-14 lg:py-20 overflow-hidden">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
-          <div className="grid lg:grid-cols-12 gap-10 items-center">
-            
-            {/* Left Column: Heading & Information */}
-            <div className="lg:col-span-6 space-y-6">
-              <span className="inline-flex items-center gap-2 rounded-full bg-teal-100/80 px-3.5 py-1 text-[11.5px] font-medium text-teal-800">
-                <HeartPulse className="h-3.5 w-3.5 text-teal-600" />
-                Medical Financial Options
-              </span>
-
-              <h1 className="text-[38px] sm:text-[50px] lg:text-[58px] leading-[1.08] font-light text-slate-900 tracking-tight">
-                Medical Loan for Healthcare & Emergency Treatment: <br />
-                <span className="text-teal-700 font-normal">Financing Options, Rates & Eligibility</span>
-              </h1>
-
-              <p className="text-[15.5px] sm:text-[17.5px] text-[#64748B] font-light leading-relaxed max-w-xl">
-                Finance hospital admission, surgeries, elective treatments, specialty care, and diagnostic bills with fast-track collateral-free medical loans from top partner lenders.
-              </p>
-
-              <div className="flex flex-wrap items-center gap-4 pt-2">
-                <button
-                  type="button"
-                  onClick={() => openFormWithDetails()}
-                  className="inline-flex h-13 items-center justify-center gap-2.5 rounded-xl bg-teal-700 px-7 text-[14px] font-medium text-white transition hover:bg-teal-800 shadow-lg shadow-teal-900/15 cursor-pointer"
-                >
-                  Check Medical Loan Eligibility
-                  <ArrowRight className="h-4 w-4" />
-                </button>
-
-                <a
-                  href="#medical-calculator"
-                  className="inline-flex h-13 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-6 text-[14px] font-medium text-slate-700 hover:border-teal-300 hover:text-teal-700 transition no-underline"
-                >
-                  Calculate Repayment EMI
-                </a>
-              </div>
-
-              <div className="pt-2 flex items-center gap-2 text-[11.5px] text-slate-400 font-light">
-                <ShieldCheck className="h-4 w-4 text-teal-600 shrink-0" />
-                <span>Zero collateral required. Instant digital verification and fast disbursal.</span>
-              </div>
+      {/* ─── CINEMATIC HERO: FULL-BLEED CAROUSEL + FIXED COPY + INLINE FORM ─── */}
+      <section className="relative isolate overflow-hidden border-b border-purple-100 bg-slate-950">
+        {/* Sliding background images */}
+        <div className="absolute inset-0 -z-20">
+          {medicalHeroSlides.map((slide, idx) => (
+            <div
+              key={slide.image}
+              className={`absolute inset-0 transition-opacity duration-[1400ms] ease-out ${heroSlide === idx ? "opacity-100" : "opacity-0"}`}
+              aria-hidden={heroSlide !== idx}
+            >
+              <Image
+                src={slide.image}
+                alt={slide.title}
+                fill
+                priority={idx === 0}
+                unoptimized
+                sizes="100vw"
+                className={`object-cover object-center transition-transform duration-[9000ms] ease-out ${heroSlide === idx ? "scale-[1.07]" : "scale-100"}`}
+              />
             </div>
+          ))}
+        </div>
 
-            {/* Right Column: Conceptual Medical Assistance Visual Card */}
-            <div className="lg:col-span-6">
-              <div className="rounded-3xl border border-teal-100 bg-white p-6 sm:p-8 shadow-[0_16px_40px_rgba(15,118,110,0.08)] space-y-6">
-                <div className="flex justify-between items-center border-b border-slate-100 pb-4">
-                  <div>
-                    <span className="text-[10.5px] uppercase tracking-wider text-teal-700 font-medium">Healthcare Coverage View</span>
-                    <h2 className="text-[20px] font-medium text-slate-900 mt-0.5">Medical Financing Overview</h2>
-                  </div>
-                  <span className="rounded-xl bg-teal-50 px-3 py-1 text-[12px] font-medium text-teal-800">
-                    Up to ₹50 Lakhs
-                  </span>
-                </div>
+        {/* Gradient overlays */}
+        <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(10,7,20,0.92)_0%,rgba(24,13,45,0.82)_38%,rgba(24,13,45,0.45)_62%,rgba(10,7,20,0.60)_100%)]" />
+        <div className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(15,8,28,0.18)_0%,rgba(15,8,28,0.06)_50%,rgba(15,8,28,0.75)_100%)]" />
+        <div className="absolute inset-x-0 bottom-0 -z-10 h-52 bg-gradient-to-t from-slate-950/80 to-transparent" />
 
-                <div className="grid grid-cols-2 gap-3">
+        <div className="mx-auto max-w-7xl px-4 pb-8 pt-10 sm:px-6 lg:px-8 lg:pb-12 lg:pt-14">
+          <div className="grid min-h-[650px] items-center gap-8 lg:grid-cols-12 lg:gap-10">
+
+            {/* Left: Copy */}
+            <div className="lg:col-span-6 lg:pr-10">
+              <div className="max-w-2xl">
+                <h1 className="text-[42px] font-extralight leading-[1.05] tracking-[-0.035em] text-white drop-shadow-sm sm:text-[56px] lg:text-[66px]">
+                  When health can't wait,
+                  <span className="mt-1 block font-normal text-purple-200">funding shouldn't either.</span>
+                </h1>
+
+                {/* Feature list */}
+                <ul className="mt-8 space-y-3">
                   {[
-                    { label: "Emergency Surgery", desc: "ICU & Hospitalization", icon: <Hospital className="h-4 w-4 text-teal-700" /> },
-                    { label: "Specialty Care", desc: "Oncology & Cardiology", icon: <Stethoscope className="h-4 w-4 text-teal-700" /> },
-                    { label: "Elective Care", desc: "Dental, Vision & Ortho", icon: <Activity className="h-4 w-4 text-teal-700" /> },
-                    { label: "Insurance Gap", desc: "Co-pay & Room Upgrades", icon: <ShieldAlert className="h-4 w-4 text-teal-700" /> },
-                  ].map((item, idx) => (
-                    <div key={idx} className="p-3.5 rounded-2xl border border-teal-50 bg-teal-50/40 space-y-1">
-                      <div className="flex items-center gap-2">
-                        {item.icon}
-                        <span className="text-[13px] font-medium text-slate-800">{item.label}</span>
-                      </div>
-                      <p className="text-[11px] text-slate-500 font-light">{item.desc}</p>
-                    </div>
+                    { icon: BadgeCheck,  text: "Compare offers from HDFC, ICICI, Axis, SBI, Kotak & Bajaj" },
+                    { icon: ShieldCheck, text: "100% collateral-free — no property, gold or guarantor required" },
+                    { icon: Clock,       text: "Pre-approved disbursal in as little as 24 hours" },
+                    { icon: HeartPulse,  text: "Covers surgeries, ICU, oncology, orthopaedics, dental & more" },
+                  ].map(({ icon: Icon, text }) => (
+                    <li key={text} className="flex items-start gap-3">
+                      <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-purple-500/25">
+                        <Icon className="h-3 w-3 text-purple-200" />
+                      </span>
+                      <span className="text-[13.5px] font-light leading-snug text-white/80">{text}</span>
+                    </li>
                   ))}
+                </ul>
+
+                {/* Stats */}
+                <div className="mt-8 grid grid-cols-3 overflow-hidden rounded-2xl border border-white/12 bg-white/8 shadow-2xl shadow-black/20 backdrop-blur-xl">
+                  <div className="px-5 py-5">
+                    <p className="text-[28px] font-semibold tracking-tight text-white">₹50L</p>
+                    <p className="mt-1 text-[11px] font-light leading-snug text-white/50">Maximum loan<br/>amount available</p>
+                  </div>
+                  <div className="border-x border-white/10 px-5 py-5">
+                    <p className="text-[28px] font-semibold tracking-tight text-white">9.60%</p>
+                    <p className="mt-1 text-[11px] font-light leading-snug text-white/50">Lowest indicative<br/>rate per annum*</p>
+                  </div>
+                  <div className="px-5 py-5">
+                    <p className="text-[28px] font-semibold tracking-tight text-white">24 hrs</p>
+                    <p className="mt-1 text-[11px] font-light leading-snug text-white/50">Express disbursal<br/>for pre-approved</p>
+                  </div>
                 </div>
 
-                <div className="rounded-2xl bg-teal-50/80 p-4 flex justify-between items-center text-[13px]">
-                  <div>
-                    <span className="text-[11px] text-slate-500 font-light block">Indicative Monthly EMI (₹5 Lakhs @ 3 Yrs)</span>
-                    <span className="text-[18px] font-medium text-teal-800">₹16,250 / month</span>
+                {/* Carousel dots */}
+                <div className="mt-6 flex items-center gap-3">
+                  <div className="flex items-center gap-2">
+                    {medicalHeroSlides.map((slide, idx) => (
+                      <button
+                        key={slide.image}
+                        type="button"
+                        onClick={() => setHeroSlide(idx)}
+                        aria-label={`Medical scene ${idx + 1}`}
+                        className={`h-1.5 rounded-full transition-all duration-300 ${heroSlide === idx ? "w-8 bg-purple-300" : "w-2 bg-white/30 hover:bg-white/60"}`}
+                      />
+                    ))}
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => openFormWithDetails()}
-                    className="inline-flex h-9 items-center justify-center rounded-xl bg-teal-700 px-4 text-[12px] font-medium text-white transition hover:bg-teal-800 cursor-pointer"
-                  >
-                    Apply Now
-                  </button>
+                  <p className="text-[10.5px] text-white/35 font-light">*Indicative rate. Subject to lender evaluation.</p>
                 </div>
               </div>
             </div>
 
+            {/* Right: Floating form */}
+            <div className="lg:col-span-6 lg:pl-5">
+              <div className="overflow-hidden rounded-[28px] border border-white/60 bg-white/95 shadow-[0_32px_90px_rgba(0,0,0,0.32)] backdrop-blur-xl">
+                <div className="flex items-start justify-between gap-4 border-b border-purple-100 bg-gradient-to-r from-[#5B21B6] to-[#7C3AED] px-5 py-5 text-white sm:px-7">
+                  <div>
+                    <span className="text-[10px] font-medium uppercase tracking-[0.16em] text-purple-200">Free eligibility check</span>
+                    <h2 className="mt-1 text-[23px] font-normal tracking-tight text-white">Find medical loan options for your profile</h2>
+                    <p className="mt-1 text-[11.5px] font-light text-purple-100">A few details help us match relevant lender options.</p>
+                  </div>
+                  <div className="hidden rounded-2xl bg-white/10 px-3 py-2 text-center sm:block"><p className="text-[16px] font-medium">2 min</p><p className="text-[9px] text-purple-200">to complete</p></div>
+                </div>
+
+                <form onSubmit={handleSubmit} noValidate className="grid gap-3.5 p-5 sm:grid-cols-2 sm:p-6">
+                  <FormInput label="Full Name" value={leadForm.fullName} error={errors.fullName} icon={<User className="h-3.5 w-3.5" />} placeholder="Enter full name" onChange={(e) => updateField("fullName", e.target.value)} />
+                  <FormInput label="Mobile Number" value={leadForm.mobile} error={errors.mobile} icon={<PhoneCall className="h-3.5 w-3.5" />} placeholder="10-digit mobile number" maxLength={14} onChange={(e) => updateField("mobile", e.target.value)} />
+                  <FormInput label="Email Address" value={leadForm.email} error={errors.email} icon={<Mail className="h-3.5 w-3.5" />} placeholder="name@example.com" onChange={(e) => updateField("email", e.target.value)} />
+                  <FormInput label="Current City" value={leadForm.city} error={errors.city} icon={<MapPin className="h-3.5 w-3.5" />} placeholder="Enter city" onChange={(e) => updateField("city", e.target.value)} />
+                  <FormSelect label="Treatment Category" value={leadForm.treatmentType} error={errors.treatmentType} icon={<Hospital className="h-3.5 w-3.5" />} placeholder="Select treatment type" options={medicalTreatmentCategories} onChange={(v) => updateField("treatmentType", v)} />
+                  <FormSelect label="Required Loan Amount" value={leadForm.medicalBudget} error={errors.medicalBudget} icon={<BadgeIndianRupee className="h-3.5 w-3.5" />} placeholder="Select amount range" options={medicalBudgetOptions} onChange={(v) => updateField("medicalBudget", v)} />
+                  <div className="sm:col-span-2"><FormSelect label="Employment Type" optional value={leadForm.employmentType} icon={<Building className="h-3.5 w-3.5" />} placeholder="Select occupation status" options={employmentOptions} onChange={(v) => updateField("employmentType", v)} /></div>
+                  <div className="sm:col-span-2"><WhatsAppConsent checked={whatsappConsent} error={errors.whatsappConsent} onChange={(checked) => { setWhatsappConsent(checked); setErrors((c) => ({ ...c, whatsappConsent: undefined })); setSubmitError(""); setSubmitSuccess(""); }} /></div>
+                  <div className="sm:col-span-2" aria-live="polite">
+                    {submitError && <p className="flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 px-3 py-2.5 text-[11px] text-red-600"><AlertCircle className="mt-0.5 h-3.5 w-3.5 shrink-0" />{submitError}</p>}
+                    {submitSuccess && <p className="flex items-start gap-2 rounded-xl border border-purple-200 bg-purple-50 px-3 py-2.5 text-[11px] text-purple-700"><CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0" />{submitSuccess}</p>}
+                  </div>
+                  <div className="sm:col-span-2">
+                    <button type="submit" disabled={isSubmitting} className="inline-flex h-13 w-full items-center justify-center gap-2 rounded-xl bg-[#5B21B6] px-5 text-[14px] font-medium text-white shadow-lg shadow-purple-900/15 transition hover:bg-[#4C1D95] disabled:opacity-60">
+                      {isSubmitting ? <><Loader2 className="h-4 w-4 animate-spin" />Checking options...</> : <>Check My Eligibility <ArrowRight className="h-4 w-4" /></>}
+                    </button>
+                    <div className="mt-3 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[10px] text-slate-400">
+                      <span className="inline-flex items-center gap-1"><ShieldCheck className="h-3.5 w-3.5 text-purple-400" /> Secure details</span><span>•</span><span>No collateral</span><span>•</span><span>Zero CIBIL impact</span>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom use-case rail */}
+        <div className="border-t border-white/10 bg-slate-950/60 backdrop-blur-xl">
+          <div className="mx-auto grid max-w-7xl grid-cols-2 px-4 sm:grid-cols-4 sm:px-6 lg:px-8">
+            {[
+              { Icon: Hospital,     title: "Emergency & ICU",      desc: "Immediate surgery deposits, ICU daily charges & hospital admission bills",         cat: "Emergency Surgery and ICU Hospitalization" },
+              { Icon: HeartPulse,   title: "Cardiology & Oncology", desc: "Bypass, angioplasty, chemotherapy, radiation & transplant procedures",              cat: "Cancer Care and Oncology Treatments" },
+              { Icon: Activity,     title: "Ortho & Joint Care",    desc: "Knee replacements, spinal surgery, hip implants & physical rehabilitation",         cat: "Orthopedic Procedures and Joint Replacements" },
+              { Icon: Stethoscope,  title: "Dental, Vision & More", desc: "Implants, LASIK, cosmetic procedures & insurance co-pay gap coverage",              cat: "Dental, Optical and Cosmetic Treatments" },
+            ].map(({ Icon, title, desc, cat }, idx) => (
+              <button
+                key={title}
+                type="button"
+                onClick={() => openFormWithDetails(cat)}
+                className={`group px-5 py-6 text-left text-white transition hover:bg-white/5 ${idx > 0 ? "border-l border-white/10" : ""}`}
+              >
+                <div className="mb-3 flex h-8 w-8 items-center justify-center rounded-lg bg-purple-500/20">
+                  <Icon className="h-4 w-4 text-purple-300" />
+                </div>
+                <p className="text-[13px] font-medium text-white">{title}</p>
+                <p className="mt-1.5 text-[11px] font-light leading-relaxed text-white/45">{desc}</p>
+                <p className="mt-3 text-[10.5px] font-medium text-purple-300 transition group-hover:text-purple-200">Check eligibility →</p>
+              </button>
+            ))}
           </div>
         </div>
       </section>
@@ -424,14 +516,14 @@ export function MedicalLoanPage({
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-200">
           <div
-            className="relative w-full max-w-xl rounded-3xl border border-teal-100 bg-white shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 max-h-[90vh] flex flex-col"
+            className="relative w-full max-w-xl rounded-3xl border border-purple-100 bg-white shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 max-h-[90vh] flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="bg-teal-700 p-6 text-white flex items-start justify-between shrink-0">
+            <div className="bg-[#5B21B6] p-6 text-white flex items-start justify-between shrink-0">
               <div>
-                <span className="text-[10px] tracking-[0.16em] uppercase text-teal-200 font-medium">Digital Healthcare Finance</span>
+                <span className="text-[10px] tracking-[0.16em] uppercase text-purple-200 font-medium">Digital Healthcare Finance</span>
                 <h2 className="text-[22px] font-normal text-white tracking-tight mt-0.5">Apply for Medical Loan</h2>
-                <p className="mt-1 text-[12.5px] text-teal-100/90 font-light leading-relaxed">
+                <p className="mt-1 text-[12.5px] text-purple-100/90 font-light leading-relaxed">
                   Submit details to compare medical financing options from partner institutions.
                 </p>
               </div>
@@ -533,7 +625,7 @@ export function MedicalLoanPage({
                     </p>
                   )}
                   {submitSuccess && (
-                    <p className="flex items-start gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2.5 text-[11px] text-emerald-700 font-light">
+                    <p className="flex items-start gap-2 rounded-xl border border-purple-200 bg-purple-50 px-3 py-2.5 text-[11px] text-purple-700 font-light">
                       <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0" />
                       {submitSuccess}
                     </p>
@@ -544,7 +636,7 @@ export function MedicalLoanPage({
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-teal-700 px-5 text-[13.5px] font-medium text-white transition hover:bg-teal-800 disabled:opacity-60 cursor-pointer shadow-md"
+                    className="w-full inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-[#5B21B6] px-5 text-[13.5px] font-medium text-white transition hover:bg-[#4C1D95] disabled:opacity-60 cursor-pointer shadow-md"
                   >
                     {isSubmitting ? (
                       <>
@@ -572,11 +664,10 @@ export function MedicalLoanPage({
       <section className="py-14 lg:py-20 bg-white border-b border-slate-100">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl mb-12">
-            <p className="text-[11px] tracking-[0.16em] uppercase text-teal-700 font-medium mb-2">Healthcare Categories</p>
             <h2 className="text-[30px] sm:text-[40px] font-light tracking-tight text-slate-900 leading-[1.12]">
               Medical Treatments Covered Under Healthcare Loans
             </h2>
-            <p className="mt-2 text-[15px] text-slate-500 font-light">
+            <p className="mt-3 text-[15px] text-slate-500 font-light">
               Personal medical loans offer unconstrained capital for planned procedures, acute surgeries, and urgent healthcare expenses.
             </p>
           </div>
@@ -586,55 +677,76 @@ export function MedicalLoanPage({
               {
                 title: "Emergency ICU & Surgeries",
                 desc: "Finance urgent surgical interventions, intensive care admission, and immediate hospital billing deposits.",
-                icon: <Hospital className="h-5 w-5 text-teal-700" />,
+                icon: <Hospital className="h-5 w-5 text-[#5B21B6]" />,
+                image: "/images/loans/medical_hero_banner_1.jpg",
                 cat: "Emergency Surgery and ICU Hospitalization",
               },
               {
                 title: "Specialty & Oncology Care",
                 desc: "Fund specialized chemotherapy, radiation cycles, organ transplants, and advanced diagnostic scans.",
-                icon: <Stethoscope className="h-5 w-5 text-teal-700" />,
+                icon: <Stethoscope className="h-5 w-5 text-[#5B21B6]" />,
+                image: "/images/loans/doctor-loan.jpg",
                 cat: "Cancer Care and Oncology Treatments",
               },
               {
                 title: "Cardiology Procedures",
-                desc: "Cover bypass surgeries, angioplasty, pacemaker implantations, and cardiac rehabilitation.",
-                icon: <HeartPulse className="h-5 w-5 text-teal-700" />,
+                desc: "Cover bypass surgeries, angioplasty, pacemaker implantations, and cardiac rehabilitation programs.",
+                icon: <HeartPulse className="h-5 w-5 text-[#5B21B6]" />,
+                image: "/images/loans/medical_hero_banner_1.jpg",
                 cat: "Cardiology and Heart Surgeries",
               },
               {
                 title: "Orthopedic & Joint Replacements",
                 desc: "Pay for knee replacements, hip surgeries, spinal procedures, and post-op physical rehabilitation.",
-                icon: <Activity className="h-5 w-5 text-teal-700" />,
+                icon: <Activity className="h-5 w-5 text-[#5B21B6]" />,
+                image: "/images/loans/doctor-loan.jpg",
                 cat: "Orthopedic Procedures and Joint Replacements",
               },
               {
                 title: "Dental & Vision Treatments",
                 desc: "Finance orthodontic procedures, dental implants, LASIK eye surgery, and elective cosmetic care.",
-                icon: <ShieldCheck className="h-5 w-5 text-teal-700" />,
+                icon: <ShieldCheck className="h-5 w-5 text-[#5B21B6]" />,
+                image: "/images/loans/medical_hero_banner_1.jpg",
                 cat: "Dental, Optical and Cosmetic Treatments",
               },
               {
                 title: "Insurance Co-pay & Out-of-Pocket",
-                desc: "Bridge gaps created by insurance room rent capping, co-payments, and non-covered consumables.",
-                icon: <ShieldAlert className="h-5 w-5 text-teal-700" />,
+                desc: "Bridge gaps created by insurance room rent capping, co-payments, and non-covered medical consumables.",
+                icon: <ShieldAlert className="h-5 w-5 text-[#5B21B6]" />,
+                image: "/images/loans/doctor-loan.jpg",
                 cat: "General Medical Bills and Diagnostic Expenses",
               },
             ].map((item, idx) => (
               <div
                 key={idx}
                 onClick={() => openFormWithDetails(item.cat)}
-                className="group rounded-2xl border border-slate-200/80 bg-white p-6 hover:border-teal-300 hover:shadow-lg transition duration-300 cursor-pointer flex flex-col justify-between"
+                className="group rounded-2xl border border-slate-200/80 bg-white overflow-hidden hover:border-purple-300 hover:shadow-lg transition duration-300 cursor-pointer flex flex-col"
               >
-                <div>
-                  <div className="h-10 w-10 rounded-xl bg-teal-50 flex items-center justify-center mb-4 transition-transform group-hover:scale-105">
-                    {item.icon}
+                {/* Image header */}
+                <div className="relative h-36 w-full overflow-hidden">
+                  <Image
+                    src={item.image}
+                    alt={item.title}
+                    fill
+                    unoptimized
+                    className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 to-transparent" />
+                  <div className="absolute bottom-3 left-3">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/90 shadow">
+                      {item.icon}
+                    </div>
                   </div>
-                  <h3 className="text-[17px] font-medium text-slate-900 group-hover:text-teal-700 transition-colors">{item.title}</h3>
-                  <p className="mt-2 text-[13px] text-slate-500 font-light leading-relaxed">{item.desc}</p>
                 </div>
-                <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-[12.5px] font-medium text-teal-700">
-                  <span>Explore Financing</span>
-                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                <div className="p-5 flex flex-col flex-1 justify-between">
+                  <div>
+                    <h3 className="text-[16px] font-medium text-slate-900 group-hover:text-[#5B21B6] transition-colors">{item.title}</h3>
+                    <p className="mt-2 text-[12.5px] text-slate-500 font-light leading-relaxed">{item.desc}</p>
+                  </div>
+                  <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-[12px] font-medium text-[#5B21B6]">
+                    <span>Explore Financing</span>
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  </div>
                 </div>
               </div>
             ))}
@@ -643,108 +755,162 @@ export function MedicalLoanPage({
       </section>
 
       {/* ─── SECTION 3: UNIFIED MEDICAL EMI CALCULATOR ────────────────── */}
-      <section id="medical-calculator" className="py-14 lg:py-20 bg-teal-50/40 border-b border-teal-100/60">
+      <section id="medical-calculator" className="py-14 lg:py-20 bg-[#F7F3FF]/40 border-b border-purple-100/60">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl mb-10">
-            <p className="text-[11px] tracking-[0.16em] uppercase text-teal-700 font-medium mb-2">Calculator</p>
             <h2 className="text-[30px] sm:text-[40px] font-light tracking-tight text-slate-900 leading-[1.12]">
               Medical Loan EMI & Repayment Calculator
             </h2>
-            <p className="mt-2 text-[15px] text-slate-500 font-light">
+            <p className="mt-3 text-[15px] text-slate-500 font-light">
               Adjust loan amount, interest rate, and repayment tenure to evaluate monthly EMI requirements.
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-12 gap-8 items-stretch bg-white rounded-3xl border border-teal-100 p-6 sm:p-8 shadow-[0_16px_40px_rgba(15,118,110,0.06)]">
-            <div className="lg:col-span-7 space-y-6">
-              <div>
-                <div className="flex justify-between items-center mb-2">
-                  <label className="text-[12px] font-medium text-slate-700">Required Medical Amount</label>
-                  <span className="text-[15px] font-medium text-teal-800">₹{loanAmount.toLocaleString()}</span>
-                </div>
-                <input
-                  type="range"
-                  min={50000}
-                  max={5000000}
-                  step={50000}
-                  value={loanAmount}
-                  onChange={(e) => setLoanAmount(Number(e.target.value))}
-                  className="w-full h-2 rounded-lg bg-teal-100 accent-teal-700 cursor-pointer"
-                />
-              </div>
+          {/* Enhanced Calculator: left = procedure cost guide, right = sliders + EMI result */}
+          <div className="rounded-3xl border border-purple-100 bg-white shadow-[0_16px_40px_rgba(91,33,182,0.07)] overflow-hidden">
 
-              <div className="grid sm:grid-cols-2 gap-6 pt-2 border-t border-slate-100">
-                <div>
-                  <div className="flex justify-between items-center mb-2">
-                    <label className="text-[12px] font-medium text-slate-700">Interest Rate (p.a.)</label>
-                    <span className="text-[13.5px] font-medium text-teal-800">{calcRate.toFixed(2)}%</span>
-                  </div>
-                  <input
-                    type="range"
-                    min={9.5}
-                    max={18}
-                    step={0.25}
-                    value={calcRate}
-                    onChange={(e) => setCalcRate(Number(e.target.value))}
-                    className="w-full h-2 rounded-lg bg-teal-100 accent-teal-700 cursor-pointer"
-                  />
-                </div>
-
-                <div>
-                  <div className="flex justify-between items-center mb-2">
-                    <label className="text-[12px] font-medium text-slate-700">Tenure (Years)</label>
-                    <span className="text-[13.5px] font-medium text-teal-800">{calcTenureYears} Years</span>
-                  </div>
-                  <input
-                    type="range"
-                    min={1}
-                    max={7}
-                    step={1}
-                    value={calcTenureYears}
-                    onChange={(e) => setCalcTenureYears(Number(e.target.value))}
-                    className="w-full h-2 rounded-lg bg-teal-100 accent-teal-700 cursor-pointer"
-                  />
-                </div>
-              </div>
+            {/* Top header bar */}
+            <div className="bg-gradient-to-r from-[#5B21B6] to-[#7C3AED] px-6 py-5 sm:px-8">
+              <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-purple-200">Interactive Financial Tool</p>
+              <h3 className="mt-1 text-[20px] font-normal text-white">Medical Loan EMI & Repayment Estimator</h3>
+              <p className="mt-0.5 text-[12px] text-purple-100/80 font-light">Adjust the sliders to model your monthly repayment for any healthcare expense.</p>
             </div>
 
-            <div className="lg:col-span-5 bg-teal-800 text-white rounded-2xl p-6 sm:p-7 flex flex-col justify-between space-y-6">
-              <div>
-                <span className="text-[10px] uppercase tracking-wider text-teal-200 font-medium">Estimated Monthly EMI</span>
-                <p className="text-[32px] font-medium text-white tracking-tight mt-1">
-                  ₹{medicalEmiCalc.emi.toLocaleString()} <span className="text-[14px] font-normal text-teal-200">/ month</span>
-                </p>
-                <p className="text-[12px] text-teal-100/80 font-light mt-1">
-                  Calculated for ₹{loanAmount.toLocaleString()} loan amount over {calcTenureYears} years.
-                </p>
+            <div className="grid lg:grid-cols-12 gap-0">
+
+              {/* Left panel: Typical procedure cost reference */}
+              <div className="lg:col-span-4 border-b lg:border-b-0 lg:border-r border-slate-100 p-6 sm:p-7 bg-[#F7F3FF]/50">
+                <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-[#5B21B6] mb-4">Typical Procedure Costs</p>
+                <ul className="space-y-3">
+                  {[
+                    { label: "Emergency ICU (7 days)",        low: "₹1.5L", high: "₹8L" },
+                    { label: "Cardiac Bypass Surgery",          low: "₹3L",   high: "₹6L" },
+                    { label: "Knee / Hip Replacement",          low: "₹2L",   high: "₹5L" },
+                    { label: "Cancer Chemotherapy (6 cycles)",  low: "₹2L",   high: "₹12L" },
+                    { label: "Organ Transplant",                low: "₹5L",   high: "₹20L" },
+                    { label: "LASIK / Dental Implants",         low: "₹50K",  high: "₹2L" },
+                  ].map(({ label, low, high }) => (
+                    <li key={label} className="flex items-start justify-between gap-2">
+                      <span className="text-[12px] font-light text-slate-600 leading-snug flex-1">{label}</span>
+                      <span className="text-[11px] font-medium text-[#5B21B6] shrink-0 whitespace-nowrap">{low}–{high}</span>
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-5 rounded-xl border border-purple-200/60 bg-white px-4 py-3">
+                  <p className="text-[10.5px] font-light text-slate-500 leading-relaxed">
+                    Loan amounts up to <strong className="font-medium text-slate-700">₹50 Lakhs</strong> available. Funds credited directly to your account — pay hospitals on your terms.
+                  </p>
+                </div>
               </div>
 
-              <div className="space-y-3 border-t border-teal-600/50 pt-4 text-[13px]">
-                <div className="flex justify-between text-teal-100">
-                  <span>Total Interest Payable</span>
-                  <span className="font-medium text-white">₹{medicalEmiCalc.totalInterest.toLocaleString()}</span>
-                </div>
-                <div className="flex justify-between text-teal-100 text-[12.5px]">
-                  <span>Total Repayment</span>
-                  <span className="font-medium text-white">₹{medicalEmiCalc.totalPayment.toLocaleString()}</span>
+              {/* Right panel: sliders + EMI */}
+              <div className="lg:col-span-8 p-6 sm:p-7">
+                <div className="grid lg:grid-cols-2 gap-8">
+
+                  {/* Sliders */}
+                  <div className="space-y-6">
+                    <div>
+                      <div className="flex justify-between items-center mb-2">
+                        <label className="text-[12px] font-medium text-slate-700">Required Medical Amount</label>
+                        <span className="text-[14px] font-semibold text-[#5B21B6]">₹{loanAmount.toLocaleString()}</span>
+                      </div>
+                      <input
+                        type="range"
+                        min={50000}
+                        max={5000000}
+                        step={50000}
+                        value={loanAmount}
+                        onChange={(e) => setLoanAmount(Number(e.target.value))}
+                        className="w-full h-2 rounded-lg bg-purple-100 accent-[#5B21B6] cursor-pointer"
+                      />
+                      <div className="flex justify-between mt-1 text-[10px] text-slate-400">
+                        <span>₹50K</span><span>₹50L</span>
+                      </div>
+                    </div>
+
+                    <div>
+                      <div className="flex justify-between items-center mb-2">
+                        <label className="text-[12px] font-medium text-slate-700">Interest Rate (p.a.)</label>
+                        <span className="text-[14px] font-semibold text-[#5B21B6]">{calcRate.toFixed(2)}%</span>
+                      </div>
+                      <input
+                        type="range"
+                        min={9.5}
+                        max={18}
+                        step={0.25}
+                        value={calcRate}
+                        onChange={(e) => setCalcRate(Number(e.target.value))}
+                        className="w-full h-2 rounded-lg bg-purple-100 accent-[#5B21B6] cursor-pointer"
+                      />
+                      <div className="flex justify-between mt-1 text-[10px] text-slate-400">
+                        <span>9.5%</span><span>18%</span>
+                      </div>
+                    </div>
+
+                    <div>
+                      <div className="flex justify-between items-center mb-2">
+                        <label className="text-[12px] font-medium text-slate-700">Repayment Tenure</label>
+                        <span className="text-[14px] font-semibold text-[#5B21B6]">{calcTenureYears} {calcTenureYears === 1 ? "Year" : "Years"}</span>
+                      </div>
+                      <input
+                        type="range"
+                        min={1}
+                        max={7}
+                        step={1}
+                        value={calcTenureYears}
+                        onChange={(e) => setCalcTenureYears(Number(e.target.value))}
+                        className="w-full h-2 rounded-lg bg-purple-100 accent-[#5B21B6] cursor-pointer"
+                      />
+                      <div className="flex justify-between mt-1 text-[10px] text-slate-400">
+                        <span>1 yr</span><span>7 yrs</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* EMI Result card */}
+                  <div className="bg-[#5B21B6] rounded-2xl p-5 flex flex-col justify-between text-white">
+                    <div>
+                      <span className="text-[10px] uppercase tracking-wider text-purple-200 font-medium">Estimated Monthly EMI</span>
+                      <p className="text-[36px] font-semibold tracking-tight text-white mt-1">
+                        ₹{medicalEmiCalc.emi.toLocaleString()}
+                      </p>
+                      <p className="text-[11px] text-purple-100/70 font-light mt-0.5">per month for {calcTenureYears} {calcTenureYears === 1 ? "year" : "years"}</p>
+                    </div>
+
+                    <div className="mt-4 space-y-2.5 border-t border-purple-400/30 pt-4">
+                      <div className="flex justify-between text-[12px] text-purple-100">
+                        <span>Loan Principal</span>
+                        <span className="font-medium text-white">₹{loanAmount.toLocaleString()}</span>
+                      </div>
+                      <div className="flex justify-between text-[12px] text-purple-100">
+                        <span>Total Interest</span>
+                        <span className="font-medium text-white">₹{medicalEmiCalc.totalInterest.toLocaleString()}</span>
+                      </div>
+                      <div className="flex justify-between text-[12.5px] border-t border-purple-400/30 pt-2.5 text-purple-100">
+                        <span className="font-medium">Total Payable</span>
+                        <span className="font-semibold text-white">₹{medicalEmiCalc.totalPayment.toLocaleString()}</span>
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const bStr = loanAmount > 2000000 ? "Above ₹25 Lakhs" : loanAmount > 1000000 ? "₹10–25 Lakhs" : loanAmount > 500000 ? "₹5–10 Lakhs" : "₹3–5 Lakhs";
+                        openFormWithDetails(undefined, bStr);
+                      }}
+                      className="mt-4 w-full inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-white text-[#5B21B6] font-medium text-[13px] hover:bg-purple-50 transition cursor-pointer"
+                    >
+                      Apply for This Amount
+                      <ArrowRight className="h-4 w-4" />
+                    </button>
+
+                    <p className="mt-2 text-[10px] text-purple-200/60 font-light leading-relaxed text-center">
+                      *Illustrative. Final rates depend on lender profile assessment.
+                    </p>
+                  </div>
+
                 </div>
               </div>
-
-              <button
-                type="button"
-                onClick={() => {
-                  const bStr = loanAmount > 2000000 ? "Above ₹25 Lakhs" : loanAmount > 1000000 ? "₹10–25 Lakhs" : loanAmount > 500000 ? "₹5–10 Lakhs" : "₹3–5 Lakhs";
-                  openFormWithDetails(undefined, bStr);
-                }}
-                className="w-full inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-white text-teal-800 font-medium text-[13.5px] hover:bg-teal-50 transition cursor-pointer shadow-md"
-              >
-                Apply for Medical Loan
-                <ArrowRight className="h-4 w-4" />
-              </button>
-
-              <p className="text-[10.5px] text-teal-200/70 font-light leading-relaxed">
-                *Illustrative calculation based on reducing balance EMI formula. Rates subject to profile verification.
-              </p>
             </div>
           </div>
         </div>
@@ -755,7 +921,7 @@ export function MedicalLoanPage({
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
             <div>
-              <p className="text-[11px] tracking-[0.16em] uppercase text-teal-700 font-medium mb-2">Partner Directory</p>
+              <p className="text-[11px] tracking-[0.16em] uppercase text-[#5B21B6] font-medium mb-2">Partner Directory</p>
               <h2 className="text-[30px] sm:text-[38px] font-light tracking-tight text-slate-900 leading-[1.12]">
                 Compare Medical Loan Offers
               </h2>
@@ -766,12 +932,18 @@ export function MedicalLoanPage({
             {filteredLenders.map((lender) => (
               <div
                 key={lender.bankSlug || lender.bankName}
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[160px_1fr_1fr_1fr_1fr_auto] items-center gap-4 rounded-2xl border border-slate-200 bg-white px-5 py-4 transition hover:border-teal-300 hover:shadow-xs"
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[160px_1fr_1fr_1fr_1fr_auto] items-center gap-4 rounded-2xl border border-slate-200 bg-white px-5 py-4 transition hover:border-purple-300 hover:shadow-xs"
               >
                 <div className="flex items-center gap-3">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-teal-50 text-[13px] font-medium text-teal-800">
-                    {lender.bankName.split(/\s+/).slice(0, 2).map((w) => w[0]).join("")}
-                  </span>
+                  <div className="relative flex h-11 w-24 shrink-0 items-center justify-center rounded-xl border border-slate-200/80 bg-white p-1.5 shadow-xs">
+                    <Image
+                      src={getBankLogoPath(lender.bankSlug)}
+                      alt={lender.bankName}
+                      fill
+                      className="object-contain p-1"
+                      unoptimized
+                    />
+                  </div>
                   <span className="text-[12.5px] font-medium text-slate-800 leading-tight">{lender.bankName}</span>
                 </div>
 
@@ -799,7 +971,7 @@ export function MedicalLoanPage({
                   <button
                     type="button"
                     onClick={() => openFormWithDetails(undefined, undefined)}
-                    className="inline-flex h-9 items-center justify-center rounded-xl border border-slate-200 px-3.5 text-[11.5px] text-slate-600 hover:border-teal-300 hover:text-teal-700 transition font-light whitespace-nowrap cursor-pointer"
+                    className="inline-flex h-9 items-center justify-center rounded-xl border border-slate-200 px-3.5 text-[11.5px] text-slate-600 hover:border-purple-300 hover:text-[#5B21B6] transition font-light whitespace-nowrap cursor-pointer"
                   >
                     Get Callback
                   </button>
@@ -811,7 +983,7 @@ export function MedicalLoanPage({
                       referrer: lender.canonicalPath || "/products/medical-loan",
                     })}
                     productSlug="medical-loan"
-                    className="inline-flex h-9 items-center justify-center gap-1.5 rounded-xl bg-teal-700 px-4 text-[11.5px] text-white no-underline hover:bg-teal-800 transition font-medium whitespace-nowrap"
+                    className="inline-flex h-9 items-center justify-center gap-1.5 rounded-xl bg-[#5B21B6] px-4 text-[11.5px] text-white no-underline hover:bg-[#4C1D95] transition font-medium whitespace-nowrap"
                   >
                     Apply Now
                     <ArrowRight className="h-3.5 w-3.5" />
@@ -827,7 +999,6 @@ export function MedicalLoanPage({
       <section className="py-14 lg:py-20 bg-white border-b border-slate-100">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 space-y-8">
           <div>
-            <p className="text-[11px] tracking-[0.16em] uppercase text-teal-700 font-medium mb-2">Comprehensive Guide</p>
             <h2 className="text-[28px] sm:text-[36px] font-light tracking-tight text-slate-900">
               Medical Emergency Loans in India: Everything You Need to Know
             </h2>
@@ -866,7 +1037,7 @@ export function MedicalLoanPage({
       <section className="py-14 lg:py-20 bg-white border-b border-slate-100">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl mb-8">
-            <p className="text-[11px] tracking-[0.16em] uppercase text-teal-700 font-medium mb-2">Requirements</p>
+            <p className="text-[11px] tracking-[0.16em] uppercase text-[#5B21B6] font-medium mb-2">Requirements</p>
             <h2 className="text-[30px] sm:text-[40px] font-light tracking-tight text-slate-900 leading-[1.12]">
               Eligibility & Document Checklist
             </h2>
@@ -878,7 +1049,7 @@ export function MedicalLoanPage({
               onClick={() => setDocTab("eligibility")}
               className={`px-5 py-2.5 rounded-xl text-[13px] font-medium transition cursor-pointer ${
                 docTab === "eligibility"
-                  ? "bg-teal-700 text-white"
+                  ? "bg-[#5B21B6] text-white"
                   : "bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200"
               }`}
             >
@@ -909,7 +1080,7 @@ export function MedicalLoanPage({
                   "Indian resident status with valid KYC proof",
                 ].map((item, idx) => (
                   <div key={idx} className="flex items-start gap-3 p-3.5 rounded-xl border border-slate-100 bg-slate-50/50">
-                    <FileCheck2 className="h-4 w-4 text-teal-700 shrink-0 mt-0.5" />
+                    <FileCheck2 className="h-4 w-4 text-[#5B21B6] shrink-0 mt-0.5" />
                     <span className="text-[13px] text-slate-700 font-light">{item}</span>
                   </div>
                 ))}
@@ -925,7 +1096,7 @@ export function MedicalLoanPage({
                   "Passport size photographs",
                 ].map((item, idx) => (
                   <div key={idx} className="flex items-start gap-3 p-3.5 rounded-xl border border-slate-100 bg-slate-50/50">
-                    <FileSpreadsheet className="h-4 w-4 text-teal-700 shrink-0 mt-0.5" />
+                    <FileSpreadsheet className="h-4 w-4 text-[#5B21B6] shrink-0 mt-0.5" />
                     <span className="text-[13px] text-slate-700 font-light">{item}</span>
                   </div>
                 ))}
@@ -939,12 +1110,11 @@ export function MedicalLoanPage({
       <LoanFAQSection faqs={faqItems} title="Medical Loan Frequently Asked Questions" />
 
       {/* ─── SECTION 8: CLOSING CTA ────────────────────────────────────── */}
-      <section className="py-16 lg:py-24 bg-gradient-to-b from-white via-teal-50/60 to-white">
+      <section className="py-16 lg:py-24 bg-gradient-to-b from-white via-[#F7F3FF]/60 to-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="relative rounded-3xl border border-teal-100 bg-white overflow-hidden p-8 sm:p-12 lg:p-16 shadow-[0_20px_60px_rgba(15,118,110,0.08)] text-center space-y-4 max-w-3xl mx-auto">
-            <span className="text-[11px] tracking-[0.16em] uppercase text-teal-700 font-medium">Digital Medical Finance</span>
+          <div className="relative rounded-3xl border border-purple-100 bg-white overflow-hidden p-8 sm:p-12 lg:p-16 shadow-[0_20px_60px_rgba(91,33,182,0.08)] text-center space-y-4 max-w-3xl mx-auto">
             <h2 className="text-[32px] sm:text-[44px] font-light tracking-tight text-slate-900 leading-[1.12]">
-              Explore Emergency Medical Loan Options
+              Get Emergency Medical Financing Today
             </h2>
             <p className="text-[15px] text-slate-500 font-light">
               Compare rates, loan limits, and repayment terms from partner financial institutions with Fintaraa.
@@ -952,7 +1122,7 @@ export function MedicalLoanPage({
             <button
               type="button"
               onClick={() => openFormWithDetails()}
-              className="mt-2 inline-flex h-13 items-center justify-center gap-2 rounded-xl bg-teal-700 px-8 text-[14px] font-medium text-white transition hover:bg-teal-800 shadow-md cursor-pointer"
+              className="mt-2 inline-flex h-13 items-center justify-center gap-2 rounded-xl bg-[#5B21B6] px-8 text-[14px] font-medium text-white transition hover:bg-[#4C1D95] shadow-md cursor-pointer"
             >
               Check My Medical Loan Eligibility
               <ArrowRight className="h-4 w-4" />
@@ -993,7 +1163,7 @@ function FormInput({
       <span className="mb-1 block text-[11px] text-slate-600 font-light">
         {label}{!optional && <span className="text-red-500 ml-0.5">*</span>}
       </span>
-      <span className={`flex h-10 items-center rounded-xl border transition ${error ? "border-red-400 bg-red-50/50" : "border-slate-200 bg-slate-50/50 focus-within:border-teal-700 focus-within:bg-white focus-within:ring-2 focus-within:ring-teal-700/10"}`}>
+      <span className={`flex h-10 items-center rounded-xl border transition ${error ? "border-red-400 bg-red-50/50" : "border-slate-200 bg-slate-50/50 focus-within:border-[#5B21B6] focus-within:bg-white focus-within:ring-2 focus-within:ring-[#5B21B6]/10"}`}>
         <span className="ml-3 shrink-0 text-slate-400">{icon}</span>
         <input
           {...props}
@@ -1030,7 +1200,7 @@ function FormSelect({
         {label}{!optional && <span className="text-red-500 ml-0.5">*</span>}
         {optional && <span className="ml-1 text-slate-400">(optional)</span>}
       </span>
-      <span className={`flex h-10 items-center rounded-xl border transition ${error ? "border-red-400 bg-red-50/50" : "border-slate-200 bg-slate-50/50 focus-within:border-teal-700 focus-within:bg-white focus-within:ring-2 focus-within:ring-teal-700/10"}`}>
+      <span className={`flex h-10 items-center rounded-xl border transition ${error ? "border-red-400 bg-red-50/50" : "border-slate-200 bg-slate-50/50 focus-within:border-[#5B21B6] focus-within:bg-white focus-within:ring-2 focus-within:ring-[#5B21B6]/10"}`}>
         <span className="ml-3 shrink-0 text-slate-400">{icon}</span>
         <select
           value={value}
