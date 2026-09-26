@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { getApplyHref } from "@/components/application/flowRegistry";
 import type { LoanSeoPageData } from "@/services/loanSeoPages";
+import { getProductContentConfig } from "@/data/productSpecificContent";
 
 const personalLoanSlides = [
   {
@@ -296,11 +297,11 @@ const fmtShort = (num: number) => {
     const lk = num / 100000;
     return `₹${lk % 1 === 0 ? lk.toFixed(0) : lk.toFixed(1)} Lakh`;
   }
-  return `₹${Math.round(num).toLocaleString("en-IN")}`;
 };
 
 export function LoanHeroSection({ page }: { page: LoanSeoPageData }) {
-  const range = defaultProductRanges[page.loanTypeSlug] || fallbackRange;
+  const config = useMemo(() => getProductContentConfig(page.loanTypeSlug, page.loanType), [page.loanTypeSlug, page.loanType]);
+  const range = config.range || defaultProductRanges[page.loanTypeSlug] || fallbackRange;
 
   // Estimator interactive state
   const [amount, setAmount] = useState<number>(range.defaultAmount);
@@ -438,21 +439,8 @@ export function LoanHeroSection({ page }: { page: LoanSeoPageData }) {
   const [isPaused, setIsPaused] = useState(false);
 
   const slides = useMemo(() => {
-    if (page.loanTypeSlug === "personal-loan") {
-      return personalLoanSlides;
-    }
-    // Generic dynamic adaptation for other loan products
-    return personalLoanSlides.map((slide, idx) => ({
-      ...slide,
-      title:
-        idx === 0
-          ? `${page.loanType} up to ${range.amountBadge}`
-          : idx === 1
-          ? `Competitive Rates on ${page.loanType}`
-          : `Fast 24-Hour Approval for ${page.loanType}`,
-      badge: idx === 0 ? `⚡ ${range.rateBadge}` : slide.badge,
-    }));
-  }, [page.loanType, page.loanTypeSlug, range.amountBadge, range.rateBadge]);
+    return config.slides && config.slides.length > 0 ? config.slides : personalLoanSlides;
+  }, [config.slides]);
 
   const nextSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev + 1) % slides.length);

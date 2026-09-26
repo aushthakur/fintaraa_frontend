@@ -45,6 +45,27 @@ import { buildApiUrl } from "@/services/apiUrl";
 import type { LoanSeoLocationPage, LoanSeoPageData } from "@/services/loanSeoPages";
 import type { BankProductLender } from "@/services/bankSeoPages";
 
+const getBankLogoPath = (slug?: string, bankName?: string) => {
+  const s = ((slug || "") + " " + (bankName || "")).toLowerCase();
+  if (s.includes("hdfc")) return "/assets/banks/HDFC-Bank.png";
+  if (s.includes("icici")) return "/assets/banks/ICICI-Bank.png";
+  if (s.includes("axis")) return "/assets/banks/axis-bank.png";
+  if (s.includes("sbi") || s.includes("state-bank") || s.includes("state bank"))
+    return "/assets/banks/State-Bank-of-India.png";
+  if (s.includes("kotak")) return "/assets/banks/Kotak-Mahindra-Bank.png";
+  if (s.includes("bajaj")) return "/assets/banks/bajaj-finserv.png";
+  if (s.includes("baroda")) return "/assets/banks/Bank-of-Baroda.png";
+  if (s.includes("indusind")) return "/assets/banks/IndusInd-Bank.png";
+  if (s.includes("federal")) return "/assets/banks/Federal-Bank.png";
+  if (s.includes("pnb") || s.includes("punjab"))
+    return "/assets/banks/Punjab-National-Bank.png";
+  if (s.includes("canara")) return "/assets/banks/canara-bank.png";
+  if (s.includes("union")) return "/assets/banks/union-bank.png";
+  if (s.includes("idfc")) return "/assets/banks/idfc.png";
+  if (s.includes("yes")) return "/assets/banks/yes-bank.png";
+  return "/assets/banks/hdfc.png";
+};
+
 // ─── Default Renovation Lenders ────────────────────────────────────────────────
 const defaultRenovationLenders: BankProductLender[] = [
   {
@@ -353,9 +374,9 @@ export function RenovationLoanPage({
 
   // Single unified calculation engine for Renovation Budget & EMI
   const combinedCalc = useMemo(() => {
-    let ratePerSqft = finishLevel === "Essential" ? 450 : finishLevel === "Standard" ? 850 : 1600;
-    let scopeMultiplier = scope === "Kitchen" ? 0.3 : scope === "Bathroom" ? 0.25 : scope === "Living Room" ? 0.4 : scope === "Bedroom" ? 0.35 : 1.0;
-    let propMultiplier = propType === "Apartment" ? 1.0 : propType === "House" ? 1.15 : 1.3;
+    const ratePerSqft = finishLevel === "Essential" ? 450 : finishLevel === "Standard" ? 850 : 1600;
+    const scopeMultiplier = scope === "Kitchen" ? 0.3 : scope === "Bathroom" ? 0.25 : scope === "Living Room" ? 0.4 : scope === "Bedroom" ? 0.35 : 1.0;
+    const propMultiplier = propType === "Apartment" ? 1.0 : propType === "House" ? 1.15 : 1.3;
 
     const baseCost = sqft * ratePerSqft * scopeMultiplier * propMultiplier;
     const minCost = Math.round(baseCost * 0.9);
@@ -761,7 +782,7 @@ export function RenovationLoanPage({
       </section>
 
       {/* ─── SECTION 3: UNIFIED RENOVATION BUDGET & EMI CALCULATOR ─────── */}
-      <section id="budget-planner" className="py-14 lg:py-20 bg-[#F7F3FF]/40 border-b border-purple-100/60">
+      <section id="budget-planner" className="py-10 sm:py-14 bg-[#F7F3FF]/40 border-b border-purple-100/60">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl mb-10">
             <p className="text-[11px] tracking-[0.16em] uppercase text-[#5B21B6] font-semibold mb-2">Smart Renovation Planner</p>
@@ -983,7 +1004,7 @@ export function RenovationLoanPage({
       </section>
 
       {/* ─── SECTION 5: RENOVATION LOAN COMPARISON MARKETPLACE ──────────── */}
-      <section className="py-14 lg:py-20 bg-slate-50/50 border-b border-slate-100">
+      <section className="py-10 sm:py-14 bg-slate-50/50 border-b border-slate-100">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
             <div>
@@ -1000,11 +1021,17 @@ export function RenovationLoanPage({
                 key={lender.bankSlug || lender.bankName}
                 className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[160px_1fr_1fr_1fr_1fr_auto] items-center gap-4 rounded-2xl border border-slate-200 bg-white px-5 py-4 transition hover:border-purple-300 hover:shadow-xs"
               >
-                <div className="flex items-center gap-3">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-purple-50 text-[13px] font-medium text-[#5B21B6]">
-                    {lender.bankName.split(/\s+/).slice(0, 2).map((w) => w[0]).join("")}
-                  </span>
-                  <span className="text-[12.5px] font-medium text-slate-800 leading-tight">{lender.bankName}</span>
+                <div className="flex items-center">
+                  <div className="relative flex h-14 w-36 sm:w-44 shrink-0 items-center justify-start py-1">
+                    <Image
+                      src={lender.logoUrl || getBankLogoPath(lender.bankSlug, lender.bankName)}
+                      alt={lender.bankName}
+                      width={160}
+                      height={48}
+                      className="max-h-11 w-auto max-w-[150px] object-contain"
+                      unoptimized
+                    />
+                  </div>
                 </div>
 
                 <div>
@@ -1056,7 +1083,7 @@ export function RenovationLoanPage({
       </section>
 
       {/* ─── SECTION 6: RENOVATION FINANCING GUIDE (SEO) ───────────────── */}
-      <section className="py-14 lg:py-20 bg-white border-b border-slate-100">
+      <section className="py-10 sm:py-14 bg-white border-b border-slate-100">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 space-y-8">
           <div>
             <p className="text-[11px] tracking-[0.16em] uppercase text-[#5B21B6] font-semibold mb-2">Comprehensive Guide</p>
@@ -1092,7 +1119,7 @@ export function RenovationLoanPage({
       </section>
 
       {/* ─── SECTION 7: HOW TO APPLY ─────────────────────────────────────── */}
-      <section className="py-14 lg:py-20 bg-[#F7F3FF]/40 border-b border-purple-100/60">
+      <section className="py-10 sm:py-14 bg-[#F7F3FF]/40 border-b border-purple-100/60">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl mb-12">
             <p className="text-[11px] tracking-[0.16em] uppercase text-[#5B21B6] font-semibold mb-2">Application Journey</p>
@@ -1121,7 +1148,7 @@ export function RenovationLoanPage({
       </section>
 
       {/* ─── SECTION 8: ELIGIBILITY AND DOCUMENTS ───────────────────────── */}
-      <section className="py-14 lg:py-20 bg-white border-b border-slate-100">
+      <section className="py-10 sm:py-14 bg-white border-b border-slate-100">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl mb-8">
             <p className="text-[11px] tracking-[0.16em] uppercase text-[#5B21B6] font-semibold mb-2">Requirements</p>

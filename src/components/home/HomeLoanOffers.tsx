@@ -39,8 +39,8 @@ function LoanRateOfferCard({
       href={`/banks/${offer.bankSlug}/${slugifyProduct(activeTab)}`}
       className="group block h-full w-full rounded-2xl border border-white/60 bg-white/60 p-3 shadow-[0_8px_30px_rgba(91,33,182,0.04)] backdrop-blur-xl no-underline transition-all duration-500 hover:-translate-y-1 hover:border-[#ddd6fe] hover:bg-white/90 hover:shadow-[0_20px_40px_rgba(91,33,182,0.12)]"
     >
-      <div className="flex flex-col items-start gap-1">
-        <div className="relative h-9 w-full overflow-hidden">
+      <div className="flex flex-col items-center justify-center mb-1">
+        <div className="relative h-12 w-full overflow-hidden py-1">
           <Image
             src={offer.logoSrc}
             alt={offer.bankName}
@@ -50,9 +50,6 @@ function LoanRateOfferCard({
             className="object-contain object-center"
           />
         </div>
-        <h4 className="line-clamp-1 mt-1 text-center w-full min-h-8 text-[12px] font-bold leading-4 tracking-tight text-[#4c1d95] sm:text-[13px]">
-          {offer.bankName}
-        </h4>
       </div>
 
       <div className="grid grid-cols-2 gap-2 border-t border-gray-100 pt-2.5">

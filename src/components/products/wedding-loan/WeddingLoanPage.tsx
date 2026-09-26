@@ -684,7 +684,7 @@ export function WeddingLoanPage({
       )}
 
       {/* ─── SECTION 2: COVERED WEDDING EXPENSES ────────────────────────── */}
-      <section className="py-14 lg:py-20 bg-white border-b border-slate-100">
+      <section className="py-10 sm:py-14 bg-white border-b border-slate-100">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl mb-12">
             <p className="text-[11px] tracking-[0.16em] uppercase text-[#5B21B6] font-medium mb-2">Comprehensive Coverage</p>
@@ -758,7 +758,7 @@ export function WeddingLoanPage({
       </section>
 
       {/* ─── SECTION 3: UNIFIED WEDDING BUDGET & EMI CALCULATOR ───────── */}
-      <section id="wedding-calculator" className="py-14 lg:py-20 bg-[#F7F3FF]/40 border-b border-purple-100/60">
+      <section id="wedding-calculator" className="py-10 sm:py-14 bg-[#F7F3FF]/40 border-b border-purple-100/60">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl mb-10">
             <p className="text-[11px] tracking-[0.16em] uppercase text-[#5B21B6] font-medium mb-2">Interactive Financial Tool</p>
@@ -885,7 +885,7 @@ export function WeddingLoanPage({
       </section>
 
       {/* ─── SECTION 4: LENDER MARKETPLACE ─────────────────────────────── */}
-      <section id="compare-lenders" className="py-14 lg:py-20 bg-slate-50/50 border-b border-slate-100">
+      <section id="compare-lenders" className="py-10 sm:py-14 bg-slate-50/50 border-b border-slate-100">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
             <div>
@@ -902,17 +902,17 @@ export function WeddingLoanPage({
                 key={lender.bankSlug || lender.bankName}
                 className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[160px_1fr_1fr_1fr_1fr_auto] items-center gap-4 rounded-2xl border border-slate-200 bg-white px-5 py-4 transition hover:border-purple-300 hover:shadow-xs"
               >
-                <div className="flex items-center gap-3">
-                  <div className="relative flex h-11 w-24 shrink-0 items-center justify-center rounded-xl border border-slate-200/80 bg-white p-1.5 shadow-xs">
+                <div className="flex items-center">
+                  <div className="relative flex h-14 w-36 sm:w-44 shrink-0 items-center justify-start py-1">
                     <Image
                       src={getBankLogoPath(lender.bankSlug)}
                       alt={lender.bankName}
-                      fill
-                      className="object-contain p-1"
+                      width={160}
+                      height={48}
+                      className="max-h-11 w-auto max-w-[150px] object-contain"
                       unoptimized
                     />
                   </div>
-                  <span className="text-[12.5px] font-medium text-slate-800 leading-tight">{lender.bankName}</span>
                 </div>
 
                 <div>
@@ -964,7 +964,7 @@ export function WeddingLoanPage({
       </section>
 
       {/* ─── SECTION 5: SEO DEEP FINANCING GUIDE ──────────────────────── */}
-      <section className="py-14 lg:py-20 bg-white border-b border-slate-100">
+      <section className="py-10 sm:py-14 bg-white border-b border-slate-100">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 space-y-8">
           <div>
             <p className="text-[11px] tracking-[0.16em] uppercase text-[#5B21B6] font-medium mb-2">Comprehensive Guide</p>
@@ -1003,7 +1003,7 @@ export function WeddingLoanPage({
       </section>
 
       {/* ─── SECTION 6: ELIGIBILITY & DOCUMENTS ───────────────────────── */}
-      <section className="py-14 lg:py-20 bg-white border-b border-slate-100">
+      <section className="py-10 sm:py-14 bg-white border-b border-slate-100">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl mb-8">
             <p className="text-[11px] tracking-[0.16em] uppercase text-[#5B21B6] font-medium mb-2">Requirements</p>
@@ -1077,7 +1077,7 @@ export function WeddingLoanPage({
       <LoanFAQSection faqs={faqItems} title="Wedding Loan Frequently Asked Questions" />
 
       {/* ─── SECTION 8: CLOSING CTA ────────────────────────────────────── */}
-      <section className="py-16 lg:py-24 bg-gradient-to-b from-white via-[#F7F3FF]/60 to-white">
+      <section className="py-10 sm:py-14 bg-gradient-to-b from-white via-[#F7F3FF]/60 to-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="relative rounded-3xl border border-purple-100 bg-white overflow-hidden p-8 sm:p-12 lg:p-16 shadow-[0_20px_60px_rgba(91,33,182,0.08)] text-center space-y-4 max-w-3xl mx-auto">
             <span className="text-[11px] tracking-[0.16em] uppercase text-[#5B21B6] font-medium">Digital Loan Discovery</span>

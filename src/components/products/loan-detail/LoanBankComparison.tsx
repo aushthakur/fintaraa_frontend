@@ -46,11 +46,11 @@ export function LoanBankComparison({
       style={{
         scrollMarginTop: "calc(var(--site-header-height, 8.25rem) + 4.5rem)",
       }}
-      className="w-full max-w-7xl mx-auto bg-white px-4 py-16 antialiased text-slate-900 md:px-6 lg:px-8 border-b border-slate-100"
+      className="w-full max-w-7xl mx-auto bg-white px-4 py-10 sm:py-14 antialiased text-slate-900 md:px-6 lg:px-8 border-b border-slate-100"
     >
       
       {/* SECTION TITLE & DESCRIPTION BLOCK */}
-      <div className="max-w-3xl mb-12">
+      <div className="max-w-3xl mb-8">
         <h2 className="text-3xl sm:text-4xl font-normal tracking-tight text-slate-900">
           {title}
         </h2>

@@ -26,6 +26,10 @@ import { EducationLoanPage } from "@/components/products/education-loan/Educatio
 import { RenovationLoanPage } from "@/components/products/renovation-loan/RenovationLoanPage";
 import { WeddingLoanPage } from "@/components/products/wedding-loan/WeddingLoanPage";
 import { MedicalLoanPage } from "@/components/products/medical-loan/MedicalLoanPage";
+import { HomeLoanPage } from "@/components/products/home-loan/HomeLoanPage";
+import { BalanceTransferLoanPage } from "@/components/products/balance-transfer-loan/BalanceTransferLoanPage";
+import { LoanAgainstPropertyPage } from "@/components/products/loan-against-property/LoanAgainstPropertyPage";
+import { ConstructionLoanPage } from "@/components/products/construction-loan/ConstructionLoanPage";
 
 type PageProps = {
   params: Promise<{
@@ -135,7 +139,20 @@ export default async function ProductLoanPage({ params }: PageProps) {
   const [page, locationPages, bankLenders] = await Promise.all([
     getLoanSeoPage(productSlug, location),
     getLoanSeoLocationPages(productSlug),
-    productSlug === "instant-loan" || productSlug === "education-loan" || productSlug === "renovation-loan" || productSlug === "wedding-loan" || productSlug === "marriage-loan" || productSlug === "medical-loan" || productSlug === "healthcare-loan"
+    productSlug === "instant-loan" ||
+    productSlug === "education-loan" ||
+    productSlug === "renovation-loan" ||
+    productSlug === "wedding-loan" ||
+    productSlug === "marriage-loan" ||
+    productSlug === "medical-loan" ||
+    productSlug === "healthcare-loan" ||
+    productSlug === "home-loan" ||
+    productSlug === "housing-loan" ||
+    productSlug === "balance-transfer-top-up-loan" ||
+    productSlug === "balance-transfer-loan" ||
+    productSlug === "loan-against-property" ||
+    productSlug === "lap" ||
+    productSlug === "construction-loan"
       ? getBankProductLenders(productSlug)
       : Promise.resolve([]),
   ]);
@@ -212,6 +229,32 @@ export default async function ProductLoanPage({ params }: PageProps) {
         />
       ) : productSlug === "medical-loan" || productSlug === "healthcare-loan" ? (
         <MedicalLoanPage
+          page={page}
+          lenders={bankLenders}
+          locationPages={locationPages}
+        />
+      ) : productSlug === "home-loan" || productSlug === "housing-loan" ? (
+        <HomeLoanPage
+          page={page}
+          lenders={bankLenders}
+          locationPages={locationPages}
+        />
+      ) : productSlug === "balance-transfer-top-up-loan" ||
+        productSlug === "balance-transfer-loan" ||
+        productSlug === "top-up-loan" ? (
+        <BalanceTransferLoanPage
+          page={page}
+          lenders={bankLenders}
+          locationPages={locationPages}
+        />
+      ) : productSlug === "loan-against-property" || productSlug === "lap" ? (
+        <LoanAgainstPropertyPage
+          page={page}
+          lenders={bankLenders}
+          locationPages={locationPages}
+        />
+      ) : productSlug === "construction-loan" ? (
+        <ConstructionLoanPage
           page={page}
           lenders={bankLenders}
           locationPages={locationPages}

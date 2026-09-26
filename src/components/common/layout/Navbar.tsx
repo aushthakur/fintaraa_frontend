@@ -50,6 +50,7 @@ import {
   productHref,
 } from "@/lib/productRouting";
 import { buildLoginRedirectHref } from "@/lib/loginRedirect";
+import { useAuthModal } from "@/context/AuthModalContext";
 import {
   insuranceProductCatalog,
   loanProductCatalog,
@@ -414,12 +415,12 @@ const buildLoanAssetSection = (): NavSection => ({
     },
     {
       label: "Loan Against FD",
-      href: "/products/loan-against-security",
+      href: "/products/loan-against-fd",
       description: "Liquidity against fixed deposits",
     },
     {
       label: "Loan Against Mutual Funds",
-      href: "/products/loan-against-security",
+      href: "/products/loan-against-mutual-fund",
       description: "Digital loan against MF units",
     },
   ],
@@ -501,28 +502,28 @@ const createNavItems = (
           },
           {
             label: "Best Rewards Cards",
-            href: "/credit-cards",
+            href: "/credit-cards/rewards",
             description: "Accelerated reward points on shopping",
             badge: "HIGH REWARD",
             badgeColor: "emerald",
           },
           {
             label: "Cashback Cards",
-            href: "/credit-cards",
+            href: "/credit-cards/cashback",
             description: "Direct cash back on monthly bills",
             badge: "HIGH SAVINGS",
             badgeColor: "amber",
           },
           {
             label: "Travel & Lounge Cards",
-            href: "/credit-cards",
+            href: "/credit-cards/travel",
             description: "Domestic & international lounge passes",
             badge: "LOUNGE PASS",
             badgeColor: "blue",
           },
           {
             label: "Fuel Surcharge Cards",
-            href: "/credit-cards",
+            href: "/credit-cards/fuel",
             description: "Save on petrol & diesel spends",
           },
         ],
@@ -719,24 +720,24 @@ const createNavItems = (
         links: [
           {
             label: "EMI Calculator",
-            href: "/tools#calculators",
+            href: "/calculators/emi-calculator",
             description: "Calculate monthly installments for any loan",
             badge: "POPULAR",
             badgeColor: "purple",
           },
           {
             label: "Home Loan Calculator",
-            href: "/tools#calculators",
+            href: "/calculators/home-loan-calculator",
             description: "Plan tenure, interest & amortization",
           },
           {
             label: "Personal Loan Calculator",
-            href: "/tools#calculators",
+            href: "/calculators/personal-loan-calculator",
             description: "Estimate monthly budget for personal credit",
           },
           {
             label: "Eligibility Calculator",
-            href: "/tools#calculators",
+            href: "/calculators/loan-eligibility-calculator",
             description: "Check maximum loan amount you qualify for",
             badge: "SMART",
             badgeColor: "emerald",
@@ -882,19 +883,19 @@ const insuranceSearchEntries: StaticSearchEntry[] = insuranceProductCatalog.map(
 );
 
 const creditCardSearchEntries: StaticSearchEntry[] = [
-  "Credit Cards",
-  "Travel Cards",
-  "Fuel Cards",
-  "Cashback Cards",
-  "Shopping Cards",
-  "Premium Cards",
-  "Rewards Cards",
-  "Balance Transfer",
-].map((label) => ({
-  label,
-  href: label === "Credit Cards" ? "/credit-cards" : "/credit-cards",
+  { label: "Credit Cards", href: "/credit-cards" },
+  { label: "Rewards Credit Cards", href: "/credit-cards/rewards" },
+  { label: "Cashback Credit Cards", href: "/credit-cards/cashback" },
+  { label: "Travel & Lounge Cards", href: "/credit-cards/travel" },
+  { label: "Fuel Surcharge Cards", href: "/credit-cards/fuel" },
+  { label: "HDFC Credit Cards", href: "/banks/hdfc-bank/credit-card" },
+  { label: "SBI Credit Cards", href: "/banks/sbi/credit-card" },
+  { label: "ICICI Credit Cards", href: "/banks/icici-bank/credit-card" },
+].map((item) => ({
+  label: item.label,
+  href: item.href,
   category: "Credit Cards",
-  keywords: ["card", "credit card", "rewards", "cashback", label],
+  keywords: ["card", "credit card", "rewards", "cashback", item.label],
 }));
 
 const serviceSearchEntries: StaticSearchEntry[] = [
@@ -2502,6 +2503,7 @@ function AuthButton({
   onClick?: () => void;
 }) {
   const router = useRouter();
+  const { openAuthModal } = useAuthModal();
   const [confirmLogoutOpen, setConfirmLogoutOpen] = useState(false);
   const partnerSession = accountType === "partner";
   const dashboardHref = partnerSession
@@ -2526,47 +2528,51 @@ function AuthButton({
 
   if (!loggedIn && mobile) {
     return (
-      <div className="rounded-2xl border border-[#d9e8f4] bg-[#f8fbff] p-3">
-        <p className="px-1 pb-2 text-[11px] font-extrabold uppercase tracking-[0.12em] text-[#718397]">
-          Choose login type
+      <div className="rounded-2xl border border-purple-100 bg-purple-50/40 p-3">
+        <p className="px-1 pb-2 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+          Sign in to Fintaraa
         </p>
         <div className="grid gap-2">
-          <Link
-            href="/login"
-            onClick={onClick}
-            className="flex items-center gap-3 rounded-xl border border-[#d8e5ef] bg-white p-3 text-[#3b0764] no-underline transition active:bg-[#edf6ff]"
+          <button
+            type="button"
+            onClick={() => {
+              onClick?.();
+              openAuthModal("user");
+            }}
+            className="flex items-center gap-3 rounded-xl border border-purple-100 bg-white p-3 text-left transition hover:border-purple-300 active:bg-purple-50"
           >
-            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#e9f3ff] text-[#5b21b6]">
-              <UserRound className="h-5 w-5" />
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-purple-100/70 text-[#5b21b6]">
+              <UserRound className="h-4.5 w-4.5" />
             </span>
-            <span className="min-w-0 text-left">
-              <span className="block text-[13px] font-extrabold">
-                Login as User
+            <div className="min-w-0">
+              <span className="block text-xs font-semibold text-slate-800">
+                Customer Login
               </span>
-              <span className="mt-0.5 block text-[11px] font-medium text-[#718397]">
-                Applications, offers and profile
+              <span className="block text-[11px] font-normal text-slate-500">
+                Manage applications & offers
               </span>
-            </span>
-            <ArrowRight className="ml-auto h-4 w-4 shrink-0 text-[#5b21b6]" />
-          </Link>
-          <Link
-            href="/partner/login"
-            onClick={onClick}
-            className="flex items-center gap-3 rounded-xl border border-[#d8e5ef] bg-white p-3 text-[#3b0764] no-underline transition active:bg-[#f0fbf5]"
+            </div>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              onClick?.();
+              openAuthModal("partner");
+            }}
+            className="flex items-center gap-3 rounded-xl border border-purple-100 bg-white p-3 text-left transition hover:border-purple-300 active:bg-purple-50"
           >
-            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#eaf8f0] text-[#13a653]">
-              <BriefcaseBusiness className="h-5 w-5" />
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-purple-100/70 text-[#5b21b6]">
+              <BriefcaseBusiness className="h-4.5 w-4.5" />
             </span>
-            <span className="min-w-0 text-left">
-              <span className="block text-[13px] font-extrabold">
-                Login as Partner
+            <div className="min-w-0">
+              <span className="block text-xs font-semibold text-slate-800">
+                Partner Login
               </span>
-              <span className="mt-0.5 block text-[11px] font-medium text-[#718397]">
-                Leads, earnings and partner tools
+              <span className="block text-[11px] font-normal text-slate-500">
+                Channel partner portal & leads
               </span>
-            </span>
-            <ArrowRight className="ml-auto h-4 w-4 shrink-0 text-[#13a653]" />
-          </Link>
+            </div>
+          </button>
         </div>
       </div>
     );
@@ -2584,9 +2590,9 @@ function AuthButton({
   if (loggedIn && mobile) {
     return (
       <>
-        <div className="overflow-hidden rounded-2xl border border-[#d9e8f4] bg-white">
-          <div className="flex items-center gap-3 border-b border-[#e5edf3] bg-[#f4f9fd] p-3">
-            <span className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-linear-to-br from-[#3b0764] to-[#5b21b6] text-[11px] font-extrabold text-white">
+        <div className="overflow-hidden rounded-2xl border border-purple-100 bg-white">
+          <div className="flex items-center gap-3 border-b border-purple-100 bg-purple-50/50 p-3">
+            <span className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-[#4C1D95] to-[#7C3AED] text-xs font-semibold text-white">
               {avatar ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
@@ -2599,46 +2605,46 @@ function AuthButton({
               )}
             </span>
             <span className="min-w-0">
-              <span className="block truncate text-[13px] font-extrabold text-[#3b0764]">
+              <span className="block truncate text-xs font-semibold text-slate-900">
                 {name}
               </span>
-              <span className="text-[11px] font-semibold text-[#718397]">
-                {partnerSession ? "Partner account" : "Customer account"}
+              <span className="text-[11px] font-normal text-slate-500">
+                {partnerSession ? "Partner Account" : "Customer Account"}
               </span>
             </span>
           </div>
-          <div className="grid p-2">
+          <div className="grid p-1.5">
             <Link
               href={dashboardHref}
               onClick={onClick}
-              className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-[13px] font-bold text-[#31516b] no-underline active:bg-[#edf6ff]"
+              className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-medium text-slate-700 no-underline hover:bg-purple-50 hover:text-[#5B21B6]"
             >
-              <LayoutDashboard className="h-4.5 w-4.5 text-[#5b21b6]" />
-              {partnerSession ? "Partner Dashboard" : "Account Dashboard"}
+              <LayoutDashboard className="h-4 w-4 text-[#5b21b6]" />
+              <span>{partnerSession ? "Partner Dashboard" : "Dashboard"}</span>
             </Link>
             <Link
               href={editProfileHref}
               onClick={onClick}
-              className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-[13px] font-bold text-[#31516b] no-underline active:bg-[#edf6ff]"
+              className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-medium text-slate-700 no-underline hover:bg-purple-50 hover:text-[#5B21B6]"
             >
-              <PencilLine className="h-4.5 w-4.5 text-[#5b21b6]" />
-              Edit Profile
+              <PencilLine className="h-4 w-4 text-[#5b21b6]" />
+              <span>Edit Profile</span>
             </Link>
             <Link
               href={notificationsHref}
               onClick={onClick}
-              className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-[13px] font-bold text-[#31516b] no-underline active:bg-[#edf6ff]"
+              className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-medium text-slate-700 no-underline hover:bg-purple-50 hover:text-[#5B21B6]"
             >
-              <Bell className="h-4.5 w-4.5 text-[#5b21b6]" />
-              Notifications
+              <Bell className="h-4 w-4 text-[#5b21b6]" />
+              <span>Notifications</span>
             </Link>
             <button
               type="button"
               onClick={handleLogout}
-              className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-left text-[13px] font-bold text-[#c43232] active:bg-red-50"
+              className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-left text-xs font-medium text-rose-600 hover:bg-rose-50"
             >
-              <LogOut className="h-4.5 w-4.5" />
-              Logout
+              <LogOut className="h-4 w-4" />
+              <span>Logout</span>
             </button>
           </div>
         </div>
@@ -2656,16 +2662,21 @@ function AuthButton({
       <div className="group/auth relative">
         <button
           type="button"
+          onClick={() => {
+            if (!loggedIn) {
+              openAuthModal("user");
+            }
+          }}
           aria-haspopup="menu"
-          className={`inline-flex h-10 items-center rounded-full text-sm transition-all duration-150 2xl:h-10.5 ${
+          className={`inline-flex h-9.5 items-center rounded-full text-xs font-medium transition-all duration-150 2xl:h-10 ${
             loggedIn
-              ? "gap-2 bg-purple-50 pl-1.5 pr-3.5 font-semibold text-[#4c1d95] ring-1 ring-purple-200/80 hover:bg-purple-100/70"
-              : "gap-2 border-1.5 border-[#5b21b6] bg-white px-4 font-semibold text-[#5b21b6] hover:bg-purple-50/80 hover:border-[#4c1d95]"
+              ? "gap-2 bg-purple-50 pl-1.5 pr-3.5 text-[#4c1d95] ring-1 ring-purple-200/80 hover:bg-purple-100/70"
+              : "gap-1.5 border border-[#5b21b6] bg-white px-3.5 text-[#5b21b6] hover:bg-purple-50/90 hover:border-[#4c1d95]"
           }`}
         >
           {loggedIn ? (
             <>
-              <span className="relative flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-linear-to-br from-[#3b0764] to-[#5b21b6] text-[11px] font-extrabold text-white 2xl:h-8.5 2xl:w-8.5">
+              <span className="relative flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-[#4C1D95] to-[#7C3AED] text-[11px] font-medium text-white 2xl:h-8 2xl:w-8">
                 {avatar ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
@@ -2677,160 +2688,94 @@ function AuthButton({
                   initials
                 )}
               </span>
-              <span className="max-w-28 truncate 2xl:max-w-36">
+              <span className="max-w-28 truncate font-medium 2xl:max-w-36">
                 Hi, {firstName}
               </span>
             </>
           ) : (
             <>
-              <UserRound className="h-4 w-4 shrink-0" />
+              <UserRound className="h-3.5 w-3.5 shrink-0" />
               <span>Login</span>
             </>
           )}
-          <ChevronDown className="h-3.5 w-3.5 shrink-0 transition-transform duration-200 group-hover/auth:rotate-180 group-focus-within/auth:rotate-180" />
+          <ChevronDown className="h-3.5 w-3.5 shrink-0 opacity-70 transition-transform duration-200 group-hover/auth:rotate-180 group-focus-within/auth:rotate-180" />
         </button>
 
-        <div className="pointer-events-none absolute right-0 top-full z-60 w-82 translate-y-1 pt-3 opacity-0 transition duration-180 group-hover/auth:pointer-events-auto group-hover/auth:translate-y-0 group-hover/auth:opacity-100 group-focus-within/auth:pointer-events-auto group-focus-within/auth:translate-y-0 group-focus-within/auth:opacity-100">
+        {/* Simplified, Clean Dropdown Menu */}
+        <div className="pointer-events-none absolute right-0 top-full z-60 w-52 translate-y-1 pt-2 opacity-0 transition duration-150 group-hover/auth:pointer-events-auto group-hover/auth:translate-y-0 group-hover/auth:opacity-100 group-focus-within/auth:pointer-events-auto group-focus-within/auth:translate-y-0 group-focus-within/auth:opacity-100">
           <div
             role="menu"
-            className="overflow-hidden rounded-2xl border border-[#d8e5ef] bg-white p-2 shadow-[0_20px_55px_rgba(16,44,69,0.17)]"
+            className="overflow-hidden rounded-2xl border border-purple-100 bg-white p-1.5 shadow-[0_12px_36px_rgba(91,33,182,0.12)]"
           >
             {loggedIn ? (
               <>
-                <div className="mx-1 mb-1 flex items-center gap-3 rounded-xl bg-[#f3f8fc] px-3 py-3">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#e5f1fb] text-[#5b21b6]">
-                    {partnerSession ? (
-                      <BriefcaseBusiness className="h-4.5 w-4.5" />
-                    ) : (
-                      <UserRound className="h-4.5 w-4.5" />
-                    )}
+                <div className="px-3 py-2 border-b border-purple-50 mb-1">
+                  <span className="block truncate text-xs font-semibold text-slate-800">
+                    {name}
                   </span>
-                  <span className="min-w-0">
-                    <span className="block truncate text-[13px] font-extrabold text-[#3b0764]">
-                      {name}
-                    </span>
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-[#718397]">
-                      {partnerSession ? "Partner account" : "Customer account"}
-                    </span>
+                  <span className="text-[10.5px] font-normal text-slate-400">
+                    {partnerSession ? "Partner Account" : "Customer Account"}
                   </span>
                 </div>
                 <Link
                   href={dashboardHref}
                   role="menuitem"
-                  className="group/item flex items-center gap-3 rounded-xl px-3 py-3 text-[#31516b] no-underline transition hover:bg-[#f3f8fc] hover:text-[#5b21b6]"
+                  className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-medium text-slate-700 no-underline transition hover:bg-purple-50 hover:text-[#5b21b6]"
                 >
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#e9f3ff] text-[#5b21b6]">
-                    <LayoutDashboard className="h-4.5 w-4.5" />
-                  </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="block text-[13px] font-extrabold">
-                      {partnerSession
-                        ? "Partner Dashboard"
-                        : "Account Dashboard"}
-                    </span>
-                    <span className="mt-0.5 block text-[10.5px] font-medium text-[#7b8ea0]">
-                      {partnerSession
-                        ? "Leads, earnings and activity"
-                        : "Applications, offers and activity"}
-                    </span>
-                  </span>
-                  <ArrowRight className="h-4 w-4 opacity-50 transition group-hover/item:translate-x-0.5 group-hover/item:opacity-100" />
+                  <LayoutDashboard className="h-4 w-4 text-[#5b21b6]" />
+                  <span>{partnerSession ? "Partner Dashboard" : "Dashboard"}</span>
                 </Link>
                 <Link
                   href={editProfileHref}
                   role="menuitem"
-                  className="group/item flex items-center gap-3 rounded-xl px-3 py-3 text-[#31516b] no-underline transition hover:bg-[#f3f8fc] hover:text-[#5b21b6]"
+                  className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-medium text-slate-700 no-underline transition hover:bg-purple-50 hover:text-[#5b21b6]"
                 >
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#eaf8f0] text-[#13a653]">
-                    <PencilLine className="h-4.5 w-4.5" />
-                  </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="block text-[13px] font-extrabold">
-                      Edit Profile
-                    </span>
-                    <span className="mt-0.5 block text-[10.5px] font-medium text-[#7b8ea0]">
-                      Update personal and account details
-                    </span>
-                  </span>
-                  <ArrowRight className="h-4 w-4 opacity-50 transition group-hover/item:translate-x-0.5 group-hover/item:opacity-100" />
+                  <PencilLine className="h-4 w-4 text-[#5b21b6]" />
+                  <span>Edit Profile</span>
                 </Link>
                 <Link
                   href={notificationsHref}
                   role="menuitem"
-                  className="group/item flex items-center gap-3 rounded-xl px-3 py-3 text-[#31516b] no-underline transition hover:bg-[#f3f8fc] hover:text-[#5b21b6]"
+                  className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-medium text-slate-700 no-underline transition hover:bg-purple-50 hover:text-[#5b21b6]"
                 >
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#fff4e8] text-[#e37712]">
-                    <Bell className="h-4.5 w-4.5" />
-                  </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="block text-[13px] font-extrabold">
-                      Notifications
-                    </span>
-                    <span className="mt-0.5 block text-[10.5px] font-medium text-[#7b8ea0]">
-                      Updates, requests and account alerts
-                    </span>
-                  </span>
-                  <ArrowRight className="h-4 w-4 opacity-50 transition group-hover/item:translate-x-0.5 group-hover/item:opacity-100" />
+                  <Bell className="h-4 w-4 text-[#5b21b6]" />
+                  <span>Notifications</span>
                 </Link>
-                <div className="mx-2 my-1 h-px bg-[#e5edf3]" />
+                <div className="mx-1 my-1 h-px bg-slate-100" />
                 <button
                   type="button"
                   role="menuitem"
                   onClick={handleLogout}
-                  className="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-[13px] font-extrabold text-[#c43232] transition hover:bg-red-50"
+                  className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-xs font-medium text-rose-600 transition hover:bg-rose-50"
                 >
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-red-50 text-[#c43232]">
-                    <LogOut className="h-4.5 w-4.5" />
-                  </span>
-                  Logout
+                  <LogOut className="h-4 w-4" />
+                  <span>Logout</span>
                 </button>
               </>
             ) : (
               <>
-                <div className="px-3 pb-2 pt-1">
-                  <p className="text-[10px] font-extrabold uppercase tracking-[0.13em] text-[#7b8ea0]">
-                    Continue to Fintaraa
-                  </p>
-                  <p className="mt-1 text-[13px] font-extrabold text-[#3b0764]">
-                    Choose how you want to login
-                  </p>
-                </div>
-                <Link
-                  href="/login"
+                <button
+                  type="button"
                   role="menuitem"
-                  className="group/item flex items-center gap-3 rounded-xl px-3 py-3 text-[#31516b] no-underline transition hover:bg-[#f3f8fc] hover:text-[#5b21b6]"
+                  onClick={() => openAuthModal("user")}
+                  className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-left text-xs font-medium text-slate-700 transition hover:bg-purple-50 hover:text-[#5b21b6]"
                 >
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#e9f3ff] text-[#5b21b6]">
-                    <UserRound className="h-5 w-5" />
+                  <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-purple-50 text-[#5b21b6]">
+                    <UserRound className="h-4 w-4" />
                   </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="block text-[13px] font-extrabold">
-                      Login as User
-                    </span>
-                    <span className="mt-0.5 block text-[10.5px] font-medium text-[#7b8ea0]">
-                      Applications, offers and profile
-                    </span>
-                  </span>
-                  <ArrowRight className="h-4 w-4 opacity-50 transition group-hover/item:translate-x-0.5 group-hover/item:opacity-100" />
-                </Link>
-                <Link
-                  href="/partner/login"
+                  <span>Customer Login</span>
+                </button>
+                <button
+                  type="button"
                   role="menuitem"
-                  className="group/item flex items-center gap-3 rounded-xl px-3 py-3 text-[#31516b] no-underline transition hover:bg-[#f0faf4] hover:text-[#108b46]"
+                  onClick={() => openAuthModal("partner")}
+                  className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-left text-xs font-medium text-slate-700 transition hover:bg-purple-50 hover:text-[#5b21b6]"
                 >
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#eaf8f0] text-[#13a653]">
-                    <BriefcaseBusiness className="h-5 w-5" />
+                  <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-purple-50 text-[#5b21b6]">
+                    <BriefcaseBusiness className="h-4 w-4" />
                   </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="block text-[13px] font-extrabold">
-                      Login as Partner
-                    </span>
-                    <span className="mt-0.5 block text-[10.5px] font-medium text-[#7b8ea0]">
-                      Leads, earnings and partner tools
-                    </span>
-                  </span>
-                  <ArrowRight className="h-4 w-4 opacity-50 transition group-hover/item:translate-x-0.5 group-hover/item:opacity-100" />
-                </Link>
+                  <span>Partner Login</span>
+                </button>
               </>
             )}
           </div>

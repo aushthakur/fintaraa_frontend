@@ -391,8 +391,8 @@ export function MedicalLoanPage({
             <div className="lg:col-span-6 lg:pr-10">
               <div className="max-w-2xl">
                 <h1 className="text-[42px] font-extralight leading-[1.05] tracking-[-0.035em] text-white drop-shadow-sm sm:text-[56px] lg:text-[66px]">
-                  When health can't wait,
-                  <span className="mt-1 block font-normal text-purple-200">funding shouldn't either.</span>
+                  When health can&apos;t wait,
+                  <span className="mt-1 block font-normal text-purple-200">funding shouldn&apos;t either.</span>
                 </h1>
 
                 {/* Feature list */}
@@ -661,7 +661,7 @@ export function MedicalLoanPage({
       )}
 
       {/* ─── SECTION 2: MEDICAL EXPENSES COVERED ────────────────────────── */}
-      <section className="py-14 lg:py-20 bg-white border-b border-slate-100">
+      <section className="py-10 sm:py-14 bg-white border-b border-slate-100">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl mb-12">
             <h2 className="text-[30px] sm:text-[40px] font-light tracking-tight text-slate-900 leading-[1.12]">
@@ -755,7 +755,7 @@ export function MedicalLoanPage({
       </section>
 
       {/* ─── SECTION 3: UNIFIED MEDICAL EMI CALCULATOR ────────────────── */}
-      <section id="medical-calculator" className="py-14 lg:py-20 bg-[#F7F3FF]/40 border-b border-purple-100/60">
+      <section id="medical-calculator" className="py-10 sm:py-14 bg-[#F7F3FF]/40 border-b border-purple-100/60">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl mb-10">
             <h2 className="text-[30px] sm:text-[40px] font-light tracking-tight text-slate-900 leading-[1.12]">
@@ -917,7 +917,7 @@ export function MedicalLoanPage({
       </section>
 
       {/* ─── SECTION 4: LENDER MARKETPLACE ─────────────────────────────── */}
-      <section className="py-14 lg:py-20 bg-slate-50/50 border-b border-slate-100">
+      <section className="py-10 sm:py-14 bg-slate-50/50 border-b border-slate-100">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
             <div>
@@ -996,7 +996,7 @@ export function MedicalLoanPage({
       </section>
 
       {/* ─── SECTION 5: SEO DEEP FINANCING GUIDE ──────────────────────── */}
-      <section className="py-14 lg:py-20 bg-white border-b border-slate-100">
+      <section className="py-10 sm:py-14 bg-white border-b border-slate-100">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 space-y-8">
           <div>
             <h2 className="text-[28px] sm:text-[36px] font-light tracking-tight text-slate-900">
@@ -1034,7 +1034,7 @@ export function MedicalLoanPage({
       </section>
 
       {/* ─── SECTION 6: ELIGIBILITY & DOCUMENTS ───────────────────────── */}
-      <section className="py-14 lg:py-20 bg-white border-b border-slate-100">
+      <section className="py-10 sm:py-14 bg-white border-b border-slate-100">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl mb-8">
             <p className="text-[11px] tracking-[0.16em] uppercase text-[#5B21B6] font-medium mb-2">Requirements</p>
@@ -1110,7 +1110,7 @@ export function MedicalLoanPage({
       <LoanFAQSection faqs={faqItems} title="Medical Loan Frequently Asked Questions" />
 
       {/* ─── SECTION 8: CLOSING CTA ────────────────────────────────────── */}
-      <section className="py-16 lg:py-24 bg-gradient-to-b from-white via-[#F7F3FF]/60 to-white">
+      <section className="py-10 sm:py-14 bg-gradient-to-b from-white via-[#F7F3FF]/60 to-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="relative rounded-3xl border border-purple-100 bg-white overflow-hidden p-8 sm:p-12 lg:p-16 shadow-[0_20px_60px_rgba(91,33,182,0.08)] text-center space-y-4 max-w-3xl mx-auto">
             <h2 className="text-[32px] sm:text-[44px] font-light tracking-tight text-slate-900 leading-[1.12]">

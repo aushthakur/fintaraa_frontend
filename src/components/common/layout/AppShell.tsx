@@ -5,10 +5,15 @@ import Navbar from "@/components/common/layout/Navbar";
 import Footer from "@/components/common/layout/Footer";
 import { SiteBreadcrumbs } from "@/components/common/layout/SiteBreadcrumbs";
 import { MobileActionBar } from "@/components/common/layout/MobileActionBar";
+import { MobileBottomNav } from "@/components/common/layout/MobileBottomNav";
 import { ResponsiveTableEnhancer } from "@/components/common/layout/ResponsiveTableEnhancer";
 import { PageSeoSchema } from "@/components/seo/PageSeoSchema";
 import { PersonalLoanRateTicker } from "@/components/common/layout/PersonalLoanRateTicker";
 import { FloatingCalculatorWidget } from "@/components/common/FloatingCalculatorWidget";
+import { CustomCursor } from "@/components/common/CustomCursor";
+
+import { AuthModalProvider } from "@/context/AuthModalContext";
+import { AuthModal } from "@/components/auth/AuthModal";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -33,12 +38,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     stickyServicePages.has(pathname);
 
   return (
-    <>
+    <AuthModalProvider>
+      <CustomCursor />
       <Navbar />
       <SiteBreadcrumbs />
       <ResponsiveTableEnhancer />
       <PageSeoSchema />
-      <div>
+      <div className="pb-16 md:pb-0">
         <div
           className={
             hideFooter
@@ -54,7 +60,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       </div>
       <PersonalLoanRateTicker />
       {!hideFooter && <MobileActionBar />}
+      {!hideFooter && <MobileBottomNav />}
       <FloatingCalculatorWidget />
-    </>
+      <AuthModal />
+    </AuthModalProvider>
   );
 }

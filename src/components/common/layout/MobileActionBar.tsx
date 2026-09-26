@@ -132,7 +132,7 @@ export function MobileActionBar() {
     <aside
       aria-label="WhatsApp Advisor"
       className={`fixed z-50 right-3 sm:right-6 md:right-8 flex flex-col items-end pointer-events-auto ${
-        hasCardApplyBar ? "bottom-24 lg:bottom-16" : "bottom-14 sm:bottom-16"
+        hasCardApplyBar ? "bottom-28 lg:bottom-16" : "bottom-20 md:bottom-16"
       }`}
     >
       {/* ── 1. INTERACTIVE CHAT WINDOW POPUP ── */}

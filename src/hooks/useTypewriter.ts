@@ -57,8 +57,10 @@ export function useTypewriter(
           setText(currentPhrase.slice(0, text.length - 1));
         }, deletingSpeed);
       } else {
-        setIsDeleting(false);
-        setPhraseIdx((prev) => (prev + 1) % phraseList.length);
+        timeout = setTimeout(() => {
+          setIsDeleting(false);
+          setPhraseIdx((prev) => (prev + 1) % phraseList.length);
+        }, 0);
       }
     }
 

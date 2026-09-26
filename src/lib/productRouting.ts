@@ -1,3 +1,9 @@
+import {
+  insuranceProductCatalog,
+  loanProductCatalog,
+} from "@/data/productCatalog";
+import { requiredLoanProductContracts } from "@/components/application/loanProductContract";
+
 export const slugifyProduct = (value: string) =>
   value
     .toLowerCase()
@@ -5,9 +11,13 @@ export const slugifyProduct = (value: string) =>
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "");
 
-export const loanProductSlugs = new Set(
-  loanProductCatalog.map((product) => product.slug),
-);
+export const loanProductSlugs = new Set([
+  ...loanProductCatalog.map((product) => product.slug),
+  ...requiredLoanProductContracts.flatMap((contract) => [
+    contract.slug,
+    ...(contract.aliases || []),
+  ]),
+]);
 
 export const isLoanProduct = (titleOrSlug: string) =>
   loanProductSlugs.has(slugifyProduct(titleOrSlug));
@@ -130,7 +140,3 @@ export const buildLoanPath = (
   ].filter(Boolean);
   return parts.join("/");
 };
-import {
-  insuranceProductCatalog,
-  loanProductCatalog,
-} from "@/data/productCatalog";

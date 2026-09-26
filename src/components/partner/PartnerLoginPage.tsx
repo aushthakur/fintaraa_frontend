@@ -1,16 +1,25 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { FormEvent, ReactNode, useEffect, useMemo, useState } from "react";
+import { FormEvent, ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import {
   Mail,
   Check,
   Phone,
   Building2,
   ArrowRight,
-  LockKeyhole,
+  ShieldCheck,
+  Lock,
+  Sparkles,
+  CheckCircle2,
+  RefreshCw,
+  Edit3,
+  TrendingUp,
+  Award,
+  Users,
+  Star,
+  Zap,
 } from "lucide-react";
 import { getSafeRedirectTarget } from "@/lib/loginRedirect";
 import {
@@ -44,8 +53,9 @@ export function PartnerLoginPage({
   const [mode, setMode] = useState<PartnerAuthMode>("login");
   const [step, setStep] = useState<PartnerAuthStep>("details");
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState<{ text: string; type: "error" | "info" | "success" } | null>(null);
   const [otpExpiresIn, setOtpExpiresIn] = useState(0);
+  const [resendIn, setResendIn] = useState(0);
   const [acceptPolicies, setAcceptPolicies] = useState(false);
   const [whatsappConsent, setWhatsappConsent] = useState(false);
   const [form, setForm] = useState({
@@ -54,6 +64,8 @@ export function PartnerLoginPage({
     mobile: "",
     otp: "",
   });
+
+  const otpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   const redirectTarget = useMemo(
     () => resolveRedirect(redirectParam),
@@ -93,12 +105,22 @@ export function PartnerLoginPage({
   }, [redirectTarget, router]);
 
   useEffect(() => {
-    if (step !== "otp" || otpExpiresIn <= 0) return;
+    if (step !== "otp" || (otpExpiresIn <= 0 && resendIn <= 0)) return;
     const timer = window.setInterval(() => {
       setOtpExpiresIn((value) => Math.max(value - 1, 0));
+      setResendIn((value) => Math.max(value - 1, 0));
     }, 1000);
     return () => window.clearInterval(timer);
-  }, [otpExpiresIn, step]);
+  }, [otpExpiresIn, resendIn, step]);
+
+  // Focus the first OTP box when entering OTP step
+  useEffect(() => {
+    if (step === "otp") {
+      setTimeout(() => {
+        otpInputRefs.current[0]?.focus();
+      }, 100);
+    }
+  }, [step]);
 
   const update = (key: keyof typeof form, value: string) => {
     setForm((prev) => ({
@@ -111,22 +133,68 @@ export function PartnerLoginPage({
   const switchMode = (nextMode: PartnerAuthMode) => {
     setMode(nextMode);
     setStep("details");
-    setMessage("");
+    setMessage(null);
+  };
+
+  const handleOtpBoxChange = (index: number, value: string) => {
+    const raw = value.replace(/\D/g, "");
+    if (!raw) {
+      const chars = form.otp.split("");
+      chars[index] = "";
+      setForm((prev) => ({ ...prev, otp: chars.join("") }));
+      return;
+    }
+
+    if (raw.length > 1) {
+      const pastedDigits = raw.slice(0, 6);
+      setForm((prev) => ({ ...prev, otp: pastedDigits }));
+      const nextIdx = Math.min(pastedDigits.length, 5);
+      otpInputRefs.current[nextIdx]?.focus();
+      return;
+    }
+
+    const currentChars = (form.otp + "      ").slice(0, 6).split("");
+    currentChars[index] = raw;
+    const updated = currentChars.join("").trim();
+    setForm((prev) => ({ ...prev, otp: updated }));
+
+    if (index < 5 && raw) {
+      otpInputRefs.current[index + 1]?.focus();
+    }
+  };
+
+  const handleOtpKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Backspace") {
+      if (!form.otp[index] && index > 0) {
+        otpInputRefs.current[index - 1]?.focus();
+      }
+    }
+  };
+
+  const handleOtpPaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const pasted = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, 6);
+    if (pasted) {
+      setForm((prev) => ({ ...prev, otp: pasted }));
+      const targetIdx = Math.min(pasted.length, 5);
+      otpInputRefs.current[targetIdx]?.focus();
+    }
   };
 
   const requestOtp = async (event: FormEvent) => {
     event.preventDefault();
-    setMessage("");
+    setMessage(null);
 
     if (mode === "login" && !validPhone) {
-      setMessage("Enter a valid mobile number to continue.");
+      setMessage({ text: "Please enter a valid 10-digit mobile number.", type: "error" });
       return;
     }
 
     if (mode === "register" && !registerReady) {
-      setMessage(
-        "Enter agency name, valid email, mobile number, and required consent.",
-      );
+      setMessage({
+        text: "Please enter agency name, valid email, mobile number, and agree to the required consent.",
+        type: "error",
+      });
       return;
     }
 
@@ -143,9 +211,10 @@ export function PartnerLoginPage({
       }
       setStep("otp");
       setOtpExpiresIn(5 * 60);
-      setMessage("OTP sent to your registered mobile number.");
+      setResendIn(30);
+      setMessage({ text: "OTP sent successfully to your registered mobile number.", type: "success" });
     } catch (error) {
-      setMessage((error as Error).message || "Unable to send OTP.");
+      setMessage({ text: (error as Error).message || "Unable to send OTP. Please try again.", type: "error" });
     } finally {
       setLoading(false);
     }
@@ -153,9 +222,9 @@ export function PartnerLoginPage({
 
   const submitOtp = async (event: FormEvent) => {
     event.preventDefault();
-    setMessage("");
+    setMessage(null);
     if (!validOtp) {
-      setMessage("Enter the 6-digit OTP sent to your mobile number.");
+      setMessage({ text: "Please enter the 6-digit OTP sent to your mobile.", type: "error" });
       return;
     }
 
@@ -172,21 +241,21 @@ export function PartnerLoginPage({
         verification?.isNewAccount ||
         !isPartnerProfileComplete(profile);
 
-      setMessage("Verified successfully. Redirecting.");
+      setMessage({ text: "Verified successfully! Redirecting to partner workspace...", type: "success" });
       router.replace(
         needsProfile ? "/partner/profile/complete" : redirectTarget,
       );
     } catch (error) {
-      setMessage((error as Error).message || "Unable to verify OTP.");
+      setMessage({ text: (error as Error).message || "Unable to verify OTP. Please try again.", type: "error" });
     } finally {
       setLoading(false);
     }
   };
 
   const resendOtp = async () => {
-    if (otpExpiresIn > 0) return;
+    if (resendIn > 0) return;
     setLoading(true);
-    setMessage("");
+    setMessage(null);
     try {
       if (mode === "register") {
         await sendPartnerOtp({
@@ -198,203 +267,366 @@ export function PartnerLoginPage({
         await sendPartnerOtp(digits);
       }
       setOtpExpiresIn(5 * 60);
-      setMessage("OTP resent successfully.");
+      setResendIn(30);
+      setMessage({ text: "OTP resent successfully.", type: "success" });
     } catch (error) {
-      setMessage((error as Error).message || "Unable to resend OTP.");
+      setMessage({ text: (error as Error).message || "Unable to resend OTP.", type: "error" });
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <main className="min-h-screen bg-white px-4 pb-10 md:px-6 lg:px-8">
-      <div className="mx-auto grid min-h-[calc(100vh-10rem)] max-w-9xl gap-8 lg:grid-cols-[1.08fr_0.92fr]">
-        <section className="relative flex min-h-136 flex-col overflow-hidden px-2 py-8 md:px-6 lg:px-8">
-          <div className="max-w-3xl">
-            <h1 className="mt-8 text-[42px] font-bold leading-[0.98] tracking-[-0.03em] text-[#07162d] md:text-[54px]">
-              Unlock your
-              <span className="block text-[#3b0764]">partner account</span>
+    <main className="min-h-[calc(100vh-4.5rem)] bg-gradient-to-b from-[#FAF7FF] via-[#F8F5FE] to-[#F3EBFF] py-6 sm:py-10 px-4 sm:px-6 lg:px-8 flex items-center justify-center relative overflow-hidden">
+      {/* Ambient background decoration */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[500px] bg-gradient-to-tr from-purple-200/40 via-violet-300/30 to-indigo-200/20 rounded-full blur-3xl pointer-events-none -z-10" />
+
+      <div className="mx-auto w-full max-w-6xl grid lg:grid-cols-12 gap-0 overflow-hidden rounded-[32px] sm:rounded-[36px] bg-white border border-purple-100/90 shadow-[0_25px_70px_rgba(91,33,182,0.09)]">
+        
+        {/* ================= LEFT HERO SHOWCASE ================= */}
+        <section className="relative lg:col-span-5 bg-gradient-to-br from-[#3B0764] via-[#5B21B6] to-[#6D28D9] text-white p-7 sm:p-10 flex flex-col justify-between overflow-hidden">
+          {/* Subtle Ambient Decorative Glows */}
+          <div className="absolute -top-20 -left-20 w-64 h-64 bg-purple-400/25 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-20 -right-20 w-64 h-64 bg-indigo-300/25 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute inset-0 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:24px_24px] opacity-10 pointer-events-none" />
+
+          {/* Top Brand Header */}
+          <div className="relative z-10">
+            <h1 className="mt-2 text-2xl sm:text-3xl font-semibold tracking-tight text-white leading-tight">
+              Scale your loan business with{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-100 via-white to-purple-200">
+                Fintaraa
+              </span>
             </h1>
-            <p className="mt-7 max-w-2xl text-[18px] leading-8 text-[#5d6b7c]">
-              Access your Fintaraa partner profile, complete agency KYC, and
-              review lead activity from one secure workspace.
+
+            <p className="mt-3 text-purple-100 text-xs sm:text-sm leading-relaxed max-w-md">
+              Access 40+ banks & NBFCs, earn highest industry payouts, and track file disbursals in real time.
             </p>
+
+            {/* Feature Highlights Grid */}
+            <div className="mt-7 space-y-3">
+              <div className="flex items-center gap-3 p-2.5 rounded-xl bg-white/10 backdrop-blur-md border border-white/15">
+                <div className="w-8 h-8 rounded-lg bg-purple-400/30 flex items-center justify-center shrink-0 text-white">
+                  <Award className="w-4 h-4 text-purple-200" />
+                </div>
+                <div>
+                  <h4 className="text-xs font-semibold text-white">Highest Industry Payouts</h4>
+                  <p className="text-[11px] text-purple-200 font-normal">Guaranteed timely monthly payouts.</p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3 p-2.5 rounded-xl bg-white/10 backdrop-blur-md border border-white/15">
+                <div className="w-8 h-8 rounded-lg bg-purple-400/30 flex items-center justify-center shrink-0 text-white">
+                  <TrendingUp className="w-4 h-4 text-purple-200" />
+                </div>
+                <div>
+                  <h4 className="text-xs font-semibold text-white">Real-Time Application Tracking</h4>
+                  <p className="text-[11px] text-purple-200 font-normal">Instant updates from lead login to sanction.</p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3 p-2.5 rounded-xl bg-white/10 backdrop-blur-md border border-white/15">
+                <div className="w-8 h-8 rounded-lg bg-purple-400/30 flex items-center justify-center shrink-0 text-white">
+                  <Zap className="w-4 h-4 text-purple-200" />
+                </div>
+                <div>
+                  <h4 className="text-xs font-semibold text-white">Dedicated Relationship Manager</h4>
+                  <p className="text-[11px] text-purple-200 font-normal">Full operational and sanction support.</p>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <div className="relative z-10 mt-auto pt-10">
-            <div className="relative min-h-72 overflow-hidden">
-              <Image
-                src="/assets/refer/login.jpg"
-                alt="Fintaraa channel partner login"
-                fill
-                priority
-                className="w-full object-contain"
-                sizes="(min-width: 1024px) 52vw, 100vw"
-              />
+          {/* Social Proof & Trust Metric */}
+          <div className="relative z-10 mt-6 pt-5 border-t border-white/15">
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="flex items-center gap-1.5 text-white">
+                  <Users className="w-4 h-4 text-purple-200" />
+                  <span className="text-xs font-semibold text-white">2,500+ Active DSAs</span>
+                </div>
+                <p className="text-[11px] text-purple-200 font-normal mt-0.5">Pan-India Partner Network</p>
+              </div>
+              <div className="text-right">
+                <p className="text-xs font-semibold text-white">₹500 Cr+</p>
+                <p className="text-[11px] text-purple-200 font-normal">Disbursed via Partners</p>
+              </div>
             </div>
           </div>
         </section>
 
-        <section className="flex items-center justify-center py-5 lg:py-0">
-          <div className="w-full max-w-2xl bg-white px-1 py-5 md:px-6 lg:px-8">
-            <div className="mb-7">
-              <h2 className="mt-4 text-[32px] font-bold leading-tight tracking-[-0.02em] text-[#07162d]">
+
+        {/* ================= RIGHT AUTH FORM ================= */}
+        <section className="lg:col-span-7 p-6 sm:p-10 lg:p-12 flex flex-col justify-between bg-white">
+          <div>
+            {/* Mode Switcher Tabs */}
+            {step === "details" && (
+              <div className="flex p-1.5 rounded-2xl bg-purple-50/60 border border-purple-100 mb-8 max-w-md">
+                <button
+                  type="button"
+                  onClick={() => switchMode("login")}
+                  className={`flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+                    mode === "login"
+                      ? "bg-[#5B21B6] text-white shadow-md shadow-purple-500/20"
+                      : "text-[#5d6b7c] hover:text-[#5B21B6]"
+                  }`}
+                >
+                  Partner Login
+                </button>
+                <button
+                  type="button"
+                  onClick={() => switchMode("register")}
+                  className={`flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+                    mode === "register"
+                      ? "bg-[#5B21B6] text-white shadow-md shadow-purple-500/20"
+                      : "text-[#5d6b7c] hover:text-[#5B21B6]"
+                  }`}
+                >
+                  Join as Partner
+                </button>
+              </div>
+            )}
+
+            {/* Header Titles */}
+            <div className="mb-6">
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#07162d] tracking-tight">
                 {step === "otp"
                   ? "Verify OTP"
                   : mode === "register"
-                    ? "Create partner account"
-                    : "Channel Partner login"}
+                    ? "Register Partner Agency"
+                    : "Channel Partner Login"}
               </h2>
-              {step === "details" && mode === "login" ? (
-                <h3 className="mt-5 text-[20px] font-semibold text-[#07162d]">
-                  Welcome back!
-                </h3>
-              ) : null}
-              <p className="mt-2 text-[14px] font-semibold leading-6 text-[#667085]">
-                {step === "otp"
-                  ? `Enter the 6-digit OTP sent to +${digits}.`
-                  : mode === "register"
-                    ? "Register your agency with name, email, mobile, and consent."
-                    : "Use your partner mobile number to receive a one-time code."}
+              <p className="mt-2 text-sm text-[#667085] leading-relaxed">
+                {step === "otp" ? (
+                  <>
+                    Enter the 6-digit code sent to{" "}
+                    <span className="font-bold text-[#5B21B6]">+91 {digits}</span>
+                  </>
+                ) : mode === "register" ? (
+                  "Create your official partner account to start submitting loan cases directly to 40+ banks."
+                ) : (
+                  "Enter your registered partner mobile number to receive a secure login OTP."
+                )}
               </p>
             </div>
 
-            {step === "details" ? (
-              <form onSubmit={requestOtp} className="grid gap-5">
-                {mode === "register" ? (
+            {/* Alert Message Box */}
+            {message && (
+              <div
+                className={`mb-6 flex items-start gap-3 p-3.5 rounded-2xl text-xs sm:text-sm font-semibold transition-all ${
+                  message.type === "error"
+                    ? "bg-rose-50 border border-rose-200 text-rose-700"
+                    : message.type === "success"
+                      ? "bg-emerald-50 border border-emerald-200 text-emerald-800"
+                      : "bg-purple-50 border border-purple-200 text-purple-800"
+                }`}
+              >
+                <div className="mt-0.5 shrink-0">
+                  {message.type === "error" ? (
+                    <span className="flex h-4 w-4 items-center justify-center rounded-full bg-rose-200 text-rose-800 text-xs font-black">!</span>
+                  ) : message.type === "success" ? (
+                    <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+                  ) : (
+                    <Sparkles className="h-4 w-4 text-purple-600" />
+                  )}
+                </div>
+                <div className="flex-1">{message.text}</div>
+              </div>
+            )}
+
+            {/* DETAILS STEP (Login or Register) */}
+            {step === "details" && (
+              <form onSubmit={requestOtp} className="space-y-4">
+                {mode === "register" && (
                   <>
-                    <PartnerAuthField
-                      label="Agency name"
-                      placeholder="Fintaraa Partner"
+                    <PartnerInputField
+                      label="Agency / Business Name"
+                      placeholder="e.g. Acme Financial Advisors"
                       value={form.name}
-                      icon={<Building2 className="h-4 w-4 text-[#98a2b3]" />}
-                      onChange={(value) => update("name", value)}
+                      icon={<Building2 className="w-4 h-4 text-purple-600" />}
+                      onChange={(val) => update("name", val)}
+                      autoFocus
                     />
-                    <PartnerAuthField
-                      label="Agency email"
-                      placeholder="partner@example.com"
-                      value={form.email}
+
+                    <PartnerInputField
+                      label="Official Email Address"
+                      placeholder="partner@yourcompany.com"
                       type="email"
-                      icon={<Mail className="h-4 w-4 text-[#98a2b3]" />}
-                      onChange={(value) => update("email", value)}
+                      value={form.email}
+                      icon={<Mail className="w-4 h-4 text-purple-600" />}
+                      onChange={(val) => update("email", val)}
                     />
                   </>
-                ) : null}
+                )}
 
-                <PartnerAuthField
-                  label="Mobile number"
-                  placeholder="Enter mobile number"
-                  value={form.mobile}
-                  type="tel"
-                  inputMode="numeric"
-                  icon={<Phone className="h-4 w-4 text-[#98a2b3]" />}
-                  onChange={(value) => update("mobile", value)}
-                />
-
-                {mode === "register" ? (
-                  <div className="grid gap-3">
-                    <PartnerConsentRow
-                      checked={whatsappConsent}
-                      onChange={() => setWhatsappConsent((value) => !value)}
-                      text="I agree to receive onboarding, application, and support updates from Fintaraa on WhatsApp, SMS, email, and phone."
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-[#5B21B6] mb-2">
+                    Partner Mobile Number
+                  </label>
+                  <div className="relative flex items-center rounded-2xl border-2 border-purple-100 bg-purple-50/20 p-1.5 focus-within:border-[#5B21B6] focus-within:bg-white focus-within:ring-4 focus-within:ring-purple-100 transition-all">
+                    <div className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white border border-purple-100 text-sm font-bold text-[#07162d] shadow-sm">
+                      <span className="text-base">🇮🇳</span>
+                      <span>+91</span>
+                    </div>
+                    <input
+                      type="tel"
+                      inputMode="numeric"
+                      maxLength={10}
+                      autoFocus={mode === "login"}
+                      placeholder="Enter 10-digit mobile number"
+                      value={form.mobile}
+                      onChange={(e) => update("mobile", e.target.value)}
+                      className="w-full bg-transparent px-3 py-2 text-base sm:text-lg font-bold text-[#07162d] placeholder:font-normal placeholder:text-[#98a2b3] outline-none"
                     />
-                    <PartnerConsentRow
+                    {digits.length === 10 && (
+                      <div className="pr-3 text-emerald-600">
+                        <CheckCircle2 className="w-5 h-5 fill-emerald-100" />
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {mode === "register" && (
+                  <div className="pt-2 space-y-3">
+                    <PartnerCheckbox
+                      checked={whatsappConsent}
+                      onChange={() => setWhatsappConsent((v) => !v)}
+                      label="I agree to receive partner onboarding, payout updates, and file status alerts on WhatsApp and Email."
+                    />
+                    <PartnerCheckbox
                       checked={acceptPolicies}
-                      onChange={() => setAcceptPolicies((value) => !value)}
-                      text="I agree to the Fintaraa Privacy Policy and Terms & Conditions."
+                      onChange={() => setAcceptPolicies((v) => !v)}
+                      label="I agree to the Fintaraa Channel Partner Agreement, Privacy Policy, and Terms of Service."
                     />
                   </div>
-                ) : null}
+                )}
 
-                <PartnerSubmitBlock
-                  message={message}
-                  loading={loading}
-                  buttonText={
-                    mode === "register" ? "Register with OTP" : "Get OTP"
-                  }
-                />
-              </form>
-            ) : (
-              <form onSubmit={submitOtp} className="grid gap-5">
-                <PartnerAuthField
-                  label="OTP code"
-                  placeholder="Enter 6 digit code"
-                  value={form.otp}
-                  inputMode="numeric"
-                  onChange={(value) => update("otp", value)}
-                />
-                <div className="flex items-center justify-between rounded-xl bg-[#f4f8fc] px-4 py-3 text-[13px] font-bold">
-                  <span className="text-[#667085]">OTP validity</span>
-                  <span
-                    className={
-                      otpExpiresIn > 0 ? "text-[#087443]" : "text-[#b42318]"
-                    }
-                  >
-                    {otpExpiresIn > 0
-                      ? `${String(Math.floor(otpExpiresIn / 60)).padStart(2, "0")}:${String(otpExpiresIn % 60).padStart(2, "0")}`
-                      : "Expired"}
-                  </span>
-                </div>
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setStep("details");
-                      setMessage("");
-                    }}
-                    className="text-[13px] font-extrabold text-[#3b0764]"
-                  >
-                    Change details
-                  </button>
-                  {otpExpiresIn <= 0 ? (
-                    <button
-                      type="button"
-                      onClick={resendOtp}
-                      disabled={loading}
-                      className="text-[13px] font-extrabold text-[#3b0764] disabled:opacity-60"
-                    >
-                      Resend OTP
-                    </button>
-                  ) : null}
-                </div>
-                <PartnerSubmitBlock
-                  message={message}
-                  loading={loading}
-                  buttonText="Verify & continue"
-                />
+                <button
+                  type="submit"
+                  disabled={loading || (mode === "login" ? digits.length < 10 : !registerReady)}
+                  className="w-full h-14 mt-4 inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#5B21B6] via-[#6D28D9] to-[#7C3AED] hover:from-[#4C1D95] hover:to-[#6D28D9] text-white font-bold text-base shadow-[0_10px_25px_-5px_rgba(91,33,182,0.35)] hover:shadow-[0_15px_30px_-5px_rgba(91,33,182,0.45)] transition-all transform active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                >
+                  {loading ? (
+                    <span className="flex items-center gap-2">
+                      <RefreshCw className="w-5 h-5 animate-spin" /> Sending OTP...
+                    </span>
+                  ) : (
+                    <>
+                      <span>{mode === "register" ? "Register with OTP" : "Get Login OTP"}</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </>
+                  )}
+                </button>
               </form>
             )}
 
-            <div className="mt-7 grid gap-3 text-center text-[13px] font-semibold text-[#667085]">
-              {mode === "login" ? (
-                <p>
-                  New partner?{" "}
-                  <button
-                    type="button"
-                    onClick={() => switchMode("register")}
-                    className="font-extrabold text-[#3b0764]"
-                  >
-                    Create partner account
-                  </button>
-                </p>
-              ) : (
-                <p>
-                  Already registered?{" "}
-                  <button
-                    type="button"
-                    onClick={() => switchMode("login")}
-                    className="font-extrabold text-[#3b0764]"
-                  >
-                    Login with OTP
-                  </button>
-                </p>
-              )}
-              <p>
-                Looking for customer login?{" "}
-                <Link href="/login" className="font-extrabold text-[#3b0764]">
-                  Login here
+            {/* OTP STEP */}
+            {step === "otp" && (
+              <form onSubmit={submitOtp} className="space-y-6">
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <label className="text-xs font-bold uppercase tracking-wider text-[#5B21B6]">
+                      Enter 6-Digit Code
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setStep("details");
+                        setMessage(null);
+                      }}
+                      className="inline-flex items-center gap-1 text-xs font-bold text-[#5B21B6] hover:underline"
+                    >
+                      <Edit3 className="w-3 h-3" /> Change Details
+                    </button>
+                  </div>
+
+                  {/* 6-Box Segmented OTP Input */}
+                  <div className="flex items-center justify-between gap-2 sm:gap-3" onPaste={handleOtpPaste}>
+                    {[0, 1, 2, 3, 4, 5].map((index) => {
+                      const digit = form.otp[index] || "";
+                      return (
+                        <input
+                          key={index}
+                          ref={(el) => {
+                            otpInputRefs.current[index] = el;
+                          }}
+                          type="text"
+                          inputMode="numeric"
+                          maxLength={1}
+                          value={digit}
+                          onChange={(e) => handleOtpBoxChange(index, e.target.value)}
+                          onKeyDown={(e) => handleOtpKeyDown(index, e)}
+                          className="w-11 h-13 sm:w-14 sm:h-16 text-center text-xl sm:text-2xl font-black rounded-2xl border-2 border-purple-100 bg-purple-50/20 text-[#07162d] focus:border-[#5B21B6] focus:bg-white focus:ring-4 focus:ring-purple-100 transition-all shadow-sm outline-none"
+                        />
+                      );
+                    })}
+                  </div>
+
+                  {/* Resend & Timer Footer */}
+                  <div className="mt-4 flex items-center justify-between rounded-xl bg-purple-50/50 p-3 border border-purple-100 text-xs">
+                    <span className="font-semibold text-[#667085]">
+                      {otpExpiresIn > 0 ? (
+                        <>
+                          Code expires in:{" "}
+                          <span className="font-bold text-emerald-700">
+                            {String(Math.floor(otpExpiresIn / 60)).padStart(2, "0")}:
+                            {String(otpExpiresIn % 60).padStart(2, "0")}
+                          </span>
+                        </>
+                      ) : (
+                        <span className="font-bold text-rose-600">OTP Expired</span>
+                      )}
+                    </span>
+
+                    <button
+                      type="button"
+                      onClick={resendOtp}
+                      disabled={resendIn > 0 || loading}
+                      className="font-bold text-[#5B21B6] hover:text-[#4C1D95] disabled:text-[#98a2b3] disabled:cursor-not-allowed transition-colors"
+                    >
+                      {resendIn > 0 ? `Resend OTP in ${resendIn}s` : "Resend OTP"}
+                    </button>
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={loading || form.otp.replace(/\D/g, "").length !== 6}
+                  className="w-full h-14 inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#5B21B6] via-[#6D28D9] to-[#7C3AED] hover:from-[#4C1D95] hover:to-[#6D28D9] text-white font-bold text-base shadow-[0_10px_25px_-5px_rgba(91,33,182,0.35)] hover:shadow-[0_15px_30px_-5px_rgba(91,33,182,0.45)] transition-all transform active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                >
+                  {loading ? (
+                    <span className="flex items-center gap-2">
+                      <RefreshCw className="w-5 h-5 animate-spin" /> Verifying Partner OTP...
+                    </span>
+                  ) : (
+                    <>
+                      <span>Verify & Enter Partner Portal</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </>
+                  )}
+                </button>
+              </form>
+            )}
+          </div>
+
+          {/* Footer Portal Switcher & Trust Indicators */}
+          <div className="mt-8 pt-6 border-t border-purple-100/80">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+              <div className="text-[#667085] font-semibold text-center sm:text-left">
+                Looking for regular customer login?{" "}
+                <Link
+                  href="/login"
+                  className="text-[#5B21B6] font-bold hover:underline inline-flex items-center gap-1"
+                >
+                  <span>Customer Login</span>
+                  <ArrowRight className="w-3 h-3" />
                 </Link>
-              </p>
+              </div>
+
+              <div className="flex items-center gap-2 text-[#98a2b3] font-medium">
+                <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                <span>256-Bit Bank Grade SSL</span>
+              </div>
             </div>
           </div>
         </section>
@@ -403,105 +635,78 @@ export function PartnerLoginPage({
   );
 }
 
-function PartnerAuthField({
+function PartnerInputField({
   label,
   placeholder,
   value,
   onChange,
   type = "text",
-  inputMode,
   icon,
+  disabled = false,
+  autoFocus = false,
 }: {
   label: string;
   placeholder: string;
   value: string;
-  onChange: (value: string) => void;
+  onChange: (val: string) => void;
   type?: string;
-  inputMode?: "numeric" | "text";
   icon?: ReactNode;
+  disabled?: boolean;
+  autoFocus?: boolean;
 }) {
   return (
-    <label className="group relative block pt-2">
-      <span className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#667085] transition-colors duration-300 group-focus-within:text-[#3b0764]">
+    <div>
+      <label className="block text-xs font-bold uppercase tracking-wider text-[#5B21B6] mb-1.5">
         {label}
-      </span>
-      <div className="relative mt-1 flex items-center gap-2">
-        {icon}
+      </label>
+      <div
+        className={`relative flex items-center rounded-2xl border-2 border-purple-100 bg-purple-50/20 px-3.5 py-3 transition-all ${
+          disabled
+            ? "bg-gray-50/80 border-gray-200 opacity-90"
+            : "focus-within:border-[#5B21B6] focus-within:bg-white focus-within:ring-4 focus-within:ring-purple-100"
+        }`}
+      >
+        {icon && <div className="mr-3 shrink-0">{icon}</div>}
         <input
           type={type}
-          inputMode={inputMode}
           value={value}
-          onChange={(event) => onChange(event.target.value)}
-          className="peer h-12 w-full border-0 border-b border-[#cfddea] bg-transparent px-0 text-[15px] font-semibold text-[#07162d] outline-none transition-all duration-300 placeholder:text-[#98a2b3] placeholder:font-semibold focus:border-transparent focus:placeholder:text-[#c8d5e1]"
+          disabled={disabled}
+          autoFocus={autoFocus}
           placeholder={placeholder}
+          onChange={(e) => onChange(e.target.value)}
+          className="w-full bg-transparent text-sm sm:text-base font-bold text-[#07162d] placeholder:font-normal placeholder:text-[#98a2b3] outline-none disabled:text-[#667085]"
         />
-        <span className="pointer-events-none absolute bottom-0 left-0 h-0.5 w-full origin-left scale-x-0 bg-linear-to-r from-[#3b0764] via-[#12b76a] to-[#1375de] transition-transform duration-300 ease-out peer-focus:scale-x-100" />
       </div>
-    </label>
+    </div>
   );
 }
 
-function PartnerConsentRow({
+function PartnerCheckbox({
   checked,
   onChange,
-  text,
+  label,
 }: {
   checked: boolean;
   onChange: () => void;
-  text: string;
+  label: string;
 }) {
   return (
-    <button
-      type="button"
+    <label
       onClick={onChange}
-      className="flex items-start gap-3 text-left"
+      className="flex items-start gap-3 p-3 rounded-xl border border-purple-100/80 bg-purple-50/20 hover:bg-purple-50/40 cursor-pointer transition-colors"
     >
-      <span
-        className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center border ${
+      <div
+        className={`w-5 h-5 mt-0.5 rounded-md flex items-center justify-center border transition-all shrink-0 ${
           checked
-            ? "border-[#3b0764] bg-[#3b0764] text-white"
-            : "border-[#cfddea] bg-white text-transparent"
+            ? "bg-[#5B21B6] border-[#5B21B6] text-white shadow-sm"
+            : "bg-white border-purple-200 text-transparent"
         }`}
       >
-        <Check className="h-3.5 w-3.5" />
-      </span>
-      <span className="text-[12px] font-semibold leading-5 text-[#667085]">
-        {text}
-      </span>
-    </button>
-  );
-}
-
-function PartnerSubmitBlock({
-  message,
-  loading,
-  buttonText,
-}: {
-  message: string;
-  loading: boolean;
-  buttonText: string;
-}) {
-  return (
-    <div className="pt-2">
-      {message ? (
-        <p className="mb-3 text-[13px] font-semibold leading-6 text-[#3b0764]">
-          {message}
-        </p>
-      ) : null}
-      <div className="grid gap-5">
-        <button
-          type="submit"
-          disabled={loading}
-          className="inline-flex h-14 w-full shrink-0 items-center justify-center gap-3 rounded-full bg-[#3b0764] px-6 text-[15px] font-extrabold text-white transition hover:bg-[#12476f] disabled:opacity-60"
-        >
-          {loading ? "Please wait..." : buttonText}
-          {!loading ? <ArrowRight className="h-4 w-4" /> : null}
-        </button>
-        <p className="text-center text-[13px] font-semibold leading-6 text-[#667085]">
-          <LockKeyhole className="mr-2 inline h-4 w-4 align-[-3px] text-[#3b0764]" />
-          Your partner information is safe and secure.
-        </p>
+        <Check className="w-3.5 h-3.5 stroke-[3]" />
       </div>
-    </div>
+      <span className="text-xs text-[#5d6b7c] font-medium leading-relaxed select-none">
+        {label}
+      </span>
+    </label>
   );
 }

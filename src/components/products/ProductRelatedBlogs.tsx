@@ -14,20 +14,6 @@ type ProductBlogCategory = "Loans" | "Insurance";
 
 const BLOG_LIMIT = 3;
 
-const sectionCopy: Record<
-  ProductBlogCategory,
-  { description: string }
-> = {
-  Loans: {
-    description:
-      "Category-wise articles on eligibility, documents, EMI planning, fees, and responsible borrowing.",
-  },
-  Insurance: {
-    description:
-      "Category-wise articles on coverage, documents, premium checks, claims, and policy selection.",
-  },
-};
-
 const sameCategory = (
   item: WebsiteKnowledgeItem,
   category: ProductBlogCategory,
@@ -50,18 +36,17 @@ const mergeWithFallback = (
 
 function ProductBlogSkeleton() {
   return (
-    <div className="flex gap-6 overflow-hidden">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {Array.from({ length: BLOG_LIMIT }).map((_, index) => (
         <div
           key={index}
-          className="h-108 w-[18rem] shrink-0 animate-pulse rounded-2xl bg-slate-100 sm:w-[20rem] md:w-88"
+          className="h-96 w-full animate-pulse rounded-2xl border border-slate-100 bg-slate-50 overflow-hidden"
         >
-          <div className="h-56 rounded-t-2xl bg-slate-200/70" />
+          <div className="h-48 bg-slate-200/70" />
           <div className="space-y-3 p-5">
-            <div className="h-4 w-32 rounded bg-white/80" />
-            <div className="h-5 rounded bg-white/80" />
-            <div className="h-5 w-4/5 rounded bg-white/80" />
-            <div className="h-12 rounded bg-white/80" />
+            <div className="h-4 w-32 rounded bg-slate-200" />
+            <div className="h-5 rounded bg-slate-200" />
+            <div className="h-4 w-4/5 rounded bg-slate-200" />
           </div>
         </div>
       ))}
@@ -72,9 +57,11 @@ function ProductBlogSkeleton() {
 export function ProductRelatedBlogs({
   category,
   productName,
+  className,
 }: {
   category: ProductBlogCategory;
   productName: string;
+  className?: string;
 }) {
   const fallbackPosts = useMemo(
     () => getFallbackBlogKnowledgeItems({ category, limit: BLOG_LIMIT }),
@@ -82,7 +69,6 @@ export function ProductRelatedBlogs({
   );
   const [posts, setPosts] = useState<WebsiteKnowledgeItem[]>(fallbackPosts);
   const [loading, setLoading] = useState(true);
-  const copy = sectionCopy[category];
 
   useEffect(() => {
     let mounted = true;
@@ -109,31 +95,28 @@ export function ProductRelatedBlogs({
   }, [category, fallbackPosts]);
 
   return (
-    <section className="bg-white px-4 py-10 md:px-6 lg:px-8">
-      <div className="mx-auto max-w-9xl">
+    <section className={`py-10 sm:py-14 bg-white border-b border-purple-100/60 ${className || ""}`}>
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-3xl">
-            <h2 className="text-[24px] font-extrabold leading-tight tracking-tight text-[#111625] md:text-[28px]">
+            <h2 className="text-[28px] sm:text-[36px] font-light tracking-tight text-slate-900 leading-[1.12]">
               {productName} Blogs & Guides
             </h2>
-            <p className="mt-2 text-[14px] font-medium leading-6 text-[#667085]">
-              {copy.description}
-            </p>
           </div>
           <Link
             href="/blog"
-            className="inline-flex h-10 w-fit shrink-0 items-center justify-center gap-2 rounded-xl bg-[#5b21b6] px-5 text-[13px] font-bold text-white no-underline transition hover:bg-[#4c1d95]"
+            className="inline-flex h-10 w-fit shrink-0 items-center justify-center gap-2 rounded-xl bg-[#5B21B6] px-5 text-[13px] font-medium text-white no-underline transition hover:bg-[#4C1D95]"
           >
             View All Blogs
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
 
-        <div className="-mx-4 overflow-x-auto px-4 pb-2">
+        <div>
           {loading ? (
             <ProductBlogSkeleton />
           ) : (
-            <div className="flex gap-6 lg:flex-wrap">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {posts.map((post) => (
                 <RecentBlogCard key={post.slug} post={post} />
               ))}

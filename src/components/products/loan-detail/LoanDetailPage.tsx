@@ -89,7 +89,7 @@ export function LoanDetailPage({
       />
 
       {/* 7. Eligibility Criteria: Salaried vs Self-Employed & CIBIL Tiers (Borderless) */}
-      <LoanEligibilityCriteria />
+      <LoanEligibilityCriteria productSlug={page.loanTypeSlug} />
 
       {/* 8. Documents Required: DigiLocker & Soft Copy Checklist (Borderless) */}
       <LoanDocumentsRequired page={page} />

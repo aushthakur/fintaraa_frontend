@@ -134,6 +134,12 @@ export const requiredLoanProductContracts: LoanProductContract[] = [
     group: "secured",
     flowKey: "loanAgainstSecurity",
     loanType: "loan_against_security",
+    aliases: [
+      "loan-against-securities",
+      "loan-against-fd",
+      "loan-against-mutual-fund",
+      "loan-against-mutual-funds",
+    ],
   },
   {
     name: "Machinery Loan",

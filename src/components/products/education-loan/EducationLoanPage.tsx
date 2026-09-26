@@ -59,6 +59,28 @@ import type {
 } from "@/services/loanSeoPages";
 import type { BankProductLender } from "@/services/bankSeoPages";
 
+const getBankLogoPath = (slug?: string, bankName?: string) => {
+  const s = ((slug || "") + " " + (bankName || "")).toLowerCase();
+  if (s.includes("hdfc")) return "/assets/banks/HDFC-Bank.png";
+  if (s.includes("icici")) return "/assets/banks/ICICI-Bank.png";
+  if (s.includes("axis")) return "/assets/banks/axis-bank.png";
+  if (s.includes("sbi") || s.includes("state-bank") || s.includes("state bank"))
+    return "/assets/banks/State-Bank-of-India.png";
+  if (s.includes("kotak")) return "/assets/banks/Kotak-Mahindra-Bank.png";
+  if (s.includes("bajaj")) return "/assets/banks/bajaj-finserv.png";
+  if (s.includes("baroda")) return "/assets/banks/Bank-of-Baroda.png";
+  if (s.includes("indusind")) return "/assets/banks/IndusInd-Bank.png";
+  if (s.includes("federal")) return "/assets/banks/Federal-Bank.png";
+  if (s.includes("pnb") || s.includes("punjab"))
+    return "/assets/banks/Punjab-National-Bank.png";
+  if (s.includes("canara")) return "/assets/banks/canara-bank.png";
+  if (s.includes("union")) return "/assets/banks/union-bank.png";
+  if (s.includes("idfc")) return "/assets/banks/idfc.png";
+  if (s.includes("yes")) return "/assets/banks/yes-bank.png";
+  if (s.includes("avanse")) return "/assets/banks/hdfc.png";
+  return "/assets/banks/hdfc.png";
+};
+
 // ─── Data & Helpers ────────────────────────────────────────────────────────────
 
 const nameRegex = /^[A-Za-z\s.]{2,60}$/;
@@ -632,7 +654,7 @@ export function EducationLoanPage({
       </section>
 
       {/* ─── STUDY DESTINATION BREAKDOWN ──────────────────────────── */}
-      <section className="bg-white border-b border-slate-100 py-12 sm:py-16">
+      <section className="bg-white border-b border-slate-100 py-10 sm:py-14">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl mb-8">
             <p className="text-[11px] tracking-[0.14em] uppercase text-[#5b21b6] mb-2 font-medium">Study Abroad & India</p>
@@ -740,7 +762,7 @@ export function EducationLoanPage({
       </section>
 
       {/* ─── LENDER COMPARISON RECTANGLES ─────────────────────────── */}
-      <section className="bg-white border-b border-slate-100 py-12 sm:py-16">
+      <section className="bg-white border-b border-slate-100 py-10 sm:py-14">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
             <div>
@@ -781,7 +803,7 @@ export function EducationLoanPage({
       </section>
 
       {/* ─── THE MORATORIUM & REPAYMENT EXPLAINER ───────────────────── */}
-      <section className="bg-[#f8fafc] border-b border-slate-100 py-12 sm:py-16">
+      <section className="bg-[#f8fafc] border-b border-slate-100 py-10 sm:py-14">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl mb-10">
             <p className="text-[11px] tracking-[0.14em] uppercase text-[#5b21b6] mb-2 font-medium font-mono">How Repayment Works</p>
@@ -831,7 +853,7 @@ export function EducationLoanPage({
       </section>
 
       {/* ─── SECTION 80E TAX BENEFIT SECTION ──────────────────────── */}
-      <section className="bg-white border-b border-slate-100 py-12 sm:py-16">
+      <section className="bg-white border-b border-slate-100 py-10 sm:py-14">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-[1fr_1.1fr] gap-12 items-center">
             <div>
@@ -889,7 +911,7 @@ export function EducationLoanPage({
       </section>
 
       {/* ─── ELIGIBILITY & DOCUMENTATION CHECKLIST TABS ─────────────── */}
-      <section className="bg-[#f8fafc] border-b border-slate-100 py-12 sm:py-16">
+      <section className="bg-[#f8fafc] border-b border-slate-100 py-10 sm:py-14">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl mb-8">
             <p className="text-[11px] tracking-[0.14em] uppercase text-[#5b21b6] mb-2 font-medium">Hassle-free Verification</p>
@@ -982,7 +1004,7 @@ export function EducationLoanPage({
       </section>
 
       {/* ─── MYTHS & REALITY SECTION ────────────────────────────────── */}
-      <section className="bg-white border-b border-slate-100 py-12 sm:py-16">
+      <section className="bg-white border-b border-slate-100 py-10 sm:py-14">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl mb-10">
             <p className="text-[11px] tracking-[0.14em] uppercase text-[#5b21b6] mb-2 font-medium">Clearing Misconceptions</p>
@@ -1067,28 +1089,20 @@ function EduLenderRow({
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[160px_1fr_1fr_1fr_1fr_auto] items-center gap-4 rounded-2xl border border-slate-200 bg-white px-5 py-4 transition hover:border-purple-300 hover:shadow-xs">
-      {/* Logo / Bank Name */}
-      <div className="flex items-center gap-3">
-        {lender.logoUrl ? (
-          <Link href={lender.canonicalPath} className="block no-underline">
-            <span className="flex h-12 w-28 items-center justify-center rounded-xl border border-slate-100 bg-white px-2">
-              <BankLogoImage
-                src={lender.logoUrl}
-                alt={lender.bankName}
-                className="h-10 w-full"
-                imageClassName="object-contain"
-                sizes="112px"
-              />
-            </span>
-          </Link>
-        ) : (
-          <Link href={lender.canonicalPath} className="flex items-center gap-2.5 no-underline min-w-0">
-            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-purple-50 text-[13px] font-medium text-[#5b21b6]">
-              {lender.bankName.split(/\s+/).slice(0, 2).map((w) => w[0]).join("")}
-            </span>
-            <span className="text-[12.5px] font-medium text-slate-800 leading-tight line-clamp-2">{lender.bankName}</span>
-          </Link>
-        )}
+      {/* Logo */}
+      <div className="flex items-center">
+        <Link href={lender.canonicalPath} className="block no-underline">
+          <div className="relative flex h-14 w-36 sm:w-44 shrink-0 items-center justify-start py-1">
+            <Image
+              src={lender.logoUrl || getBankLogoPath(lender.bankSlug, lender.bankName)}
+              alt={lender.bankName}
+              width={160}
+              height={48}
+              className="max-h-11 w-auto max-w-[150px] object-contain"
+              unoptimized
+            />
+          </div>
+        </Link>
       </div>
 
       {/* Interest rate */}

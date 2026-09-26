@@ -67,6 +67,27 @@ import type {
 } from "@/services/loanSeoPages";
 import type { BankProductLender } from "@/services/bankSeoPages";
 
+const getBankLogoPath = (slug?: string, bankName?: string) => {
+  const s = ((slug || "") + " " + (bankName || "")).toLowerCase();
+  if (s.includes("hdfc")) return "/assets/banks/HDFC-Bank.png";
+  if (s.includes("icici")) return "/assets/banks/ICICI-Bank.png";
+  if (s.includes("axis")) return "/assets/banks/axis-bank.png";
+  if (s.includes("sbi") || s.includes("state-bank") || s.includes("state bank"))
+    return "/assets/banks/State-Bank-of-India.png";
+  if (s.includes("kotak")) return "/assets/banks/Kotak-Mahindra-Bank.png";
+  if (s.includes("bajaj")) return "/assets/banks/bajaj-finserv.png";
+  if (s.includes("baroda")) return "/assets/banks/Bank-of-Baroda.png";
+  if (s.includes("indusind")) return "/assets/banks/IndusInd-Bank.png";
+  if (s.includes("federal")) return "/assets/banks/Federal-Bank.png";
+  if (s.includes("pnb") || s.includes("punjab"))
+    return "/assets/banks/Punjab-National-Bank.png";
+  if (s.includes("canara")) return "/assets/banks/canara-bank.png";
+  if (s.includes("union")) return "/assets/banks/union-bank.png";
+  if (s.includes("idfc")) return "/assets/banks/idfc.png";
+  if (s.includes("yes")) return "/assets/banks/yes-bank.png";
+  return "/assets/banks/hdfc.png";
+};
+
 type LeadFormState = {
   fullName: string;
   mobile: string;
@@ -676,7 +697,7 @@ export function InstantLoanMarketplacePage({
       <LoanStatsBar />
 
       {/* ─── FOUR CORE ADVANTAGES ─────────────────────────────── */}
-      <section className="bg-white border-b border-slate-100 py-12 sm:py-16">
+      <section className="bg-white border-b border-slate-100 py-10 sm:py-14">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl mb-10">
             <p className="text-[11px] tracking-[0.14em] uppercase text-purple-600 mb-2">Why Fintaraa instant loan</p>
@@ -711,7 +732,7 @@ export function InstantLoanMarketplacePage({
       </section>
 
       {/* ─── WHEN YOU NEED AN INSTANT LOAN ───────────────────── */}
-      <section className="bg-[#f8faff] border-b border-slate-100 py-12 sm:py-16">
+      <section className="bg-[#f8faff] border-b border-slate-100 py-10 sm:py-14">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-[1fr_1fr] gap-12 items-start">
             <div className="lg:sticky lg:top-24">
@@ -755,7 +776,7 @@ export function InstantLoanMarketplacePage({
       </section>
 
       {/* ─── LENDER MARKETPLACE ───────────────────────────────── */}
-      <section id="instant-loan-lenders" className="bg-white border-b border-slate-100 py-12 sm:py-16">
+      <section id="instant-loan-lenders" className="bg-white border-b border-slate-100 py-10 sm:py-14">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
           {/* Header row */}
@@ -830,7 +851,7 @@ export function InstantLoanMarketplacePage({
       </section>
 
       {/* ─── INSTANT VS TRADITIONAL COMPARISON ───────────────── */}
-      <section className="bg-[#f8faff] border-b border-slate-100 py-12 sm:py-16">
+      <section className="bg-[#f8faff] border-b border-slate-100 py-10 sm:py-14">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl mb-10">
             <p className="text-[11px] tracking-[0.14em] uppercase text-purple-600 mb-2">Side by side</p>
@@ -874,7 +895,7 @@ export function InstantLoanMarketplacePage({
       </section>
 
       {/* ─── USE CASES ────────────────────────────────────────── */}
-      <section className="bg-white border-b border-slate-100 py-12 sm:py-16">
+      <section className="bg-white border-b border-slate-100 py-10 sm:py-14">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl mb-10">
             <p className="text-[11px] tracking-[0.14em] uppercase text-purple-600 mb-2">What will you use it for?</p>
@@ -970,7 +991,7 @@ export function InstantLoanMarketplacePage({
       </section>
 
       {/* ─── ELIGIBILITY CRITERIA ─────────────────────────────── */}
-      <section className="bg-white border-b border-slate-100 py-12 sm:py-16">
+      <section className="bg-white border-b border-slate-100 py-10 sm:py-14">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-[1fr_1.2fr] gap-16 items-start">
             <div>
@@ -1048,7 +1069,7 @@ export function InstantLoanMarketplacePage({
       </section>
 
       {/* ─── INTEREST RATE FACTORS ────────────────────────────── */}
-      <section className="bg-white border-b border-slate-100 py-12 sm:py-16">
+      <section className="bg-white border-b border-slate-100 py-10 sm:py-14">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-[1fr_1.2fr] gap-12 items-start">
             <div className="lg:sticky lg:top-32">
@@ -1084,7 +1105,7 @@ export function InstantLoanMarketplacePage({
       </section>
 
       {/* ─── MYTHS & REALITY ────────────────────────────────── */}
-      <section className="bg-[#f8faff] border-b border-slate-100 py-12 sm:py-16 relative overflow-hidden">
+      <section className="bg-[#f8faff] border-b border-slate-100 py-10 sm:py-14 relative overflow-hidden">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl mb-10">
             <p className="text-[11px] tracking-[0.14em] uppercase text-purple-600 mb-2">Clearing the air</p>
@@ -1129,7 +1150,7 @@ export function InstantLoanMarketplacePage({
       </section>
 
       {/* ─── CTA BAND ─────────────────────────────────────────── */}
-      <section className="bg-white border-b border-slate-100 py-16">
+      <section className="bg-white border-b border-slate-100 py-10 sm:py-14">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="rounded-2xl border border-purple-100 bg-gradient-to-br from-purple-50 to-sky-50/50 p-10 sm:p-14 flex flex-col lg:flex-row items-center justify-between gap-8">
             <div className="max-w-xl">
@@ -1204,27 +1225,19 @@ function LenderRow({
   return (
     <div className="grid grid-cols-[140px_1fr_1fr_1fr_1fr_auto] items-center gap-4 rounded-2xl border border-slate-100 bg-white px-5 py-4 transition hover:border-[#5b21b6]/20 hover:shadow-[0_6px_24px_-6px_rgba(91,33,182,0.1)]">
       {/* Logo */}
-      <div className="flex items-center gap-3">
-        {lender.logoUrl ? (
-          <Link href={lender.canonicalPath} className="block no-underline">
-            <span className="flex h-12 w-28 items-center justify-center rounded-xl border border-slate-100 bg-white px-2">
-              <BankLogoImage
-                src={lender.logoUrl}
-                alt={lender.bankName}
-                className="h-10 w-full"
-                imageClassName="object-contain"
-                sizes="112px"
-              />
-            </span>
-          </Link>
-        ) : (
-          <Link href={lender.canonicalPath} className="flex items-center gap-2 no-underline min-w-0">
-            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-purple-50 text-[13px] font-normal text-[#5b21b6]">
-              {lender.bankName.split(/\s+/).slice(0, 2).map((w) => w[0]).join("")}
-            </span>
-            <span className="text-[12px] font-normal text-slate-800 leading-tight line-clamp-2">{lender.bankName}</span>
-          </Link>
-        )}
+      <div className="flex items-center">
+        <Link href={lender.canonicalPath} className="block no-underline">
+          <div className="relative flex h-14 w-36 shrink-0 items-center justify-start py-1">
+            <Image
+              src={lender.logoUrl || getBankLogoPath(lender.bankSlug, lender.bankName)}
+              alt={lender.bankName}
+              width={150}
+              height={46}
+              className="max-h-11 w-auto max-w-[140px] object-contain"
+              unoptimized
+            />
+          </div>
+        </Link>
       </div>
 
       {/* Interest rate */}
