@@ -282,7 +282,7 @@ export function CreditCardMarketplace() {
                         <p className="text-[12px] sm:text-[13px] text-gray-200 line-clamp-2 mb-4 max-w-[85%]">{card.keyBenefit}</p>
                         <Link
                           href={card.href}
-                          className="inline-flex w-fit items-center gap-2 text-[13px] font-bold text-white transition hover:text-[#c4b5fd]"
+                          className="apply-btn-rounded inline-flex w-fit items-center gap-2 text-[13px] font-bold text-white transition hover:text-[#c4b5fd] bg-white/20 px-3 py-1.5 rounded-full backdrop-blur-md border border-white/20"
                           style={{ color: card.accentColor }}
                         >
                           Apply Now <ArrowRight className="h-4 w-4" />
@@ -301,7 +301,7 @@ export function CreditCardMarketplace() {
         <div className="mt-10 text-center">
           <Link
             href="/credit-cards"
-            className="group inline-flex items-center gap-2 rounded-full border border-[#6424C7]/30 bg-purple-50/60 px-6 py-2.5 text-[13px] font-bold text-[#6424C7] transition-all duration-200 hover:bg-[#6424C7] hover:text-white hover:shadow-[0_4px_18px_rgba(100,36,199,0.30)]"
+            className="apply-btn-rounded group inline-flex items-center gap-2 rounded-full border border-[#6424C7]/30 bg-purple-50/60 px-6 py-2.5 text-[13px] font-bold text-[#6424C7] transition-all duration-200 hover:bg-[#6424C7] hover:text-white hover:shadow-[0_4px_18px_rgba(100,36,199,0.30)]"
           >
             Compare All Credit Cards
             <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />

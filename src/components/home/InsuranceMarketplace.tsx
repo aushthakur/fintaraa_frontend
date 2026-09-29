@@ -161,7 +161,7 @@ export function InsuranceMarketplace() {
                   <p className="text-[12px] sm:text-[13px] text-gray-200 line-clamp-2 mb-4 max-w-[85%]">{item.description}</p>
                   <Link
                     href={item.href}
-                    className="inline-flex w-fit items-center gap-2 text-[13px] font-bold text-white transition hover:text-[#c4b5fd]"
+                    className="apply-btn-rounded inline-flex w-fit items-center gap-2 text-[13px] font-bold text-white transition hover:text-[#c4b5fd] bg-white/20 px-3 py-1.5 rounded-full backdrop-blur-md border border-white/20"
                   >
                     Compare Plans <ArrowRight className="h-4 w-4" />
                   </Link>

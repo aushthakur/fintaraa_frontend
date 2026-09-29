@@ -74,7 +74,7 @@ export function MobileBottomNav() {
   return (
     <nav
       aria-label="Mobile Bottom Navigation"
-      className="fixed inset-x-0 bottom-0 z-40 md:hidden bg-white/95 backdrop-blur-xl border-t border-purple-100 shadow-[0_-4px_24px_rgba(91,33,182,0.08)] pb-[calc(0.4rem+env(safe-area-inset-bottom,0px))] pt-1.5 px-2"
+      className="mobile-bottom-nav rounded-t-3xl fixed inset-x-0 bottom-0 z-40 md:hidden bg-white/95 backdrop-blur-xl border-t border-purple-100 shadow-[0_-4px_24px_rgba(91,33,182,0.08)] pb-[calc(0.4rem+env(safe-area-inset-bottom,0px))] pt-1.5 px-2"
     >
       <div className="flex items-center justify-around">
         {navItems.map((item) => {
