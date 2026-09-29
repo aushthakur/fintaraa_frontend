@@ -200,10 +200,7 @@ export function LoanRatesShowcase() {
                     />
                   </div>
 
-                  {/* Bank Name */}
-                  <h3 className="text-center text-[12px] sm:text-[13.5px] lg:text-[14px] font-semibold text-gray-800 mb-2.5 sm:mb-3.5 leading-snug line-clamp-1 group-hover:text-[#6424C7] transition-colors">
-                    {bank.name}
-                  </h3>
+                  {/* Bank Name removed as requested (logos contain the name) */}
 
                   {/* Rate row */}
                   <div className="w-full rounded-xl bg-gray-50/90 border border-gray-100/90 py-2 px-1.5 sm:py-2.5 sm:px-3 flex items-center justify-around mb-3 sm:mb-4">

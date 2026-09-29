@@ -167,7 +167,7 @@ function CompactSelect({
       ref={containerRef}
       className={`relative block w-full min-w-0 ${isOpen ? "z-30" : "z-10"}`}
     >
-      <span className="text-[11px] font-bold text-[#475569]">{label}</span>
+      <span className="text-[11px] font-normal text-[#475569]">{label}</span>
       <button
         type="button"
         onClick={onToggle}
@@ -182,8 +182,8 @@ function CompactSelect({
         <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-purple-100/70 text-[#5b21b6]">
           <Icon className="h-3.5 w-3.5" />
         </span>
-        <span className="min-w-0 flex-1 truncate text-[12px] font-bold text-[#0f172a]">
-          {value}
+        <span className="min-w-0 flex-1 truncate text-[12px] font-normal text-[#0f172a]">
+          {value || `Select ${label}`}
         </span>
         <ChevronDown
           className={`h-3.5 w-3.5 shrink-0 text-[#94a3b8] transition-transform duration-200 ${
@@ -313,15 +313,15 @@ export function HeroSection() {
 
   // ORIGINAL FINTARAA HERO FORM STATE (preserved exactly)
   const [selectedProduct, setSelectedProduct] = useState(productTabs[0].label);
-  const [amount, setAmount] = useState("1000000");
-  const [purpose, setPurpose] = useState(loanTypeOptions[0]);
-  const [tenure, setTenure] = useState("5 Years");
-  const [salaryType, setSalaryType] = useState(salaryOptions[0]);
-  const [monthlyIncome, setMonthlyIncome] = useState("50000");
-  const [insuranceType, setInsuranceType] = useState(insuranceTypeOptions[0]);
-  const [insuranceNeed, setInsuranceNeed] = useState(insuranceNeedOptions[0]);
-  const [cardType, setCardType] = useState(cardTypeOptions[0]);
-  const [cibilScore, setCibilScore] = useState(720);
+  const [amount, setAmount] = useState("");
+  const [purpose, setPurpose] = useState("");
+  const [tenure, setTenure] = useState("");
+  const [salaryType, setSalaryType] = useState("");
+  const [monthlyIncome, setMonthlyIncome] = useState("");
+  const [insuranceType, setInsuranceType] = useState("");
+  const [insuranceNeed, setInsuranceNeed] = useState("");
+  const [cardType, setCardType] = useState("");
+  const [cibilScore, setCibilScore] = useState<number | "">("");
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
   // ORIGINAL SUBMISSION LOGIC AND QUERY PARAMETERS (preserved 100%)
@@ -553,19 +553,15 @@ export function HeroSection() {
 
               {/* Form Card (Shadow as Border, No Harsh Outlines) */}
               <div className="eligibility-form eligibility-form-wrapper relative z-[2] w-full rounded-2xl sm:rounded-3xl bg-white p-4 sm:p-6 shadow-[0_0_22px_rgba(15,23,42,0.12),0_1px_4px_rgba(15,23,42,0.06)] transition-all duration-300">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-[15.5px] sm:text-[16px] font-extrabold tracking-tight text-[#0f172a]">
+              <div className="w-full overflow-hidden">
+                <p className="truncate whitespace-nowrap">
+                  <span className="text-[15.5px] sm:text-[16px] font-normal tracking-tight text-[#0f172a]">
                     Check Your Eligibility
-                  </p>
-                  <p className="text-[11px] sm:text-[11.5px] font-medium text-[#64748b]">
-                    Personalised • Instant • Free Check
-                  </p>
-                </div>
-                <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-purple-50 px-2 sm:px-2.5 py-1 text-[9px] sm:text-[9.5px] font-bold uppercase tracking-wider text-[#5b21b6]">
-                  <LockKeyhole className="h-3 w-3" />
-                  Bank Grade Secure
-                </span>
+                  </span>
+                  <span className="ml-1.5 text-[11px] sm:text-[11.5px] font-normal text-[#64748b]">
+                    - Personalised • Instant • Free Check
+                  </span>
+                </p>
               </div>
 
               {/* Product Tabs (Modern Segmented Pill Bar - No Lines) */}
@@ -599,10 +595,10 @@ export function HeroSection() {
                   <>
                     <div>
                       <div className="flex items-baseline justify-between">
-                        <p className="text-[11px] font-bold text-[#475569]">
+                        <p className="text-[11px] font-normal text-[#475569]">
                           Requirement Amount
                         </p>
-                        <p className="text-[15.5px] font-extrabold text-[#5b21b6]">
+                        <p className="text-[15.5px] font-normal text-[#5b21b6]">
                           {amount ? `₹ ${formatAmount(amount)}` : "Enter amount"}
                         </p>
                       </div>
@@ -616,7 +612,7 @@ export function HeroSection() {
                           value={amount}
                           onChange={(e) => setAmount(e.target.value.replace(/\D/g, ""))}
                           placeholder="e.g. 500000"
-                          className="min-w-0 flex-1 bg-transparent text-[13px] font-bold text-[#0f172a] outline-none placeholder:text-[#94a3b8] placeholder:font-normal"
+                          className="min-w-0 flex-1 bg-transparent text-[13px] font-normal text-[#0f172a] outline-none placeholder:text-[#94a3b8] placeholder:font-normal"
                           aria-label="Requirement amount"
                         />
                       </label>
@@ -672,7 +668,7 @@ export function HeroSection() {
                         onChange={setSalaryType}
                       />
                       <label className="block">
-                        <span className="text-[11px] font-bold text-[#475569]">
+                        <span className="text-[11px] font-normal text-[#475569]">
                           Monthly Salary (₹)
                         </span>
                         <span className="mt-1 flex h-10 w-full items-center gap-2 rounded-xl bg-[#f8fafc] hover:bg-[#f1f5f9] px-2.5 transition-all focus-within:bg-white focus-within:ring-2 focus-within:ring-[#5b21b6]/20">
@@ -685,7 +681,7 @@ export function HeroSection() {
                             value={monthlyIncome}
                             onChange={(e) => setMonthlyIncome(e.target.value.replace(/\D/g, ""))}
                             placeholder="50000"
-                            className="min-w-0 flex-1 border-0 bg-transparent text-[12px] font-bold text-[#0f172a] outline-none placeholder:text-[#94a3b8] placeholder:font-normal"
+                            className="min-w-0 flex-1 border-0 bg-transparent text-[12px] font-normal text-[#0f172a] outline-none placeholder:text-[#94a3b8] placeholder:font-normal"
                             aria-label="Monthly Salary / Income"
                           />
                         </span>
@@ -695,8 +691,8 @@ export function HeroSection() {
                     <div className="relative z-0">
                       <label className="block">
                         <div className="flex items-center justify-between text-[11px]">
-                          <span className="font-bold text-[#475569]">CIBIL Score</span>
-                          <span className="rounded-md bg-teal-50 px-2 py-0.5 text-[10px] font-bold text-[#0d9488]">Min 300 - Max 900</span>
+                          <span className="font-normal text-[#475569]">CIBIL Score</span>
+                          <span className="rounded-md bg-teal-50 px-2 py-0.5 text-[10px] font-normal text-[#0d9488]">Min 300 - Max 900</span>
                         </div>
                         <span className="mt-1 flex h-10 w-full items-center gap-2 rounded-xl bg-[#f8fafc] hover:bg-[#f1f5f9] px-2.5 transition-all focus-within:bg-white focus-within:ring-2 focus-within:ring-[#5b21b6]/20">
                           <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-purple-100/70 text-[#5b21b6]">
@@ -708,7 +704,7 @@ export function HeroSection() {
                             max={900}
                             value={cibilScore}
                             onChange={(e) => setCibilScore(Number(e.target.value || 0))}
-                            className="min-w-0 flex-1 border-0 bg-transparent text-[12px] font-bold text-[#0f172a] outline-none"
+                            className="min-w-0 flex-1 border-0 bg-transparent text-[12px] font-normal text-[#0f172a] outline-none"
                             aria-label="CIBIL Score"
                           />
                         </span>

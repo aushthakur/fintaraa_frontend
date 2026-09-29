@@ -510,10 +510,10 @@ export function LoginPage({
                   <label className="block text-xs font-bold uppercase tracking-wider text-[#5B21B6] mb-2">
                     Mobile Number
                   </label>
-                  <div className="relative flex items-center rounded-2xl border-2 border-purple-100 bg-purple-50/20 p-1.5 focus-within:border-[#5B21B6] focus-within:bg-white focus-within:ring-4 focus-within:ring-purple-100 transition-all">
-                    <div className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white border border-purple-100 text-sm font-bold text-[#07162d] shadow-sm">
-                      <span className="text-base">🇮🇳</span>
-                      <span>+91</span>
+                  <div className="relative flex items-center overflow-hidden rounded-2xl border-2 border-purple-100 bg-white focus-within:border-[#5B21B6] focus-within:ring-4 focus-within:ring-purple-100/50 transition-all shadow-sm hover:border-purple-200">
+                    <div className="flex items-center justify-center gap-2 px-4 h-[56px] bg-slate-50 border-r border-purple-100/50 text-[#07162d] shrink-0">
+                      <span className="text-[20px] leading-none mb-[2px] shrink-0">🇮🇳</span>
+                      <span className="font-bold text-base leading-none text-[#5B21B6] whitespace-nowrap">+91</span>
                     </div>
                     <input
                       type="tel"
@@ -523,10 +523,10 @@ export function LoginPage({
                       placeholder="Enter 10-digit mobile number"
                       value={form.mobile}
                       onChange={(e) => update("mobile", e.target.value)}
-                      className="w-full bg-transparent px-3 py-2 text-base sm:text-lg font-bold text-[#07162d] placeholder:font-normal placeholder:text-[#98a2b3] outline-none"
+                      className="w-full h-[56px] bg-transparent px-4 text-lg font-bold text-[#07162d] placeholder:font-medium placeholder:text-[#98a2b3] outline-none"
                     />
                     {digits.length === 10 && (
-                      <div className="pr-3 text-emerald-600">
+                      <div className="pr-4 text-emerald-600 flex items-center">
                         <CheckCircle2 className="w-5 h-5 fill-emerald-100" />
                       </div>
                     )}

@@ -94,7 +94,9 @@ function PremiumSelect({
         <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#ede9fe] text-[#5b21b6]">
           <Icon className="h-4 w-4" />
         </span>
-        <span className="min-w-0 flex-1 truncate text-[#2f3a4a]">{value}</span>
+        <span className="min-w-0 flex-1 truncate text-[#2f3a4a]">
+          {value || `Select ${label}`}
+        </span>
         <ChevronDown
           className={`h-4 w-4 shrink-0 text-[#667085] transition ${
             open ? "rotate-180 text-[#5b21b6]" : ""
@@ -132,13 +134,13 @@ function PremiumSelect({
 }
 
 export function EligibilitySection() {
-  const [selectedProduct, setSelectedProduct] = useState("Loan");
-  const [amount, setAmount] = useState(1000000);
-  const [purpose, setPurpose] = useState(loanTypeOptions[0]);
-  const [tenure, setTenure] = useState("5 Years");
-  const [salaryType, setSalaryType] = useState(salaryOptions[0]);
-  const [monthlyIncome, setMonthlyIncome] = useState("50000");
-  const [cibilScore, setCibilScore] = useState(720);
+  const [selectedProduct, setSelectedProduct] = useState("");
+  const [amount, setAmount] = useState(0);
+  const [purpose, setPurpose] = useState("");
+  const [tenure, setTenure] = useState("");
+  const [salaryType, setSalaryType] = useState("");
+  const [monthlyIncome, setMonthlyIncome] = useState("");
+  const [cibilScore, setCibilScore] = useState<number | "">("");
   const activeStep = cibilScore ? 3 : amount ? 2 : selectedProduct ? 1 : 0;
 
   const continueHref = useMemo(() => {
@@ -433,7 +435,7 @@ export function EligibilitySection() {
                         setMonthlyIncome(event.target.value.replace(/\D/g, ""))
                       }
                       placeholder="Enter amount"
-                      className="min-w-0 flex-1 border-0 bg-transparent text-[13px] font-bold text-[#2f3a4a] outline-none"
+                      className="min-w-0 flex-1 border-0 bg-transparent text-[13px] font-normal text-[#2f3a4a] outline-none"
                       aria-label="Monthly Salary / Income"
                     />
                   </span>
@@ -454,7 +456,7 @@ export function EligibilitySection() {
                       onChange={(event) =>
                         setCibilScore(Number(event.target.value || 0))
                       }
-                      className="min-w-0 flex-1 border-0 bg-transparent text-[13px] font-bold text-[#2f3a4a] outline-none"
+                      className="min-w-0 flex-1 border-0 bg-transparent text-[13px] font-normal text-[#2f3a4a] outline-none"
                       aria-label="CIBIL Score"
                     />
                   </span>

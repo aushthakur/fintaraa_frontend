@@ -1369,7 +1369,7 @@ export default function Navbar() {
       className="sticky top-0 z-50 overflow-x-clip border-b border-[#e5eef8] bg-white/95 backdrop-blur"
     >
       <div className="bg-[#4c1d95] px-3 text-white min-[380px]:px-4 md:px-6 lg:px-8">
-        <div className="mx-auto flex min-h-8.5 max-w-[92rem] items-center justify-between gap-2 py-1.5 text-[9px] font-medium min-[360px]:text-[10px] sm:gap-3 sm:py-2 sm:text-[11.5px]">
+        <div className="mx-auto flex min-h-7 max-w-[92rem] items-center justify-between gap-2 py-1 text-[8.5px] font-medium min-[360px]:text-[9px] sm:gap-3 sm:py-1.5 sm:text-[10.5px]">
           <div className="flex min-w-0 items-center gap-1.5 leading-4 sm:gap-2">
             <a
               href={CALL_PHONE.href}
@@ -1510,7 +1510,7 @@ export default function Navbar() {
             href={loggedIn ? profileHref : "/login"}
             aria-label={loggedIn ? "Open account" : "Login"}
             onClick={closeMobileNavigation}
-            className="inline-flex h-9 shrink-0 items-center justify-center gap-1 rounded-md border border-[#5b21b6] px-1.5 text-[10px] font-bold text-[#5b21b6] no-underline transition active:bg-[#eef5ff] min-[360px]:h-10 min-[360px]:px-2 min-[360px]:text-[11px]"
+            className="inline-flex h-9 shrink-0 items-center justify-center gap-1 border border-[#5b21b6] bg-[#5b21b6] px-1.5 text-[10px] font-bold text-white no-underline transition hover:bg-[#4c1d95] active:bg-[#4c1d95] min-[360px]:h-10 min-[360px]:px-2 min-[360px]:text-[11px]"
           >
             <UserRound className="h-4 w-4 shrink-0" aria-hidden="true" />
             <span>{loggedIn ? "Account" : "Login"}</span>
@@ -2659,128 +2659,20 @@ function AuthButton({
 
   return (
     <>
-      <div className="group/auth relative">
-        <button
-          type="button"
-          onClick={() => {
-            if (!loggedIn) {
-              openAuthModal("user");
-            }
-          }}
-          aria-haspopup="menu"
-          className={`inline-flex h-9.5 items-center rounded-full text-xs font-medium transition-all duration-150 2xl:h-10 ${
-            loggedIn
-              ? "gap-2 bg-purple-50 pl-1.5 pr-3.5 text-[#4c1d95] ring-1 ring-purple-200/80 hover:bg-purple-100/70"
-              : "gap-1.5 border border-[#5b21b6] bg-white px-3.5 text-[#5b21b6] hover:bg-purple-50/90 hover:border-[#4c1d95]"
-          }`}
-        >
-          {loggedIn ? (
-            <>
-              <span className="relative flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-[#4C1D95] to-[#7C3AED] text-[11px] font-medium text-white 2xl:h-8 2xl:w-8">
-                {avatar ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={avatar}
-                    alt={name}
-                    className="h-full w-full object-cover"
-                  />
-                ) : (
-                  initials
-                )}
-              </span>
-              <span className="max-w-28 truncate font-medium 2xl:max-w-36">
-                Hi, {firstName}
-              </span>
-            </>
-          ) : (
-            <>
-              <UserRound className="h-3.5 w-3.5 shrink-0" />
-              <span>Login</span>
-            </>
-          )}
-          <ChevronDown className="h-3.5 w-3.5 shrink-0 opacity-70 transition-transform duration-200 group-hover/auth:rotate-180 group-focus-within/auth:rotate-180" />
-        </button>
-
-        {/* Simplified, Clean Dropdown Menu */}
-        <div className="pointer-events-none absolute right-0 top-full z-60 w-52 translate-y-1 pt-2 opacity-0 transition duration-150 group-hover/auth:pointer-events-auto group-hover/auth:translate-y-0 group-hover/auth:opacity-100 group-focus-within/auth:pointer-events-auto group-focus-within/auth:translate-y-0 group-focus-within/auth:opacity-100">
-          <div
-            role="menu"
-            className="overflow-hidden rounded-2xl border border-purple-100 bg-white p-1.5 shadow-[0_12px_36px_rgba(91,33,182,0.12)]"
-          >
-            {loggedIn ? (
-              <>
-                <div className="px-3 py-2 border-b border-purple-50 mb-1">
-                  <span className="block truncate text-xs font-semibold text-slate-800">
-                    {name}
-                  </span>
-                  <span className="text-[10.5px] font-normal text-slate-400">
-                    {partnerSession ? "Partner Account" : "Customer Account"}
-                  </span>
-                </div>
-                <Link
-                  href={dashboardHref}
-                  role="menuitem"
-                  className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-medium text-slate-700 no-underline transition hover:bg-purple-50 hover:text-[#5b21b6]"
-                >
-                  <LayoutDashboard className="h-4 w-4 text-[#5b21b6]" />
-                  <span>{partnerSession ? "Partner Dashboard" : "Dashboard"}</span>
-                </Link>
-                <Link
-                  href={editProfileHref}
-                  role="menuitem"
-                  className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-medium text-slate-700 no-underline transition hover:bg-purple-50 hover:text-[#5b21b6]"
-                >
-                  <PencilLine className="h-4 w-4 text-[#5b21b6]" />
-                  <span>Edit Profile</span>
-                </Link>
-                <Link
-                  href={notificationsHref}
-                  role="menuitem"
-                  className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-medium text-slate-700 no-underline transition hover:bg-purple-50 hover:text-[#5b21b6]"
-                >
-                  <Bell className="h-4 w-4 text-[#5b21b6]" />
-                  <span>Notifications</span>
-                </Link>
-                <div className="mx-1 my-1 h-px bg-slate-100" />
-                <button
-                  type="button"
-                  role="menuitem"
-                  onClick={handleLogout}
-                  className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-xs font-medium text-rose-600 transition hover:bg-rose-50"
-                >
-                  <LogOut className="h-4 w-4" />
-                  <span>Logout</span>
-                </button>
-              </>
-            ) : (
-              <>
-                <button
-                  type="button"
-                  role="menuitem"
-                  onClick={() => openAuthModal("user")}
-                  className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-left text-xs font-medium text-slate-700 transition hover:bg-purple-50 hover:text-[#5b21b6]"
-                >
-                  <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-purple-50 text-[#5b21b6]">
-                    <UserRound className="h-4 w-4" />
-                  </span>
-                  <span>Customer Login</span>
-                </button>
-                <button
-                  type="button"
-                  role="menuitem"
-                  onClick={() => openAuthModal("partner")}
-                  className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-left text-xs font-medium text-slate-700 transition hover:bg-purple-50 hover:text-[#5b21b6]"
-                >
-                  <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-purple-50 text-[#5b21b6]">
-                    <BriefcaseBusiness className="h-4 w-4" />
-                  </span>
-                  <span>Partner Login</span>
-                </button>
-              </>
-            )}
-          </div>
-        </div>
-      </div>
+      <button
+        type="button"
+        onClick={() => {
+          if (!loggedIn) {
+            openAuthModal("user");
+          } else {
+            router.push(dashboardHref);
+          }
+        }}
+        className="inline-flex h-9.5 shrink-0 items-center justify-center gap-1.5 border border-[#5b21b6] bg-[#5b21b6] px-4 text-xs font-bold text-white no-underline transition hover:bg-[#4c1d95] active:bg-[#4c1d95] 2xl:h-10"
+      >
+        <UserRound className="h-4 w-4 shrink-0" aria-hidden="true" />
+        <span>{loggedIn ? "Account" : "Login"}</span>
+      </button>
       {loggedIn ? (
         <LogoutConfirmationModal
           open={confirmLogoutOpen}

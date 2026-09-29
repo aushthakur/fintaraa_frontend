@@ -131,7 +131,7 @@ export function MobileActionBar() {
   return (
     <aside
       aria-label="WhatsApp Advisor"
-      className={`fixed z-50 right-3 sm:right-6 md:right-8 flex flex-col items-end pointer-events-auto ${
+      className={`whatsapp-float fixed z-50 right-3 sm:right-6 md:right-8 flex flex-col items-end pointer-events-auto ${
         hasCardApplyBar ? "bottom-28 lg:bottom-16" : "bottom-20 md:bottom-16"
       }`}
     >

@@ -268,34 +268,31 @@ export function LoansMarketplace() {
           })}
         </div>
 
-        {/* ── SPLIT SHOWCASE STAGE (Left Image Half: Pure White Studio | Right Details Half: Sleek Obsidian Slate) ── */}
-        <div className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden border border-slate-200/90 shadow-[0_20px_50px_-15px_rgba(15,23,42,0.12)] bg-white">
+        {/* ── SHOWCASE STAGE (Minimalist & Premium) ── */}
+        <div className="relative w-full rounded-[24px] sm:rounded-[32px] overflow-hidden border border-slate-200 shadow-xl shadow-slate-200/50 bg-white">
           <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch min-h-[440px]">
-            {/* ── LEFT HALF: WHITE STUDIO STAGE FOR 3D IMAGE ── */}
-            <div className="lg:col-span-6 bg-white relative flex flex-col items-center justify-center p-5 sm:p-6 lg:p-7 border-b lg:border-b-0 lg:border-r border-slate-100/90 overflow-hidden">
-              {/* Subtle ambient radial backdrop on white */}
+            {/* ── LEFT HALF: IMAGE STUDIO ── */}
+            <div className="lg:col-span-6 bg-slate-50/50 relative flex flex-col items-center justify-center p-6 sm:p-8 lg:p-10 border-b lg:border-b-0 lg:border-r border-slate-200/60 overflow-hidden">
               <div
                 aria-hidden="true"
                 className="pointer-events-none absolute inset-0 opacity-60"
                 style={{
                   background:
-                    "radial-gradient(circle at 50% 50%, rgba(147,51,234,0.06) 0%, rgba(241,245,249,0.7) 60%, transparent 100%)",
+                    "radial-gradient(circle at 50% 50%, rgba(147,51,234,0.06) 0%, transparent 60%)",
                 }}
               />
 
-              {/* Animated 3D Artwork Image Container */}
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeLoan.id}
-                  initial={{ opacity: 0, scale: 0.94, y: 8 }}
+                  initial={{ opacity: 0, scale: 0.95, y: 10 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.94, y: -8 }}
-                  transition={{ duration: 0.26, ease: "easeOut" }}
+                  exit={{ opacity: 0, scale: 0.95, y: -10 }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
                   className="relative z-10 flex flex-col items-center justify-center w-full"
                 >
-                  {/* MAXIMIZED 3D Artwork Image */}
                   <div
-                    className={`relative w-full max-w-[320px] h-[270px] sm:max-w-[390px] sm:h-[330px] lg:max-w-[460px] lg:h-[370px] filter drop-shadow-[0_20px_35px_rgba(15,23,42,0.14)] ${
+                    className={`relative w-full max-w-[320px] h-[270px] sm:max-w-[380px] sm:h-[320px] lg:max-w-[420px] lg:h-[350px] filter drop-shadow-xl ${
                       activeLoan.customImageClass || ""
                     }`}
                   >
@@ -306,17 +303,16 @@ export function LoansMarketplace() {
                       priority
                       unoptimized
                       className="object-contain object-bottom"
-                      sizes="(max-width: 640px) 320px, (max-width: 1024px) 390px, 460px"
+                      sizes="(max-width: 640px) 320px, (max-width: 1024px) 380px, 420px"
                     />
                   </div>
 
-                  {/* Crisp Light Trust Indicators */}
-                  <div className="mt-2.5 flex items-center justify-center gap-2 sm:gap-2.5">
-                    <div className="inline-flex items-center gap-1.5 rounded-full bg-slate-50 px-3 py-0.5 text-[10.5px] font-normal text-slate-600 border border-slate-200/80 shadow-2xs">
-                      <Zap className="h-3 w-3 text-[#7c3aed]" />
+                  <div className="mt-4 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+                    <div className="inline-flex items-center gap-1.5 rounded-full bg-white px-3.5 py-1 text-[11px] font-medium text-slate-600 border border-slate-200 shadow-sm">
+                      <Zap className="h-3 w-3 text-purple-600" />
                       <span>5-Min Instant Disbursal</span>
                     </div>
-                    <div className="inline-flex items-center gap-1.5 rounded-full bg-slate-50 px-3 py-0.5 text-[10.5px] font-normal text-slate-600 border border-slate-200/80 shadow-2xs">
+                    <div className="inline-flex items-center gap-1.5 rounded-full bg-white px-3.5 py-1 text-[11px] font-medium text-slate-600 border border-slate-200 shadow-sm">
                       <ShieldCheck className="h-3 w-3 text-emerald-600" />
                       <span>50+ Partner Banks</span>
                     </div>
@@ -325,125 +321,88 @@ export function LoansMarketplace() {
               </AnimatePresence>
             </div>
 
-            {/* ── RIGHT HALF: SLEEK OBSIDIAN SLATE FOR DETAILS ── */}
-            <div className="lg:col-span-6 bg-gradient-to-br from-[#080d19] via-[#0f172a] to-[#18132f] relative flex flex-col justify-between p-5 sm:p-6 lg:p-7 overflow-hidden">
-              {/* Subtle top light accent line */}
-              <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-[#a855f7]/60 to-transparent opacity-80" />
-
-              {/* Background ambient lighting blooms */}
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-purple-600/15 blur-3xl"
-              />
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute -left-16 -bottom-16 h-56 w-56 rounded-full bg-indigo-600/15 blur-3xl"
-              />
-
-              {/* Animated Content for Loan Details */}
+            {/* ── RIGHT HALF: MINIMALIST DETAILS ── */}
+            <div className="lg:col-span-6 bg-white relative flex flex-col justify-between p-6 sm:p-8 lg:p-10 overflow-hidden">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeLoan.id}
-                  initial={{ opacity: 0, x: 12 }}
+                  initial={{ opacity: 0, x: 15 }}
                   animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -12 }}
-                  transition={{ duration: 0.26, ease: "easeOut" }}
+                  exit={{ opacity: 0, x: -15 }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
                   className="relative z-10 flex flex-col justify-center flex-1"
                 >
-                  {/* Category Pill & Tagline */}
-                  <div className="flex items-center gap-2 mb-1.5">
-                    <span className="inline-flex items-center gap-1.5 rounded-md bg-white/[0.08] px-2.5 py-0.5 text-[11px] font-light text-purple-200 border border-white/10 backdrop-blur-md">
-                      <ActiveIcon className="h-3 w-3 text-[#c084fc]" />
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="inline-flex items-center gap-1.5 rounded-md bg-purple-50 px-2.5 py-1 text-[11px] font-semibold text-purple-700 border border-purple-100">
+                      <ActiveIcon className="h-3 w-3" />
                       <span>{activeLoan.categoryLabel}</span>
                     </span>
-                    <span className="text-[11.5px] font-light text-slate-400">
+                    <span className="text-[12px] font-medium text-slate-500">
                       {activeLoan.tagline}
                     </span>
                   </div>
 
-                  {/* Loan Title */}
-                  <h3 className="text-xl sm:text-2xl lg:text-[27px] font-light text-white tracking-tight leading-snug">
+                  <h3 className="text-2xl sm:text-3xl lg:text-[32px] font-bold text-slate-900 tracking-tight leading-tight mt-1">
                     {activeLoan.name}
                   </h3>
 
-                  {/* Key Proposition */}
-                  <p className="mt-1 text-[12px] sm:text-[13px] text-slate-300/85 font-light leading-relaxed">
+                  <p className="mt-2.5 text-[13px] sm:text-[14px] text-slate-600 leading-relaxed max-w-md">
                     {activeLoan.keyBenefit}
                   </p>
 
-                  {/* 3 Compact Frosted Glass Metrics */}
-                  <div className="mt-3.5 grid grid-cols-3 gap-2 sm:gap-2.5">
-                    <div className="rounded-xl bg-white/[0.05] border border-white/10 p-2 sm:p-2.5 text-center backdrop-blur-md">
-                      <span className="block text-[9.5px] sm:text-[10px] font-light uppercase tracking-wider text-slate-400">
+                  <div className="mt-4 grid grid-cols-3 gap-2 sm:gap-2.5">
+                    <div className="flex flex-col items-center justify-center h-[52px] sm:h-[60px] rounded-xl bg-slate-50 border border-slate-100 px-1.5 transition-colors hover:bg-slate-100 overflow-hidden">
+                      <span className="block w-full text-center text-[9px] sm:text-[10px] font-semibold uppercase tracking-wider text-slate-500 truncate">
                         Starting ROI
                       </span>
-                      <span className="mt-0.5 block text-base sm:text-lg lg:text-[21px] font-light text-[#c084fc] leading-tight tracking-tight">
+                      <span className="mt-0.5 block w-full text-center text-[13px] sm:text-[15px] font-bold text-purple-700 tracking-tight truncate">
                         {activeLoan.rate}
                       </span>
                     </div>
 
-                    <div className="rounded-xl bg-white/[0.05] border border-white/10 p-2 sm:p-2.5 text-center backdrop-blur-md">
-                      <span className="block text-[9.5px] sm:text-[10px] font-light uppercase tracking-wider text-slate-400">
+                    <div className="flex flex-col items-center justify-center h-[52px] sm:h-[60px] rounded-xl bg-slate-50 border border-slate-100 px-1.5 transition-colors hover:bg-slate-100 overflow-hidden">
+                      <span className="block w-full text-center text-[9px] sm:text-[10px] font-semibold uppercase tracking-wider text-slate-500 truncate">
                         Max Amount
                       </span>
-                      <span className="mt-0.5 block text-base sm:text-lg lg:text-[21px] font-light text-white leading-tight tracking-tight">
+                      <span className="mt-0.5 block w-full text-center text-[13px] sm:text-[15px] font-bold text-slate-800 tracking-tight truncate">
                         {activeLoan.amount.replace("Up to ", "")}
                       </span>
                     </div>
 
-                    <div className="rounded-xl bg-white/[0.05] border border-white/10 p-2 sm:p-2.5 text-center backdrop-blur-md">
-                      <span className="block text-[9.5px] sm:text-[10px] font-light uppercase tracking-wider text-slate-400">
+                    <div className="flex flex-col items-center justify-center h-[52px] sm:h-[60px] rounded-xl bg-slate-50 border border-slate-100 px-1.5 transition-colors hover:bg-slate-100 overflow-hidden">
+                      <span className="block w-full text-center text-[9px] sm:text-[10px] font-semibold uppercase tracking-wider text-slate-500 truncate">
                         Max Tenure
                       </span>
-                      <span className="mt-0.5 block text-base sm:text-lg lg:text-[21px] font-light text-white leading-tight tracking-tight">
+                      <span className="mt-0.5 block w-full text-center text-[13px] sm:text-[15px] font-bold text-slate-800 tracking-tight truncate">
                         {activeLoan.tenure.replace("Up to ", "")}
                       </span>
                     </div>
                   </div>
 
-                  {/* Key Perks List */}
-                  <div className="mt-3 flex flex-wrap gap-1.5">
-                    {activeLoan.perks.map((perk) => (
-                      <span
-                        key={perk}
-                        className="inline-flex items-center gap-1.5 rounded-lg bg-white/[0.04] border border-white/[0.08] px-2.5 py-1 text-[11px] font-light text-slate-200"
-                      >
-                        <CheckCircle2 className="h-3 w-3 text-[#c084fc] shrink-0" />
-                        <span>{perk}</span>
-                      </span>
-                    ))}
-                  </div>
 
-                  {/* Action Buttons */}
-                  <div className="mt-4 sm:mt-5 flex flex-wrap items-center gap-2.5">
+
+                  <div className="mt-7 flex flex-wrap items-center gap-3">
                     <Link
                       href={activeLoan.href}
-                      className="inline-flex h-9 sm:h-10 items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-[#9333ea] via-[#7c3aed] to-[#5b21b6] px-5 sm:px-6 text-[12.5px] sm:text-[13px] font-normal text-white shadow-md shadow-purple-950/40 hover:brightness-110 active:scale-95 transition-all tracking-wide"
+                      className="inline-flex h-11 sm:h-12 items-center justify-center gap-2 rounded-xl bg-[#5b21b6] px-6 sm:px-8 text-[13px] sm:text-[14px] font-semibold text-white shadow-lg shadow-purple-900/20 hover:bg-[#4c1d95] active:scale-95 transition-all"
                     >
                       <span>Apply Now</span>
-                      <ArrowRight className="h-3.5 w-3.5" />
+                      <ArrowRight className="h-4 w-4" />
                     </Link>
 
                     <Link
                       href="#calculators"
-                      className="inline-flex h-9 sm:h-10 items-center justify-center gap-1.5 rounded-xl border border-white/15 bg-white/[0.05] hover:bg-white/[0.12] px-4 text-[12px] sm:text-[12.5px] font-light text-white backdrop-blur-md transition-all active:scale-95"
+                      className="inline-flex h-11 sm:h-12 items-center justify-center gap-2 rounded-xl border-2 border-slate-200 bg-white hover:bg-slate-50 hover:border-slate-300 px-5 text-[13px] sm:text-[14px] font-semibold text-slate-700 transition-all active:scale-95"
                     >
+                      <Calculator className="h-4 w-4 text-slate-500" />
                       <span>Calculate EMI</span>
-                    </Link>
-
-                    <Link
-                      href="/products?category=Loans"
-                      className="ml-auto hidden sm:inline-flex items-center text-[11.5px] font-light text-purple-300/80 hover:text-white transition-colors"
-                    >
-                      Compare All Banks →
                     </Link>
                   </div>
                 </motion.div>
               </AnimatePresence>
 
-              {/* Bottom Progress Indicators inside Right Panel */}
-              <div className="mt-4 pt-3 flex items-center justify-between border-t border-white/[0.08] relative z-10">
-                <div className="flex items-center gap-1">
+              <div className="mt-6 pt-4 flex items-center justify-between border-t border-slate-100 relative z-10">
+                <div className="flex items-center gap-1.5">
                   {allLoans.map((_, i) => (
                     <button
                       key={i}
@@ -452,15 +411,18 @@ export function LoansMarketplace() {
                       aria-label={`Go to loan ${i + 1}`}
                       className={`rounded-full transition-all duration-300 cursor-pointer ${
                         i === selectedIndex
-                          ? "w-6 h-1 bg-[#c084fc]"
-                          : "w-1 h-1 bg-white/20 hover:bg-white/40"
+                          ? "w-8 h-1.5 bg-purple-600"
+                          : "w-2 h-1.5 bg-slate-200 hover:bg-slate-300"
                       }`}
                     />
                   ))}
                 </div>
-                <span className="text-[11px] font-light text-slate-400">
-                  {selectedIndex + 1} / {allLoans.length}
-                </span>
+                <Link
+                  href="/products?category=Loans"
+                  className="hidden sm:inline-flex items-center gap-1 text-[12px] font-semibold text-slate-500 hover:text-purple-700 transition-colors"
+                >
+                  Compare All Banks <ArrowRight className="h-3.5 w-3.5" />
+                </Link>
               </div>
             </div>
           </div>

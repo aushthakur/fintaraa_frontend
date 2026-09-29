@@ -874,4 +874,8 @@ select:disabled {
   }
 }
 
+*:not(.whatsapp-float):not(.whatsapp-float *) {
+  border-radius: 0px !important;
+}
+
 

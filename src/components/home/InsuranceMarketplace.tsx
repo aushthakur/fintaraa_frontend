@@ -1,92 +1,45 @@
 "use client";
 
 import Link from "next/link";
-import {
-  HeartPulse,
-  Umbrella,
-  Car,
-  ShieldCheck,
-  Store,
-  Plane,
-  ArrowRight,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, A11y, Autoplay } from "swiper/modules";
+import Image from "next/image";
+import { ArrowRight } from "lucide-react";
 
-interface InsuranceItem {
-  id: string;
-  name: string;
-  metric: string;
-  detail: string;
-  href: string;
-  icon: typeof HeartPulse;
-  accentColor: string;
-  glowColor: string;
-}
-
-const insuranceList: InsuranceItem[] = [
+const marqueeInsurances = [
   {
-    id: "health",
-    name: "Health Insurance",
-    metric: "From ₹450/mo",
-    detail: "Cashless treatment at 10,000+ network hospitals with zero room rent cap",
+    title: "Health Insurance",
+    subtitle: "From ₹450/mo",
+    description: "Cashless treatment at 10,000+ network hospitals with zero room rent cap",
     href: "/products/health-insurance",
-    icon: HeartPulse,
-    accentColor: "#f43f5e",
-    glowColor: "rgba(244,63,94,0.15)",
+    image: "/assets/insurance/health.jpg"
   },
   {
-    id: "life",
-    name: "Life Insurance",
-    metric: "Guaranteed Payout",
-    detail: "Financial security for your family's future with tax savings u/s 80C",
+    title: "Life Insurance",
+    subtitle: "Guaranteed Payout",
+    description: "Financial security for your family's future with tax savings u/s 80C",
     href: "/products/life-insurance",
-    icon: Umbrella,
-    accentColor: "#818cf8",
-    glowColor: "rgba(129,140,248,0.15)",
+    image: "/assets/insurance/life.jpg"
   },
   {
-    id: "motor",
-    name: "Motor Insurance",
-    metric: "Instant Renewal",
-    detail: "Zero inspection paperless policy with 24/7 roadside assistance",
+    title: "Motor Insurance",
+    subtitle: "Instant Renewal",
+    description: "Zero inspection paperless policy with 24/7 roadside assistance",
     href: "/products/motor-insurance",
-    icon: Car,
-    accentColor: "#fb923c",
-    glowColor: "rgba(251,146,60,0.15)",
+    image: "/assets/insurance/car.jpg"
   },
   {
-    id: "term",
-    name: "Term Insurance",
-    metric: "₹1 Cr from ₹490/mo",
-    detail: "Maximum life protection cover at affordable disciplined premiums",
+    title: "Term Insurance",
+    subtitle: "₹1 Cr from ₹490/mo",
+    description: "Maximum life protection cover at affordable disciplined premiums",
     href: "/products/term-insurance",
-    icon: ShieldCheck,
-    accentColor: "#34d399",
-    glowColor: "rgba(52,211,153,0.15)",
+    image: "/assets/insurance/term.jpg"
   },
   {
-    id: "travel",
-    name: "Travel Insurance",
-    metric: "From ₹250/trip",
-    detail: "Overseas medical emergency, flight delay & baggage loss coverage",
+    title: "Travel Insurance",
+    subtitle: "From ₹250/trip",
+    description: "Overseas medical emergency, flight delay & baggage loss coverage",
     href: "/products/travel-insurance",
-    icon: Plane,
-    accentColor: "#38bdf8",
-    glowColor: "rgba(56,189,248,0.15)",
-  },
-  {
-    id: "shop",
-    name: "Shop & Business",
-    metric: "Custom Cover",
-    detail: "Protect commercial property, equipment, machinery & stock inventory",
-    href: "/products/shop-insurance",
-    icon: Store,
-    accentColor: "#a78bfa",
-    glowColor: "rgba(167,139,250,0.15)",
-  },
+    image: "/assets/insurance/travel.jpg"
+  }
 ];
 
 export function InsuranceMarketplace() {
@@ -100,77 +53,7 @@ export function InsuranceMarketplace() {
         padding: "40px 0",
       }}
     >
-      <style>{`
-        @keyframes ins-float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-6px); }
-        }
-        .ins-card {
-          background: #ffffff;
-          border: 1px solid #e2e8f0;
-          border-radius: 16px;
-          padding: 22px 20px 18px;
-          display: flex;
-          flex-direction: column;
-          gap: 10px;
-          position: relative;
-          overflow: hidden;
-          height: 100%;
-          transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
-        }
-        .ins-card::before {
-          content: '';
-          position: absolute;
-          inset: 0;
-          border-radius: 16px;
-          background: var(--card-glow);
-          opacity: 0;
-          transition: opacity 0.25s ease;
-        }
-        .ins-card:hover {
-          transform: translateY(-4px);
-          border-color: var(--card-accent);
-          box-shadow: 0 8px 24px rgba(0,0,0,0.07);
-        }
-        .ins-card:hover::before {
-          opacity: 1;
-        }
-        .ins-icon-wrap {
-          width: 44px;
-          height: 44px;
-          border-radius: 12px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-shrink: 0;
-        }
-        .ins-card:hover .ins-icon-wrap {
-          animation: ins-float 2s ease-in-out infinite;
-        }
-        .ins-separator {
-          height: 1px;
-          background: linear-gradient(90deg, transparent, var(--card-accent), transparent);
-          opacity: 0.25;
-        }
-        .ins-cta {
-          display: inline-flex;
-          align-items: center;
-          gap: 6px;
-          font-size: 12px;
-          font-weight: 500;
-          letter-spacing: 0.02em;
-          color: var(--card-accent);
-          text-decoration: none;
-          transition: gap 0.2s ease;
-          margin-top: auto;
-          padding-top: 4px;
-        }
-        .ins-cta:hover { gap: 10px; }
-        .ins-view-all:hover {
-          background: rgba(91,33,182,0.08) !important;
-          border-color: rgba(91,33,182,0.5) !important;
-        }
-      `}</style>
+
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" style={{ position: "relative" }}>
         {/* Section Header */}
@@ -224,7 +107,7 @@ export function InsuranceMarketplace() {
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <Link
               href="/products?category=Insurance"
-              className="ins-view-all"
+              className="hover:bg-[#5b21b6]/10 hover:border-[#5b21b6]/50"
               style={{
                 display: "inline-flex",
                 alignItems: "center",
@@ -244,137 +127,48 @@ export function InsuranceMarketplace() {
             >
               View all plans <ArrowRight style={{ width: 13, height: 13 }} />
             </Link>
-
-            <button
-              type="button"
-              aria-label="Previous insurance plan"
-              className="ins-prev-btn inline-flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full border border-[#d9e6f2] bg-white text-[#5b21b6] shadow-[0_8px_20px_rgba(7,22,45,0.08)] transition hover:border-[#5b21b6] hover:bg-[#5b21b6] hover:text-white disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer"
-            >
-              <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5" />
-            </button>
-            <button
-              type="button"
-              aria-label="Next insurance plan"
-              className="ins-next-btn inline-flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full border border-[#d9e6f2] bg-white text-[#5b21b6] shadow-[0_8px_20px_rgba(7,22,45,0.08)] transition hover:border-[#5b21b6] hover:bg-[#5b21b6] hover:text-white disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer"
-            >
-              <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5" />
-            </button>
           </div>
         </div>
+      </div>
 
-        {/* Single Row Carousel */}
-        <div className="relative pt-1 pb-4">
-          <Swiper
-            modules={[Navigation, A11y, Autoplay]}
-            navigation={{
-              prevEl: ".ins-prev-btn",
-              nextEl: ".ins-next-btn",
-            }}
-            slidesPerView={1.15}
-            spaceBetween={14}
-            speed={600}
-            grabCursor
-            rewind
-            autoplay={{
-              delay: 3500,
-              disableOnInteraction: false,
-              pauseOnMouseEnter: true,
-            }}
-            breakpoints={{
-              640: {
-                slidesPerView: 2.2,
-                spaceBetween: 16,
-              },
-              768: {
-                slidesPerView: 2.8,
-                spaceBetween: 18,
-              },
-              1024: {
-                slidesPerView: 3.5,
-                spaceBetween: 20,
-              },
-              1280: {
-                slidesPerView: 4.2,
-                spaceBetween: 20,
-              },
-            }}
-            className="w-full"
-          >
-            {insuranceList.map((item) => {
-              const Icon = item.icon;
-              return (
-                <SwiperSlide key={item.id} className="h-auto! pb-2">
-                  <div
-                    className="ins-card"
-                    style={{
-                      "--card-accent": item.accentColor,
-                      "--card-glow": item.glowColor,
-                    } as React.CSSProperties}
+      {/* Puzzle Grid Layout */}
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-12 mt-4 relative z-10">
+        <div 
+          className="grid grid-cols-1 md:grid-cols-4 gap-4"
+          style={{ gridAutoRows: "minmax(280px, 320px)" }}
+        >
+          {marqueeInsurances.map((item, index) => {
+            let gridClass = "";
+            if (index === 0) gridClass = "md:col-span-2 md:row-span-1"; // 2 cols wide
+            else if (index === 1) gridClass = "md:col-span-1 md:row-span-1"; // 1 col wide
+            else if (index === 2) gridClass = "md:col-span-1 md:row-span-1"; // 1 col wide
+            else if (index === 3) gridClass = "md:col-span-2 md:row-span-1"; // 2 cols wide
+            else if (index === 4) gridClass = "md:col-span-2 md:row-span-1"; // 2 cols wide
+            
+            return (
+              <div key={item.title} className={`group/card relative w-full h-full min-h-[280px] overflow-hidden rounded-2xl ${gridClass}`}>
+                <Image
+                  src={item.image}
+                  alt={item.title}
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover/card:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent transition-opacity duration-300 group-hover/card:opacity-95" />
+                
+                <div className="absolute inset-0 flex flex-col justify-end p-5 sm:p-7 text-white">
+                  <h3 className="text-[18px] sm:text-[22px] font-bold leading-tight mb-1">{item.title}</h3>
+                  <p className="text-[13px] sm:text-[14px] font-semibold text-white mb-2">{item.subtitle}</p>
+                  <p className="text-[12px] sm:text-[13px] text-gray-200 line-clamp-2 mb-4 max-w-[85%]">{item.description}</p>
+                  <Link
+                    href={item.href}
+                    className="inline-flex w-fit items-center gap-2 text-[13px] font-bold text-white transition hover:text-[#c4b5fd]"
                   >
-                    {/* Icon */}
-                    <div
-                      className="ins-icon-wrap"
-                      style={{
-                        background: item.glowColor,
-                        border: `1.5px solid ${item.accentColor}33`,
-                      }}
-                    >
-                      <Icon style={{ width: 22, height: 22, color: item.accentColor }} />
-                    </div>
-
-                    {/* Name + Metric */}
-                    <div>
-                      <h3 style={{
-                        fontSize: 14,
-                        fontWeight: 600,
-                        color: "#0f172a",
-                        lineHeight: 1.3,
-                        letterSpacing: "-0.01em",
-                      }}>
-                        {item.name}
-                      </h3>
-                      <p style={{
-                        marginTop: 2,
-                        fontSize: 12,
-                        color: item.accentColor,
-                        fontWeight: 500,
-                        letterSpacing: "0.01em",
-                      }}>
-                        {item.metric}
-                      </p>
-                    </div>
-
-                    {/* Separator */}
-                    <div
-                      className="ins-separator"
-                      style={{ "--card-accent": item.accentColor } as React.CSSProperties}
-                    />
-
-                    {/* Detail */}
-                    <p style={{
-                      fontSize: 12,
-                      color: "#64748b",
-                      lineHeight: 1.65,
-                      fontWeight: 400,
-                      flexGrow: 1,
-                    }}>
-                      {item.detail}
-                    </p>
-
-                    {/* CTA */}
-                    <Link
-                      href={item.href}
-                      className="ins-cta"
-                      style={{ "--card-accent": item.accentColor } as React.CSSProperties}
-                    >
-                      Compare Plans
-                      <ArrowRight style={{ width: 13, height: 13 }} />
-                    </Link>
-                  </div>
-                </SwiperSlide>
-              );
-            })}
-          </Swiper>
+                    Compare Plans <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

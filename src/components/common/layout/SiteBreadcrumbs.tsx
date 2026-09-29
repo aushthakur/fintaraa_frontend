@@ -144,23 +144,23 @@ export function SiteBreadcrumbs() {
   if (!items.length) return null;
 
   return (
-    <nav aria-label="Breadcrumb" className="bg-white px-4 py-3 md:px-6 lg:px-8">
-      <ol className="mx-auto flex max-w-9xl items-center gap-2 overflow-x-auto whitespace-nowrap text-[12px] font-bold text-[#667085]">
+    <nav aria-label="Breadcrumb" className="border-b border-black/5 bg-white/50 backdrop-blur-xl px-4 py-2.5 md:px-6 lg:px-8">
+      <ol className="mx-auto flex max-w-9xl items-center gap-2.5 overflow-x-auto whitespace-nowrap text-[13px] font-medium">
         {items.map((item, index) => {
           const isLast = index === items.length - 1;
           return (
-            <li key={item.href} className="flex items-center gap-2">
+            <li key={item.href} className="flex items-center gap-2.5">
               {index > 0 ? (
-                <ChevronRight className="h-3.5 w-3.5 shrink-0 text-[#b4bfcc]" />
+                <ChevronRight className="h-3.5 w-3.5 shrink-0 text-gray-300" strokeWidth={2.5} />
               ) : null}
               {isLast ? (
-                <span aria-current="page" className="text-[#111827]">
+                <span aria-current="page" className="text-gray-900 font-semibold tracking-tight">
                   {item.label}
                 </span>
               ) : (
                 <Link
                   href={item.href}
-                  className="inline-flex items-center gap-1.5 text-[#667085] no-underline transition hover:text-[#4c1d95]"
+                  className="inline-flex items-center gap-1.5 text-gray-500 transition-all duration-300 hover:text-indigo-600"
                 >
                   {index === 0 ? <Home className="h-3.5 w-3.5" /> : null}
                   {item.label}
