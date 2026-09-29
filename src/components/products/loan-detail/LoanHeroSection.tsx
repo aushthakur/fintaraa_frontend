@@ -28,7 +28,7 @@ import { getProductContentConfig } from "@/data/productSpecificContent";
 
 const personalLoanSlides = [
   {
-    image: "/assets/personal-loan/hero-slide-1.jpg",
+    image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&q=80&w=1600",
     alt: "Young Indian couple planning their goals in modern apartment",
     badge: "⚡ 100% Paperless Digital Sanction",
     title: "Instant Personal Loans up to ₹1 Crore",
@@ -39,7 +39,7 @@ const personalLoanSlides = [
     ctaText: "Check Pre-Approved Offer",
   },
   {
-    image: "/assets/personal-loan/hero-slide-2.jpg",
+    image: "https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&q=80&w=1600",
     alt: "Confident Indian entrepreneur in modern atrium",
     badge: "💼 For Salaried & Working Professionals",
     title: "Preferential Rates & Instant Credit Sanctions",
@@ -50,7 +50,7 @@ const personalLoanSlides = [
     ctaText: "Explore Top Bank Offers",
   },
   {
-    image: "/assets/personal-loan/hero-slide-3.jpg",
+    image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&q=80&w=1600",
     alt: "Happy Indian family celebrating in new home",
     badge: "🎉 Low EMI Guarantee",
     title: "Celebrate Life's Joyful Moments with Affordable EMIs",

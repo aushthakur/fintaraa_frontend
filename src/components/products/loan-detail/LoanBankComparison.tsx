@@ -61,7 +61,7 @@ export function LoanBankComparison({
 
       {/* RESPONSIVE SCROLL-WRAPPER TABLE DOCK */}
       <div className="w-full overflow-x-auto">
-        <table className="w-full min-w-[700px] border-collapse bg-white text-left text-sm font-normal">
+        <table className="responsive-card-table w-full min-w-[700px] border-collapse bg-white text-left text-sm font-normal">
           <thead className="bg-slate-50/70 text-slate-600 text-xs font-normal uppercase tracking-wider border-b-2 border-slate-200 select-none">
             <tr>
               <th className="px-6 py-4 w-[24%] font-normal">Lender</th>
