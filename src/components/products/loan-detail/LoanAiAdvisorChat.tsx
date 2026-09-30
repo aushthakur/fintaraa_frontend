@@ -331,13 +331,13 @@ export function LoanAiAdvisorChat({
       </div>
 
       {/* Relative Wrapper with Girl Illustration and Speech Bubble on Left */}
-      <div className="relative mt-12 sm:mt-16 md:mt-20 lg:mt-24">
+      <div className="relative mt-32 sm:mt-16 md:mt-20 lg:mt-24">
 
         {/* Girl illustration positioned a bit more up, BEHIND the chat box */}
         <div className="absolute -top-28 sm:-top-36 md:-top-48 lg:-top-56 right-2 sm:right-6 md:right-10 w-36 sm:w-56 md:w-68 lg:w-76 pointer-events-none z-0 select-none">
           <div className="relative">
             {/* Speech Bubble on the Left Side of the Girl Image (maintained in place) */}
-            <div className="absolute top-26 sm:top-32 md:top-42 lg:top-46 -left-36 sm:-left-44 md:-left-48 bg-white/95 backdrop-blur-md border border-purple-200/90 rounded-2xl px-3.5 py-1.5 text-xs sm:text-sm font-normal text-[#6424C7] shadow-lg flex items-center gap-1.5 whitespace-nowrap animate-bounce [animation-duration:3s]">
+            <div className="absolute top-10 sm:top-32 md:top-42 lg:top-46 -left-28 sm:-left-44 md:-left-48 bg-white/95 backdrop-blur-md border border-purple-200/90 rounded-2xl px-3.5 py-1.5 text-xs sm:text-sm font-normal text-[#6424C7] shadow-lg flex items-center gap-1.5 whitespace-nowrap animate-bounce [animation-duration:3s]">
               <span>Ask me anything! 👉</span>
             </div>
 

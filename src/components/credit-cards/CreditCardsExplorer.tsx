@@ -213,7 +213,7 @@ function FilterGroup({
                 type="checkbox"
                 checked={selected.includes(option)}
                 onChange={() => onToggle(option)}
-                className="rounded border-[#cbd5e1] text-[#4c1d95] focus:ring-0"
+                className="rounded border-[#cbd5e1] text-[#6424C7] focus:ring-0"
               />
               <span>{option}</span>
             </label>
@@ -684,7 +684,7 @@ export function CreditCardsExplorer({
         <div className="flex items-center gap-2">
           <span className="text-[14px] font-bold text-[#1a1d25]">Filters</span>
           {activeFilterCount ? (
-            <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-[#4c1d95] px-1.5 text-[10px] font-extrabold text-white">
+            <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-[#6424C7] px-1.5 text-[10px] font-extrabold text-white">
               {activeFilterCount}
             </span>
           ) : null}
@@ -693,7 +693,7 @@ export function CreditCardsExplorer({
           <button
             type="button"
             onClick={clearFilters}
-            className="text-[12px] font-medium text-[#7a869a] hover:text-[#4c1d95]"
+            className="text-[12px] font-medium text-[#7a869a] hover:text-[#6424C7]"
           >
             Clear All
           </button>
@@ -748,7 +748,7 @@ export function CreditCardsExplorer({
                     onChange={() =>
                       toggleSelected(bank, selectedBanks, setSelectedBanks)
                     }
-                    className="rounded border-[#cbd5e1] text-[#4c1d95] focus:ring-0"
+                    className="rounded border-[#cbd5e1] text-[#6424C7] focus:ring-0"
                   />
                   <span>{bank}</span>
                 </label>
@@ -820,7 +820,7 @@ export function CreditCardsExplorer({
           type="checkbox"
           checked={loungeOnly}
           onChange={(event) => setLoungeOnly(event.target.checked)}
-          className="rounded border-[#cbd5e1] text-[#4c1d95] focus:ring-0"
+          className="rounded border-[#cbd5e1] text-[#6424C7] focus:ring-0"
         />
         <span>Lounge Access</span>
       </label>
@@ -829,7 +829,7 @@ export function CreditCardsExplorer({
           type="checkbox"
           checked={featuredOnly}
           onChange={(event) => setFeaturedOnly(event.target.checked)}
-          className="rounded border-[#cbd5e1] text-[#4c1d95] focus:ring-0"
+          className="rounded border-[#cbd5e1] text-[#6424C7] focus:ring-0"
         />
         <span>Featured Cards</span>
       </label>
@@ -838,7 +838,7 @@ export function CreditCardsExplorer({
           type="checkbox"
           checked={welcomeBenefitsOnly}
           onChange={(event) => setWelcomeBenefitsOnly(event.target.checked)}
-          className="rounded border-[#cbd5e1] text-[#4c1d95] focus:ring-0"
+          className="rounded border-[#cbd5e1] text-[#6424C7] focus:ring-0"
         />
         <span>Welcome Benefits</span>
       </label>
@@ -880,7 +880,7 @@ export function CreditCardsExplorer({
               <button
                 type="button"
                 onClick={() => setFiltersOpen(false)}
-                className="h-11 w-full rounded-xl bg-[#4c1d95] text-[13px] font-extrabold text-white shadow-[0_10px_24px_rgba(0,92,168,0.22)]"
+                className="h-11 w-full rounded-xl bg-[#6424C7] text-[13px] font-extrabold text-white shadow-[0_10px_24px_rgba(0,92,168,0.22)]"
               >
                 Show {sortedCards.length} Cards
               </button>
@@ -910,7 +910,7 @@ export function CreditCardsExplorer({
               }
               aria-expanded={desktopFiltersOpen}
               onClick={() => setDesktopFiltersOpen((current) => !current)}
-              className={`flex items-center justify-center border border-[#c9dceb] bg-white text-[#4c1d95] shadow-[0_6px_16px_rgba(0,82,156,0.16)] transition hover:bg-[#eef7ff] ${
+              className={`flex items-center justify-center border border-[#c9dceb] bg-white text-[#6424C7] shadow-[0_6px_16px_rgba(0,82,156,0.16)] transition hover:bg-[#eef7ff] ${
                 desktopFiltersOpen
                   ? "absolute -right-3 top-4 h-7 w-7 rounded-full"
                   : "h-10 w-full rounded-lg"
@@ -938,7 +938,7 @@ export function CreditCardsExplorer({
                   <button
                     type="button"
                     onClick={onClearRecommendation}
-                    className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[11px] font-extrabold text-[#4c1d95] ring-1 ring-[#cfe5f7]"
+                    className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[11px] font-extrabold text-[#6424C7] ring-1 ring-[#cfe5f7]"
                   >
                     ₹{recommendation.monthlyIncome.toLocaleString("en-IN")}{" "}
                     income
@@ -953,7 +953,7 @@ export function CreditCardsExplorer({
                     key={category}
                     type="button"
                     onClick={() => toggleCategory(category)}
-                    className="inline-flex items-center gap-1.5 rounded-full bg-[#4c1d95] px-3 py-1.5 text-[11px] font-extrabold text-white"
+                    className="inline-flex items-center gap-1.5 rounded-full bg-[#6424C7] px-3 py-1.5 text-[11px] font-extrabold text-white"
                   >
                     {category}
                     <X className="h-3 w-3" />
@@ -971,12 +971,12 @@ export function CreditCardsExplorer({
                 <button
                   type="button"
                   onClick={() => setFiltersOpen(true)}
-                  className="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-lg border border-[#cbd5e1] bg-white px-3 text-[12px] font-extrabold text-[#4c1d95] shadow-xs lg:hidden"
+                  className="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-lg border border-[#cbd5e1] bg-white px-3 text-[12px] font-extrabold text-[#6424C7] shadow-xs lg:hidden"
                 >
                   <SlidersHorizontal className="h-3.5 w-3.5" />
                   <span>Filters</span>
                   {activeFilterCount ? (
-                    <span className="inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-[#4c1d95] px-1 text-[9px] font-extrabold text-white">
+                    <span className="inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-[#6424C7] px-1 text-[9px] font-extrabold text-white">
                       {activeFilterCount}
                     </span>
                   ) : null}
@@ -989,7 +989,7 @@ export function CreditCardsExplorer({
                   <select
                     value={sortBy}
                     onChange={(event) => setSortBy(event.target.value)}
-                    className="h-9 appearance-none rounded-lg border border-[#cbd5e1] bg-white py-1.5 pl-3 pr-8 text-[12px] font-bold outline-none focus:border-[#4c1d95]"
+                    className="h-9 appearance-none rounded-lg border border-[#cbd5e1] bg-white py-1.5 pl-3 pr-8 text-[12px] font-bold outline-none focus:border-[#6424C7]"
                   >
                     <option value="priority">Priority</option>
                     <option value="fee-low">Annual fee: Low to high</option>
@@ -1022,7 +1022,7 @@ export function CreditCardsExplorer({
                     const benefits = getCardBenefits(card);
                     const tags = getCardTags(card);
                     return (
-                      <motion.article
+                        <motion.article
                         key={cardId || card.name}
                         layout
                         initial={{ opacity: 0, scale: 0.975 }}
@@ -1033,7 +1033,7 @@ export function CreditCardsExplorer({
                           delay: Math.min(cardIndex * 0.035, 0.18),
                           ease: [0.22, 1, 0.36, 1],
                         }}
-                        className="flex flex-col justify-between rounded-2xl border border-[#e2edf6] bg-white p-4 shadow-xs"
+                        className="group flex flex-col justify-between rounded-3xl border border-slate-200 bg-white p-5 shadow-sm hover:-translate-y-1 hover:shadow-xl hover:border-purple-200 transition-all duration-300"
                       >
                         <div>
                           <div className="flex h-7 items-center justify-between gap-2">
@@ -1045,119 +1045,122 @@ export function CreditCardsExplorer({
                                   className="h-6 w-auto max-w-24 object-contain"
                                 />
                               ) : null}
-                              <span className="text-[12px] font-extrabold text-[#4c1d95]">
+                              <span className="text-[12px] font-bold text-[#6424C7]">
                                 {card.bankName}
                               </span>
                             </div>
-                            <label className="flex cursor-pointer items-center gap-1.5 text-[11px] font-medium text-[#7a869a]">
+                            <label className="flex cursor-pointer items-center gap-1.5 text-[11px] font-medium text-slate-500 hover:text-slate-700 transition-colors">
                               <input
                                 type="checkbox"
                                 checked={compareIds.includes(cardId)}
                                 onChange={() => toggleCompare(cardId)}
-                                className="rounded border-[#cbd5e1] text-[#4c1d95] focus:ring-0"
+                                className="rounded border-slate-300 text-[#6424C7] focus:ring-0 focus:ring-offset-0"
                               />
                               <span>Compare</span>
                             </label>
                           </div>
 
-                          <div className="relative mt-3 flex h-28 w-full flex-col justify-between overflow-hidden rounded-xl bg-linear-to-br from-[#0c2340] to-[#1d3557] p-3 text-white shadow-sm">
-                            <div className="flex items-start justify-between">
-                              <div className="text-[9px] font-semibold uppercase tracking-wider opacity-70">
+                          <div className="relative mt-4 flex h-32 w-full flex-col justify-between overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 via-slate-800 to-black p-4 text-white shadow-md group-hover:shadow-lg transition-all duration-300">
+                            <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-white/5 blur-xl pointer-events-none" />
+                            <div className="absolute -left-6 -bottom-6 h-20 w-20 rounded-full bg-purple-500/10 blur-lg pointer-events-none" />
+                            
+                            <div className="relative flex items-start justify-between z-10">
+                              <div className="text-[10px] font-bold uppercase tracking-widest text-slate-300 opacity-90">
                                 {card.bankName}
                               </div>
                               {card.featured ? (
-                                <Star className="h-4 w-4 fill-amber-300 text-amber-300" />
+                                <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 drop-shadow-sm" />
                               ) : (
-                                <div className="h-3.5 w-5 rounded-xs bg-amber-400/80" />
+                                <div className="h-3 w-5 rounded bg-slate-400/20" />
                               )}
                             </div>
-                            <div className="space-y-1">
-                              <div className="font-mono text-[8px] tracking-widest opacity-80">
+                            <div className="relative space-y-1.5 z-10">
+                              <div className="font-mono text-[9px] tracking-[0.2em] text-slate-300/80">
                                 **** **** **** 8832
                               </div>
                               <div className="flex items-end justify-between">
-                                <div className="font-mono text-[7px] opacity-50">
+                                <div className="font-mono text-[8px] text-slate-400 uppercase">
                                   {card.cardType || "CREDIT"}
                                 </div>
-                                <div className="text-[11px] font-extrabold italic tracking-wide opacity-90">
+                                <div className="text-[11px] font-black italic tracking-wide text-slate-100 uppercase">
                                   {card.cardNetwork || "CARD"}
                                 </div>
                               </div>
                             </div>
                           </div>
 
-                          <h3 className="mt-4 min-h-10 text-[14px] font-bold leading-snug text-[#1a1d24]">
+                          <h3 className="mt-5 min-h-[44px] text-[15px] font-semibold leading-snug text-slate-900 group-hover:text-[#6424C7] transition-colors">
                             {card.name}
                           </h3>
                           <div className="mt-2 flex flex-wrap gap-1.5">
                             {tags.map((tag) => (
                               <span
                                 key={tag}
-                                className="rounded-md bg-[#eef2ff] px-2.5 py-0.5 text-[10px] font-bold text-[#4f46e5]"
+                                className="rounded-md bg-purple-50 px-2 py-0.5 text-[10px] font-medium text-[#6424C7] border border-purple-100"
                               >
                                 {tag}
                               </span>
                             ))}
                           </div>
 
-                          <ul className="mt-4 space-y-2 border-b border-[#f3f7fa] pb-4">
+                          <ul className="mt-5 space-y-2.5 border-b border-slate-100 pb-5">
                             {benefits.map((benefit) => (
                               <li
                                 key={benefit}
-                                className="flex items-start gap-1.5 text-[12px] font-medium text-[#4a5568]"
+                                className="flex items-start gap-2 text-[13px] font-normal text-slate-600"
                               >
-                                <span className="mt-0.5 text-[10px] text-[#a0aec0]">
-                                  •
+                                <span className="mt-1 text-[8px] text-slate-400">
+                                  ●
                                 </span>
-                                <span>{benefit}</span>
+                                <span className="leading-relaxed">{benefit}</span>
                               </li>
                             ))}
                           </ul>
                         </div>
 
                         <div>
-                          <div className="my-3 grid grid-cols-2 gap-2 rounded-xl border border-[#f0f4f8] bg-[#fafcfe] py-3 text-center">
+                          <div className="my-4 grid grid-cols-2 gap-3 rounded-2xl border border-slate-100 bg-slate-50/50 py-3 text-center">
                             <div>
-                              <span className="block text-[13px] font-bold text-[#1a1d24]">
+                              <span className="block text-[14px] font-medium text-slate-900">
                                 {formatCurrency(card.annualFee)}
                               </span>
-                              <span className="text-[10px] font-medium text-[#7a869a]">
+                              <span className="text-[11px] font-normal text-slate-500">
                                 Annual Fee
                               </span>
                             </div>
-                            <div className="border-l border-[#eef2f6]">
-                              <span className="block text-[13px] font-bold text-[#1a1d24]">
+                            <div className="border-l border-slate-200">
+                              <span className="block text-[14px] font-medium text-slate-900 truncate px-2">
                                 {card.rewardsType || "Rewards"}
                               </span>
-                              <span className="text-[10px] font-medium text-[#7a869a]">
+                              <span className="text-[11px] font-normal text-slate-500">
                                 Reward Type
                               </span>
                             </div>
                           </div>
 
-                          <div className="mb-4 text-left">
-                            <div className="text-[12px] font-bold text-[#4c1d95]">
+                          <div className="mb-5 text-left">
+                            <div className="text-[13px] font-medium text-emerald-600 line-clamp-1">
                               {card.welcomeBenefits ||
                                 "Welcome benefits available"}
                             </div>
-                            <div className="text-[10px] font-medium text-[#9aa5b5]">
+                            <div className="text-[11px] font-normal text-slate-500">
                               Welcome Benefit
                             </div>
                           </div>
 
-                          <div className="space-y-2">
-                            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                          <div className="space-y-2.5">
+                            <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
                               <button
                                 type="button"
                                 onClick={() => handleDetails(card)}
-                                className="rounded-lg border border-[#4c1d95] bg-white py-2 text-[12px] font-bold text-[#4c1d95] transition-colors hover:bg-[#f4f9ff]"
+                                className="inline-flex items-center justify-center rounded-xl bg-purple-50 py-2.5 text-[13px] font-medium text-[#6424C7] transition-all hover:bg-purple-100"
                               >
                                 View Details
                               </button>
                               <button
                                 type="button"
                                 onClick={() => handleApply(card)}
-                                className="rounded-lg bg-[#4c1d95] py-2 text-center text-[12px] font-bold text-white shadow-xs transition-colors hover:bg-[#004b87]"
+                                className="inline-flex items-center justify-center rounded-xl bg-[#6424C7] py-2.5 text-[13px] font-medium text-white shadow-sm transition-all hover:bg-[#521eb0] hover:shadow"
                               >
                                 Apply Now
                               </button>
@@ -1165,9 +1168,9 @@ export function CreditCardsExplorer({
                             <button
                               type="button"
                               onClick={() => handleEligibility(card)}
-                              className="block w-full pt-1 text-center text-[11px] font-bold text-[#4c1d95] hover:underline"
+                              className="block w-full pt-1.5 text-center text-[12px] font-medium text-slate-500 hover:text-[#6424C7] transition-colors"
                             >
-                              View Eligibility
+                              Check Eligibility First
                             </button>
                           </div>
                         </div>
@@ -1191,7 +1194,7 @@ export function CreditCardsExplorer({
             <div className="flex flex-col items-stretch justify-between gap-4 rounded-xl border border-[#e2edf6] bg-white p-4 shadow-xs md:flex-row md:items-center">
               <div className="flex flex-wrap items-center gap-4">
                 <div>
-                  <span className="text-[14px] font-bold text-[#4c1d95]">
+                  <span className="text-[14px] font-bold text-[#6424C7]">
                     {compareIds.length}/3 Cards Selected
                   </span>
                 </div>
@@ -1217,7 +1220,7 @@ export function CreditCardsExplorer({
                 type="button"
                 disabled={compareCards.length < 2}
                 onClick={() => setCompareOpen(true)}
-                className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#4c1d95] px-6 py-2.5 text-[13px] font-bold text-white transition-colors hover:bg-[#004b87] disabled:cursor-not-allowed disabled:bg-[#9db9d1] md:w-auto"
+                className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#6424C7] px-6 py-2.5 text-[13px] font-bold text-white transition-colors hover:bg-[#004b87] disabled:cursor-not-allowed disabled:bg-[#9db9d1] md:w-auto"
               >
                 <span>Compare Now</span>
                 <ExternalLink className="h-3.5 w-3.5" />
@@ -1260,7 +1263,7 @@ export function CreditCardsExplorer({
           <div className="max-h-[92vh] w-full max-w-6xl overflow-hidden rounded-2xl bg-white shadow-[0_28px_80px_rgba(15,23,42,0.28)]">
             <div className="flex flex-col gap-3 border-b border-[#e2edf6] px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <p className="text-[11px] font-extrabold uppercase tracking-wide text-[#4c1d95]">
+                <p className="text-[11px] font-extrabold uppercase tracking-wide text-[#6424C7]">
                   Credit Card Comparison
                 </p>
                 <h3 className="mt-1 text-[20px] font-extrabold text-[#1a1d25]">
@@ -1300,7 +1303,7 @@ export function CreditCardsExplorer({
                           className="h-6 w-auto max-w-20 object-contain"
                         />
                       ) : null}
-                      <span className="text-[11px] font-extrabold text-[#4c1d95]">
+                      <span className="text-[11px] font-extrabold text-[#6424C7]">
                         {card.bankName}
                       </span>
                     </div>

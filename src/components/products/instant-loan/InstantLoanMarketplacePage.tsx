@@ -748,6 +748,16 @@ export function InstantLoanMarketplacePage({
                   A personal loan should finance a defined need with a clear repayment plan. If your EMI will exceed 40% of your monthly income, consider borrowing a smaller amount or extending the tenure.
                 </p>
               </div>
+              
+              <div className="mt-8 relative w-full h-64 sm:h-80 rounded-2xl overflow-hidden shadow-lg border border-slate-200/60">
+                <Image
+                  src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&q=80&w=1600"
+                  alt="Financial planning and clear repayment"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  className="object-cover"
+                />
+              </div>
             </div>
 
             <div className="space-y-0 divide-y divide-slate-100">

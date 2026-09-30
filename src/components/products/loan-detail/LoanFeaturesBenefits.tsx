@@ -39,10 +39,7 @@ export function LoanFeaturesBenefits({
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Editorial Section Header */}
         <div className="max-w-3xl mb-16 sm:mb-20">
-          <div className="inline-flex items-center gap-2 rounded-full bg-purple-100/80 px-3.5 py-1.5 text-xs font-normal text-[#6424C7] mb-4">
-            <Sparkles className="h-3.5 w-3.5" />
-            <span>Fintaraa Borrower Advantages</span>
-          </div>
+          {/* Eyebrow badge removed */}
 
           <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-normal tracking-tight text-gray-950 leading-[1.15]">
             Key Features &amp;{" "}

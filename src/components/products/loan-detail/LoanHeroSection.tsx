@@ -439,8 +439,9 @@ export function LoanHeroSection({ page }: { page: LoanSeoPageData }) {
   const [isPaused, setIsPaused] = useState(false);
 
   const slides = useMemo(() => {
+    if (page.loanTypeSlug === "personal-loan") return personalLoanSlides;
     return config.slides && config.slides.length > 0 ? config.slides : personalLoanSlides;
-  }, [config.slides]);
+  }, [config.slides, page.loanTypeSlug]);
 
   const nextSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev + 1) % slides.length);
@@ -567,13 +568,8 @@ export function LoanHeroSection({ page }: { page: LoanSeoPageData }) {
             <div className="absolute inset-0 bg-gradient-to-r from-purple-950/40 via-transparent to-black/15 pointer-events-none" />
           </div>
 
-          {/* ── Slide Header / Eyebrow Pill ── */}
-          <div className="relative z-10 flex items-center justify-between gap-2 font-normal">
-            <div className="inline-flex items-center gap-2 rounded-full bg-white/20 backdrop-blur-md px-3.5 py-1.5 text-[12px] font-normal text-white border border-white/30 shadow-xs">
-              <Sparkles className="h-3.5 w-3.5 text-yellow-300" />
-              <span>{slides[currentSlide].badge}</span>
-            </div>
-
+          {/* ── Slide Header / Slide Counter ── */}
+          <div className="relative z-10 flex items-center justify-end gap-2 font-normal">
             <div className="flex items-center gap-1.5 rounded-full bg-black/40 backdrop-blur-md px-2.5 py-1 text-[11px] font-normal text-white/90 border border-white/15">
               <span>{currentSlide + 1}</span>
               <span className="text-white/50">/</span>

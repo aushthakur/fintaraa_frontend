@@ -6,6 +6,14 @@ const backendApiBase = (
 
 const nextConfig: NextConfig = {
   allowedDevOrigins: ["127.0.0.1", "localhost", "192.168.31.10", "*.loca.lt", "*.ngrok-free.app", "*.trycloudflare.com"],
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      },
+    ],
+  },
   experimental: {
     proxyClientMaxBodySize: "100mb",
   },

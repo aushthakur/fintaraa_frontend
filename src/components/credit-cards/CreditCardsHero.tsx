@@ -91,106 +91,82 @@ export function CreditCardsHero({
   };
 
   return (
-    <section className="relative overflow-hidden bg-[#fbfdff] px-4 pb-8 pt-8 md:px-6 lg:px-8">
-      <div className="absolute inset-0 overflow-visible pointer-events-none z-0">
-        {/* Left-most rectangle bleeding off the screen */}
-        <div
-          className="absolute hidden md:block bg-[#e0effe]"
-          style={{
-            width: "55px",
-            height: "90px",
-            top: "-20px",
-            left: "-15px",
-            borderRadius: "5px",
-            transform: "rotate(140deg)",
-          }}
-        />
-        {/* Right parallel rectangle matching the screenshot position */}
-        <div
-          className="absolute hidden md:block bg-[#e0effe]"
-          style={{
-            width: "60px",
-            height: "120px",
-            top: "-80px",
-            left: "40px",
-            borderRadius: "5px",
-            transform: "rotate(140deg)",
-          }}
-        />
-      </div>
-      <div className="mx-auto grid max-w-9xl gap-4 md:grid-cols-[1.3fr_0.7fr] md:items-center">
-        {/* LEFT CONTAINER: HERO COPY */}
-        <motion.div
-          initial={{ opacity: 0.95, x: -16 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-          className="relative z-10 mt-4 flex flex-col justify-start ps-0 sm:mt-10 sm:ps-10 lg:pt-4"
-        >
-          <div className="relative max-w-2xl">
-            <div className="absolute -left-1 -top-6 h-20 w-36 sm:-left-16 sm:-top-16 sm:h-36 sm:w-64 md:-left-18">
-              <Image
-                src="/assets/images/credit-gauge.png"
-                alt="Credit Score Meter Gauge"
-                fill
-                unoptimized
-                priority
-                className="object-contain object-left"
-              />
-            </div>
-            <h1 className="mt-14 max-w-2xl text-[32px] font-light leading-[1.12] text-[#111625] sm:mt-10 sm:text-[40px] lg:text-[48px] tracking-tight">
+    <section className="relative w-full overflow-hidden border-b border-gray-200 bg-white">
+      <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[580px] sm:min-h-[620px] lg:min-h-[660px]">
+        
+        {/* ── Left Column: Background Image & Hero Copy (7 Cols) ── */}
+        <div className="relative lg:col-span-7 flex flex-col justify-center overflow-hidden px-4 sm:px-7 lg:px-9 xl:px-12 pt-6 sm:pt-8 lg:pt-10 pb-8 sm:pb-12 lg:pb-16 min-h-[480px] sm:min-h-[540px] lg:min-h-full bg-gradient-to-br from-[#f8faff] via-white to-[#f0f5ff]">
+          
+          {/* Boy and Girl Image */}
+          <div className="absolute bottom-0 right-0 z-0 w-full max-w-[280px] sm:max-w-[400px] lg:max-w-[500px] opacity-100 pointer-events-none">
+            <Image 
+              src="/images/boy-girl.png" 
+              alt="Boy and girl with shopping bags and cards" 
+              width={600} 
+              height={600} 
+              className="w-full h-auto object-contain object-bottom" 
+              priority 
+              unoptimized
+            />
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+            className="relative z-10 max-w-2xl text-slate-900 mt-12 sm:mt-16 lg:mt-24"
+          >
+            <h1 className="text-3xl sm:text-4xl lg:text-[44px] font-normal leading-[1.12] tracking-tight text-slate-900 mb-4">
               Credit Cards Directory <br />
-              <span className="text-[#5B21B6] font-normal">
+              <span className="text-[#6424C7] font-normal">
                 & Comparison Marketplace
               </span>
             </h1>
-            <p className="mt-3 max-w-lg text-[14px] md:text-[15px] font-light leading-relaxed text-gray-600">
+            <p className="mt-3 max-w-lg text-[15px] sm:text-[17px] font-normal leading-relaxed text-slate-600">
               Compare cards from top partner banks for cashback, airport lounge access, rewards points, and zero annual fee options.
             </p>
             <AuthRedirectLink
               href="/credit-cards"
               productSlug="credit-card"
-              className="mt-6 inline-flex h-12 items-center gap-2 rounded-xl bg-[#5B21B6] px-7 text-[14px] font-medium text-white no-underline transition hover:bg-[#4C1D95] shadow-sm"
+              className="mt-8 inline-flex h-12 items-center justify-center rounded-xl whitespace-nowrap bg-[#6424C7] px-6 text-sm font-normal text-white transition-all hover:bg-[#521eb0] active:scale-[0.98] no-underline shadow-md"
             >
               Compare Card Offers
-              <ArrowRight className="h-4 w-4" />
+              <ArrowRight className="h-4 w-4 ml-2" />
             </AuthRedirectLink>
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0.95, x: 16 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{
-            duration: 0.65,
-            delay: 0.08,
-            ease: [0.22, 1, 0.36, 1],
-          }}
-          className="relative mx-auto w-full max-w-100 md:mx-0"
-        >
-          <div className="absolute inset-0 block translate-x-2 translate-y-2 rounded-[18px] bg-[#4c1d95] sm:translate-x-3 sm:translate-y-3" />
-
-          <div className="relative rounded-[18px] border border-[#d9dfe8] bg-white p-5 shadow-[0_10px_26px_rgba(0,92,168,0.12)] sm:p-6">
-            <div className="flex items-start justify-between gap-3">
+        {/* ── Right Column: Form (5 Cols) ── */}
+        <div className="lg:col-span-5 flex flex-col justify-center py-6 sm:py-8 lg:py-10 px-4 sm:px-7 lg:px-9 xl:px-12 bg-gradient-to-br from-slate-50/80 via-white to-purple-50/30 font-normal">
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{
+              duration: 0.65,
+              delay: 0.08,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+            className="w-full max-w-[480px] mx-auto lg:mx-0 bg-white rounded-3xl p-6 sm:p-7 shadow-[0_16px_40px_-12px_rgba(0,0,0,0.1)] border border-slate-200/60"
+          >
+            <div className="flex items-start justify-between gap-3 border-b border-slate-100 pb-5 mb-5">
               <div>
-                <h2 className="text-[21px] font-extrabold leading-tight text-[#111827]">
+                <h2 className="text-xl sm:text-2xl font-normal leading-tight text-slate-900">
                   Check your card offers
                 </h2>
-                <p className="mt-1 text-[12px] font-semibold leading-5 text-[#667085]">
+                <p className="mt-1.5 text-sm font-normal leading-relaxed text-slate-500">
                   Get personalised suggestions from participating partners.
                 </p>
               </div>
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#eef8ff] text-[#4c1d95]">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-purple-50 text-[#6424C7]">
                 <Gift className="h-5 w-5" />
               </span>
             </div>
 
-            <form className="mt-5 grid gap-3" onSubmit={handleSubmit} noValidate>
+            <form className="grid gap-4" onSubmit={handleSubmit} noValidate>
               <label className="grid gap-1.5">
-                <span className="text-[11px] font-extrabold uppercase tracking-[0.08em] text-[#475467]">
-                  Full Name
-                </span>
+                <span className="text-xs font-normal text-slate-700">Full Name</span>
                 <div className="relative">
-                  <UserRound className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#667085]" />
+                  <UserRound className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
                   <input
                     type="text"
                     name="fullName"
@@ -198,76 +174,63 @@ export function CreditCardsHero({
                     onChange={(event) => updateField("fullName", event.target.value)}
                     autoComplete="name"
                     placeholder="Enter name as per PAN"
-                    className={`${inputClass} pl-10`}
+                    className="h-12 w-full rounded-xl border border-slate-200 bg-white px-3 pl-10 text-sm font-normal text-slate-900 outline-none transition focus:border-[#6424C7] focus:ring-1 focus:ring-[#6424C7]"
                   />
                 </div>
               </label>
 
               <label className="grid gap-1.5">
-                <span className="text-[11px] font-extrabold uppercase tracking-[0.08em] text-[#475467]">
-                  Mobile Number
-                </span>
-                <div className="flex h-11 overflow-hidden rounded-xl border border-[#d8e4f0] bg-[#f8fbff] transition focus-within:border-[#4c1d95] focus-within:bg-white focus-within:ring-2 focus-within:ring-[#e4f1ff]">
-                  <span className="flex items-center border-r border-[#d8e4f0] bg-[#eef8ff] px-3 text-[13px] font-extrabold text-[#4c1d95]">
+                <span className="text-xs font-normal text-slate-700">Mobile Number</span>
+                <div className="relative flex h-12 overflow-hidden rounded-xl border border-slate-200 bg-white transition focus-within:border-[#6424C7] focus-within:ring-1 focus-within:ring-[#6424C7]">
+                  <span className="flex items-center border-r border-slate-100 bg-slate-50 px-3.5 text-sm font-normal text-slate-600">
                     +91
                   </span>
                   <div className="relative min-w-0 flex-1">
-                    <Phone className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#667085]" />
+                    <Phone className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
                     <input
                       type="tel"
                       name="mobile"
                       value={form.mobile}
                       onChange={(event) =>
-                        updateField(
-                          "mobile",
-                          event.target.value.replace(/\D/g, "").slice(0, 10),
-                        )
+                        updateField("mobile", event.target.value.replace(/\D/g, "").slice(0, 10))
                       }
                       autoComplete="tel"
                       inputMode="numeric"
                       maxLength={10}
                       placeholder="10-digit mobile number"
-                      className="h-full w-full bg-transparent px-3 pl-10 text-[13px] font-bold text-[#1f2937] outline-none placeholder:text-[#9aa8b8]"
+                      className="h-full w-full bg-transparent px-3 pl-10 text-sm font-normal text-slate-900 outline-none"
                     />
                   </div>
                 </div>
               </label>
 
-              <div className="grid gap-3 sm:grid-cols-2">
+              <div className="grid gap-4 sm:grid-cols-2">
                 <label className="grid gap-1.5">
-                  <span className="text-[11px] font-extrabold uppercase tracking-[0.08em] text-[#475467]">
-                    Monthly Income
-                  </span>
+                  <span className="text-xs font-normal text-slate-700">Monthly Income</span>
                   <div className="relative">
-                    <IndianRupee className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#667085]" />
+                    <IndianRupee className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
                     <input
                       type="text"
                       name="monthlyIncome"
                       value={form.monthlyIncome}
-                      onChange={(event) =>
-                        updateField("monthlyIncome", formatIncome(event.target.value))
-                      }
+                      onChange={(event) => updateField("monthlyIncome", formatIncome(event.target.value))}
                       autoComplete="off"
                       inputMode="numeric"
                       placeholder="e.g. 75,000"
-                      className={`${inputClass} pl-10`}
+                      className="h-12 w-full rounded-xl border border-slate-200 bg-white px-3 pl-10 text-sm font-normal text-slate-900 outline-none transition focus:border-[#6424C7] focus:ring-1 focus:ring-[#6424C7]"
                     />
                   </div>
                 </label>
 
                 <label className="grid gap-1.5">
-                  <span className="text-[11px] font-extrabold uppercase tracking-[0.08em] text-[#475467]">
-                    Employment Type
-                  </span>
+                  <span className="text-xs font-normal text-slate-700">Employment Type</span>
                   <div className="relative">
-                    <BriefcaseBusiness className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#667085]" />
+                    <BriefcaseBusiness className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
                     <select
                       name="employmentType"
                       value={form.employmentType}
-                      onChange={(event) =>
-                        updateField("employmentType", event.target.value)
-                      }
-                      className={`${selectClass} pl-10`}
+                      onChange={(event) => updateField("employmentType", event.target.value)}
+                      className="h-12 w-full appearance-none rounded-xl border border-slate-200 bg-white px-3 pl-10 text-sm font-normal text-slate-900 outline-none transition focus:border-[#6424C7] focus:ring-1 focus:ring-[#6424C7]"
                     >
                       <option value="">Select employment</option>
                       <option value="salaried">Salaried</option>
@@ -280,11 +243,8 @@ export function CreditCardsHero({
               </div>
 
               {error ? (
-                <p
-                  role="alert"
-                  className="flex items-center gap-1.5 rounded-lg bg-red-50 px-3 py-2 text-[11px] font-bold text-red-700"
-                >
-                  <AlertCircle className="h-3.5 w-3.5 shrink-0" />
+                <p role="alert" className="flex items-center gap-2 rounded-xl bg-red-50 px-4 py-3 text-[13px] font-normal text-red-700 mt-2">
+                  <AlertCircle className="h-4 w-4 shrink-0" />
                   {error}
                 </p>
               ) : null}
@@ -294,27 +254,27 @@ export function CreditCardsHero({
                   initial={{ opacity: 0, y: 5 }}
                   animate={{ opacity: 1, y: 0 }}
                   role="status"
-                  className="flex items-center gap-1.5 rounded-lg bg-emerald-50 px-3 py-2 text-[11px] font-bold text-emerald-700"
+                  className="flex items-center gap-2 rounded-xl bg-emerald-50 px-4 py-3 text-[13px] font-normal text-emerald-700 mt-2"
                 >
-                  <CheckCircle2 className="h-3.5 w-3.5 shrink-0" />
+                  <CheckCircle2 className="h-4 w-4 shrink-0" />
                   Personalised card matches are ready below.
                 </motion.p>
               ) : null}
 
               <button
                 type="submit"
-                className="mt-1 inline-flex h-11 w-full items-center justify-center rounded-full bg-linear-to-r from-[#0fae5e] to-[#17cb70] px-4 text-[13px] font-extrabold text-white shadow-[0_10px_20px_rgba(18,183,106,0.18)] transition hover:brightness-105"
+                className="mt-4 inline-flex h-12 w-full items-center justify-center rounded-xl bg-[#6424C7] px-6 text-sm font-normal text-white transition-all hover:bg-[#521eb0] active:scale-[0.98] shadow-md"
               >
                 Unlock Card Offers
                 <Gift className="ml-2 h-4 w-4" />
               </button>
             </form>
-            <p className="mt-4 flex items-center justify-center gap-2 text-center text-[11px] font-semibold text-[#667085]">
-              <ShieldCheck className="h-4 w-4 text-[#0fae5e]" />
+            <p className="mt-5 flex items-center justify-center gap-2 text-center text-xs font-normal text-slate-500">
+              <ShieldCheck className="h-4 w-4 text-emerald-500" />
               100% secure. Soft check only, no impact on credit score.
             </p>
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
       </div>
     </section>
   );

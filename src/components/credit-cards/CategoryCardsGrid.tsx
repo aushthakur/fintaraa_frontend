@@ -76,62 +76,76 @@ export function ExploreCategories({
     <section className="bg-white px-4 py-8 font-sans md:px-8 md:py-12 lg:px-16">
       <div className="mx-auto max-w-9xl">
         {/* Header Section */}
-        <div className="mb-5 flex flex-row items-center justify-between gap-3 md:mb-8 md:items-end">
-          <div>
-            <h2 className="text-[20px] font-extrabold leading-tight tracking-tight text-[#22252a] md:text-[26px]">
-              Explore Credit Cards by Category
+        <div className="mb-8 md:mb-12 flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div className="max-w-2xl">
+            <h2 className="text-3xl sm:text-4xl font-normal tracking-tight text-slate-900 leading-[1.12]">
+              Explore Credit Cards by <span className="text-[#6424C7]">Category</span>
             </h2>
-            <p className="mt-1 hidden max-w-xl text-[14px] leading-relaxed text-[#8a94a6] sm:block">
-              Find the perfect credit card for your lifestyle and spending
-              needs.
+            <p className="mt-3 text-[15px] sm:text-[17px] leading-relaxed text-slate-600 font-normal">
+              Find the perfect credit card tailored for your lifestyle, spending habits, and travel needs.
             </p>
           </div>
           <button
             type="button"
             onClick={onViewAll}
-            className="inline-flex shrink-0 items-center gap-1 whitespace-nowrap text-[12px] font-bold text-[#4c1d95] hover:underline md:text-[13px]"
+            className="inline-flex shrink-0 items-center justify-center h-11 px-5 rounded-xl bg-purple-50 text-[14px] font-normal text-[#6424C7] hover:bg-purple-100 transition-colors"
           >
-            View All Cards <span className="text-[14px]">→</span>
+            View All Cards <span className="ml-1.5">→</span>
           </button>
         </div>
 
         {/* Categories Grid */}
-        <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 md:grid-cols-4 md:gap-4 xl:grid-cols-8">
+        <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4 xl:grid-cols-8">
           {categories.map(({ title, icon: Icon, iconBg, iconColor }, index) => (
             <motion.button
               type="button"
               key={title}
               onClick={() => onSelect(title)}
               aria-pressed={selectedCategories.includes(title)}
-              initial={{ opacity: 0.95, y: 14 }}
+              initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
-              whileHover={{ scale: 1.025 }}
-              whileTap={{ scale: 0.98 }}
-              viewport={{ once: true, amount: 0.45 }}
+              whileHover={{ scale: 1.03, y: -2 }}
+              whileTap={{ scale: 0.97 }}
+              viewport={{ once: true, amount: 0.2 }}
               transition={{
-                duration: 0.45,
-                delay: Math.min(index * 0.04, 0.2),
-                ease: [0.22, 1, 0.36, 1],
+                duration: 0.3,
+                delay: index * 0.03,
               }}
-              className={`flex min-h-22 cursor-pointer items-center gap-2.5 rounded-xl border p-3 text-left transition-[border-color,background-color,box-shadow] duration-200 md:min-h-36.25 md:flex-col md:justify-center md:p-5 md:text-center ${
+              className={`relative overflow-hidden group flex flex-col items-center justify-center p-3 sm:p-4 text-center transition-all duration-300 min-h-[110px] sm:min-h-[130px] rounded-2xl ${
                 selectedCategories.includes(title)
-                  ? "border-[#4c1d95] bg-[#f3f9ff] shadow-[0_8px_24px_rgba(0,92,168,0.12)]"
-                  : "border-[#e3ebf3] bg-white shadow-[0_4px_12px_rgba(22,34,50,0.02)] hover:border-[#b9d7f0] hover:shadow-md"
+                  ? "bg-[#6424C7] shadow-lg shadow-purple-900/20 border border-[#6424C7]"
+                  : "bg-white hover:bg-slate-50 border border-slate-200 hover:border-purple-300 hover:shadow-md"
               }`}
             >
               {/* Colored Circular Icon Container */}
               <div
-                className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full md:h-14 md:w-14 ${iconBg} ${iconColor}`}
+                className={`flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-full transition-colors duration-300 ${
+                  selectedCategories.includes(title)
+                    ? "bg-white/20 text-white"
+                    : `${iconBg} ${iconColor} group-hover:bg-[#6424C7] group-hover:text-white`
+                }`}
               >
-                <Icon className="h-4.5 w-4.5 md:h-6 md:w-6" />
+                <Icon className="h-5 w-5 sm:h-6 sm:w-6" />
               </div>
 
               {/* Stacked Labels */}
-              <div className="min-w-0 md:mt-4">
-                <p className="wrap-break-word text-[12px] font-bold leading-tight text-[#1a1d24] md:text-[14px]">
+              <div className="mt-3 w-full relative z-10">
+                <p
+                  className={`text-[12px] sm:text-[13px] font-bold leading-tight transition-colors duration-300 ${
+                    selectedCategories.includes(title)
+                      ? "text-white"
+                      : "text-slate-900 group-hover:text-[#6424C7]"
+                  }`}
+                >
                   {title}
                 </p>
-                <p className="mt-0.5 text-[10px] font-medium text-[#8a94a6] md:text-[11px]">
+                <p
+                  className={`mt-0.5 text-[10px] sm:text-[11px] font-medium transition-colors duration-300 ${
+                    selectedCategories.includes(title)
+                      ? "text-purple-200"
+                      : "text-slate-500"
+                  }`}
+                >
                   Cards
                 </p>
               </div>

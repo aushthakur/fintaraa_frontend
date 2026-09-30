@@ -95,11 +95,7 @@ export function LoanUseCasesSection({
                     isEven ? "lg:order-1" : "lg:order-2"
                   }`}
                 >
-                  <div className="flex items-center gap-2 mb-2 text-xs font-normal uppercase tracking-widest text-[#6424C7]">
-                    <span>Category {index + 1} of {useCasesDetailed.length}</span>
-                    <span>•</span>
-                    <span>{uc.title}</span>
-                  </div>
+                  {/* Category eyebrow badge removed */}
 
                   <h3 className="text-2xl sm:text-3xl font-normal tracking-tight text-gray-950 leading-snug">
                     {uc.headline}
