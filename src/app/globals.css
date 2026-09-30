@@ -898,8 +898,5 @@ select:disabled {
   }
 }
 
-*:not(.whatsapp-float):not(.whatsapp-float *):not(.mobile-bottom-nav):not(.mobile-bottom-nav *):not(.apply-btn-rounded) {
-  border-radius: 0px !important;
-}
 
 
